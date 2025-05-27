@@ -1,0 +1,19 @@
+{
+    "name": "Nova",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0275d40c58ad070459fe8e2c3e99f443",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "GAME_COMPILE || UNITY_EDITOR"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
