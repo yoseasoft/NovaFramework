@@ -49,11 +49,23 @@ namespace NovaEngine
         {
             int channels = Configuration.LogChannel;
 
-#if !UNITY_EDITOR
-            // 如果处于非编辑器环境，需要禁用掉编辑器相关通道类型
-            int mask = ~((int) LogOutputChannelType.Editor);
-            channels = channels & mask;
-#endif
+            //#if !UNITY_EDITOR
+            //// 如果处于非编辑器环境，需要禁用掉编辑器相关通道类型
+            //int mask = ~((int) LogOutputChannelType.Editor);
+            //channels = channels & mask;
+            //#endif
+
+            if (Application.IsEditor())
+            {
+                // 如果处于编辑器环境，可以默认开启编辑器相关通道类型
+                //channels = channels | (int) LogOutputChannelType.Editor;
+            }
+            else
+            {
+                // 如果处于非编辑器环境，需要禁用掉编辑器相关通道类型
+                int mask = ~(int) LogOutputChannelType.Editor;
+                channels = channels & mask;
+            }
 
             // 打开指定的日志通道
             OpenOutputChannels(channels);

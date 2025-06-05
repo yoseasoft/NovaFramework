@@ -84,9 +84,11 @@ namespace NovaEngine
         public static T GetInstance<T>() where T : class, ISingleton, new()
         {
             SystemType classType = typeof(T);
-#if UNITY_EDITOR
-            Logger.Assert(Utility.Reflection.IsTypeOfInstantiableClass(classType), "Invalid arguments.");
-#endif
+
+            if (Application.IsEditor() || Environment.debugMode)
+            {
+                Logger.Assert(Utility.Reflection.IsTypeOfInstantiableClass(classType), "Invalid arguments.");
+            }
 
             if (s_instances.TryGetValue(classType, out ISingleton instance))
             {

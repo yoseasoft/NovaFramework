@@ -1,8 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -41,25 +42,28 @@ namespace NovaEngine
         [LogOutputChannelBinding(LogOutputChannelType.Editor)]
         public sealed class LogEditor : Singleton<LogEditor>, ILogOutput
         {
+            private const string Key_UsingCustomColor = "LogTextUsingCustomColor";
+            private const string Key_UsingSystemColor = "LogTextUsingSystemColor";
+
             /// <summary>
             /// 日志文本使用自定义颜色
             /// </summary>
-            private static bool USE_CUSTOM_COLOR_FOR_LOG_TEXT = false;
+            private static bool UsingCustomColor = false;
             /// <summary>
             /// 日志文本使用系统设置颜色
             /// </summary>
-            private static bool USE_SYSTEM_COLOR_FOR_LOG_TEXT = true;
+            private static bool UsingSystemColor = true;
 
-            private const string LOG_C_WHITE = "FFFFFF";
-            private const string LOG_C_BLACK = "000000";
-            private const string LOG_C_RED = "FF0000";
-            private const string LOG_C_GREEN = "00FF18";
-            private const string LOG_C_BLUE = "0010FF";
-            private const string LOG_C_ORINGE = "FF9400";
-            private const string LOG_C_EXCEPTION = "FF00BD";
+            private const string LOG_COLOR_WHITE        = "FFFFFF";
+            private const string LOG_COLOR_BLACK        = "000000";
+            private const string LOG_COLOR_RED          = "FF0000";
+            private const string LOG_COLOR_GREEN        = "00FF18";
+            private const string LOG_COLOR_BLUE         = "0010FF";
+            private const string LOG_COLOR_ORINGE       = "FF9400";
+            private const string LOG_COLOR_EXCEPTION    = "FF00BD";
 
             [System.ThreadStatic]
-            private static SystemStringBuilder _cachedStringBuilder = new SystemStringBuilder(4096);
+            private static SystemStringBuilder _cachedStringBuilder = new SystemStringBuilder(8192);
 
             /// <summary>
             /// 启动日志输出编辑器模式
@@ -85,6 +89,15 @@ namespace NovaEngine
             /// </summary>
             protected override void Initialize()
             {
+                if (Configuration.HasProperty(Key_UsingCustomColor))
+                {
+                    UsingCustomColor = Configuration.GetPropertyAsBool(Key_UsingCustomColor);
+                }
+
+                if (Configuration.HasProperty(Key_UsingSystemColor))
+                {
+                    UsingSystemColor = Configuration.GetPropertyAsBool(Key_UsingSystemColor);
+                }
             }
 
             /// <summary>
@@ -101,13 +114,14 @@ namespace NovaEngine
             /// <param name="message">日志内容</param>
             public void Output(LogOutputLevelType level, object message)
             {
-                SystemStringBuilder sb = GetHighlightedLogText(level, message.ToString(), USE_SYSTEM_COLOR_FOR_LOG_TEXT);
+                SystemStringBuilder sb = GetHighlightedLogText(level, message.ToString());
 
                 // 获取C#堆栈,Warning以上级别日志才获取堆栈
-                if (level <= LogOutputLevelType.Warning)
+                if (level >= LogOutputLevelType.Warning)
                 {
-                    SystemStackFrame[] stackFrames = new SystemStackTrace(true).GetFrames();
                     sb.Append("\n");
+
+                    SystemStackFrame[] stackFrames = new SystemStackTrace(true).GetFrames();
                     for (int i = 0; i < stackFrames.Length; i++)
                     {
                         SystemStackFrame frame = stackFrames[i];
@@ -141,119 +155,119 @@ namespace NovaEngine
                 }
             }
 
-            private SystemStringBuilder GetHighlightedLogText(LogOutputLevelType level, string message, bool useSystemColor)
+            private SystemStringBuilder GetHighlightedLogText(LogOutputLevelType level, string message)
             {
                 _cachedStringBuilder.Clear();
 
                 switch (level)
                 {
                     case LogOutputLevelType.Debug:
-                        if (USE_CUSTOM_COLOR_FOR_LOG_TEXT)
+                        if (UsingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#00FF18><b>[DEBUG] ► </b></color>[{0}] - <color=#{2}>{1}</color>",
-                                SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message, LOG_C_GREEN);
+                                SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message, LOG_COLOR_GREEN);
                         }
                         else
                         {
                             _cachedStringBuilder.AppendFormat(
-                                useSystemColor ?
+                                UsingSystemColor ?
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=gray><b>[DEBUG] ► </b></color>[{0}] - <color=#00FF18>{1}</color>" :
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#00FF18><b>[DEBUG] ► </b></color>[{0}] - {1}",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message);
                         }
                         break;
                     case LogOutputLevelType.Info:
-                        if (USE_CUSTOM_COLOR_FOR_LOG_TEXT)
+                        if (UsingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=gray><b>[INFO] ► </b></color>[{0}] - <color=#{2}>{1}</color>",
-                                SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message, LOG_C_BLACK);
+                                SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message, LOG_COLOR_BLACK);
                         }
                         else
                         {
                             _cachedStringBuilder.AppendFormat(
-                                useSystemColor ?
+                                UsingSystemColor ?
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=gray><b>[INFO] ► </b></color>[{0}] - <color=gray>{1}</color>" :
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=gray><b>[INFO] ► </b></color>[{0}] - {1}",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message);
                         }
                         break;
                     case LogOutputLevelType.Warning:
-                        if (USE_CUSTOM_COLOR_FOR_LOG_TEXT)
+                        if (UsingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF9400><b>[WARNING] ► </b></color>[{0}] - <color=#{2}>{1}</color>",
-                                SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message, LOG_C_ORINGE);
+                                SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message, LOG_COLOR_ORINGE);
                         }
                         else
                         {
                             _cachedStringBuilder.AppendFormat(
-                                useSystemColor ?
+                                UsingSystemColor ?
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF9400><b>[WARNING] ► </b></color>[{0}] - <color=yellow>{1}</color>" :
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF9400><b>[WARNING] ► </b></color>[{0}] - {1}",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message);
                         }
                         break;
                     case LogOutputLevelType.Error:
-                        if (USE_CUSTOM_COLOR_FOR_LOG_TEXT)
+                        if (UsingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF9400><b>[WARNING] ► </b></color>[{0}] - <color=#{2}>{1}</color>",
-                                SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message, LOG_C_RED);
+                                SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message, LOG_COLOR_RED);
                         }
                         else
                         {
                             _cachedStringBuilder.AppendFormat(
-                                useSystemColor ?
+                                UsingSystemColor ?
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=red><b>[ERROR] ► </b></color>[{0}] - <color=red>{1}</color>" :
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=red><b>[ERROR] ► </b></color>[{0}] - {1}",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message);
                         }
                         break;
                     case LogOutputLevelType.Fatal:
-                        if (USE_CUSTOM_COLOR_FOR_LOG_TEXT)
+                        if (UsingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[FATAL] ► </b></color>[{0}] - <color=#{2}>{1}</color>",
-                                SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message, LOG_C_EXCEPTION);
+                                SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message, LOG_COLOR_EXCEPTION);
                         }
                         else
                         {
                             _cachedStringBuilder.AppendFormat(
-                                useSystemColor ?
+                                UsingSystemColor ?
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[FATAL] ► </b></color>[{0}] - <color=green>{1}</color>" :
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[FATAL] ► </b></color>[{0}] - {1}",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message);
                         }
                         break;
                     case LogOutputLevelType.Assert:
-                        if (USE_CUSTOM_COLOR_FOR_LOG_TEXT)
+                        if (UsingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[ASSERT] ► </b></color>[{0}] - <color=#{2}>{1}</color>",
-                                SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message, LOG_C_EXCEPTION);
+                                SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message, LOG_COLOR_EXCEPTION);
                         }
                         else
                         {
                             _cachedStringBuilder.AppendFormat(
-                                useSystemColor ?
+                                UsingSystemColor ?
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[ASSERT] ► </b></color>[{0}] - <color=green>{1}</color>" :
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[ASSERT] ► </b></color>[{0}] - {1}",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message);
                         }
                         break;
                     case LogOutputLevelType.Exception:
-                        if (USE_CUSTOM_COLOR_FOR_LOG_TEXT)
+                        if (UsingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
-                                "<color=red><b>[NovaEngine] ► </b></color><color=red><b>[EXCEPTION] ► </b></color>[{0}] - <color=#{2}>{1}</color>",
-                                SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message, LOG_C_EXCEPTION);
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=red><b>[EXCEPTION] ► </b></color>[{0}] - <color=#{2}>{1}</color>",
+                                SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message, LOG_COLOR_EXCEPTION);
                         }
                         else
                         {
                             _cachedStringBuilder.AppendFormat(
-                                useSystemColor ?
+                                UsingSystemColor ?
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=red><b>[EXCEPTION] ► </b></color>[{0}] - <color=red>{1}</color>" :
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=red><b>[EXCEPTION] ► </b></color>[{0}] - {1}",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), message);

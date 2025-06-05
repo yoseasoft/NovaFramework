@@ -1,7 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,9 +39,10 @@ namespace NovaEngine
         /// <param name="condition">断言条件</param>
         public static void IsTrue(bool condition)
         {
-#if UNITY_EDITOR
-            UnityAssert.IsTrue(condition);
-#endif
+            if (Application.IsEditor() || Environment.debugMode)
+            {
+                UnityAssert.IsTrue(condition);
+            }
         }
 
         /// <summary>
@@ -49,9 +52,10 @@ namespace NovaEngine
         /// <param name="message">消息内容</param>
         public static void IsTrue(bool condition, string message)
         {
-#if UNITY_EDITOR
-            UnityAssert.IsTrue(condition, message);
-#endif
+            if (Application.IsEditor() || Environment.debugMode)
+            {
+                UnityAssert.IsTrue(condition, message);
+            }
         }
 
         /// <summary>
@@ -62,9 +66,10 @@ namespace NovaEngine
         /// <param name="args">消息参数列表</param>
         public static void IsTrue(bool condition, string format, params object[] args)
         {
-#if UNITY_EDITOR
-            UnityAssert.IsTrue(condition, Utility.Text.Format(format, args));
-#endif
+            if (Application.IsEditor() || Environment.debugMode)
+            {
+                UnityAssert.IsTrue(condition, Utility.Text.Format(format, args));
+            }
         }
 
         /// <summary>
@@ -73,9 +78,10 @@ namespace NovaEngine
         /// <param name="condition">断言条件</param>
         public static void IsFalse(bool condition)
         {
-#if UNITY_EDITOR
-            UnityAssert.IsFalse(condition);
-#endif
+            if (Application.IsEditor() || Environment.debugMode)
+            {
+                UnityAssert.IsFalse(condition);
+            }
         }
 
         /// <summary>
@@ -85,9 +91,10 @@ namespace NovaEngine
         /// <param name="message">消息内容</param>
         public static void IsFalse(bool condition, string message)
         {
-#if UNITY_EDITOR
-            UnityAssert.IsFalse(condition, message);
-#endif
+            if (Application.IsEditor() || Environment.debugMode)
+            {
+                UnityAssert.IsFalse(condition, message);
+            }
         }
 
         /// <summary>
@@ -98,9 +105,10 @@ namespace NovaEngine
         /// <param name="args">消息参数列表</param>
         public static void IsFalse(bool condition, string format, params object[] args)
         {
-#if UNITY_EDITOR
-            UnityAssert.IsFalse(condition, Utility.Text.Format(format, args));
-#endif
+            if (Application.IsEditor() || Environment.debugMode)
+            {
+                UnityAssert.IsFalse(condition, Utility.Text.Format(format, args));
+            }
         }
 
         /// <summary>

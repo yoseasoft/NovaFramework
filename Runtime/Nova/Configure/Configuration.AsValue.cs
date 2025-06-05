@@ -2,6 +2,7 @@
 /// NovaEngine Framework
 ///
 /// Copyring (C) 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +30,21 @@ namespace NovaEngine
     /// </summary>
     public static partial class Configuration
     {
+        /// <summary>
+        /// 检测当前容器中是否存在指定键对应的属性值
+        /// </summary>
+        /// <param name="key">属性键</param>
+        /// <returns>若存在对应属性值则返回true，否则返回false</returns>
+        public static bool HasProperty(string key)
+        {
+            if (s_variables.ContainsKey(key))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// 通过指定键获取布尔类型的属性值
         /// </summary>
