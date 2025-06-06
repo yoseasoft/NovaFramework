@@ -39,7 +39,7 @@ namespace NovaEngine
         /// <param name="condition">断言条件</param>
         public static void IsTrue(bool condition)
         {
-            if (Application.IsEditor() || Environment.debugMode)
+            if (Environment.IsDevelopmentState())
             {
                 UnityAssert.IsTrue(condition);
             }
@@ -52,7 +52,7 @@ namespace NovaEngine
         /// <param name="message">消息内容</param>
         public static void IsTrue(bool condition, string message)
         {
-            if (Application.IsEditor() || Environment.debugMode)
+            if (Environment.IsDevelopmentState())
             {
                 UnityAssert.IsTrue(condition, message);
             }
@@ -66,7 +66,7 @@ namespace NovaEngine
         /// <param name="args">消息参数列表</param>
         public static void IsTrue(bool condition, string format, params object[] args)
         {
-            if (Application.IsEditor() || Environment.debugMode)
+            if (Environment.IsDevelopmentState())
             {
                 UnityAssert.IsTrue(condition, Utility.Text.Format(format, args));
             }
@@ -78,7 +78,7 @@ namespace NovaEngine
         /// <param name="condition">断言条件</param>
         public static void IsFalse(bool condition)
         {
-            if (Application.IsEditor() || Environment.debugMode)
+            if (Environment.IsDevelopmentState())
             {
                 UnityAssert.IsFalse(condition);
             }
@@ -91,7 +91,7 @@ namespace NovaEngine
         /// <param name="message">消息内容</param>
         public static void IsFalse(bool condition, string message)
         {
-            if (Application.IsEditor() || Environment.debugMode)
+            if (Environment.IsDevelopmentState())
             {
                 UnityAssert.IsFalse(condition, message);
             }
@@ -105,7 +105,7 @@ namespace NovaEngine
         /// <param name="args">消息参数列表</param>
         public static void IsFalse(bool condition, string format, params object[] args)
         {
-            if (Application.IsEditor() || Environment.debugMode)
+            if (Environment.IsDevelopmentState())
             {
                 UnityAssert.IsFalse(condition, Utility.Text.Format(format, args));
             }

@@ -286,13 +286,14 @@ namespace GameEngine
         /// <param name="methodName">函数名称</param>
         protected static void OnLifecycleChangedBeforeMethodInvoke(object obj, string methodName)
         {
-#if UNITY_EDITOR
-            if (false == typeof(CBase).IsAssignableFrom(obj.GetType()))
+            if (NovaEngine.Environment.IsDevelopmentState())
             {
-                Debugger.Warn("The lifecycle changed target object '{0}' must be inherited from 'CBase'.", obj.GetType().FullName);
-                return;
+                if (false == typeof(CBase).IsAssignableFrom(obj.GetType()))
+                {
+                    Debugger.Warn("The lifecycle changed target object '{0}' must be inherited from 'CBase'.", obj.GetType().FullName);
+                    return;
+                }
             }
-#endif
 
             OnLifecycleChangedByMethodName(obj as CBase, methodName, true);
         }
@@ -322,13 +323,14 @@ namespace GameEngine
         /// <param name="lifecycleType">生命周期类型</param>
         protected static void OnLifecycleChangedBeforeMethodInvoke(object obj, string methodName, LifecycleKeypointType lifecycleType)
         {
-#if UNITY_EDITOR
-            if (false == typeof(CBase).IsAssignableFrom(obj.GetType()))
+            if (NovaEngine.Environment.IsDevelopmentState())
             {
-                Debugger.Warn("The lifecycle changed target object '{0}' must be inherited from 'CBase'.", obj.GetType().FullName);
-                return;
+                if (false == typeof(CBase).IsAssignableFrom(obj.GetType()))
+                {
+                    Debugger.Warn("The lifecycle changed target object '{0}' must be inherited from 'CBase'.", obj.GetType().FullName);
+                    return;
+                }
             }
-#endif
 
             OnLifecycleChangedByMethodName(obj as CBase, methodName, lifecycleType, true);
         }
@@ -356,13 +358,14 @@ namespace GameEngine
         /// <param name="methodName">函数名称</param>
         protected static void OnLifecycleChangedAfterMethodInvoke(object obj, string methodName)
         {
-#if UNITY_EDITOR
-            if (false == typeof(CBase).IsAssignableFrom(obj.GetType()))
+            if (NovaEngine.Environment.IsDevelopmentState())
             {
-                Debugger.Warn("The lifecycle changed target object '{0}' must be inherited from 'CBase'.", obj.GetType().FullName);
-                return;
+                if (false == typeof(CBase).IsAssignableFrom(obj.GetType()))
+                {
+                    Debugger.Warn("The lifecycle changed target object '{0}' must be inherited from 'CBase'.", obj.GetType().FullName);
+                    return;
+                }
             }
-#endif
 
             OnLifecycleChangedByMethodName(obj as CBase, methodName, false);
         }
@@ -392,13 +395,14 @@ namespace GameEngine
         /// <param name="lifecycleType">生命周期类型</param>
         protected static void OnLifecycleChangedAfterMethodInvoke(object obj, string methodName, LifecycleKeypointType lifecycleType)
         {
-#if UNITY_EDITOR
-            if (false == typeof(CBase).IsAssignableFrom(obj.GetType()))
+            if (NovaEngine.Environment.IsDevelopmentState())
             {
-                Debugger.Warn("The lifecycle changed target object '{0}' must be inherited from 'CBase'.", obj.GetType().FullName);
-                return;
+                if (false == typeof(CBase).IsAssignableFrom(obj.GetType()))
+                {
+                    Debugger.Warn("The lifecycle changed target object '{0}' must be inherited from 'CBase'.", obj.GetType().FullName);
+                    return;
+                }
             }
-#endif
 
             OnLifecycleChangedByMethodName(obj as CBase, methodName, lifecycleType, false);
         }
@@ -431,18 +435,19 @@ namespace GameEngine
                 return;
             }
 
-#if UNITY_EDITOR
-            if (obj.m_currentLifecycleRunningStep > lifecycleType)
+            if (NovaEngine.Environment.IsDevelopmentState())
             {
-                // 除了work和idle，正常情况下生命周期的调用步骤的按序增长的
-                if (LifecycleKeypointType.Work != lifecycleType && LifecycleKeypointType.Idle != lifecycleType)
+                if (obj.m_currentLifecycleRunningStep > lifecycleType)
                 {
-                    Debugger.Error("Invalid object lifecycle changed from '{0}' to '{1}', please checked target method '{2}.{3}' invoke is legal.",
-                            obj.m_currentLifecycleRunningStep, lifecycleType, obj.GetType().FullName, methodName);
-                    return;
+                    // 除了work和idle，正常情况下生命周期的调用步骤的按序增长的
+                    if (LifecycleKeypointType.Work != lifecycleType && LifecycleKeypointType.Idle != lifecycleType)
+                    {
+                        Debugger.Error("Invalid object lifecycle changed from '{0}' to '{1}', please checked target method '{2}.{3}' invoke is legal.",
+                                obj.m_currentLifecycleRunningStep, lifecycleType, obj.GetType().FullName, methodName);
+                        return;
+                    }
                 }
             }
-#endif
 
             // cleanup函数调用结束后，将生命周期步骤重置为unknown状态
             if (LifecycleKeypointType.Cleanup == lifecycleType && !isBefore)

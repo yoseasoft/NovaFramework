@@ -101,9 +101,11 @@ namespace GameEngine
                 return;
 
             onExternalLoadFailed();
-#if UNITY_EDITOR
-            Debugger.Error($"加载图片失败, 资源路径:{textureUrl}");
-#endif
+
+            if (NovaEngine.Environment.IsDevelopmentState())
+            {
+                Debugger.Error($"加载图片失败, 资源路径:{textureUrl}");
+            }
         }
 
         /// <summary>

@@ -85,7 +85,7 @@ namespace NovaEngine
         {
             SystemType classType = typeof(T);
 
-            if (Application.IsEditor() || Environment.debugMode)
+            if (Environment.IsDevelopmentState())
             {
                 Logger.Assert(Utility.Reflection.IsTypeOfInstantiableClass(classType), "Invalid arguments.");
             }

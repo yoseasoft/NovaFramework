@@ -291,7 +291,7 @@ namespace GameEngine
                 ContentPane.visible = false;
 
                 // 编辑器下显示名字
-                if (NovaEngine.Application.IsEditor())
+                if (NovaEngine.Environment.IsDevelopmentState())
                 {
                     window.gameObjectName = $"{GetType().Name}(Pkg:{Settings.pkgName}, Com:{Settings.comName})";
                 }
