@@ -37,22 +37,27 @@ namespace GameEngine
     internal sealed class LogGroupTag
     {
         [Debugger.LogOutputGroup]
-        public const int Basic = 0x0001;
+        public const int Basic = 1;
 
         [Debugger.LogOutputGroup]
-        public const int Profiler = 0x0002;
+        public const int Profiler = 2;
 
         [Debugger.LogOutputGroup]
-        public const int Proto = 0x0010;
+        public const int Proto = 11;
 
         [Debugger.LogOutputGroup]
-        public const int Module = 0x0020;
+        public const int Module = 12;
 
         [Debugger.LogOutputGroup]
-        public const int Controller = 0x0100;
+        public const int Controller = 21;
 
         [Debugger.LogOutputGroup]
-        public const int CodeLoader = 0x0200;
+        public const int CodeLoader = 22;
+
+        /// <summary>
+        /// 用户组的分割线
+        /// </summary>
+        public const int User = 10000;
     }
 
     /// <summary>
@@ -61,9 +66,13 @@ namespace GameEngine
     public static partial class Debugger
     {
         /// <summary>
+        /// 调试日志分组输出通道的默认开启状态
+        /// </summary>
+        private static bool DefaultLogOutputGroupEnabled = true;
+        /// <summary>
         /// 调试日志分组输出通道的默认日志输出级别
         /// </summary>
-        private const int DEFAULT_OUTPUT_GROUP_LOG_LEVEL = 5;
+        private static int DefaultLogOutputGroupLevel = 5;
 
         /// <summary>
         /// 日志输出通道分组的属性类型定义
@@ -82,11 +91,11 @@ namespace GameEngine
             public bool Enabled => m_enabled;
             public int LogLevel => m_logLevel;
 
-            public LogOutputGroupAttribute() : this(true) { }
+            public LogOutputGroupAttribute() : this(DefaultLogOutputGroupEnabled) { }
 
-            public LogOutputGroupAttribute(bool enabled) : this(enabled, DEFAULT_OUTPUT_GROUP_LOG_LEVEL) { }
+            public LogOutputGroupAttribute(bool enabled) : this(enabled, DefaultLogOutputGroupLevel) { }
 
-            public LogOutputGroupAttribute(int level) : this(true, level) { }
+            public LogOutputGroupAttribute(int level) : this(DefaultLogOutputGroupEnabled, level) { }
 
             private LogOutputGroupAttribute(bool enabled, int level) : base()
             {

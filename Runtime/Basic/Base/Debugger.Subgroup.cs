@@ -62,7 +62,7 @@ namespace GameEngine
         {
             if (false == s_debuggingOutputGroupInfos.ContainsKey(groupID))
             {
-                Warn("Could not found any output group with target ID '{0}', setted it level failed.", groupID);
+                Warn("Could not found any output group with target ID '{%d}', setted it level failed.", groupID);
                 return;
             }
 
@@ -79,6 +79,12 @@ namespace GameEngine
         /// <param name="level">日志输出级别</param>
         internal static void AddTargetOutputGroup(int groupID, string groupName, bool enabled, int level)
         {
+            if (groupID <= 0 || string.IsNullOrEmpty(groupName))
+            {
+                Warn("Add target output group failed with invalid groupID {%d} or name {%s}, please checked your setting params.", groupID, groupName);
+                return;
+            }
+
             if (s_debuggingOutputGroupInfos.ContainsKey(groupID))
             {
                 s_debuggingOutputGroupInfos.Remove(groupID);
@@ -358,7 +364,7 @@ namespace GameEngine
                     return;
                 }
 
-                NovaEngine.Debugger.Output(level, message);
+                NovaEngine.Debugger.Output(level, $"[{m_groupName}]: {message}");
             }
 
             /// <summary>
@@ -373,7 +379,7 @@ namespace GameEngine
                     return;
                 }
 
-                NovaEngine.Debugger.Output(level, message);
+                NovaEngine.Debugger.Output(level, $"[{m_groupName}]: {message}");
             }
 
             /// <summary>
@@ -389,7 +395,7 @@ namespace GameEngine
                     return;
                 }
 
-                NovaEngine.Debugger.Output(level, format, args);
+                NovaEngine.Debugger.Output(level, $"[{m_groupName}]: {format}", args);
             }
 
             /// <summary>
