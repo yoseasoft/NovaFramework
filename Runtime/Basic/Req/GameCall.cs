@@ -126,6 +126,8 @@ namespace GameEngine
                 return;
             }
 
+            Debugger.Info(LogGroupTag.Basic, "Call remote service {%s} with target function name {%s}.", targetName, methodName);
+
             NovaEngine.Utility.Reflection.CallMethod(type, methodName);
         }
     }

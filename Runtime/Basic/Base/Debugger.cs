@@ -41,7 +41,7 @@ namespace GameEngine
         /// 基于调试模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
-        [Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
+        //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
         public static void Log(object message)
         {
             s_logForObject(message);
@@ -51,7 +51,7 @@ namespace GameEngine
         /// 基于调试模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
-        [Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
+        //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
         public static void Log(string message)
         {
             s_logForString(message);
@@ -62,7 +62,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
-        [Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
+        //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
         public static void Log(bool condition, string message)
         {
             s_logForCondString(condition, message);
@@ -73,7 +73,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
-        [Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
+        //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
         public static void Log(string format, params object[] args)
         {
             s_logForFormatArgs(format, args);
@@ -85,7 +85,7 @@ namespace GameEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
-        [Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
+        //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
         public static void Log(bool condition, string format, params object[] args)
         {
             s_logForCondFormatArgs(condition, format, args);

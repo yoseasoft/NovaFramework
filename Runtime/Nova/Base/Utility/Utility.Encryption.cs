@@ -215,13 +215,13 @@ namespace NovaEngine
 
                 if (AES_CRYPTO_KEY_LENGTH != key.Length)
                 {
-                    Logger.Warn("The key param must have a length of {0} chars.", AES_CRYPTO_KEY_LENGTH);
+                    Logger.Warn("The key param must have a length of {%d} chars.", AES_CRYPTO_KEY_LENGTH);
                     return null;
                 }
 
                 if (AES_CRYPTO_VEC_LENGTH != vector.Length)
                 {
-                    Logger.Warn("The vector param must have a length of {0} chars.", AES_CRYPTO_VEC_LENGTH);
+                    Logger.Warn("The vector param must have a length of {%d} chars.", AES_CRYPTO_VEC_LENGTH);
                     return null;
                 }
 
@@ -291,13 +291,13 @@ namespace NovaEngine
 
                 if (AES_CRYPTO_KEY_LENGTH != key.Length)
                 {
-                    Logger.Warn("The key param must have a length of {0} chars.", AES_CRYPTO_KEY_LENGTH);
+                    Logger.Warn("The key param must have a length of {%d} chars.", AES_CRYPTO_KEY_LENGTH);
                     return null;
                 }
 
                 if (AES_CRYPTO_VEC_LENGTH != vector.Length)
                 {
-                    Logger.Warn("The vector param must have a length of {0} chars.", AES_CRYPTO_VEC_LENGTH);
+                    Logger.Warn("The vector param must have a length of {%d} chars.", AES_CRYPTO_VEC_LENGTH);
                     return null;
                 }
 

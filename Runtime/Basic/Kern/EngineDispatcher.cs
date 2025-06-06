@@ -49,7 +49,7 @@ namespace GameEngine
         /// <summary>
         /// 程序启动事件转发通知函数
         /// </summary>
-        public static void OnDispatchingStartup()
+        private static void OnDispatchingStartup()
         {
             s_isOnStartup = true;
 
@@ -59,7 +59,7 @@ namespace GameEngine
         /// <summary>
         /// 程序关闭事件转发通知函数
         /// </summary>
-        public static void OnDispatchingShutdown()
+        private static void OnDispatchingShutdown()
         {
             OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.Shutdown);
 
@@ -69,33 +69,33 @@ namespace GameEngine
         /// <summary>
         /// 程序固定刷新事件转发通知函数
         /// </summary>
-        public static void OnDispatchingFixedUpdate()
-        {
-            OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.FixedUpdate);
-        }
+        internal static void OnDispatchingFixedUpdate() { OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.FixedUpdate); }
 
         /// <summary>
         /// 程序刷新事件转发通知函数
         /// </summary>
-        public static void OnDispatchingUpdate()
-        {
-            OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.Update);
-        }
+        internal static void OnDispatchingUpdate() { OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.Update); }
 
         /// <summary>
         /// 程序后置刷新事件转发通知函数
         /// </summary>
-        public static void OnDispatchingLateUpdate()
+        internal static void OnDispatchingLateUpdate() { OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.LateUpdate); }
+
+        /// <summary>
+        /// 关于定时调度事件的转发通知函数
+        /// </summary>
+        /// <param name="protocolType"></param>
+        internal static void OnDispatchingForTimeScheduled(NovaEngine.Application.ProtocolType protocolType)
         {
-            OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.LateUpdate);
+            OnApplicationResponseCallback(protocolType);
         }
 
         /// <summary>
         /// 应用程序响应回调处理函数
         /// </summary>
-        public static void OnApplicationResponseCallback(NovaEngine.Application.ProtocolType protocolType)
+        internal static void OnApplicationResponseCallback(NovaEngine.Application.ProtocolType protocolType)
         {
-            // Debugger.Log("Call Application Protocol Type: {0}", protocolType.ToString());
+            // Debugger.Log("Call Application Protocol Type: {%s}", protocolType.ToString());
 
             s_applicationResponseHandler?.Invoke(protocolType);
         }
@@ -103,7 +103,7 @@ namespace GameEngine
         /// <summary>
         /// 新增应用程序响应回调的函数接口
         /// </summary>
-        public static void AddApplicationResponseHandler(ApplicationResponseHandler handler)
+        private static void AddApplicationResponseHandler(ApplicationResponseHandler handler)
         {
             s_applicationResponseHandler += handler;
         }
@@ -111,9 +111,35 @@ namespace GameEngine
         /// <summary>
         /// 移除应用程序响应回调的函数接口
         /// </summary>
-        public static void RemoveApplicationResponseHandler(ApplicationResponseHandler handler)
+        private static void RemoveApplicationResponseHandler(ApplicationResponseHandler handler)
         {
             s_applicationResponseHandler -= handler;
+        }
+
+        /// <summary>
+        /// 应用层启动回调处理的函数接口
+        /// </summary>
+        /// <param name="handler">响应句柄</param>
+        public static void OnApplicationStartup(ApplicationResponseHandler handler)
+        {
+            Debugger.Assert(false == s_isOnStartup);
+
+            AddApplicationResponseHandler(handler);
+
+            OnDispatchingStartup();
+        }
+
+        /// <summary>
+        /// 应用层关闭回调处理的函数接口
+        /// </summary>
+        /// <param name="handler">响应句柄</param>
+        public static void OnApplicationShutdown(ApplicationResponseHandler handler)
+        {
+            Debugger.Assert(s_isOnStartup);
+
+            OnDispatchingShutdown();
+
+            RemoveApplicationResponseHandler(handler);
         }
     }
 }

@@ -280,9 +280,9 @@ namespace GameEngine
         /// <param name="message">日志内容</param>
         private static void Output(int groupID, NovaEngine.LogOutputLevelType level, object message)
         {
-            if (s_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo info))
+            if (s_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
             {
-                info.Output(level, message);
+                group.Output(level, message);
             }
         }
 
@@ -294,9 +294,9 @@ namespace GameEngine
         /// <param name="message">日志内容</param>
         private static void Output(int groupID, NovaEngine.LogOutputLevelType level, string message)
         {
-            if (s_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo info))
+            if (s_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
             {
-                info.Output(level, message);
+                group.Output(level, message);
             }
         }
 
@@ -309,9 +309,9 @@ namespace GameEngine
         /// <param name="args">日志格式化参数</param>
         private static void Output(int groupID, NovaEngine.LogOutputLevelType level, string format, params object[] args)
         {
-            if (s_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo info))
+            if (s_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
             {
-                info.Output(level, format, args);
+                group.Output(level, format, args);
             }
         }
 
