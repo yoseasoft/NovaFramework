@@ -1,10 +1,11 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -26,18 +27,30 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace NovaEngine
 {
     /// <summary>
-    /// 任务管理器，统一处理所有外部协调的任务逻辑
+    /// 任务管理器，统一处理所有外部协调的任务逻辑<br/>
+    /// 参考开源项目<code>UnityMainThreadDispatcher</code>的实现方式，以队列的形式逐个完成任务的调度<br/>
+    /// 开源项目下载地址：https://github.com/PimDeWitte/UnityMainThreadDispatcher.git
     /// </summary>
     public sealed partial class TaskModule : ModuleObject
     {
         /// <summary>
-        /// 任务句柄管理列表
+        /// 执行中状态下的任务对象管理列表
         /// </summary>
-        private IList<ITaskExecute> m_taskHandlerList = null;
+        private IList<ITask> m_executionTasks = null;
+        /// <summary>
+        /// 已完成状态下的任务对象管理列表
+        /// </summary>
+        private IList<ITask> m_completedTasks = null;
+
+        /// <summary>
+        /// 接口回调执行队列
+        /// </summary>
+        private Queue<System.Action> m_executionActions = null;
 
         /// <summary>
         /// 任务模块事件类型
@@ -49,7 +62,10 @@ namespace NovaEngine
         /// </summary>
         protected override void OnInitialize()
         {
-            m_taskHandlerList = new List<ITaskExecute>();
+            m_executionTasks = new List<ITask>();
+            m_completedTasks = new List<ITask>();
+
+            m_executionActions = new Queue<System.Action>();
         }
 
         /// <summary>
@@ -57,8 +73,13 @@ namespace NovaEngine
         /// </summary>
         protected override void OnCleanup()
         {
-            m_taskHandlerList.Clear();
-            m_taskHandlerList = null;
+            m_executionTasks.Clear();
+            m_executionTasks = null;
+            m_completedTasks.Clear();
+            m_completedTasks = null;
+
+            m_executionActions.Clear();
+            m_executionActions = null;
         }
 
         /// <summary>
@@ -87,10 +108,13 @@ namespace NovaEngine
         /// </summary>
         protected override void OnUpdate()
         {
-            for (int n = 0; n < m_taskHandlerList.Count; ++n)
+            if (m_executionTasks.Count > 0)
             {
-                ITaskExecute execute = m_taskHandlerList[n];
-                execute.Execute();
+                for (int n = 0; n < m_executionTasks.Count; ++n)
+                {
+                    ITask task = m_executionTasks[n];
+                    task.Execute();
+                }
             }
         }
 
@@ -99,73 +123,66 @@ namespace NovaEngine
         /// </summary>
         protected override void OnLateUpdate()
         {
-            for (int n = 0; n < m_taskHandlerList.Count; ++n)
+            if (m_executionTasks.Count > 0)
             {
-                ITaskExecute execute = m_taskHandlerList[n];
-                execute.LateExecute();
-            }
-        }
-
-        /// <summary>
-        /// 任务管理器添加回调句柄接口
-        /// </summary>
-        /// <param name="handler">目标回调句柄</param>
-        public void AddTaskHandler(ITaskExecute handler)
-        {
-            for (int n = 0; n < m_taskHandlerList.Count; ++n)
-            {
-                ITaskExecute e = m_taskHandlerList[n];
-                if (e.ExecutingCode() == handler.ExecutingCode())
+                for (int n = 0; n < m_executionTasks.Count; ++n)
                 {
-                    Logger.Warn("添加更新处理单元到任务管理器失败，目标{0}执行单元已存在！", e.ExecutingCode());
-                    return;
+                    ITask task = m_executionTasks[n];
+                    task.LateExecute();
+
+                    // 任务完成
+                    if (task.IsCompleted())
+                    {
+                        m_completedTasks.Add(task);
+                    }
                 }
-            }
 
-            m_taskHandlerList.Add(handler);
-        }
-
-        /// <summary>
-        /// 任务管理器移除回调句柄接口
-        /// </summary>
-        /// <param name="handler">目标回调句柄</param>
-        public void RemoveTaskHandler(ITaskExecute handler)
-        {
-            for (int n = 0; n < m_taskHandlerList.Count; ++n)
-            {
-                ITaskExecute e = m_taskHandlerList[n];
-                if (e.ExecutingCode() == handler.ExecutingCode())
+                if (m_completedTasks.Count > 0)
                 {
-                    m_taskHandlerList.RemoveAt(n);
-                    return;
+                    for (int n = 0; n < m_completedTasks.Count; ++n)
+                    {
+                        RemoveTask(m_completedTasks[n]);
+                    }
+
+                    m_completedTasks.Clear();
                 }
             }
         }
 
-        #region 任务调度的回调执行接口定义
-
         /// <summary>
-        /// 任务调度的回调执行对象接口，预定义回调操作接口
+        /// 任务管理器添加任务对象实例的接口函数
         /// </summary>
-        public interface ITaskExecute
+        /// <param name="task">目标任务实例</param>
+        public void AddTask(ITask task)
         {
-            /// <summary>
-            /// 逻辑执行操作接口
-            /// </summary>
-            void Execute();
+            for (int n = 0; n < m_executionTasks.Count; ++n)
+            {
+                ITask e = m_executionTasks[n];
+                if (e.UniqueCode() == task.UniqueCode())
+                {
+                    Logger.Warn("添加更新处理单元到任务管理器失败，目标{0}执行单元已存在！", e.UniqueCode());
+                    return;
+                }
+            }
 
-            /// <summary>
-            /// 逻辑后置执行操作接口
-            /// </summary>
-            void LateExecute();
-
-            /// <summary>
-            /// 更新对象唯一识别编码
-            /// </summary>
-            /// <returns>返回一个整型数字用于区分不同更新对象</returns>
-            int ExecutingCode();
+            m_executionTasks.Add(task);
         }
 
-        #endregion
+        /// <summary>
+        /// 任务管理器移除任务对象实例的接口函数
+        /// </summary>
+        /// <param name="task">目标任务实例</param>
+        public void RemoveTask(ITask task)
+        {
+            for (int n = 0; n < m_executionTasks.Count; ++n)
+            {
+                ITask e = m_executionTasks[n];
+                if (e.UniqueCode() == task.UniqueCode())
+                {
+                    m_executionTasks.RemoveAt(n);
+                    return;
+                }
+            }
+        }
     }
 }
