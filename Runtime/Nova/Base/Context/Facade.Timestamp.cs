@@ -129,14 +129,14 @@ namespace NovaEngine
                 s_fixedDeltaTime = UnityTime.fixedDeltaTime;
                 s_frameCount = UnityTime.frameCount;
 
-                float ms_time = s_deltaTime * Definition.ConversionUnits.SecondsToMilliseconds + s_leftoverTimeOfMilliseconds;
+                float ms_time = s_deltaTime * Definition.Measure.SecondsToMilliseconds + s_leftoverTimeOfMilliseconds;
                 int ums = (int) ms_time;
 
                 s_leftoverTimeOfMilliseconds = ms_time - (float) ums;
                 s_timeOfMilliseconds = s_timeOfMilliseconds + ums;
                 s_deltaTimeOfMilliseconds = ums;
 
-                ms_time = s_unscaledDeltaTime * Definition.ConversionUnits.SecondsToMilliseconds + s_leftoverUnscaledTimeOfMilliseconds;
+                ms_time = s_unscaledDeltaTime * Definition.Measure.SecondsToMilliseconds + s_leftoverUnscaledTimeOfMilliseconds;
                 ums = (int) ms_time;
 
                 s_leftoverUnscaledTimeOfMilliseconds = ms_time - (float) ums;

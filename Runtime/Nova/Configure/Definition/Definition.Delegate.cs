@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +26,7 @@
 namespace NovaEngine
 {
     /// <summary>
-    /// 基础常量数据定义类，将字符和字符串中的一些通用常量在此统一进行定义使用
+    /// 基础常量数据定义类，将基础数据类型中的一些通用常量在此统一进行定义使用
     /// </summary>
     public static partial class Definition
     {

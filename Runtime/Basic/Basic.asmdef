@@ -2,13 +2,13 @@
     "name": "Basic",
     "rootNamespace": "",
     "references": [
-        "GUID:0275d40c58ad070459fe8e2c3e99f443",
-        "GUID:8c8f9d96103e94a7da84b012fd7e9f13",
-        "GUID:41784a9ad6ac632489b1ef27d472fdea",
-        "GUID:8e02f8f8496b34d48941c0c59d3cc08a",
-        "GUID:65d9304ef2a93d74eb9698231441ffef",
-        "GUID:f51ebe6a0ceec4240a699833d6309b23",
-        "GUID:2bafac87e7f4b9b418d9448d219b01ab"
+        "AssetModule",
+        "FairyGUI",
+        "Protobuf",
+        "ProtoBuf.Extension",
+        "UniTask",
+        "Clib",
+        "Nova"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

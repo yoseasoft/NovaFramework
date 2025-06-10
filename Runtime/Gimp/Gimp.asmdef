@@ -2,8 +2,8 @@
     "name": "Gimp",
     "rootNamespace": "",
     "references": [
-        "GUID:41784a9ad6ac632489b1ef27d472fdea",
-        "GUID:8c3d044deed6e7d47868f8bb52ce3735"
+        "Nova",
+        "Basic"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
