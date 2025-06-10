@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -59,6 +60,21 @@ namespace NovaEngine
             Throw_string = Logger.__Throw_ImplementedOnSystem;
             Throw_format_args = Logger.__Throw_ImplementedOnSystem;
             Throw_exception = Logger.__Throw_ImplementedOnSystem;
+
+            // 非调试模式下，断言和异常都作为崩溃输出处理
+            if (!Environment.debugMode)
+            {
+                Assert_empty = Logger.__Assert_ImplementedOnOutput;
+                Assert_object = Logger.__Assert_ImplementedOnOutput;
+                Assert_string = Logger.__Assert_ImplementedOnOutput;
+                Assert_format_args = Logger.__Assert_ImplementedOnOutput;
+
+                Throw_empty = Logger.__Throw_ImplementedOnOutput;
+                Throw_code = Logger.__Throw_ImplementedOnOutput;
+                Throw_string = Logger.__Throw_ImplementedOnOutput;
+                Throw_format_args = Logger.__Throw_ImplementedOnOutput;
+                Throw_exception = Logger.__Throw_ImplementedOnOutput;
+            }
 
             // if (lv <= 4)
             {

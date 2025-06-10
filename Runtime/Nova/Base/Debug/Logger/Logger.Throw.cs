@@ -193,6 +193,14 @@ namespace NovaEngine
         /// <summary>
         /// 系统异常，通过引擎接口实现的异常函数
         /// </summary>
+        internal static void __Throw_ImplementedOnOutput()
+        {
+            Fatal("Exception");
+        }
+
+        /// <summary>
+        /// 系统异常，通过引擎接口实现的异常函数
+        /// </summary>
         /// <param name="errorCode">错误码</param>
         internal static void __Throw_ImplementedOnOutput(int errorCode)
         {
