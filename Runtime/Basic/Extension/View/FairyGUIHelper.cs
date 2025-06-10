@@ -57,7 +57,7 @@ namespace GameEngine
         /// <summary>
         /// UI资源目录
         /// </summary>
-        const string FguiPath = "Assets/_Resources/UI/";
+        const string FguiPath = "Assets/_Resources/Gui/";
 
         /// <summary>
         /// UI常驻包列表
