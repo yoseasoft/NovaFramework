@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -86,9 +87,33 @@ namespace NovaEngine
         /// <typeparam name="T">异常类型</typeparam>
         internal static void Throw<T>() where T : System.Exception
         {
+            __Throw_ImplementedOnSystem<T>();
         }
 
-        #region
+        /// <summary>
+        /// 系统异常，提供一个标准接口给引擎内部使用<br/>
+        /// 此处对异常进行一次封装，之所以这样做，是为了在发布模式下能支持提供更多的错误信息
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="message">消息内容</param>
+        internal static void Throw<T>(string message) where T : System.Exception
+        {
+            __Throw_ImplementedOnSystem<T>(message);
+        }
+
+        /// <summary>
+        /// 系统异常，提供一个标准接口给引擎内部使用<br/>
+        /// 此处对异常进行一次封装，之所以这样做，是为了在发布模式下能支持提供更多的错误信息
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="format">格式内容</param>
+        /// <param name="args">消息格式化参数</param>
+        internal static void Throw<T>(string format, params object[] args) where T : System.Exception
+        {
+            __Throw_ImplementedOnSystem<T>(format, args);
+        }
+
+        #region 系统异常的具体实现接口
 
         /// <summary>
         /// 系统异常，通过引擎接口实现的异常函数
@@ -138,6 +163,36 @@ namespace NovaEngine
         /// <summary>
         /// 系统异常，通过引擎接口实现的异常函数
         /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        internal static void __Throw_ImplementedOnSystem<T>() where T : System.Exception
+        {
+            throw new CFrameworkException(typeof(T));
+        }
+
+        /// <summary>
+        /// 系统异常，通过引擎接口实现的异常函数
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="message">消息内容</param>
+        internal static void __Throw_ImplementedOnSystem<T>(string message) where T : System.Exception
+        {
+            throw new CFrameworkException(typeof(T), message);
+        }
+
+        /// <summary>
+        /// 系统异常，通过引擎接口实现的异常函数
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="format">格式内容</param>
+        /// <param name="args">消息格式化参数</param>
+        internal static void __Throw_ImplementedOnSystem<T>(string format, params object[] args) where T : System.Exception
+        {
+            throw new CFrameworkException(typeof(T), format, args);
+        }
+
+        /// <summary>
+        /// 系统异常，通过引擎接口实现的异常函数
+        /// </summary>
         /// <param name="errorCode">错误码</param>
         internal static void __Throw_ImplementedOnOutput(int errorCode)
         {
@@ -170,6 +225,36 @@ namespace NovaEngine
         internal static void __Throw_ImplementedOnOutput(System.Exception exception)
         {
             Fatal(exception.Message);
+        }
+
+        /// <summary>
+        /// 系统异常，通过引擎接口实现的异常函数
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        internal static void __Throw_ImplementedOnOutput<T>() where T : System.Exception
+        {
+            Fatal(Utility.Text.ToString(typeof(T)));
+        }
+
+        /// <summary>
+        /// 系统异常，通过引擎接口实现的异常函数
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="message">消息内容</param>
+        internal static void __Throw_ImplementedOnOutput<T>(string message) where T : System.Exception
+        {
+            Fatal(message);
+        }
+
+        /// <summary>
+        /// 系统异常，通过引擎接口实现的异常函数
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="format">格式内容</param>
+        /// <param name="args">消息格式化参数</param>
+        internal static void __Throw_ImplementedOnOutput<T>(string format, params object[] args) where T : System.Exception
+        {
+            Fatal(format, args);
         }
 
         #endregion

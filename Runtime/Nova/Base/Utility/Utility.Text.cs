@@ -661,6 +661,7 @@ namespace NovaEngine
             /// <returns>返回数组容器对应的字符串输出结果</returns>
             public static string ToString<T>(T[] array)
             {
+                // return "[" + string.Join(',', array) + "]";
                 SystemStringBuilder sb = new SystemStringBuilder();
 
                 if (null == array)
@@ -671,9 +672,9 @@ namespace NovaEngine
                 {
                     for (int n = 0; n < array.Length; ++n)
                     {
-                        if (n > 0) sb.Append(", ");
+                        if (n > 0) sb.Append(Definition.CCharacter.Comma);
 
-                        sb.AppendFormat("[{0}] = {1}", n, array[n].ToString());
+                        sb.AppendFormat("[{0}]={1}", n, array[n].ToString());
                     }
                 }
 
@@ -687,6 +688,7 @@ namespace NovaEngine
             /// <returns>返回列表容器对应的字符串输出结果</returns>
             private static string ToString(System.Collections.IList list)
             {
+                // return "[" + string.Join(',', list) + "]";
                 SystemStringBuilder sb = new SystemStringBuilder();
 
                 if (null == list)
@@ -697,9 +699,9 @@ namespace NovaEngine
                 {
                     for (int n = 0; n < list.Count; ++n)
                     {
-                        if (n > 0) sb.Append(", ");
+                        if (n > 0) sb.Append(Definition.CCharacter.Comma);
 
-                        sb.AppendFormat("[{0}] = {1}", n, list[n].ToString());
+                        sb.AppendFormat("[{0}]={1}", n, list[n].ToString());
                     }
                 }
 
@@ -755,9 +757,9 @@ namespace NovaEngine
                     int c = 0;
                     while (e.MoveNext())
                     {
-                        if (c > 0) sb.Append(", ");
+                        if (c > 0) sb.Append(Definition.CCharacter.Comma);
 
-                        sb.AppendFormat("[{0}] = {1}", e.Key.ToString(), e.Value.ToString());
+                        sb.AppendFormat("[{0}]={1}", e.Key.ToString(), e.Value.ToString());
 
                         ++c;
                     }
