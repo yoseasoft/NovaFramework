@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +35,7 @@ namespace GameEngine
         static Debugger()
         {
             // 重置调试输出
-            ResettingDebuggingOutputHandler();
+            ResettingDebugOutputHandler();
         }
 
         /// <summary>
@@ -287,6 +288,8 @@ namespace GameEngine
             s_fatalForCondFormatArgs(condition, format, args);
         }
 
+        #region 断言操作相关的接口函数
+
         /// <summary>
         /// 系统断言，仅在调试模式下该函数有效
         /// </summary>
@@ -366,6 +369,107 @@ namespace GameEngine
         {
             NovaEngine.Debugger.Assert(obj, format, args);
         }
+
+        #endregion
+
+        #region 异常操作相关的接口函数
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        public static void Throw()
+        {
+            NovaEngine.Debugger.Throw();
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="errorCode">错误码</param>
+        public static void Throw(int errorCode)
+        {
+            NovaEngine.Debugger.Throw(errorCode);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="message">消息内容</param>
+        public static void Throw(string message)
+        {
+            NovaEngine.Debugger.Throw(message);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="format">格式内容</param>
+        /// <param name="args">消息格式化参数</param>
+        public static void Throw(string format, params object[] args)
+        {
+            NovaEngine.Debugger.Throw(format, args);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="exception">异常实例</param>
+        public static void Throw(System.Exception exception)
+        {
+            NovaEngine.Debugger.Throw(exception);
+        }
+
+        /// <summary>
+        /// 对象条件判定的异常检查，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="condition">条件表达式</param>
+        public static void Throw(bool condition)
+        {
+            NovaEngine.Debugger.Throw(condition);
+        }
+
+        /// <summary>
+        /// 对象条件判定的异常检查，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="errorCode">错误码</param>
+        public static void Throw(bool condition, int errorCode)
+        {
+            NovaEngine.Debugger.Throw(condition, errorCode);
+        }
+
+        /// <summary>
+        /// 对象条件判定的异常检查，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="message">消息内容</param>
+        public static void Throw(bool condition, string message)
+        {
+            NovaEngine.Debugger.Throw(condition, message);
+        }
+
+        /// <summary>
+        /// 对象条件判定的异常检查，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="format">格式内容</param>
+        /// <param name="args">消息格式化参数</param>
+        public static void Throw(bool condition, string format, params object[] args)
+        {
+            NovaEngine.Debugger.Throw(condition, format, args);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="exception">异常实例</param>
+        public static void Throw(bool condition, System.Exception exception)
+        {
+            NovaEngine.Debugger.Throw(condition, exception);
+        }
+
+        #endregion
 
         /// <summary>
         /// 系统默认提供的日志输出接口，用于在引擎尚未初始化完成前提供输出

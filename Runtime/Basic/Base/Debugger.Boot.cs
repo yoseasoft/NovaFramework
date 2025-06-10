@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ namespace GameEngine
             InitLogOutputGroupSettings();
 
             // 绑定调试输出
-            BindingDebuggingOutputHandler();
+            BindingDebugOutputHandler();
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace GameEngine
         internal static void Shutdown()
         {
             // 重置调试输出
-            ResettingDebuggingOutputHandler();
+            ResettingDebugOutputHandler();
 
             // 移除分组设置参数
             RemoveAllLogOutputGroupSettings();
@@ -136,7 +136,7 @@ namespace GameEngine
         /// <summary>
         /// 重置全部日志输出回调接口
         /// </summary>
-        private static void ResettingDebuggingOutputHandler()
+        private static void ResettingDebugOutputHandler()
         {
             s_logForObject = Unity_Output;
             s_logForString = Unity_Output;
@@ -172,7 +172,7 @@ namespace GameEngine
         /// <summary>
         /// 绑定全部日志输出回调接口
         /// </summary>
-        private static void BindingDebuggingOutputHandler()
+        private static void BindingDebugOutputHandler()
         {
             s_logForObject = NovaEngine.Debugger.Log;
             s_logForString = NovaEngine.Debugger.Log;
