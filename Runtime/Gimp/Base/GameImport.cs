@@ -1,5 +1,5 @@
 /// -------------------------------------------------------------------------------
-/// NovaEngine Framework
+/// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///

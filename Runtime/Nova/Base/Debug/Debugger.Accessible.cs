@@ -59,6 +59,9 @@ namespace NovaEngine
         public delegate void ThrowHandler_string(string message);
         public delegate void ThrowHandler_format_args(string format, params object[] args);
         public delegate void ThrowHandler_exception(System.Exception exception);
+        public delegate void ThrowHandler_type(System.Type type);
+        public delegate void ThrowHandler_type_string(System.Type type, string message);
+        public delegate void ThrowHandler_type_format_args(System.Type type, string format, params object[] args);
 
         /// <summary>
         /// 调试模式下的输出回调接口
@@ -118,6 +121,9 @@ namespace NovaEngine
         private ThrowHandler_string m_throw_string;
         private ThrowHandler_format_args m_throw_format_args;
         private ThrowHandler_exception m_throw_exception;
+        private ThrowHandler_type m_throw_type;
+        private ThrowHandler_type_string m_throw_type_string;
+        private ThrowHandler_type_format_args m_throw_type_format_args;
 
         /// <summary>
         /// 空置版本的日志输出接口，用于忽略指定级别类型对应的输出回调
@@ -219,6 +225,27 @@ namespace NovaEngine
         private static void Blank_Throw(System.Exception exception) { }
 
         /// <summary>
+        /// 空置版本的日志异常接口，用于忽略对应的异常回调
+        /// </summary>
+        /// <param name="type">异常类型</param>
+        private static void Blank_Throw(System.Type type) { }
+
+        /// <summary>
+        /// 空置版本的日志异常接口，用于忽略对应的异常回调
+        /// </summary>
+        /// <param name="type">异常类型</param>
+        /// <param name="message">日志内容</param>
+        private static void Blank_Throw(System.Type type, string message) { }
+
+        /// <summary>
+        /// 空置版本的日志异常接口，用于忽略对应的异常回调
+        /// </summary>
+        /// <param name="type">异常类型</param>
+        /// <param name="format">日志格式内容</param>
+        /// <param name="args">日志格式化参数</param>
+        private static void Blank_Throw(System.Type type, string format, params object[] args) { }
+
+        /// <summary>
         /// 重新绑定全部日志输出回调接口为空置模式
         /// </summary>
         private void RebindingBlankOutputHandler()
@@ -257,6 +284,9 @@ namespace NovaEngine
             m_throw_string = Blank_Throw;
             m_throw_format_args = Blank_Throw;
             m_throw_exception = Blank_Throw;
+            m_throw_type = Blank_Throw;
+            m_throw_type_string = Blank_Throw;
+            m_throw_type_format_args = Blank_Throw;
         }
 
         #region 调试器对象输出回调接口的Getter/Setter函数
@@ -421,6 +451,24 @@ namespace NovaEngine
         {
             set => m_throw_exception = value;
             get => m_throw_exception;
+        }
+
+        protected internal ThrowHandler_type Throw_type
+        {
+            set => m_throw_type = value;
+            get => m_throw_type;
+        }
+
+        protected internal ThrowHandler_type_string Throw_type_string
+        {
+            set => m_throw_type_string = value;
+            get => m_throw_type_string;
+        }
+
+        protected internal ThrowHandler_type_format_args Throw_type_format_args
+        {
+            set => m_throw_type_format_args = value;
+            get => m_throw_type_format_args;
         }
 
         #endregion

@@ -84,10 +84,43 @@ namespace NovaEngine
         /// 系统异常，提供一个标准接口给引擎内部使用<br/>
         /// 此处对异常进行一次封装，之所以这样做，是为了在发布模式下能支持提供更多的错误信息
         /// </summary>
+        /// <param name="type">异常类型</param>
+        internal static void Throw(System.Type type)
+        {
+            __Throw_ImplementedOnSystem(type);
+        }
+
+        /// <summary>
+        /// 系统异常，提供一个标准接口给引擎内部使用<br/>
+        /// 此处对异常进行一次封装，之所以这样做，是为了在发布模式下能支持提供更多的错误信息
+        /// </summary>
+        /// <param name="type">异常类型</param>
+        /// <param name="message">消息内容</param>
+        internal static void Throw(System.Type type, string message)
+        {
+            __Throw_ImplementedOnSystem(type, message);
+        }
+
+        /// <summary>
+        /// 系统异常，提供一个标准接口给引擎内部使用<br/>
+        /// 此处对异常进行一次封装，之所以这样做，是为了在发布模式下能支持提供更多的错误信息
+        /// </summary>
+        /// <param name="type">异常类型</param>
+        /// <param name="format">格式内容</param>
+        /// <param name="args">消息格式化参数</param>
+        internal static void Throw(System.Type type, string format, params object[] args)
+        {
+            __Throw_ImplementedOnSystem(type, format, args);
+        }
+
+        /// <summary>
+        /// 系统异常，提供一个标准接口给引擎内部使用<br/>
+        /// 此处对异常进行一次封装，之所以这样做，是为了在发布模式下能支持提供更多的错误信息
+        /// </summary>
         /// <typeparam name="T">异常类型</typeparam>
         internal static void Throw<T>() where T : System.Exception
         {
-            __Throw_ImplementedOnSystem<T>();
+            __Throw_ImplementedOnSystem(typeof(T));
         }
 
         /// <summary>
@@ -98,7 +131,7 @@ namespace NovaEngine
         /// <param name="message">消息内容</param>
         internal static void Throw<T>(string message) where T : System.Exception
         {
-            __Throw_ImplementedOnSystem<T>(message);
+            __Throw_ImplementedOnSystem(typeof(T), message);
         }
 
         /// <summary>
@@ -110,7 +143,7 @@ namespace NovaEngine
         /// <param name="args">消息格式化参数</param>
         internal static void Throw<T>(string format, params object[] args) where T : System.Exception
         {
-            __Throw_ImplementedOnSystem<T>(format, args);
+            __Throw_ImplementedOnSystem(typeof(T), format, args);
         }
 
         #region 系统异常的具体实现接口
@@ -163,31 +196,31 @@ namespace NovaEngine
         /// <summary>
         /// 系统异常，通过引擎接口实现的异常函数
         /// </summary>
-        /// <typeparam name="T">异常类型</typeparam>
-        internal static void __Throw_ImplementedOnSystem<T>() where T : System.Exception
+        /// <param name="type">异常类型</param>
+        internal static void __Throw_ImplementedOnSystem(System.Type type)
         {
-            throw new CFrameworkException(typeof(T));
+            throw new CFrameworkException(type);
         }
 
         /// <summary>
         /// 系统异常，通过引擎接口实现的异常函数
         /// </summary>
-        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="type">异常类型</param>
         /// <param name="message">消息内容</param>
-        internal static void __Throw_ImplementedOnSystem<T>(string message) where T : System.Exception
+        internal static void __Throw_ImplementedOnSystem(System.Type type, string message)
         {
-            throw new CFrameworkException(typeof(T), message);
+            throw new CFrameworkException(type, message);
         }
 
         /// <summary>
         /// 系统异常，通过引擎接口实现的异常函数
         /// </summary>
-        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="type">异常类型</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
-        internal static void __Throw_ImplementedOnSystem<T>(string format, params object[] args) where T : System.Exception
+        internal static void __Throw_ImplementedOnSystem(System.Type type, string format, params object[] args)
         {
-            throw new CFrameworkException(typeof(T), format, args);
+            throw new CFrameworkException(type, format, args);
         }
 
         /// <summary>
@@ -238,18 +271,18 @@ namespace NovaEngine
         /// <summary>
         /// 系统异常，通过引擎接口实现的异常函数
         /// </summary>
-        /// <typeparam name="T">异常类型</typeparam>
-        internal static void __Throw_ImplementedOnOutput<T>() where T : System.Exception
+        /// <param name="type">异常类型</param>
+        internal static void __Throw_ImplementedOnOutput(System.Type type)
         {
-            Fatal(Utility.Text.ToString(typeof(T)));
+            Fatal(Utility.Text.ToString(type));
         }
 
         /// <summary>
         /// 系统异常，通过引擎接口实现的异常函数
         /// </summary>
-        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="type">异常类型</param>
         /// <param name="message">消息内容</param>
-        internal static void __Throw_ImplementedOnOutput<T>(string message) where T : System.Exception
+        internal static void __Throw_ImplementedOnOutput(System.Type type, string message)
         {
             Fatal(message);
         }
@@ -257,10 +290,10 @@ namespace NovaEngine
         /// <summary>
         /// 系统异常，通过引擎接口实现的异常函数
         /// </summary>
-        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="type">异常类型</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
-        internal static void __Throw_ImplementedOnOutput<T>(string format, params object[] args) where T : System.Exception
+        internal static void __Throw_ImplementedOnOutput(System.Type type, string format, params object[] args)
         {
             Fatal(format, args);
         }

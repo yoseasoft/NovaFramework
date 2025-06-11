@@ -76,6 +76,66 @@ namespace NovaEngine
         }
 
         /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="type">异常类型</param>
+        public static void Throw(System.Type type)
+        {
+            Instance.m_throw_type?.Invoke(type);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="type">异常类型</param>
+        /// <param name="message">消息内容</param>
+        public static void Throw(System.Type type, string message)
+        {
+            Instance.m_throw_type_string?.Invoke(type, message);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="type">异常类型</param>
+        /// <param name="format">格式内容</param>
+        /// <param name="args">消息格式化参数</param>
+        public static void Throw(System.Type type, string format, params object[] args)
+        {
+            Instance.m_throw_type_format_args?.Invoke(type, format, args);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        public static void Throw<T>() where T : System.Exception
+        {
+            Throw(typeof(T));
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="message">消息内容</param>
+        public static void Throw<T>(string message) where T : System.Exception
+        {
+            Throw(typeof(T), message);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="format">格式内容</param>
+        /// <param name="args">消息格式化参数</param>
+        public static void Throw<T>(string format, params object[] args) where T : System.Exception
+        {
+            Throw(typeof(T), format, args);
+        }
+
+        /// <summary>
         /// 对象条件判定的异常检查，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="condition">条件表达式</param>
@@ -123,6 +183,72 @@ namespace NovaEngine
         public static void Throw(bool condition, System.Exception exception)
         {
             if (condition) Throw(exception);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="type">异常类型</param>
+        public static void Throw(bool condition, System.Type type)
+        {
+            if (condition) Throw(type);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="type">异常类型</param>
+        /// <param name="message">消息内容</param>
+        public static void Throw(bool condition, System.Type type, string message)
+        {
+            if (condition) Throw(type, message);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="type">异常类型</param>
+        /// <param name="format">格式内容</param>
+        /// <param name="args">消息格式化参数</param>
+        public static void Throw(bool condition, System.Type type, string format, params object[] args)
+        {
+            if (condition) Throw(type, format, args);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="condition">条件表达式</param>
+        public static void Throw<T>(bool condition) where T : System.Exception
+        {
+            if (condition) Throw<T>();
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="message">消息内容</param>
+        public static void Throw<T>(bool condition, string message) where T : System.Exception
+        {
+            if (condition) Throw<T>(message);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="format">格式内容</param>
+        /// <param name="args">消息格式化参数</param>
+        public static void Throw<T>(bool condition, string format, params object[] args) where T : System.Exception
+        {
+            if (condition) Throw<T>(format, args);
         }
     }
 }

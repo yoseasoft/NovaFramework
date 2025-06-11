@@ -1,5 +1,5 @@
 /// -------------------------------------------------------------------------------
-/// NovaEngine Framework
+/// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
@@ -62,7 +62,7 @@ namespace GameEngine
             System.Type type = NovaEngine.Utility.Assembly.GetType(GameMacros.GAME_WORLD_MODULE_ENTRANCE_NAME);
             if (type == null)
             {
-                Debugger.Error("Could not found '{0}' class type with current assemblies list, call that function '{1}' failed.",
+                Debugger.Error("Could not found '{%s}' class type with current assemblies list, call that function '{%s}' failed.",
                         GameMacros.GAME_WORLD_MODULE_ENTRANCE_NAME, methodName);
                 return;
             }

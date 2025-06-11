@@ -420,6 +420,66 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="type">异常类型</param>
+        public static void Throw(System.Type type)
+        {
+            NovaEngine.Debugger.Throw(type);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="type">异常类型</param>
+        /// <param name="message">消息内容</param>
+        public static void Throw(System.Type type, string message)
+        {
+            NovaEngine.Debugger.Throw(type, message);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="type">异常类型</param>
+        /// <param name="format">格式内容</param>
+        /// <param name="args">消息格式化参数</param>
+        public static void Throw(System.Type type, string format, params object[] args)
+        {
+            NovaEngine.Debugger.Throw(type, format, args);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        public static void Throw<T>() where T : System.Exception
+        {
+            NovaEngine.Debugger.Throw<T>();
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="message">消息内容</param>
+        public static void Throw<T>(string message) where T : System.Exception
+        {
+            NovaEngine.Debugger.Throw<T>(message);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="format">格式内容</param>
+        /// <param name="args">消息格式化参数</param>
+        public static void Throw<T>(string format, params object[] args) where T : System.Exception
+        {
+            NovaEngine.Debugger.Throw<T>(format, args);
+        }
+
+        /// <summary>
         /// 对象条件判定的异常检查，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="condition">条件表达式</param>
@@ -467,6 +527,72 @@ namespace GameEngine
         public static void Throw(bool condition, System.Exception exception)
         {
             NovaEngine.Debugger.Throw(condition, exception);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="type">异常类型</param>
+        public static void Throw(bool condition, System.Type type)
+        {
+            NovaEngine.Debugger.Throw(condition, type);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="type">异常类型</param>
+        /// <param name="message">消息内容</param>
+        public static void Throw(bool condition, System.Type type, string message)
+        {
+            NovaEngine.Debugger.Throw(condition, type, message);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="type">异常类型</param>
+        /// <param name="format">格式内容</param>
+        /// <param name="args">消息格式化参数</param>
+        public static void Throw(bool condition, System.Type type, string format, params object[] args)
+        {
+            NovaEngine.Debugger.Throw(condition, type, format, args);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="condition">条件表达式</param>
+        public static void Throw<T>(bool condition) where T : System.Exception
+        {
+            NovaEngine.Debugger.Throw<T>(condition);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="message">消息内容</param>
+        public static void Throw<T>(bool condition, string message) where T : System.Exception
+        {
+            NovaEngine.Debugger.Throw<T>(condition, message);
+        }
+
+        /// <summary>
+        /// 系统异常，仅在调试模式下该函数有效
+        /// </summary>
+        /// <typeparam name="T">异常类型</typeparam>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="format">格式内容</param>
+        /// <param name="args">消息格式化参数</param>
+        public static void Throw<T>(bool condition, string format, params object[] args) where T : System.Exception
+        {
+            NovaEngine.Debugger.Throw<T>(condition, format, args);
         }
 
         #endregion

@@ -60,6 +60,9 @@ namespace NovaEngine
             Throw_string = Logger.__Throw_ImplementedOnSystem;
             Throw_format_args = Logger.__Throw_ImplementedOnSystem;
             Throw_exception = Logger.__Throw_ImplementedOnSystem;
+            Throw_type = Logger.__Throw_ImplementedOnSystem;
+            Throw_type_string = Logger.__Throw_ImplementedOnSystem;
+            Throw_type_format_args = Logger.__Throw_ImplementedOnSystem;
 
             // 非调试模式下，断言和异常都作为崩溃输出处理
             if (!Environment.debugMode)
@@ -74,6 +77,9 @@ namespace NovaEngine
                 Throw_string = Logger.__Throw_ImplementedOnOutput;
                 Throw_format_args = Logger.__Throw_ImplementedOnOutput;
                 Throw_exception = Logger.__Throw_ImplementedOnOutput;
+                Throw_type = Logger.__Throw_ImplementedOnOutput;
+                Throw_type_string = Logger.__Throw_ImplementedOnOutput;
+                Throw_type_format_args = Logger.__Throw_ImplementedOnOutput;
             }
 
             // if (lv <= 4)
