@@ -1,9 +1,11 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +44,7 @@ namespace GameEngine
     /// <summary>
     /// FairyGUI的辅助工具类
     /// </summary>
-    public static class FairyGUIHelper
+    public static class FairyGuiHelper
     {
         /// <summary>
         /// alpha分离贴图额外名称(FairyGUI.UIPackage.cs : LoadAtlas(PackageItem item) 内)
@@ -117,7 +119,7 @@ namespace GameEngine
             FairyGUI.UIConfig.bringWindowToFrontOnClick = false;
 
             // 注册自定义GLoader
-            UIObjectFactory.SetLoaderExtension(typeof(MyGLoader));
+            UIObjectFactory.SetLoaderExtension(typeof(FairyGLoader));
         }
 
         /// <summary>

@@ -1,9 +1,10 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +32,6 @@ using UnityScreenOrientation = UnityEngine.ScreenOrientation;
 
 using FairyGObject = FairyGUI.GObject;
 using FairyGRoot = FairyGUI.GRoot;
-using FairyWindow = FairyGUI.Window;
 using FairyIUISource = FairyGUI.IUISource;
 using FairyUILoadCallback = FairyGUI.UILoadCallback;
 using FairyRelationType = FairyGUI.RelationType;
@@ -44,7 +44,7 @@ namespace GameEngine
     /// <summary>
     /// UI基础窗口组件
     /// </summary>
-    public class BaseWindow : FairyWindow
+    public class BaseWindow : FairyGUI.Window
     {
         /// <summary>
         /// 窗口设置
@@ -92,7 +92,7 @@ namespace GameEngine
                 FairyGRoot.inst.touchable = true;
             }
             FairyGRoot.inst.onSizeChanged.Remove(RefreshWindowSize);
-            FairyGUIHelper.RemoveWindowPackage(_settings.pkgName);
+            FairyGuiHelper.RemoveWindowPackage(_settings.pkgName);
         }
 
         /// <summary>
@@ -303,7 +303,7 @@ namespace GameEngine
 
             try
             {
-                FairyGUIHelper.CreateContentPaneAsync(_settings.pkgName, _settings.comName, CreateObjectFinish);
+                FairyGuiHelper.CreateContentPaneAsync(_settings.pkgName, _settings.comName, CreateObjectFinish);
             }
             catch (System.Exception e)
             {

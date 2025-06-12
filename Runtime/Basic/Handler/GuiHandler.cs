@@ -91,7 +91,7 @@ namespace GameEngine
             if (false == base.OnInitialize()) return false;
 
             // 启动辅助工具类
-            FairyGUIHelper.Startup();
+            FairyGuiHelper.Startup();
 
             return true;
         }
@@ -108,7 +108,7 @@ namespace GameEngine
             UnregisterAllViewClasses();
 
             // 关闭辅助工具类
-            FairyGUIHelper.Shutdown();
+            FairyGuiHelper.Shutdown();
 
             base.OnCleanup();
         }
@@ -121,7 +121,7 @@ namespace GameEngine
             base.OnUpdate();
 
             // 刷新辅助工具类
-            FairyGUIHelper.Update();
+            FairyGuiHelper.Update();
         }
 
         /// <summary>
