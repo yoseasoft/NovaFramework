@@ -266,8 +266,8 @@ namespace GameEngine
                 // 回收视图实例
                 ReleaseInstance(view);
 
-                // return null;
-                throw new NovaEngine.CFrameworkException();
+                Debugger.Throw("Open target ui {%f} failed", viewType);
+                return null;
             }
 
             // 启动视图对象
