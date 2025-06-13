@@ -23,6 +23,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+#define ON_FAIRYGUI_SUPPORTED   // 开启FairyGUI框架支持
+#define ON_UGUI_SUPPORTED       // 开启UGUI框架支持
+#define ON_UITOOLKIT_SUPPORTED  // 开启UIToolkit框架支持
+
 namespace GameEngine
 {
     /// <summary>

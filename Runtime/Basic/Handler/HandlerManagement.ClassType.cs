@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -60,39 +61,39 @@ namespace GameEngine
             Network = 11,
 
             /// <summary>
-            /// 资源模块
-            /// </summary>
-            Resource = 12,
-
-            /// <summary>
-            /// 文件模块
-            /// </summary>
-            File = 13,
-
-            /// <summary>
             /// 输入模块
             /// </summary>
             Input = 21,
 
             /// <summary>
+            /// 资源模块
+            /// </summary>
+            Resource = 31,
+
+            /// <summary>
+            /// 文件模块
+            /// </summary>
+            File = 32,
+
+            /// <summary>
             /// 场景模块
             /// </summary>
-            Scene = 31,
+            Scene = 41,
 
             /// <summary>
             /// 角色模块
             /// </summary>
-            Actor = 32,
+            Actor = 42,
 
             /// <summary>
             /// UI模块
             /// </summary>
-            Gui = 33,
+            Gui = 43,
 
             /// <summary>
             /// 音频模块
             /// </summary>
-            Sound = 41,
+            Sound = 51,
 
             /// <summary>
             /// 用户自定义

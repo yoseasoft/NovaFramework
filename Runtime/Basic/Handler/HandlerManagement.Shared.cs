@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -46,6 +47,10 @@ namespace GameEngine
         /// </summary>
         private static NetworkHandler m_networkHandler = null;
         /// <summary>
+        /// 输入管理句柄对象实例
+        /// </summary>
+        private static InputHandler m_inputHandler = null;
+        /// <summary>
         /// 资源管理句柄对象实例
         /// </summary>
         private static ResourceHandler m_resourceHandler = null;
@@ -53,10 +58,6 @@ namespace GameEngine
         /// 文件管理句柄对象实例
         /// </summary>
         private static FileHandler m_fileHandler = null;
-        /// <summary>
-        /// 输入管理句柄对象实例
-        /// </summary>
-        private static InputHandler m_inputHandler = null;
         /// <summary>
         /// 场景管理句柄对象实例
         /// </summary>
@@ -139,6 +140,22 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 输入管理句柄对象实例的获取函数
+        /// 该函数具备对象实例的缓存功能，当实例对象发生变更时，需要进行清理缓存的操作
+        /// </summary>
+        public static InputHandler InputHandler
+        {
+            get
+            {
+                if (null == m_inputHandler)
+                {
+                    m_inputHandler = GetHandler<InputHandler>();
+                }
+                return m_inputHandler;
+            }
+        }
+
+        /// <summary>
         /// 资源管理句柄对象实例的获取函数
         /// 该函数具备对象实例的缓存功能，当实例对象发生变更时，需要进行清理缓存的操作
         /// </summary>
@@ -167,22 +184,6 @@ namespace GameEngine
                     m_fileHandler = GetHandler<FileHandler>();
                 }
                 return m_fileHandler;
-            }
-        }
-
-        /// <summary>
-        /// 输入管理句柄对象实例的获取函数
-        /// 该函数具备对象实例的缓存功能，当实例对象发生变更时，需要进行清理缓存的操作
-        /// </summary>
-        public static InputHandler InputHandler
-        {
-            get
-            {
-                if (null == m_inputHandler)
-                {
-                    m_inputHandler = GetHandler<InputHandler>();
-                }
-                return m_inputHandler;
             }
         }
 
@@ -259,9 +260,9 @@ namespace GameEngine
             m_threadHandler = null;
             m_taskHandler = null;
             m_networkHandler = null;
+            m_inputHandler = null;
             m_resourceHandler = null;
             m_fileHandler = null;
-            m_inputHandler = null;
             m_sceneHandler = null;
             m_actorHandler = null;
             m_guiHandler = null;

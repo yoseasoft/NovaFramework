@@ -1,9 +1,10 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,14 +26,11 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Reflection;
 
 using SystemEnum = System.Enum;
 using SystemType = System.Type;
 using SystemDelegate = System.Delegate;
 using SystemAction = System.Action;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemParameterInfo = System.Reflection.ParameterInfo;
 
 namespace GameEngine
 {
@@ -234,7 +232,7 @@ namespace GameEngine
                     {
                         NovaEngine.IO.ByteStreamBuffer streamBuffer = networkEventArgs.Data as NovaEngine.IO.ByteStreamBuffer;
                         byte[] buffer = streamBuffer.ReadBytes();
-                        OnNetworkChannelReceivedMessage(networkEventArgs.ChannelID, buffer);
+                        OnNetworkChannelReceiveMessage(networkEventArgs.ChannelID, buffer);
                     }
                     break;
             }
@@ -469,7 +467,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="channelID">通道标识</param>
         /// <param name="buffer">消息数据流</param>
-        private void OnNetworkChannelReceivedMessage(int channelID, byte[] buffer)
+        private void OnNetworkChannelReceiveMessage(int channelID, byte[] buffer)
         {
             m_messageInvokeQueue.Enqueue(() =>
             {
@@ -496,23 +494,41 @@ namespace GameEngine
                 {
                     // Debugger.Info("message:" + message.GetType() + ", Content:" + message);
 
-                    Debugger.Assert(typeof(SocketMessageChannel).IsAssignableFrom(channel.GetType()), "Invalid channel type {0}.", NovaEngine.Utility.Text.ToString(channel.GetType()));
+                    Debugger.Assert(typeof(SocketMessageChannel).IsAssignableFrom(channel.GetType()), "无效的网络通道类型：{%t}", channel);
 
-                    OnSocketChannelReceivedMessage(channel as SocketMessageChannel, message as ProtoBuf.Extension.IMessage);
+                    OnReceiveMessageComposedOfProtoBuf(channel as SocketMessageChannel, message as ProtoBuf.Extension.IMessage);
                 }
                 else
                 {
-                    Debugger.Error("Could not found any channel process matched target message type '{0}', received message and dispatched failed.", NovaEngine.Utility.Text.ToString(message.GetType()));
+                    Debugger.Error("无法找到任何匹配目标消息类型‘{%t}’的处理通道，对目标消息的接收和转发操作处理失败！", message);
                 }
             });
         }
 
         /// <summary>
-        /// 基于SOCKET模式的网络通道接收消息的通知回调接口
+        /// 通过模拟的方式接收基于ProtoBuf协议构建的网络消息的接口函数<br/>
+        /// 警告：该函数需要谨慎使用，因为它破坏了正常的消息转发流程<br/>
+        /// 正因如此，所以在正式的发布环境中，该接口将被禁用<br/>
+        /// 因此，我们建议外部业务代码仅在测试情况下使用该接口，且完成测试后尽快移除相关逻辑
+        /// </summary>
+        /// <param name="message">消息对象实例</param>
+        public void OnSimulationReceiveMessageComposedOfProtoBuf(ProtoBuf.Extension.IMessage message)
+        {
+            if (false == NovaEngine.Environment.IsDevelopmentState())
+            {
+                Debugger.Error("不能在正式环境下进行模拟接收消息处理‘{%d} - {%t}’，请检查您是否正确调用了预期的函数接口！", GetOpcodeByMessageType(message.GetType()), message);
+                return;
+            }
+
+            OnReceiveMessageComposedOfProtoBuf(null, message);
+        }
+
+        /// <summary>
+        /// 接收基于ProtoBuf协议构建的网络消息的接口函数
         /// </summary>
         /// <param name="channel">通道对象实例</param>
         /// <param name="message">消息对象实例</param>
-        private void OnSocketChannelReceivedMessage(SocketMessageChannel channel, ProtoBuf.Extension.IMessage message)
+        private void OnReceiveMessageComposedOfProtoBuf(SocketMessageChannel channel, ProtoBuf.Extension.IMessage message)
         {
             int opcode = GetOpcodeByMessageType(message.GetType());
 
@@ -553,7 +569,7 @@ namespace GameEngine
                 list = null;
             }
 
-            if (channel.IsConnected && channel.IsWaitingForTargetCode(opcode))
+            if (null != channel && channel.IsConnected && channel.IsWaitingForTargetCode(opcode))
             {
                 v = true;
                 channel.OnMessageDispatched(opcode, message);
@@ -561,7 +577,7 @@ namespace GameEngine
 
             if (!v)
             {
-                Debugger.Warn("Could not found any message recv processor with target opcode '{0}', please register some processing callback to it.", opcode);
+                Debugger.Warn("无法找到任何匹配目标操作码‘{%d}’的网络消息接收处理器，请针对该操作码注册对应的处理回调句柄！", opcode);
             }
         }
 
