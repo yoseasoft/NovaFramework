@@ -33,7 +33,7 @@ namespace GameEngine
         /// <summary>
         /// 句柄对象类的类型枚举定义
         /// </summary>
-        public enum EHandlerClassType : byte
+        public enum HandlerClassType : byte
         {
             /// <summary>
             /// 默认定义
@@ -106,7 +106,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="type">句柄类型标识</param>
         /// <returns>返回类型对应句柄的优先级</returns>
-        public static int GetHandlerPriorityWithClassType(EHandlerClassType type)
+        public static int GetHandlerPriorityWithClassType(HandlerClassType type)
         {
             return (int) type;
         }

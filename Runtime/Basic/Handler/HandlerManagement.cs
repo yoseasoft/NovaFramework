@@ -72,9 +72,9 @@ namespace GameEngine
             // 排序容器初始化
             s_handlerSortingList = new LinkedList<IHandler>();
 
-            foreach (EHandlerClassType enumValue in SystemEnum.GetValues(typeof(EHandlerClassType)))
+            foreach (HandlerClassType enumValue in SystemEnum.GetValues(typeof(HandlerClassType)))
             {
-                if (EHandlerClassType.Default == enumValue || EHandlerClassType.User == enumValue)
+                if (HandlerClassType.Default == enumValue || HandlerClassType.User == enumValue)
                 {
                     continue;
                 }
