@@ -80,6 +80,8 @@ namespace NovaEngine
             m_keycodeChangedOnPreviousFrame = null;
         }
 
+        #region 按键编码触发回调响应接口函数
+
         /// <summary>
         /// 记录当前帧按下操作触发的按键编码信息
         /// </summary>
@@ -142,6 +144,8 @@ namespace NovaEngine
         {
             m_keycodeChangedOnPreviousFrame.Remove(code);
         }
+
+        #endregion
 
         /// <summary>
         /// 检测当前帧是否触发了任意按键编码的录入操作，包括按下，长按及释放
@@ -246,6 +250,33 @@ namespace NovaEngine
         public bool IsKeycodeChanged(UnityKeyCode code)
         {
             return m_keycodeChangedOnPreviousFrame.Contains(code);
+        }
+
+        /// <summary>
+        /// 获取当前帧下所有按下的按键编码
+        /// </summary>
+        /// <returns>返回按键编码列表</returns>
+        public IList<UnityKeyCode> GetAllPressedKeycodes()
+        {
+            return m_keycodePressedOnThisFrame;
+        }
+
+        /// <summary>
+        /// 获取当前帧下所有长按的按键编码
+        /// </summary>
+        /// <returns>返回按键编码列表</returns>
+        public IList<UnityKeyCode> GetAllMovedKeycodes()
+        {
+            return m_keycodeMovedOnThisFrame;
+        }
+
+        /// <summary>
+        /// 获取当前帧下所有释放的按键编码
+        /// </summary>
+        /// <returns>返回按键编码列表</returns>
+        public IList<UnityKeyCode> GetAllReleasedKeycodes()
+        {
+            return m_keycodeReleasedOnThisFrame;
         }
 
         /// <summary>

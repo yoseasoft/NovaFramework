@@ -32,7 +32,7 @@ namespace GameEngine
     /// <summary>
     /// 消息分发类型注册函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     public class OnMessageDispatchCallAttribute : SystemAttribute
     {
         /// <summary>
@@ -84,7 +84,7 @@ namespace GameEngine
     /// <summary>
     /// 消息监听绑定函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     public class MessageListenerBindingOfTargetAttribute : SystemAttribute
     {
         /// <summary>

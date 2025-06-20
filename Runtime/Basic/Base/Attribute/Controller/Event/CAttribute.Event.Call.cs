@@ -32,7 +32,7 @@ namespace GameEngine
     /// <summary>
     /// 事件分发类型注册函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     public class OnEventDispatchCallAttribute : SystemAttribute
     {
         /// <summary>
@@ -84,7 +84,7 @@ namespace GameEngine
     /// <summary>
     /// 事件订阅绑定函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     public class EventSubscribeBindingOfTargetAttribute : SystemAttribute
     {
         /// <summary>

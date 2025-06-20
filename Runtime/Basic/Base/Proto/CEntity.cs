@@ -760,6 +760,39 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 通过组件类型在当前实体对象中获取继承自该类型的所有组件对象实例
+        /// </summary>
+        /// <typeparam name="T">组件类型</typeparam>
+        /// <returns>若查找组件实例成功则返回对应实例的列表，否则返回null</returns>
+        public IList<T> GetInheritedComponents<T>() where T : CComponent
+        {
+            SystemType componentType = typeof(T);
+
+            return NovaEngine.Utility.Collection.CastAndToList<CComponent, T>(GetInheritedComponents(componentType));
+        }
+
+        /// <summary>
+        /// 通过组件类型在当前实体对象中获取继承自该类型的所有组件对象实例
+        /// </summary>
+        /// <param name="componentType">组件类型</param>
+        /// <returns>若查找组件实例成功则返回对应实例的列表，否则返回null</returns>
+        public IList<CComponent> GetInheritedComponents(SystemType componentType)
+        {
+            IList<CComponent> list = null;
+            foreach (KeyValuePair<string, CComponent> kvp in m_components)
+            {
+                if (componentType.IsAssignableFrom(kvp.Value.GetType()))
+                {
+                    if (null == list) list = new List<CComponent>();
+
+                    list.Add(kvp.Value);
+                }
+            }
+
+            return list;
+        }
+
+        /// <summary>
         /// 获取当前实体对象中的所有组件实例
         /// </summary>
         /// <returns>返回实体对象注册的所有组件实例</returns>

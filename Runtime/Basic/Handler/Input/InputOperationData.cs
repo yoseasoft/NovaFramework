@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,63 +23,16 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Loader
+namespace GameEngine
 {
     /// <summary>
-    /// 程序集的分析处理类，对业务层载入的所有对象类进行统一加载及分析处理
+    /// 输入按键的操作数据结构体定义
     /// </summary>
-    public static partial class CodeLoader
+    public struct InputOperationData
     {
         /// <summary>
-        /// 程序集的编码分类类型的枚举定义
+        /// 输入数据的类型
         /// </summary>
-        // [System.Flags]
-        private enum CodeClassifyType : uint
-        {
-            /// <summary>
-            /// 未知类型
-            /// </summary>
-            Unknown = 0,
-
-            /// <summary>
-            /// 事件类型
-            /// </summary>
-            Event = 1,
-
-            /// <summary>
-            /// 网络类型
-            /// </summary>
-            Network = 2,
-
-            /// <summary>
-            /// 输入类型
-            /// </summary>
-            Input = 3,
-
-            /// <summary>
-            /// 实体类型
-            /// </summary>
-            Proto = 11,
-
-            /// <summary>
-            /// 扩展类型
-            /// </summary>
-            Extend = 12,
-
-            /// <summary>
-            /// 切面类型
-            /// </summary>
-            Aspect = 21,
-
-            /// <summary>
-            /// 注入类型
-            /// </summary>
-            Inject = 22,
-
-            /// <summary>
-            /// 对象池类型
-            /// </summary>
-            Pool = 31,
-        }
+        public byte type;
     }
 }

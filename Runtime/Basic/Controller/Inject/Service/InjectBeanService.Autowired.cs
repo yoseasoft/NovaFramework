@@ -49,7 +49,7 @@ namespace GameEngine
             }
 
             Loader.Symboling.Bean bean = symClass.GetBean(obj.BeanName);
-            Debugger.Warn("find bean name '{0}' and field count '{1}' with target object '{2}' !!!", obj.BeanName, bean.GetFieldCount(), NovaEngine.Utility.Text.ToString(obj.GetType()));
+            Debugger.Info("find bean name '{0}' and field count '{1}' with target object '{2}' !!!", obj.BeanName, bean.GetFieldCount(), NovaEngine.Utility.Text.ToString(obj.GetType()));
 
             IEnumerator<KeyValuePair<string, Loader.Symboling.BeanField>> e_beanField = bean.GetFieldEnumerator();
             if (null != e_beanField)

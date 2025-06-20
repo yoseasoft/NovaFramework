@@ -137,6 +137,10 @@ namespace GameEngine
         /// </summary>
         public NovaEngine.NetworkModule NetworkModule => m_networkModule;
         /// <summary>
+        /// 获取输入模块的对象实例
+        /// </summary>
+        public NovaEngine.InputModule InputModule => m_inputModule;
+        /// <summary>
         /// 获取资源模块的对象实例
         /// </summary>
         public NovaEngine.ResourceModule ResourceModule => m_resourceModule;
@@ -144,10 +148,6 @@ namespace GameEngine
         /// 获取文件模块的对象实例
         /// </summary>
         public NovaEngine.FileModule FileModule => m_fileModule;
-        /// <summary>
-        /// 获取输入模块的对象实例
-        /// </summary>
-        public NovaEngine.InputModule InputModule => m_inputModule;
         /// <summary>
         /// 获取场景模块的对象实例
         /// </summary>
@@ -164,9 +164,9 @@ namespace GameEngine
             m_threadModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.ThreadModule>();
             m_taskModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.TaskModule>();
             m_networkModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.NetworkModule>();
+            m_inputModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.InputModule>();
             m_resourceModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.ResourceModule>();
             m_fileModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.FileModule>();
-            m_inputModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.InputModule>();
             m_sceneModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.SceneModule>();
 
             // 初始化子模块行为流程缓存队列
@@ -199,9 +199,9 @@ namespace GameEngine
             m_threadModule = null;
             m_taskModule = null;
             m_networkModule = null;
+            m_inputModule = null;
             m_resourceModule = null;
             m_fileModule = null;
-            m_inputModule = null;
             m_sceneModule = null;
         }
 

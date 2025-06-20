@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -30,35 +31,35 @@ using SystemAttributeTargets = System.AttributeTargets;
 namespace GameEngine
 {
     /// <summary>
-    /// 消息分发类的属性类型定义
+    /// 键码系统的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class MessageSystemAttribute : SystemAttribute
+    public class KeycodeSystemAttribute : SystemAttribute
     {
-        public MessageSystemAttribute()
+        public KeycodeSystemAttribute()
         {
         }
     }
 
     /// <summary>
-    /// 消息声明属性类型定义
+    /// 键码声明属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class DeclareMessageClassAttribute : SystemAttribute
+    public class DeclareKeycodeClassAttribute : SystemAttribute
     {
         /// <summary>
-        /// 消息操作码标识
+        /// 键码值
         /// </summary>
-        private readonly ushort m_opcode;
+        private readonly int m_keycode;
 
         /// <summary>
-        /// 消息操作码获取函数
+        /// 键码值获取函数
         /// </summary>
-        public ushort Opcode => m_opcode;
+        public int Keycode => m_keycode;
 
-        public DeclareMessageClassAttribute(ushort opcode) : base()
+        public DeclareKeycodeClassAttribute(int keycode) : base()
         {
-            m_opcode = opcode;
+            m_keycode = keycode;
         }
     }
 }

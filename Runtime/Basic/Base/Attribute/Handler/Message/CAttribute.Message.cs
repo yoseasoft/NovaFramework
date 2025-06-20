@@ -22,63 +22,43 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Loader
+using SystemType = System.Type;
+using SystemAttribute = System.Attribute;
+using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
+using SystemAttributeTargets = System.AttributeTargets;
+
+namespace GameEngine
 {
     /// <summary>
-    /// 程序集的分析处理类，对业务层载入的所有对象类进行统一加载及分析处理
+    /// 消息系统的属性类型定义
     /// </summary>
-    public static partial class CodeLoader
+    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class MessageSystemAttribute : SystemAttribute
+    {
+        public MessageSystemAttribute()
+        {
+        }
+    }
+
+    /// <summary>
+    /// 消息声明属性类型定义
+    /// </summary>
+    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class DeclareMessageClassAttribute : SystemAttribute
     {
         /// <summary>
-        /// 程序集的编码分类类型的枚举定义
+        /// 消息操作码标识
         /// </summary>
-        // [System.Flags]
-        private enum CodeClassifyType : uint
+        private readonly ushort m_opcode;
+
+        /// <summary>
+        /// 消息操作码获取函数
+        /// </summary>
+        public ushort Opcode => m_opcode;
+
+        public DeclareMessageClassAttribute(ushort opcode) : base()
         {
-            /// <summary>
-            /// 未知类型
-            /// </summary>
-            Unknown = 0,
-
-            /// <summary>
-            /// 事件类型
-            /// </summary>
-            Event = 1,
-
-            /// <summary>
-            /// 网络类型
-            /// </summary>
-            Network = 2,
-
-            /// <summary>
-            /// 输入类型
-            /// </summary>
-            Input = 3,
-
-            /// <summary>
-            /// 实体类型
-            /// </summary>
-            Proto = 11,
-
-            /// <summary>
-            /// 扩展类型
-            /// </summary>
-            Extend = 12,
-
-            /// <summary>
-            /// 切面类型
-            /// </summary>
-            Aspect = 21,
-
-            /// <summary>
-            /// 注入类型
-            /// </summary>
-            Inject = 22,
-
-            /// <summary>
-            /// 对象池类型
-            /// </summary>
-            Pool = 31,
+            m_opcode = opcode;
         }
     }
 }
