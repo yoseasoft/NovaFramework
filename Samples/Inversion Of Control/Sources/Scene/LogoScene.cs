@@ -9,17 +9,10 @@
 namespace Game.Sample.InversionOfControl
 {
     /// <summary>
-    /// 案例入口类
+    /// Logo场景类
     /// </summary>
-    public static class SampleGate
+    [GameEngine.DeclareSceneClass("Logo")]
+    public class LogoScene : GameEngine.CScene
     {
-        public static void Run()
-        {
-            GameEngine.SceneHandler.Instance.ReplaceScene<LogoScene>();
-        }
-
-        public static void Stop()
-        {
-        }
     }
 }
