@@ -1,7 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +36,14 @@ namespace GameEngine.Loader
     public static partial class CodeLoader
     {
         /// <summary>
+        /// 指定名称的程序集过滤处理回调函数接口
+        /// </summary>
+        /// <param name="assemblyName">程序集名称</param>
+        /// <param name="classType">当前解析类</param>
+        /// <returns>若目标类需要加载则返回true，否则返回false</returns>
+        public delegate bool AssemblyLoadFiltingProcessor(string assemblyName, SystemType classType);
+
+        /// <summary>
         /// 指定名称的程序集解析进度通知回调函数接口
         /// </summary>
         /// <param name="assemblyName">程序集名称</param>
@@ -49,6 +59,11 @@ namespace GameEngine.Loader
         public delegate void LoadAssemblyCompleted(string assemblyName);
 
         /// <summary>
+        /// 加载程序集的过滤处理的回调函数管理容器
+        /// </summary>
+        private static IList<AssemblyLoadFiltingProcessor> s_assemblyLoadFiltingProcessorCallbacks;
+
+        /// <summary>
         /// 加载程序集的进度通知的回调函数管理容器
         /// </summary>
         private static IList<LoadClassProgress> s_loadClassProgressCallbacks;
@@ -57,6 +72,24 @@ namespace GameEngine.Loader
         /// 加载程序集的完成通知的回调函数管理容器
         /// </summary>
         private static IList<LoadAssemblyCompleted> s_loadAssemblyCompletedCallbacks;
+
+        /// <summary>
+        /// 程序集过滤处理转发
+        /// </summary>
+        /// <param name="assemblyName">程序集名称</param>
+        /// <param name="classType">当前解析类</param>
+        /// <returns>若目标类需要加载则返回true，否则返回false</returns>
+        private static bool CallAssemblyLoadFiltingProcessor(string assemblyName, SystemType classType)
+        {
+            for (int n = 0; null != s_assemblyLoadFiltingProcessorCallbacks && n < s_assemblyLoadFiltingProcessorCallbacks.Count; ++n)
+            {
+                // 当某一个过滤条件满足时，就可以直接忽略该类
+                if (false == s_assemblyLoadFiltingProcessorCallbacks[n].Invoke(assemblyName, classType))
+                    return false;
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// 程序集解析进度通知转发
@@ -82,6 +115,43 @@ namespace GameEngine.Loader
             for (int n = 0; null != s_loadAssemblyCompletedCallbacks && n < s_loadAssemblyCompletedCallbacks.Count; ++n)
             {
                 s_loadAssemblyCompletedCallbacks[n].Invoke(assemblyName);
+            }
+        }
+
+        /// <summary>
+        /// 新增程序集过滤处理回调接口
+        /// </summary>
+        /// <param name="callback">函数接口</param>
+        public static void AddAssemblyLoadFiltingProcessorCallback(AssemblyLoadFiltingProcessor callback)
+        {
+            if (null == s_assemblyLoadFiltingProcessorCallbacks)
+            {
+                s_assemblyLoadFiltingProcessorCallbacks = new List<AssemblyLoadFiltingProcessor>();
+            }
+
+            if (s_assemblyLoadFiltingProcessorCallbacks.Contains(callback))
+            {
+                Debugger.Warn("The assembly load filting processor callback '{0}' was already exist, repeat added it failed.", NovaEngine.Utility.Text.ToString(callback));
+                return;
+            }
+
+            s_assemblyLoadFiltingProcessorCallbacks.Add(callback);
+        }
+
+        /// <summary>
+        /// 移除程序集过滤处理回调接口
+        /// </summary>
+        /// <param name="callback">函数接口</param>
+        public static void RemoveAssemblyLoadFiltingProcessorCallback(AssemblyLoadFiltingProcessor callback)
+        {
+            if (null == s_assemblyLoadFiltingProcessorCallbacks)
+            {
+                return;
+            }
+
+            if (s_assemblyLoadFiltingProcessorCallbacks.Contains(callback))
+            {
+                s_assemblyLoadFiltingProcessorCallbacks.Remove(callback);
             }
         }
 
@@ -164,6 +234,11 @@ namespace GameEngine.Loader
         /// </summary>
         private static void RemoveAllListenerLoadedCallbacks()
         {
+            if (null != s_assemblyLoadFiltingProcessorCallbacks)
+            {
+                s_assemblyLoadFiltingProcessorCallbacks.Clear();
+                s_assemblyLoadFiltingProcessorCallbacks = null;
+            }
             if (null != s_loadClassProgressCallbacks)
             {
                 s_loadClassProgressCallbacks.Clear();

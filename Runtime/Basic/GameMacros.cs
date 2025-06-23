@@ -3,6 +3,7 @@
 ///
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -57,13 +58,17 @@ namespace GameEngine
         #region 引擎内部使用的全局常量定义
 
         /// <summary>
-        /// 业务导入模块的入口名称
+        /// 业务导入模块的对外关口名称
         /// </summary>
-        public const string GAME_IMPORT_MODULE_ENTRANCE_NAME = @"GameEngine.GameImport";
+        public const string GAME_IMPORT_MODULE_EXTERNAL_GATEWAY_NAME = @"GameEngine.GameImport";
         /// <summary>
-        /// 业务管理模块的入口名称
+        /// 业务管理模块的对外关口名称
         /// </summary>
-        public const string GAME_WORLD_MODULE_ENTRANCE_NAME = @"Game.GameWorld";
+        public const string GAME_WORLD_MODULE_EXTERNAL_GATEWAY_NAME = @"Game.GameWorld";
+        /// <summary>
+        /// 测试案例模块的对外关口名称
+        /// </summary>
+        public const string GAME_SAMPLE_MODULE_EXTERNAL_GATEWAY_NAME = @"Game.Sample.GameSample";
 
         /// <summary>
         /// 业务远程服务调用的运行服务接口名称

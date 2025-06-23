@@ -1,7 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -44,6 +46,14 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         private SystemType m_propertyType;
         /// <summary>
+        /// 属性的获取接口函数
+        /// </summary>
+        private MethodInfo m_getMethodInfo;
+        /// <summary>
+        /// 属性的设置接口函数
+        /// </summary>
+        private MethodInfo m_setMethodInfo;
+        /// <summary>
         /// 属性对象实例
         /// </summary>
         private PropertyInfo m_propertyInfo;
@@ -57,11 +67,16 @@ namespace GameEngine.Loader.Symboling
 
                 m_propertyName = m_propertyInfo.Name;
                 m_propertyType = m_propertyInfo.PropertyType;
+
+                m_getMethodInfo = m_propertyInfo.GetGetMethod();
+                m_setMethodInfo = m_propertyInfo.GetSetMethod();
             }
         }
 
         public string PropertyName => m_propertyName;
         public SystemType PropertyType => m_propertyType;
+        public MethodInfo GetMethodInfo => m_getMethodInfo;
+        public MethodInfo SetMethodInfo => m_setMethodInfo;
 
         public SymProperty() { }
 
@@ -73,7 +88,7 @@ namespace GameEngine.Loader.Symboling
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
-            sb.AppendFormat("Base = {0}, ", base.ToString());
+            sb.AppendFormat("{0}, ", base.ToString());
             sb.AppendFormat("PropertyName = {0}, ", m_propertyName);
             sb.AppendFormat("PropertyType = {0}, ", NovaEngine.Utility.Text.ToString(m_propertyType));
             sb.AppendFormat("PropertyInfo = {0}, ", NovaEngine.Utility.Text.ToString(m_propertyInfo));

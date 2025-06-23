@@ -1,7 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -75,6 +77,15 @@ namespace GameEngine.Loader.Symboling
         private bool m_isInstantiate;
 
         /// <summary>
+        /// 对象类包含的特性信息
+        /// </summary>
+        private IList<SystemType> m_featureTypes;
+        /// <summary>
+        /// 对象类包含的接口信息
+        /// </summary>
+        private IList<SystemType> m_interfaceTypes;
+
+        /// <summary>
         /// 对象类包含的字段信息
         /// </summary>
         private IDictionary<string, SymField> m_fields;
@@ -134,6 +145,9 @@ namespace GameEngine.Loader.Symboling
         public bool IsStatic => m_isStatic;
         public bool IsInstantiate => m_isInstantiate;
 
+        public IList<SystemType> FeatureTypes => m_featureTypes;
+        public IList<SystemType> InterfaceTypes => m_interfaceTypes;
+
         public IDictionary<string, SymField> Fields => m_fields;
         public IDictionary<string, SymProperty> Properties => m_properties;
         public IDictionary<string, SymMethod> Methods => m_methods;
@@ -142,6 +156,9 @@ namespace GameEngine.Loader.Symboling
 
         ~SymClass()
         {
+            RemoveAllFeatureTypes();
+            RemoveAllInterfaceTypes();
+
             RemoveAllFields();
             RemoveAllProperties();
             RemoveAllMethods();
@@ -149,12 +166,148 @@ namespace GameEngine.Loader.Symboling
             RemoveAllBeans();
         }
 
+        #region 类标记对象的特性列表相关访问接口函数
+
+        /// <summary>
+        /// 新增指定的类特性实例到当前的类标记对象中
+        /// </summary>
+        /// <param name="featureType">类特性实例</param>
+        public void AddFeatureType(SystemType featureType)
+        {
+            if (null == m_featureTypes)
+            {
+                m_featureTypes = new List<SystemType>();
+            }
+
+            if (m_featureTypes.Contains(featureType))
+            {
+                Debugger.Warn("The symbol class '{%f}' feature type '{%f}' was already exist, repeat added it failed.", m_classType, featureType);
+                return;
+            }
+
+            m_featureTypes.Add(featureType);
+        }
+
+        /// <summary>
+        /// 检测当前类标记中是否存在指定类型的特性实例
+        /// </summary>
+        /// <param name="featureType">特性类型</param>
+        /// <returns>若存在目标特性实例则返回true，否则返回false</returns>
+        public bool HasFeatureType(SystemType featureType)
+        {
+            if (null == m_featureTypes)
+            {
+                return false;
+            }
+
+            return m_featureTypes.Contains(featureType);
+        }
+
+        /// <summary>
+        /// 从当前的类标记对象中移除指定类型的类特性实例
+        /// </summary>
+        /// <param name="featureType">特性类型</param>
+        public void RemoveFeatureType(SystemType featureType)
+        {
+            if (null == m_featureTypes)
+            {
+                return;
+            }
+
+            if (false == m_featureTypes.Contains(featureType))
+            {
+                Debugger.Warn("Could not found any feature type '{%f}' from target symbol class '{%f}', removed it failed.", featureType, m_classType);
+                return;
+            }
+
+            m_featureTypes.Remove(featureType);
+        }
+
+        /// <summary>
+        /// 从当前的类标记对象中移除所有类特性实例
+        /// </summary>
+        private void RemoveAllFeatureTypes()
+        {
+            m_featureTypes?.Clear();
+            m_featureTypes = null;
+        }
+
+        #endregion
+
+        #region 类标记对象的接口列表相关访问接口函数
+
+        /// <summary>
+        /// 新增指定的类接口实例到当前的类标记对象中
+        /// </summary>
+        /// <param name="interfaceType">类接口实例</param>
+        public void AddInterfaceType(SystemType interfaceType)
+        {
+            if (null == m_interfaceTypes)
+            {
+                m_interfaceTypes = new List<SystemType>();
+            }
+
+            if (m_interfaceTypes.Contains(interfaceType))
+            {
+                Debugger.Warn("The symbol class '{%f}' interface type '{%f}' was already exist, repeat added it failed.", m_classType, interfaceType);
+                return;
+            }
+
+            m_interfaceTypes.Add(interfaceType);
+        }
+
+        /// <summary>
+        /// 检测当前类标记中是否存在指定类型的接口实例
+        /// </summary>
+        /// <param name="interfaceType">接口类型</param>
+        /// <returns>若存在目标接口实例则返回true，否则返回false</returns>
+        public bool HasInterfaceType(SystemType interfaceType)
+        {
+            if (null == m_interfaceTypes)
+            {
+                return false;
+            }
+
+            return m_interfaceTypes.Contains(interfaceType);
+        }
+
+        /// <summary>
+        /// 从当前的类标记对象中移除指定类型的接口实例
+        /// </summary>
+        /// <param name="interfaceType">接口类型</param>
+        public void RemoveInterfaceType(SystemType interfaceType)
+        {
+            if (null == m_interfaceTypes)
+            {
+                return;
+            }
+
+            if (false == m_interfaceTypes.Contains(interfaceType))
+            {
+                Debugger.Warn("Could not found any interface type '{%f}' from target symbol class '{%f}', removed it failed.", interfaceType, m_classType);
+                return;
+            }
+
+            m_interfaceTypes.Remove(interfaceType);
+        }
+
+        /// <summary>
+        /// 从当前的类标记对象中移除所有类接口实例
+        /// </summary>
+        private void RemoveAllInterfaceTypes()
+        {
+            m_interfaceTypes?.Clear();
+            m_interfaceTypes = null;
+        }
+
+        #endregion
+
         #region 类标记对象的字段列表相关访问接口函数
 
         /// <summary>
         /// 新增指定的类字段实例到当前的类标记对象中
         /// </summary>
-        /// <param name="field">类字段实例</param>
+        /// <param name="interfaceType">类字段实例</param>
         public void AddField(SymField field)
         {
             if (null == m_fields)
@@ -634,13 +787,15 @@ namespace GameEngine.Loader.Symboling
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("SymClass = { ");
-            sb.AppendFormat("Base = {0}, ", base.ToString());
+            sb.AppendFormat("{0}, ", base.ToString());
 
             sb.AppendFormat("ClassName = {0}, ", m_className);
             sb.AppendFormat("FullName = {0}, ", m_fullName);
             sb.AppendFormat("ClassType = {0}, ", NovaEngine.Utility.Text.ToString(m_classType));
             sb.AppendFormat("InstantiableType = {0}, ", m_isInstantiate);
 
+            sb.AppendFormat("FeatureTypes = {{{0}}},", NovaEngine.Utility.Text.ToString<SystemType>(m_featureTypes));
+            sb.AppendFormat("InterfaceTypes = {{{0}}},", NovaEngine.Utility.Text.ToString<SystemType>(m_interfaceTypes));
             sb.AppendFormat("Fields = {{{0}}}, ", NovaEngine.Utility.Text.ToString<string, SymField>(m_fields));
             sb.AppendFormat("Properties = {{{0}}}, ", NovaEngine.Utility.Text.ToString<string, SymProperty>(m_properties));
             sb.AppendFormat("Methods = {{{0}}}, ", NovaEngine.Utility.Text.ToString<string, SymMethod>(m_methods));

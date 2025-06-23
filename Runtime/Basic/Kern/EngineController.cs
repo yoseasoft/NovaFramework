@@ -1,9 +1,10 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -66,6 +67,20 @@ namespace GameEngine
         /// </summary>
         public static void Stop()
         {
+        }
+
+        /// <summary>
+        /// 程序集加载回调通知接口好按时
+        /// </summary>
+        /// <param name="assemblies">程序集容器</param>
+        /// <param name="reload">重载标识</param>
+        public static void OnAssemblyLoaded(IReadOnlyDictionary<string, Assembly> assemblies, bool reload)
+        {
+            // 注销所有已注册的程序集
+            NovaEngine.Utility.Assembly.UnregisterAllAssemblies();
+
+            // 重新装载全部程序集
+            NovaEngine.Utility.Assembly.RegisterCurrentDomainAssemblies(assemblies);
         }
 
         /// <summary>

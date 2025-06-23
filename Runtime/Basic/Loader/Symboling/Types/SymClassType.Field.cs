@@ -1,7 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -47,18 +49,6 @@ namespace GameEngine.Loader.Symboling
         /// 字段对象实例
         /// </summary>
         private FieldInfo m_fieldInfo;
-        /// <summary>
-        /// 字段引用的实例名称
-        /// </summary>
-        private string m_referenceName;
-        /// <summary>
-        /// 字段引用的实例类型
-        /// </summary>
-        private SystemType m_referenceType;
-        /// <summary>
-        /// 字段引用的对象实例
-        /// </summary>
-        private object m_referenceValue;
 
         public FieldInfo FieldInfo
         {
@@ -71,10 +61,6 @@ namespace GameEngine.Loader.Symboling
                 m_fieldType = m_fieldInfo.FieldType;
             }
         }
-
-        public string ReferenceName { get { return m_referenceName; } internal set { m_referenceName = value; } }
-        public SystemType ReferenceType { get { return m_referenceType; } internal set { m_referenceType = value; } }
-        public object ReferenceValue { get { return m_referenceValue; } internal set { m_referenceValue = value; } }
 
         public string FieldName => m_fieldName;
         public SystemType FieldType => m_fieldType;
@@ -89,13 +75,10 @@ namespace GameEngine.Loader.Symboling
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
-            sb.AppendFormat("Base = {0}, ", base.ToString());
+            sb.AppendFormat("{0}, ", base.ToString());
             sb.AppendFormat("FieldName = {0}, ", m_fieldName);
             sb.AppendFormat("FieldType = {0}, ", NovaEngine.Utility.Text.ToString(m_fieldType));
             sb.AppendFormat("FieldInfo = {0}, ", NovaEngine.Utility.Text.ToString(m_fieldInfo));
-            sb.AppendFormat("ReferenceName = {0}, ", m_referenceName);
-            sb.AppendFormat("ReferenceType = {0}, ", NovaEngine.Utility.Text.ToString(m_referenceType));
-            sb.AppendFormat("ReferenceValue = {0}, ", m_referenceValue?.ToString());
             return sb.ToString();
         }
     }

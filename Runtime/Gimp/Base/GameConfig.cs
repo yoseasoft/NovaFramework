@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +30,13 @@ namespace GameEngine
     /// </summary>
     public static class GameConfig
     {
+        /// <summary>
+        /// 测试案例演示流程的调度转发功能启动的状态标识<br/>
+        /// 该模块只能从导入模块中进入，不可从引擎层直接进入<br/>
+        /// 注意这个标识需手动设置，确定当前项目是否需要接入测试案例演示流程，从而决定是否需要开启该表示
+        /// </summary>
+        public static readonly bool GAME_SAMPLE_DISPATCHING_FORWARD_ENABLED = true;
+
         /// <summary>
         /// 动态生成库名称
         /// </summary>

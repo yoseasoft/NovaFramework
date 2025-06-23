@@ -1,8 +1,10 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -42,21 +44,80 @@ namespace NovaEngine
         /// </summary>
         public static class Assembly
         {
-            private static readonly SystemAssembly[] s_assemblies = null;
+            // private static readonly SystemAssembly[] s_assemblies = null;
+            private static readonly IDictionary<string, SystemAssembly> s_cachedAssemblies = null;
             private static readonly IDictionary<string, SystemType> s_cachedTypes = new Dictionary<string, SystemType>(SystemStringComparer.Ordinal);
 
             static Assembly()
             {
-                s_assemblies = SystemAppDomain.CurrentDomain.GetAssemblies();
+                // s_assemblies = SystemAppDomain.CurrentDomain.GetAssemblies();
+                s_cachedAssemblies = new Dictionary<string, SystemAssembly>();
+                s_cachedTypes = new Dictionary<string, SystemType>(SystemStringComparer.Ordinal);
+            }
+
+            /// <summary>
+            /// 将指定的程序集注册到当前域程序集缓存容器中
+            /// </summary>
+            /// <param name="assembly">程序集实例</param>
+            public static void RegisterCurrentDomainAssembly(SystemAssembly assembly)
+            {
+                Dictionary<string, SystemAssembly> dictionary = new Dictionary<string, SystemAssembly>();
+                dictionary.Add(assembly.GetName().Name, assembly);
+
+                RegisterCurrentDomainAssemblies(dictionary);
+            }
+
+            /// <summary>
+            /// 将指定的多个程序集全部注册到当前域程序集缓存容器中<br/>
+            /// 同时提供了一个重载标识，若该标识打开，则将清除掉当前已注册的所有程序集关联，重新开始记录新的程序集引用
+            /// </summary>
+            /// <param name="assemblies">目标程序集</param>
+            public static void RegisterCurrentDomainAssemblies(IReadOnlyDictionary<string, SystemAssembly> assemblies)
+            {
+                foreach (KeyValuePair<string, SystemAssembly> kvp in assemblies)
+                {
+                    // 在非重载模式下，重复加载将移除旧包
+                    if (s_cachedAssemblies.ContainsKey(kvp.Key))
+                    {
+                        Logger.Warn("当前域下的程序集缓存列表中已存在相同名称‘{%s}’的程序包，重复加载将覆盖旧的引用记录！", kvp.Key);
+                        s_cachedAssemblies.Remove(kvp.Key);
+                    }
+
+                    s_cachedAssemblies.Add(kvp.Key, kvp.Value);
+                }
+            }
+
+            /// <summary>
+            /// 注销当前域缓存的所有程序集实例
+            /// </summary>
+            public static void UnregisterAllAssemblies()
+            {
+                s_cachedAssemblies.Clear();
+                s_cachedTypes.Clear();
+            }
+
+            /// <summary>
+            /// 通过程序集的名称获取对应的程序集实例
+            /// </summary>
+            /// <param name="assemblyName">程序集名称</param>
+            /// <returns>返回该名称对应的程序集实例，若不存在则返回null</returns>
+            public static SystemAssembly GetAssembly(string assemblyName)
+            {
+                if (s_cachedAssemblies.TryGetValue(assemblyName, out SystemAssembly assembly))
+                {
+                    return assembly;
+                }
+
+                return null;
             }
 
             /// <summary>
             /// 获取已加载的程序集
             /// </summary>
             /// <returns>返回当前加载的程序集列表</returns>
-            public static SystemAssembly[] GetAssemblies()
+            public static IList<SystemAssembly> GetAllAssemblies()
             {
-                return s_assemblies;
+                return Collection.ToListForValues<string, SystemAssembly>(s_cachedAssemblies);
             }
 
             /// <summary>
@@ -66,9 +127,9 @@ namespace NovaEngine
             public static SystemType[] GetTypes()
             {
                 List<SystemType> results = new List<SystemType>();
-                foreach (SystemAssembly assembly in s_assemblies)
+                foreach (KeyValuePair<string, SystemAssembly> kvp in s_cachedAssemblies)
                 {
-                    results.AddRange(assembly.GetTypes());
+                    results.AddRange(kvp.Value.GetTypes());
                 }
 
                 return results.ToArray();
@@ -86,9 +147,9 @@ namespace NovaEngine
                 }
 
                 results.Clear();
-                foreach (SystemAssembly assembly in s_assemblies)
+                foreach (KeyValuePair<string, SystemAssembly> kvp in s_cachedAssemblies)
                 {
-                    results.AddRange(assembly.GetTypes());
+                    results.AddRange(kvp.Value.GetTypes());
                 }
             }
 
@@ -117,9 +178,9 @@ namespace NovaEngine
                     return type;
                 }
 
-                foreach (SystemAssembly assembly in s_assemblies)
+                foreach (KeyValuePair<string, SystemAssembly> kvp in s_cachedAssemblies)
                 {
-                    type = SystemType.GetType(Utility.Text.Format("{0}, {1}", typeName, assembly.FullName));
+                    type = SystemType.GetType(Utility.Text.Format("{%s}, {%s}", typeName, kvp.Value.FullName));
                     if (null != type)
                     {
                         s_cachedTypes.Add(typeName, type);

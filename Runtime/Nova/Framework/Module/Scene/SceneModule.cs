@@ -1,10 +1,11 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -219,7 +220,10 @@ namespace NovaEngine
 
             if (SceneRecordInfo.EStateType.Complete == info.StateType)
             {
-                UnitySceneManager.UnloadSceneAsync(sceneName);
+                // 2025-06-20:
+                // 为什么新的资源库此处不能使用该代码，是因为在资源管理的场景操作句柄中重复使用了该代码
+                // 因为异步卸载资源可能导致场景中材质的丢失，所以也把该操作和资源异步清理统一处理了
+                // UnitySceneManager.UnloadSceneAsync(sceneName);
             }
 
             m_sceneRecordInfos.Remove(sceneName);

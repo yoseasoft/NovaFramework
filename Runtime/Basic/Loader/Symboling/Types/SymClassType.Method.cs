@@ -1,7 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -125,7 +127,7 @@ namespace GameEngine.Loader.Symboling
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
-            sb.AppendFormat("Base = {0}, ", base.ToString());
+            sb.AppendFormat("{0}, ", base.ToString());
             sb.AppendFormat("MethodName = {0}, ", m_methodName);
             sb.AppendFormat("FullName = {0}, ", m_fullName);
             sb.AppendFormat("ReturnType = {0}, ", NovaEngine.Utility.Text.ToString(m_returnType));

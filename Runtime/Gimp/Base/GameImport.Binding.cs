@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -59,13 +60,20 @@ namespace GameEngine
         /// <param name="methodName">函数名称</param>
         private static void CallGameFunc(string methodName)
         {
-            System.Type type = NovaEngine.Utility.Assembly.GetType(GameMacros.GAME_WORLD_MODULE_ENTRANCE_NAME);
+            string targetName = GameMacros.GAME_WORLD_MODULE_EXTERNAL_GATEWAY_NAME;
+            if (GameConfig.GAME_SAMPLE_DISPATCHING_FORWARD_ENABLED)
+            {
+                targetName = GameMacros.GAME_SAMPLE_MODULE_EXTERNAL_GATEWAY_NAME;
+            }
+
+            System.Type type = NovaEngine.Utility.Assembly.GetType(targetName);
             if (type == null)
             {
-                Debugger.Error("Could not found '{%s}' class type with current assemblies list, call that function '{%s}' failed.",
-                        GameMacros.GAME_WORLD_MODULE_ENTRANCE_NAME, methodName);
+                Debugger.Error("Could not found '{%s}' class type with current assemblies list, call that function '{%s}' failed.", targetName, methodName);
                 return;
             }
+
+            // Debugger.Info("Call remote service {%s} with target function name {%s}.", targetName, methodName);
 
             NovaEngine.Utility.Reflection.CallMethod(type, methodName);
         }

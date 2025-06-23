@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -66,6 +67,17 @@ namespace GameEngine.Loader.Symboling
             {
                 // 添加类属性实例
                 symbol.AddAttribute(attr);
+
+                // 添加特性标识
+                symbol.AddFeatureType(attr.GetType());
+            }
+
+            SystemType[] interfaceTypes = targetType.GetInterfaces();
+            for (int n = 0; null != interfaceTypes && n < interfaceTypes.Length; ++n)
+            {
+                SystemType interfaceType = interfaceTypes[n];
+
+                symbol.AddInterfaceType(interfaceType);
             }
 
             SystemFieldInfo[] fields = targetType.GetFields(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Instance); // SystemBindingFlags.Static
@@ -100,6 +112,13 @@ namespace GameEngine.Loader.Symboling
             for (int n = 0; null != methods && n < methods.Length; ++n)
             {
                 SystemMethodInfo method = methods[n];
+
+                // 忽略掉从“object”继承下来的方法
+                // 暂时先这样处理，因为目前暂未发现有任何情况下需要通过反射或特性等原因来驱动“object”中定义的接口
+                if (method.DeclaringType == typeof(object))
+                {
+                    continue;
+                }
 
                 if (false == TryGetSymMethod(method, out SymMethod symMethod))
                 {

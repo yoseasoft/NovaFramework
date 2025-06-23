@@ -1,7 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -148,6 +150,14 @@ namespace GameEngine.Loader
                 if (false == IsLoadableClassType(type))
                 {
                     Debugger.Info(LogGroupTag.CodeLoader, "The class type '{%f}' was unloadable, ignore it with current loaded.", type);
+                    continue;
+                }
+
+                // 外部过滤忽略加载的目标对象类型
+                // 先进行基础类型检测，过滤掉加载器本身就不支持的类
+                if (false == CallAssemblyLoadFiltingProcessor(assemblyName, type))
+                {
+                    Debugger.Info(LogGroupTag.CodeLoader, "The class type '{%f}' was filtered out, ignore it with current loaded.", type);
                     continue;
                 }
 
