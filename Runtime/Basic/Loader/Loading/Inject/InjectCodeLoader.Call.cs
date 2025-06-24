@@ -76,6 +76,19 @@ namespace GameEngine.Loader
             info.ClassType = symClass.ClassType;
             info.BehaviourType = AspectBehaviourType.Initialize;
 
+            if (s_injectCallCodeInfos.ContainsKey(symClass.ClassType))
+            {
+                if (reload)
+                {
+                    s_injectCallCodeInfos.Remove(symClass.ClassType);
+                }
+                else
+                {
+                    Debugger.Warn("The inject call '{0}' was already existed, repeat added it failed.", symClass.FullName);
+                    return false;
+                }
+            }
+
             s_injectCallCodeInfos.Add(symClass.ClassType, info);
             Debugger.Log(LogGroupTag.CodeLoader, "Load inject call code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
 

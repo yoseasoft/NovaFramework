@@ -83,8 +83,6 @@ namespace GameEngine.Loader
         /// </summary>
         public static void Restart()
         {
-            // throw new System.NotImplementedException();
-
             // 移除全部类类型统计信息
             RemoveAllAssemblyLibraries();
         }

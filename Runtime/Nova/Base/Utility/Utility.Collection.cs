@@ -1,8 +1,10 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -150,6 +152,18 @@ namespace NovaEngine
             /// <param name="dictionary">字典数据容器</param>
             /// <returns>返回转换后的列表类型数据容器</returns>
             public static IList<K> ToListForKeys<K, V>(IDictionary<K, V> dictionary)
+            {
+                return dictionary?.Keys.ToList<K>();
+            }
+
+            /// <summary>
+            /// 通过字典类型数据的键信息转换为列表类型数据的接口函数
+            /// </summary>
+            /// <typeparam name="K">字典的键类型</typeparam>
+            /// <typeparam name="V">字典的值类型</typeparam>
+            /// <param name="dictionary">字典数据容器</param>
+            /// <returns>返回转换后的列表类型数据容器</returns>
+            public static IList<K> ToListForKeys<K, V>(IReadOnlyDictionary<K, V> dictionary)
             {
                 return dictionary?.Keys.ToList<K>();
             }
