@@ -35,7 +35,7 @@ namespace GameEngine
         /// 该模块只能从导入模块中进入，不可从引擎层直接进入<br/>
         /// 注意这个标识需手动设置，确定当前项目是否需要接入测试案例演示流程，从而决定是否需要开启该表示
         /// </summary>
-        public static readonly bool GAME_SAMPLE_DISPATCHING_FORWARD_ENABLED = true;
+        public static readonly bool GAME_SAMPLE_DISPATCHING_FORWARD_ENABLED = false;
 
         /// <summary>
         /// 动态生成库名称

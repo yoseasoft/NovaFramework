@@ -1,8 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -76,6 +77,24 @@ namespace NovaEngine
                 }
 
                 return regularPath.Contains("://") ? regularPath : ("file:///" + regularPath).Replace("file:////", "file:///");
+            }
+
+            /// <summary>
+            /// 从指定路径的末端开始截断给定层级的目录，然后返回截断后的目录地址
+            /// </summary>
+            /// <param name="path">文件路径</param>
+            /// <param name="level">截断层级</param>
+            /// <returns>返回截断后的目录地址</returns>
+            public static string TruncatePath(string path, int level)
+            {
+                for (int i = 0; i < level; i++)
+                {
+                    path = System.IO.Path.GetDirectoryName(path);
+                    if (string.IsNullOrEmpty(path))
+                        break;
+                }
+
+                return path;
             }
 
             /// <summary>

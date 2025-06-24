@@ -49,6 +49,10 @@ namespace GameEngine.Loader.Symboling
         /// 对象类的类型
         /// </summary>
         private SystemType m_classType;
+        /// <summary>
+        /// 对象类的父类类型
+        /// </summary>
+        private SystemType m_baseType;
 
         /// <summary>
         /// 对象类的默认Bean实例名称，该名称由类标记对象自动生成，不可主动赋值
@@ -114,6 +118,8 @@ namespace GameEngine.Loader.Symboling
                 m_className = m_classType.Name;
                 m_fullName = NovaEngine.Utility.Text.GetFullName(m_classType);
 
+                m_baseType = m_classType.BaseType;
+
                 m_isInterface = m_classType.IsInterface;
                 m_isClass = m_classType.IsClass;
                 m_isAbstract = m_classType.IsAbstract;
@@ -138,6 +144,7 @@ namespace GameEngine.Loader.Symboling
 
         public string ClassName => m_className;
         public string FullName => m_fullName;
+        public SystemType BaseType => m_baseType;
 
         public bool IsInterface => m_isInterface;
         public bool IsClass => m_isClass;
@@ -792,6 +799,7 @@ namespace GameEngine.Loader.Symboling
             sb.AppendFormat("ClassName = {0}, ", m_className);
             sb.AppendFormat("FullName = {0}, ", m_fullName);
             sb.AppendFormat("ClassType = {0}, ", NovaEngine.Utility.Text.ToString(m_classType));
+            sb.AppendFormat("BaseType = {0}, ", NovaEngine.Utility.Text.ToString(m_baseType));
             sb.AppendFormat("InstantiableType = {0}, ", m_isInstantiate);
 
             sb.AppendFormat("FeatureTypes = {{{0}}},", NovaEngine.Utility.Text.ToString<SystemType>(m_featureTypes));
