@@ -207,7 +207,7 @@ namespace GameEngine.Loader
                 Symboling.SymMethod symMethod = symMethods[n];
 
                 // 检查函数格式是否合法，扩展类型的函数必须为静态类型
-                if (false == symMethod.IsStatic || false == symMethod.IsExtense)
+                if (false == symMethod.IsStatic || false == symMethod.IsExtension)
                 {
                     Debugger.Info(LogGroupTag.CodeLoader, "The extend call method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     continue;

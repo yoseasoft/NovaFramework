@@ -67,7 +67,7 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// 函数是否为扩展类型
         /// </summary>
-        private bool m_isExtense;
+        private bool m_isExtension;
 
         public MethodInfo MethodInfo
         {
@@ -88,7 +88,7 @@ namespace GameEngine.Loader.Symboling
                 }
 
                 m_isStatic = m_methodInfo.IsStatic;
-                m_isExtense = NovaEngine.Utility.Reflection.IsTypeOfExtension(m_methodInfo);
+                m_isExtension = NovaEngine.Utility.Reflection.IsTypeOfExtension(m_methodInfo);
             }
         }
 
@@ -99,7 +99,7 @@ namespace GameEngine.Loader.Symboling
         public ParameterInfo[] Parameters => m_parameters;
 
         public bool IsStatic => m_isStatic;
-        public bool IsExtense => m_isExtense;
+        public bool IsExtension => m_isExtension;
 
         public SymMethod() { }
 

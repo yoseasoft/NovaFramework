@@ -76,11 +76,8 @@ namespace GameEngine
         /// <param name="reload">重载标识</param>
         public static void OnAssemblyLoaded(IReadOnlyDictionary<string, Assembly> assemblies, bool reload)
         {
-            // 注销所有已注册的程序集
-            NovaEngine.Utility.Assembly.UnregisterAllAssemblies();
-
             // 重新装载全部程序集
-            NovaEngine.Utility.Assembly.RegisterCurrentDomainAssemblies(assemblies);
+            NovaEngine.Utility.Assembly.RegisterCurrentDomainAssemblies(assemblies, reload);
         }
 
         /// <summary>

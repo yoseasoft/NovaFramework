@@ -29,7 +29,6 @@ using System.Collections.Generic;
 
 using SystemType = System.Type;
 using SystemStringComparer = System.StringComparer;
-using SystemAppDomain = System.AppDomain;
 using SystemAssembly = System.Reflection.Assembly;
 
 namespace NovaEngine
@@ -64,7 +63,7 @@ namespace NovaEngine
                 Dictionary<string, SystemAssembly> dictionary = new Dictionary<string, SystemAssembly>();
                 dictionary.Add(assembly.GetName().Name, assembly);
 
-                RegisterCurrentDomainAssemblies(dictionary);
+                RegisterCurrentDomainAssemblies(dictionary, true);
             }
 
             /// <summary>
@@ -72,18 +71,49 @@ namespace NovaEngine
             /// 同时提供了一个重载标识，若该标识打开，则将清除掉当前已注册的所有程序集关联，重新开始记录新的程序集引用
             /// </summary>
             /// <param name="assemblies">目标程序集</param>
-            public static void RegisterCurrentDomainAssemblies(IReadOnlyDictionary<string, SystemAssembly> assemblies)
+            /// <param name="reload">重载标识</param>
+            public static void RegisterCurrentDomainAssemblies(IReadOnlyDictionary<string, SystemAssembly> assemblies, bool reload)
             {
+                if (reload)
+                {
+                    // 从添加列表中注销已注册过的程序集
+                    UnregisterCurrentDomainAssemblies(Collection.ToListForKeys<string, SystemAssembly>(assemblies));
+                }
+
                 foreach (KeyValuePair<string, SystemAssembly> kvp in assemblies)
                 {
                     // 在非重载模式下，重复加载将移除旧包
                     if (s_cachedAssemblies.ContainsKey(kvp.Key))
                     {
-                        Logger.Warn("当前域下的程序集缓存列表中已存在相同名称‘{%s}’的程序包，重复加载将覆盖旧的引用记录！", kvp.Key);
+                        if (!reload)
+                        {
+                            Logger.Error("当前域中的程序集缓存列表中已存在相同名称‘{%s}’的程序包，此处正在进行错误的重复添加操作，建议在非重载模式下先移除同名程序集后再进行注册操作！", kvp.Key);
+                        }
+
                         s_cachedAssemblies.Remove(kvp.Key);
                     }
 
                     s_cachedAssemblies.Add(kvp.Key, kvp.Value);
+                }
+            }
+
+            /// <summary>
+            /// 通过指定的程序集名称列表移除对应的程序集实例
+            /// </summary>
+            /// <param name="assemblyNames">程序集名称列表</param>
+            private static void UnregisterCurrentDomainAssemblies(IList<string> assemblyNames)
+            {
+                bool removed = false;
+
+                for (int n = 0; null != assemblyNames && n < assemblyNames.Count; ++n)
+                {
+                    removed = true;
+                    s_cachedAssemblies.Remove(assemblyNames[n]);
+                }
+
+                if (removed)
+                {
+                    s_cachedTypes.Clear();
                 }
             }
 
