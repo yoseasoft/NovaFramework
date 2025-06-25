@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -465,7 +466,8 @@ namespace GameEngine
                 if (m_genericTypeCallInfos.TryGetValue(currentClassType, out IList<AspectCallInfo> list))
                 {
                     infos ??= new List<AspectCallInfo>();
-                    ((List<AspectCallInfo>) infos).AddRange(list);
+                    // 此处不使用 AddRange，因为要把父类注册的接口放在子类之前调用
+                    ((List<AspectCallInfo>) infos).InsertRange(0, list);
                 }
 
                 currentClassType = currentClassType.BaseType;

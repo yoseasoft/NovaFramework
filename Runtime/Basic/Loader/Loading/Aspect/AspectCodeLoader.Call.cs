@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -29,11 +30,6 @@ using SystemAttribute = System.Attribute;
 using SystemDelegate = System.Delegate;
 using SystemMethodInfo = System.Reflection.MethodInfo;
 using SystemStringBuilder = System.Text.StringBuilder;
-
-using SystemExpression = System.Linq.Expressions.Expression;
-using SystemParameterExpression = System.Linq.Expressions.ParameterExpression;
-using SystemUnaryExpression = System.Linq.Expressions.UnaryExpression;
-using SystemMethodCallExpression = System.Linq.Expressions.MethodCallExpression;
 
 using SystemAction_object = System.Action<object>;
 using SystemExpression_Action_object = System.Linq.Expressions.Expression<System.Action<object>>;
