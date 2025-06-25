@@ -1,5 +1,5 @@
 /// <summary>
-/// 基于 NovaFramework 的测试用例
+/// 基于 NovaFramework 的演示案例
 /// 
 /// 创建者：Hurley
 /// 创建时间：2025-06-22
@@ -9,22 +9,22 @@
 namespace Game.Sample
 {
     /// <summary>
-    /// 测试案例过滤接口定义
+    /// 演示案例过滤接口定义
     /// </summary>
     internal static class SampleFiltingProcessor
     {
         /// <summary>
-        /// 是否忽略Game模块下的所有内容，测试案例目录下的不计入忽略清单
+        /// 是否忽略Game模块下的所有内容，演示案例目录下的不计入忽略清单
         /// </summary>
         private readonly static bool IgnoreExternalGameModuleEnabled = true;
 
-        private readonly static string GameModuleName = "Game";
+        private readonly static string GameModuleName = typeof(SampleFiltingProcessor).Namespace.Substring(0, typeof(SampleFiltingProcessor).Namespace.IndexOf('.'));
         private readonly static string SampleModuleName = typeof(SampleFiltingProcessor).Namespace;
         private static string FilterModuleName = null;
 
         internal static void AddSampleFilter(GameSampleType type)
         {
-            GameEngine.Debugger.Assert(string.IsNullOrEmpty(FilterModuleName));
+            Debugger.Assert(string.IsNullOrEmpty(FilterModuleName));
 
             FilterModuleName = SampleModuleName + "." + type.ToString();
 
@@ -66,6 +66,8 @@ namespace Game.Sample
                 }
             }
 
+            // 排除掉 Game.Sample 中的类
+            // if (ns.StartsWith(SampleModuleName) && (string.Equals(ns, SampleModuleName, System.StringComparison.Ordinal) || false == string.Equals(ns, FilterModuleName, System.StringComparison.Ordinal))) { }
             if (ns.StartsWith(SampleModuleName) && false == string.Equals(ns, FilterModuleName, System.StringComparison.Ordinal))
             {
                 return false;

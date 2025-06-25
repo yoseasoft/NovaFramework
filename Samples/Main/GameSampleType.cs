@@ -1,5 +1,5 @@
 /// <summary>
-/// 基于 NovaFramework 的测试用例
+/// 基于 NovaFramework 的演示案例
 /// 
 /// 创建者：Hurley
 /// 创建时间：2025-06-22
@@ -9,13 +9,14 @@
 namespace Game.Sample
 {
     /// <summary>
-    /// 测试案例类型定义
+    /// 演示案例类型定义
     /// </summary>
     public enum GameSampleType
     {
         Unknown,
         SymbolParser,
         InversionOfControl,
+        ObjectLifecycle,
         DispatchCall,
         DependencyInject,
     }

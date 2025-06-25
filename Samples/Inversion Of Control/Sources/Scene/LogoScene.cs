@@ -1,8 +1,8 @@
 /// <summary>
-/// 基于 NovaFramework 的测试用例
+/// 基于 NovaFramework 的演示案例
 /// 
 /// 创建者：Hurley
-/// 创建时间：2025-06-23
+/// 创建时间：2025-06-24
 /// 功能描述：
 /// </summary>
 

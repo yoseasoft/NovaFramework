@@ -1,5 +1,5 @@
 /// <summary>
-/// 基于 NovaFramework 的测试用例
+/// 基于 NovaFramework 的演示案例
 /// 
 /// 创建者：Hurley
 /// 创建时间：2025-06-22
@@ -9,7 +9,7 @@
 namespace Game.Sample
 {
     /// <summary>
-    /// 测试案例总控
+    /// 演示案例总控
     /// </summary>
     public static partial class GameSample
     {

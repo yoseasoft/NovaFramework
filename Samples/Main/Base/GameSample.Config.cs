@@ -1,5 +1,5 @@
 /// <summary>
-/// 基于 NovaFramework 的测试用例
+/// 基于 NovaFramework 的演示案例
 /// 
 /// 创建者：Hurley
 /// 创建时间：2025-06-23
@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace Game.Sample
 {
     /// <summary>
-    /// 测试案例总控
+    /// 演示案例总控
     /// </summary>
     public static partial class GameSample
     {
@@ -55,7 +55,7 @@ namespace Game.Sample
                 System.Reflection.Assembly assembly = NovaEngine.Utility.Assembly.GetAssembly(WaitingLoadAssemblyNames[n]);
                 if (null == assembly)
                 {
-                    GameEngine.Debugger.Error("通过指定名称‘{%s}’获取当前上下文中已加载的程序集实例失败！", WaitingLoadAssemblyNames[n]);
+                    Debugger.Error("通过指定名称‘{%s}’获取当前上下文中已加载的程序集实例失败！", WaitingLoadAssemblyNames[n]);
                     continue;
                 }
 

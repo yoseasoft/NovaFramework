@@ -1,5 +1,5 @@
 /// <summary>
-/// 基于 NovaFramework 的测试用例
+/// 基于 NovaFramework 的演示案例
 /// 
 /// 创建者：Hurley
 /// 创建时间：2025-06-22
@@ -9,7 +9,7 @@
 namespace Game.Sample
 {
     /// <summary>
-    /// 测试案例总控
+    /// 演示案例总控
     /// </summary>
     public static partial class GameSample
     {
@@ -53,11 +53,11 @@ namespace Game.Sample
             System.Type type = NovaEngine.Utility.Assembly.GetType(targetName);
             if (type == null)
             {
-                GameEngine.Debugger.Error("Could not found '{%s}' class type with current assemblies list, call that function '{%s}' failed.", targetName, methodName);
+                Debugger.Error("Could not found '{%s}' class type with current assemblies list, call that function '{%s}' failed.", targetName, methodName);
                 return;
             }
 
-            GameEngine.Debugger.Info("Call remote service {%s} with target function name {%s}.", targetName, methodName);
+            Debugger.Info("Call remote service {%s} with target function name {%s}.", targetName, methodName);
 
             NovaEngine.Utility.Reflection.CallMethod(type, methodName);
         }

@@ -1,5 +1,5 @@
 /// <summary>
-/// 基于 NovaFramework 的测试用例
+/// 基于 NovaFramework 的演示案例
 /// 
 /// 创建者：Hurley
 /// 创建时间：2025-06-23
@@ -9,7 +9,7 @@
 namespace Game
 {
     /// <summary>
-    /// 测试案例全局观察器类
+    /// 演示案例全局观察器类
     /// </summary>
     public static class GameSampleObserver
     {

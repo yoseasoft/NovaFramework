@@ -6,7 +6,7 @@
 /// 功能描述：
 /// </summary>
 
-namespace Game.Sample.DependencyInject
+namespace Game.Sample.ObjectLifecycle
 {
     /// <summary>
     /// 案例入口类
@@ -15,6 +15,7 @@ namespace Game.Sample.DependencyInject
     {
         public static void Run()
         {
+            GameEngine.SceneHandler.Instance.ReplaceScene<LogoScene>();
         }
 
         public static void Stop()
