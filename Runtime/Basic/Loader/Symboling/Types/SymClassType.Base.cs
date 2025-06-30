@@ -37,9 +37,19 @@ namespace GameEngine.Loader.Symboling
     public abstract class SymBase
     {
         /// <summary>
+        /// 标记的唯一声明ID
+        /// </summary>
+        private int m_uid;
+
+        /// <summary>
         /// 标记包含的属性信息
         /// </summary>
         private IList<SystemAttribute> m_attributes;
+
+        /// <summary>
+        /// 唯一声明ID获取函数
+        /// </summary>
+        public int Uid => m_uid;
 
         /// <summary>
         /// 属性信息获取函数

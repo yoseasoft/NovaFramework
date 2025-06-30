@@ -528,10 +528,12 @@ namespace NovaEngine
             {
                 SystemStringBuilder stringBuilder = new SystemStringBuilder();
 
+                stringBuilder.Append(GetFullName(field.FieldType));
+                stringBuilder.Append(Definition.CCharacter.Space);
+                stringBuilder.Append(field.Name);
                 stringBuilder.Append(Definition.CCharacter.LeftParen);
                 stringBuilder.Append(field.DeclaringType.FullName);
                 stringBuilder.Append(Definition.CCharacter.RightParen);
-                stringBuilder.Append(field.Name);
 
                 return stringBuilder.ToString();
             }
@@ -545,10 +547,13 @@ namespace NovaEngine
             {
                 SystemStringBuilder stringBuilder = new SystemStringBuilder();
 
+                stringBuilder.Append(GetFullName(property.PropertyType));
+                stringBuilder.Append(Definition.CCharacter.Space);
+                stringBuilder.Append(property.Name);
                 stringBuilder.Append(Definition.CCharacter.LeftParen);
                 stringBuilder.Append(property.DeclaringType.FullName);
                 stringBuilder.Append(Definition.CCharacter.RightParen);
-                stringBuilder.Append(property.Name);
+                stringBuilder.Append(Definition.CCharacter.Space);
 
                 stringBuilder.Append(Definition.CCharacter.LeftBracket);
                 SystemMethodInfo getMethodInfo = property.GetGetMethod(true);
@@ -562,6 +567,11 @@ namespace NovaEngine
                 {
                     if (null != getMethodInfo) stringBuilder.Append(Definition.CCharacter.Semicolon);
                     stringBuilder.Append(GetFullName(setMethodInfo));
+                }
+
+                if (null == getMethodInfo && null == setMethodInfo)
+                {
+                    stringBuilder.Append(Definition.CString.Null);
                 }
                 stringBuilder.Append(Definition.CCharacter.RightBracket);
 

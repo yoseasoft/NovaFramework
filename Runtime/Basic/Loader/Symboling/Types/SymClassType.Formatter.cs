@@ -39,6 +39,7 @@ namespace GameEngine.Loader.Symboling
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("SymClass={");
 
+            sb.AppendFormat("Uid={0},", targetObject.Uid);
             sb.AppendFormat("ClassName={0},", targetObject.ClassName);
             sb.AppendFormat("FullName={0},", targetObject.FullName);
             sb.AppendFormat("ClassType={0},", NovaEngine.Utility.Text.ToString(targetObject.ClassType));
@@ -69,7 +70,92 @@ namespace GameEngine.Loader.Symboling
                 return v.MethodName;
             }));
 
-            //sb.AppendFormat("Beans = {{{0}}}, ", NovaEngine.Utility.Text.ToString<string, Bean>(m_beans));
+            sb.AppendFormat("Beans={{{0}}},", NovaEngine.Formatter.ToString<Bean>(targetObject.GetAllBeans(), (index, v) =>
+            {
+                return ToString(v);
+            }));
+
+            sb.Append("}");
+            return sb.ToString();
+        }
+
+        public static string ToString(SymField targetObject)
+        {
+            SystemStringBuilder sb = new SystemStringBuilder();
+            sb.Append("SymField={");
+
+            sb.AppendFormat("Uid={0},", targetObject.Uid);
+            //sb.AppendFormat("FieldName={0},", targetObject.FieldName);
+            //sb.AppendFormat("FieldType={0},", NovaEngine.Utility.Text.ToString(targetObject.FieldType));
+            sb.AppendFormat("FieldInfo={0},", NovaEngine.Utility.Text.ToString(targetObject.FieldInfo));
+
+            sb.AppendFormat("Attributes={{{0}}},", NovaEngine.Formatter.ToString<SystemAttribute>(targetObject.Attributes, (index, v) =>
+            {
+                return $"[{index}]={NovaEngine.Utility.Text.GetFullName(v)}";
+            }));
+
+            sb.Append("}");
+            return sb.ToString();
+        }
+
+        public static string ToString(SymProperty targetObject)
+        {
+            SystemStringBuilder sb = new SystemStringBuilder();
+            sb.Append("SymProperty={");
+
+            sb.AppendFormat("Uid={0},", targetObject.Uid);
+            //sb.AppendFormat("PropertyName={0},", targetObject.PropertyName);
+            //sb.AppendFormat("PropertyType={0},", NovaEngine.Utility.Text.ToString(targetObject.PropertyType));
+            sb.AppendFormat("PropertyInfo={0},", NovaEngine.Utility.Text.ToString(targetObject.PropertyInfo));
+
+            sb.AppendFormat("Attributes={{{0}}},", NovaEngine.Formatter.ToString<SystemAttribute>(targetObject.Attributes, (index, v) =>
+            {
+                return $"[{index}]={NovaEngine.Utility.Text.GetFullName(v)}";
+            }));
+
+            sb.Append("}");
+            return sb.ToString();
+        }
+
+        public static string ToString(SymMethod targetObject)
+        {
+            SystemStringBuilder sb = new SystemStringBuilder();
+            sb.Append("SymMethod={");
+
+            sb.AppendFormat("Uid={0},", targetObject.Uid);
+            //sb.AppendFormat("MethodName={0},", targetObject.MethodName);
+            //sb.AppendFormat("FullName={0},", targetObject.FullName);
+            //sb.AppendFormat("ReturnType={0},", NovaEngine.Utility.Text.ToString(targetObject.ReturnType));
+            sb.AppendFormat("MethodInfo={0},", NovaEngine.Utility.Text.ToString(targetObject.MethodInfo));
+
+            sb.AppendFormat("Attributes={{{0}}},", NovaEngine.Formatter.ToString<SystemAttribute>(targetObject.Attributes, (index, v) =>
+            {
+                return $"[{index}]={NovaEngine.Utility.Text.GetFullName(v)}";
+            }));
+
+            sb.Append("}");
+            return sb.ToString();
+        }
+
+        public static string ToString(Bean targetObject)
+        {
+            SystemStringBuilder sb = new SystemStringBuilder();
+            sb.Append("Bean={");
+
+            sb.AppendFormat("ClassName={0},", targetObject.TargetClass.ClassName);
+            sb.AppendFormat("BeanName={0},", targetObject.BeanName);
+            sb.AppendFormat("Singleton={0},", targetObject.Singleton);
+            sb.AppendFormat("Inherited={0},", targetObject.Inherited);
+            sb.AppendFormat("FromConfigure={0},", targetObject.FromConfigure);
+
+            sb.AppendFormat("Fields={{{0}}},", NovaEngine.Formatter.ToString<string, BeanField>(targetObject.Fields, (k, v) =>
+            {
+                return v.FieldName;
+            }));
+            sb.AppendFormat("Components={{{0}}},", NovaEngine.Formatter.ToString<BeanComponent>(targetObject.Components, (index, v) =>
+            {
+                return null == v.ReferenceClassType ? v.ReferenceBeanName : NovaEngine.Utility.Text.GetFullName(v.ReferenceClassType);
+            }));
 
             sb.Append("}");
             return sb.ToString();
