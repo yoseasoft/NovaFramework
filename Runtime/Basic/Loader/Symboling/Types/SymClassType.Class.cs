@@ -159,7 +159,7 @@ namespace GameEngine.Loader.Symboling
         public IDictionary<string, SymProperty> Properties => m_properties;
         public IDictionary<string, SymMethod> Methods => m_methods;
 
-        public SymClass() { }
+        public SymClass() : base() { }
 
         ~SymClass()
         {
@@ -790,28 +790,5 @@ namespace GameEngine.Loader.Symboling
 
         #endregion
 
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("SymClass = { ");
-            sb.AppendFormat("{0}, ", base.ToString());
-
-            sb.AppendFormat("ClassName = {0}, ", m_className);
-            sb.AppendFormat("FullName = {0}, ", m_fullName);
-            sb.AppendFormat("ClassType = {0}, ", NovaEngine.Utility.Text.ToString(m_classType));
-            sb.AppendFormat("BaseType = {0}, ", NovaEngine.Utility.Text.ToString(m_baseType));
-            sb.AppendFormat("InstantiableType = {0}, ", m_isInstantiate);
-
-            sb.AppendFormat("FeatureTypes = {{{0}}},", NovaEngine.Utility.Text.ToString<SystemType>(m_featureTypes));
-            sb.AppendFormat("InterfaceTypes = {{{0}}},", NovaEngine.Utility.Text.ToString<SystemType>(m_interfaceTypes));
-            sb.AppendFormat("Fields = {{{0}}}, ", NovaEngine.Utility.Text.ToString<string, SymField>(m_fields));
-            sb.AppendFormat("Properties = {{{0}}}, ", NovaEngine.Utility.Text.ToString<string, SymProperty>(m_properties));
-            sb.AppendFormat("Methods = {{{0}}}, ", NovaEngine.Utility.Text.ToString<string, SymMethod>(m_methods));
-
-            sb.AppendFormat("Beans = {{{0}}}, ", NovaEngine.Utility.Text.ToString<string, Bean>(m_beans));
-
-            sb.Append("}");
-            return sb.ToString();
-        }
     }
 }

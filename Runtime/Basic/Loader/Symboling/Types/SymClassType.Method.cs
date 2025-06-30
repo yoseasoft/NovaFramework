@@ -101,7 +101,7 @@ namespace GameEngine.Loader.Symboling
         public bool IsStatic => m_isStatic;
         public bool IsExtension => m_isExtension;
 
-        public SymMethod() { }
+        public SymMethod() : base() { }
 
         ~SymMethod()
         {
@@ -122,17 +122,6 @@ namespace GameEngine.Loader.Symboling
             }
 
             return m_parameters[index];
-        }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.AppendFormat("{0}, ", base.ToString());
-            sb.AppendFormat("MethodName = {0}, ", m_methodName);
-            sb.AppendFormat("FullName = {0}, ", m_fullName);
-            sb.AppendFormat("ReturnType = {0}, ", NovaEngine.Utility.Text.ToString(m_returnType));
-            sb.AppendFormat("MethodInfo = {0}, ", NovaEngine.Utility.Text.ToString(m_methodInfo));
-            return sb.ToString();
         }
     }
 }

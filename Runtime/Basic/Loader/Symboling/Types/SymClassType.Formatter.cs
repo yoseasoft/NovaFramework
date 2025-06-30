@@ -160,5 +160,33 @@ namespace GameEngine.Loader.Symboling
             sb.Append("}");
             return sb.ToString();
         }
+
+        public static string ToString(BeanField targetObject)
+        {
+            SystemStringBuilder sb = new SystemStringBuilder();
+            sb.Append("BeanField={");
+
+            sb.AppendFormat("FieldName={0},", targetObject.FieldName);
+            sb.AppendFormat("ReferenceClassType={0},", NovaEngine.Utility.Text.ToString(targetObject.ReferenceClassType));
+            sb.AppendFormat("ReferenceBeanName={0},", targetObject.ReferenceBeanName);
+            sb.AppendFormat("ReferenceValue={0},", null == targetObject.ReferenceValue ? NovaEngine.Definition.CString.Null : NovaEngine.Utility.Text.GetFullName(targetObject.ReferenceValue.GetType()));
+
+            sb.Append("}");
+            return sb.ToString();
+        }
+
+        public static string ToString(BeanComponent targetObject)
+        {
+            SystemStringBuilder sb = new SystemStringBuilder();
+            sb.Append("BeanComponent={");
+
+            sb.AppendFormat("ReferenceClassType={0},", NovaEngine.Utility.Text.ToString(targetObject.ReferenceClassType));
+            sb.AppendFormat("ReferenceBeanName={0},", targetObject.ReferenceBeanName);
+            sb.AppendFormat("Priority={0},", targetObject.Priority);
+            sb.AppendFormat("ActivationBehaviourType={0},", targetObject.ActivationBehaviourType);
+
+            sb.Append("}");
+            return sb.ToString();
+        }
     }
 }

@@ -78,21 +78,11 @@ namespace GameEngine.Loader.Symboling
         public MethodInfo GetMethodInfo => m_getMethodInfo;
         public MethodInfo SetMethodInfo => m_setMethodInfo;
 
-        public SymProperty() { }
+        public SymProperty() : base() { }
 
         ~SymProperty()
         {
             m_propertyInfo = null;
-        }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.AppendFormat("{0}, ", base.ToString());
-            sb.AppendFormat("PropertyName = {0}, ", m_propertyName);
-            sb.AppendFormat("PropertyType = {0}, ", NovaEngine.Utility.Text.ToString(m_propertyType));
-            sb.AppendFormat("PropertyInfo = {0}, ", NovaEngine.Utility.Text.ToString(m_propertyInfo));
-            return sb.ToString();
         }
     }
 }

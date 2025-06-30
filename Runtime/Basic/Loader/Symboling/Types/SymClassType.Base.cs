@@ -331,12 +331,5 @@ namespace GameEngine.Loader.Symboling
         }
 
         #endregion
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.AppendFormat("Attributes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<SystemAttribute>(m_attributes));
-            return sb.ToString();
-        }
     }
 }

@@ -65,21 +65,11 @@ namespace GameEngine.Loader.Symboling
         public string FieldName => m_fieldName;
         public SystemType FieldType => m_fieldType;
 
-        public SymField() { }
+        public SymField() : base() { }
 
         ~SymField()
         {
             m_fieldInfo = null;
-        }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.AppendFormat("{0}, ", base.ToString());
-            sb.AppendFormat("FieldName = {0}, ", m_fieldName);
-            sb.AppendFormat("FieldType = {0}, ", NovaEngine.Utility.Text.ToString(m_fieldType));
-            sb.AppendFormat("FieldInfo = {0}, ", NovaEngine.Utility.Text.ToString(m_fieldInfo));
-            return sb.ToString();
         }
     }
 }
