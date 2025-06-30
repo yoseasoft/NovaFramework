@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -26,13 +26,27 @@
 namespace NovaEngine
 {
     /// <summary>
-    /// 可实例化操作访问接口类，定义实例化函数的对外访问接口
+    /// 格式化接口集合工具类
     /// </summary>
-    public interface IInstantiable
+    public static partial class Formatter
     {
         /// <summary>
-        /// 对象实例化函数接口，由缓存管理器统一调用
+        /// 格式化信息的绑定类型定义
         /// </summary>
-        object CreateInstance(System.Type classType);
+        [System.Flags]
+        public enum BindingFlags
+        {
+            Default = 0,
+            AttributeInfo = 0x01,
+            InterfaceInfo = 0x02,
+            FieldInfo = 0x10,
+            PropertyInfo = 0x20,
+            MethodInfo = 0x40,
+
+            /// <summary>
+            /// 包含全部标识
+            /// </summary>
+            All = 0xffff,
+        }
     }
 }

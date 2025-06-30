@@ -67,25 +67,25 @@ namespace Game.Sample.ObjectLifecycle
         [GameEngine.OnAspectBeforeCallOfTarget(typeof(Player), GameEngine.AspectBehaviourType.Update)]
         static void BeforeUpdate(this Player self)
         {
-            if (GameSampleMacros.LoopOutputEnabled) GameEngine.Debugger.Info("目标玩家实例{%t}前置刷新完成！", self);
+            if (GameSample.OnceTimeUpdateCallPassed(self)) GameEngine.Debugger.Info("目标玩家实例{%t}前置刷新完成！", self);
         }
 
         [GameEngine.OnAspectAfterCallOfTarget(typeof(Player), GameEngine.AspectBehaviourType.Update)]
         static void AfterUpdate(this Player self)
         {
-            if (GameSampleMacros.LoopOutputEnabled) GameEngine.Debugger.Info("目标玩家实例{%t}后置刷新完成！", self);
+            if (GameSample.OnceTimeUpdateCallPassed(self)) GameEngine.Debugger.Info("目标玩家实例{%t}后置刷新完成！", self);
         }
 
         [GameEngine.OnAspectBeforeCallOfTarget(typeof(Player), GameEngine.AspectBehaviourType.LateUpdate)]
         static void BeforeLateUpdate(this Player self)
         {
-            if (GameSampleMacros.LoopOutputEnabled) GameEngine.Debugger.Info("目标玩家实例{%t}前置延迟刷新完成！", self);
+            if (GameSample.OnceTimeUpdateCallPassed(self)) GameEngine.Debugger.Info("目标玩家实例{%t}前置延迟刷新完成！", self);
         }
 
         [GameEngine.OnAspectAfterCallOfTarget(typeof(Player), GameEngine.AspectBehaviourType.LateUpdate)]
         static void AfterLateUpdate(this Player self)
         {
-            if (GameSampleMacros.LoopOutputEnabled) GameEngine.Debugger.Info("目标玩家实例{%t}后置延迟刷新完成！", self);
+            if (GameSample.OnceTimeUpdateCallPassed(self)) GameEngine.Debugger.Info("目标玩家实例{%t}后置延迟刷新完成！", self);
         }
 
         [GameEngine.OnAspectBeforeCallOfTarget(typeof(Player), GameEngine.AspectBehaviourType.Destroy)]

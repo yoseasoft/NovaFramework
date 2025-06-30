@@ -14,6 +14,7 @@ namespace Game.Sample
     public enum GameSampleType
     {
         Unknown,
+        TextFormat,
         SymbolParser,
         InversionOfControl,
         ObjectLifecycle,

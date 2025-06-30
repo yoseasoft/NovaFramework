@@ -51,12 +51,12 @@ namespace Game.Sample.ObjectLifecycle
 
         protected override void OnUpdate()
         {
-            if (GameSampleMacros.LoopOutputEnabled) Debugger.Info("Call Actor.OnUpdate Method.");
+            if (GameSample.OnceTimeUpdateCallPassed(this)) Debugger.Info("Call Actor.OnUpdate Method.");
         }
 
         protected override void OnLateUpdate()
         {
-            if (GameSampleMacros.LoopOutputEnabled) Debugger.Info("Call Actor.OnLateUpdate Method.");
+            if (GameSample.OnceTimeUpdateCallPassed(this)) Debugger.Info("Call Actor.OnLateUpdate Method.");
         }
     }
 }

@@ -26,6 +26,7 @@
 using System.Collections.Generic;
 
 using SystemType = System.Type;
+using SystemAttribute = System.Attribute;
 using SystemDelegate = System.Delegate;
 using SystemIntPtr = System.IntPtr;
 using SystemStringBuilder = System.Text.StringBuilder;
@@ -376,6 +377,18 @@ namespace NovaEngine
                 {
                     return GetFullName(targetType);
                 }
+                else if (obj is SystemAttribute attribute)
+                {
+                    return GetFullName(attribute);
+                }
+                else if (obj is SystemFieldInfo fieldInfo)
+                {
+                    return GetFullName(fieldInfo);
+                }
+                else if (obj is SystemPropertyInfo propertyInfo)
+                {
+                    return GetFullName(propertyInfo);
+                }
                 else if (obj is SystemDelegate callback)
                 {
                     return GetFullName(callback);
@@ -387,10 +400,6 @@ namespace NovaEngine
                 else if (obj is SystemParameterInfo parameterInfo)
                 {
                     return GetFullName(parameterInfo);
-                }
-                else if (obj is SystemPropertyInfo propertyInfo)
-                {
-                    return GetFullName(propertyInfo);
                 }
 
                 throw new CFrameworkException("Invalid format convertion class type '{%s}'.", GetFullName(obj.GetType()));
@@ -431,23 +440,33 @@ namespace NovaEngine
             }
 
             /// <summary>
-            /// 字段类型的字符串描述输出函数
+            /// 特性对象的字符串描述输出函数
             /// </summary>
-            /// <param name="field">字段类型</param>
-            /// <returns>返回字段类型对应的字符串输出结果</returns>
-            public static string ToString(SystemFieldInfo field)
+            /// <param name="attribute">特性对象</param>
+            /// <returns>返回特性对象对应的字符串输出结果</returns>
+            public static string ToString(SystemAttribute attribute)
             {
-                return null == field ? Definition.CString.Null : field.Name;
+                return null == attribute ? Definition.CString.Null : GetFullName(attribute);
             }
 
             /// <summary>
-            /// 属性类型的字符串描述输出函数
+            /// 字段对象的字符串描述输出函数
             /// </summary>
-            /// <param name="property">属性类型</param>
-            /// <returns>返回属性类型对应的字符串输出结果</returns>
+            /// <param name="field">字段对象</param>
+            /// <returns>返回字段对象对应的字符串输出结果</returns>
+            public static string ToString(SystemFieldInfo field)
+            {
+                return null == field ? Definition.CString.Null : GetFullName(field);
+            }
+
+            /// <summary>
+            /// 属性对象的字符串描述输出函数
+            /// </summary>
+            /// <param name="property">属性对象</param>
+            /// <returns>返回属性对象对应的字符串输出结果</returns>
             public static string ToString(SystemPropertyInfo property)
             {
-                return null == property ? Definition.CString.Null : property.Name;
+                return null == property ? Definition.CString.Null : GetFullName(property);
             }
 
             /// <summary>
@@ -487,27 +506,66 @@ namespace NovaEngine
             /// <returns>返回字符串信息</returns>
             public static string GetFullName(SystemType targetType)
             {
-                return null == targetType ? Definition.CString.Null : targetType.FullName;
+                return targetType.FullName;
+            }
+
+            /// <summary>
+            /// 返回指定特性的全名字符串信息
+            /// </summary>
+            /// <param name="attribute">特性对象</param>
+            /// <returns>返回字符串信息</returns>
+            public static string GetFullName(SystemAttribute attribute)
+            {
+                return attribute.GetType().FullName;
             }
 
             /// <summary>
             /// 返回指定字段的全名字符串信息
             /// </summary>
-            /// <param name="field">字段类型</param>
+            /// <param name="field">字段对象</param>
             /// <returns>返回字符串信息</returns>
             public static string GetFullName(SystemFieldInfo field)
             {
-                return null == field ? Definition.CString.Null : field.Name;
+                SystemStringBuilder stringBuilder = new SystemStringBuilder();
+
+                stringBuilder.Append(Definition.CCharacter.LeftParen);
+                stringBuilder.Append(field.DeclaringType.FullName);
+                stringBuilder.Append(Definition.CCharacter.RightParen);
+                stringBuilder.Append(field.Name);
+
+                return stringBuilder.ToString();
             }
 
             /// <summary>
             /// 返回指定属性的全名字符串信息
             /// </summary>
-            /// <param name="property">属性类型</param>
+            /// <param name="property">属性对象</param>
             /// <returns>返回字符串信息</returns>
             public static string GetFullName(SystemPropertyInfo property)
             {
-                return null == property ? Definition.CString.Null : property.Name;
+                SystemStringBuilder stringBuilder = new SystemStringBuilder();
+
+                stringBuilder.Append(Definition.CCharacter.LeftParen);
+                stringBuilder.Append(property.DeclaringType.FullName);
+                stringBuilder.Append(Definition.CCharacter.RightParen);
+                stringBuilder.Append(property.Name);
+
+                stringBuilder.Append(Definition.CCharacter.LeftBracket);
+                SystemMethodInfo getMethodInfo = property.GetGetMethod(true);
+                if (null != getMethodInfo)
+                {
+                    stringBuilder.Append(GetFullName(getMethodInfo));
+                }
+
+                SystemMethodInfo setMethodInfo = property.GetSetMethod(true);
+                if (null != setMethodInfo)
+                {
+                    if (null != getMethodInfo) stringBuilder.Append(Definition.CCharacter.Semicolon);
+                    stringBuilder.Append(GetFullName(setMethodInfo));
+                }
+                stringBuilder.Append(Definition.CCharacter.RightBracket);
+
+                return stringBuilder.ToString();
             }
 
             /// <summary>
@@ -521,7 +579,7 @@ namespace NovaEngine
 
                 if (null != callback.Target)
                 {
-                    stringBuilder.Append(callback.Target.GetType().FullName);
+                    stringBuilder.Append(GetFullName(callback.Target.GetType()));
                 }
                 else
                 {
