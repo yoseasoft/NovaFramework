@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -81,6 +82,11 @@ namespace GameEngine.Loader.Configuring
                     BeanFieldConfigureInfo fieldInfo = LoadBeanFieldElement(child);
                     beanInfo.AddFieldInfo(fieldInfo);
                 }
+                else if (ConfigureNodeName.Property.Equals(child.Name))
+                {
+                    BeanPropertyConfigureInfo propertyInfo = LoadBeanPropertyElement(child);
+                    beanInfo.AddPropertyInfo(propertyInfo);
+                }
                 else if (ConfigureNodeName.Component.Equals(child.Name))
                 {
                     BeanComponentConfigureInfo componentInfo = LoadBeanComponentElement(child);
@@ -134,6 +140,35 @@ namespace GameEngine.Loader.Configuring
             }
 
             return fieldInfo;
+        }
+
+        private static BeanPropertyConfigureInfo LoadBeanPropertyElement(SystemXmlNode node)
+        {
+            BeanPropertyConfigureInfo propertyInfo = new BeanPropertyConfigureInfo();
+
+            SystemXmlAttributeCollection attrCollection = node.Attributes;
+            for (int n = 0; null != attrCollection && n < attrCollection.Count; ++n)
+            {
+                SystemXmlAttribute attr = attrCollection[n];
+                switch (attr.Name)
+                {
+                    case ConfigureNodeAttributeName.K_NAME:
+                        propertyInfo.PropertyName = attr.Value;
+                        break;
+                    case ConfigureNodeAttributeName.K_REFERENCE_NAME:
+                        propertyInfo.ReferenceName = attr.Value;
+                        break;
+                    case ConfigureNodeAttributeName.K_REFERENCE_TYPE:
+                        propertyInfo.ReferenceType = NovaEngine.Utility.Assembly.GetType(attr.Value);
+                        Debugger.Assert(propertyInfo.ReferenceType, "Invalid bean property class type.");
+                        break;
+                    case ConfigureNodeAttributeName.K_REFERENCE_VALUE:
+                        propertyInfo.ReferenceValue = attr.Value;
+                        break;
+                }
+            }
+
+            return propertyInfo;
         }
 
         private static BeanComponentConfigureInfo LoadBeanComponentElement(SystemXmlNode node)

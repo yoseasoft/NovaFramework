@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -55,6 +56,10 @@ namespace GameEngine.Loader.Configuring
         /// </summary>
         private IDictionary<string, BeanFieldConfigureInfo> m_fields;
         /// <summary>
+        /// 节点对象的属性列表
+        /// </summary>
+        private IDictionary<string, BeanPropertyConfigureInfo> m_properties;
+        /// <summary>
         /// 节点对象的组件列表
         /// </summary>
         private IList<BeanComponentConfigureInfo> m_components;
@@ -65,11 +70,13 @@ namespace GameEngine.Loader.Configuring
         public bool Singleton { get { return m_singleton; } internal set { m_singleton = value; } }
         public bool Inherited { get { return m_inherited; } internal set { m_inherited = value; } }
         public IDictionary<string, BeanFieldConfigureInfo> Fields { get { return m_fields; } }
+        public IDictionary<string, BeanPropertyConfigureInfo> Properties { get { return m_properties; } }
         public IList<BeanComponentConfigureInfo> Components { get { return m_components; } }
 
         ~BeanConfigureInfo()
         {
             RemoveAllFieldInfos();
+            RemoveAllPropertyInfos();
             RemoveAllComponentInfos();
         }
 
@@ -103,7 +110,7 @@ namespace GameEngine.Loader.Configuring
         /// <summary>
         /// 移除当前节点对象中指定名称的字段信息
         /// </summary>
-        /// <param name="fieldName"></param>
+        /// <param name="fieldName">字段名称</param>
         public void RemoveFieldInfo(string fieldName)
         {
             if (null != m_fields && m_fields.ContainsKey(fieldName))
@@ -128,6 +135,63 @@ namespace GameEngine.Loader.Configuring
         public IEnumerator<KeyValuePair<string, BeanFieldConfigureInfo>> GetFieldInfoEnumerator()
         {
             return m_fields?.GetEnumerator();
+        }
+
+        /// <summary>
+        /// 添加指定的属性信息实例到当前节点对象中
+        /// </summary>
+        /// <param name="propertyInfo">属性信息</param>
+        /// <returns>若属性信息添加成功返回true，否则返回false</returns>
+        public bool AddPropertyInfo(BeanPropertyConfigureInfo propertyInfo)
+        {
+            if (null == propertyInfo)
+            {
+                return false;
+            }
+
+            if (null == m_properties)
+            {
+                m_properties = new Dictionary<string, BeanPropertyConfigureInfo>();
+            }
+            else if (m_properties.ContainsKey(propertyInfo.PropertyName))
+            {
+                Debugger.Warn("The bean '{0}' class's property '{1}' was already exist, repeat added it will be override old value.",
+                        NovaEngine.Utility.Text.ToString(m_classType), propertyInfo.PropertyName);
+                m_properties.Remove(propertyInfo.PropertyName);
+            }
+
+            m_properties.Add(propertyInfo.PropertyName, propertyInfo);
+            return true;
+        }
+
+        /// <summary>
+        /// 移除当前节点对象中指定名称的属性信息
+        /// </summary>
+        /// <param name="propertyName">属性名称</param>
+        public void RemovePropertyInfo(string propertyName)
+        {
+            if (null != m_properties && m_properties.ContainsKey(propertyName))
+            {
+                m_properties.Remove(propertyName);
+            }
+        }
+
+        /// <summary>
+        /// 移除当前节点对象中注册的所有属性信息
+        /// </summary>
+        private void RemoveAllPropertyInfos()
+        {
+            m_properties?.Clear();
+            m_properties = null;
+        }
+
+        /// <summary>
+        /// 获取节点对象的属性迭代器
+        /// </summary>
+        /// <returns>返回节点对象的属性迭代器</returns>
+        public IEnumerator<KeyValuePair<string, BeanPropertyConfigureInfo>> GetPropertyInfoEnumerator()
+        {
+            return m_properties?.GetEnumerator();
         }
 
         /// <summary>

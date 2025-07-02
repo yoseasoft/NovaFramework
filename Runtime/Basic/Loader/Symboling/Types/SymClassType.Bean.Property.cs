@@ -74,18 +74,6 @@ namespace GameEngine.Loader.Symboling
         ~BeanProperty()
         { }
 
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("PropertyName = {0}, ", m_propertyName);
-            sb.AppendFormat("ReferenceClassType = {0}, ", NovaEngine.Utility.Text.ToString(m_referenceClassType));
-            sb.AppendFormat("ReferenceBeanName = {0}, ", m_referenceBeanName);
-            sb.AppendFormat("ReferenceValue = {0}, ", m_referenceValue?.ToString());
-            sb.Append("}");
-            return sb.ToString();
-        }
-
         public override bool Equals(object obj)
         {
             if (obj is BeanProperty) { return Equals((BeanProperty) obj); }

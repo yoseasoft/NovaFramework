@@ -62,18 +62,6 @@ namespace GameEngine.Loader.Symboling
         ~BeanComponent()
         { }
 
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("ReferenceClassType = {0}, ", NovaEngine.Utility.Text.ToString(m_referenceClassType));
-            sb.AppendFormat("ReferenceBeanName = {0}, ", m_referenceBeanName);
-            sb.AppendFormat("Priority = {0}, ", m_priority);
-            sb.AppendFormat("ActivationBehaviourType = {0}, ", m_activationBehaviourType.ToString());
-            sb.Append("}");
-            return sb.ToString();
-        }
-
         public override bool Equals(object obj)
         {
             if (obj is BeanComponent) { return Equals((BeanComponent) obj); }

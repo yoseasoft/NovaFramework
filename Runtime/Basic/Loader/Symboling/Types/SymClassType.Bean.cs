@@ -583,20 +583,6 @@ namespace GameEngine.Loader.Symboling
 
         #endregion
 
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("TargetClass = {0}, ", m_targetClass.ClassName?.ToString());
-            sb.AppendFormat("BeanName = {0}, ", m_beanName?.ToString());
-            sb.AppendFormat("Singleton = {0}, ", m_singleton);
-            sb.AppendFormat("Inherited = {0}, ", m_inherited);
-            sb.AppendFormat("FromConfigure = {0}, ", m_fromConfigure);
-            sb.AppendFormat("Fields = {{{0}}}, ", NovaEngine.Utility.Text.ToString<string, BeanField>(m_fields));
-            sb.AppendFormat("Components = {{{0}}}, ", NovaEngine.Utility.Text.ToString<BeanComponent>(m_components));
-            sb.Append("}");
-            return sb.ToString();
-        }
     }
 
     /// <summary>

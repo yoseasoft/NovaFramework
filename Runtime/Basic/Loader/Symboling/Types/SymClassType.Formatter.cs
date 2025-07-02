@@ -152,9 +152,15 @@ namespace GameEngine.Loader.Symboling
             {
                 return v.FieldName;
             }));
+            sb.AppendFormat("Properties={{{0}}},", NovaEngine.Formatter.ToString<string, BeanProperty>(targetObject.Properties, (k, v) =>
+            {
+                return v.PropertyName;
+            }));
             sb.AppendFormat("Components={{{0}}},", NovaEngine.Formatter.ToString<BeanComponent>(targetObject.Components, (index, v) =>
             {
-                return null == v.ReferenceClassType ? v.ReferenceBeanName : NovaEngine.Utility.Text.GetFullName(v.ReferenceClassType);
+                if (null != v.ReferenceClassType) return $"ClassType={NovaEngine.Utility.Text.GetFullName(v.ReferenceClassType)}";
+                else if (null != v.ReferenceBeanName) return $"BeanName={v.ReferenceBeanName}";
+                else return NovaEngine.Definition.CString.Null;
             }));
 
             sb.Append("}");
@@ -167,9 +173,23 @@ namespace GameEngine.Loader.Symboling
             sb.Append("BeanField={");
 
             sb.AppendFormat("FieldName={0},", targetObject.FieldName);
-            sb.AppendFormat("ReferenceClassType={0},", NovaEngine.Utility.Text.ToString(targetObject.ReferenceClassType));
-            sb.AppendFormat("ReferenceBeanName={0},", targetObject.ReferenceBeanName);
-            sb.AppendFormat("ReferenceValue={0},", null == targetObject.ReferenceValue ? NovaEngine.Definition.CString.Null : NovaEngine.Utility.Text.GetFullName(targetObject.ReferenceValue.GetType()));
+            if (null != targetObject.ReferenceClassType) sb.AppendFormat("ReferenceClassType={0},", NovaEngine.Utility.Text.ToString(targetObject.ReferenceClassType));
+            if (null != targetObject.ReferenceBeanName) sb.AppendFormat("ReferenceBeanName={0},", targetObject.ReferenceBeanName);
+            if (null != targetObject.ReferenceValue) sb.AppendFormat("ReferenceValue={0},", NovaEngine.Utility.Text.GetFullName(targetObject.ReferenceValue.GetType()));
+
+            sb.Append("}");
+            return sb.ToString();
+        }
+
+        public static string ToString(BeanProperty targetObject)
+        {
+            SystemStringBuilder sb = new SystemStringBuilder();
+            sb.Append("BeanProperty={");
+
+            sb.AppendFormat("PropertyName={0},", targetObject.PropertyName);
+            if (null != targetObject.ReferenceClassType) sb.AppendFormat("ReferenceClassType={0},", NovaEngine.Utility.Text.ToString(targetObject.ReferenceClassType));
+            if (null != targetObject.ReferenceBeanName) sb.AppendFormat("ReferenceBeanName={0},", targetObject.ReferenceBeanName);
+            if (null != targetObject.ReferenceValue) sb.AppendFormat("ReferenceValue={0},", NovaEngine.Utility.Text.GetFullName(targetObject.ReferenceValue.GetType()));
 
             sb.Append("}");
             return sb.ToString();
@@ -180,8 +200,8 @@ namespace GameEngine.Loader.Symboling
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("BeanComponent={");
 
-            sb.AppendFormat("ReferenceClassType={0},", NovaEngine.Utility.Text.ToString(targetObject.ReferenceClassType));
-            sb.AppendFormat("ReferenceBeanName={0},", targetObject.ReferenceBeanName);
+            if (null != targetObject.ReferenceClassType) sb.AppendFormat("ReferenceClassType={0},", NovaEngine.Utility.Text.ToString(targetObject.ReferenceClassType));
+            if (null != targetObject.ReferenceBeanName) sb.AppendFormat("ReferenceBeanName={0},", targetObject.ReferenceBeanName);
             sb.AppendFormat("Priority={0},", targetObject.Priority);
             sb.AppendFormat("ActivationBehaviourType={0},", targetObject.ActivationBehaviourType);
 
