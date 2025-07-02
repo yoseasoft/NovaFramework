@@ -1,7 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +32,7 @@ namespace GameEngine.Loader.Configuring
     public static class ConfigureNodeName
     {
         public const string Comment = "#comment";
+        public const string File = "file";
         public const string Constant = "constant";
         public const string Bean = "bean";
         public const string Field = "field";
@@ -51,10 +54,11 @@ namespace GameEngine.Loader.Configuring
         public const string K_REFERENCE_NAME = "reference_name";
         public const string K_REFERENCE_TYPE = "reference_type";
         public const string K_REFERENCE_VALUE = "reference_value";
-        public const string K_REFERENCE_BEAN = "reference_bean";
-        public const string K_REFERENCE_FIELD = "reference_field";
-        public const string K_REFERENCE_PROPERTY = "reference_property";
+        //public const string K_REFERENCE_BEAN = "reference_bean";
+        //public const string K_REFERENCE_FIELD = "reference_field";
+        //public const string K_REFERENCE_PROPERTY = "reference_property";
         public const string K_PRIORITY = "priority";
         public const string K_ACTIVATION_ON = "activation_on";
+        public const string K_INCLUDE = "include";
     }
 }

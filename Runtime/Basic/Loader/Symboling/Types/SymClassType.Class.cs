@@ -492,6 +492,21 @@ namespace GameEngine.Loader.Symboling
         }
 
         /// <summary>
+        /// 通过指定的属性名称查找对应的属性标记对象实例
+        /// </summary>
+        /// <param name="propertyName">属性名称</param>
+        /// <returns>若查找标记对象成功则返回该实例，否则返回null</returns>
+        public SymProperty GetPropertyByName(string propertyName)
+        {
+            if (null == m_properties || false == m_properties.ContainsKey(propertyName))
+            {
+                return null;
+            }
+
+            return m_properties[propertyName];
+        }
+
+        /// <summary>
         /// 尝试通过指定的属性名称，获取对应的属性标记对象实例
         /// </summary>
         /// <param name="propertyName">属性名称</param>

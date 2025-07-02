@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -28,40 +29,65 @@ using SystemStringBuilder = System.Text.StringBuilder;
 namespace GameEngine.Loader.Configuring
 {
     /// <summary>
-    /// 通用Bean的组件配置类型的结构信息
+    /// 通用Bean的字段配置类型的结构信息
     /// </summary>
-    public class BeanComponentConfigureInfo
+    public class BeanFieldConfigureInfo : ICodeConfigureEffectivateVerification
     {
         /// <summary>
-        /// 节点组件的引用名称
+        /// 节点字段的完整名称
+        /// </summary>
+        private string m_fieldName;
+        /// <summary>
+        /// 节点字段的引用名称
         /// </summary>
         private string m_referenceName;
         /// <summary>
-        /// 节点组件的引用类型
+        /// 节点字段的引用类型
         /// </summary>
         private SystemType m_referenceType;
         /// <summary>
-        /// 节点组件的优先级
+        /// 节点字段的配置值
         /// </summary>
-        private int m_priority;
-        /// <summary>
-        /// 节点组件的激活阶段类型标识
-        /// </summary>
-        private AspectBehaviourType m_activationBehaviourType;
+        private string m_referenceValue;
 
+        public string FieldName { get { return m_fieldName; } internal set { m_fieldName = value; } }
         public string ReferenceName { get { return m_referenceName; } internal set { m_referenceName = value; } }
         public SystemType ReferenceType { get { return m_referenceType; } internal set { m_referenceType = value; } }
-        public int Priority { get { return m_priority; } internal set { m_priority = value; } }
-        public AspectBehaviourType ActivationBehaviourType { get { return m_activationBehaviourType; } internal set { m_activationBehaviourType = value; } }
+        public string ReferenceValue { get { return m_referenceValue; } internal set { m_referenceValue = value; } }
+
+        /// <summary>
+        /// 该配置对象是否有效的检测接口函数
+        /// </summary>
+        /// <returns>若配置有效则返回true，否则返回false</returns>
+        public bool IsEffectivationCodeConfigure()
+        {
+            int c = 0;
+
+            // 字段的引用名称，引用类型或引用值，必须要配置一项
+
+            if (null == m_referenceName)
+                ++c;
+
+            if (null != m_referenceType)
+                ++c;
+
+            if (null == m_referenceValue)
+                ++c;
+
+            if (c <= 0 || c > 1)
+                return false;
+
+            return true;
+        }
 
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("{ ");
+            sb.AppendFormat("FieldName = {0}, ", m_fieldName);
             sb.AppendFormat("ReferenceName = {0}, ", m_referenceName);
             sb.AppendFormat("ReferenceType = {0}, ", NovaEngine.Utility.Text.ToString(m_referenceType));
-            sb.AppendFormat("Priority = {0}, ", m_priority);
-            sb.AppendFormat("ActivationBehaviourType = {0}, ", m_activationBehaviourType);
+            sb.AppendFormat("ReferenceValue = {0}, ", m_referenceValue);
             sb.Append("}");
             return sb.ToString();
         }

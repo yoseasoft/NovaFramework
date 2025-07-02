@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,13 +26,14 @@
 namespace GameEngine.Loader.Configuring
 {
     /// <summary>
-    /// 基础配置信息的枚举类型定义
+    /// 通用Bean配置的有效性验证检测接口
     /// </summary>
-    public enum ConfigureInfoType : byte
+    public interface ICodeConfigureEffectivateVerification
     {
-        Unknown = 0,
-        Comment = 1,
-        Constant = 2,
-        Bean = 3,
+        /// <summary>
+        /// 该配置对象是否有效的检测接口函数
+        /// </summary>
+        /// <returns>若配置有效则返回true，否则返回false</returns>
+        bool IsEffectivationCodeConfigure();
     }
 }

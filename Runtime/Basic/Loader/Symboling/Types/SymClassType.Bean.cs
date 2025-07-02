@@ -1,7 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +25,6 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Reflection;
 
 using SystemType = System.Type;
 using SystemStringBuilder = System.Text.StringBuilder;
@@ -62,6 +63,10 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         private IDictionary<string, BeanField> m_fields;
         /// <summary>
+        /// Bean对象包含的属性信息
+        /// </summary>
+        private IDictionary<string, BeanProperty> m_properties;
+        /// <summary>
         /// Bean对象包含的组件信息
         /// </summary>
         private IList<BeanComponent> m_components;
@@ -74,6 +79,7 @@ namespace GameEngine.Loader.Symboling
         public bool FromConfigure { get { return m_fromConfigure; } internal set { m_fromConfigure = value; } }
 
         public IDictionary<string, BeanField> Fields => m_fields;
+        public IDictionary<string, BeanProperty> Properties => m_properties;
         public IList<BeanComponent> Components => m_components;
 
         public Bean(SymClass targetClass)
@@ -86,6 +92,7 @@ namespace GameEngine.Loader.Symboling
             m_targetClass = null;
 
             RemoveAllFields();
+            RemoveAllProperties();
             RemoveAllComponents();
         }
 
@@ -217,6 +224,138 @@ namespace GameEngine.Loader.Symboling
         {
             m_fields?.Clear();
             m_fields = null;
+        }
+
+        #endregion
+
+        #region Bean对象的属性列表相关访问接口函数
+
+        /// <summary>
+        /// 新增指定的类属性信息到当前的Bean对象中
+        /// </summary>
+        /// <param name="property">属性信息</param>
+        public void AddProperty(BeanProperty property)
+        {
+            Debugger.Assert(null != property && false == string.IsNullOrEmpty(property.PropertyName), "Invalid arguments.");
+
+            if (null == m_properties)
+            {
+                m_properties = new Dictionary<string, BeanProperty>();
+            }
+
+            if (m_properties.ContainsKey(property.PropertyName))
+            {
+                Debugger.Warn("The bean object '{0}' property name '{1}' was already exist, repeat added it failed.", m_beanName, property.PropertyName);
+                m_properties.Remove(property.PropertyName);
+            }
+
+            m_properties.Add(property.PropertyName, property);
+        }
+
+        /// <summary>
+        /// 检测当前类属性信息列表中是否存在指定名称的属性信息实例
+        /// </summary>
+        /// <param name="propertyName">属性名称</param>
+        /// <returns>若存在目标属性信息实例则返回true，否则返回false</returns>
+        public bool HasPropertyByName(string propertyName)
+        {
+            Debugger.Assert(false == string.IsNullOrEmpty(propertyName), "Invalid arguments.");
+
+            if (null == m_properties)
+            {
+                return false;
+            }
+
+            return m_properties.ContainsKey(propertyName);
+        }
+
+        /// <summary>
+        /// 获取Bean对象中属性信息的数量
+        /// </summary>
+        /// <returns>返回Bean对象中属性信息的数量</returns>
+        public int GetPropertyCount()
+        {
+            if (null == m_properties)
+            {
+                return 0;
+            }
+
+            return m_properties.Count;
+        }
+
+        /// <summary>
+        /// 通过指定的属性名称查找对应的属性信息实例
+        /// </summary>
+        /// <param name="propertyName">属性名称</param>
+        /// <returns>返回查找的属性信息实例，若查找失败返回null</returns>
+        public BeanProperty GetPropertyByName(string propertyName)
+        {
+            if (null == m_properties)
+            {
+                return null;
+            }
+
+            if (m_properties.TryGetValue(propertyName, out BeanProperty field))
+            {
+                return field;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 获取Bean对象的属性迭代器
+        /// </summary>
+        /// <returns>返回Bean对象的属性迭代器</returns>
+        public IEnumerator<KeyValuePair<string, BeanProperty>> GetPropertyEnumerator()
+        {
+            return m_properties?.GetEnumerator();
+        }
+
+        /// <summary>
+        /// 从当前的Bean对象中移除指定的类属性信息
+        /// </summary>
+        /// <param name="property">属性信息</param>
+        public void RemoveProperty(BeanProperty property)
+        {
+            if (null == m_properties)
+            {
+                return;
+            }
+
+            if (false == m_properties.ContainsKey(property.PropertyName))
+            {
+                Debugger.Warn("Could not found any property name '{0}' from target bean object '{1}', removed it failed.", property.PropertyName, m_beanName);
+                return;
+            }
+
+            m_properties.Remove(property.PropertyName);
+        }
+
+        /// <summary>
+        /// 移除类属性信息列表中指定名称的属性信息实例
+        /// </summary>
+        /// <param name="propertyName">属性名称</param>
+        public void RemovePropertyByName(string propertyName)
+        {
+            if (null == m_properties)
+            {
+                return;
+            }
+
+            if (m_properties.ContainsKey(propertyName))
+            {
+                m_properties.Remove(propertyName);
+            }
+        }
+
+        /// <summary>
+        /// 从当前的Bean对象中移除所有类属性信息
+        /// </summary>
+        private void RemoveAllProperties()
+        {
+            m_properties?.Clear();
+            m_properties = null;
         }
 
         #endregion

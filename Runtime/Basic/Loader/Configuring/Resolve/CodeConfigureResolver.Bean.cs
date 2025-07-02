@@ -127,6 +127,9 @@ namespace GameEngine.Loader.Configuring
                         fieldInfo.ReferenceType = NovaEngine.Utility.Assembly.GetType(attr.Value);
                         Debugger.Assert(fieldInfo.ReferenceType, "Invalid bean field class type.");
                         break;
+                    case ConfigureNodeAttributeName.K_REFERENCE_VALUE:
+                        fieldInfo.ReferenceValue = attr.Value;
+                        break;
                 }
             }
 

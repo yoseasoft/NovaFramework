@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,56 +29,56 @@ using SystemStringBuilder = System.Text.StringBuilder;
 namespace GameEngine.Loader.Symboling
 {
     /// <summary>
-    /// Bean对象类的字段数据的结构信息
+    /// Bean对象类的属性数据的结构信息
     /// </summary>
-    public class BeanField : BeanMember, System.IEquatable<BeanField>
+    public class BeanProperty : BeanMember, System.IEquatable<BeanProperty>
     {
         /// <summary>
-        /// 字段对象的名称
+        /// 属性对象的名称
         /// </summary>
-        private string m_fieldName;
+        private string m_propertyName;
         /// <summary>
-        /// 字段引用的实例类型
+        /// 属性引用的实例类型
         /// </summary>
         private SystemType m_referenceClassType;
         /// <summary>
-        /// 字段引用的实例名称
+        /// 属性引用的实例名称
         /// </summary>
         private string m_referenceBeanName;
         /// <summary>
-        /// 字段引用的对象实例
+        /// 属性引用的对象实例
         /// </summary>
         private object m_referenceValue;
 
-        public string FieldName { get { return m_fieldName; } internal set { m_fieldName = value; } }
+        public string PropertyName { get { return m_propertyName; } internal set { m_propertyName = value; } }
         public SystemType ReferenceClassType { get { return m_referenceClassType; } internal set { m_referenceClassType = value; } }
         public string ReferenceBeanName { get { return m_referenceBeanName; } internal set { m_referenceBeanName = value; } }
         public object ReferenceValue { get { return m_referenceValue; } internal set { m_referenceValue = value; } }
 
         /// <summary>
-        /// 获取字段配置对应的字段标记实例
+        /// 获取属性配置对应的属性标记实例
         /// </summary>
-        public SymField SymField
+        public SymProperty SymProperty
         {
             get
             {
                 Debugger.Assert(null != this.BeanObject && null != this.BeanObject.TargetClass, "The bean object instance must be non-null.");
 
-                return this.BeanObject.TargetClass.GetFieldByName(m_fieldName);
+                return this.BeanObject.TargetClass.GetPropertyByName(m_propertyName);
             }
         }
 
-        public BeanField(Bean beanObject) : base(beanObject)
+        public BeanProperty(Bean beanObject) : base(beanObject)
         { }
 
-        ~BeanField()
+        ~BeanProperty()
         { }
 
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("{ ");
-            sb.AppendFormat("FieldName = {0}, ", m_fieldName);
+            sb.AppendFormat("PropertyName = {0}, ", m_propertyName);
             sb.AppendFormat("ReferenceClassType = {0}, ", NovaEngine.Utility.Text.ToString(m_referenceClassType));
             sb.AppendFormat("ReferenceBeanName = {0}, ", m_referenceBeanName);
             sb.AppendFormat("ReferenceValue = {0}, ", m_referenceValue?.ToString());
@@ -88,14 +88,14 @@ namespace GameEngine.Loader.Symboling
 
         public override bool Equals(object obj)
         {
-            if (obj is BeanField) { return Equals((BeanField) obj); }
+            if (obj is BeanProperty) { return Equals((BeanProperty) obj); }
 
             return false;
         }
 
-        public bool Equals(BeanField other)
+        public bool Equals(BeanProperty other)
         {
-            return null != m_fieldName && m_fieldName == other.m_fieldName;
+            return null != m_propertyName && m_propertyName == other.m_propertyName;
         }
 
         public override int GetHashCode()
@@ -103,7 +103,7 @@ namespace GameEngine.Loader.Symboling
             unchecked
             {
                 int hash = 17;
-                hash = hash * 23 + m_fieldName?.GetHashCode() ?? 0;
+                hash = hash * 23 + m_propertyName?.GetHashCode() ?? 0;
                 hash = hash * 23 + m_referenceBeanName?.GetHashCode() ?? 0;
                 hash = hash * 23 + m_referenceClassType?.GetHashCode() ?? 0;
                 hash = hash * 23 + m_referenceValue?.GetHashCode() ?? 0;

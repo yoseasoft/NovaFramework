@@ -51,6 +51,9 @@ namespace NovaEngine
             // 字符类型常量，值为换行符‘\n’
             public const char LF = '\n';
 
+            // 无效字符
+            public const char Nil = '\0';
+
             // 字符类型常量，值为斜杠‘/’
             public const char Slash = '/';
             // 字符类型常量，值为反斜杠‘\’
