@@ -26,45 +26,46 @@
 namespace Game.Sample.InversionOfControl
 {
     /// <summary>
-    /// Logo场景类
+    /// 玩家对象基类
     /// </summary>
-    [GameEngine.DeclareSceneClass("Logo")]
-    [GameEngine.EntityActivationComponent(typeof(LogoMapComponent))]
-    public class LogoScene : GameEngine.CScene
+    [GameEngine.DeclareActorClass("Player")]
+    [GameEngine.EntityActivationComponent(typeof(MoveComponent))]
+    [GameEngine.EntityActivationComponent(typeof(AttackComponent), 0, GameEngine.AspectBehaviourType.Start)]
+    public class Player : Actor
     {
         protected override void OnInitialize()
         {
-            Debugger.Info("Call LogoScene.OnInitialize Method.");
+            Debugger.Info("Call Player.OnInitialize Method.");
         }
 
         protected override void OnStartup()
         {
-            Debugger.Info("Call LogoScene.OnStartup Method.");
+            Debugger.Info("Call Player.OnStartup Method.");
         }
 
         protected override void OnAwake()
         {
-            Debugger.Info("Call LogoScene.OnAwake Method.");
+            Debugger.Info("Call Player.OnAwake Method.");
         }
 
         protected override void OnStart()
         {
-            Debugger.Info("Call LogoScene.OnStart Method.");
+            Debugger.Info("Call Player.OnStart Method.");
         }
 
         protected override void OnDestroy()
         {
-            Debugger.Info("Call LogoScene.OnDestroy Method.");
+            Debugger.Info("Call Player.OnDestroy Method.");
         }
 
         protected override void OnShutdown()
         {
-            Debugger.Info("Call LogoScene.OnShutdown Method.");
+            Debugger.Info("Call Player.OnShutdown Method.");
         }
 
         protected override void OnCleanup()
         {
-            Debugger.Info("Call LogoScene.OnCleanup Method.");
+            Debugger.Info("Call Player.OnCleanup Method.");
         }
     }
 }

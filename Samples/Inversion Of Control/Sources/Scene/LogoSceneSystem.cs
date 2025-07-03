@@ -26,10 +26,31 @@
 namespace Game.Sample.InversionOfControl
 {
     /// <summary>
-    /// Logo场景类
+    /// Logo场景逻辑类
     /// </summary>
     [GameEngine.AspectOfTarget(typeof(LogoScene))]
     static class LogoSceneSystem
     {
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
+        static void AfterAwake(this LogoScene self)
+        {
+            self.GetComponent<LogoMapComponent>().player = GameEngine.ActorHandler.Instance.CreateActor<Player>();
+
+            GameEngine.Debugger.Info("目标场景实例{%t}后置唤醒完成！", self);
+        }
+
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
+        static void AfterStart(this LogoScene self)
+        {
+            GameEngine.Debugger.Info("目标场景实例{%t}后置启动完成！", self);
+        }
+
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
+        static void BeforeDestroy(this LogoScene self)
+        {
+            GameEngine.ActorHandler.Instance.DestroyActor(self.GetComponent<LogoMapComponent>().player);
+
+            GameEngine.Debugger.Info("目标场景实例{%t}前置销毁完成！", self);
+        }
     }
 }

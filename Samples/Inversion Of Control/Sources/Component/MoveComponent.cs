@@ -26,45 +26,19 @@
 namespace Game.Sample.InversionOfControl
 {
     /// <summary>
-    /// Logo场景类
+    /// 移动组件类
     /// </summary>
-    [GameEngine.DeclareSceneClass("Logo")]
-    [GameEngine.EntityActivationComponent(typeof(LogoMapComponent))]
-    public class LogoScene : GameEngine.CScene
+    [GameEngine.DeclareComponentClass("MoveComponent")]
+    public class MoveComponent : GameEngine.CComponent
     {
-        protected override void OnInitialize()
+        public MoveComponent()
         {
-            Debugger.Info("Call LogoScene.OnInitialize Method.");
+            Debugger.Info("Call MoveComponent Constructor Method...");
         }
 
-        protected override void OnStartup()
+        ~MoveComponent()
         {
-            Debugger.Info("Call LogoScene.OnStartup Method.");
-        }
-
-        protected override void OnAwake()
-        {
-            Debugger.Info("Call LogoScene.OnAwake Method.");
-        }
-
-        protected override void OnStart()
-        {
-            Debugger.Info("Call LogoScene.OnStart Method.");
-        }
-
-        protected override void OnDestroy()
-        {
-            Debugger.Info("Call LogoScene.OnDestroy Method.");
-        }
-
-        protected override void OnShutdown()
-        {
-            Debugger.Info("Call LogoScene.OnShutdown Method.");
-        }
-
-        protected override void OnCleanup()
-        {
-            Debugger.Info("Call LogoScene.OnCleanup Method.");
+            Debugger.Info("Call MoveComponent Destructor Method...");
         }
     }
 }
