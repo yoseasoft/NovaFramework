@@ -23,26 +23,26 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample.SymbolParser
+namespace Game.Sample.DispatchCall
 {
     /// <summary>
-    /// 攻击组件逻辑类
+    /// 角色对象逻辑类
     /// </summary>
     [GameEngine.Aspect]
-    public static class AttackComponentSystem
+    public static class ActorSystem
     {
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(AttackComponent), GameEngine.AspectBehaviourType.Awake)]
-        static void Awake(this AttackComponent self)
+        [GameEngine.OnAspectAfterCallOfTarget(typeof(Actor), GameEngine.AspectBehaviourType.Awake)]
+        static void Awake(this Actor self)
         {
         }
 
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(AttackComponent), GameEngine.AspectBehaviourType.Start)]
-        static void Start(this AttackComponent self)
+        [GameEngine.OnAspectAfterCallOfTarget(typeof(Actor), GameEngine.AspectBehaviourType.Start)]
+        static void Start(this Actor self)
         {
         }
 
-        [GameEngine.OnAspectBeforeCallOfTarget(typeof(AttackComponent), GameEngine.AspectBehaviourType.Destroy)]
-        static void Destroy(this AttackComponent self)
+        [GameEngine.OnAspectBeforeCallOfTarget(typeof(Actor), GameEngine.AspectBehaviourType.Destroy)]
+        static void Destroy(this Actor self)
         {
         }
     }

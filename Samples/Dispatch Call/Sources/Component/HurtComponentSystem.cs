@@ -23,27 +23,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample.SymbolParser
+namespace Game.Sample.DispatchCall
 {
     /// <summary>
-    /// 攻击组件逻辑类
+    /// 受击组件逻辑类
     /// </summary>
-    [GameEngine.Aspect]
-    public static class AttackComponentSystem
+    [GameEngine.AspectOfTarget(typeof(HurtComponent))]
+    public static class HurtComponentSystem
     {
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(AttackComponent), GameEngine.AspectBehaviourType.Awake)]
-        static void Awake(this AttackComponent self)
-        {
-        }
-
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(AttackComponent), GameEngine.AspectBehaviourType.Start)]
-        static void Start(this AttackComponent self)
-        {
-        }
-
-        [GameEngine.OnAspectBeforeCallOfTarget(typeof(AttackComponent), GameEngine.AspectBehaviourType.Destroy)]
-        static void Destroy(this AttackComponent self)
-        {
-        }
     }
 }

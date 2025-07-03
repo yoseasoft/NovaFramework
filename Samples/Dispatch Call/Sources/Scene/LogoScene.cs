@@ -29,6 +29,7 @@ namespace Game.Sample.DispatchCall
     /// Logo场景类
     /// </summary>
     [GameEngine.DeclareSceneClass("Logo")]
+    [GameEngine.EntityActivationComponent(typeof(LogoDataComponent))]
     public class LogoScene : GameEngine.CScene
     {
     }

@@ -31,7 +31,7 @@ namespace Game.Sample.DispatchCall
     [GameEngine.KeycodeSystem]
     static class LogoSceneInputSystem
     {
-        [GameEngine.OnKeycodeDispatchResponse((int) UnityEngine.KeyCode.Keypad1, GameEngine.InputOperationType.Released)]
+        [GameEngine.OnKeycodeDispatchResponse((int) UnityEngine.KeyCode.Alpha1, GameEngine.InputOperationType.Released)]
         static void OnSceneInputed(int keycode, int operationType)
         {
             LogoScene logo = GameEngine.SceneHandler.Instance.GetCurrentScene() as LogoScene;

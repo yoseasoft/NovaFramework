@@ -41,7 +41,7 @@ namespace Game.Sample.SymbolParser
         {
         }
 
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(MoveComponent), GameEngine.AspectBehaviourType.Destroy)]
+        [GameEngine.OnAspectBeforeCallOfTarget(typeof(MoveComponent), GameEngine.AspectBehaviourType.Destroy)]
         static void Destroy(this MoveComponent self)
         {
         }
