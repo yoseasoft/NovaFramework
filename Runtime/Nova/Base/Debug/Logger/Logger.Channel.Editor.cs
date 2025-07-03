@@ -162,7 +162,7 @@ namespace NovaEngine
             {
                 /**
                  * 如果是在主任务队列，则显示为：M:999
-                 * 如果是在逻辑任务对象，则显示为：M:999 L:333 - 前面为当前逻辑任务所属的主任务信息
+                 * 如果是在逻辑任务对象，则显示为：M:999|R:333 - 前面为当前逻辑任务所属的主任务信息
                  * 如果是在扩展线程中，则显示为：T(10010):333
                  */
 
@@ -179,15 +179,15 @@ namespace NovaEngine
                         if (UsingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#00FF18><b>[DEBUG] ► </b></color>[{0} {1}] - <color=#{3}>{2}</color>",
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#00FF18><b>[DEBUG] ► </b></color>[{0}] ({1}) - <color=#{3}>{2}</color>",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), GetActivatedTaskText(), message, LOG_COLOR_GREEN);
                         }
                         else
                         {
                             _cachedStringBuilder.AppendFormat(
                                 UsingSystemColor ?
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=gray><b>[DEBUG] ► </b></color>[{0} {1}] - <color=#00FF18>{2}</color>" :
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#00FF18><b>[DEBUG] ► </b></color>[{0} {1}] - {2}",
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=gray><b>[DEBUG] ► </b></color>[{0}] ({1}) - <color=#00FF18>{2}</color>" :
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#00FF18><b>[DEBUG] ► </b></color>[{0}] ({1}) - {2}",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), GetActivatedTaskText(), message);
                         }
                         break;
@@ -195,15 +195,15 @@ namespace NovaEngine
                         if (UsingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=gray><b>[INFO] ► </b></color>[{0} {1}] - <color=#{3}>{2}</color>",
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=gray><b>[INFO] ► </b></color>[{0}] ({1}) - <color=#{3}>{2}</color>",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), GetActivatedTaskText(), message, LOG_COLOR_BLACK);
                         }
                         else
                         {
                             _cachedStringBuilder.AppendFormat(
                                 UsingSystemColor ?
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=gray><b>[INFO] ► </b></color>[{0} {1}] - <color=gray>{2}</color>" :
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=gray><b>[INFO] ► </b></color>[{0} {1}] - {2}",
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=gray><b>[INFO] ► </b></color>[{0}] ({1}) - <color=gray>{2}</color>" :
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=gray><b>[INFO] ► </b></color>[{0}] ({1}) - {2}",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), GetActivatedTaskText(), message);
                         }
                         break;
@@ -211,15 +211,15 @@ namespace NovaEngine
                         if (UsingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF9400><b>[WARNING] ► </b></color>[{0} {1}] - <color=#{3}>{2}</color>",
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF9400><b>[WARNING] ► </b></color>[{0}] ({1}) - <color=#{3}>{2}</color>",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), GetActivatedTaskText(), message, LOG_COLOR_ORINGE);
                         }
                         else
                         {
                             _cachedStringBuilder.AppendFormat(
                                 UsingSystemColor ?
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF9400><b>[WARNING] ► </b></color>[{0} {1}] - <color=yellow>{2}</color>" :
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF9400><b>[WARNING] ► </b></color>[{0} {1}] - {2}",
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF9400><b>[WARNING] ► </b></color>[{0}] ({1}) - <color=yellow>{2}</color>" :
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF9400><b>[WARNING] ► </b></color>[{0}] ({1}) - {2}",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), GetActivatedTaskText(), message);
                         }
                         break;
@@ -227,15 +227,15 @@ namespace NovaEngine
                         if (UsingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF9400><b>[WARNING] ► </b></color>[{0} {1}] - <color=#{3}>{2}</color>",
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF9400><b>[WARNING] ► </b></color>[{0}] ({1}) - <color=#{3}>{2}</color>",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), GetActivatedTaskText(), message, LOG_COLOR_RED);
                         }
                         else
                         {
                             _cachedStringBuilder.AppendFormat(
                                 UsingSystemColor ?
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=red><b>[ERROR] ► </b></color>[{0} {1}] - <color=red>{2}</color>" :
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=red><b>[ERROR] ► </b></color>[{0} {1}] - {2}",
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=red><b>[ERROR] ► </b></color>[{0}] ({1}) - <color=red>{2}</color>" :
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=red><b>[ERROR] ► </b></color>[{0}] ({1}) - {2}",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), GetActivatedTaskText(), message);
                         }
                         break;
@@ -243,15 +243,15 @@ namespace NovaEngine
                         if (UsingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[FATAL] ► </b></color>[{0} {1}] - <color=#{3}>{2}</color>",
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[FATAL] ► </b></color>[{0}] ({1}) - <color=#{3}>{2}</color>",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), GetActivatedTaskText(), message, LOG_COLOR_EXCEPTION);
                         }
                         else
                         {
                             _cachedStringBuilder.AppendFormat(
                                 UsingSystemColor ?
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[FATAL] ► </b></color>[{0} {1}] - <color=green>{2}</color>" :
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[FATAL] ► </b></color>[{0} {1}] - {2}",
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[FATAL] ► </b></color>[{0}] ({1}) - <color=green>{2}</color>" :
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[FATAL] ► </b></color>[{0}] ({1}) - {2}",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), GetActivatedTaskText(), message);
                         }
                         break;
@@ -259,15 +259,15 @@ namespace NovaEngine
                         if (UsingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[ASSERT] ► </b></color>[{0} {1}] - <color=#{3}>{2}</color>",
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[ASSERT] ► </b></color>[{0}] ({1}) - <color=#{3}>{2}</color>",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), GetActivatedTaskText(), message, LOG_COLOR_EXCEPTION);
                         }
                         else
                         {
                             _cachedStringBuilder.AppendFormat(
                                 UsingSystemColor ?
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[ASSERT] ► </b></color>[{0} {1}] - <color=green>{2}</color>" :
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[ASSERT] ► </b></color>[{0} {1}] - {2}",
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[ASSERT] ► </b></color>[{0}] ({1}) - <color=green>{2}</color>" :
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF00BD><b>[ASSERT] ► </b></color>[{0}] ({1}) - {2}",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), GetActivatedTaskText(), message);
                         }
                         break;
@@ -275,15 +275,15 @@ namespace NovaEngine
                         if (UsingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=red><b>[EXCEPTION] ► </b></color>[{0} {1}] - <color=#{3}>{2}</color>",
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=red><b>[EXCEPTION] ► </b></color>[{0}] ({1}) - <color=#{3}>{2}</color>",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), GetActivatedTaskText(), message, LOG_COLOR_EXCEPTION);
                         }
                         else
                         {
                             _cachedStringBuilder.AppendFormat(
                                 UsingSystemColor ?
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=red><b>[EXCEPTION] ► </b></color>[{0} {1}] - <color=red>{2}</color>" :
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=red><b>[EXCEPTION] ► </b></color>[{0} {1}] - {2}",
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=red><b>[EXCEPTION] ► </b></color>[{0}] ({1}) - <color=red>{2}</color>" :
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=red><b>[EXCEPTION] ► </b></color>[{0}] ({1}) - {2}",
                                 SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), GetActivatedTaskText(), message);
                         }
                         break;

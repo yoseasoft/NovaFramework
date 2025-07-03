@@ -36,11 +36,15 @@ namespace Game.Sample.TextFormat
         static void TestObjectInfo(int keycode, int operationType)
         {
             Player player = CreatePlayer();
+
+            Debugger.Warn("player = {%s}", NovaEngine.Formatter.ToString(player));
+
+            GameEngine.ActorHandler.Instance.DestroyActor(player);
         }
 
         static Player CreatePlayer()
         {
-            Player player = new Player();
+            Player player = GameEngine.ActorHandler.Instance.CreateActor<Player>();
 
             player.ObjectID = 101;
             player.ObjectType = 102;
