@@ -99,7 +99,7 @@ namespace GameEngine.Loader
             // 安全检查
             Debugger.Assert(false == s_symClassMaps.ContainsKey(symbol.ClassName), $"Load class symbol {symbol.ClassName} error.");
 
-            Debugger.Log(LogGroupTag.CodeLoader, "Load class symbol '{0}' succeed from target class type '{1}'.", symbol.ToString(), NovaEngine.Utility.Text.ToString(targetType));
+            Debugger.Log(LogGroupTag.CodeLoader, "Load class symbol '{%s}' succeed from target class type '{%f}'.", Symboling.Formatter.ToString(symbol), targetType);
 
             // 添加标记信息
             s_symClassMaps.Add(symbol);
@@ -174,6 +174,52 @@ namespace GameEngine.Loader
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// 通过指定的特性类型获取具备该特性的对象类的标记数据清单
+        /// </summary>
+        /// <param name="featureType">特性类型</param>
+        /// <returns>返回对应的标记数据列表，若查找失败返回null</returns>
+        public static IList<Symboling.SymClass> FindAllSymClassesByFeatureType(SystemType featureType)
+        {
+            IList<Symboling.SymClass> results = null;
+
+            IEnumerator<Symboling.SymClass> e = s_symClassMaps.GetEnumerator();
+            while (e.MoveNext())
+            {
+                if (e.Current.HasFeatureType(featureType))
+                {
+                    if (null == results) results = new List<Symboling.SymClass>();
+
+                    results.Add(e.Current);
+                }
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// 通过指定的接口类型获取实现该接口的对象类的标记数据清单
+        /// </summary>
+        /// <param name="interfaceType">接口类型</param>
+        /// <returns>返回对应的标记数据列表，若查找失败返回null</returns>
+        public static IList<Symboling.SymClass> FindAllSymClassesByInterfaceType(SystemType interfaceType)
+        {
+            IList<Symboling.SymClass> results = null;
+
+            IEnumerator<Symboling.SymClass> e = s_symClassMaps.GetEnumerator();
+            while (e.MoveNext())
+            {
+                if (e.Current.HasInterfaceType(interfaceType))
+                {
+                    if (null == results) results = new List<Symboling.SymClass>();
+
+                    results.Add(e.Current);
+                }
+            }
+
+            return results;
         }
 
         /// <summary>

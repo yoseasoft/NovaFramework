@@ -1,8 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -339,6 +340,8 @@ namespace NovaEngine
                     return 0L;
                 }
 
+                // unsafe { fixed (object *p = &obj) { Console.WriteLine((long) p); } } // 输出对象的内存地址指针值
+
                 SystemGCHandle handle = SystemGCHandle.Alloc(obj, SystemGCHandleType.Pinned);
                 SystemIntPtr address = SystemGCHandle.ToIntPtr(handle);
                 handle.Free();
@@ -353,6 +356,13 @@ namespace NovaEngine
                     return Definition.CString.Null;
                 }
 
+                // 处理类型对象的情况
+                if (obj is SystemType)
+                {
+                    return GetFullName(obj as SystemType);
+                }
+
+                // 处理普通对象的情况
                 return GetFullName(obj.GetType());
             }
 
