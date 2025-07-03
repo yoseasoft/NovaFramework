@@ -56,11 +56,19 @@ namespace NovaEngine
                 {
                     if (n > 0) sb.Append(Definition.CCharacter.Comma);
 
-                    sb.AppendFormat("[{0}]={1}", n, callback(n, array[n]));
+                    sb.AppendFormat("{0}", callback(n, array[n]));
                 }
             }
 
             return sb.ToString();
+        }
+
+        private static string ToString_Array<T>(T[] array)
+        {
+            return ToString(array, (index, v) =>
+            {
+                return $"[{index}]={ToVerboseInfo(v)}";
+            });
         }
 
         /// <summary>

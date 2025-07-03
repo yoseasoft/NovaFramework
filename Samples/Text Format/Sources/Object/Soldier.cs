@@ -23,18 +23,19 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Game.Sample.TextFormat
 {
     /// <summary>
     /// 战斗对象基类
     /// </summary>
     [GameEngine.DeclareActorClass("Soldier")]
-    [GameEngine.EntityActivationComponent(typeof(MoveComponent))]
     public class Soldier : Actor
     {
         private int tag;
         public SoldierBlockInfo blockInfo;
-        public SoldierBuffInfo buffInfo;
+        public IDictionary<int, SoldierBuffInfo> buffs;
 
         public int Tag { get { return tag; } set { tag = value; } }
     }

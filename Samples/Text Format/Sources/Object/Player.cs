@@ -29,12 +29,13 @@ namespace Game.Sample.TextFormat
     /// 玩家对象基类
     /// </summary>
     [GameEngine.DeclareActorClass("Player")]
-    [GameEngine.EntityActivationComponent(typeof(AttackComponent))]
-    [GameEngine.EntityActivationComponent(typeof(BuffComponent))]
     public class Player : Soldier
     {
         private int level;
         public PlayerCardInfo cardInfo;
         public PlayerSkillInfo skillInfo;
+
+        public int Level { get { return level; } set { level = value; } }
+        public int Exp { get; set; }
     }
 }
