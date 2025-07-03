@@ -23,28 +23,28 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Game.Sample.TextFormat
 {
     /// <summary>
-    /// 玩家信息
+    /// 操作任务接口类
     /// </summary>
-    public struct PlayerCardInfo
+    static partial class OpsTask
     {
-        public int card_id;
-        public int card_type;
-        public string card_name;
+        [GameEngine.OnKeycodeDispatchResponse(TaskCode_ObjectInfo, GameEngine.InputOperationType.Released)]
+        static void TestObjectInfo(int keycode, int operationType)
+        {
+            Player player = CreatePlayer();
+        }
 
-        public IList<PlayerCardRefInfo> card_ref_list;
-    }
+        static Player CreatePlayer()
+        {
+            Player player = new Player();
 
-    /// <summary>
-    /// 玩家引用信息
-    /// </summary>
-    public struct PlayerCardRefInfo
-    {
-        public int ref_count;
-        public string ref_name;
+            player.ObjectID = 1001;
+            player.ObjectType = 999;
+            player.objectName = "hurley";
+
+            return player;
+        }
     }
 }

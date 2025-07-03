@@ -23,28 +23,19 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Game.Sample.TextFormat
 {
     /// <summary>
-    /// 玩家信息
+    /// 战斗对象基类
     /// </summary>
-    public struct PlayerCardInfo
+    [GameEngine.DeclareActorClass("Soldier")]
+    [GameEngine.EntityActivationComponent(typeof(MoveComponent))]
+    public class Soldier : Actor
     {
-        public int card_id;
-        public int card_type;
-        public string card_name;
+        private int tag;
+        public SoldierBlockInfo blockInfo;
+        public SoldierBuffInfo buffInfo;
 
-        public IList<PlayerCardRefInfo> card_ref_list;
-    }
-
-    /// <summary>
-    /// 玩家引用信息
-    /// </summary>
-    public struct PlayerCardRefInfo
-    {
-        public int ref_count;
-        public string ref_name;
+        public int Tag { get { return tag; } set { tag = value; } }
     }
 }

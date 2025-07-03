@@ -28,23 +28,10 @@ using System.Collections.Generic;
 namespace Game.Sample.TextFormat
 {
     /// <summary>
-    /// 玩家信息
+    /// Buff组件类
     /// </summary>
-    public struct PlayerCardInfo
+    public class BuffComponent : GameEngine.CComponent
     {
-        public int card_id;
-        public int card_type;
-        public string card_name;
-
-        public IList<PlayerCardRefInfo> card_ref_list;
-    }
-
-    /// <summary>
-    /// 玩家引用信息
-    /// </summary>
-    public struct PlayerCardRefInfo
-    {
-        public int ref_count;
-        public string ref_name;
+        public IList<int> buff_ids;
     }
 }

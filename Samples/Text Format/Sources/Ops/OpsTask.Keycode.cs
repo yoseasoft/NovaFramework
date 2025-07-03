@@ -31,5 +31,7 @@ namespace Game.Sample.TextFormat
     static partial class OpsTask
     {
         public const int TaskCode_LogFormat = (int) UnityEngine.KeyCode.Alpha1;
+        public const int TaskCode_DataCollection = (int) UnityEngine.KeyCode.Alpha2;
+        public const int TaskCode_ObjectInfo = (int) UnityEngine.KeyCode.Alpha3;
     }
 }

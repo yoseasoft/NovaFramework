@@ -23,28 +23,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Game.Sample.TextFormat
 {
     /// <summary>
-    /// 玩家信息
+    /// 玩家技能信息
     /// </summary>
-    public struct PlayerCardInfo
+    public class PlayerSkillInfo
     {
-        public int card_id;
-        public int card_type;
-        public string card_name;
-
-        public IList<PlayerCardRefInfo> card_ref_list;
-    }
-
-    /// <summary>
-    /// 玩家引用信息
-    /// </summary>
-    public struct PlayerCardRefInfo
-    {
-        public int ref_count;
-        public string ref_name;
+        public int skill_id;
+        public int skill_type;
+        public string skill_name;
     }
 }

@@ -28,17 +28,13 @@ using System.Collections.Generic;
 namespace Game.Sample.TextFormat
 {
     /// <summary>
-    /// Logo场景输入逻辑类
+    /// 操作任务接口类
     /// </summary>
-    [GameEngine.KeycodeSystem]
-    static class LogoSceneInputSystem
+    static partial class OpsTask
     {
-        [GameEngine.OnKeycodeDispatchResponse((int) UnityEngine.KeyCode.A, GameEngine.InputOperationType.Released)]
-        static void OnSceneInputed(int keycode, int operationType)
+        [GameEngine.OnKeycodeDispatchResponse(TaskCode_DataCollection, GameEngine.InputOperationType.Released)]
+        static void TestDataCollection(int keycode, int operationType)
         {
-            LogoScene logo = GameEngine.SceneHandler.Instance.GetCurrentScene() as LogoScene;
-            Debugger.Assert(null != logo, "Invalid activated scene.");
-
             int[] arr_int = new int[2];
             arr_int[0] = 1;
             arr_int[1] = 2;
@@ -66,7 +62,7 @@ namespace Game.Sample.TextFormat
             Debugger.Warn(dict_pci.GetType().FullName);
 
             NovaEngine.Formatter.ToString(arr_int as System.Collections.ICollection, (index, v) =>
-            { 
+            {
                 Debugger.Warn(v.GetType().FullName);
                 return v.ToString();
             });

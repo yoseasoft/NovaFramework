@@ -23,28 +23,19 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Game.Sample.TextFormat
 {
     /// <summary>
-    /// 玩家信息
+    /// 属性组件类
     /// </summary>
-    public struct PlayerCardInfo
+    public class AttributeComponent : GameEngine.CComponent
     {
-        public int card_id;
-        public int card_type;
-        public string card_name;
+        public int health;
+        public int mana;
 
-        public IList<PlayerCardRefInfo> card_ref_list;
-    }
+        public int speed;
 
-    /// <summary>
-    /// 玩家引用信息
-    /// </summary>
-    public struct PlayerCardRefInfo
-    {
-        public int ref_count;
-        public string ref_name;
+        public int attack;
+        public int defense;
     }
 }
