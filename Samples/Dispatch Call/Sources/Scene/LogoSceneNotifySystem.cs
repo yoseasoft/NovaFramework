@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
@@ -42,6 +44,41 @@ namespace Game.Sample.DispatchCall
             InitSoldierFromMessage(player, message.Player.Soldier);
 
             logoDataComponent.player = player;
+
+            Debugger.Info("玩家角色‘{%s}’进入场景成功，正式开始游戏！", player.GetComponent<IdentityComponent>().objectName);
+        }
+
+        [GameEngine.MessageListenerBindingOfTarget(typeof(LeaveWorldResp))]
+        static void OnLeaveWorldNotify(this LogoScene self, LeaveWorldResp message)
+        {
+            LogoDataComponent logoDataComponent = self.GetComponent<LogoDataComponent>();
+            Debugger.Assert(null != logoDataComponent.player, "接收到离开场景通知时，玩家对象实例必须有效！");
+
+            Debugger.Info("玩家角色‘{%s}’离开场景成功，正式结束游戏！", logoDataComponent.player.GetComponent<IdentityComponent>().objectName);
+
+            GameEngine.ActorHandler.Instance.DestroyActor(logoDataComponent.player);
+
+            logoDataComponent.player = null;
+        }
+
+        [GameEngine.MessageListenerBindingOfTarget(typeof(LevelSpawnResp))]
+        static void OnLevelSpawnNotify(this LogoScene self, LevelSpawnResp message)
+        {
+            LogoDataComponent logoDataComponent = self.GetComponent<LogoDataComponent>();
+            logoDataComponent.monsters ??= new List<Monster>();
+
+            Monster monster = GameEngine.ActorHandler.Instance.CreateActor<Monster>();
+
+            for (int n = 0; n < message.MonsterList.Count; ++n)
+            {
+                MonsterInfo monsterInfo = message.MonsterList[n];
+
+                InitSoldierFromMessage(monster, monsterInfo.Soldier);
+
+                logoDataComponent.monsters.Add(monster);
+
+                Debugger.Info("怪物角色‘{%s}’进入场景成功，请锁定并攻击它！", monster.GetComponent<IdentityComponent>().objectName);
+            }
         }
 
         static void InitSoldierFromMessage(Soldier soldier, SoldierInfo message)
@@ -61,6 +98,20 @@ namespace Game.Sample.DispatchCall
             TransformComponent transformComponent = soldier.GetComponent<TransformComponent>();
             transformComponent.position = new UnityEngine.Vector3(message.Position.x, message.Position.y, message.Position.z);
             transformComponent.rotation = new UnityEngine.Vector3(message.Direction.x, message.Direction.y, message.Direction.z);
+
+            SkillComponent skillComponent = soldier.GetComponent<SkillComponent>();
+            skillComponent.skills = new List<SkillComponent.Skill>();
+            for (int n = 0; null != message.SkillList && n < message.SkillList.Count; ++n)
+            {
+                SkillInfo skillInfo = message.SkillList[n];
+                skillComponent.skills.Add(new SkillComponent.Skill() {
+                    id = skillInfo.Id,
+                    name = skillInfo.Name,
+                    is_coolingdown = true,
+                    cooling_time = skillInfo.CoolingTime,
+                    last_used_time = 0f,
+                });
+            }
         }
     }
 }

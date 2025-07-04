@@ -33,7 +33,8 @@ namespace Game.Sample.DispatchCall
     public static class ProtoOpcode
     {
         public const ushort EnterWorldResp = 901;
-        public const ushort LevelSpawnResp = 902;
+        public const ushort LeaveWorldResp = 902;
+        public const ushort LevelSpawnResp = 903;
 
         public const ushort LevelUpgradeResp = 911;
         public const ushort ActorHurtResp = 912;
@@ -200,6 +201,17 @@ namespace Game.Sample.DispatchCall
         /// </summary>
         [ProtoBuf.ProtoMember(2)]
         public PlayerInfo Player { get; set; }
+    }
+
+    /// <summary>
+    /// 离开游戏回复
+    /// </summary>
+    [ProtoBuf.ProtoContract]
+    [ProtoBuf.Extension.Message(ProtoOpcode.LeaveWorldResp)]
+    public partial class LeaveWorldResp : ProtoBuf.Extension.Object, ProtoBuf.Extension.IMessage
+    {
+        [ProtoBuf.ProtoMember(1)]
+        public int Code { get; set; }
     }
 
     /// <summary>

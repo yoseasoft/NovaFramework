@@ -31,7 +31,8 @@ namespace Game.Sample.DispatchCall
     public static class EventNotify
     {
         public const int PlayerDisplayInfo = 1101;
-        public const int PlayerSearchAllEnemies = 1102;
+        public const int PlayerSearchAllEnemies = 1102; // 检索所有敌方单位
+        public const int PlayerLockOneTarget = 1103; // 锁定一个目标
         public const int PlayerUpgrade = 1104;
 
         public const int MonsterReturnSpawnPoint = 1201;

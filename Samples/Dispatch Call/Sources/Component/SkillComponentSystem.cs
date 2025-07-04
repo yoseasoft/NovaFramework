@@ -73,7 +73,7 @@ namespace Game.Sample.DispatchCall
 
             skill.is_coolingdown = false;
             skill.last_used_time = NovaEngine.Facade.Timestamp.RealtimeSinceStartup + skill.cooling_time;
-            Debugger.Warn("角色对象‘{%s}’的技能‘{%s}’释放成功！", ((Soldier) self.Entity).GetComponent<IdentityComponent>().objectName, skill.name);
+            Debugger.Info("角色对象‘{%s}’的技能‘{%s}’释放成功！", ((Soldier) self.Entity).GetComponent<IdentityComponent>().objectName, skill.name);
         }
 
         public static SkillComponent.Skill GetUnusedSkill(this SkillComponent self, int skillId = 0)
