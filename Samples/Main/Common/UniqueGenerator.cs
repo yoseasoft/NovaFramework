@@ -23,22 +23,29 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample.DispatchCall
+namespace Game.Sample
 {
     /// <summary>
-    /// 属性组件类
+    /// 演示案例唯一键生成器
     /// </summary>
-    [GameEngine.DeclareComponentClass("AttributeComponent")]
-    public class AttributeComponent : GameEngine.CComponent
+    public static class UniqueGenerator
     {
-        public int level;
+        private static int _uniqueCount = 10000;
 
-        public int exp;
+        private static object _locked = new object();
 
-        public int health;
+        /// <summary>
+        /// 获取一个唯一标识，该接口函数确保线程安全
+        /// </summary>
+        /// <returns>返回一个有效的唯一标识</returns>
+        public static int NextId()
+        {
+            lock (_locked)
+            {
+                ++_uniqueCount;
 
-        public int energy;
-
-        public int attack;
+                return _uniqueCount;
+            }
+        }
     }
 }

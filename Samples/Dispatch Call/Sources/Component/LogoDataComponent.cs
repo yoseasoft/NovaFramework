@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
@@ -32,5 +34,7 @@ namespace Game.Sample.DispatchCall
     public class LogoDataComponent : GameEngine.CComponent
     {
         public Player player = null;
+
+        public IList<Monster> monsters = null;
     }
 }

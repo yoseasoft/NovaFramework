@@ -26,19 +26,10 @@
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
-    /// 属性组件类
+    /// 孵化组件类
     /// </summary>
-    [GameEngine.DeclareComponentClass("AttributeComponent")]
-    public class AttributeComponent : GameEngine.CComponent
+    [GameEngine.DeclareComponentClass("SpawnComponent")]
+    public class SpawnComponent : GameEngine.CComponent
     {
-        public int level;
-
-        public int exp;
-
-        public int health;
-
-        public int energy;
-
-        public int attack;
     }
 }

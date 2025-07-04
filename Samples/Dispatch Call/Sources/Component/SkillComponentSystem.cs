@@ -26,10 +26,10 @@
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
-    /// 受击组件类
+    /// 技能组件逻辑类
     /// </summary>
-    [GameEngine.DeclareComponentClass("HurtComponent")]
-    public class HurtComponent : GameEngine.CComponent
+    [GameEngine.AspectOfTarget(typeof(SkillComponent))]
+    public static class SkillComponentSystem
     {
     }
 }

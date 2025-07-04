@@ -26,19 +26,41 @@
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
-    /// 属性组件类
+    /// Logo数据组件逻辑类
     /// </summary>
-    [GameEngine.DeclareComponentClass("AttributeComponent")]
-    public class AttributeComponent : GameEngine.CComponent
+    [GameEngine.Aspect]
+    public static class LogoDataComponentSystem
     {
-        public int level;
+        [GameEngine.OnAspectAfterCallOfTarget(typeof(LogoDataComponent), GameEngine.AspectBehaviourType.Awake)]
+        static void Awake(this LogoDataComponent self)
+        {
+        }
 
-        public int exp;
+        [GameEngine.OnAspectAfterCallOfTarget(typeof(LogoDataComponent), GameEngine.AspectBehaviourType.Start)]
+        static void Start(this LogoDataComponent self)
+        {
+        }
 
-        public int health;
+        [GameEngine.OnAspectAfterCallOfTarget(typeof(LogoDataComponent), GameEngine.AspectBehaviourType.Update)]
+        static void Update(this LogoDataComponent self)
+        {
+            for (int n = 0; null != self.monsters && n < self.monsters.Count; ++n)
+            {
+                Monster monster = self.monsters[n];
+                AttributeComponent attributeComponent = monster.GetComponent<AttributeComponent>();
+                if (attributeComponent.health <= 0)
+                {
+                    IdentityComponent identityComponent = monster.GetComponent<IdentityComponent>();
 
-        public int energy;
+                    // 发送死亡通知
+                    GameEngine.NetworkHandler.Instance.OnSimulationReceiveMessageComposedOfProtoBuf(new ActorDieResp() { Uid = identityComponent.objectID });
+                }
+            }
+        }
 
-        public int attack;
+        [GameEngine.OnAspectBeforeCallOfTarget(typeof(LogoDataComponent), GameEngine.AspectBehaviourType.Destroy)]
+        static void Destroy(this LogoDataComponent self)
+        {
+        }
     }
 }

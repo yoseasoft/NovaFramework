@@ -26,19 +26,12 @@
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
-    /// 属性组件类
+    /// 变换组件类
     /// </summary>
-    [GameEngine.DeclareComponentClass("AttributeComponent")]
-    public class AttributeComponent : GameEngine.CComponent
+    [GameEngine.DeclareComponentClass("TransformComponent")]
+    public class TransformComponent : GameEngine.CComponent
     {
-        public int level;
-
-        public int exp;
-
-        public int health;
-
-        public int energy;
-
-        public int attack;
+        public UnityEngine.Vector3 position;
+        public UnityEngine.Vector3 rotation;
     }
 }

@@ -26,19 +26,34 @@
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
-    /// 属性组件类
+    /// 事件通知类
     /// </summary>
-    [GameEngine.DeclareComponentClass("AttributeComponent")]
-    public class AttributeComponent : GameEngine.CComponent
+    public static class EventNotify
     {
-        public int level;
+        public const int PlayerDisplayInfo = 1101;
+        public const int PlayerSearchAllEnemies = 1102;
+        public const int PlayerUpgrade = 1104;
 
-        public int exp;
+        public const int MonsterReturnSpawnPoint = 1201;
+        public const int MonsterRestoreHealth = 1202;
+    }
 
-        public int health;
+    /// <summary>
+    /// 士兵移动通知
+    /// </summary>
+    public struct SoldierMovedNotify
+    {
+        public int uid;
+        public UnityEngine.Vector3 rotation;
+        public float distance;
+    }
 
-        public int energy;
-
-        public int attack;
+    /// <summary>
+    /// 士兵使用技能通知
+    /// </summary>
+    public struct SoldierUseSkillNotify
+    {
+        public int uid;
+        public int skill_id;
     }
 }

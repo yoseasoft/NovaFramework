@@ -29,6 +29,7 @@ namespace Game.Sample.DispatchCall
     /// 战斗对象基类
     /// </summary>
     [GameEngine.DeclareActorClass("Soldier")]
+    [GameEngine.EntityActivationComponent(typeof(TransformComponent))]
     [GameEngine.EntityActivationComponent(typeof(MoveComponent))]
     public class Soldier : Actor
     {

@@ -30,10 +30,18 @@ namespace GameEngine
     public abstract partial class CBean : IProto, NovaEngine.IInitializable
     {
         /// <summary>
+        /// 实体对象的标识
+        /// </summary>
+        private long m_beanId;
+        /// <summary>
         /// 实体对象的名称
         /// </summary>
         private string m_beanName;
 
+        /// <summary>
+        /// 获取或设置实体对象的标识
+        /// </summary>
+        public long BeanId { get { return m_beanId; } internal set { m_beanId = value; } }
         /// <summary>
         /// 获取或设置实体对象的名称
         /// </summary>

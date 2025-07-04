@@ -26,10 +26,24 @@
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
-    /// 受击组件逻辑类
+    /// 变换组件逻辑类
     /// </summary>
-    [GameEngine.AspectOfTarget(typeof(HurtComponent))]
-    public static class HurtComponentSystem
+    [GameEngine.Aspect]
+    public static class TransformComponentSystem
     {
+        [GameEngine.OnAspectAfterCallOfTarget(typeof(TransformComponent), GameEngine.AspectBehaviourType.Awake)]
+        static void Awake(this TransformComponent self)
+        {
+        }
+
+        [GameEngine.OnAspectAfterCallOfTarget(typeof(TransformComponent), GameEngine.AspectBehaviourType.Start)]
+        static void Start(this TransformComponent self)
+        {
+        }
+
+        [GameEngine.OnAspectBeforeCallOfTarget(typeof(TransformComponent), GameEngine.AspectBehaviourType.Destroy)]
+        static void Destroy(this TransformComponent self)
+        {
+        }
     }
 }

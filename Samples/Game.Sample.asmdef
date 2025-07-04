@@ -5,7 +5,9 @@
         "Clib",
         "Nova",
         "Basic",
-        "Gimp"
+        "Gimp",
+        "Protobuf",
+        "ProtoBuf.Extension"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
