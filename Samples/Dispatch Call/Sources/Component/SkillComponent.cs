@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
@@ -31,5 +33,16 @@ namespace Game.Sample.DispatchCall
     [GameEngine.DeclareComponentClass("SkillComponent")]
     public class SkillComponent : GameEngine.CComponent
     {
+        public class Skill
+        {
+            public int id;
+            public string name;
+
+            public bool is_coolingdown;
+            public float cooling_time;
+            public float last_used_time;
+        }
+
+        public IList<Skill> skills;
     }
 }

@@ -47,19 +47,7 @@ namespace Game.Sample.DispatchCall
     public partial class BaseInfo : ProtoBuf.Extension.Object
     {
         [ProtoBuf.ProtoMember(1)]
-        public ulong Uid { get; set; }
-
-        /// <summary>
-        /// 生命
-        /// </summary>
-        [ProtoBuf.ProtoMember(2)]
-        public int Health { get; set; }
-
-        /// <summary>
-        /// 攻击
-        /// </summary>
-        [ProtoBuf.ProtoMember(3)]
-        public int Attack { get; set; }
+        public int Uid { get; set; }
 
         /// <summary>
         /// 角色名
@@ -69,10 +57,10 @@ namespace Game.Sample.DispatchCall
     }
 
     /// <summary>
-    /// 主状态信息
+    /// 属性状态信息
     /// </summary>
     [ProtoBuf.ProtoContract]
-    public partial class MainStatInfo : ProtoBuf.Extension.Object
+    public partial class AttrStatInfo : ProtoBuf.Extension.Object
     {
         /// <summary>
         /// 等级
@@ -87,10 +75,38 @@ namespace Game.Sample.DispatchCall
         public int Exp { get; set; }
 
         /// <summary>
+        /// 生命
+        /// </summary>
+        [ProtoBuf.ProtoMember(2)]
+        public int Health { get; set; }
+
+        /// <summary>
         /// 体力
         /// </summary>
         [ProtoBuf.ProtoMember(3)]
         public int Energy { get; set; }
+
+        /// <summary>
+        /// 攻击
+        /// </summary>
+        [ProtoBuf.ProtoMember(3)]
+        public int Attack { get; set; }
+    }
+
+    /// <summary>
+    /// 三维向量信息
+    /// </summary>
+    [ProtoBuf.ProtoContract]
+    public partial class Vector3Info : ProtoBuf.Extension.Object
+    {
+        [ProtoBuf.ProtoMember(1)]
+        public float x { get; set; }
+
+        [ProtoBuf.ProtoMember(2)]
+        public float y { get; set; }
+
+        [ProtoBuf.ProtoMember(3)]
+        public float z { get; set; }
     }
 
     /// <summary>
@@ -103,16 +119,50 @@ namespace Game.Sample.DispatchCall
         public int Id { get; set; }
 
         /// <summary>
-        /// 等级
-        /// </summary>
-        [ProtoBuf.ProtoMember(2)]
-        public int Level { get; set; }
-
-        /// <summary>
         /// 名称
         /// </summary>
-        [ProtoBuf.ProtoMember(3)]
+        [ProtoBuf.ProtoMember(2)]
         public string Name { get; set; }
+
+        /// <summary>
+        /// 冷却时间
+        /// </summary>
+        [ProtoBuf.ProtoMember(3)]
+        public float CoolingTime { get; set; }
+    }
+
+    /// <summary>
+    /// 士兵信息
+    /// </summary>
+    [ProtoBuf.ProtoContract]
+    public partial class SoldierInfo : ProtoBuf.Extension.Object
+    {
+        [ProtoBuf.ProtoMember(1)]
+        public BaseInfo Basic { get; set; }
+
+        /// <summary>
+        /// 属性状态
+        /// </summary>
+        [ProtoBuf.ProtoMember(2)]
+        public AttrStatInfo AttrStat { get; set; }
+
+        /// <summary>
+        /// 技能列表
+        /// </summary>
+        [ProtoBuf.ProtoMember(3)]
+        public List<SkillInfo> SkillList { get; set; } = new();
+
+        /// <summary>
+        /// 位置
+        /// </summary>
+        [ProtoBuf.ProtoMember(4)]
+        public Vector3Info Position { get; set; }
+
+        /// <summary>
+        /// 方向
+        /// </summary>
+        [ProtoBuf.ProtoMember(5)]
+        public Vector3Info Direction { get; set; }
     }
 
     /// <summary>
@@ -122,19 +172,7 @@ namespace Game.Sample.DispatchCall
     public partial class PlayerInfo : ProtoBuf.Extension.Object
     {
         [ProtoBuf.ProtoMember(1)]
-        public BaseInfo Basic { get; set; }
-
-        /// <summary>
-        /// 主状态
-        /// </summary>
-        [ProtoBuf.ProtoMember(2)]
-        public MainStatInfo MainStat { get; set; }
-
-        /// <summary>
-        /// 技能列表
-        /// </summary>
-        [ProtoBuf.ProtoMember(3)]
-        public List<SkillInfo> SkillList { get; set; } = new();
+        public SoldierInfo Soldier { get; set; }
     }
 
     /// <summary>
@@ -144,13 +182,7 @@ namespace Game.Sample.DispatchCall
     public partial class MonsterInfo : ProtoBuf.Extension.Object
     {
         [ProtoBuf.ProtoMember(1)]
-        public BaseInfo Basic { get; set; }
-
-        /// <summary>
-        /// 技能列表
-        /// </summary>
-        [ProtoBuf.ProtoMember(2)]
-        public List<SkillInfo> SkillList { get; set; } = new();
+        public SoldierInfo Soldier { get; set; }
     }
 
     /// <summary>
@@ -167,7 +199,7 @@ namespace Game.Sample.DispatchCall
         /// 玩家信息
         /// </summary>
         [ProtoBuf.ProtoMember(2)]
-        public PlayerInfo player { get; set; }
+        public PlayerInfo Player { get; set; }
     }
 
     /// <summary>
@@ -198,16 +230,10 @@ namespace Game.Sample.DispatchCall
         public int Uid { get; set; }
 
         /// <summary>
-        /// 主状态
+        /// 属性状态
         /// </summary>
         [ProtoBuf.ProtoMember(2)]
-        public MainStatInfo MainStat { get; set; }
-
-        /// <summary>
-        /// 生命
-        /// </summary>
-        [ProtoBuf.ProtoMember(3)]
-        public int Health { get; set; }
+        public AttrStatInfo AttrStat { get; set; }
     }
 
     /// <summary>

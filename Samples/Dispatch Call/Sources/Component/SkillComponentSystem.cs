@@ -31,5 +31,85 @@ namespace Game.Sample.DispatchCall
     [GameEngine.AspectOfTarget(typeof(SkillComponent))]
     public static class SkillComponentSystem
     {
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
+        static void Awake(this SkillComponent self)
+        {
+        }
+
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
+        static void Start(this SkillComponent self)
+        {
+        }
+
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Update)]
+        static void Update(this SkillComponent self)
+        {
+            for (int n = 0; null != self.skills && n < self.skills.Count; ++n)
+            {
+                SkillComponent.Skill skill = self.skills[n];
+                if (!skill.is_coolingdown)
+                {
+                    if (skill.last_used_time >= NovaEngine.Facade.Timestamp.RealtimeSinceStartup)
+                    {
+                        skill.is_coolingdown = true;
+                        Debugger.Warn("角色对象‘{%s}’的技能‘{%s}’已冷却！", ((Soldier) self.Entity).GetComponent<IdentityComponent>().objectName, skill.name);
+                    }
+                }
+            }
+        }
+
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
+        static void Destroy(this SkillComponent self)
+        {
+        }
+
+        public static void UseSkill(this SkillComponent self, int skillId = 0)
+        {
+            SkillComponent.Skill skill = self.GetUnusedSkill(skillId);
+            if (null == skill)
+            {
+                return;
+            }
+
+            skill.is_coolingdown = false;
+            skill.last_used_time = NovaEngine.Facade.Timestamp.RealtimeSinceStartup + skill.cooling_time;
+            Debugger.Warn("角色对象‘{%s}’的技能‘{%s}’释放成功！", ((Soldier) self.Entity).GetComponent<IdentityComponent>().objectName, skill.name);
+        }
+
+        public static SkillComponent.Skill GetUnusedSkill(this SkillComponent self, int skillId = 0)
+        {
+            if (skillId > 0)
+            {
+                for (int n = 0; null != self.skills && n < self.skills.Count; ++n)
+                {
+                    SkillComponent.Skill skill = self.skills[n];
+                    if (skill.id == skillId)
+                    {
+                        if (!skill.is_coolingdown)
+                        {
+                            Debugger.Warn("角色对象‘{%s}’选定的指定技能‘{%s}’处于冷却CD中，不能使用该技能！", ((Soldier) self.Entity).GetComponent<IdentityComponent>().objectName, skill.name);
+                            return null;
+                        }
+
+                        return skill;
+                    }
+                }
+
+                Debugger.Warn("无法从角色对象‘{%s}’的技能列表中找到ID为‘{%d}’的技能实例，获取该技能对象失败！", ((Soldier) self.Entity).GetComponent<IdentityComponent>().objectName, skillId);
+                return null;
+            }
+
+            for (int n = 0; null != self.skills && n < self.skills.Count; ++n)
+            {
+                SkillComponent.Skill skill = self.skills[n];
+                if (skill.is_coolingdown)
+                {
+                    return skill;
+                }
+            }
+
+            Debugger.Warn("角色对象‘{%s}’技能列表中的所有技能当前均处于冷却CD中，获取可使用的技能对象失败！", ((Soldier) self.Entity).GetComponent<IdentityComponent>().objectName);
+            return null;
+        }
     }
 }
