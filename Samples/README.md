@@ -7,9 +7,10 @@
 4. 运行程序，将自动转入对应案例类型的==SampleGate==并进入该案例的演示流程；
 
 目前已有的演示案例包括：  
+- [Text Format](Text%20Format/InstructionManual.md)
 - Symbol Parser
 - Inversion Of Control
 - Object Lifecycle
-- Dispatch Call
+- [Dispatch Call](Dispatch%20Call/InstructionManual.md)
 - Dependency Inject
 

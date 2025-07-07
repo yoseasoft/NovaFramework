@@ -41,11 +41,11 @@ namespace Game.Sample.DispatchCall
 
             Player player = GameEngine.ActorHandler.Instance.CreateActor<Player>();
 
-            InitSoldierFromMessage(player, message.Player.Soldier);
+            InitPlayerFromMessage(player, message.Player);
 
             mainDataComponent.player = player;
 
-            Debugger.Info("玩家角色‘{%s}’进入场景成功，正式开始游戏！", player.GetComponent<IdentityComponent>().objectName);
+            Debugger.Info("玩家对象‘{%s}’进入场景成功，正式开始游戏！", player.GetComponent<IdentityComponent>().objectName);
         }
 
         [GameEngine.MessageListenerBindingOfTarget(typeof(LeaveWorldResp))]
@@ -54,7 +54,19 @@ namespace Game.Sample.DispatchCall
             MainDataComponent mainDataComponent = self.GetComponent<MainDataComponent>();
             Debugger.Assert(null != mainDataComponent.player, "接收到离开场景通知时，玩家对象实例必须有效！");
 
-            Debugger.Info("玩家角色‘{%s}’离开场景成功，正式结束游戏！", mainDataComponent.player.GetComponent<IdentityComponent>().objectName);
+            for (int n = 0; null != mainDataComponent.monsters && n < mainDataComponent.monsters.Count; ++n)
+            {
+                Monster monster = mainDataComponent.monsters[n];
+
+                Debugger.Info("怪物对象‘{%s}’强制离开场景成功！", monster.GetComponent<IdentityComponent>().objectName);
+
+                GameEngine.ActorHandler.Instance.DestroyActor(monster);
+            }
+
+            mainDataComponent.monsters?.Clear();
+            mainDataComponent.monsters = null;
+
+            Debugger.Info("玩家对象‘{%s}’离开场景成功，正式结束游戏！", mainDataComponent.player.GetComponent<IdentityComponent>().objectName);
 
             GameEngine.ActorHandler.Instance.DestroyActor(mainDataComponent.player);
 
@@ -67,18 +79,38 @@ namespace Game.Sample.DispatchCall
             MainDataComponent mainDataComponent = self.GetComponent<MainDataComponent>();
             mainDataComponent.monsters ??= new List<Monster>();
 
-            Monster monster = GameEngine.ActorHandler.Instance.CreateActor<Monster>();
-
             for (int n = 0; n < message.MonsterList.Count; ++n)
             {
                 MonsterInfo monsterInfo = message.MonsterList[n];
 
-                InitSoldierFromMessage(monster, monsterInfo.Soldier);
+                if (mainDataComponent.monsters.Count > 5)
+                {
+                    Debugger.Info("当前场景怪物数量超出限制范围，新增怪物对象‘{%s}’失败！", monsterInfo.Soldier.Basic.Name);
+                    continue;
+                }
+
+                Monster monster = GameEngine.ActorHandler.Instance.CreateActor<Monster>();
+
+                InitMonsterFromMessage(monster, monsterInfo);
 
                 mainDataComponent.monsters.Add(monster);
 
-                Debugger.Info("怪物角色‘{%s}’进入场景成功，请锁定并攻击它！", monster.GetComponent<IdentityComponent>().objectName);
+                Debugger.Info("怪物对象‘{%s}’进入场景成功，请锁定并攻击它！", monster.GetComponent<IdentityComponent>().objectName);
             }
+        }
+
+        static void InitPlayerFromMessage(Player player, PlayerInfo message)
+        {
+            InitSoldierFromMessage(player, message.Soldier);
+        }
+
+        static void InitMonsterFromMessage(Monster monster, MonsterInfo message)
+        {
+            InitSoldierFromMessage(monster, message.Soldier);
+
+            TransformComponent transformComponent = monster.GetComponent<TransformComponent>();
+            SpawnComponent spawnComponent = monster.GetComponent<SpawnComponent>();
+            spawnComponent.born_position = transformComponent.position;
         }
 
         static void InitSoldierFromMessage(Soldier soldier, SoldierInfo message)
@@ -107,6 +139,7 @@ namespace Game.Sample.DispatchCall
                 skillComponent.skills.Add(new SkillComponent.Skill() {
                     id = skillInfo.Id,
                     name = skillInfo.Name,
+                    range = skillInfo.Range,
                     is_coolingdown = true,
                     cooling_time = skillInfo.CoolingTime,
                     last_used_time = 0f,

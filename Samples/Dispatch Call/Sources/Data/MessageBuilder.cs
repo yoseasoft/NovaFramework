@@ -49,15 +49,15 @@ namespace Game.Sample.DispatchCall
                     AttrStat = new AttrStatInfo()
                     {
                         Level = 10,
-                        Exp = 100,
+                        Exp = 50,
                         Health = 1000,
                         Energy = 100,
                         Attack = 20,
                     },
                     SkillList = new List<SkillInfo>()
                         {
-                            new SkillInfo() { Id = 101, Name = @"一剑荡魔", CoolingTime = 5f, },
-                            new SkillInfo() { Id = 102, Name = @"万剑归宗", CoolingTime = 10f, },
+                            new SkillInfo() { Id = 101, Name = @"一剑荡魔", Range = 2f, CoolingTime = 5f, },
+                            new SkillInfo() { Id = 102, Name = @"万剑归宗", Range = 4f, CoolingTime = 10f, },
                         },
                     Position = new Vector3Info() { x = 0f, y = 0f, z = 0f, },
                     Direction = new Vector3Info() { x = 0f, y = 0f, z = 0f, },
@@ -94,8 +94,8 @@ namespace Game.Sample.DispatchCall
                     },
                     SkillList = new List<SkillInfo>()
                         {
-                            new SkillInfo() { Id = 1101, Name = @"黏液喷吐", CoolingTime = 5f, },
-                            new SkillInfo() { Id = 1102, Name = @"滚动突击", CoolingTime = 10f, },
+                            new SkillInfo() { Id = 1101, Name = @"黏液喷吐", Range = 2f, CoolingTime = 5f, },
+                            new SkillInfo() { Id = 1102, Name = @"滚动突击", Range = 2f, CoolingTime = 10f, },
                         },
                     Position = new Vector3Info() { x = ox, y = 0f, z = oz, },
                     Direction = new Vector3Info() { x = 0f, y = 0f, z = 0f, },
@@ -132,8 +132,8 @@ namespace Game.Sample.DispatchCall
                     },
                     SkillList = new List<SkillInfo>()
                         {
-                            new SkillInfo() { Id = 1201, Name = @"疾速火箭", CoolingTime = 5f, },
-                            new SkillInfo() { Id = 1202, Name = @"爆裂散射", CoolingTime = 10f, },
+                            new SkillInfo() { Id = 1201, Name = @"疾速火箭", Range = 4f, CoolingTime = 5f, },
+                            new SkillInfo() { Id = 1202, Name = @"爆裂散射", Range = 4f, CoolingTime = 10f, },
                         },
                     Position = new Vector3Info() { x = ox, y = 0f, z = oz, },
                     Direction = new Vector3Info() { x = 0f, y = 0f, z = 0f, },

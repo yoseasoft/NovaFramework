@@ -23,28 +23,12 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
-    /// 技能组件类
+    /// 消息处理类
     /// </summary>
-    [GameEngine.DeclareComponentClass("SkillComponent")]
-    public class SkillComponent : GameEngine.CComponent
+    static class MessageProcessor
     {
-        public class Skill
-        {
-            public int id;
-            public string name;
-
-            public float range;
-
-            public bool is_coolingdown;
-            public float cooling_time;
-            public float last_used_time;
-        }
-
-        public IList<Skill> skills;
     }
 }

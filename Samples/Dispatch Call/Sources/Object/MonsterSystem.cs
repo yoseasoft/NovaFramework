@@ -23,12 +23,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using SystemStringBuilder = System.Text.StringBuilder;
+
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
     /// 怪物对象逻辑类
     /// </summary>
     [GameEngine.Aspect]
+    [GameEngine.ExtendSupported]
     public static class MonsterSystem
     {
         [GameEngine.OnAspectAfterCallOfTarget(typeof(Monster), GameEngine.AspectBehaviourType.Awake)]
@@ -44,6 +47,24 @@ namespace Game.Sample.DispatchCall
         [GameEngine.OnAspectBeforeCallOfTarget(typeof(Monster), GameEngine.AspectBehaviourType.Destroy)]
         static void Destroy(this Monster self)
         {
+        }
+
+        [GameEngine.EventSubscribeBindingOfTarget(EventNotify.PlayerSearchAllEnemies)]
+        private static void OnEnemyDisplayInfo(this Monster self, int eventID, params object[] args)
+        {
+            Debugger.Info("怪物对象成功接收事件[{%d}]，信息输出：{%s}！", eventID, self.ToMonsterString());
+        }
+
+        public static string ToMonsterString(this Monster self)
+        {
+            SystemStringBuilder sb = new SystemStringBuilder();
+
+            sb.AppendFormat("[怪物对象]:{0},", self.ToSoldierString());
+
+            SpawnComponent spawnComponent = self.GetComponent<SpawnComponent>();
+            sb.AppendFormat("出生点={{{0},{1},{2}}},", spawnComponent.born_position.x, spawnComponent.born_position.y, spawnComponent.born_position.z);
+
+            return sb.ToString();
         }
     }
 }

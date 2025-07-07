@@ -63,12 +63,27 @@ namespace NovaEngine
             return sb.ToString();
         }
 
-        private static string ToString_Array<T>(T[] array)
+        private static string ToString_Array(System.Array array)
         {
-            return ToString(array, (index, v) =>
+            SystemStringBuilder sb = new SystemStringBuilder();
+
+            if (null == array)
             {
-                return $"[{index}]={ToVerboseInfo(v)}";
-            });
+                sb.Append(Definition.CString.Null);
+            }
+            else
+            {
+                int n = 0;
+                foreach (object item in array)
+                {
+                    if (n > 0) sb.Append(Definition.CCharacter.Comma);
+
+                    sb.Append(ToString(item));
+                    n++;
+                }
+            }
+
+            return sb.ToString();
         }
 
         /// <summary>

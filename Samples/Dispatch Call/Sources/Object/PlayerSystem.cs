@@ -23,12 +23,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using SystemStringBuilder = System.Text.StringBuilder;
+
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
     /// 玩家对象逻辑类
     /// </summary>
     [GameEngine.Aspect]
+    [GameEngine.ExtendSupported]
     public static class PlayerSystem
     {
         [GameEngine.OnAspectAfterCallOfTarget(typeof(Player), GameEngine.AspectBehaviourType.Awake)]
@@ -44,6 +47,65 @@ namespace Game.Sample.DispatchCall
         [GameEngine.OnAspectBeforeCallOfTarget(typeof(Player), GameEngine.AspectBehaviourType.Destroy)]
         static void Destroy(this Player self)
         {
+        }
+
+        [GameEngine.EventSubscribeBindingOfTarget(EventNotify.PlayerDisplayInfo)]
+        private static void OnPlayerDisplayInfo(this Player self, int eventID, params object[] args)
+        {
+            Debugger.Info("玩家对象成功接收事件[{%d}]，事件参数：{%s}，信息输出：{%s}！", eventID, NovaEngine.Formatter.ToString(args), self.ToPlayerString());
+        }
+
+        [GameEngine.EventSubscribeBindingOfTarget(EventNotify.PlayerLockOneTarget)]
+        private static void OnPlayerLockOneTarget(this Player self, int eventID, params object[] args)
+        {
+            MainDataComponent mainDataComponent = GameEngine.SceneHandler.Instance.GetCurrentScene().GetComponent<MainDataComponent>();
+            Monster monster = null;
+            int uid = 0;
+            if (null != args && args.Length > 0)
+            {
+                uid = (int) args[0];
+            }
+
+            if (uid > 0)
+            {
+                monster = mainDataComponent.GetSoldierByUid(uid) as Monster;
+            }
+            else
+            {
+                monster = mainDataComponent.GetRandomMonsterObject();
+            }
+
+            if (null == monster)
+            {
+                Debugger.Info("玩家对象成功接收事件[{%d}]，事件参数：{%d}，未找到任何目标怪物对象！", eventID, uid);
+            }
+            else
+            {
+                AttackComponent attackComponent = self.GetComponent<AttackComponent>();
+                int monsterId = monster.GetComponent<IdentityComponent>().objectID;
+                if (attackComponent.targetId == monsterId)
+                {
+                    Debugger.Info("玩家对象成功接收事件[{%d}]，事件参数：{%d}，当前锁定重复的目标：{%s}！", eventID, uid, monster.GetComponent<IdentityComponent>().objectName);
+                }
+                else
+                {
+                    attackComponent.targetId = monsterId;
+
+                    Debugger.Info("玩家对象成功接收事件[{%d}]，事件参数：{%d}，找到目标：{%s}！", eventID, uid, monster.GetComponent<IdentityComponent>().objectName);
+                }
+            }
+        }
+
+        public static string ToPlayerString(this Player self)
+        {
+            SystemStringBuilder sb = new SystemStringBuilder();
+
+            sb.AppendFormat("[玩家对象]:{0},", self.ToSoldierString());
+
+            AttackComponent attackComponent = self.GetComponent<AttackComponent>();
+            sb.AppendFormat("目标={0},", attackComponent.targetId);
+
+            return sb.ToString();
         }
     }
 }

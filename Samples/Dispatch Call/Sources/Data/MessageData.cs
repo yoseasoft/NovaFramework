@@ -128,9 +128,15 @@ namespace Game.Sample.DispatchCall
         public string Name { get; set; }
 
         /// <summary>
-        /// 冷却时间
+        /// 攻击范围
         /// </summary>
         [ProtoBuf.ProtoMember(3)]
+        public float Range { get; set; }
+
+        /// <summary>
+        /// 冷却时间
+        /// </summary>
+        [ProtoBuf.ProtoMember(4)]
         public float CoolingTime { get; set; }
     }
 

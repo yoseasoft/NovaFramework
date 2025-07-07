@@ -31,5 +31,6 @@ namespace Game.Sample.DispatchCall
     [GameEngine.DeclareComponentClass("AttackComponent")]
     public class AttackComponent : GameEngine.CComponent
     {
+        public int targetId;
     }
 }

@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using SystemStringBuilder = System.Text.StringBuilder;
+
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
@@ -44,6 +46,43 @@ namespace Game.Sample.DispatchCall
         [GameEngine.OnAspectBeforeCallOfTarget(typeof(Soldier), GameEngine.AspectBehaviourType.Destroy)]
         static void Destroy(this Soldier self)
         {
+        }
+
+        public static string ToSoldierString(this Soldier self)
+        {
+            SystemStringBuilder sb = new SystemStringBuilder();
+
+            IdentityComponent identityComponent = self.GetComponent<IdentityComponent>();
+            sb.AppendFormat("Id={0},Type={1},名称={2},",
+                identityComponent.objectID,
+                identityComponent.objectType,
+                identityComponent.objectName);
+
+            AttributeComponent attributeComponent = self.GetComponent<AttributeComponent>();
+            sb.AppendFormat("等级={0},经验={1},生命={2},体力={3},攻击={4},",
+                attributeComponent.level,
+                attributeComponent.exp,
+                attributeComponent.health,
+                attributeComponent.energy,
+                attributeComponent.attack);
+
+            TransformComponent transformComponent = self.GetComponent<TransformComponent>();
+            sb.AppendFormat("位置={{{0},{1},{2}}},方向={{{3},{4},{5}}},",
+                transformComponent.position.x, transformComponent.position.y, transformComponent.position.z,
+                transformComponent.rotation.x, transformComponent.rotation.y, transformComponent.rotation.z);
+
+            SkillComponent skillComponent = self.GetComponent<SkillComponent>();
+            sb.Append(@"技能={");
+            for (int n = 0; null != skillComponent.skills && n < skillComponent.skills.Count; ++n)
+            {
+                SkillComponent.Skill skill = skillComponent.skills[n];
+
+                if (n > 0) sb.Append(",");
+                sb.AppendFormat("[{0},{1},{2},{3},{4},{5}]", skill.id, skill.name, skill.range, skill.is_coolingdown.ToString(), skill.cooling_time, skill.last_used_time);
+            }
+            sb.Append(@"}");
+
+            return sb.ToString();
         }
     }
 }

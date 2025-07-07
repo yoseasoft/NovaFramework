@@ -1,3 +1,8 @@
+
+using log4net.Core;
+using WebSocketSharp;
+
+
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework Samples
 ///
@@ -26,17 +31,43 @@
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
-    /// 案例入口类
+    /// 事件处理类
     /// </summary>
-    public static class SampleGate
+    [GameEngine.EventSystem]
+    static class EventProcessor
     {
-        public static void Run()
+        [GameEngine.OnEventDispatchCall(typeof(Player), EventNotify.PlayerUpgrade)]
+        private static void OnPlayerUpgrade(Player self, int eventID, params object[] args)
         {
-            GameEngine.SceneHandler.Instance.ReplaceScene<MainScene>();
+            AttributeComponent attributeComponent = self.GetComponent<AttributeComponent>();
+
+            int level = attributeComponent.level;
+            int exp = 0;
+
+            if (null != args && args.Length > 0)
+            {
+                exp = (int) args[0];
+            }
+
+            attributeComponent.exp += exp;
+            while (attributeComponent.exp >= 100)
+            {
+                attributeComponent.exp -= 100;
+                attributeComponent.level += 1;
+            }
+
+            Debugger.Info("玩家对象‘{%s}’获取经验‘{%d}’，升级（{%d} -> {%d}）成功！", self.GetComponent<IdentityComponent>().objectName, exp, level, attributeComponent.level);
         }
 
-        public static void Stop()
+        [GameEngine.OnEventDispatchCall(typeof(Monster), EventNotify.MonsterReturnSpawnPoint)]
+        private static void OnMonsterReturnSpawnPoint(Monster self)
         {
+            TransformComponent transformComponent = self.GetComponent<TransformComponent>();
+            SpawnComponent spawnComponent = self.GetComponent<SpawnComponent>();
+
+            transformComponent.position = spawnComponent.born_position;
+
+            Debugger.Info("怪物对象‘{%s}’返回出生点完成！", self.GetComponent<IdentityComponent>().objectName);
         }
     }
 }

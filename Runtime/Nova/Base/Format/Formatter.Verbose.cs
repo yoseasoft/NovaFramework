@@ -29,7 +29,6 @@ using SystemType = System.Type;
 using SystemStringBuilder = System.Text.StringBuilder;
 using SystemFieldInfo = System.Reflection.FieldInfo;
 using SystemPropertyInfo = System.Reflection.PropertyInfo;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace NovaEngine
@@ -58,14 +57,14 @@ namespace NovaEngine
                 return obj.ToString();
             }
 
-            if (IsCoreSystemLibraryType(classType))
-            {
-                return GetCoreSystemObjectVerboseInfo(obj);
-            }
-
             if (IsContainerType(classType))
             {
                 return GetContainerObjectVerboseInfo(obj);
+            }
+
+            if (IsCoreSystemLibraryType(classType))
+            {
+                return GetCoreSystemObjectVerboseInfo(obj);
             }
 
             return GetCustomObjectVerboseInfo(obj);
@@ -97,13 +96,13 @@ namespace NovaEngine
             if (classType.IsArray)
             {
                 // 获取数组元素类型
-                SystemType elementType = classType.GetElementType();
-
+                // SystemType elementType = classType.GetElementType();
                 // 获取泛型方法
-                SystemMethodInfo methodInfo = typeof(Formatter).GetMethod("ToString_Array").MakeGenericMethod(elementType);
-
+                // SystemMethodInfo methodInfo = typeof(Formatter).GetMethod("ToString_Array").MakeGenericMethod(elementType);
                 // 调用方法
-                return methodInfo.Invoke(null, new object[] { obj }) as string;
+                // return methodInfo.Invoke(null, new object[] { obj }) as string;
+
+                return ToString_Array((System.Array) obj);
             }
 
             return null;

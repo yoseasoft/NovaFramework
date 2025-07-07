@@ -31,6 +31,7 @@ namespace Game.Sample.DispatchCall
     [GameEngine.DeclareActorClass("Soldier")]
     [GameEngine.EntityActivationComponent(typeof(TransformComponent))]
     [GameEngine.EntityActivationComponent(typeof(MoveComponent))]
+    [GameEngine.EntityActivationComponent(typeof(SkillComponent))]
     [GameEngine.EntityActivationComponent(typeof(ChatComponent))]
     public class Soldier : Actor
     {
