@@ -26,55 +26,21 @@
 namespace Game.Sample.ObjectLifecycle
 {
     /// <summary>
-    /// Logo场景类
+    /// 主场景数据组件类
     /// </summary>
-    [GameEngine.DeclareSceneClass("Logo")]
-    [GameEngine.EntityActivationComponent(typeof(LogoDataComponent))]
-    public class LogoScene : GameEngine.CScene
+    [GameEngine.DeclareComponentClass("MainDataComponent")]
+    public class MainDataComponent : GameEngine.CComponent
     {
-        protected override void OnInitialize()
+        public Player player = null;
+
+        public MainDataComponent()
         {
-            Debugger.Info("Call Logo.OnInitialize Method.");
+            Debugger.Info("Call MainDataComponent Constructor Method...");
         }
 
-        protected override void OnStartup()
+        ~MainDataComponent()
         {
-            Debugger.Info("Call Logo.OnStartup Method.");
-        }
-
-        protected override void OnAwake()
-        {
-            Debugger.Info("Call Logo.OnAwake Method.");
-        }
-
-        protected override void OnStart()
-        {
-            Debugger.Info("Call Logo.OnStart Method.");
-        }
-
-        protected override void OnDestroy()
-        {
-            Debugger.Info("Call Logo.OnDestroy Method.");
-        }
-
-        protected override void OnShutdown()
-        {
-            Debugger.Info("Call Logo.OnShutdown Method.");
-        }
-
-        protected override void OnCleanup()
-        {
-            Debugger.Info("Call Logo.OnCleanup Method.");
-        }
-
-        protected override void OnUpdate()
-        {
-            if (GameSample.OnceTimeUpdateCallPassed(this)) Debugger.Info("Call Logo.OnUpdate Method.");
-        }
-
-        protected override void OnLateUpdate()
-        {
-            if (GameSample.OnceTimeUpdateCallPassed(this)) Debugger.Info("Call Logo.OnLateUpdate Method.");
+            Debugger.Info("Call MainDataComponent Destructor Method...");
         }
     }
 }

@@ -26,115 +26,115 @@
 namespace Game.Sample.ObjectLifecycle
 {
     /// <summary>
-    /// Logo场景逻辑类
+    /// 主场景逻辑类
     /// </summary>
-    [GameEngine.AspectOfTarget(typeof(LogoScene))]
-    static class LogoSceneSystem
+    [GameEngine.AspectOfTarget(typeof(MainScene))]
+    static class MainSceneSystem
     {
         [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Initialize)]
-        static void BeforeInitialize(this LogoScene self)
+        static void BeforeInitialize(this MainScene self)
         {
             GameEngine.Debugger.Info("目标场景实例{%t}前置初始化完成！", self);
         }
 
         [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Initialize)]
-        static void AfterInitialize(this LogoScene self)
+        static void AfterInitialize(this MainScene self)
         {
             GameEngine.Debugger.Info("目标场景实例{%t}后置初始化完成！", self);
         }
 
         [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Startup)]
-        static void BeforeStartup(this LogoScene self)
+        static void BeforeStartup(this MainScene self)
         {
             GameEngine.Debugger.Info("目标场景实例{%t}前置开启完成！", self);
         }
 
         [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Startup)]
-        static void AfterStartup(this LogoScene self)
+        static void AfterStartup(this MainScene self)
         {
             GameEngine.Debugger.Info("目标场景实例{%t}后置开启完成！", self);
         }
 
         [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Awake)]
-        static void BeforeAwake(this LogoScene self)
+        static void BeforeAwake(this MainScene self)
         {
             GameEngine.Debugger.Info("目标场景实例{%t}前置唤醒完成！", self);
         }
 
         [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
-        static void AfterAwake(this LogoScene self)
+        static void AfterAwake(this MainScene self)
         {
             GameEngine.Debugger.Info("目标场景实例{%t}后置唤醒完成！", self);
         }
 
         [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Start)]
-        static void BeforeStart(this LogoScene self)
+        static void BeforeStart(this MainScene self)
         {
             GameEngine.Debugger.Info("目标场景实例{%t}前置启动完成！", self);
         }
 
         [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
-        static void AfterStart(this LogoScene self)
+        static void AfterStart(this MainScene self)
         {
             GameEngine.Debugger.Info("目标场景实例{%t}后置启动完成！", self);
         }
 
         [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Update)]
-        static void BeforeUpdate(this LogoScene self)
+        static void BeforeUpdate(this MainScene self)
         {
             if (GameSample.OnceTimeUpdateCallPassed(self)) GameEngine.Debugger.Info("目标场景实例{%t}前置刷新完成！", self);
         }
 
         [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Update)]
-        static void AfterUpdate(this LogoScene self)
+        static void AfterUpdate(this MainScene self)
         {
             if (GameSample.OnceTimeUpdateCallPassed(self)) GameEngine.Debugger.Info("目标场景实例{%t}后置刷新完成！", self);
         }
 
         [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.LateUpdate)]
-        static void BeforeLateUpdate(this LogoScene self)
+        static void BeforeLateUpdate(this MainScene self)
         {
             if (GameSample.OnceTimeUpdateCallPassed(self)) GameEngine.Debugger.Info("目标场景实例{%t}前置延迟刷新完成！", self);
         }
 
         [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.LateUpdate)]
-        static void AfterLateUpdate(this LogoScene self)
+        static void AfterLateUpdate(this MainScene self)
         {
             if (GameSample.OnceTimeUpdateCallPassed(self)) GameEngine.Debugger.Info("目标场景实例{%t}后置延迟刷新完成！", self);
         }
 
         [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
-        static void BeforeDestroy(this LogoScene self)
+        static void BeforeDestroy(this MainScene self)
         {
             GameEngine.Debugger.Info("目标场景实例{%t}前置销毁完成！", self);
         }
 
         [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Destroy)]
-        static void AfterDestroy(this LogoScene self)
+        static void AfterDestroy(this MainScene self)
         {
             GameEngine.Debugger.Info("目标场景实例{%t}后置销毁完成！", self);
         }
 
         [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Shutdown)]
-        static void BeforeShutdown(this LogoScene self)
+        static void BeforeShutdown(this MainScene self)
         {
             GameEngine.Debugger.Info("目标场景实例{%t}前置关闭完成！", self);
         }
 
         [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Shutdown)]
-        static void AfterShutdown(this LogoScene self)
+        static void AfterShutdown(this MainScene self)
         {
             GameEngine.Debugger.Info("目标场景实例{%t}后置关闭完成！", self);
         }
 
         [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Cleanup)]
-        static void BeforeCleanup(this LogoScene self)
+        static void BeforeCleanup(this MainScene self)
         {
             GameEngine.Debugger.Info("目标场景实例{%t}前置清理完成！", self);
         }
 
         [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Cleanup)]
-        static void AfterCleanup(this LogoScene self)
+        static void AfterCleanup(this MainScene self)
         {
             GameEngine.Debugger.Info("目标场景实例{%t}后置清理完成！", self);
         }

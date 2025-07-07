@@ -23,24 +23,19 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample.InversionOfControl
+namespace Game.Sample.DynamicInvokeGenerator
 {
     /// <summary>
-    /// Logo场景地图组件类
+    /// 案例入口类
     /// </summary>
-    [GameEngine.DeclareComponentClass("LogoMapComponent")]
-    public class LogoMapComponent : GameEngine.CComponent
+    public static class SampleGate
     {
-        public Player player;
-
-        public LogoMapComponent()
+        public static void Run()
         {
-            Debugger.Info("Call LogoMapComponent Constructor Method...");
         }
 
-        ~LogoMapComponent()
+        public static void Stop()
         {
-            Debugger.Info("Call LogoMapComponent Destructor Method...");
         }
     }
 }

@@ -23,13 +23,30 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample.TextFormat
+namespace Game.Sample.ObjectLifecycle
 {
     /// <summary>
-    /// Logo场景类
+    /// 主场景输入逻辑类
     /// </summary>
-    [GameEngine.DeclareSceneClass("Logo")]
-    public class LogoScene : GameEngine.CScene
+    [GameEngine.KeycodeSystem]
+    static class MainSceneInputSystem
     {
+        [GameEngine.OnKeycodeDispatchResponse((int) UnityEngine.KeyCode.A, GameEngine.InputOperationType.Released)]
+        static void OnSceneInputed(int keycode, int operationType)
+        {
+            MainScene main = GameEngine.SceneHandler.Instance.GetCurrentScene() as MainScene;
+            Debugger.Assert(null != main, "Invalid activated scene.");
+
+            MainDataComponent mainDataComponent = main.GetComponent<MainDataComponent>();
+            if (null == mainDataComponent.player)
+            {
+                mainDataComponent.player = GameEngine.ActorHandler.Instance.CreateActor<Player>();
+            }
+            else
+            {
+                GameEngine.ActorHandler.Instance.DestroyActor(mainDataComponent.player);
+                mainDataComponent.player = null;
+            }
+        }
     }
 }

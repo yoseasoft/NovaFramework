@@ -23,44 +23,18 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
-    /// Logo数据组件逻辑类
+    /// 主数据组件类
     /// </summary>
-    [GameEngine.Aspect]
-    public static class LogoDataComponentSystem
+    [GameEngine.DeclareComponentClass("MainDataComponent")]
+    public class MainDataComponent : GameEngine.CComponent
     {
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(LogoDataComponent), GameEngine.AspectBehaviourType.Awake)]
-        static void Awake(this LogoDataComponent self)
-        {
-        }
+        public Player player = null;
 
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(LogoDataComponent), GameEngine.AspectBehaviourType.Start)]
-        static void Start(this LogoDataComponent self)
-        {
-        }
-
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(LogoDataComponent), GameEngine.AspectBehaviourType.Update)]
-        static void Update(this LogoDataComponent self)
-        {
-            for (int n = 0; null != self.monsters && n < self.monsters.Count; ++n)
-            {
-                Monster monster = self.monsters[n];
-                AttributeComponent attributeComponent = monster.GetComponent<AttributeComponent>();
-                if (attributeComponent.health <= 0)
-                {
-                    IdentityComponent identityComponent = monster.GetComponent<IdentityComponent>();
-
-                    // 发送死亡通知
-                    GameEngine.NetworkHandler.Instance.OnSimulationReceiveMessageComposedOfProtoBuf(new ActorDieResp() { Uid = identityComponent.objectID });
-                }
-            }
-        }
-
-        [GameEngine.OnAspectBeforeCallOfTarget(typeof(LogoDataComponent), GameEngine.AspectBehaviourType.Destroy)]
-        static void Destroy(this LogoDataComponent self)
-        {
-        }
+        public IList<Monster> monsters = null;
     }
 }

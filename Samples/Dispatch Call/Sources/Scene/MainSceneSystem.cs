@@ -23,24 +23,37 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample.ObjectLifecycle
+namespace Game.Sample.DispatchCall
 {
     /// <summary>
-    /// Logo数据组件类
+    /// 主场景逻辑类
     /// </summary>
-    [GameEngine.DeclareComponentClass("LogoDataComponent")]
-    public class LogoDataComponent : GameEngine.CComponent
+    [GameEngine.AspectOfTarget(typeof(MainScene))]
+    static class MainSceneSystem
     {
-        public Player player = null;
-
-        public LogoDataComponent()
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
+        static void AfterAwake(this MainScene self)
         {
-            Debugger.Info("Call LogoDataComponent Constructor Method...");
         }
 
-        ~LogoDataComponent()
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
+        static void AfterStart(this MainScene self)
         {
-            Debugger.Info("Call LogoDataComponent Destructor Method...");
+        }
+
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Update)]
+        static void AfterUpdate(this MainScene self)
+        {
+        }
+
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.LateUpdate)]
+        static void AfterLateUpdate(this MainScene self)
+        {
+        }
+
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
+        static void BeforeDestroy(this MainScene self)
+        {
         }
     }
 }

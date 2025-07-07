@@ -26,34 +26,11 @@
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
-    /// Logo场景逻辑类
+    /// 主场景类
     /// </summary>
-    [GameEngine.AspectOfTarget(typeof(LogoScene))]
-    static class LogoSceneSystem
+    [GameEngine.DeclareSceneClass("Main")]
+    [GameEngine.EntityActivationComponent(typeof(MainDataComponent))]
+    public class MainScene : GameEngine.CScene
     {
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
-        static void AfterAwake(this LogoScene self)
-        {
-        }
-
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
-        static void AfterStart(this LogoScene self)
-        {
-        }
-
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Update)]
-        static void AfterUpdate(this LogoScene self)
-        {
-        }
-
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.LateUpdate)]
-        static void AfterLateUpdate(this LogoScene self)
-        {
-        }
-
-        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
-        static void BeforeDestroy(this LogoScene self)
-        {
-        }
     }
 }

@@ -32,13 +32,15 @@ namespace Game.Sample.DispatchCall
     /// </summary>
     public static class ProtoOpcode
     {
-        public const ushort EnterWorldResp = 901;
-        public const ushort LeaveWorldResp = 902;
-        public const ushort LevelSpawnResp = 903;
+        public const ushort EnterWorldResp = 101;
+        public const ushort LeaveWorldResp = 102;
+        public const ushort LevelSpawnResp = 103;
 
-        public const ushort LevelUpgradeResp = 911;
-        public const ushort ActorHurtResp = 912;
-        public const ushort ActorDieResp = 913;
+        public const ushort LevelUpgradeResp = 111;
+        public const ushort ActorHurtResp = 112;
+        public const ushort ActorDieResp = 113;
+
+        public const ushort ActorChatResp = 211;
     }
 
     /// <summary>
@@ -274,5 +276,32 @@ namespace Game.Sample.DispatchCall
     {
         [ProtoBuf.ProtoMember(1)]
         public int Uid { get; set; }
+    }
+
+    /// <summary>
+    /// 聊天信息
+    /// </summary>
+    [ProtoBuf.ProtoContract]
+    public partial class ChatInfo : ProtoBuf.Extension.Object
+    {
+        [ProtoBuf.ProtoMember(1)]
+        public int Uid { get; set; }
+
+        /// <summary>
+        /// 聊天内容
+        /// </summary>
+        [ProtoBuf.ProtoMember(4)]
+        public string Text { get; set; }
+    }
+
+    /// <summary>
+    /// 聊天信息回复
+    /// </summary>
+    [ProtoBuf.ProtoContract]
+    [ProtoBuf.Extension.Message(ProtoOpcode.ActorChatResp)]
+    public partial class ActorChatResp : ProtoBuf.Extension.Object, ProtoBuf.Extension.IMessage
+    {
+        [ProtoBuf.ProtoMember(1)]
+        public List<ChatInfo> ChatList { get; set; }
     }
 }

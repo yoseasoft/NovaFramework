@@ -23,18 +23,37 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
-namespace Game.Sample.DispatchCall
+namespace Game.Sample.TextFormat
 {
     /// <summary>
-    /// Logo数据组件类
+    /// 主场景逻辑类
     /// </summary>
-    [GameEngine.DeclareComponentClass("LogoDataComponent")]
-    public class LogoDataComponent : GameEngine.CComponent
+    [GameEngine.AspectOfTarget(typeof(MainScene))]
+    static class MainSceneSystem
     {
-        public Player player = null;
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
+        static void AfterAwake(this MainScene self)
+        {
+        }
 
-        public IList<Monster> monsters = null;
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
+        static void AfterStart(this MainScene self)
+        {
+        }
+
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Update)]
+        static void AfterUpdate(this MainScene self)
+        {
+        }
+
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.LateUpdate)]
+        static void AfterLateUpdate(this MainScene self)
+        {
+        }
+
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
+        static void BeforeDestroy(this MainScene self)
+        {
+        }
     }
 }

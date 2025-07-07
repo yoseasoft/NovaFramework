@@ -23,14 +23,58 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample.DispatchCall
+namespace Game.Sample.ObjectLifecycle
 {
     /// <summary>
-    /// Logo场景类
+    /// 主场景类
     /// </summary>
-    [GameEngine.DeclareSceneClass("Logo")]
-    [GameEngine.EntityActivationComponent(typeof(LogoDataComponent))]
-    public class LogoScene : GameEngine.CScene
+    [GameEngine.DeclareSceneClass("Main")]
+    [GameEngine.EntityActivationComponent(typeof(MainDataComponent))]
+    public class MainScene : GameEngine.CScene
     {
+        protected override void OnInitialize()
+        {
+            Debugger.Info("Call Main.OnInitialize Method.");
+        }
+
+        protected override void OnStartup()
+        {
+            Debugger.Info("Call Main.OnStartup Method.");
+        }
+
+        protected override void OnAwake()
+        {
+            Debugger.Info("Call Main.OnAwake Method.");
+        }
+
+        protected override void OnStart()
+        {
+            Debugger.Info("Call Main.OnStart Method.");
+        }
+
+        protected override void OnDestroy()
+        {
+            Debugger.Info("Call Main.OnDestroy Method.");
+        }
+
+        protected override void OnShutdown()
+        {
+            Debugger.Info("Call Main.OnShutdown Method.");
+        }
+
+        protected override void OnCleanup()
+        {
+            Debugger.Info("Call Main.OnCleanup Method.");
+        }
+
+        protected override void OnUpdate()
+        {
+            if (GameSample.OnceTimeUpdateCallPassed(this)) Debugger.Info("Call Main.OnUpdate Method.");
+        }
+
+        protected override void OnLateUpdate()
+        {
+            if (GameSample.OnceTimeUpdateCallPassed(this)) Debugger.Info("Call Main.OnLateUpdate Method.");
+        }
     }
 }

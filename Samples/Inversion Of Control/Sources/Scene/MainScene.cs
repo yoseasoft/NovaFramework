@@ -23,19 +23,48 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample.DispatchCall
+namespace Game.Sample.InversionOfControl
 {
     /// <summary>
-    /// Logo场景输入逻辑类
+    /// 主场景类
     /// </summary>
-    [GameEngine.KeycodeSystem]
-    static class LogoSceneInputSystem
+    [GameEngine.DeclareSceneClass("Main")]
+    [GameEngine.EntityActivationComponent(typeof(MainMapComponent))]
+    public class MainScene : GameEngine.CScene
     {
-        [GameEngine.OnKeycodeDispatchResponse((int) UnityEngine.KeyCode.Alpha1, GameEngine.InputOperationType.Released)]
-        static void OnSceneInputed(int keycode, int operationType)
+        protected override void OnInitialize()
         {
-            LogoScene logo = GameEngine.SceneHandler.Instance.GetCurrentScene() as LogoScene;
-            Debugger.Assert(null != logo, "Invalid activated scene.");
+            Debugger.Info("Call MainScene.OnInitialize Method.");
+        }
+
+        protected override void OnStartup()
+        {
+            Debugger.Info("Call MainScene.OnStartup Method.");
+        }
+
+        protected override void OnAwake()
+        {
+            Debugger.Info("Call MainScene.OnAwake Method.");
+        }
+
+        protected override void OnStart()
+        {
+            Debugger.Info("Call MainScene.OnStart Method.");
+        }
+
+        protected override void OnDestroy()
+        {
+            Debugger.Info("Call MainScene.OnDestroy Method.");
+        }
+
+        protected override void OnShutdown()
+        {
+            Debugger.Info("Call MainScene.OnShutdown Method.");
+        }
+
+        protected override void OnCleanup()
+        {
+            Debugger.Info("Call MainScene.OnCleanup Method.");
         }
     }
 }

@@ -23,34 +23,51 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample.InversionOfControl
+using System.Collections.Generic;
+using static Game.Sample.DispatchCall.SkillComponent;
+
+namespace Game.Sample.DispatchCall
 {
     /// <summary>
-    /// Logo场景逻辑类
+    /// 聊天组件逻辑类
     /// </summary>
-    [GameEngine.AspectOfTarget(typeof(LogoScene))]
-    static class LogoSceneSystem
+    [GameEngine.Aspect]
+    public static class ChatComponentSystem
     {
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
-        static void AfterAwake(this LogoScene self)
+        [GameEngine.OnAspectAfterCallOfTarget(typeof(ChatComponent), GameEngine.AspectBehaviourType.Awake)]
+        static void Awake(this ChatComponent self)
         {
-            self.GetComponent<LogoMapComponent>().player = GameEngine.ActorHandler.Instance.CreateActor<Player>();
-
-            GameEngine.Debugger.Info("目标场景实例{%t}后置唤醒完成！", self);
+            self.messages = new List<string>();
         }
 
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
-        static void AfterStart(this LogoScene self)
+        [GameEngine.OnAspectAfterCallOfTarget(typeof(ChatComponent), GameEngine.AspectBehaviourType.Start)]
+        static void Start(this ChatComponent self)
         {
-            GameEngine.Debugger.Info("目标场景实例{%t}后置启动完成！", self);
         }
 
-        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
-        static void BeforeDestroy(this LogoScene self)
+        [GameEngine.OnAspectAfterCallOfTarget(typeof(ChatComponent), GameEngine.AspectBehaviourType.Update)]
+        static void Update(this ChatComponent self)
         {
-            GameEngine.ActorHandler.Instance.DestroyActor(self.GetComponent<LogoMapComponent>().player);
+            if (null != self.messages && self.messages.Count > 0)
+            {
+                string text = self.messages[0];
+                self.messages.RemoveAt(0);
 
-            GameEngine.Debugger.Info("目标场景实例{%t}前置销毁完成！", self);
+                Debugger.Info("角色对象‘{%s}’说：{%s}", ((Soldier) self.Entity).GetComponent<IdentityComponent>().objectName, text);
+            }
+        }
+
+        [GameEngine.OnAspectBeforeCallOfTarget(typeof(ChatComponent), GameEngine.AspectBehaviourType.Destroy)]
+        static void Destroy(this ChatComponent self)
+        {
+            self.messages.Clear();
+            self.messages = null;
+        }
+
+        public static void AddChat(this ChatComponent self, string text)
+        {
+            self.messages ??= new List<string>();
+            self.messages.Add(text);
         }
     }
 }

@@ -23,37 +23,16 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample.TextFormat
+using System.Collections.Generic;
+
+namespace Game.Sample.DispatchCall
 {
     /// <summary>
-    /// Logo场景逻辑类
+    /// 聊天组件类
     /// </summary>
-    [GameEngine.AspectOfTarget(typeof(LogoScene))]
-    static class LogoSceneSystem
+    [GameEngine.DeclareComponentClass("ChatComponent")]
+    public class ChatComponent : GameEngine.CComponent
     {
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
-        static void AfterAwake(this LogoScene self)
-        {
-        }
-
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
-        static void AfterStart(this LogoScene self)
-        {
-        }
-
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Update)]
-        static void AfterUpdate(this LogoScene self)
-        {
-        }
-
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.LateUpdate)]
-        static void AfterLateUpdate(this LogoScene self)
-        {
-        }
-
-        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
-        static void BeforeDestroy(this LogoScene self)
-        {
-        }
+        public IList<string> messages;
     }
 }

@@ -28,44 +28,44 @@ using System.Collections.Generic;
 namespace Game.Sample.DispatchCall
 {
     /// <summary>
-    /// Logo场景通知逻辑类
+    /// 主场景通知逻辑类
     /// </summary>
     [GameEngine.ExtendSupported]
-    static class LogoSceneNotifySystem
+    static class MainSceneNotifySystem
     {
         [GameEngine.MessageListenerBindingOfTarget(typeof(EnterWorldResp))]
-        static void OnEnterWorldNotify(this LogoScene self, EnterWorldResp message)
+        static void OnEnterWorldNotify(this MainScene self, EnterWorldResp message)
         {
-            LogoDataComponent logoDataComponent = self.GetComponent<LogoDataComponent>();
-            Debugger.Assert(null == logoDataComponent.player, "接收到进入场景通知时，玩家对象实例必须为空！");
+            MainDataComponent mainDataComponent = self.GetComponent<MainDataComponent>();
+            Debugger.Assert(null == mainDataComponent.player, "接收到进入场景通知时，玩家对象实例必须为空！");
 
             Player player = GameEngine.ActorHandler.Instance.CreateActor<Player>();
 
             InitSoldierFromMessage(player, message.Player.Soldier);
 
-            logoDataComponent.player = player;
+            mainDataComponent.player = player;
 
             Debugger.Info("玩家角色‘{%s}’进入场景成功，正式开始游戏！", player.GetComponent<IdentityComponent>().objectName);
         }
 
         [GameEngine.MessageListenerBindingOfTarget(typeof(LeaveWorldResp))]
-        static void OnLeaveWorldNotify(this LogoScene self, LeaveWorldResp message)
+        static void OnLeaveWorldNotify(this MainScene self, LeaveWorldResp message)
         {
-            LogoDataComponent logoDataComponent = self.GetComponent<LogoDataComponent>();
-            Debugger.Assert(null != logoDataComponent.player, "接收到离开场景通知时，玩家对象实例必须有效！");
+            MainDataComponent mainDataComponent = self.GetComponent<MainDataComponent>();
+            Debugger.Assert(null != mainDataComponent.player, "接收到离开场景通知时，玩家对象实例必须有效！");
 
-            Debugger.Info("玩家角色‘{%s}’离开场景成功，正式结束游戏！", logoDataComponent.player.GetComponent<IdentityComponent>().objectName);
+            Debugger.Info("玩家角色‘{%s}’离开场景成功，正式结束游戏！", mainDataComponent.player.GetComponent<IdentityComponent>().objectName);
 
-            GameEngine.ActorHandler.Instance.DestroyActor(logoDataComponent.player);
+            GameEngine.ActorHandler.Instance.DestroyActor(mainDataComponent.player);
 
-            logoDataComponent.player = null;
+            mainDataComponent.player = null;
         }
 
         [GameEngine.MessageListenerBindingOfTarget(typeof(LevelSpawnResp))]
-        static void OnLevelSpawnNotify(this LogoScene self, LevelSpawnResp message)
+        static void OnLevelSpawnNotify(this MainScene self, LevelSpawnResp message)
         {
-            LogoDataComponent logoDataComponent = self.GetComponent<LogoDataComponent>();
-            logoDataComponent.monsters ??= new List<Monster>();
+            MainDataComponent mainDataComponent = self.GetComponent<MainDataComponent>();
+            mainDataComponent.monsters ??= new List<Monster>();
 
             Monster monster = GameEngine.ActorHandler.Instance.CreateActor<Monster>();
 
@@ -75,7 +75,7 @@ namespace Game.Sample.DispatchCall
 
                 InitSoldierFromMessage(monster, monsterInfo.Soldier);
 
-                logoDataComponent.monsters.Add(monster);
+                mainDataComponent.monsters.Add(monster);
 
                 Debugger.Info("怪物角色‘{%s}’进入场景成功，请锁定并攻击它！", monster.GetComponent<IdentityComponent>().objectName);
             }

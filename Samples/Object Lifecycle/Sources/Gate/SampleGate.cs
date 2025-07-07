@@ -32,7 +32,7 @@ namespace Game.Sample.ObjectLifecycle
     {
         public static void Run()
         {
-            GameEngine.SceneHandler.Instance.ReplaceScene<LogoScene>();
+            GameEngine.SceneHandler.Instance.ReplaceScene<MainScene>();
         }
 
         public static void Stop()
