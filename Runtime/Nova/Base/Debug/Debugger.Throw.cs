@@ -35,7 +35,7 @@ namespace NovaEngine
         /// </summary>
         public static void Throw()
         {
-            Instance.m_throw_empty?.Invoke();
+            Instance._throw_empty?.Invoke();
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace NovaEngine
         /// <param name="errorCode">错误码</param>
         public static void Throw(int errorCode)
         {
-            Instance.m_throw_code?.Invoke(errorCode);
+            Instance._throw_code?.Invoke(errorCode);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace NovaEngine
         /// <param name="message">消息内容</param>
         public static void Throw(string message)
         {
-            Instance.m_throw_string?.Invoke(message);
+            Instance._throw_string?.Invoke(message);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace NovaEngine
         /// <param name="args">消息格式化参数</param>
         public static void Throw(string format, params object[] args)
         {
-            Instance.m_throw_format_args?.Invoke(format, args);
+            Instance._throw_format_args?.Invoke(format, args);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace NovaEngine
         /// <param name="exception">异常实例</param>
         public static void Throw(System.Exception exception)
         {
-            Instance.m_throw_exception?.Invoke(exception);
+            Instance._throw_exception?.Invoke(exception);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace NovaEngine
         /// <param name="type">异常类型</param>
         public static void Throw(System.Type type)
         {
-            Instance.m_throw_type?.Invoke(type);
+            Instance._throw_type?.Invoke(type);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace NovaEngine
         /// <param name="message">消息内容</param>
         public static void Throw(System.Type type, string message)
         {
-            Instance.m_throw_type_string?.Invoke(type, message);
+            Instance._throw_type_string?.Invoke(type, message);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace NovaEngine
         /// <param name="args">消息格式化参数</param>
         public static void Throw(System.Type type, string format, params object[] args)
         {
-            Instance.m_throw_type_format_args?.Invoke(type, format, args);
+            Instance._throw_type_format_args?.Invoke(type, format, args);
         }
 
         /// <summary>

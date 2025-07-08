@@ -66,64 +66,64 @@ namespace NovaEngine
         /// <summary>
         /// 调试模式下的输出回调接口
         /// </summary>
-        private OutputHandler_object m_log_object;
-        private OutputHandler_string m_log_string;
-        private OutputHandler_format_args m_log_format_args;
+        private OutputHandler_object      _log_object;
+        private OutputHandler_string      _log_string;
+        private OutputHandler_format_args _log_format_args;
 
         /// <summary>
         /// 信息模式下的输出回调接口
         /// </summary>
-        private OutputHandler_object m_info_object;
-        private OutputHandler_string m_info_string;
-        private OutputHandler_format_args m_info_format_args;
+        private OutputHandler_object      _info_object;
+        private OutputHandler_string      _info_string;
+        private OutputHandler_format_args _info_format_args;
 
         /// <summary>
         /// 警告模式下的输出回调接口
         /// </summary>
-        private OutputHandler_object m_warn_object;
-        private OutputHandler_string m_warn_string;
-        private OutputHandler_format_args m_warn_format_args;
+        private OutputHandler_object      _warn_object;
+        private OutputHandler_string      _warn_string;
+        private OutputHandler_format_args _warn_format_args;
 
         /// <summary>
         /// 错误模式下的输出回调接口
         /// </summary>
-        private OutputHandler_object m_error_object;
-        private OutputHandler_string m_error_string;
-        private OutputHandler_format_args m_error_format_args;
+        private OutputHandler_object      _error_object;
+        private OutputHandler_string      _error_string;
+        private OutputHandler_format_args _error_format_args;
 
         /// <summary>
         /// 崩溃模式下的输出回调接口
         /// </summary>
-        private OutputHandler_object m_fatal_object;
-        private OutputHandler_string m_fatal_string;
-        private OutputHandler_format_args m_fatal_format_args;
+        private OutputHandler_object      _fatal_object;
+        private OutputHandler_string      _fatal_string;
+        private OutputHandler_format_args _fatal_format_args;
 
         /// <summary>
         /// 自定义模式下的输出回调接口
         /// </summary>
-        private OutputHandler_level_object m_output_object;
-        private OutputHandler_level_string m_output_string;
-        private OutputHandler_level_format_args m_output_format_args;
+        private OutputHandler_level_object      _output_object;
+        private OutputHandler_level_string      _output_string;
+        private OutputHandler_level_format_args _output_format_args;
 
         /// <summary>
         /// 调试模型下的断言回调接口
         /// </summary>
-        private AssertHandler_empty m_assert_empty;
-        private AssertHandler_object m_assert_object;
-        private AssertHandler_string m_assert_string;
-        private AssertHandler_format_args m_assert_format_args;
+        private AssertHandler_empty       _assert_empty;
+        private AssertHandler_object      _assert_object;
+        private AssertHandler_string      _assert_string;
+        private AssertHandler_format_args _assert_format_args;
 
         /// <summary>
         /// 调试模型下的异常回调接口
         /// </summary>
-        private ThrowHandler_empty m_throw_empty;
-        private ThrowHandler_code m_throw_code;
-        private ThrowHandler_string m_throw_string;
-        private ThrowHandler_format_args m_throw_format_args;
-        private ThrowHandler_exception m_throw_exception;
-        private ThrowHandler_type m_throw_type;
-        private ThrowHandler_type_string m_throw_type_string;
-        private ThrowHandler_type_format_args m_throw_type_format_args;
+        private ThrowHandler_empty            _throw_empty;
+        private ThrowHandler_code             _throw_code;
+        private ThrowHandler_string           _throw_string;
+        private ThrowHandler_format_args      _throw_format_args;
+        private ThrowHandler_exception        _throw_exception;
+        private ThrowHandler_type             _throw_type;
+        private ThrowHandler_type_string      _throw_type_string;
+        private ThrowHandler_type_format_args _throw_type_format_args;
 
         /// <summary>
         /// 空置版本的日志输出接口，用于忽略指定级别类型对应的输出回调
@@ -250,225 +250,225 @@ namespace NovaEngine
         /// </summary>
         private void RebindingBlankOutputHandler()
         {
-            m_log_object = Blank_Output;
-            m_log_string = Blank_Output;
-            m_log_format_args = Blank_Output;
+            _log_object = Blank_Output;
+            _log_string = Blank_Output;
+            _log_format_args = Blank_Output;
 
-            m_info_object = Blank_Output;
-            m_info_string = Blank_Output;
-            m_info_format_args = Blank_Output;
+            _info_object = Blank_Output;
+            _info_string = Blank_Output;
+            _info_format_args = Blank_Output;
 
-            m_warn_object = Blank_Output;
-            m_warn_string = Blank_Output;
-            m_warn_format_args = Blank_Output;
+            _warn_object = Blank_Output;
+            _warn_string = Blank_Output;
+            _warn_format_args = Blank_Output;
 
-            m_error_object = Blank_Output;
-            m_error_string = Blank_Output;
-            m_error_format_args = Blank_Output;
+            _error_object = Blank_Output;
+            _error_string = Blank_Output;
+            _error_format_args = Blank_Output;
 
-            m_fatal_object = Blank_Output;
-            m_fatal_string = Blank_Output;
-            m_fatal_format_args = Blank_Output;
+            _fatal_object = Blank_Output;
+            _fatal_string = Blank_Output;
+            _fatal_format_args = Blank_Output;
 
-            m_output_object = Blank_Output;
-            m_output_string = Blank_Output;
-            m_output_format_args = Blank_Output;
+            _output_object = Blank_Output;
+            _output_string = Blank_Output;
+            _output_format_args = Blank_Output;
 
-            m_assert_empty = Blank_Assert;
-            m_assert_object = Blank_Assert;
-            m_assert_string = Blank_Assert;
-            m_assert_format_args = Blank_Assert;
+            _assert_empty = Blank_Assert;
+            _assert_object = Blank_Assert;
+            _assert_string = Blank_Assert;
+            _assert_format_args = Blank_Assert;
 
-            m_throw_empty = Blank_Throw;
-            m_throw_code = Blank_Throw;
-            m_throw_string = Blank_Throw;
-            m_throw_format_args = Blank_Throw;
-            m_throw_exception = Blank_Throw;
-            m_throw_type = Blank_Throw;
-            m_throw_type_string = Blank_Throw;
-            m_throw_type_format_args = Blank_Throw;
+            _throw_empty = Blank_Throw;
+            _throw_code = Blank_Throw;
+            _throw_string = Blank_Throw;
+            _throw_format_args = Blank_Throw;
+            _throw_exception = Blank_Throw;
+            _throw_type = Blank_Throw;
+            _throw_type_string = Blank_Throw;
+            _throw_type_format_args = Blank_Throw;
         }
 
         #region 调试器对象输出回调接口的Getter/Setter函数
 
         protected internal OutputHandler_object Log_object
         {
-            set => m_log_object = value;
-            get => m_log_object;
+            set => _log_object = value;
+            get => _log_object;
         }
 
         protected internal OutputHandler_string Log_string
         {
-            set => m_log_string = value;
-            get => m_log_string;
+            set => _log_string = value;
+            get => _log_string;
         }
 
         protected internal OutputHandler_format_args Log_format_args
         {
-            set => m_log_format_args = value;
-            get => m_log_format_args;
+            set => _log_format_args = value;
+            get => _log_format_args;
         }
 
         protected internal OutputHandler_object Info_object
         {
-            set => m_info_object = value;
-            get => m_info_object;
+            set => _info_object = value;
+            get => _info_object;
         }
 
         protected internal OutputHandler_string Info_string
         {
-            set => m_info_string = value;
-            get => m_info_string;
+            set => _info_string = value;
+            get => _info_string;
         }
 
         protected internal OutputHandler_format_args Info_format_args
         {
-            set => m_info_format_args = value;
-            get => m_info_format_args;
+            set => _info_format_args = value;
+            get => _info_format_args;
         }
 
         protected internal OutputHandler_object Warn_object
         {
-            set => m_warn_object = value;
-            get => m_warn_object;
+            set => _warn_object = value;
+            get => _warn_object;
         }
 
         protected internal OutputHandler_string Warn_string
         {
-            set => m_warn_string = value;
-            get => m_warn_string;
+            set => _warn_string = value;
+            get => _warn_string;
         }
 
         protected internal OutputHandler_format_args Warn_format_args
         {
-            set => m_warn_format_args = value;
-            get => m_warn_format_args;
+            set => _warn_format_args = value;
+            get => _warn_format_args;
         }
 
         protected internal OutputHandler_object Error_object
         {
-            set => m_error_object = value;
-            get => m_error_object;
+            set => _error_object = value;
+            get => _error_object;
         }
 
         protected internal OutputHandler_string Error_string
         {
-            set => m_error_string = value;
-            get => m_error_string;
+            set => _error_string = value;
+            get => _error_string;
         }
 
         protected internal OutputHandler_format_args Error_format_args
         {
-            set => m_error_format_args = value;
-            get => m_error_format_args;
+            set => _error_format_args = value;
+            get => _error_format_args;
         }
 
         protected internal OutputHandler_object Fatal_object
         {
-            set => m_fatal_object = value;
-            get => m_fatal_object;
+            set => _fatal_object = value;
+            get => _fatal_object;
         }
 
         protected internal OutputHandler_string Fatal_string
         {
-            set => m_fatal_string = value;
-            get => m_fatal_string;
+            set => _fatal_string = value;
+            get => _fatal_string;
         }
 
         protected internal OutputHandler_format_args Fatal_format_args
         {
-            set => m_fatal_format_args = value;
-            get => m_fatal_format_args;
+            set => _fatal_format_args = value;
+            get => _fatal_format_args;
         }
 
         protected internal OutputHandler_level_object Output_object
         {
-            set => m_output_object = value;
-            get => m_output_object;
+            set => _output_object = value;
+            get => _output_object;
         }
 
         protected internal OutputHandler_level_string Output_string
         {
-            set => m_output_string = value;
-            get => m_output_string;
+            set => _output_string = value;
+            get => _output_string;
         }
 
         protected internal OutputHandler_level_format_args Output_format_args
         {
-            set => m_output_format_args = value;
-            get => m_output_format_args;
+            set => _output_format_args = value;
+            get => _output_format_args;
         }
 
         protected internal AssertHandler_empty Assert_empty
         {
-            set => m_assert_empty = value;
-            get => m_assert_empty;
+            set => _assert_empty = value;
+            get => _assert_empty;
         }
 
         protected internal AssertHandler_object Assert_object
         {
-            set => m_assert_object = value;
-            get => m_assert_object;
+            set => _assert_object = value;
+            get => _assert_object;
         }
 
         protected internal AssertHandler_string Assert_string
         {
-            set => m_assert_string = value;
-            get => m_assert_string;
+            set => _assert_string = value;
+            get => _assert_string;
         }
 
         protected internal AssertHandler_format_args Assert_format_args
         {
-            set => m_assert_format_args = value;
-            get => m_assert_format_args;
+            set => _assert_format_args = value;
+            get => _assert_format_args;
         }
 
         protected internal ThrowHandler_empty Throw_empty
         {
-            set => m_throw_empty = value;
-            get => m_throw_empty;
+            set => _throw_empty = value;
+            get => _throw_empty;
         }
 
         protected internal ThrowHandler_code Throw_code
         {
-            set => m_throw_code = value;
-            get => m_throw_code;
+            set => _throw_code = value;
+            get => _throw_code;
         }
 
         protected internal ThrowHandler_string Throw_string
         {
-            set => m_throw_string = value;
-            get => m_throw_string;
+            set => _throw_string = value;
+            get => _throw_string;
         }
 
         protected internal ThrowHandler_format_args Throw_format_args
         {
-            set => m_throw_format_args = value;
-            get => m_throw_format_args;
+            set => _throw_format_args = value;
+            get => _throw_format_args;
         }
 
         protected internal ThrowHandler_exception Throw_exception
         {
-            set => m_throw_exception = value;
-            get => m_throw_exception;
+            set => _throw_exception = value;
+            get => _throw_exception;
         }
 
         protected internal ThrowHandler_type Throw_type
         {
-            set => m_throw_type = value;
-            get => m_throw_type;
+            set => _throw_type = value;
+            get => _throw_type;
         }
 
         protected internal ThrowHandler_type_string Throw_type_string
         {
-            set => m_throw_type_string = value;
-            get => m_throw_type_string;
+            set => _throw_type_string = value;
+            get => _throw_type_string;
         }
 
         protected internal ThrowHandler_type_format_args Throw_type_format_args
         {
-            set => m_throw_type_format_args = value;
-            get => m_throw_type_format_args;
+            set => _throw_type_format_args = value;
+            get => _throw_type_format_args;
         }
 
         #endregion

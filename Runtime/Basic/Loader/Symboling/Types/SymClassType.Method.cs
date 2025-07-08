@@ -65,6 +65,12 @@ namespace GameEngine.Loader.Symboling
         private SystemType[] m_parameterTypes;
 
         /// <summary>
+        /// 函数扩展参数类型
+        /// 该参数仅当函数为扩展函数类型时有效
+        /// </summary>
+        private SystemType m_extensionParameterType;
+
+        /// <summary>
         /// 函数是否为静态类型
         /// </summary>
         private bool m_isStatic;
@@ -88,6 +94,7 @@ namespace GameEngine.Loader.Symboling
                 ParameterInfo[] parameters = m_methodInfo.GetParameters();
                 m_parameters = new ParameterInfo[parameters.Length];
                 m_parameterTypes = new SystemType[parameters.Length];
+                m_extensionParameterType = null;
                 for (int n = 0; n < parameters.Length; ++n)
                 {
                     m_parameters[n] = parameters[n];
@@ -96,6 +103,14 @@ namespace GameEngine.Loader.Symboling
 
                 m_isStatic = m_methodInfo.IsStatic;
                 m_isExtension = NovaEngine.Utility.Reflection.IsTypeOfExtension(m_methodInfo);
+
+                if (m_isExtension)
+                {
+                    Debugger.Assert(m_parameterTypes.Length > 0, "Parameters index out of range.");
+
+                    // 扩展的this参数固定为函数的第一个参数
+                    m_extensionParameterType = m_parameterTypes[0];
+                }
             }
         }
 
@@ -105,6 +120,7 @@ namespace GameEngine.Loader.Symboling
 
         public ParameterInfo[] Parameters => m_parameters;
         public SystemType[] ParameterTypes => m_parameterTypes;
+        public SystemType ExtensionParameterType => m_extensionParameterType;
 
         public bool IsStatic => m_isStatic;
         public bool IsExtension => m_isExtension;
@@ -117,6 +133,7 @@ namespace GameEngine.Loader.Symboling
 
             m_parameters = null;
             m_parameterTypes = null;
+            m_extensionParameterType = null;
         }
 
         /// <summary>

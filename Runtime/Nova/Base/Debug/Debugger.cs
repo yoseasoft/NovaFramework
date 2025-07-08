@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -49,7 +49,7 @@ namespace NovaEngine
         /// <param name="message">日志内容</param>
         public static void Log(object message)
         {
-            Instance.m_log_object?.Invoke(message);
+            Instance._log_object?.Invoke(message);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace NovaEngine
         /// <param name="message">日志内容</param>
         public static void Log(string message)
         {
-            Instance.m_log_string?.Invoke(message);
+            Instance._log_string?.Invoke(message);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace NovaEngine
         /// <param name="args">日志格式化参数</param>
         public static void Log(string format, params object[] args)
         {
-            Instance.m_log_format_args?.Invoke(format, args);
+            Instance._log_format_args?.Invoke(format, args);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace NovaEngine
         /// <param name="message">日志内容</param>
         public static void Info(object message)
         {
-            Instance.m_info_object?.Invoke(message);
+            Instance._info_object?.Invoke(message);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace NovaEngine
         /// <param name="message">日志内容</param>
         public static void Info(string message)
         {
-            Instance.m_info_string?.Invoke(message);
+            Instance._info_string?.Invoke(message);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace NovaEngine
         /// <param name="args">日志格式化参数</param>
         public static void Info(string format, params object[] args)
         {
-            Instance.m_info_format_args?.Invoke(format, args);
+            Instance._info_format_args?.Invoke(format, args);
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace NovaEngine
         /// <param name="message">日志内容</param>
         public static void Warn(object message)
         {
-            Instance.m_warn_object?.Invoke(message);
+            Instance._warn_object?.Invoke(message);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace NovaEngine
         /// <param name="message">日志内容</param>
         public static void Warn(string message)
         {
-            Instance.m_warn_string?.Invoke(message);
+            Instance._warn_string?.Invoke(message);
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace NovaEngine
         /// <param name="args">日志格式化参数</param>
         public static void Warn(string format, params object[] args)
         {
-            Instance.m_warn_format_args?.Invoke(format, args);
+            Instance._warn_format_args?.Invoke(format, args);
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace NovaEngine
         /// <param name="message">日志内容</param>
         public static void Error(object message)
         {
-            Instance.m_error_object?.Invoke(message);
+            Instance._error_object?.Invoke(message);
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace NovaEngine
         /// <param name="message">日志内容</param>
         public static void Error(string message)
         {
-            Instance.m_error_string?.Invoke(message);
+            Instance._error_string?.Invoke(message);
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace NovaEngine
         /// <param name="args">日志格式化参数</param>
         public static void Error(string format, params object[] args)
         {
-            Instance.m_error_format_args?.Invoke(format, args);
+            Instance._error_format_args?.Invoke(format, args);
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace NovaEngine
         /// <param name="message">日志内容</param>
         public static void Fatal(object message)
         {
-            Instance.m_fatal_object?.Invoke(message);
+            Instance._fatal_object?.Invoke(message);
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace NovaEngine
         /// <param name="message">日志内容</param>
         public static void Fatal(string message)
         {
-            Instance.m_fatal_string?.Invoke(message);
+            Instance._fatal_string?.Invoke(message);
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace NovaEngine
         /// <param name="args">日志格式化参数</param>
         public static void Fatal(string format, params object[] args)
         {
-            Instance.m_fatal_format_args?.Invoke(format, args);
+            Instance._fatal_format_args?.Invoke(format, args);
         }
 
         /// <summary>
@@ -295,7 +295,7 @@ namespace NovaEngine
         /// <param name="message">日志内容</param>
         public static void Output(LogOutputLevelType level, object message)
         {
-            Instance.m_output_object?.Invoke(level, message);
+            Instance._output_object?.Invoke(level, message);
         }
 
         /// <summary>
@@ -305,7 +305,7 @@ namespace NovaEngine
         /// <param name="message">日志内容</param>
         public static void Output(LogOutputLevelType level, string message)
         {
-            Instance.m_output_string?.Invoke(level, message);
+            Instance._output_string?.Invoke(level, message);
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace NovaEngine
         /// <param name="args">日志格式化参数</param>
         public static void Output(LogOutputLevelType level, string format, params object[] args)
         {
-            Instance.m_output_format_args?.Invoke(level, format, args);
+            Instance._output_format_args?.Invoke(level, format, args);
         }
     }
 }

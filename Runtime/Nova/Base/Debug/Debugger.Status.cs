@@ -32,46 +32,46 @@ namespace NovaEngine
         /// <summary>
         /// 对象类型校验模式启用状态标识
         /// </summary>
-        private bool m_isClassTypeVerificationEnabled = false;
+        private bool _isClassTypeVerificationEnabled = false;
 
         /// <summary>
         /// 函数信息校验模式启用状态标识
         /// </summary>
-        private bool m_isMethodInfoVerificationEnabled = false;
+        private bool _isMethodInfoVerificationEnabled = false;
 
         /// <summary>
         /// 参数信息校验模式启用状态标识
         /// </summary>
-        private bool m_isParameterInfoVerificationEnabled = false;
+        private bool _isParameterInfoVerificationEnabled = false;
 
         /// <summary>
         /// 调试校验中的断言模式启用状态标识
         /// </summary>
-        private bool m_isDebuggingVerificationAssertModeEnabled = false;
+        private bool _isDebuggingVerificationAssertModeEnabled = false;
 
         /// <summary>
         /// 对象类型校验模式启用状态标识的getter/setter属性
         /// </summary>
         public bool IsClassTypeVerificationEnabled
-        { get { return m_isClassTypeVerificationEnabled; } set { m_isClassTypeVerificationEnabled = value; } }
+        { get { return _isClassTypeVerificationEnabled; } set { _isClassTypeVerificationEnabled = value; } }
 
         /// <summary>
         /// 函数信息校验模式启用状态标识的getter/setter属性
         /// </summary>
         public bool IsMethodInfoVerificationEnabled
-        { get { return m_isMethodInfoVerificationEnabled; } set { m_isMethodInfoVerificationEnabled = value; } }
+        { get { return _isMethodInfoVerificationEnabled; } set { _isMethodInfoVerificationEnabled = value; } }
 
         /// <summary>
         /// 参数信息校验模式启用状态标识的getter/setter属性
         /// </summary>
         public bool IsParameterInfoVerificationEnabled
-        { get { return m_isParameterInfoVerificationEnabled; } set { m_isParameterInfoVerificationEnabled = value; } }
+        { get { return _isParameterInfoVerificationEnabled; } set { _isParameterInfoVerificationEnabled = value; } }
 
         /// <summary>
         /// 调试校验中的断言模式启用状态标识的getter/setter属性
         /// </summary>
         public bool IsDebuggingVerificationAssertModeEnabled
-        { get { return m_isDebuggingVerificationAssertModeEnabled; } set { m_isDebuggingVerificationAssertModeEnabled = value; } }
+        { get { return _isDebuggingVerificationAssertModeEnabled; } set { _isDebuggingVerificationAssertModeEnabled = value; } }
 
         /// <summary>
         /// 检测当前调试校验模式是否已处于激活状态

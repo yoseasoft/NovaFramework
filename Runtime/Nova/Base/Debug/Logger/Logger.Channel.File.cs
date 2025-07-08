@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,8 +39,8 @@ namespace NovaEngine
         [LogOutputChannelBinding(LogOutputChannelType.File)]
         public sealed class LogFile : Singleton<LogFile>, ILogOutput
         {
-            private SystemFileInfo m_fileHandler = null;
-            private SystemStreamWriter m_fileWriter = null;
+            private SystemFileInfo _fileHandler = null;
+            private SystemStreamWriter _fileWriter = null;
 
             /// <summary>
             /// 启动日志输出文件模式
@@ -88,7 +88,7 @@ namespace NovaEngine
             /// <returns>若打开日志文件句柄成功则返回true，否则返回false</returns>
             public bool Open(string filename, string backup)
             {
-                if (null != m_fileHandler)
+                if (null != _fileHandler)
                 {
                     Close();
                 }
@@ -100,24 +100,24 @@ namespace NovaEngine
 
                 filename = Utility.Resource.PersistentDataPath + "/" + filename;
 
-                m_fileHandler = new SystemFileInfo(filename);
-                if (m_fileHandler.Exists)
+                _fileHandler = new SystemFileInfo(filename);
+                if (_fileHandler.Exists)
                 {
                     if (null != backup)
                     {
                         // 已存在旧日志文件的情况下，将其内容进行备份处理
                         backup = Utility.Resource.PersistentDataPath + "/" + backup;
-                        m_fileHandler.CopyTo(backup, true);
+                        _fileHandler.CopyTo(backup, true);
                     }
 
                     // 清空原日志文件内容
-                    m_fileHandler.Delete();
-                    m_fileWriter = m_fileHandler.CreateText();
+                    _fileHandler.Delete();
+                    _fileWriter = _fileHandler.CreateText();
                 }
                 else
                 {
                     // 创建新的日志文件
-                    m_fileWriter = new SystemStreamWriter(filename, true, System.Text.Encoding.Default);
+                    _fileWriter = new SystemStreamWriter(filename, true, System.Text.Encoding.Default);
                 }
 
                 return true;
@@ -128,14 +128,14 @@ namespace NovaEngine
             /// </summary>
             private void Close()
             {
-                if (null != m_fileWriter)
+                if (null != _fileWriter)
                 {
-                    m_fileWriter.Close();
-                    m_fileWriter.Dispose();
-                    m_fileWriter = null;
+                    _fileWriter.Close();
+                    _fileWriter.Dispose();
+                    _fileWriter = null;
                 }
 
-                m_fileHandler = null;
+                _fileHandler = null;
             }
 
             /// <summary>
@@ -144,9 +144,9 @@ namespace NovaEngine
             /// <param name="text">待写入的日志文本内容串</param>
             private void Write(string text)
             {
-                if (null != m_fileWriter)
+                if (null != _fileWriter)
                 {
-                    m_fileWriter.WriteLine(text);
+                    _fileWriter.WriteLine(text);
                 }
             }
 

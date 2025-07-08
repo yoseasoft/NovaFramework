@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2024, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyring (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,7 @@ namespace NovaEngine
         /// <summary>
         /// 日志输出通道绑定信息管理容器
         /// </summary>
-        private static IList<LogOutputChannelBindingInfo> s_logOutputChannelBindingInfos = null;
+        private static IList<LogOutputChannelBindingInfo> _logOutputChannelBindingInfos = null;
 
         /// <summary>
         /// 打开当前日志管理模块的输出通道
@@ -54,7 +54,7 @@ namespace NovaEngine
         /// <param name="channels">通道组标识</param>
         private static void OpenOutputChannels(int channels)
         {
-            s_logOutputChannelBindingInfos = new List<LogOutputChannelBindingInfo>();
+            _logOutputChannelBindingInfos = new List<LogOutputChannelBindingInfo>();
 
             SystemType classType = typeof(Logger);
             SystemType[] innerClassTypes = classType.GetNestedTypes(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Instance);
@@ -75,10 +75,10 @@ namespace NovaEngine
                 Definition.Delegate.EmptyFunctionHandler shutdownAction = (Definition.Delegate.EmptyFunctionHandler) shutdownMethodInfo.CreateDelegate(typeof(Definition.Delegate.EmptyFunctionHandler));
 
                 LogOutputChannelBindingInfo info = new LogOutputChannelBindingInfo(channelBindingAttribute.ChannelType, startupAction, shutdownAction);
-                s_logOutputChannelBindingInfos.Add(info);
+                _logOutputChannelBindingInfos.Add(info);
             }
 
-            foreach (LogOutputChannelBindingInfo info in s_logOutputChannelBindingInfos)
+            foreach (LogOutputChannelBindingInfo info in _logOutputChannelBindingInfos)
             {
                 if ((channels & (int) info.ChannelType) == (int) info.ChannelType)
                 {
@@ -92,13 +92,13 @@ namespace NovaEngine
         /// </summary>
         private static void CloseOutputChannels()
         {
-            foreach (LogOutputChannelBindingInfo info in s_logOutputChannelBindingInfos)
+            foreach (LogOutputChannelBindingInfo info in _logOutputChannelBindingInfos)
             {
                 info.OnChannelShutdown();
             }
 
-            s_logOutputChannelBindingInfos.Clear();
-            s_logOutputChannelBindingInfos = null;
+            _logOutputChannelBindingInfos.Clear();
+            _logOutputChannelBindingInfos = null;
         }
 
         #region 日志输出通道绑定信息数据结构及接口定义

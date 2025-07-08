@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,11 +37,11 @@ namespace NovaEngine
         /// <summary>
         /// 错误码描述内容
         /// </summary>
-        private readonly string m_description;
+        private readonly string _description;
 
         public ErrorCodeDescriptionAttribute(string description) : base()
         {
-            m_description = description;
+            _description = description;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace NovaEngine
         /// </summary>
         public string Description
         {
-            get { return m_description; }
+            get { return _description; }
         }
     }
 }

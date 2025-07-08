@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyring (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ namespace NovaEngine
         /// <param name="condition">条件表达式</param>
         public static void Assert(bool condition)
         {
-            Instance.m_assert_empty?.Invoke(condition);
+            Instance._assert_empty?.Invoke(condition);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace NovaEngine
         /// <param name="message">消息内容</param>
         public static void Assert(bool condition, object message)
         {
-            Instance.m_assert_object?.Invoke(condition, message);
+            Instance._assert_object?.Invoke(condition, message);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace NovaEngine
         /// <param name="message">消息内容</param>
         public static void Assert(bool condition, string message)
         {
-            Instance.m_assert_string?.Invoke(condition, message);
+            Instance._assert_string?.Invoke(condition, message);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace NovaEngine
         /// <param name="args">消息格式化参数</param>
         public static void Assert(bool condition, string format, params object[] args)
         {
-            Instance.m_assert_format_args?.Invoke(condition, format, args);
+            Instance._assert_format_args?.Invoke(condition, format, args);
         }
 
         /// <summary>

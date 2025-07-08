@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -60,7 +60,7 @@ namespace NovaEngine
             {
                 if (condition)
                 {
-                    if (Instance.m_isDebuggingVerificationAssertModeEnabled)
+                    if (Instance._isDebuggingVerificationAssertModeEnabled)
                     {
                         Assert(Utility.Reflection.IsGenericDelegateParameterTypeMatched(handler, parameterTypes), "Invalid method format.");
                     }
@@ -95,7 +95,7 @@ namespace NovaEngine
             {
                 if (condition)
                 {
-                    if (Instance.m_isDebuggingVerificationAssertModeEnabled)
+                    if (Instance._isDebuggingVerificationAssertModeEnabled)
                     {
                         Assert(Utility.Reflection.IsGenericDelegateParameterTypeMatched(methodInfo, parameterTypes), "Invalid method format.");
                     }
@@ -132,7 +132,7 @@ namespace NovaEngine
             {
                 if (condition)
                 {
-                    if (Instance.m_isDebuggingVerificationAssertModeEnabled)
+                    if (Instance._isDebuggingVerificationAssertModeEnabled)
                     {
                         Assert(Utility.Reflection.IsGenericDelegateParameterAndReturnTypeMatched(handler, returnType, parameterTypes), "Invalid method format.");
                     }
@@ -169,7 +169,7 @@ namespace NovaEngine
             {
                 if (condition)
                 {
-                    if (Instance.m_isDebuggingVerificationAssertModeEnabled)
+                    if (Instance._isDebuggingVerificationAssertModeEnabled)
                     {
                         Assert(Utility.Reflection.IsGenericDelegateParameterAndReturnTypeMatched(methodInfo, returnType, parameterTypes), "Invalid method format.");
                     }

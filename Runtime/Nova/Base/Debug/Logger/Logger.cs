@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2025, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ namespace NovaEngine
         /// <summary>
         /// 日志输入代理回调接口
         /// </summary>
-        private static OutputHandler s_logOutputHandler = null;
+        private static OutputHandler _logOutputHandler = null;
 
         /// <summary>
         /// 启动日志系统
@@ -91,7 +91,7 @@ namespace NovaEngine
         /// <param name="log">通道实例</param>
         internal static void AddOutputChannel(ILogOutput log)
         {
-            s_logOutputHandler += log.Output;
+            _logOutputHandler += log.Output;
         }
 
         // internal static void RemoveOutputChannel(OutputHandler output)
@@ -105,7 +105,7 @@ namespace NovaEngine
         /// <param name="log">通道实例</param>
         internal static void RemoveOutputChannel(ILogOutput log)
         {
-            s_logOutputHandler -= log.Output;
+            _logOutputHandler -= log.Output;
         }
     }
 }

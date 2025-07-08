@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -59,16 +59,16 @@ namespace NovaEngine
         /// <summary>
         /// 测试用例类级别标识
         /// </summary>
-        private readonly int m_level;
+        private readonly int _level;
 
         /// <summary>
         /// 测试用例类级别的获取函数
         /// </summary>
-        public int Level => m_level;
+        public int Level => _level;
 
         public TestingClassAttribute(int level) : base()
         {
-            m_level = level;
+            _level = level;
         }
     }
 }

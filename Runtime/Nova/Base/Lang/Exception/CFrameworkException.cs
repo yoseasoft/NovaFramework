@@ -1,10 +1,10 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyring (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -41,12 +41,12 @@ namespace NovaEngine
         /// <summary>
         /// 自定义异常类型的错误编码参数
         /// </summary>
-        private readonly int m_targetCode = 0;
+        private readonly int _targetCode = 0;
 
         /// <summary>
         /// 错误码属性接口
         /// </summary>
-        public int TargetCode => m_targetCode;
+        public int TargetCode => _targetCode;
 
         /// <summary>
         /// 引擎框架异常类的新实例构建接口
@@ -61,7 +61,7 @@ namespace NovaEngine
         /// <param name="targetCode">错误码标识</param>
         public CFrameworkException(int targetCode) : base()
         {
-            m_targetCode = targetCode;
+            _targetCode = targetCode;
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace NovaEngine
         /// <param name="message">描述错误的消息</param>
         public CFrameworkException(int targetCode, string message) : base(message)
         {
-            m_targetCode = targetCode;
+            _targetCode = targetCode;
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace NovaEngine
         /// <param name="message">描述错误的消息</param>
         public CFrameworkException(string message) : base(message)
         {
-            m_targetCode = ErrorCode.UNKNOWN;
+            _targetCode = ErrorCode.UNKNOWN;
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace NovaEngine
         {
             SystemType targetType = innerException.GetType();
 
-            m_targetCode = ErrorCode.GetErrorCodeByExceptionType(targetType);
+            _targetCode = ErrorCode.GetErrorCodeByExceptionType(targetType);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace NovaEngine
         /// <param name="context">包含有关源或目标的上下文信息</param>
         protected CFrameworkException(SystemSerializationInfo info, SystemStreamingContext context) : base(info, context)
         {
-            m_targetCode = ErrorCode.UNKNOWN;
+            _targetCode = ErrorCode.UNKNOWN;
         }
     }
 }

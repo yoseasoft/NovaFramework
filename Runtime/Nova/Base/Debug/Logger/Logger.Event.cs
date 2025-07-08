@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +44,7 @@ namespace NovaEngine
             /// <summary>
             /// 输出事件回调接口
             /// </summary>
-            private OutputHandler m_outputCallback = null;
+            private OutputHandler _outputCallback = null;
 
             /// <summary>
             /// 启动日志输出事件模式
@@ -87,7 +87,7 @@ namespace NovaEngine
             /// <param name="message">日志内容</param>
             public void Output(LogOutputLevelType level, object message)
             {
-                m_outputCallback(level, message);
+                _outputCallback(level, message);
             }
 
             /// <summary>
@@ -96,7 +96,7 @@ namespace NovaEngine
             /// <param name="handler">输出句柄实例</param>
             public void AddOutputHandler(OutputHandler handler)
             {
-                m_outputCallback += handler;
+                _outputCallback += handler;
             }
 
             /// <summary>
@@ -105,7 +105,7 @@ namespace NovaEngine
             /// <param name="handler">输出句柄实例</param>
             public void RemoveOutputHandler(OutputHandler handler)
             {
-                m_outputCallback -= handler;
+                _outputCallback -= handler;
             }
 
             /// <summary>
@@ -113,7 +113,7 @@ namespace NovaEngine
             /// </summary>
             public void RemoveAllOutputHandler()
             {
-                m_outputCallback = null;
+                _outputCallback = null;
             }
         }
     }
