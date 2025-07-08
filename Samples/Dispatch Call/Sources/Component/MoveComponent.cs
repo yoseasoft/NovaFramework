@@ -31,6 +31,6 @@ namespace Game.Sample.DispatchCall
     [GameEngine.DeclareComponentClass("MoveComponent")]
     public class MoveComponent : GameEngine.CComponent, GameEngine.IUpdateActivation
     {
-        public float escape_time;
+        public int escape_time;
     }
 }

@@ -31,7 +31,6 @@ namespace Game.Sample.DispatchCall
     /// 玩家对象逻辑类
     /// </summary>
     [GameEngine.Aspect]
-    [GameEngine.ExtendSupported]
     public static class PlayerSystem
     {
         [GameEngine.OnAspectAfterCallOfTarget(typeof(Player), GameEngine.AspectBehaviourType.Awake)]

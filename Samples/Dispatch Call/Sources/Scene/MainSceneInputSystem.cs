@@ -30,7 +30,6 @@ namespace Game.Sample.DispatchCall
     /// <summary>
     /// 主场景输入逻辑类
     /// </summary>
-    [GameEngine.KeycodeSystem]
     static class MainSceneInputSystem
     {
         [GameEngine.OnKeycodeDispatchResponse((int) UnityEngine.KeyCode.E, GameEngine.InputOperationType.Released)]

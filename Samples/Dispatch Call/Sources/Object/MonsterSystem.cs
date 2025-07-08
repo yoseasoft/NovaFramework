@@ -31,7 +31,6 @@ namespace Game.Sample.DispatchCall
     /// 怪物对象逻辑类
     /// </summary>
     [GameEngine.Aspect]
-    [GameEngine.ExtendSupported]
     public static class MonsterSystem
     {
         [GameEngine.OnAspectAfterCallOfTarget(typeof(Monster), GameEngine.AspectBehaviourType.Awake)]

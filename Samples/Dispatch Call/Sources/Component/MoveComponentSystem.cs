@@ -44,9 +44,18 @@ namespace Game.Sample.DispatchCall
         [GameEngine.OnAspectAfterCallOfTarget(typeof(MoveComponent), GameEngine.AspectBehaviourType.Update)]
         static void Update(this MoveComponent self)
         {
-            if (self.escape_time > NovaEngine.Facade.Timestamp.RealtimeSinceStartup)
+            if (self.escape_time > 0)
             {
                 self.MoveTo();
+
+                self.escape_time--;
+                if (self.escape_time <= 0)
+                {
+                    TransformComponent transformComponent = self.GetComponent<TransformComponent>();
+                    Debugger.Info("角色对象‘{%s}’移动结束，当前位置{{{%d},{%d},{%d}}}！",
+                        self.GetComponent<IdentityComponent>().objectName,
+                        transformComponent.position.x, transformComponent.position.y, transformComponent.position.z);
+                }
             }
         }
 
@@ -76,7 +85,7 @@ namespace Game.Sample.DispatchCall
             if (distance >= 2f)
             {
                 UnityEngine.Vector3 direction = UnityEngine.Vector3.Normalize(targetTransformComponent.position - ownerTransformComponent.position);
-                const float speed = 3f;
+                const float speed = 5f;
 
                 float move_distance = speed * NovaEngine.Facade.Timestamp.DeltaTime;
                 move_distance = UnityEngine.Mathf.Min(move_distance, distance / 2f);
@@ -84,16 +93,22 @@ namespace Game.Sample.DispatchCall
                 UnityEngine.Vector3 old_position = ownerTransformComponent.position;
                 ownerTransformComponent.position += direction * move_distance;
 
-                Debugger.Info("角色对象‘{%s}’从源位置{{{%d},{%d},{%d}}}移动到目标位置{{{%d},{%d},{%d}}}！",
-                    self.GetComponent<IdentityComponent>().objectName,
-                    old_position.x, old_position.y, old_position.z,
-                    ownerTransformComponent.position.x, ownerTransformComponent.position.y, ownerTransformComponent.position.z);
+                //Debugger.Info("角色对象‘{%s}’从源位置{{{%d},{%d},{%d}}}移动到目标位置{{{%d},{%d},{%d}}}！",
+                //    self.GetComponent<IdentityComponent>().objectName,
+                //    old_position.x, old_position.y, old_position.z,
+                //    ownerTransformComponent.position.x, ownerTransformComponent.position.y, ownerTransformComponent.position.z);
             }
         }
 
         public static void OnMovingStart(this MoveComponent self)
         {
-            self.escape_time = NovaEngine.Facade.Timestamp.RealtimeSinceStartup + 0.3f;
+            if (self.escape_time > 0)
+            {
+                Debugger.Info("角色对象‘{%s}’正处于移动中，需等待此次移动完成后才可以再次开始新一轮的移动行为！", self.GetComponent<IdentityComponent>().objectName);
+                return;
+            }
+
+            self.escape_time = 5;
         }
     }
 }
