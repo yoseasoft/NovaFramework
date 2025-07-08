@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,17 +36,17 @@ namespace NovaEngine.IO
         /// <summary>
         /// 当前打开的文件名称
         /// </summary>
-        private string m_filename = null;
+        private string _filename = null;
 
         /// <summary>
         /// 当前打开的文件内容
         /// </summary>
-        private string m_content = null;
+        private string _content = null;
 
         /// <summary>
         /// 文件段属性映射表
         /// </summary>
-        private IDictionary<string, string> m_attributes = null;
+        private IDictionary<string, string> _attributes = null;
 
         /// <summary>
         /// 获取文件名称
@@ -55,7 +55,7 @@ namespace NovaEngine.IO
         {
             get
             {
-                return m_filename;
+                return _filename;
             }
         }
 
@@ -66,7 +66,7 @@ namespace NovaEngine.IO
         {
             get
             {
-                return m_content;
+                return _content;
             }
         }
 
@@ -94,7 +94,7 @@ namespace NovaEngine.IO
                 return false;
             }
 
-            m_filename = filename;
+            _filename = filename;
 
             return LoadFromText(text);
         }
@@ -106,7 +106,7 @@ namespace NovaEngine.IO
         /// <returns>若加载文件成功则返回true，否则返回false</returns>
         public bool LoadFromText(string text)
         {
-            m_content = text;
+            _content = text;
 
             return __ResolveFileContent();
         }
@@ -116,13 +116,13 @@ namespace NovaEngine.IO
         /// </summary>
         public void Close()
         {
-            m_filename = null;
-            m_content = null;
+            _filename = null;
+            _content = null;
 
-            if (null != m_attributes)
+            if (null != _attributes)
             {
-                m_attributes.Clear();
-                m_attributes = null;
+                _attributes.Clear();
+                _attributes = null;
             }
         }
 
@@ -132,12 +132,12 @@ namespace NovaEngine.IO
         /// <returns>若解析成功则返回true，否则返回false</returns>
         private bool __ResolveFileContent()
         {
-            if (string.IsNullOrEmpty(this.m_content))
+            if (string.IsNullOrEmpty(this._content))
             {
                 return false;
             }
 
-            string[] contents = this.m_content.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+            string[] contents = this._content.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
 
             for (int n = 0; n < contents.GetLength(0); ++n)
             {
@@ -153,17 +153,17 @@ namespace NovaEngine.IO
                 string[] attr = line.Split(new char[] { '=' });
                 if (attr.Length < 2)
                 {
-                    Logger.Error("文件‘{0}’存在错误的配置,请检查", m_filename);
+                    Logger.Error("文件‘{0}’存在错误的配置,请检查", _filename);
                     continue;
                 }
 
                 if (attr[0].Length < 0 || attr[1].Length < 0)
                 {
-                    Logger.Error("文件‘{0}’存在错误的配置key={1}, value={2}请检查", m_filename, attr[0], attr[1]);
+                    Logger.Error("文件‘{0}’存在错误的配置key={1}, value={2}请检查", _filename, attr[0], attr[1]);
                     continue;
                 }
 
-                m_attributes[attr[0].Trim()] = attr[1].Trim();
+                _attributes[attr[0].Trim()] = attr[1].Trim();
             }
 
             return true;
@@ -177,7 +177,7 @@ namespace NovaEngine.IO
         public string GetAttributeValue(string key)
         {
             string attr = null;
-            if (false == m_attributes.TryGetValue(key, out attr))
+            if (false == _attributes.TryGetValue(key, out attr))
             {
                 return null;
             }

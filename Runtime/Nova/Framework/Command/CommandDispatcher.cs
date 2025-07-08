@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -32,14 +32,14 @@ namespace NovaEngine
     /// </summary>
     public sealed class CommandDispatcher
     {
-        private readonly Dictionary<string, ICommandAgent> m_commandAgents = null;
+        private readonly Dictionary<string, ICommandAgent> _commandAgents = null;
 
         /// <summary>
         /// 指令管理类的新实例构建接口
         /// </summary>
         public CommandDispatcher()
         {
-            m_commandAgents = new Dictionary<string, ICommandAgent>();
+            _commandAgents = new Dictionary<string, ICommandAgent>();
         }
 
         /// <summary>
@@ -54,12 +54,12 @@ namespace NovaEngine
         /// </summary>
         public void Cleanup()
         {
-            foreach (KeyValuePair<string, ICommandAgent> pair in m_commandAgents)
+            foreach (KeyValuePair<string, ICommandAgent> pair in _commandAgents)
             {
                 pair.Value.Cleanup();
             }
 
-            m_commandAgents.Clear();
+            _commandAgents.Clear();
         }
 
         /// <summary>
@@ -74,13 +74,13 @@ namespace NovaEngine
                 throw new CFrameworkException("Command agent is invalid.");
             }
 
-            if (m_commandAgents.ContainsKey(cname))
+            if (_commandAgents.ContainsKey(cname))
             {
                 throw new CFrameworkException("Agent name '{%s}' is already exist.", cname);
             }
 
             agent.Initialize();
-            m_commandAgents.Add(cname, agent);
+            _commandAgents.Add(cname, agent);
         }
 
         /// <summary>
@@ -94,15 +94,15 @@ namespace NovaEngine
                 throw new CFrameworkException("Command agent is invalid.");
             }
 
-            if (false == m_commandAgents.ContainsKey(cname))
+            if (false == _commandAgents.ContainsKey(cname))
             {
                 throw new CFrameworkException("Agent name '{%s}' is not exist.", cname);
             }
 
-            ICommandAgent agent = m_commandAgents[cname];
+            ICommandAgent agent = _commandAgents[cname];
             agent.Cleanup();
 
-            m_commandAgents.Remove(cname);
+            _commandAgents.Remove(cname);
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace NovaEngine
         /// <param name="command">指令对象实例</param>
         public void Call(CommandArgs command)
         {
-            foreach (KeyValuePair<string, ICommandAgent> pair in m_commandAgents)
+            foreach (KeyValuePair<string, ICommandAgent> pair in _commandAgents)
             {
                 pair.Value.Call(command);
             }

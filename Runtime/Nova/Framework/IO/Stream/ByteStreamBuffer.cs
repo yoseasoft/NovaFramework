@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -34,17 +34,17 @@ namespace NovaEngine.IO
     /// </summary>
     public sealed class ByteStreamBuffer
     {
-        private SystemMemoryStream m_stream = null;
-        private SystemBinaryReader m_reader = null;
-        private SystemBinaryWriter m_writer = null;
+        private SystemMemoryStream _stream = null;
+        private SystemBinaryReader _reader = null;
+        private SystemBinaryWriter _writer = null;
 
         /// <summary>
         /// 字节流缓冲区的新实例构建接口
         /// </summary>
         public ByteStreamBuffer()
         {
-            m_stream = new SystemMemoryStream();
-            m_writer = new SystemBinaryWriter(m_stream);
+            _stream = new SystemMemoryStream();
+            _writer = new SystemBinaryWriter(_stream);
         }
 
         /// <summary>
@@ -55,8 +55,8 @@ namespace NovaEngine.IO
         {
             Logger.Assert(null != data);
 
-            m_stream = new SystemMemoryStream(data);
-            m_reader = new SystemBinaryReader(m_stream);
+            _stream = new SystemMemoryStream(data);
+            _reader = new SystemBinaryReader(_stream);
         }
 
         ~ByteStreamBuffer()
@@ -69,22 +69,22 @@ namespace NovaEngine.IO
         /// </summary>
         public void Close()
         {
-            if (null != m_reader)
+            if (null != _reader)
             {
-                m_reader.Close();
-                m_reader = null;
+                _reader.Close();
+                _reader = null;
             }
 
-            if (null != m_writer)
+            if (null != _writer)
             {
-                m_writer.Close();
-                m_writer = null;
+                _writer.Close();
+                _writer = null;
             }
 
-            if (null != m_stream)
+            if (null != _stream)
             {
-                m_stream.Close();
-                m_stream = null;
+                _stream.Close();
+                _stream = null;
             }
         }
 
@@ -94,7 +94,7 @@ namespace NovaEngine.IO
         /// <returns>返回字节数据</returns>
         public byte ReadByte()
         {
-            return m_reader.ReadByte();
+            return _reader.ReadByte();
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace NovaEngine.IO
         /// <returns>返回短整型数据</returns>
         public short ReadShort()
         {
-            return m_reader.ReadInt16();
+            return _reader.ReadInt16();
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace NovaEngine.IO
         /// <returns>返回整型数据</returns>
         public int ReadInt()
         {
-            return m_reader.ReadInt32();
+            return _reader.ReadInt32();
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace NovaEngine.IO
         /// <returns>返回长整型数据</returns>
         public long ReadLong()
         {
-            return m_reader.ReadInt64();
+            return _reader.ReadInt64();
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace NovaEngine.IO
         /// <returns>返回单精度浮点数据</returns>
         public float ReadFloat()
         {
-            return m_reader.ReadSingle();
+            return _reader.ReadSingle();
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace NovaEngine.IO
         /// <returns>返回双精度浮点数据</returns>
         public double ReadDouble()
         {
-            return m_reader.ReadDouble();
+            return _reader.ReadDouble();
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace NovaEngine.IO
         /// <returns>返回字符串数据</returns>
         public string ReadString()
         {
-            return m_reader.ReadString();
+            return _reader.ReadString();
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace NovaEngine.IO
         {
             // int count = this.ReadInt();
             // return m_reader.ReadBytes(count);
-            return m_reader.ReadBytes((int) m_stream.Length);
+            return _reader.ReadBytes((int) _stream.Length);
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace NovaEngine.IO
         /// <param name="v">字节数值</param>
         public void WriteByte(byte v)
         {
-            m_writer.Write(v);
+            _writer.Write(v);
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace NovaEngine.IO
         /// <param name="v">短整型数值</param>
         public void WriteShort(short v)
         {
-            m_writer.Write(v);
+            _writer.Write(v);
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace NovaEngine.IO
         /// <param name="v">整型数值</param>
         public void WriteInt(int v)
         {
-            m_writer.Write(v);
+            _writer.Write(v);
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace NovaEngine.IO
         /// <param name="v">长整型数值</param>
         public void WriteLong(long v)
         {
-            m_writer.Write(v);
+            _writer.Write(v);
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace NovaEngine.IO
         /// <param name="v">单精度浮点数值</param>
         public void WriteFloat(float v)
         {
-            m_writer.Write(v);
+            _writer.Write(v);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace NovaEngine.IO
         /// <param name="v">双精度浮点数值</param>
         public void WriteDouble(double v)
         {
-            m_writer.Write(v);
+            _writer.Write(v);
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace NovaEngine.IO
         /// <param name="v">字符串数值</param>
         public void WriteString(string v)
         {
-            m_writer.Write(v);
+            _writer.Write(v);
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace NovaEngine.IO
         public void WriteBytes(byte[] v)
         {
             // m_writer.Write((int) v.Length);
-            m_writer.Write(v);
+            _writer.Write(v);
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace NovaEngine.IO
         /// </summary>
         public void Flush()
         {
-            m_writer.Flush();
+            _writer.Flush();
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace NovaEngine.IO
         public byte[] ToBytes()
         {
             this.Flush();
-            return m_stream.ToArray();
+            return _stream.ToArray();
         }
     }
 }

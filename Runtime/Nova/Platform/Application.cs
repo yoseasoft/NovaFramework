@@ -1,10 +1,10 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +44,7 @@ namespace NovaEngine
         /// <summary>
         /// 应用程序协议转换的处理回调函数
         /// </summary>
-        private static ApplicationProtocolTransformationHandler m_protocolTransformationCallback;
+        private static ApplicationProtocolTransformationHandler _protocolTransformationCallback;
 
         /// <summary>
         /// 应用管理对象实例的初始化回调接口
@@ -193,7 +193,7 @@ namespace NovaEngine
         /// <param name="handler">协议转换句柄函数</param>
         public void AddProtocolTransformationHandler(ApplicationProtocolTransformationHandler handler)
         {
-            m_protocolTransformationCallback += handler;
+            _protocolTransformationCallback += handler;
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace NovaEngine
         /// <param name="handler">协议转换句柄函数</param>
         public void RemoveProtocolTransformationHandler(ApplicationProtocolTransformationHandler handler)
         {
-            m_protocolTransformationCallback -= handler;
+            _protocolTransformationCallback -= handler;
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace NovaEngine
         /// <param name="protocolType">协议类型</param>
         private void OnProtocolTransformationDispatch(ProtocolType protocolType)
         {
-            m_protocolTransformationCallback?.Invoke(protocolType);
+            _protocolTransformationCallback?.Invoke(protocolType);
         }
 
         #endregion

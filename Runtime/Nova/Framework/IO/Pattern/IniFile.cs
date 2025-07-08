@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -35,24 +35,24 @@ namespace NovaEngine.IO
         /// <summary>
         /// 当前打开的文件名称
         /// </summary>
-        private string m_filename = null;
+        private string _filename = null;
 
         /// <summary>
         /// 当前打开的文件内容
         /// </summary>
-        private string m_content = null;
+        private string _content = null;
 
         /// <summary>
         /// 文件段属性映射表
         /// </summary>
-        private IDictionary<string, IDictionary<string, string>> m_sections = null;
+        private IDictionary<string, IDictionary<string, string>> _sections = null;
 
         /// <summary>
         /// 获取文件名称
         /// </summary>
         public string Filename
         {
-            get { return m_filename; }
+            get { return _filename; }
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace NovaEngine.IO
         /// </summary>
         public string Content
         {
-            get { return m_content; }
+            get { return _content; }
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace NovaEngine.IO
                 return false;
             }
 
-            m_filename = filename;
+            _filename = filename;
 
             return LoadFromText(text);
         }
@@ -99,7 +99,7 @@ namespace NovaEngine.IO
         /// <returns>若加载文件成功则返回true，否则返回false</returns>
         public bool LoadFromText(string text)
         {
-            m_content = text;
+            _content = text;
 
             return __ResolveFileContent();
         }
@@ -109,13 +109,13 @@ namespace NovaEngine.IO
         /// </summary>
         public void Close()
         {
-            m_filename = null;
-            m_content = null;
+            _filename = null;
+            _content = null;
 
-            if (null != m_sections)
+            if (null != _sections)
             {
-                m_sections.Clear();
-                m_sections = null;
+                _sections.Clear();
+                _sections = null;
             }
         }
 
@@ -125,20 +125,20 @@ namespace NovaEngine.IO
         /// <returns>若解析成功则返回true，否则返回false</returns>
         private bool __ResolveFileContent()
         {
-            if (string.IsNullOrEmpty(this.m_content))
+            if (string.IsNullOrEmpty(this._content))
             {
                 return false;
             }
 
-            string[] contents = this.m_content.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+            string[] contents = this._content.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
 
             string sectionName = "default";
             IDictionary<string, string> dict = null;
-            if (null == m_sections)
+            if (null == _sections)
             {
                 dict = new Dictionary<string, string>();
-                m_sections = new Dictionary<string, IDictionary<string, string>>();
-                m_sections.Add(sectionName, dict);
+                _sections = new Dictionary<string, IDictionary<string, string>>();
+                _sections.Add(sectionName, dict);
             }
 
             for (int n = 0; n < contents.GetLength(0); ++n)
@@ -155,10 +155,10 @@ namespace NovaEngine.IO
                 if (line.StartsWith("[") && line.EndsWith("]"))
                 {
                     sectionName = line.Substring(1, line.Length - 2).Trim();
-                    if (false == m_sections.ContainsKey(sectionName))
+                    if (false == _sections.ContainsKey(sectionName))
                     {
                         dict = new Dictionary<string, string>();
-                        m_sections.Add(sectionName, dict);
+                        _sections.Add(sectionName, dict);
                     }
                     continue;
                 }
@@ -167,13 +167,13 @@ namespace NovaEngine.IO
                 string[] property = line.Split(new char[] { '=' });
                 if (property.Length < 2)
                 {
-                    Logger.Error("文件‘{0}’存在错误的配置,请检查", m_filename);
+                    Logger.Error("文件‘{0}’存在错误的配置,请检查", _filename);
                     continue;
                 }
 
                 if (property[0].Length < 0 || property[1].Length < 0)
                 {
-                    Logger.Error("文件‘{0}’存在错误的配置key={1}, value={2}请检查", m_filename, property[0], property[1]);
+                    Logger.Error("文件‘{0}’存在错误的配置key={1}, value={2}请检查", _filename, property[0], property[1]);
                     continue;
                 }
 
@@ -190,7 +190,7 @@ namespace NovaEngine.IO
         /// <returns>返回段落映射的字典表</returns>
         public IReadOnlyDictionary<string, string> GetSectionValue(string sectionName = "default")
         {
-            if (false == m_sections.TryGetValue(sectionName, out IDictionary<string, string> dict))
+            if (false == _sections.TryGetValue(sectionName, out IDictionary<string, string> dict))
             {
                 return null;
             }

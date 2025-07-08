@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@ namespace NovaEngine
         /// <summary>
         /// 引擎对象实例当前运行的平台类型
         /// </summary>
-        private PlatformType m_platformType;
+        private PlatformType _platformType;
 
         /**
          * 当引擎打包为DLL后，该属性标识将不会发生任何作用
@@ -53,7 +53,7 @@ namespace NovaEngine
         protected override void Initialize()
         {
             // 平台类型初始化
-            m_platformType = CurrentPlatformType;
+            _platformType = CurrentPlatformType;
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace NovaEngine
         protected override void Cleanup()
         {
             // 重置平台类型
-            m_platformType = PlatformType.Unknown;
+            _platformType = PlatformType.Unknown;
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace NovaEngine
         /// <returns>返回引擎对象实例当前运行的平台类型</returns>
         public PlatformType TargetPlatformType()
         {
-            return m_platformType;
+            return _platformType;
         }
     }
 }

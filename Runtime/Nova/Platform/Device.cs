@@ -1,10 +1,10 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -43,14 +43,14 @@ namespace NovaEngine
         /// <summary>
         /// 当前设备屏幕的dpi（每英寸点数），对于不支持读取dpi的设备，默认为0f
         /// </summary>
-        private float m_screenDpi = 0f;
+        private float _screenDpi = 0f;
 
         /// <summary>
         /// 获取当前设备屏幕的dpi
         /// </summary>
         public float ScreenDpi
         {
-            get { return m_screenDpi; }
+            get { return _screenDpi; }
         }
 
         /// <summary>
@@ -73,10 +73,10 @@ namespace NovaEngine
         /// <returns>当对象实例启动成功时返回true，否则返回false</returns>
         public bool Startup()
         {
-            m_screenDpi = UnityScreen.dpi;
-            if (m_screenDpi <= 0f)
+            _screenDpi = UnityScreen.dpi;
+            if (_screenDpi <= 0f)
             {
-                m_screenDpi = DefaultScreenDpi;
+                _screenDpi = DefaultScreenDpi;
             }
 
             // 屏幕休眠设置

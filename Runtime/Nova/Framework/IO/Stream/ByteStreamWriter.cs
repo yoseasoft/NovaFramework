@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -33,16 +33,16 @@ namespace NovaEngine.IO
     /// </summary>
     public sealed class ByteStreamWriter
     {
-        private SystemMemoryStream m_stream = null;
-        private SystemBinaryWriter m_writer = null;
+        private SystemMemoryStream _stream = null;
+        private SystemBinaryWriter _writer = null;
 
         /// <summary>
         /// 字节流缓冲区的新实例构建接口
         /// </summary>
         public ByteStreamWriter()
         {
-            m_stream = new SystemMemoryStream();
-            m_writer = new SystemBinaryWriter(m_stream);
+            _stream = new SystemMemoryStream();
+            _writer = new SystemBinaryWriter(_stream);
         }
 
         /// <summary>
@@ -58,16 +58,16 @@ namespace NovaEngine.IO
         /// </summary>
         public void Close()
         {
-            if (null != m_writer)
+            if (null != _writer)
             {
-                m_writer.Close();
-                m_writer = null;
+                _writer.Close();
+                _writer = null;
             }
 
-            if (null != m_stream)
+            if (null != _stream)
             {
-                m_stream.Close();
-                m_stream = null;
+                _stream.Close();
+                _stream = null;
             }
         }
 
@@ -77,7 +77,7 @@ namespace NovaEngine.IO
         /// <param name="v">字节数值</param>
         public void WriteByte(byte v)
         {
-            m_writer.Write(v);
+            _writer.Write(v);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace NovaEngine.IO
         /// <param name="v">短整型数值</param>
         public void WriteShort(short v)
         {
-            m_writer.Write(v);
+            _writer.Write(v);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace NovaEngine.IO
         /// <param name="v">整型数值</param>
         public void WriteInt(int v)
         {
-            m_writer.Write(v);
+            _writer.Write(v);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace NovaEngine.IO
         /// <param name="v">长整型数值</param>
         public void WriteLong(long v)
         {
-            m_writer.Write(v);
+            _writer.Write(v);
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace NovaEngine.IO
         /// <param name="v">单精度浮点数值</param>
         public void WriteFloat(float v)
         {
-            m_writer.Write(v);
+            _writer.Write(v);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace NovaEngine.IO
         /// <param name="v">双精度浮点数值</param>
         public void WriteDouble(double v)
         {
-            m_writer.Write(v);
+            _writer.Write(v);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace NovaEngine.IO
         /// <param name="v">字符串数值</param>
         public void WriteString(string v)
         {
-            m_writer.Write(v);
+            _writer.Write(v);
         }
 
         /// <summary>
@@ -140,8 +140,8 @@ namespace NovaEngine.IO
         /// <param name="v">字节数组数值</param>
         public void WriteBytes(byte[] v)
         {
-            m_writer.Write((int) v.Length);
-            m_writer.Write(v);
+            _writer.Write((int) v.Length);
+            _writer.Write(v);
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace NovaEngine.IO
         /// </summary>
         public void Flush()
         {
-            m_writer.Flush();
+            _writer.Flush();
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace NovaEngine.IO
         public byte[] ToBytes()
         {
             this.Flush();
-            return m_stream.ToArray();
+            return _stream.ToArray();
         }
     }
 }

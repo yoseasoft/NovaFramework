@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ namespace NovaEngine.IO
     /// </summary>
     public sealed class MemoryBuffer : System.IO.MemoryStream, System.Buffers.IBufferWriter<byte>
     {
-        private int origin;
+        private int _origin;
 
         public MemoryBuffer()
         {
@@ -49,12 +49,12 @@ namespace NovaEngine.IO
 
         public MemoryBuffer(byte[] buffer, int index, int length) : base(buffer, index, length)
         {
-            this.origin = index;
+            this._origin = index;
         }
 
-        public System.ReadOnlyMemory<byte> WrittenMemory => this.GetBuffer().AsMemory(this.origin, (int) this.Position);
+        public System.ReadOnlyMemory<byte> WrittenMemory => this.GetBuffer().AsMemory(this._origin, (int) this.Position);
 
-        public System.ReadOnlySpan<byte> WrittenSpan => this.GetBuffer().AsSpan(this.origin, (int) this.Position);
+        public System.ReadOnlySpan<byte> WrittenSpan => this.GetBuffer().AsSpan(this._origin, (int) this.Position);
 
         public void Advance(int count)
         {
@@ -72,7 +72,7 @@ namespace NovaEngine.IO
             {
                 this.SetLength(this.Position + sizeHint);
             }
-            var memory = this.GetBuffer().AsMemory((int) this.Position + this.origin, (int) (this.Length - this.Position));
+            var memory = this.GetBuffer().AsMemory((int) this.Position + this._origin, (int) (this.Length - this.Position));
             return memory;
         }
 
@@ -82,7 +82,7 @@ namespace NovaEngine.IO
             {
                 this.SetLength(this.Position + sizeHint);
             }
-            var span = this.GetBuffer().AsSpan((int) this.Position + this.origin, (int) (this.Length - this.Position));
+            var span = this.GetBuffer().AsSpan((int) this.Position + this._origin, (int) (this.Length - this.Position));
             return span;
         }
     }

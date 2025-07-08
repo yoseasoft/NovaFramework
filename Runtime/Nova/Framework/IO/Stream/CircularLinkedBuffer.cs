@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -43,14 +43,14 @@ namespace NovaEngine.IO
         /// <summary>
         /// 数据推送队列
         /// </summary>
-        private readonly Queue<byte[]> m_bufferQueue = new Queue<byte[]>();
+        private readonly Queue<byte[]> _bufferQueue = new Queue<byte[]>();
 
         /// <summary>
         /// 数据缓存队列
         /// </summary>
-        private readonly Queue<byte[]> m_bufferCache = new Queue<byte[]>();
+        private readonly Queue<byte[]> _bufferCache = new Queue<byte[]>();
 
-        private byte[] lastBuffer;
+        private byte[] _lastBuffer;
 
         public CircularLinkedBuffer()
         {
@@ -65,12 +65,12 @@ namespace NovaEngine.IO
         {
             get
             {
-                if (this.m_bufferQueue.Count == 0)
+                if (this._bufferQueue.Count == 0)
                 {
                     this.AddLast();
                 }
 
-                return this.m_bufferQueue.Peek();
+                return this._bufferQueue.Peek();
             }
         }
 
@@ -78,12 +78,12 @@ namespace NovaEngine.IO
         {
             get
             {
-                if (this.m_bufferQueue.Count == 0)
+                if (this._bufferQueue.Count == 0)
                 {
                     this.AddLast();
                 }
 
-                return this.lastBuffer;
+                return this._lastBuffer;
             }
         }
 
@@ -95,14 +95,14 @@ namespace NovaEngine.IO
             get
             {
                 int c = 0;
-                if (this.m_bufferQueue.Count > 0)
+                if (this._bufferQueue.Count > 0)
                 {
-                    c = (this.m_bufferQueue.Count - 1) * BUFFER_CHUNK_SIZE + this.LastIndex - this.FirstIndex;
+                    c = (this._bufferQueue.Count - 1) * BUFFER_CHUNK_SIZE + this.LastIndex - this.FirstIndex;
                 }
 
                 if (c < 0)
                 {
-                    Logger.Error("circular buffer count '{0}' error.", this.m_bufferQueue.Count);
+                    Logger.Error("circular buffer count '{0}' error.", this._bufferQueue.Count);
                 }
 
                 return c;
@@ -112,21 +112,21 @@ namespace NovaEngine.IO
         public void AddLast()
         {
             byte[] buffer;
-            if (this.m_bufferCache.Count > 0)
+            if (this._bufferCache.Count > 0)
             {
-                buffer = this.m_bufferCache.Dequeue();
+                buffer = this._bufferCache.Dequeue();
             }
             else
             {
                 buffer = new byte[BUFFER_CHUNK_SIZE];
             }
-            this.m_bufferQueue.Enqueue(buffer);
-            this.lastBuffer = buffer;
+            this._bufferQueue.Enqueue(buffer);
+            this._lastBuffer = buffer;
         }
 
         public void RemoveFirst()
         {
-            this.m_bufferCache.Enqueue(m_bufferQueue.Dequeue());
+            this._bufferCache.Enqueue(_bufferQueue.Dequeue());
         }
 
         // 从CircularBuffer读到stream
@@ -174,13 +174,13 @@ namespace NovaEngine.IO
                 int n = count - alreadyCopyCount;
                 if (BUFFER_CHUNK_SIZE - this.LastIndex > n)
                 {
-                    stream.Read(this.lastBuffer, this.LastIndex, n);
+                    stream.Read(this._lastBuffer, this.LastIndex, n);
                     this.LastIndex += count - alreadyCopyCount;
                     alreadyCopyCount += n;
                 }
                 else
                 {
-                    stream.Read(this.lastBuffer, this.LastIndex, BUFFER_CHUNK_SIZE - this.LastIndex);
+                    stream.Read(this._lastBuffer, this.LastIndex, BUFFER_CHUNK_SIZE - this.LastIndex);
                     alreadyCopyCount += BUFFER_CHUNK_SIZE - this.LastIndex;
                     this.LastIndex = BUFFER_CHUNK_SIZE;
                 }
@@ -238,13 +238,13 @@ namespace NovaEngine.IO
                 int n = count - alreadyCopyCount;
                 if (BUFFER_CHUNK_SIZE - this.LastIndex > n)
                 {
-                    SystemArray.Copy(buffer, alreadyCopyCount + offset, this.lastBuffer, this.LastIndex, n);
+                    SystemArray.Copy(buffer, alreadyCopyCount + offset, this._lastBuffer, this.LastIndex, n);
                     this.LastIndex += count - alreadyCopyCount;
                     alreadyCopyCount += n;
                 }
                 else
                 {
-                    SystemArray.Copy(buffer, alreadyCopyCount + offset, this.lastBuffer, this.LastIndex, BUFFER_CHUNK_SIZE - this.LastIndex);
+                    SystemArray.Copy(buffer, alreadyCopyCount + offset, this._lastBuffer, this.LastIndex, BUFFER_CHUNK_SIZE - this.LastIndex);
                     alreadyCopyCount += BUFFER_CHUNK_SIZE - this.LastIndex;
                     this.LastIndex = BUFFER_CHUNK_SIZE;
                 }
@@ -254,8 +254,8 @@ namespace NovaEngine.IO
         // 清理buffer中的全部数据
         public void Clear()
         {
-            this.m_bufferQueue.Clear();
-            this.m_bufferCache.Clear();
+            this._bufferQueue.Clear();
+            this._bufferCache.Clear();
         }
     }
 }

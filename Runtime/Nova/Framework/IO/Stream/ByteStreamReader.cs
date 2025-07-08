@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -33,8 +33,8 @@ namespace NovaEngine.IO
     /// </summary>
     public sealed class ByteStreamReader
     {
-        private SystemMemoryStream m_stream = null;
-        private SystemBinaryReader m_reader = null;
+        private SystemMemoryStream _stream = null;
+        private SystemBinaryReader _reader = null;
 
         /// <summary>
         /// 字节流缓冲区的新实例构建接口
@@ -44,8 +44,8 @@ namespace NovaEngine.IO
         {
             Logger.Assert(null != data);
 
-            m_stream = new SystemMemoryStream(data);
-            m_reader = new SystemBinaryReader(m_stream);
+            _stream = new SystemMemoryStream(data);
+            _reader = new SystemBinaryReader(_stream);
         }
 
         /// <summary>
@@ -61,16 +61,16 @@ namespace NovaEngine.IO
         /// </summary>
         public void Close()
         {
-            if (null != m_reader)
+            if (null != _reader)
             {
-                m_reader.Close();
-                m_reader = null;
+                _reader.Close();
+                _reader = null;
             }
 
-            if (null != m_stream)
+            if (null != _stream)
             {
-                m_stream.Close();
-                m_stream = null;
+                _stream.Close();
+                _stream = null;
             }
         }
 
@@ -80,7 +80,7 @@ namespace NovaEngine.IO
         /// <returns>返回字节数据</returns>
         public byte ReadByte()
         {
-            return m_reader.ReadByte();
+            return _reader.ReadByte();
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace NovaEngine.IO
         /// <returns>返回短整型数据</returns>
         public short ReadShort()
         {
-            return m_reader.ReadInt16();
+            return _reader.ReadInt16();
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace NovaEngine.IO
         /// <returns>返回整型数据</returns>
         public int ReadInt()
         {
-            return m_reader.ReadInt32();
+            return _reader.ReadInt32();
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace NovaEngine.IO
         /// <returns>返回长整型数据</returns>
         public long ReadLong()
         {
-            return m_reader.ReadInt64();
+            return _reader.ReadInt64();
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace NovaEngine.IO
         /// <returns>返回单精度浮点数据</returns>
         public float ReadFloat()
         {
-            return m_reader.ReadSingle();
+            return _reader.ReadSingle();
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace NovaEngine.IO
         /// <returns>返回双精度浮点数据</returns>
         public double ReadDouble()
         {
-            return m_reader.ReadDouble();
+            return _reader.ReadDouble();
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace NovaEngine.IO
         /// <returns>返回字符串数据</returns>
         public string ReadString()
         {
-            return m_reader.ReadString();
+            return _reader.ReadString();
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace NovaEngine.IO
         public byte[] ReadBytes()
         {
             int count = this.ReadInt();
-            return m_reader.ReadBytes(count);
+            return _reader.ReadBytes(count);
         }
     }
 }
