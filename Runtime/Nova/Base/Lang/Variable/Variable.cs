@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -73,14 +73,14 @@ namespace NovaEngine
     /// </summary>
     public abstract class Variable<T> : Variable
     {
-        private T m_value;
+        private T _value;
 
         /// <summary>
         /// 泛型变量的新实例构建接口
         /// </summary>
         protected Variable()
         {
-            m_value = default;
+            _value = default;
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace NovaEngine
         /// <param name="value">初始值</param>
         protected Variable(T value)
         {
-            m_value = value;
+            _value = value;
         }
 
         /// <summary>
@@ -110,11 +110,11 @@ namespace NovaEngine
         {
             get
             {
-                return m_value;
+                return _value;
             }
             set
             {
-                m_value = value;
+                _value = value;
             }
         }
 
@@ -124,7 +124,7 @@ namespace NovaEngine
         /// <returns>返回当前变量值</returns>
         public override object GetValue()
         {
-            return m_value;
+            return _value;
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace NovaEngine
         /// <param name="value">变量值</param>
         public override void SetValue(object value)
         {
-            m_value = (T) value;
+            _value = (T) value;
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace NovaEngine
         /// </summary>
         public override void Reset()
         {
-            m_value = default;
+            _value = default;
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace NovaEngine
         /// <returns>返回变量字符串</returns>
         public override string ToString()
         {
-            return (null != m_value) ? m_value.ToString() : "<Null>";
+            return (null != _value) ? _value.ToString() : "<Null>";
         }
     }
 

@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -38,21 +38,21 @@ namespace NovaEngine.ObjectPool
         /// <summary>
         /// 关联的映射类型
         /// </summary>
-        private readonly SystemType m_type;
+        private readonly SystemType _type;
         /// <summary>
         /// 关联的映射名称
         /// </summary>
-        private readonly string m_name;
+        private readonly string _name;
 
         /// <summary>
         /// 获取映射类型
         /// </summary>
-        public SystemType Type { get { return m_type; } }
+        public SystemType Type { get { return _type; } }
 
         /// <summary>
         /// 获取映射名称
         /// </summary>
-        public string Name { get { return m_name; } }
+        public string Name { get { return _name; } }
 
         /// <summary>
         /// 类型名称映射结构的初始构造函数
@@ -75,8 +75,8 @@ namespace NovaEngine.ObjectPool
                 throw new CFrameworkException("Type is invalid.");
             }
 
-            m_type = type;
-            m_name = name ?? string.Empty;
+            _type = type;
+            _name = name ?? string.Empty;
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace NovaEngine.ObjectPool
         /// <returns></returns>
         public override int GetHashCode()
         {
-            return m_type.GetHashCode() ^ m_name.GetHashCode();
+            return _type.GetHashCode() ^ _name.GetHashCode();
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace NovaEngine.ObjectPool
         /// <returns>若两个实例相同则返回true，否则返回false</returns>
         public bool Equals(TypeNamePair other)
         {
-            return m_type == other.m_type && m_name == other.m_name;
+            return _type == other._type && _name == other._name;
         }
 
         /// <summary>
@@ -114,13 +114,13 @@ namespace NovaEngine.ObjectPool
         /// <returns>返回该实例的字符串信息</returns>
         public override string ToString()
         {
-            if (null == m_type)
+            if (null == _type)
             {
                 throw new CFrameworkException("Type is invalid.");
             }
 
-            string typeName = m_type.FullName;
-            return string.IsNullOrEmpty(m_name) ? typeName : Utility.Text.Format("{0}.{1}", typeName, m_name);
+            string typeName = _type.FullName;
+            return string.IsNullOrEmpty(_name) ? typeName : Utility.Text.Format("{0}.{1}", typeName, _name);
         }
 
         /// <summary>

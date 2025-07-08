@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,7 @@ namespace NovaEngine
             String,
         }
 
-        private Variable m_variable = null;
+        private Variable _variable = null;
 
         public Value()
         {
@@ -74,7 +74,7 @@ namespace NovaEngine
 
         public Value(string value) { }
 
-        private SystemIConvertible m_field;
+        private SystemIConvertible _field;
 
 
     }

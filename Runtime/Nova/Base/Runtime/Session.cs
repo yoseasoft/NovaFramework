@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -35,22 +35,22 @@ namespace NovaEngine
         /// </summary>
         public const int SESSION_INIT_VALUE = 10000;
 
-        private readonly object m_locked = new object();
+        // private readonly object _locked = new object();
 
         /// <summary>
         /// 初始会话值，用于进行会话值的重置
         /// </summary>
-        private int m_initValue = 0;
+        private int _initValue = 0;
 
         /// <summary>
         /// 最大会话值，用于进行会话值的边界检查
         /// </summary>
-        private int m_maxValue = 0;
+        private int _maxValue = 0;
 
         /// <summary>
         /// 会话值，记录当前会话递增后的结果值
         /// </summary>
-        private int m_currValue = 0;
+        private int _currValue = 0;
 
         /// <summary>
         /// 会话对象构造函数
@@ -69,9 +69,9 @@ namespace NovaEngine
         /// <param name="max">最大会话值</param>
         private void Init(int init, int max)
         {
-            m_initValue = init;
-            m_maxValue  = max;
-            m_currValue = init + 1;
+            _initValue = init;
+            _maxValue  = max;
+            _currValue = init + 1;
         }
 
         /// <summary>
@@ -80,9 +80,9 @@ namespace NovaEngine
         /// <param name="session">会话对象</param>
         private void InitWithSession(Session session)
         {
-            m_initValue = session.m_initValue;
-            m_maxValue  = session.m_maxValue;
-            m_currValue = session.m_currValue;
+            _initValue = session._initValue;
+            _maxValue  = session._maxValue;
+            _currValue = session._currValue;
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace NovaEngine
         /// <returns>返回自增后的当前会话值标识</returns>
         public int Next()
         {
-            return __CalcNextUnsafeSessionID(m_currValue, m_initValue, m_maxValue);
+            return __CalcNextUnsafeSessionID(_currValue, _initValue, _maxValue);
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace NovaEngine
         /// </summary>
         public void Reset()
         {
-            m_currValue = m_initValue;
+            _currValue = _initValue;
         }
     }
 }

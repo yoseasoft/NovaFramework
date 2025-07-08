@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -61,20 +61,20 @@ namespace NovaEngine
         /// <returns>若从指定流获取指定键的值成功则返回true，否则返回false</returns>
         public delegate bool TryGetValueCallback(SystemBinaryReader binaryReader, string key, out object value);
 
-        private readonly Dictionary<byte, SerializeCallback> m_serializeCallbacks;
-        private readonly Dictionary<byte, DeserializeCallback> m_deserializeCallbacks;
-        private readonly Dictionary<byte, TryGetValueCallback> m_tryGetValueCallbacks;
-        private byte m_latestSerializeCallbackVersion;
+        private readonly Dictionary<byte, SerializeCallback> _serializeCallbacks;
+        private readonly Dictionary<byte, DeserializeCallback> _deserializeCallbacks;
+        private readonly Dictionary<byte, TryGetValueCallback> _tryGetValueCallbacks;
+        private byte _latestSerializeCallbackVersion;
 
         /// <summary>
         /// 初始化游戏框架序列化器基类的新实例
         /// </summary>
         public Serializer()
         {
-            m_serializeCallbacks = new Dictionary<byte, SerializeCallback>();
-            m_deserializeCallbacks = new Dictionary<byte, DeserializeCallback>();
-            m_tryGetValueCallbacks = new Dictionary<byte, TryGetValueCallback>();
-            m_latestSerializeCallbackVersion = 0;
+            _serializeCallbacks = new Dictionary<byte, SerializeCallback>();
+            _deserializeCallbacks = new Dictionary<byte, DeserializeCallback>();
+            _tryGetValueCallbacks = new Dictionary<byte, TryGetValueCallback>();
+            _latestSerializeCallbackVersion = 0;
         }
 
         /// <summary>
@@ -89,10 +89,10 @@ namespace NovaEngine
                 throw new CFrameworkException("Serialize callback is invalid.");
             }
 
-            m_serializeCallbacks[version] = callback;
-            if (version > m_latestSerializeCallbackVersion)
+            _serializeCallbacks[version] = callback;
+            if (version > _latestSerializeCallbackVersion)
             {
-                m_latestSerializeCallbackVersion = version;
+                _latestSerializeCallbackVersion = version;
             }
         }
 
@@ -108,7 +108,7 @@ namespace NovaEngine
                 throw new CFrameworkException("Deserialize callback is invalid.");
             }
 
-            m_deserializeCallbacks[version] = callback;
+            _deserializeCallbacks[version] = callback;
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace NovaEngine
                 throw new CFrameworkException("Try get value callback is invalid.");
             }
 
-            m_tryGetValueCallbacks[version] = callback;
+            _tryGetValueCallbacks[version] = callback;
         }
 
         /// <summary>
@@ -134,12 +134,12 @@ namespace NovaEngine
         /// <returns>是否序列化数据成功</returns>
         public bool Serialize(SystemStream stream, T data)
         {
-            if (m_serializeCallbacks.Count <= 0)
+            if (_serializeCallbacks.Count <= 0)
             {
                 throw new CFrameworkException("No serialize callback registered.");
             }
 
-            return Serialize(stream, data, m_latestSerializeCallbackVersion);
+            return Serialize(stream, data, _latestSerializeCallbackVersion);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace NovaEngine
                 binaryWriter.Write(header[2]);
                 binaryWriter.Write(version);
                 SerializeCallback callback = null;
-                if (!m_serializeCallbacks.TryGetValue(version, out callback))
+                if (!_serializeCallbacks.TryGetValue(version, out callback))
                 {
                     throw new CFrameworkException("Serialize callback '{%d}' is not exist.", version);
                 }
@@ -190,7 +190,7 @@ namespace NovaEngine
 
                 byte version = binaryReader.ReadByte();
                 DeserializeCallback callback = null;
-                if (!m_deserializeCallbacks.TryGetValue(version, out callback))
+                if (!_deserializeCallbacks.TryGetValue(version, out callback))
                 {
                     throw new CFrameworkException("Deserialize callback '{%d}' is not exist.", version);
                 }
@@ -222,7 +222,7 @@ namespace NovaEngine
 
                 byte version = binaryReader.ReadByte();
                 TryGetValueCallback callback = null;
-                if (!m_tryGetValueCallbacks.TryGetValue(version, out callback))
+                if (!_tryGetValueCallbacks.TryGetValue(version, out callback))
                 {
                     return false;
                 }

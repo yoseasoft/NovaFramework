@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -35,17 +35,17 @@ namespace NovaEngine
          * 分别提供了两套接口对线程安全及非线程的情形进行支持，您可根据自身的实际需求调用对应的方法
          */
 
-        private static readonly object s_locked = new object();
+        private static readonly object _locked = new object();
 
         /// <summary>
         /// 字符串名称标识类型的会话增量管理容器，用于系统内部运行时批量数据ID自生成
         /// </summary>
-        private static System.Collections.Hashtable m_sessionNameMappings = new System.Collections.Hashtable();
+        private static System.Collections.Hashtable _sessionNameMappings = new System.Collections.Hashtable();
 
         /// <summary>
         /// 数值名称标识类型的会话增量管理容器，用于系统内部运行时批量数据ID自生成
         /// </summary>
-        private static System.Collections.Hashtable m_sessionTypeMappings = new System.Collections.Hashtable();
+        private static System.Collections.Hashtable _sessionTypeMappings = new System.Collections.Hashtable();
 
         /// <summary>
         /// 会话增量获取接口，在线程安全的情况下提取会话值
@@ -56,7 +56,7 @@ namespace NovaEngine
         /// <returns>返回自增后的当前会话值标识</returns>
         private static int __CalcNextSessionID(int session, int init, int max)
         {
-            lock (s_locked)
+            lock (_locked)
             {
                 return __CalcNextUnsafeSessionID(session, init, max);
             }
@@ -89,7 +89,7 @@ namespace NovaEngine
         /// <returns>返回自增后的当前会话值标识</returns>
         public static int NextSessionID(string name, int init = Session.SESSION_INIT_VALUE, int max = System.Int32.MaxValue)
         {
-            lock (s_locked)
+            lock (_locked)
             {
                 return NextUnsafeSessionID(name, init, max);
             }
@@ -105,9 +105,9 @@ namespace NovaEngine
         public static int NextUnsafeSessionID(string name, int init = Session.SESSION_INIT_VALUE, int max = System.Int32.MaxValue)
         {
             int session = 0;
-            if (m_sessionNameMappings.ContainsKey(name))
+            if (_sessionNameMappings.ContainsKey(name))
             {
-                session = (int) m_sessionNameMappings[name];
+                session = (int) _sessionNameMappings[name];
             }
             else
             {
@@ -116,7 +116,7 @@ namespace NovaEngine
             }
 
             session = __CalcNextUnsafeSessionID(session, init, max);
-            m_sessionNameMappings[name] = session;
+            _sessionNameMappings[name] = session;
 
             return session;
         }
@@ -130,7 +130,7 @@ namespace NovaEngine
         /// <returns>返回自增后的当前会话值标识</returns>
         public static int NextSessionID(int type, int init = Session.SESSION_INIT_VALUE, int max = System.Int32.MaxValue)
         {
-            lock (s_locked)
+            lock (_locked)
             {
                 return NextUnsafeSessionID(type, init, max);
             }
@@ -146,9 +146,9 @@ namespace NovaEngine
         public static int NextUnsafeSessionID(int type, int init = Session.SESSION_INIT_VALUE, int max = System.Int32.MaxValue)
         {
             int session = 0;
-            if (m_sessionTypeMappings.ContainsKey(type))
+            if (_sessionTypeMappings.ContainsKey(type))
             {
-                session = (int) m_sessionTypeMappings[type];
+                session = (int) _sessionTypeMappings[type];
             }
             else
             {
@@ -157,7 +157,7 @@ namespace NovaEngine
             }
 
             session = __CalcNextUnsafeSessionID(session, init, max);
-            m_sessionTypeMappings[type] = session;
+            _sessionTypeMappings[type] = session;
 
             return session;
         }
@@ -168,7 +168,7 @@ namespace NovaEngine
         /// <param name="name">名称标识</param>
         public static void ResetSession(string name)
         {
-            lock (s_locked)
+            lock (_locked)
             {
                 ResetUnsafeSession(name);
             }
@@ -180,9 +180,9 @@ namespace NovaEngine
         /// <param name="name">名称标识</param>
         public static void ResetUnsafeSession(string name)
         {
-            if (m_sessionNameMappings.ContainsKey(name))
+            if (_sessionNameMappings.ContainsKey(name))
             {
-                m_sessionNameMappings.Remove(name);
+                _sessionNameMappings.Remove(name);
             }
         }
 
@@ -192,7 +192,7 @@ namespace NovaEngine
         /// <param name="type">类型标识</param>
         public static void ResetSession(int type)
         {
-            lock (s_locked)
+            lock (_locked)
             {
                 ResetUnsafeSession(type);
             }
@@ -204,9 +204,9 @@ namespace NovaEngine
         /// <param name="type">类型标识</param>
         public static void ResetUnsafeSession(int type)
         {
-            if (m_sessionTypeMappings.ContainsKey(type))
+            if (_sessionTypeMappings.ContainsKey(type))
             {
-                m_sessionTypeMappings.Remove(type);
+                _sessionTypeMappings.Remove(type);
             }
         }
 
@@ -215,7 +215,7 @@ namespace NovaEngine
         /// </summary>
         public static void CleanupAllSessions()
         {
-            lock (s_locked)
+            lock (_locked)
             {
                 CleanupAllUnsafeSessions();
             }
@@ -226,8 +226,8 @@ namespace NovaEngine
         /// </summary>
         public static void CleanupAllUnsafeSessions()
         {
-            m_sessionNameMappings.Clear();
-            m_sessionTypeMappings.Clear();
+            _sessionNameMappings.Clear();
+            _sessionTypeMappings.Clear();
         }
     }
 }

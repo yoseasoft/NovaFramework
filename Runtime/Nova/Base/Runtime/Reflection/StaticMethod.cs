@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -35,17 +35,17 @@ namespace NovaEngine
         /// <summary>
         /// 当前绑定的目标函数实例信息
         /// </summary>
-        private readonly SystemMethodInfo m_methodInfo;
+        private readonly SystemMethodInfo _methodInfo;
 
         /// <summary>
         /// 当前绑定函数的参数数量
         /// </summary>
-        private readonly int m_paramCount;
+        private readonly int _paramCount;
 
         /// <summary>
         /// 当前绑定函数的参数列表
         /// </summary>
-        private readonly object[] m_params;
+        private readonly object[] _params;
 
         /// <summary>
         /// 静态函数对象的构造函数
@@ -55,9 +55,9 @@ namespace NovaEngine
         /// <param name="methodName">函数名称</param>
         public StaticMethod(SystemAssembly assembly, string typeName, string methodName)
         {
-            m_methodInfo = assembly.GetType(typeName).GetMethod(methodName);
-            m_paramCount = m_methodInfo.GetParameters().Length;
-            m_params = new object[m_paramCount];
+            _methodInfo = assembly.GetType(typeName).GetMethod(methodName);
+            _paramCount = _methodInfo.GetParameters().Length;
+            _params = new object[_paramCount];
         }
 
         /// <summary>
@@ -65,9 +65,9 @@ namespace NovaEngine
         /// </summary>
         public virtual void Invoke()
         {
-            Logger.Assert(0 == m_paramCount, "Invalid parameters length.");
+            Logger.Assert(0 == _paramCount, "Invalid parameters length.");
 
-            m_methodInfo.Invoke(null, m_params);
+            _methodInfo.Invoke(null, _params);
         }
 
         /// <summary>
@@ -76,10 +76,10 @@ namespace NovaEngine
         /// <param name="arg1">参数1</param>
         public virtual void Invoke(object arg1)
         {
-            Logger.Assert(1 == m_paramCount, "Invalid parameters length.");
+            Logger.Assert(1 == _paramCount, "Invalid parameters length.");
 
-            m_params[0] = arg1;
-            m_methodInfo.Invoke(null, m_params);
+            _params[0] = arg1;
+            _methodInfo.Invoke(null, _params);
         }
 
         /// <summary>
@@ -89,11 +89,11 @@ namespace NovaEngine
         /// <param name="arg2">参数2</param>
         public virtual void Invoke(object arg1, object arg2)
         {
-            Logger.Assert(2 == m_paramCount, "Invalid parameters length.");
+            Logger.Assert(2 == _paramCount, "Invalid parameters length.");
 
-            m_params[0] = arg1;
-            m_params[1] = arg2;
-            m_methodInfo.Invoke(null, m_params);
+            _params[0] = arg1;
+            _params[1] = arg2;
+            _methodInfo.Invoke(null, _params);
         }
 
         /// <summary>
@@ -104,12 +104,12 @@ namespace NovaEngine
         /// <param name="arg3">参数3</param>
         public virtual void Invoke(object arg1, object arg2, object arg3)
         {
-            Logger.Assert(3 == m_paramCount, "Invalid parameters length.");
+            Logger.Assert(3 == _paramCount, "Invalid parameters length.");
 
-            m_params[0] = arg1;
-            m_params[1] = arg2;
-            m_params[2] = arg3;
-            m_methodInfo.Invoke(null, m_params);
+            _params[0] = arg1;
+            _params[1] = arg2;
+            _params[2] = arg3;
+            _methodInfo.Invoke(null, _params);
         }
     }
 }

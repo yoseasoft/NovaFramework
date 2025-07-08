@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -73,7 +73,7 @@ namespace NovaEngine
         /// <summary>
         /// 单例对象的实例管理容器
         /// </summary>
-        private static IDictionary<SystemType, ISingleton> s_instances = new Dictionary<SystemType, ISingleton>();
+        private static IDictionary<SystemType, ISingleton> _instances = new Dictionary<SystemType, ISingleton>();
 
         /// <summary>
         /// 获取指定类型的对象实例<br/>
@@ -90,13 +90,13 @@ namespace NovaEngine
                 Logger.Assert(Utility.Reflection.IsTypeOfInstantiableClass(classType), "Invalid arguments.");
             }
 
-            if (s_instances.TryGetValue(classType, out ISingleton instance))
+            if (_instances.TryGetValue(classType, out ISingleton instance))
             {
                 return instance as T;
             }
 
             instance = CreateInstance<T>();
-            s_instances.Add(classType, instance);
+            _instances.Add(classType, instance);
             return instance as T;
         }
 
@@ -137,14 +137,14 @@ namespace NovaEngine
         /// <param name="classType">对象类型</param>
         private static void ReleaseInstance(SystemType classType)
         {
-            if (false == s_instances.ContainsKey(classType))
+            if (false == _instances.ContainsKey(classType))
             {
                 Logger.Warn("Could not found any object instance with target class type '{0}', released instance failed.", classType.FullName);
                 return;
             }
 
-            ISingleton instance = s_instances[classType];
-            s_instances.Remove(classType);
+            ISingleton instance = _instances[classType];
+            _instances.Remove(classType);
 
             if (typeof(IInitializable).IsAssignableFrom(instance.GetType()))
             {
@@ -157,7 +157,7 @@ namespace NovaEngine
         /// </summary>
         internal static void ReleaseAllInstances()
         {
-            IList<SystemType> keys = Utility.Collection.ToList<SystemType>(s_instances.Keys);
+            IList<SystemType> keys = Utility.Collection.ToList<SystemType>(_instances.Keys);
             for (int n = 0; n < keys.Count; ++n)
             {
                 ReleaseInstance(keys[n]);
