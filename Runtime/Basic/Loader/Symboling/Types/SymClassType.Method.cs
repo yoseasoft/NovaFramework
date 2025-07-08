@@ -60,6 +60,11 @@ namespace GameEngine.Loader.Symboling
         private ParameterInfo[] m_parameters;
 
         /// <summary>
+        /// 函数参数类型
+        /// </summary>
+        private SystemType[] m_parameterTypes;
+
+        /// <summary>
         /// 函数是否为静态类型
         /// </summary>
         private bool m_isStatic;
@@ -82,9 +87,11 @@ namespace GameEngine.Loader.Symboling
 
                 ParameterInfo[] parameters = m_methodInfo.GetParameters();
                 m_parameters = new ParameterInfo[parameters.Length];
+                m_parameterTypes = new SystemType[parameters.Length];
                 for (int n = 0; n < parameters.Length; ++n)
                 {
                     m_parameters[n] = parameters[n];
+                    m_parameterTypes[n] = parameters[n].ParameterType;
                 }
 
                 m_isStatic = m_methodInfo.IsStatic;
@@ -97,6 +104,7 @@ namespace GameEngine.Loader.Symboling
         public SystemType ReturnType => m_returnType;
 
         public ParameterInfo[] Parameters => m_parameters;
+        public SystemType[] ParameterTypes => m_parameterTypes;
 
         public bool IsStatic => m_isStatic;
         public bool IsExtension => m_isExtension;
@@ -106,6 +114,9 @@ namespace GameEngine.Loader.Symboling
         ~SymMethod()
         {
             m_methodInfo = null;
+
+            m_parameters = null;
+            m_parameterTypes = null;
         }
 
         /// <summary>
@@ -122,6 +133,22 @@ namespace GameEngine.Loader.Symboling
             }
 
             return m_parameters[index];
+        }
+
+        /// <summary>
+        /// 获取指定索引指向的参数类型
+        /// </summary>
+        /// <param name="index">索引值</param>
+        /// <returns>返回给定索引的参数类型，若不存在返回null</returns>
+        public SystemType GetParameterType(int index)
+        {
+            if (index < 0 || index >= m_parameterTypes.Length)
+            {
+                Debugger.Warn("The method parameter type search index '{0}' out of the range, getted it failed.", index);
+                return null;
+            }
+
+            return m_parameterTypes[index];
         }
     }
 }

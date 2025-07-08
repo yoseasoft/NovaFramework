@@ -276,16 +276,21 @@ namespace GameEngine.Loader
         {
             handler = null;
 
+            Symboling.SymClass symClass = GetSymClassByType(targetType);
             IEnumerator<KeyValuePair<SystemType, LinkedList<OnCodeTypeLoadedHandler>>> e = s_codeTypeLoadedCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 if (e.Current.Key.IsSubclassOf(typeof(SystemAttribute)))
                 {
                     // 属性类的绑定回调
-                    IEnumerable<SystemAttribute> attrTypes = targetType.GetCustomAttributes();
-                    foreach (SystemAttribute attrType in attrTypes)
+                    // IEnumerable<SystemAttribute> attrTypes = targetType.GetCustomAttributes();
+                    IList<SystemType> attrTypes = symClass.FeatureTypes;
+                    // foreach (SystemAttribute attrType in attrTypes)
+                    for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
                     {
-                        if (e.Current.Key == attrType.GetType() || e.Current.Key.IsAssignableFrom(attrType.GetType()))
+                        // if (e.Current.Key == attrType.GetType() || e.Current.Key.IsAssignableFrom(attrType.GetType()))
+                        SystemType attrType = attrTypes[n];
+                        if (e.Current.Key == attrType || e.Current.Key.IsAssignableFrom(attrType))
                         {
                             handler = e.Current.Value;
                             return true;
@@ -320,16 +325,27 @@ namespace GameEngine.Loader
 
             IDictionary<SystemType, IList<OnCodeTypeLoadedHandler>> dict = null;
 
+            Symboling.SymClass symClass = GetSymClassByType(targetType);
             IEnumerator<KeyValuePair<SystemType, LinkedList<OnCodeTypeLoadedHandler>>> e = s_codeTypeLoadedCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 if (e.Current.Key.IsSubclassOf(typeof(SystemAttribute)))
                 {
+                    /**
+                     * fixed on 2025-07-08：
+                     * 将属性检测调整为从标记类中拿特性进行检测，这样可以支持构建标记类时动态增加新的特性；
+                     * 从而让外部的绑定工作更简单，只需要添加绑定函数，在构建标记类时通过检查绑定函数的特征，动态添加对应的特性标签；
+                     */
+
                     // 属性类的绑定回调
-                    IEnumerable<SystemAttribute> attrTypes = targetType.GetCustomAttributes();
-                    foreach (SystemAttribute attrType in attrTypes)
+                    // IEnumerable<SystemAttribute> attrTypes = targetType.GetCustomAttributes();
+                    IList<SystemType> attrTypes = symClass.FeatureTypes;
+                    // foreach (SystemAttribute attrType in attrTypes)
+                    for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
                     {
-                        if (e.Current.Key == attrType.GetType() || e.Current.Key.IsAssignableFrom(attrType.GetType()))
+                        // if (e.Current.Key == attrType.GetType() || e.Current.Key.IsAssignableFrom(attrType.GetType()))
+                        SystemType attrType = attrTypes[n];
+                        if (e.Current.Key == attrType || e.Current.Key.IsAssignableFrom(attrType))
                         {
                             if (null == dict) dict = new Dictionary<SystemType, IList<OnCodeTypeLoadedHandler>>();
                             Debugger.Assert(false == dict.ContainsKey(e.Current.Key), "Repeat added it failed.");
@@ -418,7 +434,7 @@ namespace GameEngine.Loader
         public static void AddCodeTypeLoadedCallback(SystemType targetType, OnCodeTypeLoadedHandler callback)
         {
             LinkedList<OnCodeTypeLoadedHandler> handlers = null;
-            if (false == TryGetCodeTypeLoadedHandler(targetType, out handlers))
+            if (false == s_codeTypeLoadedCallbacks.TryGetValue(targetType, out handlers))
             {
                 handlers = new LinkedList<OnCodeTypeLoadedHandler>();
                 handlers.AddLast(callback);
@@ -444,7 +460,7 @@ namespace GameEngine.Loader
         public static void RemoveCodeTypeLoadedCallback(SystemType targetType, OnCodeTypeLoadedHandler callback)
         {
             LinkedList<OnCodeTypeLoadedHandler> handlers = null;
-            if (false == TryGetCodeTypeLoadedHandler(targetType, out handlers))
+            if (false == s_codeTypeLoadedCallbacks.TryGetValue(targetType, out handlers))
             {
                 Debugger.Warn("Could not found any load callback from this type '{0}', remove it failed.", targetType.FullName);
                 return;

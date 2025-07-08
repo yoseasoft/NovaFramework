@@ -77,6 +77,7 @@ namespace GameEngine.Loader.Symboling
             {
                 SystemType interfaceType = interfaceTypes[n];
 
+                // 添加接口标识
                 symbol.AddInterfaceType(interfaceType);
             }
 
@@ -157,6 +158,9 @@ namespace GameEngine.Loader.Symboling
                     return null;
                 }
             }
+
+            // 个性化定制
+            DoPersonalizedCustomizationOfClass(symbol);
 
             return symbol;
         }

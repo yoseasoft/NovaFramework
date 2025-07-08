@@ -28,7 +28,6 @@ namespace Game.Sample.DispatchCall
     /// <summary>
     /// 事件构建类
     /// </summary>
-    [GameEngine.KeycodeSystem]
     static class EventBuilder
     {
         [GameEngine.OnKeycodeDispatchResponse((int) UnityEngine.KeyCode.Alpha1, GameEngine.InputOperationType.Released)]

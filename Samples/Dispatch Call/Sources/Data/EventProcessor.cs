@@ -33,7 +33,6 @@ namespace Game.Sample.DispatchCall
     /// <summary>
     /// 事件处理类
     /// </summary>
-    [GameEngine.EventSystem]
     static class EventProcessor
     {
         [GameEngine.OnEventDispatchCall(typeof(Player), EventNotify.PlayerUpgrade)]

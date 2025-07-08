@@ -179,11 +179,13 @@ namespace GameEngine.Loader
                 return IsInputClassCallbackExist(filterType);
             }
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
-            for (int n = 0; null != attrs && n < attrs.Count; ++n)
+            // IList<SystemAttribute> attrs = symClass.Attributes;
+            IList<SystemType> attrTypes = symClass.FeatureTypes;
+            for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
-                if (IsInputClassCallbackExist(attr.GetType()))
+                SystemType attrType = attrTypes[n];
+                // if (IsInputClassCallbackExist(attr.GetType()))
+                if (IsInputClassCallbackExist(attrType))
                 {
                     return true;
                 }
@@ -203,11 +205,13 @@ namespace GameEngine.Loader
         {
             SystemDelegate callback = null;
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
-            for (int n = 0; null != attrs && n < attrs.Count; ++n)
+            // IList<SystemAttribute> attrs = symClass.Attributes;
+            IList<SystemType> attrTypes = symClass.FeatureTypes;
+            for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
-                if (TryGetInputClassCallbackForTargetContainer(attr.GetType(), out callback, s_inputClassLoadCallbacks))
+                SystemType attrType = attrTypes[n];
+                // if (TryGetInputClassCallbackForTargetContainer(attr.GetType(), out callback, s_inputClassLoadCallbacks))
+                if (TryGetInputClassCallbackForTargetContainer(attrType, out callback, s_inputClassLoadCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
                     Debugger.Assert(null != handler, "Invalid input class load handler.");
@@ -228,11 +232,13 @@ namespace GameEngine.Loader
         {
             SystemDelegate callback = null;
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
-            for (int n = 0; null != attrs && n < attrs.Count; ++n)
+            // IList<SystemAttribute> attrs = symClass.Attributes;
+            IList<SystemType> attrTypes = symClass.FeatureTypes;
+            for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
-                if (TryGetInputClassCallbackForTargetContainer(attr.GetType(), out callback, s_inputCodeInfoLookupCallbacks))
+                SystemType attrType = attrTypes[n];
+                // if (TryGetInputClassCallbackForTargetContainer(attr.GetType(), out callback, s_inputCodeInfoLookupCallbacks))
+                if (TryGetInputClassCallbackForTargetContainer(attrType, out callback, s_inputCodeInfoLookupCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;
                     Debugger.Assert(null != handler, "Invalid input class lookup handler.");

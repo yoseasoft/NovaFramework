@@ -30,7 +30,6 @@ namespace Game.Sample.DispatchCall
     /// <summary>
     /// 主场景通知逻辑类
     /// </summary>
-    [GameEngine.ExtendSupported]
     static class MainSceneNotifySystem
     {
         [GameEngine.MessageListenerBindingOfTarget(typeof(EnterWorldResp))]

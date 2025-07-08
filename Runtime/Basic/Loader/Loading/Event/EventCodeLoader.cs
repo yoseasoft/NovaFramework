@@ -1,7 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -178,11 +180,13 @@ namespace GameEngine.Loader
                 return IsEventClassCallbackExist(filterType);
             }
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
-            for (int n = 0; null != attrs && n < attrs.Count; ++n)
+            // IList<SystemAttribute> attrs = symClass.Attributes;
+            IList<SystemType> attrTypes = symClass.FeatureTypes;
+            for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
-                if (IsEventClassCallbackExist(attr.GetType()))
+                SystemType attrType = attrTypes[n];
+                // if (IsEventClassCallbackExist(attr.GetType()))
+                if (IsEventClassCallbackExist(attrType))
                 {
                     return true;
                 }
@@ -202,11 +206,13 @@ namespace GameEngine.Loader
         {
             SystemDelegate callback = null;
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
-            for (int n = 0; null != attrs && n < attrs.Count; ++n)
+            // IList<SystemAttribute> attrs = symClass.Attributes;
+            IList<SystemType> attrTypes = symClass.FeatureTypes;
+            for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
-                if (TryGetEventClassCallbackForTargetContainer(attr.GetType(), out callback, s_eventClassLoadCallbacks))
+                SystemType attrType = attrTypes[n];
+                // if (TryGetEventClassCallbackForTargetContainer(attr.GetType(), out callback, s_eventClassLoadCallbacks))
+                if (TryGetEventClassCallbackForTargetContainer(attrType, out callback, s_eventClassLoadCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
                     Debugger.Assert(null != handler, "Invalid event class load handler.");
@@ -227,11 +233,13 @@ namespace GameEngine.Loader
         {
             SystemDelegate callback = null;
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
-            for (int n = 0; null != attrs && n < attrs.Count; ++n)
+            // IList<SystemAttribute> attrs = symClass.Attributes;
+            IList<SystemType> attrTypes = symClass.FeatureTypes;
+            for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
-                if (TryGetEventClassCallbackForTargetContainer(attr.GetType(), out callback, s_eventCodeInfoLookupCallbacks))
+                SystemType attrType = attrTypes[n];
+                // if (TryGetEventClassCallbackForTargetContainer(attr.GetType(), out callback, s_eventCodeInfoLookupCallbacks))
+                if (TryGetEventClassCallbackForTargetContainer(attrType, out callback, s_eventCodeInfoLookupCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;
                     Debugger.Assert(null != handler, "Invalid event class lookup handler.");

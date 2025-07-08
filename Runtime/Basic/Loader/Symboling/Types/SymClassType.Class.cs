@@ -188,7 +188,7 @@ namespace GameEngine.Loader.Symboling
 
             if (m_featureTypes.Contains(featureType))
             {
-                Debugger.Warn("The symbol class '{%f}' feature type '{%f}' was already exist, repeat added it failed.", m_classType, featureType);
+                // Debugger.Warn("The symbol class '{%f}' feature type '{%f}' was already exist, repeat added it failed.", m_classType, featureType);
                 return;
             }
 
