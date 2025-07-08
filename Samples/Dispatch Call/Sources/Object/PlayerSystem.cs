@@ -96,6 +96,14 @@ namespace Game.Sample.DispatchCall
             }
         }
 
+        [GameEngine.EventSubscribeBindingOfTarget(EventNotify.PlayerChaseTarget)]
+        private static void OnPlayerChaseTarget(this Player self)
+        {
+            self.GetComponent<MoveComponent>().OnMovingStart();
+
+            Debugger.Info("玩家对象‘{%s}’开始移动！", self.GetComponent<IdentityComponent>().objectName);
+        }
+
         public static string ToPlayerString(this Player self)
         {
             SystemStringBuilder sb = new SystemStringBuilder();

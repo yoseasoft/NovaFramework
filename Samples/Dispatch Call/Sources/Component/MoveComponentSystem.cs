@@ -41,9 +41,59 @@ namespace Game.Sample.DispatchCall
         {
         }
 
+        [GameEngine.OnAspectAfterCallOfTarget(typeof(MoveComponent), GameEngine.AspectBehaviourType.Update)]
+        static void Update(this MoveComponent self)
+        {
+            if (self.escape_time > NovaEngine.Facade.Timestamp.RealtimeSinceStartup)
+            {
+                self.MoveTo();
+            }
+        }
+
         [GameEngine.OnAspectBeforeCallOfTarget(typeof(MoveComponent), GameEngine.AspectBehaviourType.Destroy)]
         static void Destroy(this MoveComponent self)
         {
+        }
+
+        static void MoveTo(this MoveComponent self)
+        {
+            AttackComponent attackComponent = self.GetComponent<AttackComponent>();
+            Monster monster = null;
+            if (attackComponent.targetId > 0)
+            {
+                MainDataComponent mainDataComponent = GameEngine.SceneHandler.Instance.GetCurrentScene().GetComponent<MainDataComponent>();
+                monster = mainDataComponent.GetSoldierByUid(attackComponent.targetId) as Monster;
+            }
+
+            if (null == monster)
+            {
+                return;
+            }
+
+            TransformComponent ownerTransformComponent = self.GetComponent<TransformComponent>();
+            TransformComponent targetTransformComponent = monster.GetComponent<TransformComponent>();
+            float distance = UnityEngine.Vector3.Distance(ownerTransformComponent.position, targetTransformComponent.position);
+            if (distance >= 2f)
+            {
+                UnityEngine.Vector3 direction = UnityEngine.Vector3.Normalize(targetTransformComponent.position - ownerTransformComponent.position);
+                const float speed = 3f;
+
+                float move_distance = speed * NovaEngine.Facade.Timestamp.DeltaTime;
+                move_distance = UnityEngine.Mathf.Min(move_distance, distance / 2f);
+
+                UnityEngine.Vector3 old_position = ownerTransformComponent.position;
+                ownerTransformComponent.position += direction * move_distance;
+
+                Debugger.Info("角色对象‘{%s}’从源位置{{{%d},{%d},{%d}}}移动到目标位置{{{%d},{%d},{%d}}}！",
+                    self.GetComponent<IdentityComponent>().objectName,
+                    old_position.x, old_position.y, old_position.z,
+                    ownerTransformComponent.position.x, ownerTransformComponent.position.y, ownerTransformComponent.position.z);
+            }
+        }
+
+        public static void OnMovingStart(this MoveComponent self)
+        {
+            self.escape_time = NovaEngine.Facade.Timestamp.RealtimeSinceStartup + 0.3f;
         }
     }
 }

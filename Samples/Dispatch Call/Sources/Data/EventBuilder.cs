@@ -66,5 +66,11 @@ namespace Game.Sample.DispatchCall
 
             GameEngine.EventController.Instance.Send(EventNotify.PlayerUpgrade, exp);
         }
+
+        [GameEngine.OnKeycodeDispatchResponse((int) UnityEngine.KeyCode.Alpha5, GameEngine.InputOperationType.Released)]
+        static void OnPlayerChaseTargetEventSend(int keycode, int operationType)
+        {
+            GameEngine.EventController.Instance.Send(EventNotify.PlayerChaseTarget);
+        }
     }
 }
