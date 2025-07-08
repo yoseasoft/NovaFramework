@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -40,19 +40,19 @@ namespace NovaEngine
         /// <summary>
         /// 进行实例管理的对象链表容器
         /// </summary>
-        private readonly LinkedList<T> m_linkedList;
+        private readonly LinkedList<T> _linkedList;
         /// <summary>
         /// 缓存实例的对象队列容器
         /// </summary>
-        private readonly Queue<LinkedListNode<T>> m_cachedNodes;
+        private readonly Queue<LinkedListNode<T>> _cachedNodes;
 
         /// <summary>
         /// 标准链表的新实例构建接口
         /// </summary>
         public CacheLinkedList()
         {
-            m_linkedList = new LinkedList<T>();
-            m_cachedNodes = new Queue<LinkedListNode<T>>();
+            _linkedList = new LinkedList<T>();
+            _cachedNodes = new Queue<LinkedListNode<T>>();
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace NovaEngine
         /// </summary>
         public int Count
         {
-            get { return m_linkedList.Count; }
+            get { return _linkedList.Count; }
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace NovaEngine
         /// </summary>
         public int CachedCount
         {
-            get { return m_cachedNodes.Count; }
+            get { return _cachedNodes.Count; }
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace NovaEngine
         /// </summary>
         public LinkedListNode<T> First
         {
-            get { return m_linkedList.First; }
+            get { return _linkedList.First; }
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace NovaEngine
         /// </summary>
         public LinkedListNode<T> Last
         {
-            get { return m_linkedList.Last; }
+            get { return _linkedList.Last; }
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace NovaEngine
         /// </summary>
         public bool IsReadOnly
         {
-            get { return ((ICollection<T>) m_linkedList).IsReadOnly; }
+            get { return ((ICollection<T>) _linkedList).IsReadOnly; }
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace NovaEngine
         /// </summary>
         public object SyncRoot
         {
-            get { return ((ICollection) m_linkedList).SyncRoot; }
+            get { return ((ICollection) _linkedList).SyncRoot; }
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace NovaEngine
         /// </summary>
         public bool IsSynchronized
         {
-            get { return ((ICollection) m_linkedList).IsSynchronized; }
+            get { return ((ICollection) _linkedList).IsSynchronized; }
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace NovaEngine
         public LinkedListNode<T> AddAfter(LinkedListNode<T> node, T value)
         {
             LinkedListNode<T> newNode = AcquireNode(value);
-            m_linkedList.AddAfter(node, newNode);
+            _linkedList.AddAfter(node, newNode);
             return newNode;
         }
 
@@ -140,7 +140,7 @@ namespace NovaEngine
         /// <param name="newNode">指定的新节点</param>
         public void AddAfter(LinkedListNode<T> node, LinkedListNode<T> newNode)
         {
-            m_linkedList.AddAfter(node, newNode);
+            _linkedList.AddAfter(node, newNode);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace NovaEngine
         public LinkedListNode<T> AddBefore(LinkedListNode<T> node, T value)
         {
             LinkedListNode<T> newNode = AcquireNode(value);
-            m_linkedList.AddBefore(node, newNode);
+            _linkedList.AddBefore(node, newNode);
             return newNode;
         }
 
@@ -163,7 +163,7 @@ namespace NovaEngine
         /// <param name="newNode">指定的新节点</param>
         public void AddBefore(LinkedListNode<T> node, LinkedListNode<T> newNode)
         {
-            m_linkedList.AddBefore(node, newNode);
+            _linkedList.AddBefore(node, newNode);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace NovaEngine
         public LinkedListNode<T> AddFirst(T value)
         {
             LinkedListNode<T> node = AcquireNode(value);
-            m_linkedList.AddFirst(node);
+            _linkedList.AddFirst(node);
             return node;
         }
 
@@ -184,7 +184,7 @@ namespace NovaEngine
         /// <param name="node">指定的新节点</param>
         public void AddFirst(LinkedListNode<T> node)
         {
-            m_linkedList.AddFirst(node);
+            _linkedList.AddFirst(node);
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace NovaEngine
         public LinkedListNode<T> AddLast(T value)
         {
             LinkedListNode<T> node = AcquireNode(value);
-            m_linkedList.AddLast(node);
+            _linkedList.AddLast(node);
             return node;
         }
 
@@ -205,7 +205,7 @@ namespace NovaEngine
         /// <param name="node">指定的新节点</param>
         public void AddLast(LinkedListNode<T> node)
         {
-            m_linkedList.AddLast(node);
+            _linkedList.AddLast(node);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace NovaEngine
         /// </summary>
         public void Clear()
         {
-            LinkedListNode<T> current = m_linkedList.First;
+            LinkedListNode<T> current = _linkedList.First;
             while (null != current)
             {
                 LinkedListNode<T> next = current.Next;
@@ -221,7 +221,7 @@ namespace NovaEngine
                 current = next;
             }
 
-            m_linkedList.Clear();
+            _linkedList.Clear();
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace NovaEngine
         /// </summary>
         public void RemoveAllCachedNodes()
         {
-            m_cachedNodes.Clear();
+            _cachedNodes.Clear();
         }
 
         /// <summary>
@@ -239,7 +239,7 @@ namespace NovaEngine
         /// <returns>若链表中存在指定值则返回true，否则返回false</returns>
         public bool Contains(T value)
         {
-            return m_linkedList.Contains(value);
+            return _linkedList.Contains(value);
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace NovaEngine
         /// <param name="index">数组中从零开始的索引，从此处开始复制</param>
         public void CopyTo(T[] array, int index)
         {
-            m_linkedList.CopyTo(array, index);
+            _linkedList.CopyTo(array, index);
         }
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace NovaEngine
         /// <param name="index">数组中从零开始的索引，从此处开始复制</param>
         public void CopyTo(SystemArray array, int index)
         {
-            ((ICollection) m_linkedList).CopyTo(array, index);
+            ((ICollection) _linkedList).CopyTo(array, index);
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace NovaEngine
         /// <returns>返回包含指定值的第一个节点</returns>
         public LinkedListNode<T> Find(T value)
         {
-            return m_linkedList.Find(value);
+            return _linkedList.Find(value);
         }
 
         /// <summary>
@@ -279,7 +279,7 @@ namespace NovaEngine
         /// <returns>返回包含指定值的最后一个节点</returns>
         public LinkedListNode<T> FindLast(T value)
         {
-            return m_linkedList.FindLast(value);
+            return _linkedList.FindLast(value);
         }
 
         /// <summary>
@@ -289,10 +289,10 @@ namespace NovaEngine
         /// <returns>若节点移除成功则返回true，否则返回false</returns>
         public bool Remove(T value)
         {
-            LinkedListNode<T> node = m_linkedList.Find(value);
+            LinkedListNode<T> node = _linkedList.Find(value);
             if (null != node)
             {
-                m_linkedList.Remove(node);
+                _linkedList.Remove(node);
                 ReleaseNode(node);
                 return true;
             }
@@ -306,7 +306,7 @@ namespace NovaEngine
         /// <param name="node">指定的节点</param>
         public void Remove(LinkedListNode<T> node)
         {
-            m_linkedList.Remove(node);
+            _linkedList.Remove(node);
             ReleaseNode(node);
         }
 
@@ -315,13 +315,13 @@ namespace NovaEngine
         /// </summary>
         public void RemoveFirst()
         {
-            LinkedListNode<T> node = m_linkedList.First;
+            LinkedListNode<T> node = _linkedList.First;
             if (null == node)
             {
                 throw new CFrameworkException("First node is invalid.");
             }
 
-            m_linkedList.RemoveFirst();
+            _linkedList.RemoveFirst();
             ReleaseNode(node);
         }
 
@@ -330,22 +330,22 @@ namespace NovaEngine
         /// </summary>
         public void RemoveLast()
         {
-            LinkedListNode<T> node = m_linkedList.Last;
+            LinkedListNode<T> node = _linkedList.Last;
             if (null == node)
             {
                 throw new CFrameworkException("Last node is invalid.");
             }
 
-            m_linkedList.RemoveLast();
+            _linkedList.RemoveLast();
             ReleaseNode(node);
         }
 
         private LinkedListNode<T> AcquireNode(T value)
         {
             LinkedListNode<T> node = null;
-            if (m_cachedNodes.Count > 0)
+            if (_cachedNodes.Count > 0)
             {
-                node = m_cachedNodes.Dequeue();
+                node = _cachedNodes.Dequeue();
                 node.Value = value;
             }
             else
@@ -359,7 +359,7 @@ namespace NovaEngine
         private void ReleaseNode(LinkedListNode<T> node)
         {
             node.Value = default(T);
-            m_cachedNodes.Enqueue(node);
+            _cachedNodes.Enqueue(node);
         }
 
         /// <summary>
@@ -368,7 +368,7 @@ namespace NovaEngine
         /// <returns>循环访问集合的枚举数</returns>
         public Enumerator GetEnumerator()
         {
-            return new Enumerator(m_linkedList);
+            return new Enumerator(_linkedList);
         }
 
         /// <summary>

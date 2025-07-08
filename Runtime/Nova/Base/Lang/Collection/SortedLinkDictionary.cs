@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -50,12 +50,12 @@ namespace NovaEngine
         /// <summary>
         /// 针对该容器内部使用的缓冲池
         /// </summary>
-        private readonly Queue<Node> m_pool = new Queue<Node>();
+        private readonly Queue<Node> _pool = new Queue<Node>();
 
         /// <summary>
         /// 容器中节点对象的头索引
         /// </summary>
-        private Node m_head;
+        private Node _head;
 
         /// <summary>
         /// 从缓冲池中分配节点对象实例的操作函数
@@ -64,12 +64,12 @@ namespace NovaEngine
         /// <returns>返回有效的节点对象实例</returns>
         private Node Fetch()
         {
-            if (m_pool.Count == 0)
+            if (_pool.Count == 0)
             {
                 return new Node();
             }
 
-            return m_pool.Dequeue();
+            return _pool.Dequeue();
         }
 
         /// <summary>
@@ -82,9 +82,9 @@ namespace NovaEngine
             node.Value = default;
             node.Next = null;
 
-            if (m_pool.Count < MAX_POOL_SIZE)
+            if (_pool.Count < MAX_POOL_SIZE)
             {
-                m_pool.Enqueue(node);
+                _pool.Enqueue(node);
             }
         }
 
@@ -97,26 +97,26 @@ namespace NovaEngine
         public new void Add(TKey key, TValue value)
         {
             // 首次添加节点
-            if (null == m_head)
+            if (null == _head)
             {
                 Node node = Fetch();
                 node.Value = key;
-                m_head = node;
+                _head = node;
                 return;
             }
 
             // 与头节点进行对比
-            if (key.CompareTo(m_head.Value) < 0)
+            if (key.CompareTo(_head.Value) < 0)
             {
                 Node node = Fetch();
                 node.Value = key;
-                node.Next = m_head;
-                m_head = node;
+                node.Next = _head;
+                _head = node;
                 base.Add(key, value);
                 return;
             }
 
-            Node p = m_head;
+            Node p = _head;
             // 遍历对比进行插入
             while (true)
             {
@@ -159,12 +159,12 @@ namespace NovaEngine
         /// <returns>从当前映射容器中移除数据项成功则返回true，否则返回false</returns>
         public new bool Remove(TKey key)
         {
-            if (null == m_head)
+            if (null == _head)
             {
                 return false;
             }
 
-            Node p = m_head;
+            Node p = _head;
             // 遍历查找进行移除
             while (true)
             {

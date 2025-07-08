@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -35,8 +35,8 @@ namespace NovaEngine
     /// <typeparam name="T">指定双向链表的元素类型</typeparam>
     public struct DoubleLinkedList<T> : IEnumerable<T>, IEnumerable
     {
-        private readonly LinkedListNode<T> m_first;
-        private readonly LinkedListNode<T> m_terminal;
+        private readonly LinkedListNode<T> _first;
+        private readonly LinkedListNode<T> _terminal;
 
         /// <summary>
         /// 双向链表的新实例构建接口
@@ -50,8 +50,8 @@ namespace NovaEngine
                 throw new CFrameworkException("Range is invalid.");
             }
 
-            m_first = first;
-            m_terminal = terminal;
+            _first = first;
+            _terminal = terminal;
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace NovaEngine
         {
             get
             {
-                return (null != m_first && null != m_terminal && m_first != m_terminal);
+                return (null != _first && null != _terminal && _first != _terminal);
             }
         }
 
@@ -70,7 +70,7 @@ namespace NovaEngine
         /// </summary>
         public LinkedListNode<T> First
         {
-            get { return m_first; }
+            get { return _first; }
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace NovaEngine
         /// </summary>
         public LinkedListNode<T> Terminal
         {
-            get { return m_terminal; }
+            get { return _terminal; }
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace NovaEngine
                 }
 
                 int count = 0;
-                for (LinkedListNode<T> current = m_first; current != null && current != m_terminal; current = current.Next)
+                for (LinkedListNode<T> current = _first; current != null && current != _terminal; current = current.Next)
                 {
                     count++;
                 }
@@ -110,7 +110,7 @@ namespace NovaEngine
         /// <returns>若当前双向链表包含指定值则返回true，否则返回false</returns>
         public bool Contains(T value)
         {
-            for (LinkedListNode<T> current = m_first; current != null && current != m_terminal; current = current.Next)
+            for (LinkedListNode<T> current = _first; current != null && current != _terminal; current = current.Next)
             {
                 if (current.Value.Equals(value))
                 {
@@ -165,7 +165,7 @@ namespace NovaEngine
                 }
 
                 m_linkedListRange = range;
-                m_current = m_linkedListRange.m_first;
+                m_current = m_linkedListRange._first;
                 m_currentValue = default(T);
             }
 
@@ -204,7 +204,7 @@ namespace NovaEngine
             /// <returns>返回下一个节点</returns>
             public bool MoveNext()
             {
-                if (null == m_current || m_current == m_linkedListRange.m_terminal)
+                if (null == m_current || m_current == m_linkedListRange._terminal)
                 {
                     return false;
                 }
@@ -219,7 +219,7 @@ namespace NovaEngine
             /// </summary>
             void IEnumerator.Reset()
             {
-                m_current = m_linkedListRange.m_first;
+                m_current = m_linkedListRange._first;
                 m_currentValue = default(T);
             }
         }

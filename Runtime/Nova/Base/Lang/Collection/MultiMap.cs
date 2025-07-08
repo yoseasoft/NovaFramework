@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -44,11 +44,11 @@ namespace NovaEngine
         /// <summary>
         /// 最大缓冲区长度
         /// </summary>
-        private readonly int m_maxPoolSize = 0;
+        private readonly int _maxPoolSize = 0;
         /// <summary>
         /// 列表实例的缓冲区队列
         /// </summary>
-        private readonly Queue<List<TValue>> m_pool;
+        private readonly Queue<List<TValue>> _pool;
 
         /// <summary>
         /// 多值映射字典的新实例构造函数
@@ -56,8 +56,8 @@ namespace NovaEngine
         /// <param name="maxPoolSize">最大缓冲区长度</param>
         public MultiMap(int maxPoolSize)
         {
-            m_maxPoolSize = maxPoolSize;
-            m_pool = new Queue<List<TValue>>(maxPoolSize);
+            _maxPoolSize = maxPoolSize;
+            _pool = new Queue<List<TValue>>(maxPoolSize);
         }
 
         /// <summary>
@@ -91,10 +91,10 @@ namespace NovaEngine
         /// <returns>返回有效的列表对象实例</returns>
         private List<TValue> Fetch()
         {
-            if (m_pool.Count > 0)
+            if (_pool.Count > 0)
             {
                 // 弹出缓存实例
-                return m_pool.Dequeue();
+                return _pool.Dequeue();
             }
 
             return new List<TValue>(16);
@@ -111,14 +111,14 @@ namespace NovaEngine
             { return; }
 
             // 缓冲区达到上限，丢弃实例
-            if (m_pool.Count >= m_maxPoolSize)
+            if (_pool.Count >= _maxPoolSize)
             { return; }
 
             // 重置列表数据
             list.Clear();
 
             // 推入缓存实例
-            m_pool.Enqueue(list);
+            _pool.Enqueue(list);
         }
 
         /// <summary>

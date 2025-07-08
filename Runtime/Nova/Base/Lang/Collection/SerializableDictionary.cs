@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -32,30 +32,30 @@ namespace NovaEngine
     public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, UnityEngine.ISerializationCallbackReceiver
     {
         [UnityEngine.SerializeField, UnityEngine.HideInInspector]
-        private List<TKey> m_keys = new List<TKey>();
+        private List<TKey> _keys = new List<TKey>();
 
         [UnityEngine.SerializeField, UnityEngine.HideInInspector]
-        private List<TValue> m_values = new List<TValue>();
+        private List<TValue> _values = new List<TValue>();
 
         void UnityEngine.ISerializationCallbackReceiver.OnBeforeSerialize()
         {
             this.Clear();
 
-            for (int n = 0; n < m_keys.Count && n < m_values.Count; ++n)
+            for (int n = 0; n < _keys.Count && n < _values.Count; ++n)
             {
-                this[this.m_keys[n]] = this.m_values[n];
+                this[this._keys[n]] = this._values[n];
             }
         }
 
         void UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            this.m_keys.Clear();
-            this.m_values.Clear();
+            this._keys.Clear();
+            this._values.Clear();
 
             foreach (KeyValuePair<TKey, TValue> pair in this)
             {
-                this.m_keys.Add(pair.Key);
-                this.m_values.Add(pair.Value);
+                this._keys.Add(pair.Key);
+                this._values.Add(pair.Value);
             }
         }
     }

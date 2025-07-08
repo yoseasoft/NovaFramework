@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,16 +36,16 @@ namespace NovaEngine
     /// <typeparam name="TValue">指定多值字典的值类型</typeparam>
     public sealed class MultiDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, DoubleLinkedList<TValue>>>, IEnumerable
     {
-        private readonly CacheLinkedList<TValue> m_linkedList;
-        private readonly Dictionary<TKey, DoubleLinkedList<TValue>> m_dictionary;
+        private readonly CacheLinkedList<TValue> _linkedList;
+        private readonly Dictionary<TKey, DoubleLinkedList<TValue>> _dictionary;
 
         /// <summary>
         /// 多值字典的新实例构造函数
         /// </summary>
         public MultiDictionary()
         {
-            m_linkedList = new CacheLinkedList<TValue>();
-            m_dictionary = new Dictionary<TKey, DoubleLinkedList<TValue>>();
+            _linkedList = new CacheLinkedList<TValue>();
+            _dictionary = new Dictionary<TKey, DoubleLinkedList<TValue>>();
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace NovaEngine
         /// </summary>
         public int Count
         {
-            get { return m_dictionary.Count; }
+            get { return _dictionary.Count; }
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace NovaEngine
         /// <returns>若多值字典中包含指定主键则返回true，否则返回false</returns>
         public bool Contains(TKey key)
         {
-            return m_dictionary.ContainsKey(key);
+            return _dictionary.ContainsKey(key);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace NovaEngine
         public bool Contains(TKey key, TValue value)
         {
             DoubleLinkedList<TValue> range = default(DoubleLinkedList<TValue>);
-            if (m_dictionary.TryGetValue(key, out range))
+            if (_dictionary.TryGetValue(key, out range))
             {
                 return range.Contains(value);
             }
@@ -99,7 +99,7 @@ namespace NovaEngine
         /// <returns>若获取成功返回true，否则返回false</returns>
         public bool TryGetValue(TKey key, out DoubleLinkedList<TValue> range)
         {
-            return m_dictionary.TryGetValue(key, out range);
+            return _dictionary.TryGetValue(key, out range);
         }
 
         /// <summary>
@@ -110,15 +110,15 @@ namespace NovaEngine
         public void Add(TKey key, TValue value)
         {
             DoubleLinkedList<TValue> range = default(DoubleLinkedList<TValue>);
-            if (m_dictionary.TryGetValue(key, out range))
+            if (_dictionary.TryGetValue(key, out range))
             {
-                m_linkedList.AddBefore(range.Terminal, value);
+                _linkedList.AddBefore(range.Terminal, value);
             }
             else
             {
-                LinkedListNode<TValue> first = m_linkedList.AddLast(value);
-                LinkedListNode<TValue> terminal = m_linkedList.AddLast(default(TValue));
-                m_dictionary.Add(key, new DoubleLinkedList<TValue>(first, terminal));
+                LinkedListNode<TValue> first = _linkedList.AddLast(value);
+                LinkedListNode<TValue> terminal = _linkedList.AddLast(default(TValue));
+                _dictionary.Add(key, new DoubleLinkedList<TValue>(first, terminal));
             }
         }
 
@@ -131,7 +131,7 @@ namespace NovaEngine
         public bool Remove(TKey key, TValue value)
         {
             DoubleLinkedList<TValue> range = default(DoubleLinkedList<TValue>);
-            if (m_dictionary.TryGetValue(key, out range))
+            if (_dictionary.TryGetValue(key, out range))
             {
                 for (LinkedListNode<TValue> current = range.First; current != null && current != range.Terminal; current = current.Next)
                 {
@@ -142,16 +142,16 @@ namespace NovaEngine
                             LinkedListNode<TValue> next = current.Next;
                             if (next == range.Terminal)
                             {
-                                m_linkedList.Remove(next);
-                                m_dictionary.Remove(key);
+                                _linkedList.Remove(next);
+                                _dictionary.Remove(key);
                             }
                             else
                             {
-                                m_dictionary[key] = new DoubleLinkedList<TValue>(next, range.Terminal);
+                                _dictionary[key] = new DoubleLinkedList<TValue>(next, range.Terminal);
                             }
                         }
 
-                        m_linkedList.Remove(current);
+                        _linkedList.Remove(current);
                         return true;
                     }
                 }
@@ -168,15 +168,15 @@ namespace NovaEngine
         public bool RemoveAll(TKey key)
         {
             DoubleLinkedList<TValue> range = default(DoubleLinkedList<TValue>);
-            if (m_dictionary.TryGetValue(key, out range))
+            if (_dictionary.TryGetValue(key, out range))
             {
-                m_dictionary.Remove(key);
+                _dictionary.Remove(key);
 
                 LinkedListNode<TValue> current = range.First;
                 while (null != current)
                 {
                     LinkedListNode<TValue> next = current != range.Terminal ? current.Next : null;
-                    m_linkedList.Remove(current);
+                    _linkedList.Remove(current);
                     current = next;
                 }
 
@@ -191,8 +191,8 @@ namespace NovaEngine
         /// </summary>
         public void Clear()
         {
-            m_dictionary.Clear();
-            m_linkedList.Clear();
+            _dictionary.Clear();
+            _linkedList.Clear();
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace NovaEngine
             get
             {
                 DoubleLinkedList<TValue> range = default(DoubleLinkedList<TValue>);
-                m_dictionary.TryGetValue(key, out range);
+                _dictionary.TryGetValue(key, out range);
                 return range;
             }
         }
@@ -216,7 +216,7 @@ namespace NovaEngine
         /// <returns>循环访问集合的枚举数</returns>
         public Enumerator GetEnumerator()
         {
-            return new Enumerator(m_dictionary);
+            return new Enumerator(_dictionary);
         }
 
         /// <summary>

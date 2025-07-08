@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -35,18 +35,18 @@ namespace NovaEngine
     /// <typeparam name="TValue">字典的值类型</typeparam>
     public class CompositeKeyMap<TClassKey, TNameKey, TValue> : IEnumerable<TValue>, IEnumerable
     {
-        private readonly DoubleMap<TClassKey, TNameKey> m_keyMap;
-        private readonly Dictionary<TClassKey, TValue> m_classValueMap;
-        private readonly Dictionary<TNameKey, TValue> m_nameValueMap;
+        private readonly DoubleMap<TClassKey, TNameKey> _keyMap;
+        private readonly Dictionary<TClassKey, TValue>  _classValueMap;
+        private readonly Dictionary<TNameKey, TValue>   _nameValueMap;
 
         /// <summary>
         /// 复合键映射字典的新实例构造函数
         /// </summary>
         public CompositeKeyMap()
         {
-            m_keyMap = new DoubleMap<TClassKey, TNameKey>();
-            m_classValueMap = new Dictionary<TClassKey, TValue>();
-            m_nameValueMap = new Dictionary<TNameKey, TValue>();
+            _keyMap = new DoubleMap<TClassKey, TNameKey>();
+            _classValueMap = new Dictionary<TClassKey, TValue>();
+            _nameValueMap = new Dictionary<TNameKey, TValue>();
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace NovaEngine
         /// </summary>
         public int Count
         {
-            get { return m_keyMap.Count; }
+            get { return _keyMap.Count; }
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace NovaEngine
         /// </summary>
         public Dictionary<TClassKey, TValue>.KeyCollection AllClassKeys
         {
-            get { return m_classValueMap.Keys; }
+            get { return _classValueMap.Keys; }
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace NovaEngine
         /// </summary>
         public Dictionary<TNameKey, TValue>.KeyCollection AllNameKeys
         {
-            get { return m_nameValueMap.Keys; }
+            get { return _nameValueMap.Keys; }
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace NovaEngine
         /// <returns>若复合字典中包含指定主键则返回true，否则返回false</returns>
         public bool ContainsKey(TClassKey key)
         {
-            return m_keyMap.ContainsKey(key);
+            return _keyMap.ContainsKey(key);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace NovaEngine
         /// <returns>若复合字典中包含指定主键则返回true，否则返回false</returns>
         public bool ContainsKey(TNameKey key)
         {
-            return m_keyMap.ContainsValue(key);
+            return _keyMap.ContainsValue(key);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace NovaEngine
         /// <returns>若获取成功返回true，否则返回false</returns>
         public bool TryGetValue(TClassKey key, out TValue value)
         {
-            return m_classValueMap.TryGetValue(key, out value);
+            return _classValueMap.TryGetValue(key, out value);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace NovaEngine
         /// <returns>若获取成功返回true，否则返回false</returns>
         public bool TryGetValue(TNameKey key, out TValue value)
         {
-            return m_nameValueMap.TryGetValue(key, out value);
+            return _nameValueMap.TryGetValue(key, out value);
         }
 
         /// <summary>
@@ -138,9 +138,9 @@ namespace NovaEngine
                 return false;
             }
 
-            m_keyMap.Add(ckey, nkey);
-            m_classValueMap.Add(ckey, value);
-            m_nameValueMap.Add(nkey, value);
+            _keyMap.Add(ckey, nkey);
+            _classValueMap.Add(ckey, value);
+            _nameValueMap.Add(nkey, value);
             return true;
         }
 
@@ -150,15 +150,15 @@ namespace NovaEngine
         /// <param name="key">指定的主键</param>
         public void Remove(TClassKey key)
         {
-            if (false == m_keyMap.TryGetValueByKey(key, out TNameKey nameKey))
+            if (false == _keyMap.TryGetValueByKey(key, out TNameKey nameKey))
             {
                 Logger.Warn("Could not found any value with class key '{%o}', removed it failed.", key);
                 return;
             }
 
-            m_keyMap.RemoveByKey(key);
-            m_classValueMap.Remove(key);
-            m_nameValueMap.Remove(nameKey);
+            _keyMap.RemoveByKey(key);
+            _classValueMap.Remove(key);
+            _nameValueMap.Remove(nameKey);
         }
 
         /// <summary>
@@ -167,15 +167,15 @@ namespace NovaEngine
         /// <param name="key">指定的主键</param>
         public void Remove(TNameKey key)
         {
-            if (false == m_keyMap.TryGetKeyByValue(key, out TClassKey classKey))
+            if (false == _keyMap.TryGetKeyByValue(key, out TClassKey classKey))
             {
                 Logger.Warn("Could not found any value with name key '{%o}', removed it failed.", key);
                 return;
             }
 
-            m_keyMap.RemoveByValue(key);
-            m_classValueMap.Remove(classKey);
-            m_nameValueMap.Remove(key);
+            _keyMap.RemoveByValue(key);
+            _classValueMap.Remove(classKey);
+            _nameValueMap.Remove(key);
         }
 
         /// <summary>
@@ -183,9 +183,9 @@ namespace NovaEngine
         /// </summary>
         public void Clear()
         {
-            m_keyMap.Clear();
-            m_classValueMap.Clear();
-            m_nameValueMap.Clear();
+            _keyMap.Clear();
+            _classValueMap.Clear();
+            _nameValueMap.Clear();
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace NovaEngine
         /// <returns>循环访问集合的枚举数</returns>
         public Enumerator GetEnumerator()
         {
-            return new Enumerator(m_classValueMap.Values);
+            return new Enumerator(_classValueMap.Values);
         }
 
         /// <summary>

@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -34,18 +34,18 @@ namespace NovaEngine
         /// <summary>
         /// 正向关联的映射对象容器实例
         /// </summary>
-        private readonly IDictionary<TKey, TValue> m_kv = null;
+        private readonly IDictionary<TKey, TValue> _kv = null;
         /// <summary>
         /// 反向关联的映射对象容器实例
         /// </summary>
-        private readonly IDictionary<TValue, TKey> m_vk = null;
+        private readonly IDictionary<TValue, TKey> _vk = null;
 
         /// <summary>
         /// 获取当前映射容器所有的键列表
         /// </summary>
         public IList<TKey> Keys
         {
-            get { return new List<TKey>(m_kv.Keys); }
+            get { return new List<TKey>(_kv.Keys); }
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace NovaEngine
         /// </summary>
         public IList<TValue> Values
         {
-            get { return new List<TValue>(m_vk.Keys); }
+            get { return new List<TValue>(_vk.Keys); }
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace NovaEngine
         /// </summary>
         public int Count
         {
-            get { return m_kv.Count; }
+            get { return _kv.Count; }
         }
 
         /// <summary>
@@ -69,8 +69,8 @@ namespace NovaEngine
         /// </summary>
         public DoubleMap()
         {
-            m_kv = new Dictionary<TKey, TValue>();
-            m_vk = new Dictionary<TValue, TKey>();
+            _kv = new Dictionary<TKey, TValue>();
+            _vk = new Dictionary<TValue, TKey>();
         }
 
         /// <summary>
@@ -79,8 +79,8 @@ namespace NovaEngine
         /// <param name="capacity">初始容器空间大小</param>
         public DoubleMap(int capacity)
         {
-            m_kv = new Dictionary<TKey, TValue>(capacity);
-            m_vk = new Dictionary<TValue, TKey>(capacity);
+            _kv = new Dictionary<TKey, TValue>(capacity);
+            _vk = new Dictionary<TValue, TKey>(capacity);
         }
 
         /// <summary>
@@ -104,10 +104,10 @@ namespace NovaEngine
             }
 
             // Dictionary<TKey, TValue>.KeyCollection keys = m_kv.Keys;
-            ICollection<TKey> keys = m_kv.Keys;
+            ICollection<TKey> keys = _kv.Keys;
             foreach (TKey key in keys)
             {
-                action(key, m_kv[key]);
+                action(key, _kv[key]);
             }
         }
 
@@ -119,15 +119,15 @@ namespace NovaEngine
         public void Add(TKey key, TValue value)
         {
             if (null == key || null == value ||
-                m_kv.ContainsKey(key) || m_vk.ContainsKey(value))
+                _kv.ContainsKey(key) || _vk.ContainsKey(value))
             {
                 Logger.Warn("Invalid arguments.");
                 return;
             }
 
             // 在两个容器中分别进行数据新增
-            m_kv.Add(key, value);
-            m_vk.Add(value, key);
+            _kv.Add(key, value);
+            _vk.Add(value, key);
         }
 
         /// <summary>
@@ -137,9 +137,9 @@ namespace NovaEngine
         /// <returns>返回给定键对应的映射值，若不存在该键则返回值类型的默认值</returns>
         public TValue GetValueByKey(TKey key)
         {
-            if (null != key && m_kv.ContainsKey(key))
+            if (null != key && _kv.ContainsKey(key))
             {
-                return m_kv[key];
+                return _kv[key];
             }
 
             return default(TValue);
@@ -153,9 +153,9 @@ namespace NovaEngine
         /// <returns>若查找映射值成功则返回true，否则返回false</returns>
         public bool TryGetValueByKey(TKey key, out TValue value)
         {
-            if (null != key && m_kv.ContainsKey(key))
+            if (null != key && _kv.ContainsKey(key))
             {
-                value = m_kv[key];
+                value = _kv[key];
                 return true;
             }
 
@@ -171,9 +171,9 @@ namespace NovaEngine
         /// <returns>返回给定映射值对应的键信息，若不存在该值则返回键类型的默认值</returns>
         public TKey GetKeyByValue(TValue value)
         {
-            if (null != value && m_vk.ContainsKey(value))
+            if (null != value && _vk.ContainsKey(value))
             {
-                return m_vk[value];
+                return _vk[value];
             }
 
             return default(TKey);
@@ -187,9 +187,9 @@ namespace NovaEngine
         /// <returns>若查找键信息成功则返回true，否则返回false</returns>
         public bool TryGetKeyByValue(TValue value, out TKey key)
         {
-            if (null != value && m_vk.ContainsKey(value))
+            if (null != value && _vk.ContainsKey(value))
             {
-                key = m_vk[value];
+                key = _vk[value];
                 return true;
             }
 
@@ -205,14 +205,14 @@ namespace NovaEngine
         public void RemoveByKey(TKey key)
         {
             TValue value;
-            if (null == key || !m_kv.TryGetValue(key, out value))
+            if (null == key || !_kv.TryGetValue(key, out value))
             {
                 return;
             }
 
             // 在两个容器中分别进行数据移除操作
-            m_kv.Remove(key);
-            m_vk.Remove(value);
+            _kv.Remove(key);
+            _vk.Remove(value);
         }
 
         /// <summary>
@@ -222,14 +222,14 @@ namespace NovaEngine
         public void RemoveByValue(TValue value)
         {
             TKey key;
-            if (null == value || !m_vk.TryGetValue(value, out key))
+            if (null == value || !_vk.TryGetValue(value, out key))
             {
                 return;
             }
 
             // 在两个容器中分别进行数据移除操作
-            m_kv.Remove(key);
-            m_vk.Remove(value);
+            _kv.Remove(key);
+            _vk.Remove(value);
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace NovaEngine
                 return false;
             }
 
-            return m_kv.ContainsKey(key);
+            return _kv.ContainsKey(key);
         }
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace NovaEngine
                 return false;
             }
 
-            return m_vk.ContainsKey(value);
+            return _vk.ContainsKey(value);
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace NovaEngine
                 return false;
             }
 
-            return m_kv.ContainsKey(key) && m_vk.ContainsKey(value);
+            return _kv.ContainsKey(key) && _vk.ContainsKey(value);
         }
 
         /// <summary>
@@ -283,8 +283,8 @@ namespace NovaEngine
         /// </summary>
         public void Clear()
         {
-            m_kv.Clear();
-            m_vk.Clear();
+            _kv.Clear();
+            _vk.Clear();
         }
     }
 }
