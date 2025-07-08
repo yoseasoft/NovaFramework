@@ -1,10 +1,10 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -44,22 +44,22 @@ namespace NovaEngine
         /// <summary>
         /// 表现层对象静态实例
         /// </summary>
-        private static Facade s_instance = null;
+        private static Facade _instance = null;
 
         /// <summary>
         /// 引擎对象实例
         /// </summary>
-        private readonly Engine m_engine = null;
+        private readonly Engine _engine = null;
 
         /// <summary>
         /// 表现层所依赖的根节点组件实例
         /// </summary>
-        // private readonly UnityGameObject m_rootGameObject = null;
+        // private readonly UnityGameObject _rootGameObject = null;
 
         /// <summary>
         /// 表现层所依赖的MONO对象组件实例
         /// </summary>
-        // private readonly UnityMonoBehaviour m_monoBehaviour = null;
+        // private readonly UnityMonoBehaviour _monoBehaviour = null;
 
         /// <summary>
         /// 表现层对象构造函数
@@ -69,9 +69,9 @@ namespace NovaEngine
         {
             // 初始化根节点组件实例
             // 该实例一旦初始化后不可更改
-            m_engine = engine;
-            // m_rootGameObject = engine.MonoBehaviour.gameObject;
-            // m_monoBehaviour = engine.MonoBehaviour;
+            _engine = engine;
+            // _rootGameObject = engine.MonoBehaviour.gameObject;
+            // _monoBehaviour = engine.MonoBehaviour;
         }
 
         /// <summary>
@@ -79,9 +79,9 @@ namespace NovaEngine
         /// </summary>
         ~Facade()
         {
-            // m_engine = null;
-            // m_rootGameObject = null;
-            // m_monoBehaviour = null;
+            // _engine = null;
+            // _rootGameObject = null;
+            // _monoBehaviour = null;
         }
 
         /// <summary>
@@ -91,12 +91,12 @@ namespace NovaEngine
         protected virtual bool Initialize()
         {
             // 该初始化接口仅可调用一次，若需再次初始化该接口，需将之前的实例销毁掉
-            Logger.Assert(null == s_instance);
+            Logger.Assert(null == _instance);
 
-            // if (null == m_rootGameObject) { Logger.Error("管理器对象的根节点组件实例为空，不可添加组件实例及进行MONO协程调度！"); return false; }
+            // if (null == _rootGameObject) { Logger.Error("管理器对象的根节点组件实例为空，不可添加组件实例及进行MONO协程调度！"); return false; }
 
             // 将当前对象赋予表现层静态实例
-            s_instance = this;
+            _instance = this;
 
             // 初始化模块控制器的配置信息
             ModuleController.Config.InitModuleConfigure();
@@ -117,7 +117,7 @@ namespace NovaEngine
         /// <returns>返回表现层的静态实例对象</returns>
         public static Facade Instance
         {
-            get { return s_instance; }
+            get { return _instance; }
         }
 
         /// <summary>
@@ -125,16 +125,16 @@ namespace NovaEngine
         /// </summary>
         public static Facade Create(Engine engine)
         {
-            if (s_instance == null)
+            if (_instance == null)
             {
                 Facade facade = new Facade(engine);
                 if (facade.Initialize())
                 {
-                    s_instance = facade;
+                    _instance = facade;
                 }
             }
 
-            return s_instance;
+            return _instance;
         }
 
         /// <summary>
@@ -142,10 +142,10 @@ namespace NovaEngine
         /// </summary>
         public static void Destroy()
         {
-            if (s_instance != null)
+            if (_instance != null)
             {
-                s_instance.Cleanup();
-                s_instance = null;
+                _instance.Cleanup();
+                _instance = null;
             }
         }
 
@@ -201,7 +201,7 @@ namespace NovaEngine
             System.GC.Collect();
         }
 
-        #region 消息指令与模块对象注册/转发接口
+        #region 模块对象与模块指令的注册/转发接口函数
 
         /// <summary>
         /// 发送模块指令，由当前系统控制器立即执行处理
@@ -234,7 +234,7 @@ namespace NovaEngine
 
         #endregion
 
-        #region 线程/协程组件调用操作接口
+        #region 线程/协程组件调用操作接口函数
 
         /// <summary>
         /// 执行协程调度接口

@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -165,9 +165,9 @@ namespace NovaEngine
             UnityGameObject gameObject = new UnityGameObject(name);
             CFrameworkComponent component = (CFrameworkComponent) gameObject.AddUniqueComponent(componentType);
 
-            if (null != s_rootGameObject)
+            if (null != _rootGameObject)
             {
-                s_rootGameObject.AddChild(gameObject);
+                _rootGameObject.AddChild(gameObject);
             }
             else
             {

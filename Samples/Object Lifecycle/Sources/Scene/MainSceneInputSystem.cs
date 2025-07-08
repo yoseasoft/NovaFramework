@@ -28,7 +28,6 @@ namespace Game.Sample.ObjectLifecycle
     /// <summary>
     /// 主场景输入逻辑类
     /// </summary>
-    [GameEngine.KeycodeSystem]
     static class MainSceneInputSystem
     {
         [GameEngine.OnKeycodeDispatchResponse((int) UnityEngine.KeyCode.A, GameEngine.InputOperationType.Released)]

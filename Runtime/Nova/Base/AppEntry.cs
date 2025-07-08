@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -42,38 +42,38 @@ namespace NovaEngine
         /// <summary>
         /// 程序管理器的实例运行状态标识
         /// </summary>
-        private static bool s_isRunning = false;
+        private static bool _isRunning = false;
 
         /// <summary>
         /// 程序调度的根节点对象实例
         /// </summary>
-        private static UnityGameObject s_rootGameObject = null;
+        private static UnityGameObject _rootGameObject = null;
         /// <summary>
         /// 程序调度的根控制器对象实例
         /// </summary>
-        private static UnityMonoBehaviour s_rootController = null;
+        private static UnityMonoBehaviour _rootController = null;
 
         /// <summary>
         /// 引擎对象实例
         /// </summary>
-        private static Engine s_engine = null;
+        private static Engine _engine = null;
 
         /// <summary>
         /// 获取当前调度器运行状态标识
         /// </summary>
-        public static bool IsRunning => s_isRunning;
+        public static bool IsRunning => _isRunning;
         /// <summary>
         /// 获取当前调度器的根节点对象实例
         /// </summary>
-        public static UnityGameObject RootGameObject => s_rootGameObject;
+        public static UnityGameObject RootGameObject => _rootGameObject;
         /// <summary>
         /// 获取当前调度器的根控制器对象实例
         /// </summary>
-        public static UnityMonoBehaviour RootController => s_rootController;
+        public static UnityMonoBehaviour RootController => _rootController;
         /// <summary>
         /// 获取当前程序的引擎对象实例
         /// </summary>
-        public static Engine Engine => s_engine;
+        public static Engine Engine => _engine;
 
         /// <summary>
         /// 总控对象实例创建函数
@@ -81,10 +81,10 @@ namespace NovaEngine
         /// <returns>若实例创建成功返回true，否则返回false</returns>
         public static bool Create()
         {
-            Logger.Assert(null == s_engine, "Cannot created one more time.");
+            Logger.Assert(null == _engine, "Cannot created one more time.");
 
             // 创建引擎实例
-            s_engine = Engine.Create();
+            _engine = Engine.Create();
 
             return true;
         }
@@ -106,9 +106,9 @@ namespace NovaEngine
                 }
 
                 UnityComponent[] components = gameObject.GetComponents<UnityComponent>();
-                for (int n = 0; null != s_rootController && n < components.Length; ++n)
+                for (int n = 0; null != _rootController && n < components.Length; ++n)
                 {
-                    if (s_rootController == components[n])
+                    if (_rootController == components[n])
                     {
                         controller = components[n] as UnityMonoBehaviour;
                         break;
@@ -122,9 +122,9 @@ namespace NovaEngine
                 }
 
                 // 初始化根节点实例
-                s_rootGameObject = gameObject;
+                _rootGameObject = gameObject;
                 // 初始化根控制器实例
-                s_rootController = controller;
+                _rootController = controller;
             }
 
             return Create();
@@ -135,7 +135,7 @@ namespace NovaEngine
         /// </summary>
         public static void Destroy()
         {
-            if (s_isRunning)
+            if (_isRunning)
             {
                 // 如果处于运行状态，则需要先关闭调度器
                 Shutdown();
@@ -143,10 +143,10 @@ namespace NovaEngine
 
             // 销毁引擎实例
             Engine.Destroy();
-            s_engine = null;
+            _engine = null;
 
-            s_rootController = null;
-            s_rootGameObject = null;
+            _rootController = null;
+            _rootGameObject = null;
         }
 
         /// <summary>
@@ -154,18 +154,18 @@ namespace NovaEngine
         /// </summary>
         public static void Startup()
         {
-            Logger.Assert(null != s_engine, "Invalid arguments.");
+            Logger.Assert(null != _engine, "Invalid arguments.");
 
-            if (s_engine.IsOnStartup)
+            if (_engine.IsOnStartup)
             {
                 Logger.Warn("The App entry is already running, cannot repeat start it.");
                 return;
             }
 
             // 引擎实例启动
-            s_engine.Startup();
+            _engine.Startup();
 
-            s_isRunning = true;
+            _isRunning = true;
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace NovaEngine
         /// </summary>
         public static void Shutdown()
         {
-            if (null == s_engine || false == s_engine.IsOnStartup)
+            if (null == _engine || false == _engine.IsOnStartup)
             {
                 return;
             }
@@ -184,9 +184,9 @@ namespace NovaEngine
             RemoveAllComponents();
 
             // 引擎实例关闭
-            s_engine.Shutdown();
+            _engine.Shutdown();
 
-            s_isRunning = false;
+            _isRunning = false;
         }
 
         /// <summary>
@@ -194,9 +194,9 @@ namespace NovaEngine
         /// </summary>
         public static void Update()
         {
-            if (s_isRunning)
+            if (_isRunning)
             {
-                s_engine.Update();
+                _engine.Update();
             }
 
             // 管理器刷新通知
@@ -208,9 +208,9 @@ namespace NovaEngine
         /// </summary>
         public static void LateUpdate()
         {
-            if (s_isRunning)
+            if (_isRunning)
             {
-                s_engine.LateUpdate();
+                _engine.LateUpdate();
             }
 
             // 管理器后置刷新通知
