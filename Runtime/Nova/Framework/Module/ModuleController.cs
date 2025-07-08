@@ -142,7 +142,7 @@ namespace NovaEngine
             {
                 lock (s_waitingActions)
                 {
-                    float t = Facade.Timestamp.Time;
+                    float t = Timestamp.Time;
                     for (int n = s_waitingActions.Count - 1; n >= 0; --n)
                     {
                         TaskInvokeAction task = s_waitingActions[n];
@@ -410,7 +410,7 @@ namespace NovaEngine
             float time = 0f;
             if (delay > 0f)
             {
-                time = Facade.Timestamp.Time + delay;
+                time = Timestamp.Time + delay;
             }
 
             lock (s_waitingActions)

@@ -52,7 +52,7 @@ namespace Game.Sample
             }
 
             int hash = obj.GetHashCode();
-            int frame = NovaEngine.Facade.Timestamp.FrameCount;
+            int frame = NovaEngine.Timestamp.FrameCount;
 
             if (false == GameEntityUpdateCallStat.TryGetValue(hash, out int v))
             {

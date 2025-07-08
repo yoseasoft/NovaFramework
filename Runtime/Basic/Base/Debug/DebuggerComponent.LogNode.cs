@@ -122,7 +122,7 @@ namespace GameEngine.Debug
             {
                 LogNode node = NovaEngine.ReferencePool.Acquire<LogNode>();
                 node.m_time = SystemDateTime.UtcNow;
-                node.m_frameCount = NovaEngine.Facade.Timestamp.FrameCount;
+                node.m_frameCount = NovaEngine.Timestamp.FrameCount;
                 node.m_type = type;
                 node.m_message = message;
                 node.m_stackTrace = stackTrace;

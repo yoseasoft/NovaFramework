@@ -49,7 +49,7 @@ namespace Game.Sample.DispatchCall
                 SkillComponent.Skill skill = self.skills[n];
                 if (!skill.is_coolingdown)
                 {
-                    if (skill.last_used_time >= NovaEngine.Facade.Timestamp.RealtimeSinceStartup)
+                    if (skill.last_used_time >= NovaEngine.Timestamp.RealtimeSinceStartup)
                     {
                         skill.is_coolingdown = true;
                         Debugger.Warn("角色对象‘{%s}’的技能‘{%s}’已冷却！", ((Soldier) self.Entity).GetComponent<IdentityComponent>().objectName, skill.name);
@@ -72,7 +72,7 @@ namespace Game.Sample.DispatchCall
             }
 
             skill.is_coolingdown = false;
-            skill.last_used_time = NovaEngine.Facade.Timestamp.RealtimeSinceStartup + skill.cooling_time;
+            skill.last_used_time = NovaEngine.Timestamp.RealtimeSinceStartup + skill.cooling_time;
             Debugger.Info("角色对象‘{%s}’的技能‘{%s}’释放成功！", ((Soldier) self.Entity).GetComponent<IdentityComponent>().objectName, skill.name);
         }
 

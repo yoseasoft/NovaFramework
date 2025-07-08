@@ -51,29 +51,29 @@ namespace NovaEngine
         /// <summary>
         /// 核心引擎对象静态实例
         /// </summary>
-        protected static Engine s_instance;
+        protected static Engine _instance;
 
         /// <summary>
         /// 表现层管理对象实例
         /// </summary>
-        protected Facade m_facade = null;
+        protected Facade _facade = null;
 
         /// <summary>
         /// 记录当前引擎对象实例是否已经启动的状态标识
         /// </summary>
-        protected bool m_isOnStartup = false;
+        protected bool _isOnStartup = false;
 
         /// <summary>
         /// 引擎对象实例所依赖的MONO组件对象
         /// </summary>
-        // private readonly UnityMonoBehaviour m_monoBehaviour = null;
+        // private readonly UnityMonoBehaviour _monoBehaviour = null;
 
         /// <summary>
         /// 获取当前引擎对象的表现层管理实例
         /// </summary>
         public Facade Facade
         {
-            get { return m_facade; }
+            get { return _facade; }
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace NovaEngine
         /// </summary>
         public bool IsOnStartup
         {
-            get { return m_isOnStartup; }
+            get { return _isOnStartup; }
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace NovaEngine
         protected Engine()
         {
             // MONO组件初始化
-            // m_monoBehaviour = monoBehaviour;
+            // _monoBehaviour = monoBehaviour;
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace NovaEngine
         /// </summary>
         ~Engine()
         {
-            // m_monoBehaviour = null;
+            // _monoBehaviour = null;
         }
 
         /// <summary>
@@ -108,15 +108,15 @@ namespace NovaEngine
         protected virtual bool Initialize()
         {
             // 该初始化接口仅可调用一次，若需再次初始化该接口，需将之前的实例销毁掉
-            Logger.Assert(null == s_instance);
+            Logger.Assert(null == _instance);
 
-            // if (null == m_monoBehaviour) { Logger.Error("引擎对象实例的MONO组件对象实例为空，引擎初始化失败！"); return false; }
+            // if (null == _monoBehaviour) { Logger.Error("引擎对象实例的MONO组件对象实例为空，引擎初始化失败！"); return false; }
 
             // 表现层对象实例初始化
-            m_facade = Facade.Create(this);
+            _facade = Facade.Create(this);
 
             // 将当前对象赋予引擎静态实例
-            // s_instance = this;
+            // _instance = this;
 
             return true;
         }
@@ -126,14 +126,14 @@ namespace NovaEngine
         /// </summary>
         protected virtual void Cleanup()
         {
-            if (m_isOnStartup)
+            if (_isOnStartup)
             {
                 this.Shutdown();
             }
 
             // 表现层对象实例清理
             Facade.Destroy();
-            m_facade = null;
+            _facade = null;
 
             // 清理表现层的静态实例
             Facade.Destroy();
@@ -145,7 +145,7 @@ namespace NovaEngine
         /// <returns>返回引擎对象的静态实例</returns>
         public static Engine Instance
         {
-            get { return s_instance; }
+            get { return _instance; }
         }
 
         /// <summary>
@@ -153,16 +153,16 @@ namespace NovaEngine
         /// </summary>
         public static Engine Create()
         {
-            if (s_instance == null)
+            if (_instance == null)
             {
                 Engine engine = new Engine();
                 if (engine.Initialize())
                 {
-                    s_instance = engine;
+                    _instance = engine;
                 }
             }
 
-            return s_instance;
+            return _instance;
         }
 
         /// <summary>
@@ -170,10 +170,10 @@ namespace NovaEngine
         /// </summary>
         public static void Destroy()
         {
-            if (s_instance != null)
+            if (_instance != null)
             {
-                s_instance.Cleanup();
-                s_instance = null;
+                _instance.Cleanup();
+                _instance = null;
             }
         }
 
@@ -183,25 +183,25 @@ namespace NovaEngine
             Application.Instance.Startup();
 
             // 引擎正常启动，总控对象不可为null
-            Logger.Assert(null != m_facade);
+            Logger.Assert(null != _facade);
 
-            m_facade.Startup();
+            _facade.Startup();
 
-            m_isOnStartup = true;
+            _isOnStartup = true;
         }
 
         public virtual void Shutdown()
         {
             // 引擎尚未启动
-            if (false == m_isOnStartup)
+            if (false == _isOnStartup)
             {
                 Logger.Warn("The kernel engine was not startup, do it shutdown failed.");
                 return;
             }
 
-            m_isOnStartup = false;
+            _isOnStartup = false;
 
-            m_facade.Shutdown();
+            _facade.Shutdown();
 
             // 程序关闭
             Application.Instance.Shutdown();
@@ -213,13 +213,16 @@ namespace NovaEngine
         // Update is called once per frame
         public virtual void Update()
         {
-            m_facade.Update();
+            // 刷新时间戳
+            Timestamp.RefreshTimeOnUpdate();
+
+            _facade.Update();
         }
 
         // LateUpdate is called once per frame, after Update has finished
         public virtual void LateUpdate()
         {
-            m_facade.LateUpdate();
+            _facade.LateUpdate();
         }
     }
 }

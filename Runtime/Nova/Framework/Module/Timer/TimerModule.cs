@@ -457,8 +457,8 @@ namespace NovaEngine
             /// </summary>
             private void ResetTime()
             {
-                // m_timeStartup = Facade.Timestamp.RealtimeSinceStartup;
-                m_timeStartup = Facade.Timestamp.TimeOfMilliseconds;
+                // m_timeStartup = Timestamp.RealtimeSinceStartup;
+                m_timeStartup = Timestamp.TimeOfMilliseconds;
                 m_timeFinished = m_timeStartup + m_interval;
             }
 
@@ -491,8 +491,8 @@ namespace NovaEngine
                 // 重置标识
                 m_restarted = false;
 
-                // if (Facade.Timestamp.RealtimeSinceStartup >= m_timeFinished)
-                if (Facade.Timestamp.TimeOfMilliseconds >= m_timeFinished)
+                // if (Timestamp.RealtimeSinceStartup >= m_timeFinished)
+                if (Timestamp.TimeOfMilliseconds >= m_timeFinished)
                 {
                     // 当前调度接口由于是在主刷新接口中被执行，因此不用加入事件队列，直接发送消息指令即可
                     // m_timerModule.OnSchedule(m_session);

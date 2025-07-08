@@ -170,9 +170,6 @@ namespace NovaEngine
         /// </summary>
         public virtual void Update()
         {
-            // 时间戳刷新
-            Timestamp.RefreshTimeOnUpdate();
-
             // 模块刷新
             ModuleController.Update();
         }

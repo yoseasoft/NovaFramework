@@ -166,7 +166,7 @@ namespace NovaEngine
                  * 如果是在扩展线程中，则显示为：T(10010):333
                  */
 
-                return string.Format("{0}:{1}", "M", Facade.Timestamp.FrameCount);
+                return string.Format("{0}:{1}", "M", Timestamp.FrameCount);
             }
 
             private SystemStringBuilder GetHighlightedLogText(LogOutputLevelType level, string message)

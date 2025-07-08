@@ -112,7 +112,7 @@ namespace GameEngine.Debug
                 return;
             }
 
-            m_debuggerWindowRoot.OnUpdate(NovaEngine.Facade.Timestamp.DeltaTime, NovaEngine.Facade.Timestamp.UnscaledDeltaTime);
+            m_debuggerWindowRoot.OnUpdate(NovaEngine.Timestamp.DeltaTime, NovaEngine.Timestamp.UnscaledDeltaTime);
         }
 
         /// <summary>

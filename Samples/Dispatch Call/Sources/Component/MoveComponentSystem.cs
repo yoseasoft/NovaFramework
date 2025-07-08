@@ -87,7 +87,7 @@ namespace Game.Sample.DispatchCall
                 UnityEngine.Vector3 direction = UnityEngine.Vector3.Normalize(targetTransformComponent.position - ownerTransformComponent.position);
                 const float speed = 5f;
 
-                float move_distance = speed * NovaEngine.Facade.Timestamp.DeltaTime;
+                float move_distance = speed * NovaEngine.Timestamp.DeltaTime;
                 move_distance = UnityEngine.Mathf.Min(move_distance, distance / 2f);
 
                 UnityEngine.Vector3 old_position = ownerTransformComponent.position;
