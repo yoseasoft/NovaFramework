@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -37,7 +37,7 @@ namespace NovaEngine
         /// <returns>若存在对应属性值则返回true，否则返回false</returns>
         public static bool HasProperty(string key)
         {
-            if (s_variables.ContainsKey(key))
+            if (_variables.ContainsKey(key))
             {
                 return true;
             }
@@ -52,7 +52,7 @@ namespace NovaEngine
         /// <returns>返回给定键对应的布尔值，若不存在则返回false</returns>
         public static bool GetPropertyAsBool(string key)
         {
-            if (false == s_variables.TryGetValue(key, out string value))
+            if (false == _variables.TryGetValue(key, out string value))
             {
                 return false;
             }
@@ -67,7 +67,7 @@ namespace NovaEngine
         /// <returns>返回给定键对应的整数值，若不存在则返回0</returns>
         public static int GetPropertyAsInt(string key)
         {
-            if (false == s_variables.TryGetValue(key, out string value))
+            if (false == _variables.TryGetValue(key, out string value))
             {
                 return 0;
             }

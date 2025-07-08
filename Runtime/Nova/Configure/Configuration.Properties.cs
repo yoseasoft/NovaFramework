@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -38,11 +38,11 @@ namespace NovaEngine
         /// <summary>
         /// 配置类的所有字段映射集合
         /// </summary>
-        private static IDictionary<string, SystemFieldInfo> s_configureFields = null;
+        private static IDictionary<string, SystemFieldInfo> _configureFields = null;
         /// <summary>
         /// 配置类的参数存储容器
         /// </summary>
-        private static IDictionary<string, string> s_variables = null;
+        private static IDictionary<string, string> _variables = null;
 
         /// <summary>
         /// 设置属性参数
@@ -73,21 +73,21 @@ namespace NovaEngine
             InitConfigureFieldCollection();
 
             // 基础属性类型
-            if (s_configureFields.TryGetValue(key, out SystemFieldInfo field))
+            if (_configureFields.TryGetValue(key, out SystemFieldInfo field))
             {
                 field.SetValue(null, Utility.Convertion.StringToTargetType(value, field.FieldType));
 
                 return;
             }
 
-            if (s_variables.ContainsKey(key))
+            if (_variables.ContainsKey(key))
             {
                 Logger.Warn("The key '{%s}' was already exist in properties, repeat added it will be override old value.", key);
 
-                s_variables.Remove(key);
+                _variables.Remove(key);
             }
 
-            s_variables.Add(key, value);
+            _variables.Add(key, value);
         }
 
         /// <summary>
@@ -95,12 +95,12 @@ namespace NovaEngine
         /// </summary>
         private static void InitConfigureFieldCollection()
         {
-            if (null == s_configureFields)
+            if (null == _configureFields)
             {
                 // 初始化字段容器
-                s_configureFields = new Dictionary<string, SystemFieldInfo>();
+                _configureFields = new Dictionary<string, SystemFieldInfo>();
                 // 初始化参数容器
-                s_variables = new Dictionary<string, string>();
+                _variables = new Dictionary<string, string>();
 
                 SystemType classType = typeof(Configuration);
                 SystemFieldInfo[] fields = classType.GetFields(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static | SystemBindingFlags.FlattenHierarchy);
@@ -111,7 +111,7 @@ namespace NovaEngine
                     if (field.IsStatic && field.IsInitOnly)
                     {
                         // 只读模式的静态字段成员
-                        s_configureFields.Add(field.Name, field);
+                        _configureFields.Add(field.Name, field);
                     }
                 }
             }

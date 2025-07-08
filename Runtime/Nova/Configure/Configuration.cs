@@ -109,7 +109,7 @@ namespace NovaEngine
             }
 
             sb.Append("}, VARIABLES = { ");
-            foreach (KeyValuePair<string, string> pair in s_variables)
+            foreach (KeyValuePair<string, string> pair in _variables)
             {
                 sb.AppendFormat("{0} = {1}, ", pair.Key, pair.Value);
             }

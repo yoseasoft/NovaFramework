@@ -1,10 +1,10 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -101,7 +101,7 @@ namespace NovaEngine
         /// <summary>
         /// 全局环境参数映射表
         /// </summary>
-        private static readonly IDictionary<string, string> s_variables = new Dictionary<string, string>();
+        private static readonly IDictionary<string, string> _variables = new Dictionary<string, string>();
 
         /// <summary>
         /// 设置环境成员属性的值，通过查找与指定字符串相匹配的成员属性设定其对应值
@@ -156,7 +156,7 @@ namespace NovaEngine
         /// </summary>
         public static void CleanupAllVariables()
         {
-            s_variables.Clear();
+            _variables.Clear();
         }
 
         /// <summary>
@@ -166,15 +166,15 @@ namespace NovaEngine
         /// <param name="value">环境参数值</param>
         public static void SetVariable(string key, string value)
         {
-            if (s_variables.ContainsKey(key))
+            if (_variables.ContainsKey(key))
             {
                 Logger.Info("The environment variable key {%s} was already exists, repeat setting it will be override old value.", key);
 
-                s_variables[key] = value;
+                _variables[key] = value;
             }
             else
             {
-                s_variables.Add(key, value);
+                _variables.Add(key, value);
             }
 
             // 每次设置变量时，同步赋值到配置类中
@@ -188,9 +188,9 @@ namespace NovaEngine
         /// <returns>若存在指定环境参数则返回对应值，否则返回null</returns>
         public static string GetVariable(string key)
         {
-            if (s_variables.ContainsKey(key))
+            if (_variables.ContainsKey(key))
             {
-                return s_variables[key];
+                return _variables[key];
             }
 
             return null;
@@ -337,7 +337,7 @@ namespace NovaEngine
             }
 
             sb.Append("}, VARIABLES = { ");
-            foreach (KeyValuePair<string, string> pair in s_variables)
+            foreach (KeyValuePair<string, string> pair in _variables)
             {
                 sb.AppendFormat("{0} = {1}, ", pair.Key, pair.Value);
             }
