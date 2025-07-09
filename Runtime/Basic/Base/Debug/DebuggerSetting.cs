@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -31,14 +31,14 @@ namespace GameEngine.Debug
     /// </summary>
     public sealed class DebuggerSetting : IDebuggerSetting
     {
-        private readonly IDictionary<string, string> m_settings = new Dictionary<string, string>();
+        private readonly IDictionary<string, string> _settings = new Dictionary<string, string>();
 
         /// <summary>
         /// 获取游戏配置项的数量
         /// </summary>
         public int Count
         {
-            get { return m_settings.Count; }
+            get { return _settings.Count; }
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace GameEngine.Debug
         public string[] GetAllKeys()
         {
             int index = 0;
-            string[] keys = new string[m_settings.Count];
-            foreach (KeyValuePair<string, string> setting in m_settings)
+            string[] keys = new string[_settings.Count];
+            foreach (KeyValuePair<string, string> setting in _settings)
             {
                 keys[index++] = setting.Key;
             }
@@ -69,7 +69,7 @@ namespace GameEngine.Debug
             }
 
             results.Clear();
-            foreach (KeyValuePair<string, string> setting in m_settings)
+            foreach (KeyValuePair<string, string> setting in _settings)
             {
                 results.Add(setting.Key);
             }
@@ -82,7 +82,7 @@ namespace GameEngine.Debug
         /// <returns>若存在给定名称的配置项返回true，否则返回false</returns>
         public bool HasKey(string key)
         {
-            return m_settings.ContainsKey(key);
+            return _settings.ContainsKey(key);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace GameEngine.Debug
         /// <param name="key">配置名称</param>
         public bool RemoveKey(string key)
         {
-            return m_settings.Remove(key);
+            return _settings.Remove(key);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace GameEngine.Debug
         /// </summary>
         public void RemoveAllKeys()
         {
-            m_settings.Clear();
+            _settings.Clear();
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace GameEngine.Debug
         public bool GetBool(string key)
         {
             string value = null;
-            if (false == m_settings.TryGetValue(key, out value))
+            if (false == _settings.TryGetValue(key, out value))
             {
                 Debugger.Warn("Setting '{0}' is not exist.", key);
                 return false;
@@ -129,7 +129,7 @@ namespace GameEngine.Debug
         public bool GetBool(string key, bool defaultValue)
         {
             string value = null;
-            if (false == m_settings.TryGetValue(key, out value))
+            if (false == _settings.TryGetValue(key, out value))
             {
                 return defaultValue;
             }
@@ -144,7 +144,7 @@ namespace GameEngine.Debug
         /// <param name="value">配置值</param>
         public void SetBool(string key, bool value)
         {
-            m_settings[key] = value ? "1" : "0";
+            _settings[key] = value ? "1" : "0";
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace GameEngine.Debug
         public int GetInt(string key)
         {
             string value = null;
-            if (false == m_settings.TryGetValue(key, out value))
+            if (false == _settings.TryGetValue(key, out value))
             {
                 Debugger.Warn("Setting '{0}' is not exist.", key);
                 return 0;
@@ -174,7 +174,7 @@ namespace GameEngine.Debug
         public int GetInt(string key, int defaultValue)
         {
             string value = null;
-            if (false == m_settings.TryGetValue(key, out value))
+            if (false == _settings.TryGetValue(key, out value))
             {
                 return defaultValue;
             }
@@ -189,7 +189,7 @@ namespace GameEngine.Debug
         /// <param name="value">配置值</param>
         public void SetInt(string key, int value)
         {
-            m_settings[key] = value.ToString();
+            _settings[key] = value.ToString();
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace GameEngine.Debug
         public float GetFloat(string key)
         {
             string value = null;
-            if (false == m_settings.TryGetValue(key, out value))
+            if (false == _settings.TryGetValue(key, out value))
             {
                 Debugger.Warn("Setting '{0}' is not exist.", key);
                 return 0f;
@@ -219,7 +219,7 @@ namespace GameEngine.Debug
         public float GetFloat(string key, float defaultValue)
         {
             string value = null;
-            if (false == m_settings.TryGetValue(key, out value))
+            if (false == _settings.TryGetValue(key, out value))
             {
                 return defaultValue;
             }
@@ -234,7 +234,7 @@ namespace GameEngine.Debug
         /// <param name="value">配置值</param>
         public void SetFloat(string key, float value)
         {
-            m_settings[key] = value.ToString();
+            _settings[key] = value.ToString();
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace GameEngine.Debug
         public string GetString(string key)
         {
             string value = null;
-            if (false == m_settings.TryGetValue(key, out value))
+            if (false == _settings.TryGetValue(key, out value))
             {
                 Debugger.Warn("Setting '{0}' is not exist.", key);
                 return null;
@@ -264,7 +264,7 @@ namespace GameEngine.Debug
         public string GetString(string key, string defaultValue)
         {
             string value = null;
-            if (false == m_settings.TryGetValue(key, out value))
+            if (false == _settings.TryGetValue(key, out value))
             {
                 return defaultValue;
             }
@@ -279,7 +279,7 @@ namespace GameEngine.Debug
         /// <param name="value">配置值</param>
         public void SetString(string key, string value)
         {
-            m_settings[key] = value;
+            _settings[key] = value;
         }
     }
 }

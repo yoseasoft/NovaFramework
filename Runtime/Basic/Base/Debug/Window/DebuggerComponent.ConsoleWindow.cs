@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -47,130 +47,130 @@ namespace GameEngine.Debug
             /// <summary>
             /// 日志节点的存储管理队列
             /// </summary>
-            private readonly Queue<LogNode> m_logNodes = new Queue<LogNode>();
+            private readonly Queue<LogNode> _logNodes = new Queue<LogNode>();
 
-            private IDebuggerSetting m_debuggerSetting = null;
-            private UnityVector2 m_logScrollPosition = UnityVector2.zero;
-            private UnityVector2 m_stackScrollPosition = UnityVector2.zero;
-            private int m_infoCount = 0;
-            private int m_warnCount = 0;
-            private int m_errorCount = 0;
-            private int m_fatalCount = 0;
-            private LogNode m_selectedNode = null;
-            private bool m_lastLockScroll = true;
-            private bool m_lastInfoFilter = true;
-            private bool m_lastWarnFilter = true;
-            private bool m_lastErrorFilter = true;
-            private bool m_lastFatalFilter = true;
-
-            [UnityEngine.SerializeField]
-            private bool m_lockScroll = true;
+            private IDebuggerSetting _debuggerSetting = null;
+            private UnityVector2 _logScrollPosition = UnityVector2.zero;
+            private UnityVector2 _stackScrollPosition = UnityVector2.zero;
+            private int _infoCount = 0;
+            private int _warnCount = 0;
+            private int _errorCount = 0;
+            private int _fatalCount = 0;
+            private LogNode _selectedNode = null;
+            private bool _lastLockScroll = true;
+            private bool _lastInfoFilter = true;
+            private bool _lastWarnFilter = true;
+            private bool _lastErrorFilter = true;
+            private bool _lastFatalFilter = true;
 
             [UnityEngine.SerializeField]
-            private int m_maxLine = 100;
+            private bool _lockScroll = true;
 
             [UnityEngine.SerializeField]
-            private bool m_infoFilter = true;
+            private int _maxLine = 100;
 
             [UnityEngine.SerializeField]
-            private bool m_warnFilter = true;
+            private bool _infoFilter = true;
 
             [UnityEngine.SerializeField]
-            private bool m_errorFilter = true;
+            private bool _warnFilter = true;
 
             [UnityEngine.SerializeField]
-            private bool m_fatalFilter = true;
+            private bool _errorFilter = true;
 
             [UnityEngine.SerializeField]
-            private UnityColor32 m_infoColor = UnityColor.white;
+            private bool _fatalFilter = true;
 
             [UnityEngine.SerializeField]
-            private UnityColor32 m_warnColor = UnityColor.yellow;
+            private UnityColor32 _infoColor = UnityColor.white;
 
             [UnityEngine.SerializeField]
-            private UnityColor32 m_errorColor = UnityColor.red;
+            private UnityColor32 _warnColor = UnityColor.yellow;
 
             [UnityEngine.SerializeField]
-            private UnityColor32 m_fatalColor = new UnityColor(0.7f, 0.2f, 0.2f);
+            private UnityColor32 _errorColor = UnityColor.red;
+
+            [UnityEngine.SerializeField]
+            private UnityColor32 _fatalColor = new UnityColor(0.7f, 0.2f, 0.2f);
 
             public int InfoCount
             {
-                get { return m_infoCount; }
+                get { return _infoCount; }
             }
 
             public int WarnCount
             {
-                get { return m_warnCount; }
+                get { return _warnCount; }
             }
 
             public int ErrorCount
             {
-                get { return m_errorCount; }
+                get { return _errorCount; }
             }
 
             public int FatalCount
             {
-                get { return m_fatalCount; }
+                get { return _fatalCount; }
             }
 
             public bool LockScroll
             {
-                get { return m_lockScroll; }
-                set { m_lockScroll = value; }
+                get { return _lockScroll; }
+                set { _lockScroll = value; }
             }
 
             public int MaxLine
             {
-                get { return m_maxLine; }
-                set { m_maxLine = value; }
+                get { return _maxLine; }
+                set { _maxLine = value; }
             }
 
             public bool InfoFilter
             {
-                get { return m_infoFilter; }
-                set { m_infoFilter = value; }
+                get { return _infoFilter; }
+                set { _infoFilter = value; }
             }
 
             public bool WarnFilter
             {
-                get { return m_warnFilter; }
-                set { m_warnFilter = value; }
+                get { return _warnFilter; }
+                set { _warnFilter = value; }
             }
 
             public bool ErrorFilter
             {
-                get { return m_errorFilter; }
-                set { m_errorFilter = value; }
+                get { return _errorFilter; }
+                set { _errorFilter = value; }
             }
 
             public bool FatalFilter
             {
-                get { return m_fatalFilter; }
-                set { m_fatalFilter = value; }
+                get { return _fatalFilter; }
+                set { _fatalFilter = value; }
             }
 
             public UnityColor32 InfoColor
             {
-                get { return m_infoColor; }
-                set { m_infoColor = value; }
+                get { return _infoColor; }
+                set { _infoColor = value; }
             }
 
             public UnityColor32 WarnColor
             {
-                get { return m_warnColor; }
-                set { m_warnColor = value; }
+                get { return _warnColor; }
+                set { _warnColor = value; }
             }
 
             public UnityColor32 ErrorColor
             {
-                get { return m_errorColor; }
-                set { m_errorColor = value; }
+                get { return _errorColor; }
+                set { _errorColor = value; }
             }
 
             public UnityColor32 FatalColor
             {
-                get { return m_fatalColor; }
-                set { m_fatalColor = value; }
+                get { return _fatalColor; }
+                set { _fatalColor = value; }
             }
 
             /// <summary>
@@ -180,8 +180,8 @@ namespace GameEngine.Debug
             public void Initialize(params object[] args)
             {
                 IDebuggerManager debuggerManager = NovaEngine.AppEntry.GetManager<IDebuggerManager>();
-                m_debuggerSetting = debuggerManager.DebuggerSetting;
-                if (null == m_debuggerSetting)
+                _debuggerSetting = debuggerManager.DebuggerSetting;
+                if (null == _debuggerSetting)
                 {
                     Debugger.Fatal("Setting component is invalid.");
                     return;
@@ -189,11 +189,11 @@ namespace GameEngine.Debug
 
                 UnityApplication.logMessageReceived += OnLogMessageReceived;
 
-                m_lockScroll = m_lastLockScroll = m_debuggerSetting.GetBool(IDebuggerSetting.ConsoleLockScroll, true);
-                m_infoFilter = m_lastInfoFilter = m_debuggerSetting.GetBool(IDebuggerSetting.ConsoleInfoFilter, true);
-                m_warnFilter = m_lastWarnFilter = m_debuggerSetting.GetBool(IDebuggerSetting.ConsoleWarnFilter, true);
-                m_errorFilter = m_lastErrorFilter = m_debuggerSetting.GetBool(IDebuggerSetting.ConsoleErrorFilter, true);
-                m_fatalFilter = m_lastFatalFilter = m_debuggerSetting.GetBool(IDebuggerSetting.ConsoleFatalFilter, true);
+                _lockScroll = _lastLockScroll = _debuggerSetting.GetBool(IDebuggerSetting.ConsoleLockScroll, true);
+                _infoFilter = _lastInfoFilter = _debuggerSetting.GetBool(IDebuggerSetting.ConsoleInfoFilter, true);
+                _warnFilter = _lastWarnFilter = _debuggerSetting.GetBool(IDebuggerSetting.ConsoleWarnFilter, true);
+                _errorFilter = _lastErrorFilter = _debuggerSetting.GetBool(IDebuggerSetting.ConsoleErrorFilter, true);
+                _fatalFilter = _lastFatalFilter = _debuggerSetting.GetBool(IDebuggerSetting.ConsoleFatalFilter, true);
             }
 
             /// <summary>
@@ -228,34 +228,34 @@ namespace GameEngine.Debug
             /// <param name="realElapseSeconds">真实流逝时间，以秒为单位</param>
             public void OnUpdate(float elapseSeconds, float realElapseSeconds)
             {
-                if (m_lastLockScroll != m_lockScroll)
+                if (_lastLockScroll != _lockScroll)
                 {
-                    m_lastLockScroll = m_lockScroll;
-                    m_debuggerSetting.SetBool(IDebuggerSetting.ConsoleLockScroll, m_lockScroll);
+                    _lastLockScroll = _lockScroll;
+                    _debuggerSetting.SetBool(IDebuggerSetting.ConsoleLockScroll, _lockScroll);
                 }
 
-                if (m_lastInfoFilter != m_infoFilter)
+                if (_lastInfoFilter != _infoFilter)
                 {
-                    m_lastInfoFilter = m_infoFilter;
-                    m_debuggerSetting.SetBool(IDebuggerSetting.ConsoleInfoFilter, m_infoFilter);
+                    _lastInfoFilter = _infoFilter;
+                    _debuggerSetting.SetBool(IDebuggerSetting.ConsoleInfoFilter, _infoFilter);
                 }
 
-                if (m_lastWarnFilter != m_warnFilter)
+                if (_lastWarnFilter != _warnFilter)
                 {
-                    m_lastWarnFilter = m_warnFilter;
-                    m_debuggerSetting.SetBool(IDebuggerSetting.ConsoleWarnFilter, m_warnFilter);
+                    _lastWarnFilter = _warnFilter;
+                    _debuggerSetting.SetBool(IDebuggerSetting.ConsoleWarnFilter, _warnFilter);
                 }
 
-                if (m_lastErrorFilter != m_errorFilter)
+                if (_lastErrorFilter != _errorFilter)
                 {
-                    m_lastErrorFilter = m_errorFilter;
-                    m_debuggerSetting.SetBool(IDebuggerSetting.ConsoleErrorFilter, m_errorFilter);
+                    _lastErrorFilter = _errorFilter;
+                    _debuggerSetting.SetBool(IDebuggerSetting.ConsoleErrorFilter, _errorFilter);
                 }
 
-                if (m_lastFatalFilter != m_fatalFilter)
+                if (_lastFatalFilter != _fatalFilter)
                 {
-                    m_lastFatalFilter = m_fatalFilter;
-                    m_debuggerSetting.SetBool(IDebuggerSetting.ConsoleFatalFilter, m_fatalFilter);
+                    _lastFatalFilter = _fatalFilter;
+                    _debuggerSetting.SetBool(IDebuggerSetting.ConsoleFatalFilter, _fatalFilter);
                 }
             }
 
@@ -273,57 +273,57 @@ namespace GameEngine.Debug
                         ClearAllLogs();
                     }
 
-                    m_lockScroll = UnityGUILayout.Toggle(m_lockScroll, "Lock Scroll", UnityGUILayout.Width(90f));
+                    _lockScroll = UnityGUILayout.Toggle(_lockScroll, "Lock Scroll", UnityGUILayout.Width(90f));
                     UnityGUILayout.FlexibleSpace();
-                    m_infoFilter = UnityGUILayout.Toggle(m_infoFilter, NovaEngine.Utility.Text.Format("Info ({0})", m_infoCount.ToString()), UnityGUILayout.Width(90f));
-                    m_warnFilter = UnityGUILayout.Toggle(m_warnFilter, NovaEngine.Utility.Text.Format("Warn ({0})", m_warnCount.ToString()), UnityGUILayout.Width(90f));
-                    m_errorFilter = UnityGUILayout.Toggle(m_errorFilter, NovaEngine.Utility.Text.Format("Error ({0})", m_errorCount.ToString()), UnityGUILayout.Width(90f));
-                    m_fatalFilter = UnityGUILayout.Toggle(m_fatalFilter, NovaEngine.Utility.Text.Format("Fatal ({0})", m_fatalCount.ToString()), UnityGUILayout.Width(90f));
+                    _infoFilter = UnityGUILayout.Toggle(_infoFilter, NovaEngine.Utility.Text.Format("Info ({0})", _infoCount.ToString()), UnityGUILayout.Width(90f));
+                    _warnFilter = UnityGUILayout.Toggle(_warnFilter, NovaEngine.Utility.Text.Format("Warn ({0})", _warnCount.ToString()), UnityGUILayout.Width(90f));
+                    _errorFilter = UnityGUILayout.Toggle(_errorFilter, NovaEngine.Utility.Text.Format("Error ({0})", _errorCount.ToString()), UnityGUILayout.Width(90f));
+                    _fatalFilter = UnityGUILayout.Toggle(_fatalFilter, NovaEngine.Utility.Text.Format("Fatal ({0})", _fatalCount.ToString()), UnityGUILayout.Width(90f));
                 }
                 UnityGUILayout.EndHorizontal();
 
                 UnityGUILayout.BeginVertical("box");
                 {
-                    if (m_lockScroll)
+                    if (_lockScroll)
                     {
-                        m_logScrollPosition.y = float.MaxValue;
+                        _logScrollPosition.y = float.MaxValue;
                     }
 
-                    m_logScrollPosition = UnityGUILayout.BeginScrollView(m_logScrollPosition);
+                    _logScrollPosition = UnityGUILayout.BeginScrollView(_logScrollPosition);
                     {
                         bool selected = false;
-                        foreach (LogNode logNode in m_logNodes)
+                        foreach (LogNode logNode in _logNodes)
                         {
                             switch (logNode.Type)
                             {
                                 case UnityLogType.Log:
-                                    if (!m_infoFilter) { continue; }
+                                    if (!_infoFilter) { continue; }
                                     break;
                                 case UnityLogType.Warning:
-                                    if (!m_warnFilter) { continue; }
+                                    if (!_warnFilter) { continue; }
                                     break;
                                 case UnityLogType.Error:
-                                    if (!m_errorFilter) { continue; }
+                                    if (!_errorFilter) { continue; }
                                     break;
                                 case UnityLogType.Exception:
-                                    if (!m_fatalFilter) { continue; }
+                                    if (!_fatalFilter) { continue; }
                                     break;
                             }
 
-                            if (UnityGUILayout.Toggle(m_selectedNode == logNode, GetLogString(logNode)))
+                            if (UnityGUILayout.Toggle(_selectedNode == logNode, GetLogString(logNode)))
                             {
                                 selected = true;
-                                if (m_selectedNode != logNode)
+                                if (_selectedNode != logNode)
                                 {
-                                    m_selectedNode = logNode;
-                                    m_stackScrollPosition = UnityVector2.zero;
+                                    _selectedNode = logNode;
+                                    _stackScrollPosition = UnityVector2.zero;
                                 }
                             }
                         }
 
                         if (!selected)
                         {
-                            m_selectedNode = null;
+                            _selectedNode = null;
                         }
                     }
                     UnityGUILayout.EndScrollView();
@@ -332,14 +332,14 @@ namespace GameEngine.Debug
 
                 UnityGUILayout.BeginVertical("box");
                 {
-                    m_stackScrollPosition = UnityGUILayout.BeginScrollView(m_stackScrollPosition, UnityGUILayout.Height(100f));
+                    _stackScrollPosition = UnityGUILayout.BeginScrollView(_stackScrollPosition, UnityGUILayout.Height(100f));
                     {
-                        if (m_selectedNode != null)
+                        if (_selectedNode != null)
                         {
-                            UnityColor32 color = GetLogStringColor(m_selectedNode.Type);
+                            UnityColor32 color = GetLogStringColor(_selectedNode.Type);
                             if (UnityGUILayout.Button(NovaEngine.Utility.Text.Format("",
                                     color.r.ToString("x2"), color.g.ToString("x2"), color.b.ToString("x2"), color.a.ToString("x2"),
-                                    m_selectedNode.Message, m_selectedNode.StackTrace, System.Environment.NewLine), "label"))
+                                    _selectedNode.Message, _selectedNode.StackTrace, System.Environment.NewLine), "label"))
                             {
                             }
                         }
@@ -354,7 +354,7 @@ namespace GameEngine.Debug
             /// </summary>
             private void ClearAllLogs()
             {
-                m_logNodes.Clear();
+                _logNodes.Clear();
             }
 
             /// <summary>
@@ -362,26 +362,26 @@ namespace GameEngine.Debug
             /// </summary>
             public void RefreshLogCount()
             {
-                m_infoCount = 0;
-                m_warnCount = 0;
-                m_errorCount = 0;
-                m_fatalCount = 0;
+                _infoCount = 0;
+                _warnCount = 0;
+                _errorCount = 0;
+                _fatalCount = 0;
 
-                foreach (LogNode logNode in m_logNodes)
+                foreach (LogNode logNode in _logNodes)
                 {
                     switch (logNode.Type)
                     {
                         case UnityLogType.Log:
-                            m_infoCount++;
+                            _infoCount++;
                             break;
                         case UnityLogType.Warning:
-                            m_warnCount++;
+                            _warnCount++;
                             break;
                         case UnityLogType.Error:
-                            m_errorCount++;
+                            _errorCount++;
                             break;
                         case UnityLogType.Exception:
-                            m_fatalCount++;
+                            _fatalCount++;
                             break;
                     }
                 }
@@ -401,7 +401,7 @@ namespace GameEngine.Debug
                 }
 
                 results.Clear();
-                foreach (LogNode logNode in m_logNodes)
+                foreach (LogNode logNode in _logNodes)
                 {
                     results.Add(logNode);
                 }
@@ -427,7 +427,7 @@ namespace GameEngine.Debug
                     return;
                 }
 
-                int position = m_logNodes.Count - count;
+                int position = _logNodes.Count - count;
                 if (position < 0)
                 {
                     position = 0;
@@ -435,7 +435,7 @@ namespace GameEngine.Debug
 
                 int index = 0;
                 results.Clear();
-                foreach (LogNode logNode in m_logNodes)
+                foreach (LogNode logNode in _logNodes)
                 {
                     if (index++ < position)
                     {
@@ -459,11 +459,11 @@ namespace GameEngine.Debug
                     logType = UnityLogType.Error;
                 }
 
-                m_logNodes.Enqueue(LogNode.Create(logType, logMessage, stackTrace));
+                _logNodes.Enqueue(LogNode.Create(logType, logMessage, stackTrace));
                 // 超出存储上限，移除旧的日志记录
-                while (m_logNodes.Count > m_maxLine)
+                while (_logNodes.Count > _maxLine)
                 {
-                    LogNode.Release(m_logNodes.Dequeue());
+                    LogNode.Release(_logNodes.Dequeue());
                 }
             }
 
@@ -491,16 +491,16 @@ namespace GameEngine.Debug
                 switch (logType)
                 {
                     case UnityLogType.Log:
-                        color = m_infoColor;
+                        color = _infoColor;
                         break;
                     case UnityLogType.Warning:
-                        color = m_warnColor;
+                        color = _warnColor;
                         break;
                     case UnityLogType.Error:
-                        color = m_errorColor;
+                        color = _errorColor;
                         break;
                     case UnityLogType.Exception:
-                        color = m_fatalColor;
+                        color = _fatalColor;
                         break;
                 }
 

@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -46,26 +46,26 @@ namespace GameEngine.Debug
                 /// <summary>
                 /// 实例的名称
                 /// </summary>
-                private readonly string m_name;
+                private readonly string _name;
                 /// <summary>
                 /// 实例的类型
                 /// </summary>
-                private readonly string m_type;
+                private readonly string _type;
                 /// <summary>
                 /// 实例的内存大小
                 /// </summary>
-                private readonly long m_size;
+                private readonly long _size;
                 /// <summary>
                 /// 实例重复使用的状态标识
                 /// </summary>
-                private bool m_highlight;
+                private bool _highlight;
 
                 /// <summary>
                 /// 获取实例的名称
                 /// </summary>
                 public string Name
                 {
-                    get { return m_name; }
+                    get { return _name; }
                 }
 
                 /// <summary>
@@ -73,7 +73,7 @@ namespace GameEngine.Debug
                 /// </summary>
                 public string Type
                 {
-                    get { return m_type; }
+                    get { return _type; }
                 }
 
                 /// <summary>
@@ -81,7 +81,7 @@ namespace GameEngine.Debug
                 /// </summary>
                 public long Size
                 {
-                    get { return m_size; }
+                    get { return _size; }
                 }
 
                 /// <summary>
@@ -89,16 +89,16 @@ namespace GameEngine.Debug
                 /// </summary>
                 public bool Highlight
                 {
-                    get { return m_highlight; }
-                    set { m_highlight = value; }
+                    get { return _highlight; }
+                    set { _highlight = value; }
                 }
 
                 public Sample(string name, string type, long size)
                 {
-                    m_name = name;
-                    m_type = type;
-                    m_size = size;
-                    m_highlight = false;
+                    _name = name;
+                    _type = type;
+                    _size = size;
+                    _highlight = false;
                 }
             }
         }

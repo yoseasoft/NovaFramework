@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -46,25 +46,25 @@ namespace GameEngine.Debug
             /// <summary>
             /// 记录对象的存储列表容器
             /// </summary>
-            private readonly List<Record> m_records = new List<Record>();
+            private readonly List<Record> _records = new List<Record>();
 
             /// <summary>
             /// 记录对象的比较器函数引用
             /// </summary>
-            private readonly System.Comparison<Record> m_recordComparer = RecordComparer;
+            private readonly System.Comparison<Record> _recordComparer = RecordComparer;
 
             /// <summary>
             /// 记录刷新的时间标签
             /// </summary>
-            private SystemDateTime m_sampleTime = SystemDateTime.MinValue;
+            private SystemDateTime _sampleTime = SystemDateTime.MinValue;
             /// <summary>
             /// 所有记录的累计总数
             /// </summary>
-            private int m_sampleCount = 0;
+            private int _sampleCount = 0;
             /// <summary>
             /// 所有记录的累计内存大小
             /// </summary>
-            private long m_sampleSize = 0L;
+            private long _sampleSize = 0L;
 
             protected override void OnDrawScrollableWindow()
             {
@@ -76,16 +76,16 @@ namespace GameEngine.Debug
                         TakeSample();
                     }
 
-                    if (m_sampleTime <= SystemDateTime.MinValue)
+                    if (_sampleTime <= SystemDateTime.MinValue)
                     {
                         UnityGUILayout.Label("<b>Please take sample at first.</b>");
                     }
                     else
                     {
                         UnityGUILayout.Label(NovaEngine.Utility.Text.Format("<b>{0} Objects ({1}) obtained at {2}.</b>",
-                                                                            m_sampleCount.ToString(),
-                                                                            GetByteLengthString(m_sampleSize),
-                                                                            m_sampleTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")));
+                                                                            _sampleCount.ToString(),
+                                                                            GetByteLengthString(_sampleSize),
+                                                                            _sampleTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")));
 
                         UnityGUILayout.BeginHorizontal();
                         {
@@ -95,13 +95,13 @@ namespace GameEngine.Debug
                         }
                         UnityGUILayout.EndHorizontal();
 
-                        for (int n = 0; n < m_records.Count; ++n)
+                        for (int n = 0; n < _records.Count; ++n)
                         {
                             UnityGUILayout.BeginHorizontal();
                             {
-                                UnityGUILayout.Label(m_records[n].Name);
-                                UnityGUILayout.Label(m_records[n].Count.ToString(), UnityGUILayout.Width(120f));
-                                UnityGUILayout.Label(GetByteLengthString(m_records[n].Size), UnityGUILayout.Width(120f));
+                                UnityGUILayout.Label(_records[n].Name);
+                                UnityGUILayout.Label(_records[n].Count.ToString(), UnityGUILayout.Width(120f));
+                                UnityGUILayout.Label(GetByteLengthString(_records[n].Size), UnityGUILayout.Width(120f));
                             }
                             UnityGUILayout.EndHorizontal();
                         }
@@ -115,10 +115,10 @@ namespace GameEngine.Debug
             /// </summary>
             private void TakeSample()
             {
-                m_records.Clear();
-                m_sampleTime = SystemDateTime.UtcNow;
-                m_sampleCount = 0;
-                m_sampleSize = 0L;
+                _records.Clear();
+                _sampleTime = SystemDateTime.UtcNow;
+                _sampleCount = 0;
+                _sampleSize = 0L;
 
                 UnityObject[] samples = UnityResources.FindObjectsOfTypeAll<UnityObject>();
                 for (int n = 0; n < samples.Length; ++n)
@@ -126,11 +126,11 @@ namespace GameEngine.Debug
                     long sampleSize = UnityProfiler.GetRuntimeMemorySizeLong(samples[n]);
 
                     string name = samples[n].GetType().Name;
-                    m_sampleCount++;
-                    m_sampleSize += sampleSize;
+                    _sampleCount++;
+                    _sampleSize += sampleSize;
 
                     Record record = null;
-                    foreach (Record r in m_records)
+                    foreach (Record r in _records)
                     {
                         // 已存在同名资源的记录
                         if (r.Name == name)
@@ -143,14 +143,14 @@ namespace GameEngine.Debug
                     if (null == record)
                     {
                         record = new Record(name);
-                        m_records.Add(record);
+                        _records.Add(record);
                     }
 
                     record.Count++;
                     record.Size += sampleSize;
                 }
 
-                m_records.Sort(m_recordComparer);
+                _records.Sort(_recordComparer);
             }
 
             /// <summary>

@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -32,15 +32,15 @@ namespace GameEngine.Debug
         /// <summary>
         /// 调试管理器的配置对象实例
         /// </summary>
-        private readonly IDebuggerSetting m_debuggerSetting;
+        private readonly IDebuggerSetting _debuggerSetting;
         /// <summary>
         /// 调试管理器的根窗口组实例
         /// </summary>
-        private readonly DebuggerWindowGroup m_debuggerWindowRoot;
+        private readonly DebuggerWindowGroup _debuggerWindowRoot;
         /// <summary>
         /// 当前管理器激或窗口状态标识
         /// </summary>
-        private bool m_activeWindow;
+        private bool _activeWindow;
 
         /// <summary>
         /// 获取管理器实例的优先级
@@ -55,8 +55,8 @@ namespace GameEngine.Debug
         /// </summary>
         public bool ActiveWindow
         {
-            get { return m_activeWindow; }
-            set { m_activeWindow = value; }
+            get { return _activeWindow; }
+            set { _activeWindow = value; }
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace GameEngine.Debug
         /// </summary>
         public IDebuggerSetting DebuggerSetting
         {
-            get { return m_debuggerSetting; }
+            get { return _debuggerSetting; }
         }
 
         /// <summary>
@@ -72,14 +72,14 @@ namespace GameEngine.Debug
         /// </summary>
         public IDebuggerWindowGroup DebuggerWindowRoot
         {
-            get { return m_debuggerWindowRoot; }
+            get { return _debuggerWindowRoot; }
         }
 
         public DebuggerManager()
         {
-            m_debuggerSetting = new DebuggerSetting();
-            m_debuggerWindowRoot = new DebuggerWindowGroup();
-            m_activeWindow = false;
+            _debuggerSetting = new DebuggerSetting();
+            _debuggerWindowRoot = new DebuggerWindowGroup();
+            _activeWindow = false;
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace GameEngine.Debug
         {
             base.Initialize();
 
-            m_debuggerWindowRoot.Initialize();
+            _debuggerWindowRoot.Initialize();
         }
 
         /// <summary>
@@ -97,9 +97,9 @@ namespace GameEngine.Debug
         /// </summary>
         public override void Cleanup()
         {
-            m_activeWindow = false;
+            _activeWindow = false;
 
-            m_debuggerWindowRoot.Cleanup();
+            _debuggerWindowRoot.Cleanup();
         }
 
         /// <summary>
@@ -107,12 +107,12 @@ namespace GameEngine.Debug
         /// </summary>
         public override void Update()
         {
-            if (!m_activeWindow)
+            if (!_activeWindow)
             {
                 return;
             }
 
-            m_debuggerWindowRoot.OnUpdate(NovaEngine.Timestamp.DeltaTime, NovaEngine.Timestamp.UnscaledDeltaTime);
+            _debuggerWindowRoot.OnUpdate(NovaEngine.Timestamp.DeltaTime, NovaEngine.Timestamp.UnscaledDeltaTime);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace GameEngine.Debug
                 return;
             }
 
-            m_debuggerWindowRoot.RegisterDebuggerWindow(path, debuggerWindow);
+            _debuggerWindowRoot.RegisterDebuggerWindow(path, debuggerWindow);
             debuggerWindow.Initialize(args);
         }
 
@@ -153,7 +153,7 @@ namespace GameEngine.Debug
         /// <returns>若窗口注销成功返回true，否则返回false</returns>
         public bool UnregisterDebuggerWindow(string path)
         {
-            return m_debuggerWindowRoot.UnregisterDebuggerWindow(path);
+            return _debuggerWindowRoot.UnregisterDebuggerWindow(path);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace GameEngine.Debug
         /// <returns>若存在路径对应的窗口实例则返回其引用，否则返回null</returns>
         public IDebuggerWindow GetDebuggerWindow(string path)
         {
-            return m_debuggerWindowRoot.GetDebuggerWindow(path);
+            return _debuggerWindowRoot.GetDebuggerWindow(path);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace GameEngine.Debug
         /// <returns>若选中窗口实例成功返回true，否则返回false</returns>
         public bool SelectedDebuggerWindow(string path)
         {
-            return m_debuggerWindowRoot.SelectDebuggerWindow(path);
+            return _debuggerWindowRoot.SelectDebuggerWindow(path);
         }
     }
 }

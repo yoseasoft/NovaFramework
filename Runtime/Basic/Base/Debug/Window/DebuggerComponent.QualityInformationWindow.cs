@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,7 @@ namespace GameEngine.Debug
         /// </summary>
         private sealed class QualityInformationWindow : BaseScrollableDebuggerWindow
         {
-            private bool m_applyExpensiveChanges = false;
+            private bool _applyExpensiveChanges = false;
 
             protected override void OnDrawScrollableWindow()
             {
@@ -47,12 +47,12 @@ namespace GameEngine.Debug
                     int currentQualityLevel = UnityQualitySettings.GetQualityLevel();
 
                     DrawItem("Current Quality Level", UnityQualitySettings.names[currentQualityLevel]);
-                    m_applyExpensiveChanges = UnityGUILayout.Toggle(m_applyExpensiveChanges, "Apply expensive changes on quality level change.");
+                    _applyExpensiveChanges = UnityGUILayout.Toggle(_applyExpensiveChanges, "Apply expensive changes on quality level change.");
 
                     int newQualityLevel = UnityGUILayout.SelectionGrid(currentQualityLevel, UnityQualitySettings.names, 3, "toggle");
                     if (newQualityLevel != currentQualityLevel)
                     {
-                        UnityQualitySettings.SetQualityLevel(newQualityLevel, m_applyExpensiveChanges);
+                        UnityQualitySettings.SetQualityLevel(newQualityLevel, _applyExpensiveChanges);
                     }
                 }
                 UnityGUILayout.EndVertical();

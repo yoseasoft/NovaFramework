@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -34,18 +34,18 @@ namespace GameEngine.Debug
         /// </summary>
         public sealed class FpsCounter
         {
-            private float m_updateInterval;
-            private float m_currentFps;
-            private int m_frames;
-            private float m_accumulator;
-            private float m_timeLeft;
+            private float _updateInterval;
+            private float _currentFps;
+            private int _frames;
+            private float _accumulator;
+            private float _timeLeft;
 
             /// <summary>
             /// 获取或设置当前帧率统计的刷新间隔值
             /// </summary>
             public float UpdateInterval
             {
-                get { return m_updateInterval; }
+                get { return _updateInterval; }
                 set
                 {
                     if (value <= 0)
@@ -54,7 +54,7 @@ namespace GameEngine.Debug
                         return;
                     }
 
-                    m_updateInterval = value;
+                    _updateInterval = value;
                     Reset();
                 }
             }
@@ -64,7 +64,7 @@ namespace GameEngine.Debug
             /// </summary>
             public float CurrentFps
             {
-                get { return m_currentFps; }
+                get { return _currentFps; }
             }
 
             public FpsCounter(float updateInterval)
@@ -75,22 +75,22 @@ namespace GameEngine.Debug
                     return;
                 }
 
-                m_updateInterval = updateInterval;
+                _updateInterval = updateInterval;
                 Reset();
             }
 
             public void Update(float elapseSeconds, float realElapseSeconds)
             {
-                ++m_frames;
-                m_accumulator += realElapseSeconds;
-                m_timeLeft -= realElapseSeconds;
+                ++_frames;
+                _accumulator += realElapseSeconds;
+                _timeLeft -= realElapseSeconds;
 
-                if (m_timeLeft <= 0f)
+                if (_timeLeft <= 0f)
                 {
-                    m_currentFps = m_accumulator > 0f ? m_frames / m_accumulator : 0f;
-                    m_frames = 0;
-                    m_accumulator = 0f;
-                    m_timeLeft += m_updateInterval;
+                    _currentFps = _accumulator > 0f ? _frames / _accumulator : 0f;
+                    _frames = 0;
+                    _accumulator = 0f;
+                    _timeLeft += _updateInterval;
                 }
             }
 
@@ -99,10 +99,10 @@ namespace GameEngine.Debug
             /// </summary>
             private void Reset()
             {
-                m_currentFps = 0f;
-                m_frames = 0;
-                m_accumulator = 0f;
-                m_timeLeft = 0f;
+                _currentFps = 0f;
+                _frames = 0;
+                _accumulator = 0f;
+                _timeLeft = 0f;
             }
         }
     }

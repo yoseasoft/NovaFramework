@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -42,22 +42,22 @@ namespace GameEngine.Debug
                 /// <summary>
                 /// 资源对象的名称
                 /// </summary>
-                private readonly string m_name;
+                private readonly string _name;
                 /// <summary>
                 /// 资源对象引用的数量
                 /// </summary>
-                private int m_count;
+                private int _count;
                 /// <summary>
                 /// 资源对象消耗的内存总量
                 /// </summary>
-                private long m_size;
+                private long _size;
 
                 /// <summary>
                 /// 获取资源对象名称
                 /// </summary>
                 public string Name
                 {
-                    get { return m_name; }
+                    get { return _name; }
                 }
 
                 /// <summary>
@@ -65,8 +65,8 @@ namespace GameEngine.Debug
                 /// </summary>
                 public int Count
                 {
-                    get { return m_count; }
-                    set { m_count = value; }
+                    get { return _count; }
+                    set { _count = value; }
                 }
 
                 /// <summary>
@@ -74,15 +74,15 @@ namespace GameEngine.Debug
                 /// </summary>
                 public long Size
                 {
-                    get { return m_size; }
-                    set { m_size = value; }
+                    get { return _size; }
+                    set { _size = value; }
                 }
 
                 public Record(string name)
                 {
-                    m_name = name;
-                    m_count = 0;
-                    m_size = 0L;
+                    _name = name;
+                    _count = 0;
+                    _size = 0L;
                 }
             }
         }

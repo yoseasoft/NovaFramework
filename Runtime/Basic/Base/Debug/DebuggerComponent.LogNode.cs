@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -42,52 +42,52 @@ namespace GameEngine.Debug
             /// <summary>
             /// 日志记录发生的时间
             /// </summary>
-            private SystemDateTime m_time;
+            private SystemDateTime _time;
             /// <summary>
             /// 日志记录发生的帧数
             /// </summary>
-            private int m_frameCount;
+            private int _frameCount;
             /// <summary>
             /// 日志记录的类型
             /// </summary>
-            private UnityLogType m_type;
+            private UnityLogType _type;
             /// <summary>
             /// 日志记录的内容
             /// </summary>
-            private string m_message;
+            private string _message;
             /// <summary>
             /// 日志记录的栈信息
             /// </summary>
-            private string m_stackTrace;
+            private string _stackTrace;
 
             /// <summary>
             /// 获取当前日志记录发生的时间
             /// </summary>
-            public SystemDateTime Time { get { return m_time; } }
+            public SystemDateTime Time { get { return _time; } }
             /// <summary>
             /// 获取当前日志记录发生的帧数
             /// </summary>
-            public int FrameCount { get { return m_frameCount; } }
+            public int FrameCount { get { return _frameCount; } }
             /// <summary>
             /// 获取当前日志记录的类型
             /// </summary>
-            public UnityLogType Type { get { return m_type; } }
+            public UnityLogType Type { get { return _type; } }
             /// <summary>
             /// 获取当前日志记录的内容
             /// </summary>
-            public string Message { get { return m_message; } }
+            public string Message { get { return _message; } }
             /// <summary>
             /// 获取当前日志记录的栈信息
             /// </summary>
-            public string StackTrace { get { return m_stackTrace; } }
+            public string StackTrace { get { return _stackTrace; } }
 
             public LogNode()
             {
-                m_time = default(SystemDateTime);
-                m_frameCount = 0;
-                m_type = UnityLogType.Error;
-                m_message = null;
-                m_stackTrace = null;
+                _time = default(SystemDateTime);
+                _frameCount = 0;
+                _type = UnityLogType.Error;
+                _message = null;
+                _stackTrace = null;
             }
 
             /// <summary>
@@ -102,11 +102,11 @@ namespace GameEngine.Debug
             /// </summary>
             public void Cleanup()
             {
-                m_time = default(SystemDateTime);
-                m_frameCount = 0;
-                m_type = UnityLogType.Error;
-                m_message = null;
-                m_stackTrace = null;
+                _time = default(SystemDateTime);
+                _frameCount = 0;
+                _type = UnityLogType.Error;
+                _message = null;
+                _stackTrace = null;
             }
 
             /// <summary>
@@ -121,11 +121,11 @@ namespace GameEngine.Debug
             public static LogNode Create(UnityLogType type, string message, string stackTrace)
             {
                 LogNode node = NovaEngine.ReferencePool.Acquire<LogNode>();
-                node.m_time = SystemDateTime.UtcNow;
-                node.m_frameCount = NovaEngine.Timestamp.FrameCount;
-                node.m_type = type;
-                node.m_message = message;
-                node.m_stackTrace = stackTrace;
+                node._time = SystemDateTime.UtcNow;
+                node._frameCount = NovaEngine.Timestamp.FrameCount;
+                node._type = type;
+                node._message = message;
+                node._stackTrace = stackTrace;
                 return node;
             }
 

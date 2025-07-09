@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,15 +39,15 @@ namespace GameEngine.Debug
         /// </summary>
         private sealed class SettingsWindow : BaseScrollableDebuggerWindow
         {
-            private DebuggerComponent m_debuggerComponent = null;
-            private IDebuggerSetting m_debuggerSetting = null;
-            private float m_lastIconX = 0f;
-            private float m_lastIconY = 0f;
-            private float m_lastWindowX = 0f;
-            private float m_lastWindowY = 0f;
-            private float m_lastWindowWidth = 0f;
-            private float m_lastWindowHeight = 0f;
-            private float m_lastWindowScale = 0f;
+            private DebuggerComponent _debuggerComponent = null;
+            private IDebuggerSetting _debuggerSetting = null;
+            private float _lastIconX = 0f;
+            private float _lastIconY = 0f;
+            private float _lastWindowX = 0f;
+            private float _lastWindowY = 0f;
+            private float _lastWindowWidth = 0f;
+            private float _lastWindowHeight = 0f;
+            private float _lastWindowScale = 0f;
 
             /// <summary>
             /// 设置窗口初始化操作函数
@@ -57,8 +57,8 @@ namespace GameEngine.Debug
             {
                 base.Initialize(args);
 
-                m_debuggerComponent = NovaEngine.AppEntry.GetComponent<DebuggerComponent>();
-                if (null == m_debuggerComponent)
+                _debuggerComponent = NovaEngine.AppEntry.GetComponent<DebuggerComponent>();
+                if (null == _debuggerComponent)
                 {
                     Debugger.Fatal("Debugger component is invalid.");
                     return;
@@ -71,24 +71,24 @@ namespace GameEngine.Debug
                     return;
                 }
 
-                m_debuggerSetting = debuggerManager.DebuggerSetting;
-                if (null == m_debuggerSetting)
+                _debuggerSetting = debuggerManager.DebuggerSetting;
+                if (null == _debuggerSetting)
                 {
                     Debugger.Fatal("Debugger setting is invalid.");
                     return;
                 }
 
-                m_lastIconX = m_debuggerSetting.GetFloat(IDebuggerSetting.IconX, DefaultIconRect.x);
-                m_lastIconY = m_debuggerSetting.GetFloat(IDebuggerSetting.IconY, DefaultIconRect.y);
-                m_lastWindowX = m_debuggerSetting.GetFloat(IDebuggerSetting.WindowX, DefaultWindowRect.x);
-                m_lastWindowY = m_debuggerSetting.GetFloat(IDebuggerSetting.WindowY, DefaultWindowRect.y);
-                m_lastWindowWidth = m_debuggerSetting.GetFloat(IDebuggerSetting.WindowWidth, DefaultWindowRect.width);
-                m_lastWindowHeight = m_debuggerSetting.GetFloat(IDebuggerSetting.WindowHeight, DefaultWindowRect.height);
-                m_lastWindowScale = m_debuggerSetting.GetFloat(IDebuggerSetting.WindowScale, DefaultWindowScale);
+                _lastIconX = _debuggerSetting.GetFloat(IDebuggerSetting.IconX, DefaultIconRect.x);
+                _lastIconY = _debuggerSetting.GetFloat(IDebuggerSetting.IconY, DefaultIconRect.y);
+                _lastWindowX = _debuggerSetting.GetFloat(IDebuggerSetting.WindowX, DefaultWindowRect.x);
+                _lastWindowY = _debuggerSetting.GetFloat(IDebuggerSetting.WindowY, DefaultWindowRect.y);
+                _lastWindowWidth = _debuggerSetting.GetFloat(IDebuggerSetting.WindowWidth, DefaultWindowRect.width);
+                _lastWindowHeight = _debuggerSetting.GetFloat(IDebuggerSetting.WindowHeight, DefaultWindowRect.height);
+                _lastWindowScale = _debuggerSetting.GetFloat(IDebuggerSetting.WindowScale, DefaultWindowScale);
 
-                m_debuggerComponent.WindowScale = m_lastWindowScale;
-                m_debuggerComponent.IconRect = new UnityRect(m_lastIconX, m_lastIconY, DefaultIconRect.width, DefaultIconRect.height);
-                m_debuggerComponent.WindowRect = new UnityRect(m_lastWindowX, m_lastWindowY, m_lastWindowWidth, m_lastWindowHeight);
+                _debuggerComponent.WindowScale = _lastWindowScale;
+                _debuggerComponent.IconRect = new UnityRect(_lastIconX, _lastIconY, DefaultIconRect.width, DefaultIconRect.height);
+                _debuggerComponent.WindowRect = new UnityRect(_lastWindowX, _lastWindowY, _lastWindowWidth, _lastWindowHeight);
             }
 
             /// <summary>
@@ -106,46 +106,46 @@ namespace GameEngine.Debug
             /// <param name="realElapseSeconds">真实流逝时间，以秒为单位</param>
             public override void OnUpdate(float elapseSeconds, float realElapseSeconds)
             {
-                if (m_lastIconX != m_debuggerComponent.IconRect.x)
+                if (_lastIconX != _debuggerComponent.IconRect.x)
                 {
-                    m_lastIconX = m_debuggerComponent.IconRect.x;
-                    m_debuggerSetting.SetFloat(IDebuggerSetting.IconX, m_lastIconX);
+                    _lastIconX = _debuggerComponent.IconRect.x;
+                    _debuggerSetting.SetFloat(IDebuggerSetting.IconX, _lastIconX);
                 }
 
-                if (m_lastIconY != m_debuggerComponent.IconRect.y)
+                if (_lastIconY != _debuggerComponent.IconRect.y)
                 {
-                    m_lastIconY = m_debuggerComponent.IconRect.y;
-                    m_debuggerSetting.SetFloat(IDebuggerSetting.IconY, m_lastIconY);
+                    _lastIconY = _debuggerComponent.IconRect.y;
+                    _debuggerSetting.SetFloat(IDebuggerSetting.IconY, _lastIconY);
                 }
 
-                if (m_lastWindowX != m_debuggerComponent.WindowRect.x)
+                if (_lastWindowX != _debuggerComponent.WindowRect.x)
                 {
-                    m_lastWindowX = m_debuggerComponent.WindowRect.x;
-                    m_debuggerSetting.SetFloat(IDebuggerSetting.WindowX, m_lastWindowX);
+                    _lastWindowX = _debuggerComponent.WindowRect.x;
+                    _debuggerSetting.SetFloat(IDebuggerSetting.WindowX, _lastWindowX);
                 }
 
-                if (m_lastWindowY != m_debuggerComponent.WindowRect.y)
+                if (_lastWindowY != _debuggerComponent.WindowRect.y)
                 {
-                    m_lastWindowY = m_debuggerComponent.WindowRect.y;
-                    m_debuggerSetting.SetFloat(IDebuggerSetting.WindowY, m_lastWindowY);
+                    _lastWindowY = _debuggerComponent.WindowRect.y;
+                    _debuggerSetting.SetFloat(IDebuggerSetting.WindowY, _lastWindowY);
                 }
 
-                if (m_lastWindowWidth != m_debuggerComponent.WindowRect.width)
+                if (_lastWindowWidth != _debuggerComponent.WindowRect.width)
                 {
-                    m_lastWindowWidth = m_debuggerComponent.WindowRect.width;
-                    m_debuggerSetting.SetFloat(IDebuggerSetting.WindowWidth, m_lastWindowWidth);
+                    _lastWindowWidth = _debuggerComponent.WindowRect.width;
+                    _debuggerSetting.SetFloat(IDebuggerSetting.WindowWidth, _lastWindowWidth);
                 }
 
-                if (m_lastWindowHeight != m_debuggerComponent.WindowRect.height)
+                if (_lastWindowHeight != _debuggerComponent.WindowRect.height)
                 {
-                    m_lastWindowHeight = m_debuggerComponent.WindowRect.height;
-                    m_debuggerSetting.SetFloat(IDebuggerSetting.WindowHeight, m_lastWindowHeight);
+                    _lastWindowHeight = _debuggerComponent.WindowRect.height;
+                    _debuggerSetting.SetFloat(IDebuggerSetting.WindowHeight, _lastWindowHeight);
                 }
 
-                if (m_lastWindowScale != m_debuggerComponent.WindowScale)
+                if (_lastWindowScale != _debuggerComponent.WindowScale)
                 {
-                    m_lastWindowScale = m_debuggerComponent.WindowScale;
-                    m_debuggerSetting.SetFloat(IDebuggerSetting.WindowScale, m_lastWindowScale);
+                    _lastWindowScale = _debuggerComponent.WindowScale;
+                    _debuggerSetting.SetFloat(IDebuggerSetting.WindowScale, _lastWindowScale);
                 }
             }
 
@@ -163,7 +163,7 @@ namespace GameEngine.Debug
 
                     UnityGUILayout.BeginHorizontal();
                     {
-                        float width = m_debuggerComponent.WindowRect.width;
+                        float width = _debuggerComponent.WindowRect.width;
                         UnityGUILayout.Label("Width:", UnityGUILayout.Width(60f));
                         if (UnityGUILayout.RepeatButton("-", UnityGUILayout.Width(30f)))
                         {
@@ -175,19 +175,19 @@ namespace GameEngine.Debug
                             width++;
                         }
                         width = UnityMathf.Clamp(width, 100f, UnityScreen.width - 20f);
-                        if (width != m_debuggerComponent.WindowRect.width)
+                        if (width != _debuggerComponent.WindowRect.width)
                         {
-                            m_debuggerComponent.WindowRect = new UnityRect(m_debuggerComponent.WindowRect.x,
-                                                                           m_debuggerComponent.WindowRect.y,
+                            _debuggerComponent.WindowRect = new UnityRect(_debuggerComponent.WindowRect.x,
+                                                                           _debuggerComponent.WindowRect.y,
                                                                            width,
-                                                                           m_debuggerComponent.WindowRect.height);
+                                                                           _debuggerComponent.WindowRect.height);
                         }
                     }
                     UnityGUILayout.EndHorizontal();
 
                     UnityGUILayout.BeginHorizontal();
                     {
-                        float height = m_debuggerComponent.WindowRect.height;
+                        float height = _debuggerComponent.WindowRect.height;
                         UnityGUILayout.Label("Height:", UnityGUILayout.Width(60f));
                         if (UnityGUILayout.RepeatButton("-", UnityGUILayout.Width(30f)))
                         {
@@ -199,11 +199,11 @@ namespace GameEngine.Debug
                             height++;
                         }
                         height = UnityMathf.Clamp(height, 100f, UnityScreen.height - 20f);
-                        if (height != m_debuggerComponent.WindowRect.height)
+                        if (height != _debuggerComponent.WindowRect.height)
                         {
-                            m_debuggerComponent.WindowRect = new UnityRect(m_debuggerComponent.WindowRect.x,
-                                                                           m_debuggerComponent.WindowRect.y,
-                                                                           m_debuggerComponent.WindowRect.width,
+                            _debuggerComponent.WindowRect = new UnityRect(_debuggerComponent.WindowRect.x,
+                                                                           _debuggerComponent.WindowRect.y,
+                                                                           _debuggerComponent.WindowRect.width,
                                                                            height);
                         }
                     }
@@ -211,7 +211,7 @@ namespace GameEngine.Debug
 
                     UnityGUILayout.BeginHorizontal();
                     {
-                        float scale = m_debuggerComponent.WindowScale;
+                        float scale = _debuggerComponent.WindowScale;
                         UnityGUILayout.Label("Scale:", UnityGUILayout.Width(60f));
                         if (UnityGUILayout.RepeatButton("-", UnityGUILayout.Width(30f)))
                         {
@@ -223,9 +223,9 @@ namespace GameEngine.Debug
                             scale += 0.01f;
                         }
                         scale = UnityMathf.Clamp(scale, 0.5f, 4f);
-                        if (scale != m_debuggerComponent.WindowScale)
+                        if (scale != _debuggerComponent.WindowScale)
                         {
-                            m_debuggerComponent.WindowScale = scale;
+                            _debuggerComponent.WindowScale = scale;
                         }
                     }
                     UnityGUILayout.EndHorizontal();
@@ -234,42 +234,42 @@ namespace GameEngine.Debug
                     {
                         if (UnityGUILayout.Button("0.5x", UnityGUILayout.Height(60f)))
                         {
-                            m_debuggerComponent.WindowScale = 0.5f;
+                            _debuggerComponent.WindowScale = 0.5f;
                         }
                         if (UnityGUILayout.Button("1.0x", UnityGUILayout.Height(60f)))
                         {
-                            m_debuggerComponent.WindowScale = 1f;
+                            _debuggerComponent.WindowScale = 1f;
                         }
                         if (UnityGUILayout.Button("1.5x", UnityGUILayout.Height(60f)))
                         {
-                            m_debuggerComponent.WindowScale = 1.5f;
+                            _debuggerComponent.WindowScale = 1.5f;
                         }
                         if (UnityGUILayout.Button("2.0x", UnityGUILayout.Height(60f)))
                         {
-                            m_debuggerComponent.WindowScale = 2f;
+                            _debuggerComponent.WindowScale = 2f;
                         }
                         if (UnityGUILayout.Button("2.5x", UnityGUILayout.Height(60f)))
                         {
-                            m_debuggerComponent.WindowScale = 2.5f;
+                            _debuggerComponent.WindowScale = 2.5f;
                         }
                         if (UnityGUILayout.Button("3.0x", UnityGUILayout.Height(60f)))
                         {
-                            m_debuggerComponent.WindowScale = 3f;
+                            _debuggerComponent.WindowScale = 3f;
                         }
                         if (UnityGUILayout.Button("3.5x", UnityGUILayout.Height(60f)))
                         {
-                            m_debuggerComponent.WindowScale = 3.5f;
+                            _debuggerComponent.WindowScale = 3.5f;
                         }
                         if (UnityGUILayout.Button("4.0x", UnityGUILayout.Height(60f)))
                         {
-                            m_debuggerComponent.WindowScale = 4f;
+                            _debuggerComponent.WindowScale = 4f;
                         }
                     }
                     UnityGUILayout.EndHorizontal();
 
                     if (UnityGUILayout.Button("Reset Layout", UnityGUILayout.Height(30f)))
                     {
-                        m_debuggerComponent.ResetLayout();
+                        _debuggerComponent.ResetLayout();
                     }
                 }
                 UnityGUILayout.EndVertical();

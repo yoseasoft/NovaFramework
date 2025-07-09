@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -50,29 +50,29 @@ namespace GameEngine.Debug
             /// <summary>
             /// 实例对象的存储列表容器
             /// </summary>
-            private readonly List<Sample> m_samples = new List<Sample>();
+            private readonly List<Sample> _samples = new List<Sample>();
 
             /// <summary>
             /// 实例对象的比较器函数引用
             /// </summary>
-            private readonly System.Comparison<Sample> m_sampleComparer = SampleComparer;
+            private readonly System.Comparison<Sample> _sampleComparer = SampleComparer;
 
             /// <summary>
             /// 实例刷新的时间标签
             /// </summary>
-            private SystemDateTime m_sampleTime = SystemDateTime.MinValue;
+            private SystemDateTime _sampleTime = SystemDateTime.MinValue;
             /// <summary>
             /// 所有实例的累计内存大小
             /// </summary>
-            private long m_sampleSize = 0L;
+            private long _sampleSize = 0L;
             /// <summary>
             /// 所有复用实例的累计内存大小
             /// </summary>
-            private long m_duplicateSampleSize = 0L;
+            private long _duplicateSampleSize = 0L;
             /// <summary>
             /// 所有复用实例的累计总数
             /// </summary>
-            private int m_duplicateSampleCount = 0;
+            private int _duplicateSampleCount = 0;
 
             protected override void OnDrawScrollableWindow()
             {
@@ -85,30 +85,30 @@ namespace GameEngine.Debug
                         TakeSample();
                     }
 
-                    if (m_sampleTime <= SystemDateTime.MinValue)
+                    if (_sampleTime <= SystemDateTime.MinValue)
                     {
                         UnityGUILayout.Label(NovaEngine.Utility.Text.Format("<b>Please take sample for {0} first.</b>", typeName));
                     }
                     else
                     {
-                        if (m_duplicateSampleCount > 0)
+                        if (_duplicateSampleCount > 0)
                         {
                             UnityGUILayout.Label(NovaEngine.Utility.Text.Format("<b>{0} {1}s ({2}) obtained at {3}, while {4} {1}s ({5}) might be duplicated.</b>",
-                                                                                m_samples.Count.ToString(), typeName,
-                                                                                GetByteLengthString(m_sampleSize),
-                                                                                m_sampleTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"),
-                                                                                m_duplicateSampleCount.ToString(),
-                                                                                GetByteLengthString(m_duplicateSampleSize)));
+                                                                                _samples.Count.ToString(), typeName,
+                                                                                GetByteLengthString(_sampleSize),
+                                                                                _sampleTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"),
+                                                                                _duplicateSampleCount.ToString(),
+                                                                                GetByteLengthString(_duplicateSampleSize)));
                         }
                         else
                         {
                             UnityGUILayout.Label(NovaEngine.Utility.Text.Format("<b>{0} {1}s ({2}) obtained at {3}.</b>",
-                                                                                m_samples.Count.ToString(), typeName,
-                                                                                GetByteLengthString(m_sampleSize),
-                                                                                m_sampleTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")));
+                                                                                _samples.Count.ToString(), typeName,
+                                                                                GetByteLengthString(_sampleSize),
+                                                                                _sampleTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")));
                         }
 
-                        if (m_samples.Count > 0)
+                        if (_samples.Count > 0)
                         {
                             UnityGUILayout.BeginHorizontal();
                             {
@@ -120,20 +120,20 @@ namespace GameEngine.Debug
                         }
 
                         int count = 0;
-                        for (int n = 0; n < m_samples.Count; ++n)
+                        for (int n = 0; n < _samples.Count; ++n)
                         {
                             UnityGUILayout.BeginHorizontal();
                             {
-                                UnityGUILayout.Label(m_samples[n].Highlight ?
-                                                            NovaEngine.Utility.Text.Format("<color=yellow>{0}</color>", m_samples[n].Name) :
-                                                            m_samples[n].Name);
-                                UnityGUILayout.Label(m_samples[n].Highlight ?
-                                                            NovaEngine.Utility.Text.Format("<color=yellow>{0}</color>", m_samples[n].Type) :
-                                                            m_samples[n].Type,
+                                UnityGUILayout.Label(_samples[n].Highlight ?
+                                                            NovaEngine.Utility.Text.Format("<color=yellow>{0}</color>", _samples[n].Name) :
+                                                            _samples[n].Name);
+                                UnityGUILayout.Label(_samples[n].Highlight ?
+                                                            NovaEngine.Utility.Text.Format("<color=yellow>{0}</color>", _samples[n].Type) :
+                                                            _samples[n].Type,
                                                      UnityGUILayout.Width(240f));
-                                UnityGUILayout.Label(m_samples[n].Highlight ?
-                                                            NovaEngine.Utility.Text.Format("<color=yellow>{0}</color>", GetByteLengthString(m_samples[n].Size)) :
-                                                            GetByteLengthString(m_samples[n].Size),
+                                UnityGUILayout.Label(_samples[n].Highlight ?
+                                                            NovaEngine.Utility.Text.Format("<color=yellow>{0}</color>", GetByteLengthString(_samples[n].Size)) :
+                                                            GetByteLengthString(_samples[n].Size),
                                                      UnityGUILayout.Width(80f));
                             }
                             UnityGUILayout.EndHorizontal();
@@ -154,33 +154,33 @@ namespace GameEngine.Debug
             /// </summary>
             private void TakeSample()
             {
-                m_sampleTime = SystemDateTime.UtcNow;
-                m_sampleSize = 0L;
-                m_duplicateSampleSize = 0L;
-                m_duplicateSampleCount = 0;
-                m_samples.Clear();
+                _sampleTime = SystemDateTime.UtcNow;
+                _sampleSize = 0L;
+                _duplicateSampleSize = 0L;
+                _duplicateSampleCount = 0;
+                _samples.Clear();
 
                 T[] samples = UnityResources.FindObjectsOfTypeAll<T>();
                 for (int n = 0; n < samples.Length; ++n)
                 {
                     long sampleSize = UnityProfiler.GetRuntimeMemorySizeLong(samples[n]);
 
-                    m_sampleSize += sampleSize;
-                    m_samples.Add(new Sample(samples[n].name, samples[n].GetType().Name, sampleSize));
+                    _sampleSize += sampleSize;
+                    _samples.Add(new Sample(samples[n].name, samples[n].GetType().Name, sampleSize));
                 }
 
-                m_samples.Sort(m_sampleComparer);
+                _samples.Sort(_sampleComparer);
 
                 // 检测实例重复使用状态
-                for (int n = 0; n < m_samples.Count; ++n)
+                for (int n = 0; n < _samples.Count; ++n)
                 {
-                    if (m_samples[n].Name == m_samples[n - 1].Name &&
-                        m_samples[n].Type == m_samples[n - 1].Type &&
-                        m_samples[n].Size == m_samples[n - 1].Size)
+                    if (_samples[n].Name == _samples[n - 1].Name &&
+                        _samples[n].Type == _samples[n - 1].Type &&
+                        _samples[n].Size == _samples[n - 1].Size)
                     {
-                        m_samples[n].Highlight = true;
-                        m_duplicateSampleSize += m_samples[n].Size;
-                        m_duplicateSampleCount++;
+                        _samples[n].Highlight = true;
+                        _duplicateSampleSize += _samples[n].Size;
+                        _duplicateSampleCount++;
                     }
                 }
             }

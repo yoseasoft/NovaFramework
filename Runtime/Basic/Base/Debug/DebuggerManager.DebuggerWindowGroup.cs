@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,22 +36,22 @@ namespace GameEngine.Debug
         /// </summary>
         private sealed class DebuggerWindowGroup : IDebuggerWindowGroup
         {
-            private readonly List<KeyValuePair<string, IDebuggerWindow>> m_debuggerWindows;
-            private int m_selectedIndex;
-            private string[] m_debuggerWindowNames;
+            private readonly List<KeyValuePair<string, IDebuggerWindow>> _debuggerWindows;
+            private int _selectedIndex;
+            private string[] _debuggerWindowNames;
 
             /// <summary>
             /// 获取调试器窗口的数量
             /// </summary>
-            public int DebuggerWindowCount { get { return m_debuggerWindows.Count; } }
+            public int DebuggerWindowCount { get { return _debuggerWindows.Count; } }
 
             /// <summary>
             /// 获取或设置当前选中的调试器窗口的索引
             /// </summary>
             public int SelectedIndex
             {
-                get { return m_selectedIndex; }
-                set { m_selectedIndex = value; }
+                get { return _selectedIndex; }
+                set { _selectedIndex = value; }
             }
 
             /// <summary>
@@ -61,20 +61,20 @@ namespace GameEngine.Debug
             {
                 get
                 {
-                    if (m_selectedIndex >= m_debuggerWindows.Count || m_selectedIndex < 0)
+                    if (_selectedIndex >= _debuggerWindows.Count || _selectedIndex < 0)
                     {
                         return null;
                     }
 
-                    return m_debuggerWindows[m_selectedIndex].Value;
+                    return _debuggerWindows[_selectedIndex].Value;
                 }
             }
 
             public DebuggerWindowGroup()
             {
-                m_debuggerWindows = new List<KeyValuePair<string, IDebuggerWindow>>();
-                m_selectedIndex = 0;
-                m_debuggerWindowNames = null;
+                _debuggerWindows = new List<KeyValuePair<string, IDebuggerWindow>>();
+                _selectedIndex = 0;
+                _debuggerWindowNames = null;
             }
 
             /// <summary>
@@ -90,12 +90,12 @@ namespace GameEngine.Debug
             /// </summary>
             public void Cleanup()
             {
-                foreach (KeyValuePair<string, IDebuggerWindow> debuggerWindow in m_debuggerWindows)
+                foreach (KeyValuePair<string, IDebuggerWindow> debuggerWindow in _debuggerWindows)
                 {
                     debuggerWindow.Value.Cleanup();
                 }
 
-                m_debuggerWindows.Clear();
+                _debuggerWindows.Clear();
             }
 
             /// <summary>
@@ -136,10 +136,10 @@ namespace GameEngine.Debug
             /// </summary>
             private void RefreshDebuggerWindowNames()
             {
-                m_debuggerWindowNames = new string[m_debuggerWindows.Count];
-                for (int n = 0; n < m_debuggerWindows.Count; ++n)
+                _debuggerWindowNames = new string[_debuggerWindows.Count];
+                for (int n = 0; n < _debuggerWindows.Count; ++n)
                 {
-                    m_debuggerWindowNames[n] = m_debuggerWindows[n].Key;
+                    _debuggerWindowNames[n] = _debuggerWindows[n].Key;
                 }
             }
 
@@ -149,7 +149,7 @@ namespace GameEngine.Debug
             /// <returns>返回调试器窗口名称的集合，若没有则返回空</returns>
             public string[] GetAllDebuggerWindowNames()
             {
-                return m_debuggerWindowNames;
+                return _debuggerWindowNames;
             }
 
             /// <summary>
@@ -231,7 +231,7 @@ namespace GameEngine.Debug
                         throw new NovaEngine.CFrameworkException("Debugger window has been registered.");
                     }
 
-                    m_debuggerWindows.Add(new KeyValuePair<string, IDebuggerWindow>(path, debuggerWindow));
+                    _debuggerWindows.Add(new KeyValuePair<string, IDebuggerWindow>(path, debuggerWindow));
                     RefreshDebuggerWindowNames();
                 }
                 else
@@ -247,7 +247,7 @@ namespace GameEngine.Debug
                         }
 
                         debuggerWindowGroup = new DebuggerWindowGroup();
-                        m_debuggerWindows.Add(new KeyValuePair<string, IDebuggerWindow>(debuggerWindowGroupName, debuggerWindowGroup));
+                        _debuggerWindows.Add(new KeyValuePair<string, IDebuggerWindow>(debuggerWindowGroupName, debuggerWindowGroup));
                         RefreshDebuggerWindowNames();
                     }
 
@@ -271,7 +271,7 @@ namespace GameEngine.Debug
                 if (pos < 0 || pos >= path.Length - 1)
                 {
                     IDebuggerWindow debuggerWindow = InternalGetDebuggerWindow(path);
-                    bool result = m_debuggerWindows.Remove(new KeyValuePair<string, IDebuggerWindow>(path, debuggerWindow));
+                    bool result = _debuggerWindows.Remove(new KeyValuePair<string, IDebuggerWindow>(path, debuggerWindow));
                     debuggerWindow.Cleanup();
                     RefreshDebuggerWindowNames();
                     return result;
@@ -290,7 +290,7 @@ namespace GameEngine.Debug
 
             private IDebuggerWindow InternalGetDebuggerWindow(string name)
             {
-                foreach (KeyValuePair<string, IDebuggerWindow> debuggerWindow in m_debuggerWindows)
+                foreach (KeyValuePair<string, IDebuggerWindow> debuggerWindow in _debuggerWindows)
                 {
                     if (debuggerWindow.Key == name)
                     {
@@ -303,11 +303,11 @@ namespace GameEngine.Debug
 
             private bool InternalSelectDebuggerWindow(string name)
             {
-                for (int n = 0; n < m_debuggerWindows.Count; ++n)
+                for (int n = 0; n < _debuggerWindows.Count; ++n)
                 {
-                    if (m_debuggerWindows[n].Key == name)
+                    if (_debuggerWindows[n].Key == name)
                     {
-                        m_selectedIndex = n;
+                        _selectedIndex = n;
                         return true;
                     }
                 }
