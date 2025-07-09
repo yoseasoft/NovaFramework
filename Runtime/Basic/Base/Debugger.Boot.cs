@@ -91,82 +91,82 @@ namespace GameEngine
         /// <summary>
         /// 调试模式下的输出回调接口
         /// </summary>
-        private static NovaEngine.Debugger.OutputHandler_object s_logForObject;
-        private static NovaEngine.Debugger.OutputHandler_string s_logForString;
-        private static NovaEngine.Debugger.OutputHandler_cond_string s_logForCondString;
-        private static NovaEngine.Debugger.OutputHandler_format_args s_logForFormatArgs;
-        private static NovaEngine.Debugger.OutputHandler_cond_format_args s_logForCondFormatArgs;
+        private static NovaEngine.Debugger.OutputHandler_object _logForObject;
+        private static NovaEngine.Debugger.OutputHandler_string _logForString;
+        private static NovaEngine.Debugger.OutputHandler_cond_string _logForCondString;
+        private static NovaEngine.Debugger.OutputHandler_format_args _logForFormatArgs;
+        private static NovaEngine.Debugger.OutputHandler_cond_format_args _logForCondFormatArgs;
 
         /// <summary>
         /// 信息模式下的输出回调接口
         /// </summary>
-        private static NovaEngine.Debugger.OutputHandler_object s_infoForObject;
-        private static NovaEngine.Debugger.OutputHandler_string s_infoForString;
-        private static NovaEngine.Debugger.OutputHandler_cond_string s_infoForCondString;
-        private static NovaEngine.Debugger.OutputHandler_format_args s_infoForFormatArgs;
-        private static NovaEngine.Debugger.OutputHandler_cond_format_args s_infoForCondFormatArgs;
+        private static NovaEngine.Debugger.OutputHandler_object _infoForObject;
+        private static NovaEngine.Debugger.OutputHandler_string _infoForString;
+        private static NovaEngine.Debugger.OutputHandler_cond_string _infoForCondString;
+        private static NovaEngine.Debugger.OutputHandler_format_args _infoForFormatArgs;
+        private static NovaEngine.Debugger.OutputHandler_cond_format_args _infoForCondFormatArgs;
 
         /// <summary>
         /// 警告模式下的输出回调接口
         /// </summary>
-        private static NovaEngine.Debugger.OutputHandler_object s_warnForObject;
-        private static NovaEngine.Debugger.OutputHandler_string s_warnForString;
-        private static NovaEngine.Debugger.OutputHandler_cond_string s_warnForCondString;
-        private static NovaEngine.Debugger.OutputHandler_format_args s_warnForFormatArgs;
-        private static NovaEngine.Debugger.OutputHandler_cond_format_args s_warnForCondFormatArgs;
+        private static NovaEngine.Debugger.OutputHandler_object _warnForObject;
+        private static NovaEngine.Debugger.OutputHandler_string _warnForString;
+        private static NovaEngine.Debugger.OutputHandler_cond_string _warnForCondString;
+        private static NovaEngine.Debugger.OutputHandler_format_args _warnForFormatArgs;
+        private static NovaEngine.Debugger.OutputHandler_cond_format_args _warnForCondFormatArgs;
 
         /// <summary>
         /// 错误模式下的输出回调接口
         /// </summary>
-        private static NovaEngine.Debugger.OutputHandler_object s_errorForObject;
-        private static NovaEngine.Debugger.OutputHandler_string s_errorForString;
-        private static NovaEngine.Debugger.OutputHandler_cond_string s_errorForCondString;
-        private static NovaEngine.Debugger.OutputHandler_format_args s_errorForFormatArgs;
-        private static NovaEngine.Debugger.OutputHandler_cond_format_args s_errorForCondFormatArgs;
+        private static NovaEngine.Debugger.OutputHandler_object _errorForObject;
+        private static NovaEngine.Debugger.OutputHandler_string _errorForString;
+        private static NovaEngine.Debugger.OutputHandler_cond_string _errorForCondString;
+        private static NovaEngine.Debugger.OutputHandler_format_args _errorForFormatArgs;
+        private static NovaEngine.Debugger.OutputHandler_cond_format_args _errorForCondFormatArgs;
 
         /// <summary>
         /// 崩溃模式下的输出回调接口
         /// </summary>
-        private static NovaEngine.Debugger.OutputHandler_object s_fatalForObject;
-        private static NovaEngine.Debugger.OutputHandler_string s_fatalForString;
-        private static NovaEngine.Debugger.OutputHandler_cond_string s_fatalForCondString;
-        private static NovaEngine.Debugger.OutputHandler_format_args s_fatalForFormatArgs;
-        private static NovaEngine.Debugger.OutputHandler_cond_format_args s_fatalForCondFormatArgs;
+        private static NovaEngine.Debugger.OutputHandler_object _fatalForObject;
+        private static NovaEngine.Debugger.OutputHandler_string _fatalForString;
+        private static NovaEngine.Debugger.OutputHandler_cond_string _fatalForCondString;
+        private static NovaEngine.Debugger.OutputHandler_format_args _fatalForFormatArgs;
+        private static NovaEngine.Debugger.OutputHandler_cond_format_args _fatalForCondFormatArgs;
 
         /// <summary>
         /// 重置全部日志输出回调接口
         /// </summary>
         private static void ResettingDebugOutputHandler()
         {
-            s_logForObject = Unity_Output;
-            s_logForString = Unity_Output;
-            s_logForCondString = Unity_Output;
-            s_logForFormatArgs = Unity_Output;
-            s_logForCondFormatArgs = Unity_Output;
+            _logForObject = Unity_Output;
+            _logForString = Unity_Output;
+            _logForCondString = Unity_Output;
+            _logForFormatArgs = Unity_Output;
+            _logForCondFormatArgs = Unity_Output;
 
-            s_infoForObject = Unity_Output;
-            s_infoForString = Unity_Output;
-            s_infoForCondString = Unity_Output;
-            s_infoForFormatArgs = Unity_Output;
-            s_infoForCondFormatArgs = Unity_Output;
+            _infoForObject = Unity_Output;
+            _infoForString = Unity_Output;
+            _infoForCondString = Unity_Output;
+            _infoForFormatArgs = Unity_Output;
+            _infoForCondFormatArgs = Unity_Output;
 
-            s_warnForObject = Unity_Output;
-            s_warnForString = Unity_Output;
-            s_warnForCondString = Unity_Output;
-            s_warnForFormatArgs = Unity_Output;
-            s_warnForCondFormatArgs = Unity_Output;
+            _warnForObject = Unity_Output;
+            _warnForString = Unity_Output;
+            _warnForCondString = Unity_Output;
+            _warnForFormatArgs = Unity_Output;
+            _warnForCondFormatArgs = Unity_Output;
 
-            s_errorForObject = Unity_Output;
-            s_errorForString = Unity_Output;
-            s_errorForCondString = Unity_Output;
-            s_errorForFormatArgs = Unity_Output;
-            s_errorForCondFormatArgs = Unity_Output;
+            _errorForObject = Unity_Output;
+            _errorForString = Unity_Output;
+            _errorForCondString = Unity_Output;
+            _errorForFormatArgs = Unity_Output;
+            _errorForCondFormatArgs = Unity_Output;
 
-            s_fatalForObject = Unity_Output;
-            s_fatalForString = Unity_Output;
-            s_fatalForCondString = Unity_Output;
-            s_fatalForFormatArgs = Unity_Output;
-            s_fatalForCondFormatArgs = Unity_Output;
+            _fatalForObject = Unity_Output;
+            _fatalForString = Unity_Output;
+            _fatalForCondString = Unity_Output;
+            _fatalForFormatArgs = Unity_Output;
+            _fatalForCondFormatArgs = Unity_Output;
         }
 
         /// <summary>
@@ -174,35 +174,35 @@ namespace GameEngine
         /// </summary>
         private static void BindingDebugOutputHandler()
         {
-            s_logForObject = NovaEngine.Debugger.Log;
-            s_logForString = NovaEngine.Debugger.Log;
-            s_logForCondString = NovaEngine.Debugger.Log;
-            s_logForFormatArgs = NovaEngine.Debugger.Log;
-            s_logForCondFormatArgs = NovaEngine.Debugger.Log;
+            _logForObject = NovaEngine.Debugger.Log;
+            _logForString = NovaEngine.Debugger.Log;
+            _logForCondString = NovaEngine.Debugger.Log;
+            _logForFormatArgs = NovaEngine.Debugger.Log;
+            _logForCondFormatArgs = NovaEngine.Debugger.Log;
 
-            s_infoForObject = NovaEngine.Debugger.Info;
-            s_infoForString = NovaEngine.Debugger.Info;
-            s_infoForCondString = NovaEngine.Debugger.Info;
-            s_infoForFormatArgs = NovaEngine.Debugger.Info;
-            s_infoForCondFormatArgs = NovaEngine.Debugger.Info;
+            _infoForObject = NovaEngine.Debugger.Info;
+            _infoForString = NovaEngine.Debugger.Info;
+            _infoForCondString = NovaEngine.Debugger.Info;
+            _infoForFormatArgs = NovaEngine.Debugger.Info;
+            _infoForCondFormatArgs = NovaEngine.Debugger.Info;
 
-            s_warnForObject = NovaEngine.Debugger.Warn;
-            s_warnForString = NovaEngine.Debugger.Warn;
-            s_warnForCondString = NovaEngine.Debugger.Warn;
-            s_warnForFormatArgs = NovaEngine.Debugger.Warn;
-            s_warnForCondFormatArgs = NovaEngine.Debugger.Warn;
+            _warnForObject = NovaEngine.Debugger.Warn;
+            _warnForString = NovaEngine.Debugger.Warn;
+            _warnForCondString = NovaEngine.Debugger.Warn;
+            _warnForFormatArgs = NovaEngine.Debugger.Warn;
+            _warnForCondFormatArgs = NovaEngine.Debugger.Warn;
 
-            s_errorForObject = NovaEngine.Debugger.Error;
-            s_errorForString = NovaEngine.Debugger.Error;
-            s_errorForCondString = NovaEngine.Debugger.Error;
-            s_errorForFormatArgs = NovaEngine.Debugger.Error;
-            s_errorForCondFormatArgs = NovaEngine.Debugger.Error;
+            _errorForObject = NovaEngine.Debugger.Error;
+            _errorForString = NovaEngine.Debugger.Error;
+            _errorForCondString = NovaEngine.Debugger.Error;
+            _errorForFormatArgs = NovaEngine.Debugger.Error;
+            _errorForCondFormatArgs = NovaEngine.Debugger.Error;
 
-            s_fatalForObject = NovaEngine.Debugger.Fatal;
-            s_fatalForString = NovaEngine.Debugger.Fatal;
-            s_fatalForCondString = NovaEngine.Debugger.Fatal;
-            s_fatalForFormatArgs = NovaEngine.Debugger.Fatal;
-            s_fatalForCondFormatArgs = NovaEngine.Debugger.Fatal;
+            _fatalForObject = NovaEngine.Debugger.Fatal;
+            _fatalForString = NovaEngine.Debugger.Fatal;
+            _fatalForCondString = NovaEngine.Debugger.Fatal;
+            _fatalForFormatArgs = NovaEngine.Debugger.Fatal;
+            _fatalForCondFormatArgs = NovaEngine.Debugger.Fatal;
         }
 
         #endregion

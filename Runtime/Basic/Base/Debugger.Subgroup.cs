@@ -35,7 +35,7 @@ namespace GameEngine
         /// <summary>
         /// 以分组模式开启调试的状态标识映射列表
         /// </summary>
-        private static readonly IDictionary<int, DebuggingOutputGroupInfo> s_debuggingOutputGroupInfos = new Dictionary<int, DebuggingOutputGroupInfo>();
+        private static readonly IDictionary<int, DebuggingOutputGroupInfo> _debuggingOutputGroupInfos = new Dictionary<int, DebuggingOutputGroupInfo>();
 
         /// <summary>
         /// 设置当前调试环境下指定分组的启用状态标识
@@ -44,13 +44,13 @@ namespace GameEngine
         /// <param name="enabled">启用状态标识</param>
         internal static void SetTargetOutputGroupEnabled(int groupID, bool enabled)
         {
-            if (false == s_debuggingOutputGroupInfos.ContainsKey(groupID))
+            if (false == _debuggingOutputGroupInfos.ContainsKey(groupID))
             {
                 Warn("Could not found any output group with target ID '{0}', setted it enabled failed.", groupID);
                 return;
             }
 
-            DebuggingOutputGroupInfo info = s_debuggingOutputGroupInfos[groupID];
+            DebuggingOutputGroupInfo info = _debuggingOutputGroupInfos[groupID];
             info.Enabled = enabled;
         }
 
@@ -61,13 +61,13 @@ namespace GameEngine
         /// <param name="level">日志输出级别</param>
         internal static void SetTargetOutputGroupLevel(int groupID, int level)
         {
-            if (false == s_debuggingOutputGroupInfos.ContainsKey(groupID))
+            if (false == _debuggingOutputGroupInfos.ContainsKey(groupID))
             {
                 Warn("Could not found any output group with target ID '{%d}', setted it level failed.", groupID);
                 return;
             }
 
-            DebuggingOutputGroupInfo info = s_debuggingOutputGroupInfos[groupID];
+            DebuggingOutputGroupInfo info = _debuggingOutputGroupInfos[groupID];
             info.LogLevel = level;
         }
 
@@ -86,13 +86,13 @@ namespace GameEngine
                 return;
             }
 
-            if (s_debuggingOutputGroupInfos.ContainsKey(groupID))
+            if (_debuggingOutputGroupInfos.ContainsKey(groupID))
             {
-                s_debuggingOutputGroupInfos.Remove(groupID);
+                _debuggingOutputGroupInfos.Remove(groupID);
             }
 
             DebuggingOutputGroupInfo info = new DebuggingOutputGroupInfo(groupID, groupName, enabled, level);
-            s_debuggingOutputGroupInfos.Add(groupID, info);
+            _debuggingOutputGroupInfos.Add(groupID, info);
         }
 
         /// <summary>
@@ -101,13 +101,13 @@ namespace GameEngine
         /// <param name="groupID">模块组标识</param>
         internal static void RemoveTargetOutputGroup(int groupID)
         {
-            if (false == s_debuggingOutputGroupInfos.ContainsKey(groupID))
+            if (false == _debuggingOutputGroupInfos.ContainsKey(groupID))
             {
                 Warn("Could not found any output group with target ID '{0}', removed it failed.", groupID);
                 return;
             }
 
-            s_debuggingOutputGroupInfos.Remove(groupID);
+            _debuggingOutputGroupInfos.Remove(groupID);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace GameEngine
         /// </summary>
         internal static void RemoveAllOutputGroups()
         {
-            s_debuggingOutputGroupInfos?.Clear();
+            _debuggingOutputGroupInfos?.Clear();
         }
 
         /// <summary>
@@ -281,7 +281,7 @@ namespace GameEngine
         /// <param name="message">日志内容</param>
         private static void Output(int groupID, NovaEngine.LogOutputLevelType level, object message)
         {
-            if (s_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
+            if (_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
             {
                 group.Output(level, message);
             }
@@ -295,7 +295,7 @@ namespace GameEngine
         /// <param name="message">日志内容</param>
         private static void Output(int groupID, NovaEngine.LogOutputLevelType level, string message)
         {
-            if (s_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
+            if (_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
             {
                 group.Output(level, message);
             }
@@ -310,7 +310,7 @@ namespace GameEngine
         /// <param name="args">日志格式化参数</param>
         private static void Output(int groupID, NovaEngine.LogOutputLevelType level, string format, params object[] args)
         {
-            if (s_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
+            if (_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
             {
                 group.Output(level, format, args);
             }
@@ -326,31 +326,31 @@ namespace GameEngine
             /// <summary>
             /// 调试日志分组标识
             /// </summary>
-            private readonly int m_groupID;
+            private readonly int _groupID;
             /// <summary>
             /// 调试日志分组的描述名称
             /// </summary>
-            private readonly string m_groupName;
+            private readonly string _groupName;
             /// <summary>
             /// 调试日志分组的开启状态标识
             /// </summary>
-            private bool m_enabled;
+            private bool _enabled;
             /// <summary>
             /// 调试日志分组的可输出日志级别
             /// </summary>
-            private int m_logLevel;
+            private int _logLevel;
 
-            public int GroupID => m_groupID;
-            public string GroupName => m_groupName;
-            public bool Enabled { get { return m_enabled; } set { m_enabled = value; } }
-            public int LogLevel { get { return m_logLevel; } set { m_logLevel = value; } }
+            public int GroupID => _groupID;
+            public string GroupName => _groupName;
+            public bool Enabled { get { return _enabled; } set { _enabled = value; } }
+            public int LogLevel { get { return _logLevel; } set { _logLevel = value; } }
 
             public DebuggingOutputGroupInfo(int groupID, string groupName, bool enabled, int logLevel)
             {
-                m_groupID = groupID;
-                m_groupName = groupName;
-                m_enabled = enabled && GameMacros.DEBUGGING_OUTPUT_GROUP_POLICY_ENABLED;
-                m_logLevel = logLevel;
+                _groupID = groupID;
+                _groupName = groupName;
+                _enabled = enabled && GameMacros.DEBUGGING_OUTPUT_GROUP_POLICY_ENABLED;
+                _logLevel = logLevel;
             }
 
             /// <summary>
@@ -365,7 +365,7 @@ namespace GameEngine
                     return;
                 }
 
-                NovaEngine.Debugger.Output(level, $"[{m_groupName}]: {message}");
+                NovaEngine.Debugger.Output(level, $"[{_groupName}]: {message}");
             }
 
             /// <summary>
@@ -380,7 +380,7 @@ namespace GameEngine
                     return;
                 }
 
-                NovaEngine.Debugger.Output(level, $"[{m_groupName}]: {message}");
+                NovaEngine.Debugger.Output(level, $"[{_groupName}]: {message}");
             }
 
             /// <summary>
@@ -396,7 +396,7 @@ namespace GameEngine
                     return;
                 }
 
-                NovaEngine.Debugger.Output(level, $"[{m_groupName}]: {format}", args);
+                NovaEngine.Debugger.Output(level, $"[{_groupName}]: {format}", args);
             }
 
             /// <summary>
@@ -406,7 +406,7 @@ namespace GameEngine
             /// <returns>若启用给定级别的调试输出返回true，否则返回false</returns>
             private bool IsOutputEnabled(NovaEngine.LogOutputLevelType level)
             {
-                if (m_enabled && m_logLevel >= (int) level)
+                if (_enabled && _logLevel >= (int) level)
                 {
                     return true;
                 }

@@ -45,7 +45,7 @@ namespace GameEngine
         //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
         public static void Log(object message)
         {
-            s_logForObject(message);
+            _logForObject(message);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace GameEngine
         //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
         public static void Log(string message)
         {
-            s_logForString(message);
+            _logForString(message);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace GameEngine
         //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
         public static void Log(bool condition, string message)
         {
-            s_logForCondString(condition, message);
+            _logForCondString(condition, message);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace GameEngine
         //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
         public static void Log(string format, params object[] args)
         {
-            s_logForFormatArgs(format, args);
+            _logForFormatArgs(format, args);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace GameEngine
         //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
         public static void Log(bool condition, string format, params object[] args)
         {
-            s_logForCondFormatArgs(condition, format, args);
+            _logForCondFormatArgs(condition, format, args);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace GameEngine
         /// <param name="message">日志内容</param>
         public static void Info(object message)
         {
-            s_infoForObject(message);
+            _infoForObject(message);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace GameEngine
         /// <param name="message">日志内容</param>
         public static void Info(string message)
         {
-            s_infoForString(message);
+            _infoForString(message);
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace GameEngine
         /// <param name="message">日志内容</param>
         public static void Info(bool condition, string message)
         {
-            s_infoForCondString(condition, message);
+            _infoForCondString(condition, message);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace GameEngine
         /// <param name="args">日志格式化参数</param>
         public static void Info(string format, params object[] args)
         {
-            s_infoForFormatArgs(format, args);
+            _infoForFormatArgs(format, args);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace GameEngine
         /// <param name="args">日志格式化参数</param>
         public static void Info(bool condition, string format, params object[] args)
         {
-            s_infoForCondFormatArgs(condition, format, args);
+            _infoForCondFormatArgs(condition, format, args);
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace GameEngine
         /// <param name="message">日志内容</param>
         public static void Warn(object message)
         {
-            s_warnForObject(message);
+            _warnForObject(message);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace GameEngine
         /// <param name="message">日志内容</param>
         public static void Warn(string message)
         {
-            s_warnForString(message);
+            _warnForString(message);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace GameEngine
         /// <param name="message">日志内容</param>
         public static void Warn(bool condition, string message)
         {
-            s_warnForCondString(condition, message);
+            _warnForCondString(condition, message);
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace GameEngine
         /// <param name="args">日志格式化参数</param>
         public static void Warn(string format, params object[] args)
         {
-            s_warnForFormatArgs(format, args);
+            _warnForFormatArgs(format, args);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace GameEngine
         /// <param name="args">日志格式化参数</param>
         public static void Warn(bool condition, string format, params object[] args)
         {
-            s_warnForCondFormatArgs(condition, format, args);
+            _warnForCondFormatArgs(condition, format, args);
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace GameEngine
         /// <param name="message">日志内容</param>
         public static void Error(object message)
         {
-            s_errorForObject(message);
+            _errorForObject(message);
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace GameEngine
         /// <param name="message">日志内容</param>
         public static void Error(string message)
         {
-            s_errorForString(message);
+            _errorForString(message);
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace GameEngine
         /// <param name="message">日志内容</param>
         public static void Error(bool condition, string message)
         {
-            s_errorForCondString(condition, message);
+            _errorForCondString(condition, message);
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace GameEngine
         /// <param name="args">日志格式化参数</param>
         public static void Error(string format, params object[] args)
         {
-            s_errorForFormatArgs(format, args);
+            _errorForFormatArgs(format, args);
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace GameEngine
         /// <param name="args">日志格式化参数</param>
         public static void Error(bool condition, string format, params object[] args)
         {
-            s_errorForCondFormatArgs(condition, format, args);
+            _errorForCondFormatArgs(condition, format, args);
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace GameEngine
         /// <param name="message">日志内容</param>
         public static void Fatal(object message)
         {
-            s_fatalForObject(message);
+            _fatalForObject(message);
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace GameEngine
         /// <param name="message">日志内容</param>
         public static void Fatal(string message)
         {
-            s_fatalForString(message);
+            _fatalForString(message);
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace GameEngine
         /// <param name="message">日志内容</param>
         public static void Fatal(bool condition, string message)
         {
-            s_fatalForCondString(condition, message);
+            _fatalForCondString(condition, message);
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace GameEngine
         /// <param name="args">日志格式化参数</param>
         public static void Fatal(string format, params object[] args)
         {
-            s_fatalForFormatArgs(format, args);
+            _fatalForFormatArgs(format, args);
         }
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace GameEngine
         /// <param name="args">日志格式化参数</param>
         public static void Fatal(bool condition, string format, params object[] args)
         {
-            s_fatalForCondFormatArgs(condition, format, args);
+            _fatalForCondFormatArgs(condition, format, args);
         }
 
         #region 断言操作相关的接口函数

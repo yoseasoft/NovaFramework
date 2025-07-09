@@ -1,9 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -27,11 +26,9 @@
 namespace GameEngine
 {
     /// <summary>
-    /// 基于ECS模式的实体对象抽象类，用于对一个ECS模式的实体对象的类作标记，在类型判断或反射检测时以该标记作为依据<br/>
-    /// 您可以通过继承该接口类，标记一个类是否为ECS模式的实体对象类，并参与到实体对象类的通用逻辑流程中<br/>
-    /// 该抽象类不具备任何功能接口，仅作为一个检测标记而存在
+    /// 编码监听行为激活标识接口类，用于定义指定类是否激活监听编码的函数接口
     /// </summary>
-    public interface IEntity
+    public interface IKeycodeActivation : IActivation
     {
     }
 }

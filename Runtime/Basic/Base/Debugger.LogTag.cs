@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -82,14 +82,14 @@ namespace GameEngine
             /// <summary>
             /// 日志分组启用状态标识
             /// </summary>
-            private readonly bool m_enabled;
+            private readonly bool _enabled;
             /// <summary>
             /// 日志分组的输出级别
             /// </summary>
-            private readonly int m_logLevel;
+            private readonly int _logLevel;
 
-            public bool Enabled => m_enabled;
-            public int LogLevel => m_logLevel;
+            public bool Enabled => _enabled;
+            public int LogLevel => _logLevel;
 
             public LogOutputGroupAttribute() : this(DefaultLogOutputGroupEnabled) { }
 
@@ -99,8 +99,8 @@ namespace GameEngine
 
             private LogOutputGroupAttribute(bool enabled, int level) : base()
             {
-                m_enabled = enabled;
-                m_logLevel = level;
+                _enabled = enabled;
+                _logLevel = level;
             }
         }
 

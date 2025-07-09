@@ -35,7 +35,37 @@ namespace GameEngine
     /// <br/>
     /// 目前封装的UI包括：FairyGUI, UGUI, UI Toolkit
     /// </summary>
-    public sealed class GuiForm
+    public abstract class GuiForm
     {
+        /*
+         * 
+         * 当Form被创建至场景中时，会先后执行OnOpen，OnResume，OnReveal回调；
+         * 
+         * 当Form因层级关系变化需要被暂停时，执行OnPause回调；
+         * 当Form因层级变化而不再处于最高层，导致被遮挡时，执行OnCover回调；
+         * 
+         * 当Form因层级关系变化不再被暂停时，执行OnResume回调；
+         * 当Form因层级关系变化而变为最高层，从而即将显示时，执行OnReveal回调；
+         * 
+         * 当Form即将被销毁时：
+         * 1. 先判断此刻是否已经被暂停，如果未暂停则执行OnPause回调；
+         * 2. 再判断此刻是否在层级里处于最高层，即正处于显示状态，则执行OnCover回调；
+         * 3. 最后执行OnClose回调，并继续完成实体对象剩余生命周期处理回调；
+         * 
+         */
+
+
+
+        protected abstract void OnOpen(object userData);
+
+        protected abstract void OnResume();
+
+        protected abstract void OnReveal();
+
+        protected abstract void OnPause();
+
+        protected abstract void OnCover();
+
+        protected abstract void OnClose();
     }
 }
