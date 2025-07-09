@@ -99,7 +99,7 @@ namespace GameEngine.Loader.Symboling
 
                 if (!on_keycode_system)
                 {
-                    if (false == method.IsExtension && method.HasAttribute(typeof(OnKeycodeDispatchResponseAttribute)))
+                    if (false == method.IsExtension && method.HasAttribute(typeof(OnKeycodeDispatchCallAttribute)))
                     {
                         on_keycode_system = true;
                     }

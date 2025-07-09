@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -47,13 +47,13 @@ namespace GameEngine
         /// <summary>
         /// 匹配切点的目标对象类型
         /// </summary>
-        private readonly SystemType m_classType;
+        private readonly SystemType _classType;
 
-        public SystemType ClassType => m_classType;
+        public SystemType ClassType => _classType;
 
         public AspectOfTargetAttribute(SystemType classType) : base()
         {
-            m_classType = classType;
+            _classType = classType;
         }
     }
 

@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -49,16 +49,16 @@ namespace GameEngine
         /// <summary>
         /// 消息操作码标识
         /// </summary>
-        private readonly ushort m_opcode;
+        private readonly ushort _opcode;
 
         /// <summary>
         /// 消息操作码获取函数
         /// </summary>
-        public ushort Opcode => m_opcode;
+        public ushort Opcode => _opcode;
 
         public DeclareMessageClassAttribute(ushort opcode) : base()
         {
-            m_opcode = opcode;
+            _opcode = opcode;
         }
     }
 }

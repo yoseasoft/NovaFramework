@@ -32,7 +32,7 @@ namespace Game.Sample.TextFormat
     /// </summary>
     static partial class OpsTask
     {
-        [GameEngine.OnKeycodeDispatchResponse(TaskCode_DataCollection, GameEngine.InputOperationType.Released)]
+        [GameEngine.OnKeycodeDispatchCall(TaskCode_DataCollection, GameEngine.InputOperationType.Released)]
         static void TestDataCollection(int keycode, int operationType)
         {
             int[] arr_int = new int[2];

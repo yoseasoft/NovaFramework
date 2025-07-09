@@ -30,7 +30,7 @@ namespace Game.Sample.TextFormat
     /// </summary>
     static partial class OpsTask
     {
-        [GameEngine.OnKeycodeDispatchResponse(TaskCode_LogFormat, GameEngine.InputOperationType.Released)]
+        [GameEngine.OnKeycodeDispatchCall(TaskCode_LogFormat, GameEngine.InputOperationType.Released)]
         static void TestLogFormat(int keycode, int operationType)
         {
             int num = 10;

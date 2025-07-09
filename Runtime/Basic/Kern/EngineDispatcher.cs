@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -34,24 +34,24 @@ namespace GameEngine
         /// <summary>
         /// 应用程序响应回调句柄函数委托实例
         /// </summary>
-        private static ApplicationResponseHandler s_applicationResponseHandler;
+        private static ApplicationResponseHandler _applicationResponseHandler;
 
         /// <summary>
         /// 应用程序正式启动的状态标识
         /// </summary>
-        private static bool s_isOnStartup = false;
+        private static bool _isOnStartup = false;
 
         /// <summary>
         /// 获取当前应用程序正式启动的状态
         /// </summary>
-        public static bool IsOnStartup => s_isOnStartup;
+        public static bool IsOnStartup => _isOnStartup;
 
         /// <summary>
         /// 程序启动事件转发通知函数
         /// </summary>
         private static void OnDispatchingStartup()
         {
-            s_isOnStartup = true;
+            _isOnStartup = true;
 
             OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.Startup);
         }
@@ -63,7 +63,7 @@ namespace GameEngine
         {
             OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.Shutdown);
 
-            s_isOnStartup = false;
+            _isOnStartup = false;
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace GameEngine
         {
             // Debugger.Log("Call Application Protocol Type: {%s}", protocolType.ToString());
 
-            s_applicationResponseHandler?.Invoke(protocolType);
+            _applicationResponseHandler?.Invoke(protocolType);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace GameEngine
         /// </summary>
         private static void AddApplicationResponseHandler(ApplicationResponseHandler handler)
         {
-            s_applicationResponseHandler += handler;
+            _applicationResponseHandler += handler;
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace GameEngine
         /// </summary>
         private static void RemoveApplicationResponseHandler(ApplicationResponseHandler handler)
         {
-            s_applicationResponseHandler -= handler;
+            _applicationResponseHandler -= handler;
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace GameEngine
         /// <param name="handler">响应句柄</param>
         public static void OnApplicationStartup(ApplicationResponseHandler handler)
         {
-            Debugger.Assert(false == s_isOnStartup);
+            Debugger.Assert(false == _isOnStartup);
 
             AddApplicationResponseHandler(handler);
 
@@ -135,7 +135,7 @@ namespace GameEngine
         /// <param name="handler">响应句柄</param>
         public static void OnApplicationShutdown(ApplicationResponseHandler handler)
         {
-            Debugger.Assert(s_isOnStartup);
+            Debugger.Assert(_isOnStartup);
 
             OnDispatchingShutdown();
 

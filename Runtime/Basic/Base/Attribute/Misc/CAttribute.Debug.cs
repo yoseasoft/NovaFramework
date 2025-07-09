@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -56,13 +56,13 @@ namespace GameEngine
         /// <summary>
         /// 参数值
         /// </summary>
-        private object m_value;
+        private object _value;
 
-        public object Value => m_value;
+        public object Value => _value;
 
         public AssignableOnReleaseModeAttribute(object value) : base()
         {
-            m_value = value;
+            _value = value;
         }
     }
 }

@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -38,28 +38,28 @@ namespace GameEngine
         /// <summary>
         /// 派发事件的目标对象类型
         /// </summary>
-        private readonly SystemType m_classType;
+        private readonly SystemType _classType;
         /// <summary>
         /// 派发侦听的事件标识
         /// </summary>
-        private readonly int m_eventID;
+        private readonly int _eventID;
         /// <summary>
         /// 派发侦听的事件数据类型
         /// </summary>
-        private readonly SystemType m_eventDataType;
+        private readonly SystemType _eventDataType;
 
         /// <summary>
         /// 目标对象类型获取函数
         /// </summary>
-        public SystemType ClassType => m_classType;
+        public SystemType ClassType => _classType;
         /// <summary>
         /// 事件标识获取函数
         /// </summary>
-        public int EventID => m_eventID;
+        public int EventID => _eventID;
         /// <summary>
         /// 事件数据类型获取函数
         /// </summary>
-        public SystemType EventDataType => m_eventDataType;
+        public SystemType EventDataType => _eventDataType;
 
         public OnEventDispatchCallAttribute(int eventID) : this(null, eventID)
         { }
@@ -75,9 +75,9 @@ namespace GameEngine
 
         private OnEventDispatchCallAttribute(SystemType classType, int eventID, SystemType eventDataType) : base()
         {
-            m_classType = classType;
-            m_eventID = eventID;
-            m_eventDataType = eventDataType;
+            _classType = classType;
+            _eventID = eventID;
+            _eventDataType = eventDataType;
         }
     }
 
@@ -90,19 +90,19 @@ namespace GameEngine
         /// <summary>
         /// 订阅绑定的事件标识
         /// </summary>
-        private readonly int m_eventID;
+        private readonly int _eventID;
         /// <summary>
         /// 订阅绑定的事件数据类型
         /// </summary>
-        private readonly SystemType m_eventDataType;
+        private readonly SystemType _eventDataType;
         /// <summary>
         /// 订阅绑定的观察行为类型
         /// </summary>
-        private readonly AspectBehaviourType m_behaviourType;
+        private readonly AspectBehaviourType _behaviourType;
 
-        public int EventID => m_eventID;
-        public SystemType EventDataType => m_eventDataType;
-        public AspectBehaviourType BehaviourType => m_behaviourType;
+        public int EventID => _eventID;
+        public SystemType EventDataType => _eventDataType;
+        public AspectBehaviourType BehaviourType => _behaviourType;
 
         public EventSubscribeBindingOfTargetAttribute(int eventID) : this(eventID, null, AspectBehaviourType.Initialize)
         { }
@@ -118,9 +118,9 @@ namespace GameEngine
 
         private EventSubscribeBindingOfTargetAttribute(int eventID, SystemType eventDataType, AspectBehaviourType behaviourType) : base()
         {
-            m_eventID = eventID;
-            m_eventDataType = eventDataType;
-            m_behaviourType = behaviourType;
+            _eventID = eventID;
+            _eventDataType = eventDataType;
+            _behaviourType = behaviourType;
         }
     }
 }

@@ -35,27 +35,27 @@ namespace GameEngine.Loader
     /// <summary>
     /// 输入响应类的结构信息
     /// </summary>
-    public class InputResponseCodeInfo : InputCodeInfo
+    public class InputCallCodeInfo : InputCodeInfo
     {
         /// <summary>
         /// 事件调用类的数据引用对象
         /// </summary>
-        private IList<InputResponseMethodTypeCodeInfo> m_methodTypes;
+        private IList<InputCallMethodTypeCodeInfo> m_methodTypes;
 
         /// <summary>
         /// 新增指定函数的回调句柄相关的结构信息
         /// </summary>
         /// <param name="invoke">函数的结构信息</param>
-        internal void AddMethodType(InputResponseMethodTypeCodeInfo invoke)
+        internal void AddMethodType(InputCallMethodTypeCodeInfo invoke)
         {
             if (null == m_methodTypes)
             {
-                m_methodTypes = new List<InputResponseMethodTypeCodeInfo>();
+                m_methodTypes = new List<InputCallMethodTypeCodeInfo>();
             }
 
             if (m_methodTypes.Contains(invoke))
             {
-                Debugger.Warn("The input response class type '{0}' was already registed target keycode '{1}', repeat added it failed.", m_classType.FullName, invoke.Keycode);
+                Debugger.Warn("The input call class type '{0}' was already registed target keycode '{1}', repeat added it failed.", m_classType.FullName, invoke.Keycode);
                 return;
             }
 
@@ -90,11 +90,11 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="index">索引值</param>
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
-        internal InputResponseMethodTypeCodeInfo GetMethodType(int index)
+        internal InputCallMethodTypeCodeInfo GetMethodType(int index)
         {
             if (null == m_methodTypes || index < 0 || index >= m_methodTypes.Count)
             {
-                Debugger.Warn("Invalid index ({0}) for input response method type code info list.", index);
+                Debugger.Warn("Invalid index ({0}) for input call method type code info list.", index);
                 return null;
             }
 
@@ -104,10 +104,10 @@ namespace GameEngine.Loader
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("InputResponse = { ");
+            sb.Append("InputCall = { ");
             sb.AppendFormat("Parent = {0}, ", base.ToString());
 
-            sb.AppendFormat("MethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<InputResponseMethodTypeCodeInfo>(m_methodTypes));
+            sb.AppendFormat("MethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<InputCallMethodTypeCodeInfo>(m_methodTypes));
 
             sb.Append("}");
             return sb.ToString();
@@ -117,7 +117,7 @@ namespace GameEngine.Loader
     /// <summary>
     /// 输入响应类的函数结构信息
     /// </summary>
-    public class InputResponseMethodTypeCodeInfo
+    public class InputCallMethodTypeCodeInfo
     {
         /// <summary>
         /// 输入响应类的完整名称
@@ -174,12 +174,12 @@ namespace GameEngine.Loader
         /// <summary>
         /// 输入响应类的结构信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, InputResponseCodeInfo> s_inputResponseCodeInfos = new Dictionary<SystemType, InputResponseCodeInfo>();
+        private static IDictionary<SystemType, InputCallCodeInfo> s_inputCallCodeInfos = new Dictionary<SystemType, InputCallCodeInfo>();
 
         [OnInputClassLoadOfTarget(typeof(KeycodeSystemAttribute))]
-        private static bool LoadInputResponseClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadInputCallClass(Symboling.SymClass symClass, bool reload)
         {
-            InputResponseCodeInfo info = new InputResponseCodeInfo();
+            InputCallCodeInfo info = new InputCallCodeInfo();
             info.ClassType = symClass.ClassType;
 
             IList<Symboling.SymMethod> symMethods = symClass.GetAllMethods();
@@ -188,9 +188,9 @@ namespace GameEngine.Loader
                 Symboling.SymMethod symMethod = symMethods[n];
 
                 // 检查函数格式是否合法
-                if (false == symMethod.IsStatic || false == Inspecting.CodeInspector.IsValidFormatOfInputResponseFunction(symMethod.MethodInfo))
+                if (false == symMethod.IsStatic || false == Inspecting.CodeInspector.IsValidFormatOfInputCallFunction(symMethod.MethodInfo))
                 {
-                    Debugger.Info(LogGroupTag.CodeLoader, "The input response method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    Debugger.Info(LogGroupTag.CodeLoader, "The input call method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     continue;
                 }
 
@@ -199,17 +199,17 @@ namespace GameEngine.Loader
                 {
                     SystemAttribute attr = attrs[m];
 
-                    if (attr is OnKeycodeDispatchResponseAttribute)
+                    if (attr is OnKeycodeDispatchCallAttribute)
                     {
-                        OnKeycodeDispatchResponseAttribute _attr = (OnKeycodeDispatchResponseAttribute) attr;
+                        OnKeycodeDispatchCallAttribute _attr = (OnKeycodeDispatchCallAttribute) attr;
 
-                        InputResponseMethodTypeCodeInfo responseMethodInfo = new InputResponseMethodTypeCodeInfo();
-                        responseMethodInfo.TargetType = _attr.ClassType;
-                        responseMethodInfo.Keycode = _attr.Keycode;
-                        responseMethodInfo.OperationType = (int) _attr.OperationType;
-                        responseMethodInfo.InputDataType = _attr.InputDataType;
+                        InputCallMethodTypeCodeInfo callMethodInfo = new InputCallMethodTypeCodeInfo();
+                        callMethodInfo.TargetType = _attr.ClassType;
+                        callMethodInfo.Keycode = _attr.Keycode;
+                        callMethodInfo.OperationType = (int) _attr.OperationType;
+                        callMethodInfo.InputDataType = _attr.InputDataType;
 
-                        if (responseMethodInfo.Keycode <= 0 && responseMethodInfo.OperationType <= 0)
+                        if (callMethodInfo.Keycode <= 0 && callMethodInfo.OperationType <= 0)
                         {
                             // 未进行合法标识的函数忽略它
                             continue;
@@ -217,21 +217,21 @@ namespace GameEngine.Loader
 
                         // 先记录函数信息并检查函数格式
                         // 在绑定环节在进行委托的格式转换
-                        responseMethodInfo.Fullname = symMethod.FullName;
-                        responseMethodInfo.Method = symMethod.MethodInfo;
+                        callMethodInfo.Fullname = symMethod.FullName;
+                        callMethodInfo.Method = symMethod.MethodInfo;
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                         if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                         {
                             bool verificated = false;
-                            if (null == responseMethodInfo.TargetType)
+                            if (null == callMethodInfo.TargetType)
                             {
-                                if (Inspecting.CodeInspector.IsNullParameterTypeOfInputResponseFunction(symMethod.MethodInfo))
+                                if (Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo))
                                 {
                                     // 无参类型的输入响应函数
                                     verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
                                 }
-                                else if (responseMethodInfo.Keycode > 0)
+                                else if (callMethodInfo.Keycode > 0)
                                 {
                                     // 输入键码和操作类型派发
                                     verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, typeof(int), typeof(int));
@@ -239,79 +239,79 @@ namespace GameEngine.Loader
                                 else
                                 {
                                     // 输入键码集合数据派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, responseMethodInfo.InputDataType);
+                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.InputDataType);
                                 }
                             }
                             else
                             {
-                                if (Inspecting.CodeInspector.IsNullParameterTypeOfInputResponseFunction(symMethod.MethodInfo))
+                                if (Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo))
                                 {
                                     // 无参类型的输入响应函数
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, responseMethodInfo.TargetType);
+                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType);
                                 }
-                                else if (responseMethodInfo.Keycode > 0)
+                                else if (callMethodInfo.Keycode > 0)
                                 {
                                     // 输入键码和操作类型派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, responseMethodInfo.TargetType, typeof(int), typeof(int));
+                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType, typeof(int), typeof(int));
                                 }
                                 else
                                 {
                                     // 输入键码集合数据派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, responseMethodInfo.TargetType, responseMethodInfo.InputDataType);
+                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType, callMethodInfo.InputDataType);
                                 }
                             }
 
                             // 校验失败
                             if (false == verificated)
                             {
-                                Debugger.Error("Cannot verificated from method info '{0}' to input standard response, loaded this method failed.", symMethod.FullName);
+                                Debugger.Error("Cannot verificated from method info '{0}' to input listener call, loaded this method failed.", symMethod.FullName);
                                 continue;
                             }
                         }
 
                         // if (false == method.IsStatic)
-                        // { Debugger.Warn("The input response method '{0} - {1}' must be static type, loaded it failed.", symClass.FullName, symMethod.MethodName); continue; }
+                        // { Debugger.Warn("The input call method '{0} - {1}' must be static type, loaded it failed.", symClass.FullName, symMethod.MethodName); continue; }
 
-                        info.AddMethodType(responseMethodInfo);
+                        info.AddMethodType(callMethodInfo);
                     }
                 }
             }
 
             if (info.GetMethodTypeCount() <= 0)
             {
-                Debugger.Warn("The input response method types count must be great than zero, newly added class '{0}' failed.", info.ClassType.FullName);
+                Debugger.Warn("The input call method types count must be great than zero, newly added class '{0}' failed.", info.ClassType.FullName);
                 return false;
             }
 
-            if (s_inputResponseCodeInfos.ContainsKey(symClass.ClassType))
+            if (s_inputCallCodeInfos.ContainsKey(symClass.ClassType))
             {
                 if (reload)
                 {
-                    s_inputResponseCodeInfos.Remove(symClass.ClassType);
+                    s_inputCallCodeInfos.Remove(symClass.ClassType);
                 }
                 else
                 {
-                    Debugger.Warn("The input response '{0}' was already existed, repeat added it failed.", symClass.FullName);
+                    Debugger.Warn("The input call '{0}' was already existed, repeat added it failed.", symClass.FullName);
                     return false;
                 }
             }
 
-            s_inputResponseCodeInfos.Add(symClass.ClassType, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load input response code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
+            s_inputCallCodeInfos.Add(symClass.ClassType, info);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load input call code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
 
             return true;
         }
 
         [OnInputClassCleanupOfTarget(typeof(KeycodeSystemAttribute))]
-        private static void CleanupAllInputResponseClasses()
+        private static void CleanupAllInputCallClasses()
         {
-            s_inputResponseCodeInfos.Clear();
+            s_inputCallCodeInfos.Clear();
         }
 
         [OnInputCodeInfoLookupOfTarget(typeof(KeycodeSystemAttribute))]
-        private static InputResponseCodeInfo LookupInputResponseCodeInfo(Symboling.SymClass symClass)
+        private static InputCallCodeInfo LookupInputCallCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<SystemType, InputResponseCodeInfo> pair in s_inputResponseCodeInfos)
+            foreach (KeyValuePair<SystemType, InputCallCodeInfo> pair in s_inputCallCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

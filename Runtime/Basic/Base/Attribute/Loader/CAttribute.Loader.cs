@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -35,13 +35,13 @@ namespace GameEngine
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class OnCodeLoaderClassLoadOfTargetAttribute : SystemAttribute
     {
-        private readonly SystemType m_classType;
+        private readonly SystemType _classType;
 
-        public SystemType ClassType => m_classType;
+        public SystemType ClassType => _classType;
 
         public OnCodeLoaderClassLoadOfTargetAttribute(SystemType classType)
         {
-            m_classType = classType;
+            _classType = classType;
         }
     }
 
@@ -51,13 +51,13 @@ namespace GameEngine
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class OnCodeLoaderClassCleanupOfTargetAttribute : SystemAttribute
     {
-        private readonly SystemType m_classType;
+        private readonly SystemType _classType;
 
-        public SystemType ClassType => m_classType;
+        public SystemType ClassType => _classType;
 
         public OnCodeLoaderClassCleanupOfTargetAttribute(SystemType classType)
         {
-            m_classType = classType;
+            _classType = classType;
         }
     }
 
@@ -67,13 +67,13 @@ namespace GameEngine
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class OnCodeLoaderClassLookupOfTargetAttribute : SystemAttribute
     {
-        private readonly SystemType m_classType;
+        private readonly SystemType _classType;
 
-        public SystemType ClassType => m_classType;
+        public SystemType ClassType => _classType;
 
         public OnCodeLoaderClassLookupOfTargetAttribute(SystemType classType)
         {
-            m_classType = classType;
+            _classType = classType;
         }
     }
 
@@ -85,11 +85,11 @@ namespace GameEngine
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class OnProcessRegisterClassOfTargetAttribute : SystemAttribute
     {
-        private readonly SystemType m_classType;
+        private readonly SystemType _classType;
 
-        public SystemType ClassType => m_classType;
+        public SystemType ClassType => _classType;
 
-        public OnProcessRegisterClassOfTargetAttribute(SystemType classType) { m_classType = classType; }
+        public OnProcessRegisterClassOfTargetAttribute(SystemType classType) { _classType = classType; }
     }
 
     /// <summary>
@@ -98,10 +98,10 @@ namespace GameEngine
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class OnProcessUnregisterClassOfTargetAttribute : SystemAttribute
     {
-        private readonly SystemType m_classType;
+        private readonly SystemType _classType;
 
-        public SystemType ClassType => m_classType;
+        public SystemType ClassType => _classType;
 
-        public OnProcessUnregisterClassOfTargetAttribute(SystemType classType) { m_classType = classType; }
+        public OnProcessUnregisterClassOfTargetAttribute(SystemType classType) { _classType = classType; }
     }
 }

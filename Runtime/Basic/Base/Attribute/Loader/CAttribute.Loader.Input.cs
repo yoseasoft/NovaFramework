@@ -34,17 +34,17 @@ namespace GameEngine
     /// 输入响应类型注册函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnInputResponseRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
+    public class OnInputCallRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
     {
-        public OnInputResponseRegisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
+        public OnInputCallRegisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
     }
 
     /// <summary>
     /// 输入响应类型注销函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnInputResponseUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
+    public class OnInputCallUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
     {
-        public OnInputResponseUnregisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
+        public OnInputCallUnregisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
     }
 }

@@ -50,16 +50,16 @@ namespace GameEngine
         /// <summary>
         /// 键码值
         /// </summary>
-        private readonly int m_keycode;
+        private readonly int _keycode;
 
         /// <summary>
         /// 键码值获取函数
         /// </summary>
-        public int Keycode => m_keycode;
+        public int Keycode => _keycode;
 
         public DeclareKeycodeClassAttribute(int keycode) : base()
         {
-            m_keycode = keycode;
+            _keycode = keycode;
         }
     }
 }

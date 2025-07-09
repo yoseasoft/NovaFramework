@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,21 +37,21 @@ namespace GameEngine
         /// <summary>
         /// 场景名称
         /// </summary>
-        private readonly string m_sceneName;
+        private readonly string _sceneName;
         /// <summary>
         /// 场景功能类型标识
         /// </summary>
-        private readonly int m_funcType;
+        private readonly int _funcType;
 
         /// <summary>
         /// 场景名称获取函数
         /// </summary>
-        public string SceneName => m_sceneName;
+        public string SceneName => _sceneName;
 
         /// <summary>
         /// 场景功能类型获取函数
         /// </summary>
-        public int FuncType => m_funcType;
+        public int FuncType => _funcType;
 
         public DeclareSceneClassAttribute(string sceneName) : this(sceneName, 0)
         {
@@ -63,8 +63,8 @@ namespace GameEngine
 
         public DeclareSceneClassAttribute(string sceneName, int funcType) : base()
         {
-            m_sceneName = sceneName ?? string.Empty;
-            m_funcType = funcType;
+            _sceneName = sceneName ?? string.Empty;
+            _funcType = funcType;
         }
     }
 
@@ -77,16 +77,16 @@ namespace GameEngine
         /// <summary>
         /// 场景名称标识
         /// </summary>
-        private readonly string m_viewName;
+        private readonly string _viewName;
 
         /// <summary>
         /// 场景名称获取函数
         /// </summary>
-        public string ViewName => m_viewName;
+        public string ViewName => _viewName;
 
         public SceneAutoDisplayOnTargetViewAttribute(string viewName) : base()
         {
-            m_viewName = viewName;
+            _viewName = viewName;
         }
     }
 }

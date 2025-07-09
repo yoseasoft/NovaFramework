@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -38,16 +38,16 @@ namespace GameEngine
         /// <summary>
         /// 组件名称
         /// </summary>
-        private readonly string m_componentName;
+        private readonly string _componentName;
 
         /// <summary>
         /// 组件名称获取函数
         /// </summary>
-        public string ComponentName => m_componentName;
+        public string ComponentName => _componentName;
 
         public DeclareComponentClassAttribute(string componentName) : base()
         {
-            m_componentName = componentName ?? string.Empty;
+            _componentName = componentName ?? string.Empty;
         }
     }
 }

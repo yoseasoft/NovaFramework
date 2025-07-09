@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -38,29 +38,29 @@ namespace GameEngine
         /// <summary>
         /// 状态名称
         /// </summary>
-        private readonly string m_stateName;
+        private readonly string _stateName;
 
         /// <summary>
         /// 状态优先级
         /// </summary>
-        private readonly int m_priority;
+        private readonly int _priority;
 
         /// <summary>
         /// 状态名称获取函数
         /// </summary>
-        public string StateName => m_stateName;
+        public string StateName => _stateName;
         /// <summary>
         /// 状态优先级获取函数
         /// </summary>
-        public int Priority => m_priority;
+        public int Priority => _priority;
 
         public DeclareStateClassAttribute(string stateName) : this(stateName, 0)
         { }
 
         public DeclareStateClassAttribute(string stateName, int priority) : base()
         {
-            m_stateName = stateName;
-            m_priority = priority;
+            _stateName = stateName;
+            _priority = priority;
         }
     }
 }

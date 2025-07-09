@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -38,36 +38,36 @@ namespace GameEngine
         /// <summary>
         /// 组件引用对象类型
         /// </summary>
-        private readonly SystemType m_referenceType;
+        private readonly SystemType _referenceType;
         /// <summary>
         /// 组件引用实体名称
         /// </summary>
-        private readonly string m_referenceName;
+        private readonly string _referenceName;
         /// <summary>
         /// 组件优先级
         /// </summary>
-        private readonly int m_priority;
+        private readonly int _priority;
         /// <summary>
         /// 组件的激活行为类型
         /// </summary>
-        private readonly AspectBehaviourType m_activationBehaviourType;
+        private readonly AspectBehaviourType _activationBehaviourType;
 
         /// <summary>
         /// 组件引用类型获取函数
         /// </summary>
-        public SystemType ReferenceType => m_referenceType;
+        public SystemType ReferenceType => _referenceType;
         /// <summary>
         /// 组件引用名称获取函数
         /// </summary>
-        public string ReferenceName => m_referenceName;
+        public string ReferenceName => _referenceName;
         /// <summary>
         /// 组件优先级获取函数
         /// </summary>
-        public int Priority => m_priority;
+        public int Priority => _priority;
         /// <summary>
         /// 组件激活行为类型获取函数
         /// </summary>
-        public AspectBehaviourType ActivationBehaviourType => m_activationBehaviourType;
+        public AspectBehaviourType ActivationBehaviourType => _activationBehaviourType;
 
         public EntityActivationComponentAttribute(SystemType referenceType) : this(referenceType, null, 0, AspectBehaviourType.Initialize)
         {
@@ -95,10 +95,10 @@ namespace GameEngine
 
         protected EntityActivationComponentAttribute(SystemType referenceType, string referenceName, int priority, AspectBehaviourType activationBehaviourType) : base()
         {
-            m_referenceType = referenceType;
-            m_referenceName = referenceName;
-            m_priority = priority;
-            m_activationBehaviourType = activationBehaviourType;
+            _referenceType = referenceType;
+            _referenceName = referenceName;
+            _priority = priority;
+            _activationBehaviourType = activationBehaviourType;
         }
     }
 
@@ -111,12 +111,12 @@ namespace GameEngine
         /// <summary>
         /// 组件激活的目标实体名称
         /// </summary>
-        private readonly string m_targetBeanName;
+        private readonly string _targetBeanName;
 
         /// <summary>
         /// 组件激活的目标实体名称获取函数
         /// </summary>
-        public string TargetBeanName => m_targetBeanName;
+        public string TargetBeanName => _targetBeanName;
 
         public EntityActivationComponentOfTargetAttribute(string beanName, SystemType referenceType) : this(beanName, referenceType, null, 0, AspectBehaviourType.Initialize)
         {
@@ -144,7 +144,7 @@ namespace GameEngine
 
         private EntityActivationComponentOfTargetAttribute(string beanName, SystemType referenceType, string referenceName, int priority, AspectBehaviourType activationBehaviourType) : base(referenceType, referenceName, priority, activationBehaviourType)
         {
-            m_targetBeanName = beanName;
+            _targetBeanName = beanName;
         }
     }
 }

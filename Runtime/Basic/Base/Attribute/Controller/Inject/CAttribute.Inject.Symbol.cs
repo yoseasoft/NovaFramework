@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -38,20 +38,20 @@ namespace GameEngine
         /// <summary>
         /// 对象实例的配置名称
         /// </summary>
-        private readonly string m_beanName;
+        private readonly string _beanName;
         /// <summary>
         /// 对象实例的单例模式状态标识
         /// </summary>
-        private readonly bool m_singleton;
+        private readonly bool _singleton;
 
         /// <summary>
         /// 对象配置名称获取函数
         /// </summary>
-        public string BeanName => m_beanName;
+        public string BeanName => _beanName;
         /// <summary>
         /// 对象单例模式状态标识获取函数
         /// </summary>
-        public bool Singleton => m_singleton;
+        public bool Singleton => _singleton;
 
         public OnBeanConfiguredAttribute(string beanName) : this(beanName, false)
         {
@@ -63,8 +63,8 @@ namespace GameEngine
 
         public OnBeanConfiguredAttribute(string beanName, bool singleton) : base()
         {
-            m_beanName = beanName;
-            m_singleton = singleton;
+            _beanName = beanName;
+            _singleton = singleton;
         }
     }
 
@@ -77,20 +77,20 @@ namespace GameEngine
         /// <summary>
         /// 对象实例的引用类型
         /// </summary>
-        private readonly SystemType m_referenceType;
+        private readonly SystemType _referenceType;
         /// <summary>
         /// 对象实例的引用名称
         /// </summary>
-        private readonly string m_referenceName;
+        private readonly string _referenceName;
 
         /// <summary>
         /// 对象引用类型获取函数
         /// </summary>
-        public SystemType ReferenceType => m_referenceType;
+        public SystemType ReferenceType => _referenceType;
         /// <summary>
         /// 对象引用名称获取函数
         /// </summary>
-        public string ReferenceName => m_referenceName;
+        public string ReferenceName => _referenceName;
 
         public OnBeanAutowiredAttribute(SystemType referenceType) : this(referenceType, null)
         {
@@ -102,8 +102,8 @@ namespace GameEngine
 
         public OnBeanAutowiredAttribute(SystemType referenceType, string referenceName) : base()
         {
-            m_referenceType= referenceType;
-            m_referenceName = referenceName;
+            _referenceType= referenceType;
+            _referenceName = referenceName;
         }
     }
 
@@ -116,12 +116,12 @@ namespace GameEngine
         /// <summary>
         /// 对象实例的实体名称
         /// </summary>
-        private readonly string m_beanName;
+        private readonly string _beanName;
 
         /// <summary>
         /// 对象实体名称获取函数
         /// </summary>
-        public string BeanName => m_beanName;
+        public string BeanName => _beanName;
 
         public OnBeanAutowiredOfTargetAttribute(string beanName, SystemType referenceType) : this(beanName, referenceType, null)
         {
@@ -133,7 +133,7 @@ namespace GameEngine
 
         public OnBeanAutowiredOfTargetAttribute(string beanName, SystemType referenceType, string referenceName) : base(referenceType, referenceName)
         {
-            m_beanName = beanName;
+            _beanName = beanName;
         }
     }
 }

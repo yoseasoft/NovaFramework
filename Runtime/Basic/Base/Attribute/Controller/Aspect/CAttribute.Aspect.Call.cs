@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -38,19 +38,19 @@ namespace GameEngine
         /// <summary>
         /// 定义切点的函数名称
         /// </summary>
-        private readonly string m_methodName;
+        private readonly string _methodName;
         /// <summary>
         /// 定义切点的访问类型
         /// </summary>
-        private readonly AspectAccessType m_accessType;
+        private readonly AspectAccessType _accessType;
 
-        public string MethodName => m_methodName;
-        public AspectAccessType AccessType => m_accessType;
+        public string MethodName => _methodName;
+        public AspectAccessType AccessType => _accessType;
 
         public OnAspectCallAttribute(string methodName, AspectAccessType accessType)
         {
-            m_methodName = methodName;
-            m_accessType = accessType;
+            _methodName = methodName;
+            _accessType = accessType;
         }
 
         public OnAspectCallAttribute(AspectBehaviourType behaviourType, AspectAccessType accessType)
@@ -61,8 +61,8 @@ namespace GameEngine
                 return;
             }
 
-            m_methodName = behaviourType.ToString();
-            m_accessType = accessType;
+            _methodName = behaviourType.ToString();
+            _accessType = accessType;
         }
     }
 
@@ -75,25 +75,25 @@ namespace GameEngine
         /// <summary>
         /// 匹配切点的目标对象类型
         /// </summary>
-        private readonly SystemType m_classType;
+        private readonly SystemType _classType;
         /// <summary>
         /// 定义切点的函数名称
         /// </summary>
-        private readonly string m_methodName;
+        private readonly string _methodName;
         /// <summary>
         /// 定义切点的访问类型
         /// </summary>
-        private readonly AspectAccessType m_accessType;
+        private readonly AspectAccessType _accessType;
 
-        public SystemType ClassType => m_classType;
-        public string MethodName => m_methodName;
-        public AspectAccessType AccessType => m_accessType;
+        public SystemType ClassType => _classType;
+        public string MethodName => _methodName;
+        public AspectAccessType AccessType => _accessType;
 
         public OnAspectCallOfTargetAttribute(SystemType classType, string methodName, AspectAccessType accessType)
         {
-            m_classType = classType;
-            m_methodName = methodName;
-            m_accessType = accessType;
+            _classType = classType;
+            _methodName = methodName;
+            _accessType = accessType;
         }
 
         public OnAspectCallOfTargetAttribute(SystemType classType, AspectBehaviourType behaviourType, AspectAccessType accessType)
@@ -104,9 +104,9 @@ namespace GameEngine
                 return;
             }
 
-            m_classType = classType;
-            m_methodName = behaviourType.ToString();
-            m_accessType = accessType;
+            _classType = classType;
+            _methodName = behaviourType.ToString();
+            _accessType = accessType;
         }
     }
 

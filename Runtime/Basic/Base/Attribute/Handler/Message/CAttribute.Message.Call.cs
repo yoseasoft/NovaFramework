@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -38,28 +38,28 @@ namespace GameEngine
         /// <summary>
         /// 派发消息的目标对象类型
         /// </summary>
-        private readonly SystemType m_classType;
+        private readonly SystemType _classType;
         /// <summary>
         /// 消息操作码标识
         /// </summary>
-        private readonly int m_opcode;
+        private readonly int _opcode;
         /// <summary>
         /// 消息对象类型
         /// </summary>
-        private readonly SystemType m_messageType;
+        private readonly SystemType _messageType;
 
         /// <summary>
         /// 目标对象类型获取函数
         /// </summary>
-        public SystemType ClassType => m_classType;
+        public SystemType ClassType => _classType;
         /// <summary>
         /// 消息操作码获取函数
         /// </summary>
-        public int Opcode => m_opcode;
+        public int Opcode => _opcode;
         /// <summary>
         /// 消息对象类型获取函数
         /// </summary>
-        public SystemType MessageType => m_messageType;
+        public SystemType MessageType => _messageType;
 
         public OnMessageDispatchCallAttribute(int opcode) : this(null, opcode)
         { }
@@ -75,9 +75,9 @@ namespace GameEngine
 
         private OnMessageDispatchCallAttribute(SystemType classType, int opcode, SystemType messageType) : base()
         {
-            m_classType = classType;
-            m_opcode = opcode;
-            m_messageType = messageType;
+            _classType = classType;
+            _opcode = opcode;
+            _messageType = messageType;
         }
     }
 
@@ -90,19 +90,19 @@ namespace GameEngine
         /// <summary>
         /// 消息操作码标识
         /// </summary>
-        private readonly int m_opcode;
+        private readonly int _opcode;
         /// <summary>
         /// 消息对象类型
         /// </summary>
-        private readonly SystemType m_messageType;
+        private readonly SystemType _messageType;
         /// <summary>
         /// 监听绑定的观察行为类型
         /// </summary>
-        private readonly AspectBehaviourType m_behaviourType;
+        private readonly AspectBehaviourType _behaviourType;
 
-        public int Opcode => m_opcode;
-        public SystemType MessageType => m_messageType;
-        public AspectBehaviourType BehaviourType => m_behaviourType;
+        public int Opcode => _opcode;
+        public SystemType MessageType => _messageType;
+        public AspectBehaviourType BehaviourType => _behaviourType;
 
         public MessageListenerBindingOfTargetAttribute(int opcode) : this(opcode, null, AspectBehaviourType.Initialize)
         { }
@@ -118,9 +118,9 @@ namespace GameEngine
 
         private MessageListenerBindingOfTargetAttribute(int opcode, SystemType messageType, AspectBehaviourType behaviourType) : base()
         {
-            m_opcode = opcode;
-            m_messageType = messageType;
-            m_behaviourType = behaviourType;
+            _opcode = opcode;
+            _messageType = messageType;
+            _behaviourType = behaviourType;
         }
     }
 }

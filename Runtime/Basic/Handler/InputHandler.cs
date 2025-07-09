@@ -49,12 +49,12 @@ namespace GameEngine
         /// <summary>
         /// 通过按键编码分发调度接口的数据结构容器
         /// </summary>
-        private IDictionary<int, IList<InputResponseInfo>> m_inputCodeDistributeResponseInfos = null;
+        private IDictionary<int, IList<InputCallInfo>> _inputCodeDistributeCallInfos = null;
 
         /// <summary>
         /// 通过输入数据分发调度接口的数据结构容器
         /// </summary>
-        private IDictionary<SystemType, IList<InputResponseInfo>> m_inputDataDistributeResponseInfos = null;
+        private IDictionary<SystemType, IList<InputCallInfo>> _inputDataDistributeCallInfos = null;
 
         /// <summary>
         /// 句柄对象内置初始化接口函数
@@ -63,8 +63,8 @@ namespace GameEngine
         protected override bool OnInitialize()
         {
             // 初始化转发调度管理容器
-            m_inputCodeDistributeResponseInfos = new Dictionary<int, IList<InputResponseInfo>>();
-            m_inputDataDistributeResponseInfos = new Dictionary<SystemType, IList<InputResponseInfo>>();
+            _inputCodeDistributeCallInfos = new Dictionary<int, IList<InputCallInfo>>();
+            _inputDataDistributeCallInfos = new Dictionary<SystemType, IList<InputCallInfo>>();
 
             return true;
         }
@@ -75,10 +75,10 @@ namespace GameEngine
         protected override void OnCleanup()
         {
             // 清理转发调度管理容器
-            m_inputCodeDistributeResponseInfos.Clear();
-            m_inputCodeDistributeResponseInfos = null;
-            m_inputDataDistributeResponseInfos.Clear();
-            m_inputDataDistributeResponseInfos = null;
+            _inputCodeDistributeCallInfos.Clear();
+            _inputCodeDistributeCallInfos = null;
+            _inputDataDistributeCallInfos.Clear();
+            _inputDataDistributeCallInfos = null;
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace GameEngine
                 list = InputModule.GetAllPressedKeycodes();
                 for (int n = 0; n < list.Count; ++n)
                 {
-                    OnInputDistributeResponseDispatched((int) list[n], (int) InputOperationType.Pressed);
+                    OnInputDistributeCallDispatched((int) list[n], (int) InputOperationType.Pressed);
                 }
             }
 
@@ -110,7 +110,7 @@ namespace GameEngine
                 list = InputModule.GetAllMovedKeycodes();
                 for (int n = 0; n < list.Count; ++n)
                 {
-                    OnInputDistributeResponseDispatched((int) list[n], (int) InputOperationType.Moved);
+                    OnInputDistributeCallDispatched((int) list[n], (int) InputOperationType.Moved);
                 }
             }
 
@@ -120,7 +120,7 @@ namespace GameEngine
                 list = InputModule.GetAllReleasedKeycodes();
                 for (int n = 0; n < list.Count; ++n)
                 {
-                    OnInputDistributeResponseDispatched((int) list[n], (int) InputOperationType.Released);
+                    OnInputDistributeCallDispatched((int) list[n], (int) InputOperationType.Released);
                 }
             }
         }
@@ -223,15 +223,15 @@ namespace GameEngine
         /// </summary>
         /// <param name="keycode">按键编码</param>
         /// <param name="operationType">按键操作类型</param>
-        private void OnInputDistributeResponseDispatched(int keycode, int operationType)
+        private void OnInputDistributeCallDispatched(int keycode, int operationType)
         {
-            IList<InputResponseInfo> list = null;
-            if (m_inputCodeDistributeResponseInfos.TryGetValue(keycode, out list))
+            IList<InputCallInfo> list = null;
+            if (_inputCodeDistributeCallInfos.TryGetValue(keycode, out list))
             {
-                IEnumerator<InputResponseInfo> e_info = list.GetEnumerator();
+                IEnumerator<InputCallInfo> e_info = list.GetEnumerator();
                 while (e_info.MoveNext())
                 {
-                    InputResponseInfo info = e_info.Current;
+                    InputCallInfo info = e_info.Current;
                     if (null == info.TargetType)
                     {
                         info.Invoke(keycode, operationType);
@@ -257,17 +257,17 @@ namespace GameEngine
         /// 针对输入数据进行响应分发的调度入口函数
         /// </summary>
         /// <param name="inputData">输入数据</param>
-        private void OnInputDistributeResponseDispatched(object inputData)
+        private void OnInputDistributeCallDispatched(object inputData)
         {
             SystemType inputDataType = inputData.GetType();
 
-            IList<InputResponseInfo> list = null;
-            if (m_inputDataDistributeResponseInfos.TryGetValue(inputDataType, out list))
+            IList<InputCallInfo> list = null;
+            if (_inputDataDistributeCallInfos.TryGetValue(inputDataType, out list))
             {
-                IEnumerator<InputResponseInfo> e_info = list.GetEnumerator();
+                IEnumerator<InputCallInfo> e_info = list.GetEnumerator();
                 while (e_info.MoveNext())
                 {
-                    InputResponseInfo info = e_info.Current;
+                    InputCallInfo info = e_info.Current;
                     if (null == info.TargetType)
                     {
                         info.Invoke(inputData);
@@ -297,22 +297,22 @@ namespace GameEngine
         /// <param name="keycode">按键编码</param>
         /// <param name="operationType">操作类型</param>
         /// <param name="callback">函数回调句柄</param>
-        private void AddInputDistributeResponseInfo(string fullname, SystemType targetType, int keycode, int operationType, SystemDelegate callback)
+        private void AddInputDistributeCallInfo(string fullname, SystemType targetType, int keycode, int operationType, SystemDelegate callback)
         {
-            InputResponseInfo info = new InputResponseInfo(fullname, targetType, keycode, operationType, callback);
+            InputCallInfo info = new InputCallInfo(fullname, targetType, keycode, operationType, callback);
 
             Debugger.Info(LogGroupTag.Module, "新增指定的按键编码‘{%d}’及操作类型‘{%d}’对应的输入响应监听事件，其响应接口函数来自于目标类型‘{%f}’的‘{%s}’函数。",
                     keycode, operationType, targetType, fullname);
-            if (m_inputCodeDistributeResponseInfos.ContainsKey(keycode))
+            if (_inputCodeDistributeCallInfos.ContainsKey(keycode))
             {
-                IList<InputResponseInfo> list = m_inputCodeDistributeResponseInfos[keycode];
+                IList<InputCallInfo> list = _inputCodeDistributeCallInfos[keycode];
                 list.Add(info);
             }
             else
             {
-                IList<InputResponseInfo> list = new List<InputResponseInfo>();
+                IList<InputCallInfo> list = new List<InputCallInfo>();
                 list.Add(info);
-                m_inputCodeDistributeResponseInfos.Add(keycode, list);
+                _inputCodeDistributeCallInfos.Add(keycode, list);
             }
         }
 
@@ -323,22 +323,22 @@ namespace GameEngine
         /// <param name="targetType">目标对象类型</param>
         /// <param name="inputDataType">输入数据类型</param>
         /// <param name="callback">函数回调句柄</param>
-        private void AddInputDistributeResponseInfo(string fullname, SystemType targetType, SystemType inputDataType, SystemDelegate callback)
+        private void AddInputDistributeCallInfo(string fullname, SystemType targetType, SystemType inputDataType, SystemDelegate callback)
         {
-            InputResponseInfo info = new InputResponseInfo(fullname, targetType, inputDataType, callback);
+            InputCallInfo info = new InputCallInfo(fullname, targetType, inputDataType, callback);
 
             Debugger.Info(LogGroupTag.Module, "新增指定的按键编码的数据类型‘{%f}’对应的输入响应监听事件，其响应接口函数来自于目标类型‘{%f}’的‘{%s}’函数。",
                     inputDataType, targetType, fullname);
-            if (m_inputDataDistributeResponseInfos.ContainsKey(inputDataType))
+            if (_inputDataDistributeCallInfos.ContainsKey(inputDataType))
             {
-                IList<InputResponseInfo> list = m_inputDataDistributeResponseInfos[inputDataType];
+                IList<InputCallInfo> list = _inputDataDistributeCallInfos[inputDataType];
                 list.Add(info);
             }
             else
             {
-                IList<InputResponseInfo> list = new List<InputResponseInfo>();
+                IList<InputCallInfo> list = new List<InputCallInfo>();
                 list.Add(info);
-                m_inputDataDistributeResponseInfos.Add(inputDataType, list);
+                _inputDataDistributeCallInfos.Add(inputDataType, list);
             }
         }
 
@@ -348,21 +348,21 @@ namespace GameEngine
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
         /// <param name="keycode">按键编码</param>
-        private void RemoveInputDistributeResponseInfo(string fullname, SystemType targetType, int keycode, int operationType)
+        private void RemoveInputDistributeCallInfo(string fullname, SystemType targetType, int keycode, int operationType)
         {
             Debugger.Info(LogGroupTag.Module, "移除指定的按键编码‘{%d}’及操作类型‘{%d}’对应的全部输入响应监听事件，其响应接口函数来自于目标类型‘{%f}’的‘{%s}’函数。",
                     keycode, operationType, targetType, fullname);
-            if (false == m_inputCodeDistributeResponseInfos.ContainsKey(keycode))
+            if (false == _inputCodeDistributeCallInfos.ContainsKey(keycode))
             {
                 Debugger.Warn(LogGroupTag.Module, "从当前的输入响应管理容器中无法找到任何与目标按键编码‘{%d}’匹配的响应登记信息，移除输入响应分发信息失败！", keycode);
                 return;
             }
 
             bool succ = false;
-            IList<InputResponseInfo> list = m_inputCodeDistributeResponseInfos[keycode];
+            IList<InputCallInfo> list = _inputCodeDistributeCallInfos[keycode];
             for (int n = list.Count - 1; n >= 0; --n)
             {
-                InputResponseInfo info = list[n];
+                InputCallInfo info = list[n];
                 if (info.Fullname.Equals(fullname))
                 {
                     Debugger.Assert(info.TargetType == targetType && info.Keycode == keycode, "Invalid arguments.");
@@ -370,7 +370,7 @@ namespace GameEngine
                     list.RemoveAt(n);
                     if (list.Count <= 0)
                     {
-                        m_inputCodeDistributeResponseInfos.Remove(keycode);
+                        _inputCodeDistributeCallInfos.Remove(keycode);
                     }
 
                     succ = true;
@@ -390,21 +390,21 @@ namespace GameEngine
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
         /// <param name="inputDataType">输入数据类型</param>
-        private void RemoveInputDistributeResponseInfo(string fullname, SystemType targetType, SystemType inputDataType)
+        private void RemoveInputDistributeCallInfo(string fullname, SystemType targetType, SystemType inputDataType)
         {
             Debugger.Info(LogGroupTag.Module, "移除指定的按键编码的数据类型‘{%f}’对应的全部输入响应监听事件，其响应接口函数来自于目标类型‘{%f}’的‘{%s}’函数。",
                     inputDataType, targetType, fullname);
-            if (false == m_inputDataDistributeResponseInfos.ContainsKey(inputDataType))
+            if (false == _inputDataDistributeCallInfos.ContainsKey(inputDataType))
             {
                 Debugger.Warn(LogGroupTag.Module, "从当前的输入响应管理容器中无法找到任何与目标数据类型‘{%f}’匹配的响应登记信息，移除输入响应分发信息失败！", inputDataType);
                 return;
             }
 
             bool succ = false;
-            IList<InputResponseInfo> list = m_inputDataDistributeResponseInfos[inputDataType];
+            IList<InputCallInfo> list = _inputDataDistributeCallInfos[inputDataType];
             for (int n = list.Count - 1; n >= 0; --n)
             {
-                InputResponseInfo info = list[n];
+                InputCallInfo info = list[n];
                 if (info.Fullname.Equals(fullname))
                 {
                     Debugger.Assert(info.TargetType == targetType && info.InputDataType == inputDataType, "Invalid arguments.");
@@ -412,7 +412,7 @@ namespace GameEngine
                     list.RemoveAt(n);
                     if (list.Count <= 0)
                     {
-                        m_inputDataDistributeResponseInfos.Remove(inputDataType);
+                        _inputDataDistributeCallInfos.Remove(inputDataType);
                     }
 
                     succ = true;
@@ -429,10 +429,10 @@ namespace GameEngine
         /// <summary>
         /// 移除当前输入响应管理器中登记的所有分发函数回调句柄
         /// </summary>
-        private void RemoveAllInputDistributeResponses()
+        private void RemoveAllInputDistributeCalls()
         {
-            m_inputCodeDistributeResponseInfos.Clear();
-            m_inputDataDistributeResponseInfos.Clear();
+            _inputCodeDistributeCallInfos.Clear();
+            _inputDataDistributeCallInfos.Clear();
         }
 
         #endregion
@@ -442,66 +442,66 @@ namespace GameEngine
         /// <summary>
         /// 输入响应的数据信息类
         /// </summary>
-        private class InputResponseInfo
+        private class InputCallInfo
         {
             /// <summary>
             /// 输入响应类的完整名称
             /// </summary>
-            private string m_fullname;
+            private string _fullname;
             /// <summary>
             /// 输入响应类的目标对象类型
             /// </summary>
-            private SystemType m_targetType;
+            private SystemType _targetType;
             /// <summary>
             /// 输入响应类的编码信息
             /// </summary>
-            private int m_keycode;
+            private int _keycode;
             /// <summary>
             /// 输入响应类的操作类型
             /// </summary>
-            private int m_operationType;
+            private int _operationType;
             /// <summary>
             /// 输入响应类的键码数据类型
             /// </summary>
-            private SystemType m_inputDataType;
+            private SystemType _inputDataType;
             /// <summary>
             /// 输入响应类的回调句柄
             /// </summary>
-            private SystemDelegate m_callback;
+            private SystemDelegate _callback;
             /// <summary>
             /// 输入响应回调函数的无参状态标识
             /// </summary>
-            private bool m_isNullParameterType;
+            private bool _isNullParameterType;
 
-            public string Fullname => m_fullname;
-            public SystemType TargetType => m_targetType;
-            public int Keycode => m_keycode;
-            public int OperationType => m_operationType;
-            public SystemType InputDataType => m_inputDataType;
-            public SystemDelegate Callback => m_callback;
-            public bool IsNullParameterType => m_isNullParameterType;
+            public string Fullname => _fullname;
+            public SystemType TargetType => _targetType;
+            public int Keycode => _keycode;
+            public int OperationType => _operationType;
+            public SystemType InputDataType => _inputDataType;
+            public SystemDelegate Callback => _callback;
+            public bool IsNullParameterType => _isNullParameterType;
 
-            public InputResponseInfo(string fullname, SystemType targetType, int keycode, int operationType, SystemDelegate callback)
+            public InputCallInfo(string fullname, SystemType targetType, int keycode, int operationType, SystemDelegate callback)
                 : this(fullname, targetType, keycode, operationType, null, callback)
             {
             }
 
-            public InputResponseInfo(string fullname, SystemType targetType, SystemType inputDataType, SystemDelegate callback)
+            public InputCallInfo(string fullname, SystemType targetType, SystemType inputDataType, SystemDelegate callback)
                 : this(fullname, targetType, 0, 0, inputDataType, callback)
             {
             }
 
-            private InputResponseInfo(string fullname, SystemType targetType, int keycode, int operationType, SystemType inputDataType, SystemDelegate callback)
+            private InputCallInfo(string fullname, SystemType targetType, int keycode, int operationType, SystemType inputDataType, SystemDelegate callback)
             {
                 Debugger.Assert(null != callback, "Invalid arguments.");
 
-                m_fullname = fullname;
-                m_targetType = targetType;
-                m_keycode = keycode;
-                m_operationType = operationType;
-                m_inputDataType = inputDataType;
-                m_callback = callback;
-                m_isNullParameterType = Loader.Inspecting.CodeInspector.IsNullParameterTypeOfInputResponseFunction(callback.Method);
+                _fullname = fullname;
+                _targetType = targetType;
+                _keycode = keycode;
+                _operationType = operationType;
+                _inputDataType = inputDataType;
+                _callback = callback;
+                _isNullParameterType = Loader.Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(callback.Method);
             }
 
             /// <summary>
@@ -511,19 +511,19 @@ namespace GameEngine
             /// <param name="operationType">按键操作类型</param>
             public void Invoke(int keycode, int operationType)
             {
-                if (m_operationType == 0 || (m_operationType & operationType) == 0)
+                if (_operationType == 0 || (_operationType & operationType) == 0)
                 {
                     // ignore
                     return;
                 }
 
-                if (m_isNullParameterType)
+                if (_isNullParameterType)
                 {
-                    m_callback.DynamicInvoke();
+                    _callback.DynamicInvoke();
                 }
                 else
                 {
-                    m_callback.DynamicInvoke(keycode, operationType);
+                    _callback.DynamicInvoke(keycode, operationType);
                 }
             }
 
@@ -535,19 +535,19 @@ namespace GameEngine
             /// <param name="operationType">按键操作类型</param>
             public void Invoke(IProto proto, int keycode, int operationType)
             {
-                if (m_operationType == 0 || (m_operationType & operationType) == 0)
+                if (_operationType == 0 || (_operationType & operationType) == 0)
                 {
                     // ignore
                     return;
                 }
 
-                if (m_isNullParameterType)
+                if (_isNullParameterType)
                 {
-                    m_callback.DynamicInvoke(proto);
+                    _callback.DynamicInvoke(proto);
                 }
                 else
                 {
-                    m_callback.DynamicInvoke(proto, keycode, operationType);
+                    _callback.DynamicInvoke(proto, keycode, operationType);
                 }
             }
 
@@ -557,13 +557,13 @@ namespace GameEngine
             /// <param name="inputData">输入数据</param>
             public void Invoke(object inputData)
             {
-                if (m_isNullParameterType)
+                if (_isNullParameterType)
                 {
-                    m_callback.DynamicInvoke();
+                    _callback.DynamicInvoke();
                 }
                 else
                 {
-                    m_callback.DynamicInvoke(inputData);
+                    _callback.DynamicInvoke(inputData);
                 }
             }
 
@@ -574,13 +574,13 @@ namespace GameEngine
             /// <param name="inputData">输入数据</param>
             public void Invoke(IProto proto, object inputData)
             {
-                if (m_isNullParameterType)
+                if (_isNullParameterType)
                 {
-                    m_callback.DynamicInvoke(proto);
+                    _callback.DynamicInvoke(proto);
                 }
                 else
                 {
-                    m_callback.DynamicInvoke(proto, inputData);
+                    _callback.DynamicInvoke(proto, inputData);
                 }
             }
         }

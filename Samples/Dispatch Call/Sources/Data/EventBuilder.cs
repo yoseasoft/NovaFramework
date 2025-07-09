@@ -30,19 +30,19 @@ namespace Game.Sample.DispatchCall
     /// </summary>
     static class EventBuilder
     {
-        [GameEngine.OnKeycodeDispatchResponse((int) UnityEngine.KeyCode.Alpha1, GameEngine.InputOperationType.Released)]
+        [GameEngine.OnKeycodeDispatchCall((int) UnityEngine.KeyCode.Alpha1, GameEngine.InputOperationType.Released)]
         static void OnPlayerDisplayInfoEventSend(int keycode, int operationType)
         {
             GameEngine.EventController.Instance.Send(EventNotify.PlayerDisplayInfo, "疯狂星期四", 8080);
         }
 
-        [GameEngine.OnKeycodeDispatchResponse((int) UnityEngine.KeyCode.Alpha2, GameEngine.InputOperationType.Released)]
+        [GameEngine.OnKeycodeDispatchCall((int) UnityEngine.KeyCode.Alpha2, GameEngine.InputOperationType.Released)]
         static void OnPlayerSearchAllEnemiesEventSend(int keycode, int operationType)
         {
             GameEngine.EventController.Instance.Send(EventNotify.PlayerSearchAllEnemies);
         }
 
-        [GameEngine.OnKeycodeDispatchResponse((int) UnityEngine.KeyCode.Alpha3, GameEngine.InputOperationType.Released)]
+        [GameEngine.OnKeycodeDispatchCall((int) UnityEngine.KeyCode.Alpha3, GameEngine.InputOperationType.Released)]
         static void OnPlayerLockOneTargetEventSend(int keycode, int operationType)
         {
             int r = NovaEngine.Utility.Random.GetRandom(2);
@@ -58,7 +58,7 @@ namespace Game.Sample.DispatchCall
             GameEngine.EventController.Instance.Send(EventNotify.PlayerLockOneTarget, uid);
         }
 
-        [GameEngine.OnKeycodeDispatchResponse((int) UnityEngine.KeyCode.Alpha4, GameEngine.InputOperationType.Released)]
+        [GameEngine.OnKeycodeDispatchCall((int) UnityEngine.KeyCode.Alpha4, GameEngine.InputOperationType.Released)]
         static void OnPlayerUpgradeEventSend(int keycode, int operationType)
         {
             int exp = NovaEngine.Utility.Random.GetRandom(1000);
@@ -66,7 +66,7 @@ namespace Game.Sample.DispatchCall
             GameEngine.EventController.Instance.Send(EventNotify.PlayerUpgrade, exp);
         }
 
-        [GameEngine.OnKeycodeDispatchResponse((int) UnityEngine.KeyCode.Alpha5, GameEngine.InputOperationType.Released)]
+        [GameEngine.OnKeycodeDispatchCall((int) UnityEngine.KeyCode.Alpha5, GameEngine.InputOperationType.Released)]
         static void OnPlayerChaseTargetEventSend(int keycode, int operationType)
         {
             GameEngine.EventController.Instance.Send(EventNotify.PlayerChaseTarget);

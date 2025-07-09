@@ -43,7 +43,7 @@ namespace GameEngine.Loader.Inspecting
         /// </summary>
         /// <param name="methodInfo">函数类型</param>
         /// <returns>若格式正确则返回true，否则返回false</returns>
-        public static bool IsValidFormatOfInputResponseFunction(SystemMethodInfo methodInfo)
+        public static bool IsValidFormatOfInputCallFunction(SystemMethodInfo methodInfo)
         {
             // 函数返回值必须为“void”
             if (typeof(void) != methodInfo.ReturnType)
@@ -109,7 +109,7 @@ namespace GameEngine.Loader.Inspecting
         /// </summary>
         /// <param name="methodInfo">函数类型</param>
         /// <returns>若为无参格式则返回true，否则返回false</returns>
-        public static bool IsNullParameterTypeOfInputResponseFunction(SystemMethodInfo methodInfo)
+        public static bool IsNullParameterTypeOfInputCallFunction(SystemMethodInfo methodInfo)
         {
             // 无参类型的输入响应函数有两种格式:
             // 1. [static] void OnInput();
@@ -136,7 +136,7 @@ namespace GameEngine.Loader.Inspecting
         /// </summary>
         /// <param name="methodInfo">函数类型</param>
         /// <returns>若格式正确则返回true，否则返回false</returns>
-        public static bool IsValidFormatOfProtoExtendInputResponseFunction(SystemMethodInfo methodInfo)
+        public static bool IsValidFormatOfProtoExtendInputCallFunction(SystemMethodInfo methodInfo)
         {
             // 函数返回值必须为“void”
             if (typeof(void) != methodInfo.ReturnType)

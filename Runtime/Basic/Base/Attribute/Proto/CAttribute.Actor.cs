@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,21 +37,21 @@ namespace GameEngine
         /// <summary>
         /// 角色名称
         /// </summary>
-        private readonly string m_actorName;
+        private readonly string _actorName;
         /// <summary>
         /// 角色功能类型标识
         /// </summary>
-        private readonly int m_funcType;
+        private readonly int _funcType;
 
         /// <summary>
         /// 角色名称获取函数
         /// </summary>
-        public string ActorName => m_actorName;
+        public string ActorName => _actorName;
 
         /// <summary>
         /// 角色功能类型获取函数
         /// </summary>
-        public int FuncType => m_funcType;
+        public int FuncType => _funcType;
 
         public DeclareActorClassAttribute(string actorName) : this(actorName, 0)
         {
@@ -63,8 +63,8 @@ namespace GameEngine
 
         public DeclareActorClassAttribute(string actorName, int funcType) : base()
         {
-            m_actorName = actorName ?? string.Empty;
-            m_funcType = funcType;
+            _actorName = actorName ?? string.Empty;
+            _funcType = funcType;
         }
     }
 }

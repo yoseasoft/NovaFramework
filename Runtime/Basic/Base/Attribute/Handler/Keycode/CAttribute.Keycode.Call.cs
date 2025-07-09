@@ -34,66 +34,66 @@ namespace GameEngine
     /// 键码响应类型注册函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class OnKeycodeDispatchResponseAttribute : SystemAttribute
+    public class OnKeycodeDispatchCallAttribute : SystemAttribute
     {
         /// <summary>
         /// 响应键码的目标对象类型
         /// </summary>
-        private readonly SystemType m_classType;
+        private readonly SystemType _classType;
         /// <summary>
         /// 键码唯一标识
         /// </summary>
-        private readonly int m_keycode;
+        private readonly int _keycode;
         /// <summary>
         /// 键码操作类型
         /// </summary>
-        private readonly InputOperationType m_operationType;
+        private readonly InputOperationType _operationType;
         /// <summary>
         /// 派发侦听的输入数据类型
         /// </summary>
-        private readonly SystemType m_inputDataType;
+        private readonly SystemType _inputDataType;
 
         /// <summary>
         /// 目标对象类型获取函数
         /// </summary>
-        public SystemType ClassType => m_classType;
+        public SystemType ClassType => _classType;
         /// <summary>
         /// 键码获取函数
         /// </summary>
-        public int Keycode => m_keycode;
+        public int Keycode => _keycode;
         /// <summary>
         /// 操作类型获取函数
         /// </summary>
-        public InputOperationType OperationType => m_operationType;
+        public InputOperationType OperationType => _operationType;
         /// <summary>
         /// 输入数据类型获取函数
         /// </summary>
-        public SystemType InputDataType => m_inputDataType;
+        public SystemType InputDataType => _inputDataType;
 
-        public OnKeycodeDispatchResponseAttribute(int keycode) : this(null, keycode, InputOperationType.Unknown, null)
+        public OnKeycodeDispatchCallAttribute(int keycode) : this(null, keycode, InputOperationType.Unknown, null)
         { }
 
-        public OnKeycodeDispatchResponseAttribute(int keycode, InputOperationType operationType) : this(null, keycode, operationType, null)
+        public OnKeycodeDispatchCallAttribute(int keycode, InputOperationType operationType) : this(null, keycode, operationType, null)
         { }
 
-        public OnKeycodeDispatchResponseAttribute(SystemType inputDataType) : this(null, 0, InputOperationType.Unknown, inputDataType)
+        public OnKeycodeDispatchCallAttribute(SystemType inputDataType) : this(null, 0, InputOperationType.Unknown, inputDataType)
         { }
 
-        public OnKeycodeDispatchResponseAttribute(SystemType classType, int keycode) : this(classType, keycode, InputOperationType.Unknown, null)
+        public OnKeycodeDispatchCallAttribute(SystemType classType, int keycode) : this(classType, keycode, InputOperationType.Unknown, null)
         { }
 
-        public OnKeycodeDispatchResponseAttribute(SystemType classType, int keycode, InputOperationType operationType) : this(classType, keycode, operationType, null)
+        public OnKeycodeDispatchCallAttribute(SystemType classType, int keycode, InputOperationType operationType) : this(classType, keycode, operationType, null)
         { }
 
-        public OnKeycodeDispatchResponseAttribute(SystemType classType, SystemType inputDataType) : this(classType, 0, InputOperationType.Unknown, inputDataType)
+        public OnKeycodeDispatchCallAttribute(SystemType classType, SystemType inputDataType) : this(classType, 0, InputOperationType.Unknown, inputDataType)
         { }
 
-        private OnKeycodeDispatchResponseAttribute(SystemType classType, int keycode, InputOperationType operationType, SystemType inputDataType) : base()
+        private OnKeycodeDispatchCallAttribute(SystemType classType, int keycode, InputOperationType operationType, SystemType inputDataType) : base()
         {
-            m_classType = classType;
-            m_keycode = keycode;
-            m_operationType = operationType;
-            m_inputDataType = inputDataType;
+            _classType = classType;
+            _keycode = keycode;
+            _operationType = operationType;
+            _inputDataType = inputDataType;
         }
     }
 
@@ -106,24 +106,24 @@ namespace GameEngine
         /// <summary>
         /// 键码唯一标识
         /// </summary>
-        private readonly int m_keycode;
+        private readonly int _keycode;
         /// <summary>
         /// 键码操作类型
         /// </summary>
-        private readonly InputOperationType m_operationType;
+        private readonly InputOperationType _operationType;
         /// <summary>
         /// 派发侦听的输入数据类型
         /// </summary>
-        private readonly SystemType m_inputDataType;
+        private readonly SystemType _inputDataType;
         /// <summary>
         /// 监听绑定的观察行为类型
         /// </summary>
-        private readonly AspectBehaviourType m_behaviourType;
+        private readonly AspectBehaviourType _behaviourType;
 
-        public int Keycode => m_keycode;
-        public InputOperationType OperationType => m_operationType;
-        public SystemType InputDataType => m_inputDataType;
-        public AspectBehaviourType BehaviourType => m_behaviourType;
+        public int Keycode => _keycode;
+        public InputOperationType OperationType => _operationType;
+        public SystemType InputDataType => _inputDataType;
+        public AspectBehaviourType BehaviourType => _behaviourType;
 
         public KeycodeListenerBindingOfTargetAttribute(int keycode) : this(keycode, InputOperationType.Unknown, null, AspectBehaviourType.Initialize)
         { }
@@ -145,10 +145,10 @@ namespace GameEngine
 
         private KeycodeListenerBindingOfTargetAttribute(int keycode, InputOperationType operationType, SystemType inputDataType, AspectBehaviourType behaviourType) : base()
         {
-            m_keycode = keycode;
-            m_operationType = operationType;
-            m_inputDataType = inputDataType;
-            m_behaviourType = behaviourType;
+            _keycode = keycode;
+            _operationType = operationType;
+            _inputDataType = inputDataType;
+            _behaviourType = behaviourType;
         }
     }
 }
