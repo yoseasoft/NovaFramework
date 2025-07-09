@@ -2,6 +2,8 @@
 /// GameEngine Framework
 ///
 /// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -35,6 +37,15 @@ namespace GameEngine
     /// </summary>
     public abstract partial class CBase
     {
+        /// <summary>
+        /// 基础对象内部输入编码的监听回调容器列表
+        /// </summary>
+        private IDictionary<int, IDictionary<string, InputCallSyntaxInfo>> _inputCallInfosForCode;
+        /// <summary>
+        /// 基础对象内部输入编码的监听回调容器列表
+        /// </summary>
+        private IDictionary<SystemType, IDictionary<string, InputCallSyntaxInfo>> _inputCallInfosForType;
+
         /// <summary>
         /// 基础对象内部订阅事件的监听回调容器列表
         /// </summary>
@@ -844,56 +855,56 @@ namespace GameEngine
 
         #endregion
 
-        #region 基础回调接口包装类型定义
+        #region 基础回调接口包装结构及处理函数声明（包含回调接口函数的通用数据结构）
 
         protected class BaseCallSyntaxInfo
         {
             /// <summary>
             /// 回调函数的目标对象实例
             /// </summary>
-            protected readonly CBase m_targetObject;
+            protected readonly CBase _targetObject;
             /// <summary>
             /// 回调函数的完整名称
             /// </summary>
-            protected readonly string m_fullname;
+            protected readonly string _fullname;
             /// <summary>
             /// 回调函数的函数信息实例
             /// </summary>
-            protected readonly SystemMethodInfo m_methodInfo;
+            protected readonly SystemMethodInfo _methodInfo;
             /// <summary>
             /// 回调函数的动态构建回调句柄
             /// </summary>
-            protected readonly SystemDelegate m_callback;
+            protected readonly SystemDelegate _callback;
             /// <summary>
             /// 回调函数的自动注册状态标识
             /// </summary>
-            protected readonly bool m_automatically;
+            protected readonly bool _automatically;
             /// <summary>
             /// 回调函数的扩展定义状态标识
             /// </summary>
-            protected readonly bool m_isExtensionType;
+            protected readonly bool _isExtensionType;
             /// <summary>
             /// 回调函数的无参状态标识
             /// </summary>
-            protected readonly bool m_isNullParameterType;
+            protected readonly bool _isNullParameterType;
 
-            public string Fullname => m_fullname;
-            public SystemMethodInfo MethodInfo => m_methodInfo;
-            public SystemDelegate Callback => m_callback;
-            public bool Automatically => m_automatically;
-            public bool IsExtensionType => m_isExtensionType;
-            public bool IsNullParameterType => m_isNullParameterType;
+            public string Fullname => _fullname;
+            public SystemMethodInfo MethodInfo => _methodInfo;
+            public SystemDelegate Callback => _callback;
+            public bool Automatically => _automatically;
+            public bool IsExtensionType => _isExtensionType;
+            public bool IsNullParameterType => _isNullParameterType;
 
             protected BaseCallSyntaxInfo(CBase targetObject, SystemMethodInfo methodInfo, bool automatically)
             {
-                m_targetObject = targetObject;
-                m_methodInfo = methodInfo;
-                m_automatically = automatically;
-                m_isExtensionType = NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo);
-                m_isNullParameterType = Loader.Inspecting.CodeInspector.IsNullParameterTypeOfMessageCallFunction(methodInfo);
+                _targetObject = targetObject;
+                _methodInfo = methodInfo;
+                _automatically = automatically;
+                _isExtensionType = NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo);
+                _isNullParameterType = Loader.Inspecting.CodeInspector.IsNullParameterTypeOfMessageCallFunction(methodInfo);
 
                 object obj = targetObject;
-                if (m_isExtensionType)
+                if (_isExtensionType)
                 {
                     // 扩展函数在构建委托时不需要传入运行时对象实例，而是在调用时传入
                     obj = null;
@@ -904,8 +915,8 @@ namespace GameEngine
                 SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(obj, methodInfo);
                 Debugger.Assert(null != callback, "Invalid method type.");
 
-                m_fullname = fullname;
-                m_callback = callback;
+                _fullname = fullname;
+                _callback = callback;
             }
 
             /// <summary>
@@ -921,6 +932,107 @@ namespace GameEngine
 
         #endregion
 
+        #region 输入回调接口包装结构及处理函数声明
+
+        /// <summary>
+        /// 输入回调接口的包装对象类
+        /// </summary>
+        protected class InputCallSyntaxInfo : BaseCallSyntaxInfo
+        {
+            /// <summary>
+            /// 输入回调绑定的输入编码
+            /// </summary>
+            private readonly int _inputCode;
+            /// <summary>
+            /// 输入回调绑定的输入数据类型
+            /// </summary>
+            private readonly SystemType _inputType;
+
+            public int InputCode => _inputCode;
+            public SystemType InputType => _inputType;
+
+            public InputCallSyntaxInfo(CBase targetObject, int inputCode, SystemMethodInfo methodInfo) : this(targetObject, inputCode, methodInfo, false)
+            { }
+
+            public InputCallSyntaxInfo(CBase targetObject, int inputCode, SystemMethodInfo methodInfo, bool automatically) : this(targetObject, inputCode, null, methodInfo, automatically)
+            { }
+
+            public InputCallSyntaxInfo(CBase targetObject, SystemType inputType, SystemMethodInfo methodInfo) : this(targetObject, inputType, methodInfo, false)
+            { }
+
+            public InputCallSyntaxInfo(CBase targetObject, SystemType inputType, SystemMethodInfo methodInfo, bool automatically) : this(targetObject, 0, inputType, methodInfo, automatically)
+            { }
+
+            private InputCallSyntaxInfo(CBase targetObject, int inputCode, SystemType inputType, SystemMethodInfo methodInfo, bool automatically) : base(targetObject, methodInfo, automatically)
+            {
+                _inputCode = inputCode;
+                _inputType = inputType;
+            }
+
+            /// <summary>
+            /// 输入回调的调度函数
+            /// </summary>
+            /// <param name="inputCode">输入编码</param>
+            /// <param name="operationType">输入操作类型</param>
+            public void Invoke(int inputCode, int operationType)
+            {
+                if (_isExtensionType)
+                {
+                    if (_isNullParameterType)
+                    {
+                        _callback.DynamicInvoke(_targetObject);
+                    }
+                    else
+                    {
+                        _callback.DynamicInvoke(_targetObject, inputCode, operationType);
+                    }
+                }
+                else
+                {
+                    if (_isNullParameterType)
+                    {
+                        _callback.DynamicInvoke();
+                    }
+                    else
+                    {
+                        _callback.DynamicInvoke(inputCode, operationType);
+                    }
+                }
+            }
+
+            /// <summary>
+            /// 输入回调的调度函数
+            /// </summary>
+            /// <param name="inputData">输入数据</param>
+            public void Invoke(object inputData)
+            {
+                if (_isExtensionType)
+                {
+                    if (_isNullParameterType)
+                    {
+                        _callback.DynamicInvoke(_targetObject);
+                    }
+                    else
+                    {
+                        _callback.DynamicInvoke(_targetObject, inputData);
+                    }
+                }
+                else
+                {
+                    if (_isNullParameterType)
+                    {
+                        _callback.DynamicInvoke();
+                    }
+                    else
+                    {
+                        _callback.DynamicInvoke(inputData);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
         #region 事件回调接口包装结构及处理函数声明
 
         /// <summary>
@@ -931,14 +1043,14 @@ namespace GameEngine
             /// <summary>
             /// 事件回调绑定的事件标识
             /// </summary>
-            private readonly int m_eventID;
+            private readonly int _eventID;
             /// <summary>
             /// 事件回调绑定的事件数据类型
             /// </summary>
-            private readonly SystemType m_eventType;
+            private readonly SystemType _eventType;
 
-            public int EventID => m_eventID;
-            public SystemType EventType => m_eventType;
+            public int EventID => _eventID;
+            public SystemType EventType => _eventType;
 
             public EventCallSyntaxInfo(CBase targetObject, int eventID, SystemMethodInfo methodInfo) : this(targetObject, eventID, methodInfo, false)
             { }
@@ -954,8 +1066,8 @@ namespace GameEngine
 
             private EventCallSyntaxInfo(CBase targetObject, int eventID, SystemType eventType, SystemMethodInfo methodInfo, bool automatically) : base(targetObject, methodInfo, automatically)
             {
-                m_eventID = eventID;
-                m_eventType = eventType;
+                _eventID = eventID;
+                _eventType = eventType;
             }
 
             /// <summary>
@@ -965,26 +1077,26 @@ namespace GameEngine
             /// <param name="args">事件数据参数</param>
             public void Invoke(int eventID, params object[] args)
             {
-                if (m_isExtensionType)
+                if (_isExtensionType)
                 {
-                    if (m_isNullParameterType)
+                    if (_isNullParameterType)
                     {
-                        m_callback.DynamicInvoke(m_targetObject);
+                        _callback.DynamicInvoke(_targetObject);
                     }
                     else
                     {
-                        m_callback.DynamicInvoke(m_targetObject, eventID, args);
+                        _callback.DynamicInvoke(_targetObject, eventID, args);
                     }
                 }
                 else
                 {
-                    if (m_isNullParameterType)
+                    if (_isNullParameterType)
                     {
-                        m_callback.DynamicInvoke();
+                        _callback.DynamicInvoke();
                     }
                     else
                     {
-                        m_callback.DynamicInvoke(eventID, args);
+                        _callback.DynamicInvoke(eventID, args);
                     }
                 }
             }
@@ -995,26 +1107,26 @@ namespace GameEngine
             /// <param name="eventData">事件数据</param>
             public void Invoke(object eventData)
             {
-                if (m_isExtensionType)
+                if (_isExtensionType)
                 {
-                    if (m_isNullParameterType)
+                    if (_isNullParameterType)
                     {
-                        m_callback.DynamicInvoke(m_targetObject);
+                        _callback.DynamicInvoke(_targetObject);
                     }
                     else
                     {
-                        m_callback.DynamicInvoke(m_targetObject, eventData);
+                        _callback.DynamicInvoke(_targetObject, eventData);
                     }
                 }
                 else
                 {
-                    if (m_isNullParameterType)
+                    if (_isNullParameterType)
                     {
-                        m_callback.DynamicInvoke();
+                        _callback.DynamicInvoke();
                     }
                     else
                     {
-                        m_callback.DynamicInvoke(eventData);
+                        _callback.DynamicInvoke(eventData);
                     }
                 }
             }
@@ -1032,14 +1144,14 @@ namespace GameEngine
             /// <summary>
             /// 消息回调绑定的协议标识
             /// </summary>
-            private readonly int m_opcode;
+            private readonly int _opcode;
             /// <summary>
             /// 消息回调绑定的协议对象类型
             /// </summary>
-            private readonly SystemType m_messageType;
+            private readonly SystemType _messageType;
 
-            public int Opcode => m_opcode;
-            public SystemType MessageType => m_messageType;
+            public int Opcode => _opcode;
+            public SystemType MessageType => _messageType;
 
             public MessageCallSyntaxInfo(CBase targetObject, int opcode, SystemMethodInfo methodInfo) : this(targetObject, opcode, methodInfo, false)
             { }
@@ -1055,8 +1167,8 @@ namespace GameEngine
 
             private MessageCallSyntaxInfo(CBase targetObject, int opcode, SystemType messageType, SystemMethodInfo methodInfo, bool automatically) : base(targetObject, methodInfo, automatically)
             {
-                m_opcode = opcode;
-                m_messageType = messageType;
+                _opcode = opcode;
+                _messageType = messageType;
             }
 
             /// <summary>
@@ -1065,26 +1177,26 @@ namespace GameEngine
             /// <param name="message">消息对象实例</param>
             public void Invoke(ProtoBuf.Extension.IMessage message)
             {
-                if (m_isExtensionType)
+                if (_isExtensionType)
                 {
-                    if (m_isNullParameterType)
+                    if (_isNullParameterType)
                     {
-                        m_callback.DynamicInvoke(m_targetObject);
+                        _callback.DynamicInvoke(_targetObject);
                     }
                     else
                     {
-                        m_callback.DynamicInvoke(m_targetObject, message);
+                        _callback.DynamicInvoke(_targetObject, message);
                     }
                 }
                 else
                 {
-                    if (m_isNullParameterType)
+                    if (_isNullParameterType)
                     {
-                        m_callback.DynamicInvoke();
+                        _callback.DynamicInvoke();
                     }
                     else
                     {
-                        m_callback.DynamicInvoke(message);
+                        _callback.DynamicInvoke(message);
                     }
                 }
             }
