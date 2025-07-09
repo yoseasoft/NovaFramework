@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,11 +36,11 @@ namespace GameEngine
         /// <summary>
         /// 当前节点对象的父节点实例
         /// </summary>
-        private CNode m_parent = null;
+        private CNode _parent = null;
         /// <summary>
         /// 当前节点对象的子节点列表
         /// </summary>
-        private IList<CNode> m_childrens = null;
+        private IList<CNode> _childrens = null;
 
         /// <summary>
         /// 节点初始化通知接口函数
@@ -50,7 +50,7 @@ namespace GameEngine
             base.Initialize();
 
             // 初始化节点列表
-            m_childrens = new List<CNode>();
+            _childrens = new List<CNode>();
 
             OnInitialize();
         }
@@ -69,7 +69,7 @@ namespace GameEngine
 
             // 清理节点列表
             RemoveAllChildrens();
-            m_childrens = null;
+            _childrens = null;
 
             base.Cleanup();
         }
@@ -143,9 +143,9 @@ namespace GameEngine
         /// </summary>
         public void RemoveAllChildrens()
         {
-            while (m_childrens.Count > 0)
+            while (_childrens.Count > 0)
             {
-                RemoveChild(m_childrens[0]);
+                RemoveChild(_childrens[0]);
             }
         }
 

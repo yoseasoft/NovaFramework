@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,41 +39,41 @@ namespace GameEngine
         /// <summary>
         /// 实体对象过期状态标识
         /// </summary>
-        private bool m_isOnExpired = false;
+        private bool _isOnExpired = false;
         /// <summary>
         /// 实体对象等待销毁状态标识
         /// </summary>
-        private bool m_isOnWaitingDestroy = false;
+        private bool _isOnWaitingDestroy = false;
 
         /// <summary>
         /// 实体对象的组件列表容器
         /// </summary>
-        protected IDictionary<string, CComponent> m_components = null;
+        protected IDictionary<string, CComponent> _components = null;
 
         /// <summary>
         /// 实体对象内部组件实例的刷新统计列表
         /// </summary>
-        protected IList<CComponent> m_componentUpdateList = null;
+        protected IList<CComponent> _componentUpdateList = null;
 
         /// <summary>
         /// 实体对象内部组件实例的事件分发列表
         /// </summary>
-        protected IList<CComponent> m_componentEventDispatchList = null;
+        protected IList<CComponent> _componentEventDispatchList = null;
 
         /// <summary>
         /// 实体对象内部组件实例的消息分发列表
         /// </summary>
-        protected IList<CComponent> m_componentMessageDispatchList = null;
+        protected IList<CComponent> _componentMessageDispatchList = null;
 
         /// <summary>
         /// 实体对象内部随机因子管理容器
         /// </summary>
-        protected IDictionary<string, SystemRandom> m_randoms = null;
+        protected IDictionary<string, SystemRandom> _randoms = null;
 
         /// <summary>
         /// 获取实体对象当前过期状态
         /// </summary>
-        public bool IsOnExpired => (m_isOnExpired || m_isOnWaitingDestroy);
+        public bool IsOnExpired => (_isOnExpired || _isOnWaitingDestroy);
 
         /// <summary>
         /// 获取实体对象的名称
@@ -88,16 +88,16 @@ namespace GameEngine
             base.Initialize();
 
             // 组件列表初始化
-            m_components = new Dictionary<string, CComponent>();
+            _components = new Dictionary<string, CComponent>();
             // 组件刷新列表初始化
-            m_componentUpdateList = new List<CComponent>();
+            _componentUpdateList = new List<CComponent>();
             // 组件事件分发列表初始化
-            m_componentEventDispatchList = new List<CComponent>();
+            _componentEventDispatchList = new List<CComponent>();
             // 组件消息分发列表初始化
-            m_componentMessageDispatchList = new List<CComponent>();
+            _componentMessageDispatchList = new List<CComponent>();
 
             // 随机因子管理容器初始化
-            m_randoms = new Dictionary<string, SystemRandom>();
+            _randoms = new Dictionary<string, SystemRandom>();
         }
 
         /// <summary>
@@ -106,20 +106,20 @@ namespace GameEngine
         public override void Cleanup()
         {
             // 重置过期状态标识
-            m_isOnExpired = false;
+            _isOnExpired = false;
             // 重置销毁待命状态标识
-            m_isOnWaitingDestroy = false;
+            _isOnWaitingDestroy = false;
 
             // 移除全部随机因子对象实例
-            m_randoms.Clear();
-            m_randoms = null;
+            _randoms.Clear();
+            _randoms = null;
 
             // 移除全部组件对象实例
             RemoveAllComponents();
-            m_components = null;
-            m_componentUpdateList = null;
-            m_componentEventDispatchList = null;
-            m_componentMessageDispatchList = null;
+            _components = null;
+            _componentUpdateList = null;
+            _componentEventDispatchList = null;
+            _componentMessageDispatchList = null;
 
             base.Cleanup();
         }
@@ -160,7 +160,7 @@ namespace GameEngine
         public virtual void Awake()
         {
             // 唤醒当前加载的全部组件
-            foreach (KeyValuePair<string, CComponent> pair in m_components)
+            foreach (KeyValuePair<string, CComponent> pair in _components)
             {
                 CComponent component = pair.Value;
 
@@ -183,10 +183,10 @@ namespace GameEngine
         public virtual void Start()
         {
             // 开始当前加载的全部组件
-            IList<string> keys = NovaEngine.Utility.Collection.ToListForKeys<string, CComponent>(m_components);
+            IList<string> keys = NovaEngine.Utility.Collection.ToListForKeys<string, CComponent>(_components);
             for (int n = 0; n < keys.Count; ++n)
             {
-                if (false == m_components.TryGetValue(keys[n], out CComponent component))
+                if (false == _components.TryGetValue(keys[n], out CComponent component))
                 {
                     Debugger.Warn("Could not found any component instance with target name '{0}', started it failed.", keys[n]);
                     continue;
@@ -204,14 +204,14 @@ namespace GameEngine
         /// </summary>
         public virtual void Destroy()
         {
-            m_isOnExpired = false;
-            m_isOnWaitingDestroy = false;
+            _isOnExpired = false;
+            _isOnWaitingDestroy = false;
 
             // 停止当前加载的全部组件
-            IList<string> keys = NovaEngine.Utility.Collection.ToListForKeys<string, CComponent>(m_components);
+            IList<string> keys = NovaEngine.Utility.Collection.ToListForKeys<string, CComponent>(_components);
             for (int n = keys.Count - 1; n >= 0; --n)
             {
-                if (false == m_components.TryGetValue(keys[n], out CComponent component))
+                if (false == _components.TryGetValue(keys[n], out CComponent component))
                 {
                     Debugger.Warn("Could not found any component instance with target name '{0}', destroyed it failed.", keys[n]);
                     continue;
@@ -234,7 +234,7 @@ namespace GameEngine
         /// </summary>
         public void OnExpired()
         {
-            m_isOnExpired = true;
+            _isOnExpired = true;
 
             // 2024-07-04:
             // 过期状态不再移除对象实例
@@ -250,7 +250,7 @@ namespace GameEngine
             // 标记待销毁状态的同时，需要将其设置为过期状态
             OnExpired();
 
-            m_isOnWaitingDestroy = true;
+            _isOnWaitingDestroy = true;
             ProtoController.Instance.RegProtoLifecycleNotification(AspectBehaviourType.Destroy, this);
         }
 
@@ -267,9 +267,9 @@ namespace GameEngine
         {
             base.OnEventDispatchForId(eventID, args);
 
-            for (int n = 0; null != m_componentEventDispatchList && n < m_componentEventDispatchList.Count; ++n)
+            for (int n = 0; null != _componentEventDispatchList && n < _componentEventDispatchList.Count; ++n)
             {
-                CComponent component = m_componentEventDispatchList[n];
+                CComponent component = _componentEventDispatchList[n];
                 if (component.IsOnAwakingStatus())
                 {
                     component.OnEventDispatchForId(eventID, args);
@@ -287,9 +287,9 @@ namespace GameEngine
         {
             base.OnEventDispatchForType(eventData);
 
-            for (int n = 0; null != m_componentEventDispatchList && n < m_componentEventDispatchList.Count; ++n)
+            for (int n = 0; null != _componentEventDispatchList && n < _componentEventDispatchList.Count; ++n)
             {
-                CComponent component = m_componentEventDispatchList[n];
+                CComponent component = _componentEventDispatchList[n];
                 if (component.IsOnAwakingStatus())
                 {
                     component.OnEventDispatchForType(eventData);
@@ -309,9 +309,9 @@ namespace GameEngine
                 return true;
             }
 
-            for (int n = 0; n < m_componentEventDispatchList.Count; ++n)
+            for (int n = 0; n < _componentEventDispatchList.Count; ++n)
             {
-                CComponent component = m_componentEventDispatchList[n] as CComponent;
+                CComponent component = _componentEventDispatchList[n] as CComponent;
                 if (component.IsSubscribedOfTargetId(eventID))
                 {
                     return true;
@@ -333,9 +333,9 @@ namespace GameEngine
                 return true;
             }
 
-            for (int n = 0; n < m_componentEventDispatchList.Count; ++n)
+            for (int n = 0; n < _componentEventDispatchList.Count; ++n)
             {
-                CComponent component = m_componentEventDispatchList[n] as CComponent;
+                CComponent component = _componentEventDispatchList[n] as CComponent;
                 if (component.IsSubscribedOfTargetType(eventType))
                 {
                     return true;
@@ -429,9 +429,9 @@ namespace GameEngine
         {
             base.OnMessageDispatch(opcode, message);
 
-            for (int n = 0; null != m_componentEventDispatchList && n < m_componentMessageDispatchList.Count; ++n)
+            for (int n = 0; null != _componentEventDispatchList && n < _componentMessageDispatchList.Count; ++n)
             {
-                CComponent component = m_componentMessageDispatchList[n];
+                CComponent component = _componentMessageDispatchList[n];
                 if (component.IsOnAwakingStatus())
                 {
                     component.OnMessageDispatch(opcode, message);
@@ -451,9 +451,9 @@ namespace GameEngine
                 return true;
             }
 
-            for (int n = 0; n < m_componentMessageDispatchList.Count; ++n)
+            for (int n = 0; n < _componentMessageDispatchList.Count; ++n)
             {
-                CComponent component = m_componentMessageDispatchList[n] as CComponent;
+                CComponent component = _componentMessageDispatchList[n] as CComponent;
                 if (component.IsMessageListenedOfTargetType(opcode))
                 {
                     return true;
@@ -540,7 +540,7 @@ namespace GameEngine
         /// <returns>若当前实体已经添加给定名称的组件则返回true，否则返回false</returns>
         public bool HasComponent(string name)
         {
-            return m_components.ContainsKey(name);
+            return _components.ContainsKey(name);
         }
 
         /// <summary>
@@ -576,7 +576,7 @@ namespace GameEngine
         /// <returns>若当前实体已经添加给定组件实例则返回true，否则返回false</returns>
         public bool HasComponent(CComponent component)
         {
-            IEnumerator<KeyValuePair<string, CComponent>> e = m_components.GetEnumerator();
+            IEnumerator<KeyValuePair<string, CComponent>> e = _components.GetEnumerator();
             while (e.MoveNext())
             {
                 if (e.Current.Value == component)
@@ -673,7 +673,7 @@ namespace GameEngine
             }
 
             string componentName = GetComponentName(component);
-            if (m_components.ContainsKey(componentName))
+            if (_components.ContainsKey(componentName))
             {
                 Debugger.Warn("The component name '{0}' was already registed, repeat added it failed.", componentName);
                 return null;
@@ -685,18 +685,18 @@ namespace GameEngine
             // 初始化组件实例
             Call(component.Initialize, LifecycleKeypointType.Initialize);
 
-            m_components.Add(componentName, component);
+            _components.Add(componentName, component);
 
             // 如果组件激活了事件分发接口，则添加到事件分发队列中
             if (typeof(IEventActivation).IsAssignableFrom(component.GetType()))
             {
-                m_componentEventDispatchList.Add(component);
+                _componentEventDispatchList.Add(component);
             }
 
             // 如果组件激活了消息分发接口，则添加到消息分发队列中
             if (typeof(IMessageActivation).IsAssignableFrom(component.GetType()))
             {
-                m_componentMessageDispatchList.Add(component);
+                _componentMessageDispatchList.Add(component);
             }
 
             // 启动组件实例
@@ -727,7 +727,7 @@ namespace GameEngine
         public CComponent GetComponent(string name)
         {
             CComponent component;
-            if (false == m_components.TryGetValue(name, out component))
+            if (false == _components.TryGetValue(name, out component))
             {
                 return null;
             }
@@ -779,7 +779,7 @@ namespace GameEngine
         public IList<CComponent> GetInheritedComponents(SystemType componentType)
         {
             IList<CComponent> list = null;
-            foreach (KeyValuePair<string, CComponent> kvp in m_components)
+            foreach (KeyValuePair<string, CComponent> kvp in _components)
             {
                 if (componentType.IsAssignableFrom(kvp.Value.GetType()))
                 {
@@ -798,7 +798,7 @@ namespace GameEngine
         /// <returns>返回实体对象注册的所有组件实例</returns>
         public IList<CComponent> GetAllComponents()
         {
-            return NovaEngine.Utility.Collection.ToListForValues<string, CComponent>(m_components);
+            return NovaEngine.Utility.Collection.ToListForValues<string, CComponent>(_components);
         }
 
         /// <summary>
@@ -831,7 +831,7 @@ namespace GameEngine
         public void RemoveComponent(string name)
         {
             CComponent component;
-            if (false == m_components.TryGetValue(name, out component))
+            if (false == _components.TryGetValue(name, out component))
             {
                 Debugger.Warn("Could not found any component instance with name '{0}', removed it failed.", name);
                 return;
@@ -853,14 +853,14 @@ namespace GameEngine
                 Call(component.Destroy, LifecycleKeypointType.Destroy);
             }
 
-            m_componentUpdateList.Remove(component);
+            _componentUpdateList.Remove(component);
 
             // 关闭组件实例
             Call(component.Shutdown, LifecycleKeypointType.Shutdown);
 
-            m_componentEventDispatchList.Remove(component);
-            m_componentMessageDispatchList.Remove(component);
-            m_components.Remove(name);
+            _componentEventDispatchList.Remove(component);
+            _componentMessageDispatchList.Remove(component);
+            _components.Remove(name);
 
             // 清理组件实例
             Call(component.Cleanup, LifecycleKeypointType.Cleanup);
@@ -913,7 +913,7 @@ namespace GameEngine
         public void RemoveAllComponents()
         {
             List<string> keys = new List<string>();
-            keys.AddRange(m_components.Keys);
+            keys.AddRange(_components.Keys);
 
             for (int n = keys.Count - 1; n >= 0; --n)
             {
@@ -927,7 +927,7 @@ namespace GameEngine
         /// <param name="component">组件对象实例</param>
         protected internal void OnComponentStartProcessing(CComponent component)
         {
-            if (false == m_components.Values.Contains(component))
+            if (false == _components.Values.Contains(component))
             {
                 Debugger.Error("Could not found any added record of the component instance '{0}', calling start process failed.", component.GetType().FullName);
                 return;
@@ -939,7 +939,7 @@ namespace GameEngine
             // 如果组件实现了刷新接口，则添加到刷新队列中
             if (typeof(IUpdateActivation).IsAssignableFrom(component.GetType()))
             {
-                m_componentUpdateList.Add(component);
+                _componentUpdateList.Add(component);
             }
         }
 
@@ -949,9 +949,9 @@ namespace GameEngine
         /// </summary>
         protected void UpdateAllComponents()
         {
-            for (int n = 0; false == IsOnExpired && n < m_componentUpdateList.Count; ++n)
+            for (int n = 0; false == IsOnExpired && n < _componentUpdateList.Count; ++n)
             {
-                Call(m_componentUpdateList[n].Update);
+                Call(_componentUpdateList[n].Update);
             }
         }
 
@@ -961,9 +961,9 @@ namespace GameEngine
         /// </summary>
         protected void LateUpdateAllComponents()
         {
-            for (int n = 0; false == IsOnExpired && n < m_componentUpdateList.Count; ++n)
+            for (int n = 0; false == IsOnExpired && n < _componentUpdateList.Count; ++n)
             {
-                Call(m_componentUpdateList[n].LateUpdate);
+                Call(_componentUpdateList[n].LateUpdate);
             }
         }
 
@@ -994,14 +994,14 @@ namespace GameEngine
                 return false;
             }
 
-            if (m_randoms.ContainsKey(name))
+            if (_randoms.ContainsKey(name))
             {
                 Debugger.Warn("The random '{%s}' was already exist in entity instance '{%t}', repeated init it will be created new instance.", name, this);
-                m_randoms.Remove(name);
+                _randoms.Remove(name);
             }
 
             SystemRandom random = new SystemRandom(seed);
-            m_randoms.Add(name, random);
+            _randoms.Add(name, random);
 
             return true;
         }
@@ -1022,7 +1022,7 @@ namespace GameEngine
         /// <returns>返回随机值</returns>
         public int RandomNext(string name)
         {
-            if (false == m_randoms.TryGetValue(name, out SystemRandom random))
+            if (false == _randoms.TryGetValue(name, out SystemRandom random))
             {
                 Debugger.Warn("Could not found target random '{%s}' from entity instance '{%t}', getted next value failed.", name, this);
                 return 0;
@@ -1049,7 +1049,7 @@ namespace GameEngine
         /// <returns>返回随机值</returns>
         public int RandomNext(string name, int maxValue)
         {
-            if (false == m_randoms.TryGetValue(name, out SystemRandom random))
+            if (false == _randoms.TryGetValue(name, out SystemRandom random))
             {
                 Debugger.Warn("Could not found target random '{%s}' from entity instance '{%t}', getted next value failed.", name, this);
                 return 0;
@@ -1078,7 +1078,7 @@ namespace GameEngine
         /// <returns>返回随机值</returns>
         public int RandomNext(string name, int minValue, int maxValue)
         {
-            if (false == m_randoms.TryGetValue(name, out SystemRandom random))
+            if (false == _randoms.TryGetValue(name, out SystemRandom random))
             {
                 Debugger.Warn("Could not found target random '{%s}' from entity instance '{%t}', getted next value failed.", name, this);
                 return 0;

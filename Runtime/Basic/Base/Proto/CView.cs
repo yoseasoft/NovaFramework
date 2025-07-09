@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -58,7 +58,7 @@ namespace GameEngine
         /// <summary>
         /// 视图对象实例已经关闭的状态标识
         /// </summary>
-        protected bool m_isClosed = false;
+        protected bool _isClosed = false;
 
         /// <summary>
         /// 视图对象挂载的窗口实例
@@ -98,7 +98,7 @@ namespace GameEngine
         /// <summary>
         /// 获取当前视图对象实例的关闭状态
         /// </summary>
-        public bool IsClosed => m_isClosed;
+        public bool IsClosed => _isClosed;
 
         /// <summary>
         /// 视图对象初始化通知接口函数
@@ -249,11 +249,11 @@ namespace GameEngine
         /// </summary>
         protected internal void __Close()
         {
-            if (m_isClosed)
+            if (_isClosed)
                 return;
 
             // 先标记关闭状态
-            m_isClosed = true;
+            _isClosed = true;
 
             // 关闭通知
             Call(Shutdown, LifecycleKeypointType.Shutdown);

@@ -38,16 +38,16 @@ namespace GameEngine
         /// <summary>
         /// 基础对象内部订阅事件的监听回调容器列表
         /// </summary>
-        private IDictionary<int, IDictionary<string, EventCallSyntaxInfo>> m_eventCallInfosForId;
+        private IDictionary<int, IDictionary<string, EventCallSyntaxInfo>> _eventCallInfosForId;
         /// <summary>
         /// 基础对象内部订阅事件的监听回调容器列表
         /// </summary>
-        private IDictionary<SystemType, IDictionary<string, EventCallSyntaxInfo>> m_eventCallInfosForType;
+        private IDictionary<SystemType, IDictionary<string, EventCallSyntaxInfo>> _eventCallInfosForType;
 
         /// <summary>
         /// 基础对象内部消息通知的监听回调的映射容器列表
         /// </summary>
-        private IDictionary<int, IDictionary<string, MessageCallSyntaxInfo>> m_messageCallInfosForType;
+        private IDictionary<int, IDictionary<string, MessageCallSyntaxInfo>> _messageCallInfosForType;
 
         /// <summary>
         /// 基础对象的通信模块包初始化函数接口
@@ -55,11 +55,11 @@ namespace GameEngine
         private void OnCommuPackageInitialize()
         {
             // 事件监听回调映射容器初始化
-            m_eventCallInfosForId = new Dictionary<int, IDictionary<string, EventCallSyntaxInfo>>();
-            m_eventCallInfosForType = new Dictionary<SystemType, IDictionary<string, EventCallSyntaxInfo>>();
+            _eventCallInfosForId = new Dictionary<int, IDictionary<string, EventCallSyntaxInfo>>();
+            _eventCallInfosForType = new Dictionary<SystemType, IDictionary<string, EventCallSyntaxInfo>>();
 
             // 消息监听回调映射容器初始化
-            m_messageCallInfosForType = new Dictionary<int, IDictionary<string, MessageCallSyntaxInfo>>();
+            _messageCallInfosForType = new Dictionary<int, IDictionary<string, MessageCallSyntaxInfo>>();
         }
 
         /// <summary>
@@ -69,12 +69,12 @@ namespace GameEngine
         {
             // 移除所有订阅事件
             UnsubscribeAllEvents();
-            m_eventCallInfosForId = null;
-            m_eventCallInfosForType = null;
+            _eventCallInfosForId = null;
+            _eventCallInfosForType = null;
 
             // 移除所有消息通知
             RemoveAllMessageListeners();
-            m_messageCallInfosForType = null;
+            _messageCallInfosForType = null;
         }
 
         #region 基础对象事件转发相关操作函数合集
@@ -88,7 +88,7 @@ namespace GameEngine
         /// <param name="args">事件数据参数</param>
         public virtual void OnEventDispatchForId(int eventID, params object[] args)
         {
-            if (m_eventCallInfosForId.TryGetValue(eventID, out IDictionary<string, EventCallSyntaxInfo> infos))
+            if (_eventCallInfosForId.TryGetValue(eventID, out IDictionary<string, EventCallSyntaxInfo> infos))
             {
                 IEnumerator<EventCallSyntaxInfo> e = infos.Values.GetEnumerator();
                 while (e.MoveNext())
@@ -108,7 +108,7 @@ namespace GameEngine
         /// <param name="eventData">事件数据</param>
         public virtual void OnEventDispatchForType(object eventData)
         {
-            if (m_eventCallInfosForType.TryGetValue(eventData.GetType(), out IDictionary<string, EventCallSyntaxInfo> infos))
+            if (_eventCallInfosForType.TryGetValue(eventData.GetType(), out IDictionary<string, EventCallSyntaxInfo> infos))
             {
                 IEnumerator<EventCallSyntaxInfo> e = infos.Values.GetEnumerator();
                 while (e.MoveNext())
@@ -163,7 +163,7 @@ namespace GameEngine
         /// <returns>若订阅了给定事件标识则返回true，否则返回false</returns>
         protected internal virtual bool IsSubscribedOfTargetId(int eventID)
         {
-            if (m_eventCallInfosForId.ContainsKey(eventID) && m_eventCallInfosForId[eventID].Count > 0)
+            if (_eventCallInfosForId.ContainsKey(eventID) && _eventCallInfosForId[eventID].Count > 0)
             {
                 return true;
             }
@@ -178,7 +178,7 @@ namespace GameEngine
         /// <returns>若订阅了给定事件类型则返回true，否则返回false</returns>
         protected internal virtual bool IsSubscribedOfTargetType(SystemType eventType)
         {
-            if (m_eventCallInfosForType.ContainsKey(eventType) && m_eventCallInfosForType[eventType].Count > 0)
+            if (_eventCallInfosForType.ContainsKey(eventType) && _eventCallInfosForType[eventType].Count > 0)
             {
                 return true;
             }
@@ -239,13 +239,13 @@ namespace GameEngine
 
             EventCallSyntaxInfo info = new EventCallSyntaxInfo(this, eventID, methodInfo, automatically);
 
-            if (false == m_eventCallInfosForId.TryGetValue(eventID, out IDictionary<string, EventCallSyntaxInfo> infos))
+            if (false == _eventCallInfosForId.TryGetValue(eventID, out IDictionary<string, EventCallSyntaxInfo> infos))
             {
                 // 创建监听列表
                 infos = new Dictionary<string, EventCallSyntaxInfo>();
                 infos.Add(info.Fullname, info);
 
-                m_eventCallInfosForId.Add(eventID, infos);
+                _eventCallInfosForId.Add(eventID, infos);
 
                 // 新增事件订阅的后处理程序
                 return OnSubscribeActionPostProcess(eventID);
@@ -337,13 +337,13 @@ namespace GameEngine
 
             EventCallSyntaxInfo info = new EventCallSyntaxInfo(this, eventType, methodInfo, automatically);
 
-            if (false == m_eventCallInfosForType.TryGetValue(eventType, out IDictionary<string, EventCallSyntaxInfo> infos))
+            if (false == _eventCallInfosForType.TryGetValue(eventType, out IDictionary<string, EventCallSyntaxInfo> infos))
             {
                 // 创建监听列表
                 infos = new Dictionary<string, EventCallSyntaxInfo>();
                 infos.Add(info.Fullname, info);
 
-                m_eventCallInfosForType.Add(eventType, infos);
+                _eventCallInfosForType.Add(eventType, infos);
 
                 // 新增事件订阅的后处理程序
                 return OnSubscribeActionPostProcess(eventType);
@@ -368,9 +368,9 @@ namespace GameEngine
         public virtual void Unsubscribe(int eventID)
         {
             // 若针对特定事件绑定了监听回调，则移除相应的回调句柄
-            if (m_eventCallInfosForId.ContainsKey(eventID))
+            if (_eventCallInfosForId.ContainsKey(eventID))
             {
-                m_eventCallInfosForId.Remove(eventID);
+                _eventCallInfosForId.Remove(eventID);
             }
 
             // 移除事件订阅的后处理程序
@@ -396,7 +396,7 @@ namespace GameEngine
         /// <param name="funcName">函数名称</param>
         protected internal void Unsubscribe(int eventID, string funcName)
         {
-            if (m_eventCallInfosForId.TryGetValue(eventID, out IDictionary<string, EventCallSyntaxInfo> infos))
+            if (_eventCallInfosForId.TryGetValue(eventID, out IDictionary<string, EventCallSyntaxInfo> infos))
             {
                 if (infos.ContainsKey(funcName))
                 {
@@ -427,9 +427,9 @@ namespace GameEngine
         public virtual void Unsubscribe(SystemType eventType)
         {
             // 若针对特定事件绑定了监听回调，则移除相应的回调句柄
-            if (m_eventCallInfosForType.ContainsKey(eventType))
+            if (_eventCallInfosForType.ContainsKey(eventType))
             {
-                m_eventCallInfosForType.Remove(eventType);
+                _eventCallInfosForType.Remove(eventType);
             }
 
             // 移除事件订阅的后处理程序
@@ -475,7 +475,7 @@ namespace GameEngine
         /// <param name="funcName">函数名称</param>
         protected internal void Unsubscribe(SystemType eventType, string funcName)
         {
-            if (m_eventCallInfosForType.TryGetValue(eventType, out IDictionary<string, EventCallSyntaxInfo> infos))
+            if (_eventCallInfosForType.TryGetValue(eventType, out IDictionary<string, EventCallSyntaxInfo> infos))
             {
                 if (infos.ContainsKey(funcName))
                 {
@@ -495,8 +495,8 @@ namespace GameEngine
         /// </summary>
         protected internal void UnsubscribeAllAutomaticallyEvents()
         {
-            OnAutomaticallyCallSyntaxInfoProcessHandler<int, EventCallSyntaxInfo>(m_eventCallInfosForId, Unsubscribe);
-            OnAutomaticallyCallSyntaxInfoProcessHandler<SystemType, EventCallSyntaxInfo>(m_eventCallInfosForType, Unsubscribe);
+            OnAutomaticallyCallSyntaxInfoProcessHandler<int, EventCallSyntaxInfo>(_eventCallInfosForId, Unsubscribe);
+            OnAutomaticallyCallSyntaxInfoProcessHandler<SystemType, EventCallSyntaxInfo>(_eventCallInfosForType, Unsubscribe);
         }
 
         /// <summary>
@@ -504,14 +504,14 @@ namespace GameEngine
         /// </summary>
         public virtual void UnsubscribeAllEvents()
         {
-            IList<int> id_keys = NovaEngine.Utility.Collection.ToListForKeys<int, IDictionary<string, EventCallSyntaxInfo>>(m_eventCallInfosForId);
+            IList<int> id_keys = NovaEngine.Utility.Collection.ToListForKeys<int, IDictionary<string, EventCallSyntaxInfo>>(_eventCallInfosForId);
             for (int n = 0; null != id_keys && n < id_keys.Count; ++n) { Unsubscribe(id_keys[n]); }
 
-            IList<SystemType> type_keys = NovaEngine.Utility.Collection.ToListForKeys<SystemType, IDictionary<string, EventCallSyntaxInfo>>(m_eventCallInfosForType);
+            IList<SystemType> type_keys = NovaEngine.Utility.Collection.ToListForKeys<SystemType, IDictionary<string, EventCallSyntaxInfo>>(_eventCallInfosForType);
             for (int n = 0; null != type_keys && n < type_keys.Count; ++n) { Unsubscribe(type_keys[n]); }
 
-            m_eventCallInfosForId.Clear();
-            m_eventCallInfosForType.Clear();
+            _eventCallInfosForId.Clear();
+            _eventCallInfosForType.Clear();
         }
 
         #endregion
@@ -527,7 +527,7 @@ namespace GameEngine
         /// <param name="message">消息对象实例</param>
         public virtual void OnMessageDispatch(int opcode, ProtoBuf.Extension.IMessage message)
         {
-            if (m_messageCallInfosForType.TryGetValue(opcode, out IDictionary<string, MessageCallSyntaxInfo> infos))
+            if (_messageCallInfosForType.TryGetValue(opcode, out IDictionary<string, MessageCallSyntaxInfo> infos))
             {
                 IEnumerator<MessageCallSyntaxInfo> e = infos.Values.GetEnumerator();
                 while (e.MoveNext())
@@ -565,7 +565,7 @@ namespace GameEngine
         /// <returns>若监听了给定消息类型则返回true，否则返回false</returns>
         protected internal virtual bool IsMessageListenedOfTargetType(int opcode)
         {
-            if (m_messageCallInfosForType.ContainsKey(opcode) && m_messageCallInfosForType[opcode].Count > 0)
+            if (_messageCallInfosForType.ContainsKey(opcode) && _messageCallInfosForType[opcode].Count > 0)
             {
                 return true;
             }
@@ -626,13 +626,13 @@ namespace GameEngine
 
             MessageCallSyntaxInfo info = new MessageCallSyntaxInfo(this, opcode, methodInfo, automatically);
 
-            if (false == m_messageCallInfosForType.TryGetValue(opcode, out IDictionary<string, MessageCallSyntaxInfo> infos))
+            if (false == _messageCallInfosForType.TryGetValue(opcode, out IDictionary<string, MessageCallSyntaxInfo> infos))
             {
                 // 创建监听列表
                 infos = new Dictionary<string, MessageCallSyntaxInfo>();
                 infos.Add(info.Fullname, info);
 
-                m_messageCallInfosForType.Add(opcode, infos);
+                _messageCallInfosForType.Add(opcode, infos);
 
                 // 新增消息监听的后处理程序
                 return OnMessageListenerAddedActionPostProcess(opcode);
@@ -716,9 +716,9 @@ namespace GameEngine
         public virtual void RemoveMessageListener(int opcode)
         {
             // 若针对特定消息绑定了监听回调，则移除相应的回调句柄
-            if (m_messageCallInfosForType.ContainsKey(opcode))
+            if (_messageCallInfosForType.ContainsKey(opcode))
             {
-                m_messageCallInfosForType.Remove(opcode);
+                _messageCallInfosForType.Remove(opcode);
             }
 
             // 移除消息监听的后处理程序
@@ -744,7 +744,7 @@ namespace GameEngine
         /// <param name="funcName">函数名称</param>
         protected internal void RemoveMessageListener(int opcode, string funcName)
         {
-            if (m_messageCallInfosForType.TryGetValue(opcode, out IDictionary<string, MessageCallSyntaxInfo> infos))
+            if (_messageCallInfosForType.TryGetValue(opcode, out IDictionary<string, MessageCallSyntaxInfo> infos))
             {
                 if (infos.ContainsKey(funcName))
                 {
@@ -828,7 +828,7 @@ namespace GameEngine
         /// </summary>
         protected internal void RemoveAllAutomaticallyMessageListeners()
         {
-            OnAutomaticallyCallSyntaxInfoProcessHandler<int, MessageCallSyntaxInfo>(m_messageCallInfosForType, RemoveMessageListener);
+            OnAutomaticallyCallSyntaxInfoProcessHandler<int, MessageCallSyntaxInfo>(_messageCallInfosForType, RemoveMessageListener);
         }
 
         /// <summary>
@@ -836,10 +836,10 @@ namespace GameEngine
         /// </summary>
         public virtual void RemoveAllMessageListeners()
         {
-            IList<int> id_keys = NovaEngine.Utility.Collection.ToListForKeys<int, IDictionary<string, MessageCallSyntaxInfo>>(m_messageCallInfosForType);
+            IList<int> id_keys = NovaEngine.Utility.Collection.ToListForKeys<int, IDictionary<string, MessageCallSyntaxInfo>>(_messageCallInfosForType);
             for (int n = 0; null != id_keys && n < id_keys.Count; ++n) { RemoveMessageListener(id_keys[n]); }
 
-            m_messageCallInfosForType.Clear();
+            _messageCallInfosForType.Clear();
         }
 
         #endregion

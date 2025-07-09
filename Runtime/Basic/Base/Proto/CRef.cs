@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -31,35 +31,35 @@ namespace GameEngine
     /// <summary>
     /// 引用对象抽象类，对场景中的引用对象上下文进行封装及调度管理
     /// </summary>
-    public abstract partial class CRef : CBase, IEventDispatch, IMessageDispatch
+    public abstract partial class CRef : CBase
     {
         /// <summary>
         /// 对象内部订阅事件的标识管理容器
         /// </summary>
-        private IList<int> m_eventIds;
+        private IList<int> _eventIds;
         /// <summary>
         /// 对象内部订阅事件的类型管理容器
         /// </summary>
-        private IList<SystemType> m_eventTypes;
+        private IList<SystemType> _eventTypes;
 
         /// <summary>
         /// 对象内部订阅事件的监听回调的映射容器列表
         /// </summary>
-        private IDictionary<int, IDictionary<string, EventCallSyntaxInfo>> m_eventCallInfosForId;
+        private IDictionary<int, IDictionary<string, EventCallSyntaxInfo>> _eventCallInfosForId;
         /// <summary>
         /// 对象内部订阅事件的监听回调的映射容器列表
         /// </summary>
-        private IDictionary<SystemType, IDictionary<string, EventCallSyntaxInfo>> m_eventCallInfosForType;
+        private IDictionary<SystemType, IDictionary<string, EventCallSyntaxInfo>> _eventCallInfosForType;
 
         /// <summary>
         /// 对象内部监听消息的协议码管理容器
         /// </summary>
-        private IList<int> m_messageTypes;
+        private IList<int> _messageTypes;
 
         /// <summary>
         /// 对象内部消息通知的监听回调的映射容器列表
         /// </summary>
-        private IDictionary<int, IDictionary<string, MessageCallSyntaxInfo>> m_messageCallInfosForType;
+        private IDictionary<int, IDictionary<string, MessageCallSyntaxInfo>> _messageCallInfosForType;
 
         /// <summary>
         /// 对象内部定时任务的会话管理容器
@@ -74,17 +74,17 @@ namespace GameEngine
             base.Initialize();
 
             // 事件标识容器初始化
-            m_eventIds = new List<int>();
+            _eventIds = new List<int>();
             // 事件类型容器初始化
-            m_eventTypes = new List<SystemType>();
+            _eventTypes = new List<SystemType>();
             // 事件监听回调映射容器初始化
-            m_eventCallInfosForId = new Dictionary<int, IDictionary<string, EventCallSyntaxInfo>>();
-            m_eventCallInfosForType = new Dictionary<SystemType, IDictionary<string, EventCallSyntaxInfo>>();
+            _eventCallInfosForId = new Dictionary<int, IDictionary<string, EventCallSyntaxInfo>>();
+            _eventCallInfosForType = new Dictionary<SystemType, IDictionary<string, EventCallSyntaxInfo>>();
 
             // 消息协议码容器初始化
-            m_messageTypes = new List<int>();
+            _messageTypes = new List<int>();
             // 消息监听回调映射容器初始化
-            m_messageCallInfosForType = new Dictionary<int, IDictionary<string, MessageCallSyntaxInfo>>();
+            _messageCallInfosForType = new Dictionary<int, IDictionary<string, MessageCallSyntaxInfo>>();
 
             // 任务会话容器初始化
             m_schedules = new List<int>();
@@ -103,13 +103,13 @@ namespace GameEngine
             base.Cleanup();
 
             // 移除所有订阅事件
-            Debugger.Assert(m_eventIds.Count == 0 && m_eventTypes.Count == 0);
-            m_eventIds = null;
-            m_eventTypes = null;
+            Debugger.Assert(_eventIds.Count == 0 && _eventTypes.Count == 0);
+            _eventIds = null;
+            _eventTypes = null;
 
             // 移除所有消息通知
-            Debugger.Assert(m_messageTypes.Count == 0);
-            m_messageTypes = null;
+            Debugger.Assert(_messageTypes.Count == 0);
+            _messageTypes = null;
         }
 
         #region 引用对象事件订阅相关操作函数合集
@@ -187,7 +187,7 @@ namespace GameEngine
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
         public override sealed bool Subscribe(int eventID)
         {
-            if (m_eventIds.Contains(eventID))
+            if (_eventIds.Contains(eventID))
             {
                 // Debugger.Warn("The 'CRef' instance event '{0}' was already subscribed, repeat do it failed.", eventID);
                 return true;
@@ -199,7 +199,7 @@ namespace GameEngine
                 return false;
             }
 
-            m_eventIds.Add(eventID);
+            _eventIds.Add(eventID);
 
             return true;
         }
@@ -211,7 +211,7 @@ namespace GameEngine
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
         public override sealed bool Subscribe(SystemType eventType)
         {
-            if (m_eventTypes.Contains(eventType))
+            if (_eventTypes.Contains(eventType))
             {
                 // Debugger.Warn("The 'CRef' instance's event '{0}' was already subscribed, repeat do it failed.", eventType.FullName);
                 return true;
@@ -223,7 +223,7 @@ namespace GameEngine
                 return false;
             }
 
-            m_eventTypes.Add(eventType);
+            _eventTypes.Add(eventType);
 
             return true;
         }
@@ -234,14 +234,14 @@ namespace GameEngine
         /// <param name="eventID">事件标识</param>
         public override sealed void Unsubscribe(int eventID)
         {
-            if (false == m_eventIds.Contains(eventID))
+            if (false == _eventIds.Contains(eventID))
             {
                 // Debugger.Warn("Could not found any event '{0}' for target 'CRef' instance with on subscribed, do unsubscribe failed.", eventID);
                 return;
             }
 
             EventController.Instance.Unsubscribe(eventID, this);
-            m_eventIds.Remove(eventID);
+            _eventIds.Remove(eventID);
 
             base.Unsubscribe(eventID);
         }
@@ -252,14 +252,14 @@ namespace GameEngine
         /// <param name="eventType">事件类型</param>
         public override sealed void Unsubscribe(SystemType eventType)
         {
-            if (false == m_eventTypes.Contains(eventType))
+            if (false == _eventTypes.Contains(eventType))
             {
                 // Debugger.Warn("Could not found any event '{0}' for target 'CRef' instance with on subscribed, do unsubscribe failed.", eventType.FullName);
                 return;
             }
 
             EventController.Instance.Unsubscribe(eventType, this);
-            m_eventTypes.Remove(eventType);
+            _eventTypes.Remove(eventType);
 
             base.Unsubscribe(eventType);
         }
@@ -273,8 +273,8 @@ namespace GameEngine
 
             EventController.Instance.UnsubscribeAll(this);
 
-            m_eventIds.Clear();
-            m_eventTypes.Clear();
+            _eventIds.Clear();
+            _eventTypes.Clear();
         }
 
         #endregion
@@ -312,7 +312,7 @@ namespace GameEngine
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
         public override sealed bool AddMessageListener(int opcode)
         {
-            if (m_messageTypes.Contains(opcode))
+            if (_messageTypes.Contains(opcode))
             {
                 // Debugger.Warn("The 'CRef' instance's message type '{0}' was already exist, repeat added it failed.", opcode);
                 return true;
@@ -324,7 +324,7 @@ namespace GameEngine
                 return false;
             }
 
-            m_messageTypes.Add(opcode);
+            _messageTypes.Add(opcode);
 
             return true;
         }
@@ -335,14 +335,14 @@ namespace GameEngine
         /// <param name="opcode">协议操作码</param>
         public override sealed void RemoveMessageListener(int opcode)
         {
-            if (false == m_messageTypes.Contains(opcode))
+            if (false == _messageTypes.Contains(opcode))
             {
                 // Debugger.Warn("Could not found any message type '{0}' for target 'CRef' instance with on listened, do removed it failed.", opcode);
                 return;
             }
 
             NetworkHandler.Instance.RemoveMessageDispatchListener(opcode, this);
-            m_messageTypes.Remove(opcode);
+            _messageTypes.Remove(opcode);
 
             base.RemoveMessageListener(opcode);
         }
@@ -356,7 +356,7 @@ namespace GameEngine
 
             NetworkHandler.Instance.RemoveAllMessageDispatchListeners(this);
 
-            m_messageTypes.Clear();
+            _messageTypes.Clear();
         }
 
         #endregion

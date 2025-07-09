@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -32,20 +32,20 @@ namespace GameEngine
         /// <summary>
         /// 实体对象的标识
         /// </summary>
-        private long m_beanId;
+        private long _beanId;
         /// <summary>
         /// 实体对象的名称
         /// </summary>
-        private string m_beanName;
+        private string _beanName;
 
         /// <summary>
         /// 获取或设置实体对象的标识
         /// </summary>
-        public long BeanId { get { return m_beanId; } internal set { m_beanId = value; } }
+        public long BeanId { get { return _beanId; } internal set { _beanId = value; } }
         /// <summary>
         /// 获取或设置实体对象的名称
         /// </summary>
-        public string BeanName { get { return m_beanName; } internal set { m_beanName = value; } }
+        public string BeanName { get { return _beanName; } internal set { _beanName = value; } }
 
         /// <summary>
         /// 对象初始化函数接口
@@ -63,7 +63,7 @@ namespace GameEngine
         /// <returns>返回对象实例的Bean名称</returns>
         public string GetBeanNameOrDefault()
         {
-            if (null == m_beanName)
+            if (null == _beanName)
             {
                 Loader.Symboling.SymClass symClass = Loader.CodeLoader.GetSymClassByType(GetType());
                 Debugger.Assert(null != symClass, "Could not found any symbol class with type '{0}'.", NovaEngine.Utility.Text.ToString(GetType()));
@@ -71,7 +71,7 @@ namespace GameEngine
                 return symClass.DefaultBeanName;
             }
 
-            return m_beanName;
+            return _beanName;
         }
     }
 }
