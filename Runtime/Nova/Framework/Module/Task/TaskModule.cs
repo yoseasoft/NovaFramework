@@ -41,16 +41,16 @@ namespace NovaEngine
         /// <summary>
         /// 执行中状态下的任务对象管理列表
         /// </summary>
-        private IList<ITask> m_executionTasks = null;
+        private IList<ITask> _executionTasks = null;
         /// <summary>
         /// 已完成状态下的任务对象管理列表
         /// </summary>
-        private IList<ITask> m_completedTasks = null;
+        private IList<ITask> _completedTasks = null;
 
         /// <summary>
         /// 接口回调执行队列
         /// </summary>
-        private Queue<System.Action> m_executionActions = null;
+        private Queue<System.Action> _executionActions = null;
 
         /// <summary>
         /// 任务模块事件类型
@@ -62,10 +62,10 @@ namespace NovaEngine
         /// </summary>
         protected override void OnInitialize()
         {
-            m_executionTasks = new List<ITask>();
-            m_completedTasks = new List<ITask>();
+            _executionTasks = new List<ITask>();
+            _completedTasks = new List<ITask>();
 
-            m_executionActions = new Queue<System.Action>();
+            _executionActions = new Queue<System.Action>();
         }
 
         /// <summary>
@@ -73,13 +73,13 @@ namespace NovaEngine
         /// </summary>
         protected override void OnCleanup()
         {
-            m_executionTasks.Clear();
-            m_executionTasks = null;
-            m_completedTasks.Clear();
-            m_completedTasks = null;
+            _executionTasks.Clear();
+            _executionTasks = null;
+            _completedTasks.Clear();
+            _completedTasks = null;
 
-            m_executionActions.Clear();
-            m_executionActions = null;
+            _executionActions.Clear();
+            _executionActions = null;
         }
 
         /// <summary>
@@ -108,11 +108,11 @@ namespace NovaEngine
         /// </summary>
         protected override void OnUpdate()
         {
-            if (m_executionTasks.Count > 0)
+            if (_executionTasks.Count > 0)
             {
-                for (int n = 0; n < m_executionTasks.Count; ++n)
+                for (int n = 0; n < _executionTasks.Count; ++n)
                 {
-                    ITask task = m_executionTasks[n];
+                    ITask task = _executionTasks[n];
                     task.Execute();
                 }
             }
@@ -123,28 +123,28 @@ namespace NovaEngine
         /// </summary>
         protected override void OnLateUpdate()
         {
-            if (m_executionTasks.Count > 0)
+            if (_executionTasks.Count > 0)
             {
-                for (int n = 0; n < m_executionTasks.Count; ++n)
+                for (int n = 0; n < _executionTasks.Count; ++n)
                 {
-                    ITask task = m_executionTasks[n];
+                    ITask task = _executionTasks[n];
                     task.LateExecute();
 
                     // 任务完成
                     if (task.IsCompleted())
                     {
-                        m_completedTasks.Add(task);
+                        _completedTasks.Add(task);
                     }
                 }
 
-                if (m_completedTasks.Count > 0)
+                if (_completedTasks.Count > 0)
                 {
-                    for (int n = 0; n < m_completedTasks.Count; ++n)
+                    for (int n = 0; n < _completedTasks.Count; ++n)
                     {
-                        RemoveTask(m_completedTasks[n]);
+                        RemoveTask(_completedTasks[n]);
                     }
 
-                    m_completedTasks.Clear();
+                    _completedTasks.Clear();
                 }
             }
         }
@@ -155,9 +155,9 @@ namespace NovaEngine
         /// <param name="task">目标任务实例</param>
         public void AddTask(ITask task)
         {
-            for (int n = 0; n < m_executionTasks.Count; ++n)
+            for (int n = 0; n < _executionTasks.Count; ++n)
             {
-                ITask e = m_executionTasks[n];
+                ITask e = _executionTasks[n];
                 if (e.UniqueCode() == task.UniqueCode())
                 {
                     Logger.Warn("添加更新处理单元到任务管理器失败，目标{0}执行单元已存在！", e.UniqueCode());
@@ -165,7 +165,7 @@ namespace NovaEngine
                 }
             }
 
-            m_executionTasks.Add(task);
+            _executionTasks.Add(task);
         }
 
         /// <summary>
@@ -174,12 +174,12 @@ namespace NovaEngine
         /// <param name="task">目标任务实例</param>
         public void RemoveTask(ITask task)
         {
-            for (int n = 0; n < m_executionTasks.Count; ++n)
+            for (int n = 0; n < _executionTasks.Count; ++n)
             {
-                ITask e = m_executionTasks[n];
+                ITask e = _executionTasks[n];
                 if (e.UniqueCode() == task.UniqueCode())
                 {
-                    m_executionTasks.RemoveAt(n);
+                    _executionTasks.RemoveAt(n);
                     return;
                 }
             }

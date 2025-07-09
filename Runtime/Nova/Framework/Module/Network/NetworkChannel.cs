@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,42 +37,42 @@ namespace NovaEngine
         /// <summary>
         /// 网络通道唯一标识
         /// </summary>
-        protected int m_channelID = 0;
+        protected int _channelID = 0;
 
         /// <summary>
         /// 网络通道名称
         /// </summary>
-        protected string m_channelName = null;
+        protected string _channelName = null;
 
         /// <summary>
         /// 网络通道地址
         /// </summary>
-        protected string m_url = null;
+        protected string _url = null;
 
         /// <summary>
         /// 网络通道错误码记录
         /// </summary>
-        protected int m_errorCode = 0;
+        protected int _errorCode = 0;
 
         /// <summary>
         /// 网络通道关闭状态标识
         /// </summary>
-        protected bool m_isClosed = false;
+        protected bool _isClosed = false;
 
         /// <summary>
         /// 网络通道相关服务引用实例
         /// </summary>
-        protected NetworkService m_service = null;
+        protected NetworkService _service = null;
 
         /// <summary>
         /// 网络连接回调通知代理接口
         /// </summary>
-        protected System.Action<NetworkChannel> m_connectionCallback;
+        protected System.Action<NetworkChannel> _connectionCallback;
 
         /// <summary>
         /// 网络断开连接回调通知代理接口
         /// </summary>
-        protected System.Action<NetworkChannel> m_disconnectionCallback;
+        protected System.Action<NetworkChannel> _disconnectionCallback;
 
         /// <summary>
         /// 网络错误回调通知代理接口
@@ -82,19 +82,19 @@ namespace NovaEngine
         /// <summary>
         /// 网络数据读入操作回调接口代理接口
         /// </summary>
-        protected System.Action<SystemMemoryStream, int> m_readCallback;
+        protected System.Action<SystemMemoryStream, int> _readCallback;
 
         /// <summary>
         /// 网络数据写入操作失败回调接口代理接口
         /// </summary>
-        protected System.Action<SystemMemoryStream, int> m_writeFailedCallback;
+        protected System.Action<SystemMemoryStream, int> _writeFailedCallback;
 
         /// <summary>
         /// 获取网络通道唯一标识
         /// </summary>
         public int ChannelID
         {
-            get { return m_channelID; }
+            get { return _channelID; }
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace NovaEngine
         /// </summary>
         public string ChannelName
         {
-            get { return m_channelName; }
+            get { return _channelName; }
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace NovaEngine
         /// </summary>
         public string Url
         {
-            get { return m_url; }
+            get { return _url; }
         }
 
         /// <summary>
@@ -118,8 +118,8 @@ namespace NovaEngine
         /// </summary>
         public int ErrorCode
         {
-            get { return m_errorCode; }
-            set { m_errorCode = value; }
+            get { return _errorCode; }
+            set { _errorCode = value; }
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace NovaEngine
         /// </summary>
         public bool IsClosed
         {
-            get { return m_isClosed; }
+            get { return _isClosed; }
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace NovaEngine
         /// </summary>
         public NetworkService Service
         {
-            get { return m_service; }
+            get { return _service; }
         }
 
         /// <summary>
@@ -151,8 +151,8 @@ namespace NovaEngine
         /// </summary>
         public event System.Action<NetworkChannel> ConnectionCallback
         {
-            add { m_connectionCallback += value; }
-            remove { m_connectionCallback -= value; }
+            add { _connectionCallback += value; }
+            remove { _connectionCallback -= value; }
         }
 
         /// <summary>
@@ -160,8 +160,8 @@ namespace NovaEngine
         /// </summary>
         public event System.Action<NetworkChannel> DisconnectionCallback
         {
-            add { m_disconnectionCallback += value; }
-            remove { m_disconnectionCallback -= value; }
+            add { _disconnectionCallback += value; }
+            remove { _disconnectionCallback -= value; }
         }
 
         /// <summary>
@@ -178,8 +178,8 @@ namespace NovaEngine
         /// </summary>
         public event System.Action<SystemMemoryStream, int> ReadCallback
         {
-            add { m_readCallback += value; }
-            remove { m_readCallback -= value; }
+            add { _readCallback += value; }
+            remove { _readCallback -= value; }
         }
 
         /// <summary>
@@ -187,8 +187,8 @@ namespace NovaEngine
         /// </summary>
         public event System.Action<SystemMemoryStream, int> WriteFailedCallback
         {
-            add { m_writeFailedCallback += value; }
-            remove { m_writeFailedCallback -= value; }
+            add { _writeFailedCallback += value; }
+            remove { _writeFailedCallback -= value; }
         }
 
         /// <summary>
@@ -201,22 +201,22 @@ namespace NovaEngine
         {
             Logger.Assert(null != service);
 
-            this.m_channelID = Session.NextSessionID((int) ModuleObject.EEventType.Network);
-            this.m_channelName = name;
-            this.m_url = url;
+            this._channelID = Session.NextSessionID((int) ModuleObject.EEventType.Network);
+            this._channelName = name;
+            this._url = url;
 
-            this.m_service = service;
+            this._service = service;
         }
 
         ~NetworkChannel()
         {
-            this.m_channelID = 0;
-            this.m_channelName = null;
-            this.m_url = null;
-            this.m_errorCode = 0;
-            this.m_isClosed = false;
+            this._channelID = 0;
+            this._channelName = null;
+            this._url = null;
+            this._errorCode = 0;
+            this._isClosed = false;
 
-            this.m_service = null;
+            this._service = null;
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace NovaEngine
         /// <param name="e">网络错误码</param>
         protected void OnError(int e)
         {
-            this.m_errorCode = e;
+            this._errorCode = e;
             this.m_errorCallback?.Invoke(this, e);
         }
 
@@ -241,12 +241,12 @@ namespace NovaEngine
         /// </summary>
         public void Close()
         {
-            if (this.m_isClosed)
+            if (this._isClosed)
             {
                 return;
             }
 
-            this.m_isClosed = true;
+            this._isClosed = true;
 
             this.OnClose();
         }
@@ -263,10 +263,10 @@ namespace NovaEngine
         /// <param name="url">通道连接目标地址</param>
         public void Connect(string name, string url)
         {
-            Logger.Assert(string.IsNullOrEmpty(m_channelName) && string.IsNullOrEmpty(m_url), "The name or url was already assigned value.");
+            Logger.Assert(string.IsNullOrEmpty(_channelName) && string.IsNullOrEmpty(_url), "The name or url was already assigned value.");
 
-            m_channelName = name;
-            m_url = url;
+            _channelName = name;
+            _url = url;
 
             Connect();
         }

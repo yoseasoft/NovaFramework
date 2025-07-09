@@ -1,10 +1,10 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,7 @@ namespace NovaEngine
         /// <summary>
         /// UnityGameObject和实例化对象的对照表
         /// </summary>
-        private IDictionary<UnityEngine.GameObject, AssetModule.InstantiateObject> m_gameObjectInstantiateMapping = new Dictionary<UnityEngine.GameObject, AssetModule.InstantiateObject>();
+        private IDictionary<UnityEngine.GameObject, AssetModule.InstantiateObject> _gameObjectInstantiateMapping = new Dictionary<UnityEngine.GameObject, AssetModule.InstantiateObject>();
 
         /// <summary>
         /// 同步实例化对象
@@ -55,7 +55,7 @@ namespace NovaEngine
             UnityGameObject gameObject = instantiateObject.gameObject;
             if (null != gameObject)
             {
-                m_gameObjectInstantiateMapping.Add(gameObject, instantiateObject);
+                _gameObjectInstantiateMapping.Add(gameObject, instantiateObject);
             }
             return gameObject;
         }
@@ -73,7 +73,7 @@ namespace NovaEngine
                 UnityGameObject gameObject = insObject.gameObject;
                 if (null != gameObject)
                 {
-                    m_gameObjectInstantiateMapping.Add(gameObject, insObject);
+                    _gameObjectInstantiateMapping.Add(gameObject, insObject);
                 }
                 completed?.Invoke(gameObject);
             };
@@ -102,9 +102,9 @@ namespace NovaEngine
         /// <param name="gameObject">对象模型组件实例</param>
         public void DestroyObject(UnityGameObject gameObject)
         {
-            if (m_gameObjectInstantiateMapping.TryGetValue(gameObject, out var instantiateObject))
+            if (_gameObjectInstantiateMapping.TryGetValue(gameObject, out var instantiateObject))
             {
-                m_gameObjectInstantiateMapping.Remove(gameObject);
+                _gameObjectInstantiateMapping.Remove(gameObject);
                 instantiateObject.Destroy();
             }
             else

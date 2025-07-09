@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,15 +39,15 @@ namespace NovaEngine
         {
             private const int CACHED_BLOCK_SIZE = 1024 * 4;
 
-            private static SystemIntPtr s_cachedHGlobalPtr = SystemIntPtr.Zero;
-            private static int s_cachedHGlobalSize = 0;
+            private static SystemIntPtr _cachedHGlobalPtr = SystemIntPtr.Zero;
+            private static int _cachedHGlobalSize = 0;
 
             /// <summary>
             /// 获取缓存的指向从进程的非托管内存中分配的内存的指针
             /// </summary>
             internal static SystemIntPtr CachedHGlobalPtr
             {
-                get { return s_cachedHGlobalPtr; }
+                get { return _cachedHGlobalPtr; }
             }
 
             /// <summary>
@@ -55,7 +55,7 @@ namespace NovaEngine
             /// </summary>
             public static int CachedHGlobalSize
             {
-                get { return s_cachedHGlobalSize; }
+                get { return _cachedHGlobalSize; }
             }
 
             /// <summary>
@@ -69,12 +69,12 @@ namespace NovaEngine
                     throw new CFrameworkException("Ensure size is invalid.");
                 }
 
-                if (s_cachedHGlobalPtr == SystemIntPtr.Zero || s_cachedHGlobalSize < ensureSize)
+                if (_cachedHGlobalPtr == SystemIntPtr.Zero || _cachedHGlobalSize < ensureSize)
                 {
                     FreeCachedHGlobal();
                     int size = (ensureSize - 1 + CACHED_BLOCK_SIZE) / CACHED_BLOCK_SIZE * CACHED_BLOCK_SIZE;
-                    s_cachedHGlobalPtr = System.Runtime.InteropServices.Marshal.AllocHGlobal(size);
-                    s_cachedHGlobalSize = size;
+                    _cachedHGlobalPtr = System.Runtime.InteropServices.Marshal.AllocHGlobal(size);
+                    _cachedHGlobalSize = size;
                 }
             }
 
@@ -83,11 +83,11 @@ namespace NovaEngine
             /// </summary>
             public static void FreeCachedHGlobal()
             {
-                if (s_cachedHGlobalPtr != SystemIntPtr.Zero)
+                if (_cachedHGlobalPtr != SystemIntPtr.Zero)
                 {
-                    System.Runtime.InteropServices.Marshal.FreeHGlobal(s_cachedHGlobalPtr);
-                    s_cachedHGlobalPtr = SystemIntPtr.Zero;
-                    s_cachedHGlobalSize = 0;
+                    System.Runtime.InteropServices.Marshal.FreeHGlobal(_cachedHGlobalPtr);
+                    _cachedHGlobalPtr = SystemIntPtr.Zero;
+                    _cachedHGlobalSize = 0;
                 }
             }
 
@@ -117,9 +117,9 @@ namespace NovaEngine
                 }
 
                 EnsureCachedHGlobalSize(structureSize);
-                System.Runtime.InteropServices.Marshal.StructureToPtr(structure, s_cachedHGlobalPtr, true);
+                System.Runtime.InteropServices.Marshal.StructureToPtr(structure, _cachedHGlobalPtr, true);
                 byte[] result = new byte[structureSize];
-                System.Runtime.InteropServices.Marshal.Copy(s_cachedHGlobalPtr, result, 0, structureSize);
+                System.Runtime.InteropServices.Marshal.Copy(_cachedHGlobalPtr, result, 0, structureSize);
                 return result;
             }
 
@@ -189,8 +189,8 @@ namespace NovaEngine
                 }
 
                 EnsureCachedHGlobalSize(structureSize);
-                System.Runtime.InteropServices.Marshal.StructureToPtr(structure, s_cachedHGlobalPtr, true);
-                System.Runtime.InteropServices.Marshal.Copy(s_cachedHGlobalPtr, result, startIndex, structureSize);
+                System.Runtime.InteropServices.Marshal.StructureToPtr(structure, _cachedHGlobalPtr, true);
+                System.Runtime.InteropServices.Marshal.Copy(_cachedHGlobalPtr, result, startIndex, structureSize);
             }
 
             /// <summary>
@@ -259,8 +259,8 @@ namespace NovaEngine
                 }
 
                 EnsureCachedHGlobalSize(structureSize);
-                System.Runtime.InteropServices.Marshal.Copy(buffer, startIndex, s_cachedHGlobalPtr, structureSize);
-                return (T) System.Runtime.InteropServices.Marshal.PtrToStructure(s_cachedHGlobalPtr, typeof(T));
+                System.Runtime.InteropServices.Marshal.Copy(buffer, startIndex, _cachedHGlobalPtr, structureSize);
+                return (T) System.Runtime.InteropServices.Marshal.PtrToStructure(_cachedHGlobalPtr, typeof(T));
             }
         }
     }

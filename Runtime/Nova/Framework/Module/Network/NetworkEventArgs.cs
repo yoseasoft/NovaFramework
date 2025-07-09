@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,17 +39,17 @@ namespace NovaEngine
         /// <summary>
         /// 网络基础指令协议类型
         /// </summary>
-        private int m_type;
+        private int _type;
 
         /// <summary>
         /// 网络通道标识
         /// </summary>
-        private int m_channelID = 0;
+        private int _channelID = 0;
 
         /// <summary>
         /// 网络数据实体
         /// </summary>
-        private object m_data = null;
+        private object _data = null;
 
         /// <summary>
         /// 网络事件参数对象的新实例构建接口
@@ -60,20 +60,20 @@ namespace NovaEngine
 
         public int Type
         {
-            get { return m_type; }
-            set { m_type = value; }
+            get { return _type; }
+            set { _type = value; }
         }
 
         public int ChannelID
         {
-            get { return m_channelID; }
-            set { m_channelID = value; }
+            get { return _channelID; }
+            set { _channelID = value; }
         }
 
         public object Data
         {
-            get { return m_data; }
-            set { m_data = value; }
+            get { return _data; }
+            set { _data = value; }
         }
 
         /// <summary>
@@ -81,9 +81,9 @@ namespace NovaEngine
         /// </summary>
         public override void Initialize()
         {
-            m_type = 0;
-            m_channelID = 0;
-            m_data = null;
+            _type = 0;
+            _channelID = 0;
+            _data = null;
         }
 
         /// <summary>
@@ -91,9 +91,9 @@ namespace NovaEngine
         /// </summary>
         public override void Cleanup()
         {
-            m_type = 0;
-            m_channelID = 0;
-            m_data = null;
+            _type = 0;
+            _channelID = 0;
+            _data = null;
         }
 
         /// <summary>

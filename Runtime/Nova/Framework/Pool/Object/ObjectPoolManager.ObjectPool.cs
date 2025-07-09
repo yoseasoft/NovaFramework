@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -42,17 +42,17 @@ namespace NovaEngine.ObjectPool
         /// <typeparam name="T"></typeparam>
         private sealed class ObjectPool<T> : ObjectPoolBase, IObjectPool<T> where T : ObjectBase
         {
-            private readonly MultiDictionary<string, Object<T>> m_objects;
-            private readonly Dictionary<object, Object<T>> m_objectMap;
-            private readonly ReleaseObjectFilterCallback<T> m_defaultReleaseObjectFilterCallback;
-            private readonly IList<T> m_cachedCanReleaseObjects;
-            private readonly IList<T> m_cachedToReleaseObjects;
-            private readonly bool m_allowMultiSpawn;
-            private float m_autoReleaseInterval;
-            private int m_capacity;
-            private float m_expireTime;
-            private int m_priority;
-            private float m_autoReleaseTime;
+            private readonly MultiDictionary<string, Object<T>> _objects;
+            private readonly Dictionary<object, Object<T>> _objectMap;
+            private readonly ReleaseObjectFilterCallback<T> _defaultReleaseObjectFilterCallback;
+            private readonly IList<T> _cachedCanReleaseObjects;
+            private readonly IList<T> _cachedToReleaseObjects;
+            private readonly bool _allowMultiSpawn;
+            private float _autoReleaseInterval;
+            private int   _capacity;
+            private float _expireTime;
+            private int   _priority;
+            private float _autoReleaseTime;
 
             /// <summary>
             /// 获取对象池中的对象类型
@@ -67,7 +67,7 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             public override int Count
             {
-                get { return m_objectMap.Count; }
+                get { return _objectMap.Count; }
             }
 
             /// <summary>
@@ -77,8 +77,8 @@ namespace NovaEngine.ObjectPool
             {
                 get
                 {
-                    GetCanReleaseObjects(m_cachedCanReleaseObjects);
-                    return m_cachedCanReleaseObjects.Count;
+                    GetCanReleaseObjects(_cachedCanReleaseObjects);
+                    return _cachedCanReleaseObjects.Count;
                 }
             }
 
@@ -87,7 +87,7 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             public override bool AllowMultiSpawn
             {
-                get { return m_allowMultiSpawn; }
+                get { return _allowMultiSpawn; }
             }
 
             /// <summary>
@@ -95,8 +95,8 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             public override float AutoReleaseInterval
             {
-                get { return m_autoReleaseInterval; }
-                set { m_autoReleaseInterval = value; }
+                get { return _autoReleaseInterval; }
+                set { _autoReleaseInterval = value; }
             }
 
             /// <summary>
@@ -104,7 +104,7 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             public override int Capacity
             {
-                get { return m_capacity; }
+                get { return _capacity; }
                 set
                 {
                     if (value < 0)
@@ -112,12 +112,12 @@ namespace NovaEngine.ObjectPool
                         throw new CFrameworkException("Capacity is invalid.");
                     }
 
-                    if (m_capacity == value)
+                    if (_capacity == value)
                     {
                         return;
                     }
 
-                    m_capacity = value;
+                    _capacity = value;
                     Release();
                 }
             }
@@ -127,7 +127,7 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             public override float ExpireTime
             {
-                get { return m_expireTime; }
+                get { return _expireTime; }
                 set
                 {
                     if (value < 0f)
@@ -135,12 +135,12 @@ namespace NovaEngine.ObjectPool
                         throw new CFrameworkException("ExpireTime is invalid.");
                     }
 
-                    if (m_expireTime == value)
+                    if (_expireTime == value)
                     {
                         return;
                     }
 
-                    m_expireTime = value;
+                    _expireTime = value;
                     Release();
                 }
             }
@@ -150,24 +150,24 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             public override int Priority
             {
-                get { return m_priority; }
-                set { m_priority = value; }
+                get { return _priority; }
+                set { _priority = value; }
             }
 
             public ObjectPool(string name, bool allowMultiSpawn, float autoReleaseInterval, int capacity, float expireTime, int priority)
                 : base(name)
             {
-                m_objects = new MultiDictionary<string, Object<T>>();
-                m_objectMap = new Dictionary<object, Object<T>>();
-                m_defaultReleaseObjectFilterCallback = DefaultReleaseObjectFilterCallback;
-                m_cachedCanReleaseObjects = new List<T>();
-                m_cachedToReleaseObjects = new List<T>();
-                m_allowMultiSpawn = allowMultiSpawn;
-                m_autoReleaseInterval = autoReleaseInterval;
+                _objects = new MultiDictionary<string, Object<T>>();
+                _objectMap = new Dictionary<object, Object<T>>();
+                _defaultReleaseObjectFilterCallback = DefaultReleaseObjectFilterCallback;
+                _cachedCanReleaseObjects = new List<T>();
+                _cachedToReleaseObjects = new List<T>();
+                _allowMultiSpawn = allowMultiSpawn;
+                _autoReleaseInterval = autoReleaseInterval;
                 Capacity = capacity;
                 ExpireTime = expireTime;
-                m_priority = priority;
-                m_autoReleaseTime = 0f;
+                _priority = priority;
+                _autoReleaseTime = 0f;
             }
 
             /// <summary>
@@ -183,10 +183,10 @@ namespace NovaEngine.ObjectPool
                 }
 
                 Object<T> internalObject = Object<T>.Create(obj, spawned);
-                m_objects.Add(obj.Name, internalObject);
-                m_objectMap.Add(obj.Target, internalObject);
+                _objects.Add(obj.Name, internalObject);
+                _objectMap.Add(obj.Target, internalObject);
 
-                if (Count > m_capacity)
+                if (Count > _capacity)
                 {
                     Release();
                 }
@@ -214,12 +214,12 @@ namespace NovaEngine.ObjectPool
                 }
 
                 DoubleLinkedList<Object<T>> objectRange = default(DoubleLinkedList<Object<T>>);
-                if (m_objects.TryGetValue(name, out objectRange))
+                if (_objects.TryGetValue(name, out objectRange))
                 {
                     foreach (Object<T> internalObject in objectRange)
                     {
                         // 允许多次分配或对象实例尚未被使用
-                        if (m_allowMultiSpawn || false == internalObject.IsOnUsed)
+                        if (_allowMultiSpawn || false == internalObject.IsOnUsed)
                         {
                             return true;
                         }
@@ -251,12 +251,12 @@ namespace NovaEngine.ObjectPool
                 }
 
                 DoubleLinkedList<Object<T>> objectRange = default(DoubleLinkedList<Object<T>>);
-                if (m_objects.TryGetValue(name, out objectRange))
+                if (_objects.TryGetValue(name, out objectRange))
                 {
                     foreach (Object<T> internalObject in objectRange)
                     {
                         // 允许多次分配或对象实例尚未被使用
-                        if (m_allowMultiSpawn || false == internalObject.IsOnUsed)
+                        if (_allowMultiSpawn || false == internalObject.IsOnUsed)
                         {
                             return internalObject.Spawn();
                         }
@@ -295,7 +295,7 @@ namespace NovaEngine.ObjectPool
                 if (null != internalObject)
                 {
                     internalObject.Unspawn();
-                    if (Count > m_capacity && internalObject.SpawnCount <= 0)
+                    if (Count > _capacity && internalObject.SpawnCount <= 0)
                     {
                         Release();
                     }
@@ -423,8 +423,8 @@ namespace NovaEngine.ObjectPool
                     return false;
                 }
 
-                m_objects.Remove(internalObject.Name, internalObject);
-                m_objectMap.Remove(internalObject.Peek().Target);
+                _objects.Remove(internalObject.Name, internalObject);
+                _objectMap.Remove(internalObject.Peek().Target);
 
                 internalObject.Release(false);
                 ReferencePool.Release(internalObject);
@@ -437,7 +437,7 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             public override void Release()
             {
-                Release(Count - m_capacity, m_defaultReleaseObjectFilterCallback);
+                Release(Count - _capacity, _defaultReleaseObjectFilterCallback);
             }
 
             /// <summary>
@@ -447,7 +447,7 @@ namespace NovaEngine.ObjectPool
             /// <param name="releaseCount">尝试释放的对象数量</param>
             public override void Release(int releaseCount)
             {
-                Release(releaseCount, m_defaultReleaseObjectFilterCallback);
+                Release(releaseCount, _defaultReleaseObjectFilterCallback);
             }
 
             /// <summary>
@@ -456,7 +456,7 @@ namespace NovaEngine.ObjectPool
             /// <param name="callback">释放对象筛选函数</param>
             public void Release(ReleaseObjectFilterCallback<T> callback)
             {
-                Release(Count - m_capacity, callback);
+                Release(Count - _capacity, callback);
             }
 
             /// <summary>
@@ -477,14 +477,14 @@ namespace NovaEngine.ObjectPool
                 }
 
                 SystemDateTime expireTime = SystemDateTime.MinValue;
-                if (m_expireTime < float.MaxValue)
+                if (_expireTime < float.MaxValue)
                 {
-                    expireTime = SystemDateTime.UtcNow.AddSeconds(-m_expireTime);
+                    expireTime = SystemDateTime.UtcNow.AddSeconds(-_expireTime);
                 }
 
-                m_autoReleaseTime = 0f;
-                GetCanReleaseObjects(m_cachedCanReleaseObjects);
-                IList<T> toReleaseObjects = callback(m_cachedCanReleaseObjects, releaseCount, expireTime);
+                _autoReleaseTime = 0f;
+                GetCanReleaseObjects(_cachedCanReleaseObjects);
+                IList<T> toReleaseObjects = callback(_cachedCanReleaseObjects, releaseCount, expireTime);
                 if (null == toReleaseObjects || toReleaseObjects.Count <= 0)
                 {
                     return;
@@ -501,9 +501,9 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             public override void ReleaseAllUnused()
             {
-                m_autoReleaseTime = 0f;
-                GetCanReleaseObjects(m_cachedCanReleaseObjects);
-                foreach (T toReleaseObject in m_cachedCanReleaseObjects)
+                _autoReleaseTime = 0f;
+                GetCanReleaseObjects(_cachedCanReleaseObjects);
+                foreach (T toReleaseObject in _cachedCanReleaseObjects)
                 {
                     ReleaseObject(toReleaseObject);
                 }
@@ -511,8 +511,8 @@ namespace NovaEngine.ObjectPool
 
             internal override void Update(float elapseSeconds, float realElapseSeconds)
             {
-                m_autoReleaseTime += realElapseSeconds;
-                if (m_autoReleaseTime < m_autoReleaseInterval)
+                _autoReleaseTime += realElapseSeconds;
+                if (_autoReleaseTime < _autoReleaseInterval)
                 {
                     return;
                 }
@@ -522,16 +522,16 @@ namespace NovaEngine.ObjectPool
 
             internal override void Shutdown()
             {
-                foreach (KeyValuePair<object, Object<T>> objectInMap in m_objectMap)
+                foreach (KeyValuePair<object, Object<T>> objectInMap in _objectMap)
                 {
                     objectInMap.Value.Release(true);
                     ReferencePool.Release(objectInMap.Value);
                 }
 
-                m_objects.Clear();
-                m_objectMap.Clear();
-                m_cachedCanReleaseObjects.Clear();
-                m_cachedToReleaseObjects.Clear();
+                _objects.Clear();
+                _objectMap.Clear();
+                _cachedCanReleaseObjects.Clear();
+                _cachedToReleaseObjects.Clear();
             }
 
             /// <summary>
@@ -541,7 +541,7 @@ namespace NovaEngine.ObjectPool
             public override ObjectInfo[] GetAllObjectInfos()
             {
                 List<ObjectInfo> results = new List<ObjectInfo>();
-                foreach (KeyValuePair<string, DoubleLinkedList<Object<T>>> objectRanges in m_objects)
+                foreach (KeyValuePair<string, DoubleLinkedList<Object<T>>> objectRanges in _objects)
                 {
                     foreach (Object<T> internalObject in objectRanges.Value)
                     {
@@ -570,7 +570,7 @@ namespace NovaEngine.ObjectPool
                 }
 
                 Object<T> internalObject = null;
-                if (m_objectMap.TryGetValue(target, out internalObject))
+                if (_objectMap.TryGetValue(target, out internalObject))
                 {
                     return internalObject;
                 }
@@ -590,7 +590,7 @@ namespace NovaEngine.ObjectPool
                 }
 
                 results.Clear();
-                foreach (KeyValuePair<object, Object<T>> objectInMap in m_objectMap)
+                foreach (KeyValuePair<object, Object<T>> objectInMap in _objectMap)
                 {
                     Object<T> internalObject = objectInMap.Value;
                     if (internalObject.IsOnUsed || internalObject.Locked || false == internalObject.Releasabled)
@@ -604,7 +604,7 @@ namespace NovaEngine.ObjectPool
 
             private IList<T> DefaultReleaseObjectFilterCallback(IList<T> candidateObjects, int releaseCount, SystemDateTime expireTime)
             {
-                m_cachedToReleaseObjects.Clear();
+                _cachedToReleaseObjects.Clear();
 
                 if (expireTime > SystemDateTime.MinValue)
                 {
@@ -612,13 +612,13 @@ namespace NovaEngine.ObjectPool
                     {
                         if (candidateObjects[n].LastUseTime <= expireTime)
                         {
-                            m_cachedToReleaseObjects.Add(candidateObjects[n]);
+                            _cachedToReleaseObjects.Add(candidateObjects[n]);
                             candidateObjects.RemoveAt(n);
                             continue;
                         }
                     }
 
-                    releaseCount -= m_cachedToReleaseObjects.Count;
+                    releaseCount -= _cachedToReleaseObjects.Count;
                 }
 
                 for (int n = 0; releaseCount > 0 && n < candidateObjects.Count; ++n)
@@ -635,11 +635,11 @@ namespace NovaEngine.ObjectPool
                         }
                     }
 
-                    m_cachedToReleaseObjects.Add(candidateObjects[n]);
+                    _cachedToReleaseObjects.Add(candidateObjects[n]);
                     releaseCount--;
                 }
 
-                return m_cachedToReleaseObjects;
+                return _cachedToReleaseObjects;
             }
         }
     }

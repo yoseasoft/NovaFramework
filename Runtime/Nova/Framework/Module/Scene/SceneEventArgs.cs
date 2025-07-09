@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,23 +39,23 @@ namespace NovaEngine
         /// <summary>
         /// 场景协议类型
         /// </summary>
-        private int m_protocol = 0;
+        private int _protocol = 0;
 
         /// <summary>
         /// 场景数据实体
         /// </summary>
-        private object m_data = null;
+        private object _data = null;
 
         public int Protocol
         {
-            get { return m_protocol; }
-            set { m_protocol = value; }
+            get { return _protocol; }
+            set { _protocol = value; }
         }
 
         public object Data
         {
-            get { return m_data; }
-            set { m_data = value; }
+            get { return _data; }
+            set { _data = value; }
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace NovaEngine
         /// </summary>
         public override void Initialize()
         {
-            m_data = null;
+            _data = null;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace NovaEngine
         /// </summary>
         public override void Cleanup()
         {
-            m_data = null;
+            _data = null;
         }
 
         /// <summary>

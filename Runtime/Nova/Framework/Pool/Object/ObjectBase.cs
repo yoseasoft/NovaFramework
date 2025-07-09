@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,30 +37,30 @@ namespace NovaEngine.ObjectPool
         /// <summary>
         /// 对象的名称
         /// </summary>
-        private string m_name;
+        private string _name;
         /// <summary>
         /// 对象的引用实例
         /// </summary>
-        private object m_target;
+        private object _target;
         /// <summary>
         /// 对象加锁的状态标识
         /// </summary>
-        private bool m_locked;
+        private bool _locked;
         /// <summary>
         /// 对象的优先级
         /// </summary>
-        private int m_priority;
+        private int _priority;
         /// <summary>
         /// 对象最后使用的时间
         /// </summary>
-        private SystemDateTime m_lastUseTime;
+        private SystemDateTime _lastUseTime;
 
         /// <summary>
         /// 获取对象的名称
         /// </summary>
         public string Name
         {
-            get { return m_name; }
+            get { return _name; }
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         public object Target
         {
-            get { return m_target; }
+            get { return _target; }
         }
 
         /// <summary>
@@ -76,8 +76,8 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         public bool Locked
         {
-            get { return m_locked; }
-            set { m_locked = value; }
+            get { return _locked; }
+            set { _locked = value; }
         }
 
         /// <summary>
@@ -85,8 +85,8 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         public int Priority
         {
-            get { return m_priority; }
-            set { m_priority = value; }
+            get { return _priority; }
+            set { _priority = value; }
         }
 
         /// <summary>
@@ -94,8 +94,8 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         public SystemDateTime LastUseTime
         {
-            get { return m_lastUseTime; }
-            set { m_lastUseTime = value; }
+            get { return _lastUseTime; }
+            set { _lastUseTime = value; }
         }
 
         /// <summary>
@@ -108,11 +108,11 @@ namespace NovaEngine.ObjectPool
 
         public ObjectBase()
         {
-            m_name = null;
-            m_target = null;
-            m_locked = false;
-            m_priority = 0;
-            m_lastUseTime = default(SystemDateTime);
+            _name = null;
+            _target = null;
+            _locked = false;
+            _priority = 0;
+            _lastUseTime = default(SystemDateTime);
         }
 
         /// <summary>
@@ -177,11 +177,11 @@ namespace NovaEngine.ObjectPool
                 throw new CFrameworkException("Target '{0}' is invalid.", name);
             }
 
-            m_name = name ?? string.Empty;
-            m_target = target;
-            m_locked = locked;
-            m_priority = priority;
-            m_lastUseTime = SystemDateTime.UtcNow;
+            _name = name ?? string.Empty;
+            _target = target;
+            _locked = locked;
+            _priority = priority;
+            _lastUseTime = SystemDateTime.UtcNow;
         }
 
         /// <summary>
@@ -189,11 +189,11 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         public virtual void Cleanup()
         {
-            m_name = null;
-            m_target = null;
-            m_locked = false;
-            m_priority = 0;
-            m_lastUseTime = default(SystemDateTime);
+            _name = null;
+            _target = null;
+            _locked = false;
+            _priority = 0;
+            _lastUseTime = default(SystemDateTime);
         }
 
         /// <summary>

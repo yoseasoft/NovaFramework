@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,7 @@ namespace NovaEngine
     /// </summary>
     public sealed class HttpChannel : NetworkChannel
     {
-        private readonly SystemMemoryStream m_memoryStream = null;
+        private readonly SystemMemoryStream _memoryStream = null;
 
         /// <summary>
         /// HTTP网络通道对象的新实例构建接口
@@ -53,7 +53,7 @@ namespace NovaEngine
         /// <param name="service">服务对象实例</param>
         public HttpChannel(string name, string url, HttpService service) : base(name, url, service)
         {
-            this.m_memoryStream = service.MemoryStreamManager.GetStream(name, ushort.MaxValue);
+            this._memoryStream = service.MemoryStreamManager.GetStream(name, ushort.MaxValue);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace NovaEngine
         /// </summary>
         protected override void OnClose()
         {
-            this.m_memoryStream.Dispose();
+            this._memoryStream.Dispose();
 
             base.OnClose();
         }
@@ -105,12 +105,12 @@ namespace NovaEngine
         {
             yield return new UnityWaitForEndOfFrame();
 
-            this.m_connectionCallback?.Invoke(this);
+            this._connectionCallback?.Invoke(this);
         }
 
         private SystemIEnumerator __DoPostRequest(byte[] body)
         {
-            UnityWebRequest webRequest = new UnityWebRequest(this.m_url, "POST");
+            UnityWebRequest webRequest = new UnityWebRequest(this._url, "POST");
             webRequest.certificateHandler = new Network.AcceptAllCertificatesHandler();// 必须验证, 具体原因可进入Network.AcceptAllCertificatesHandler查看
             webRequest.uploadHandler = new UnityUploadHandlerRaw(body);
             webRequest.downloadHandler = new UnityDownloadHandlerBuffer();
@@ -120,23 +120,23 @@ namespace NovaEngine
             if (UnityWebRequest.Result.ProtocolError == webRequest.result || UnityWebRequest.Result.ConnectionError == webRequest.result)
             {
                 Logger.Error(webRequest.error);
-                this.m_memoryStream.Seek(0, SystemSeekOrigin.Begin);
-                this.m_memoryStream.SetLength(body.Length);
-                SystemArray.Copy(body, 0, this.m_memoryStream.GetBuffer(), 0, body.Length);
-                m_writeFailedCallback?.Invoke(this.m_memoryStream, MessageStreamCode.String);
+                this._memoryStream.Seek(0, SystemSeekOrigin.Begin);
+                this._memoryStream.SetLength(body.Length);
+                SystemArray.Copy(body, 0, this._memoryStream.GetBuffer(), 0, body.Length);
+                _writeFailedCallback?.Invoke(this._memoryStream, MessageStreamCode.String);
             }
             else
             {
                 long size = (long) webRequest.downloadedBytes;
                 // Logger.Debug(webRequest.downloadHandler.text);
-                this.m_memoryStream.Seek(0, SystemSeekOrigin.Begin);
-                this.m_memoryStream.SetLength(size);
-                SystemArray.Copy(webRequest.downloadHandler.data, 0, this.m_memoryStream.GetBuffer(), 0, size);
+                this._memoryStream.Seek(0, SystemSeekOrigin.Begin);
+                this._memoryStream.SetLength(size);
+                SystemArray.Copy(webRequest.downloadHandler.data, 0, this._memoryStream.GetBuffer(), 0, size);
 
                 try
                 {
                     // 协议码为空
-                    this.m_readCallback.Invoke(this.m_memoryStream, MessageStreamCode.String);
+                    this._readCallback.Invoke(this._memoryStream, MessageStreamCode.String);
                 }
                 catch (SystemException e)
                 {

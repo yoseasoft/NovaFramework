@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,14 +37,14 @@ namespace NovaEngine.ObjectPool
         /// <summary>
         /// 对象池的名称
         /// </summary>
-        private readonly string m_name;
+        private readonly string _name;
 
         /// <summary>
         /// 获取对象池的名称
         /// </summary>
         public string Name
         {
-            get { return m_name; }
+            get { return _name; }
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         public string FullName
         {
-            get { return new TypeNamePair(ObjectType, m_name).ToString(); }
+            get { return new TypeNamePair(ObjectType, _name).ToString(); }
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="name">对象池名称</param>
         public ObjectPoolBase(string name)
         {
-            m_name = name ?? string.Empty;
+            _name = name ?? string.Empty;
         }
 
         /// <summary>

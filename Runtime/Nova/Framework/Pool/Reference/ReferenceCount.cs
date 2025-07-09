@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -33,26 +33,26 @@ namespace NovaEngine
         /// <summary>
         /// 初始引用计数值
         /// </summary>
-        private int m_count = 0;
+        private int _count = 0;
 
-        private readonly object m_locked = new object();
+        private readonly object _locked = new object();
 
         /// <summary>
         /// 获取对象实例当前引用计数值
         /// </summary>
-        public int Count => m_count;
+        public int Count => _count;
 
         /// <summary>
         /// 检测对象实例当前是否被引用
         /// </summary>
-        public bool IsUnused => (m_count == 0);
+        public bool IsUnused => (_count == 0);
 
         /// <summary>
         /// 增加对象实例的引用计数值
         /// </summary>
         public void Increase()
         {
-            ++m_count;
+            ++_count;
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace NovaEngine
         /// </summary>
         public void Decrease()
         {
-            --m_count;
+            --_count;
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace NovaEngine
         /// </summary>
         public void Reset()
         {
-            m_count = 0;
+            _count = 0;
         }
     }
 }

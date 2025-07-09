@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -33,13 +33,13 @@ namespace NovaEngine
     /// <typeparam name="T">事件类型</typeparam>
     internal sealed partial class EventPool<T> where T : EventArgs
     {
-        private readonly MultiDictionary<int, System.EventHandler<T>> m_eventHandlers;
-        private readonly Queue<Event> m_events;
-        private readonly Dictionary<object, LinkedListNode<System.EventHandler<T>>> m_cachedNodes;
-        private readonly Dictionary<object, LinkedListNode<System.EventHandler<T>>> m_tempNodes;
-        private readonly AllowHandlerType m_mode;
+        private readonly MultiDictionary<int, System.EventHandler<T>> _eventHandlers;
+        private readonly Queue<Event> _events;
+        private readonly Dictionary<object, LinkedListNode<System.EventHandler<T>>> _cachedNodes;
+        private readonly Dictionary<object, LinkedListNode<System.EventHandler<T>>> _tempNodes;
+        private readonly AllowHandlerType _mode;
 
-        private System.EventHandler<T> m_defaultHandler;
+        private System.EventHandler<T> _defaultHandler;
 
         /// <summary>
         /// 事件对象缓冲池的新实例构建接口
@@ -47,12 +47,12 @@ namespace NovaEngine
         /// <param name="mode">事件池模式</param>
         public EventPool(AllowHandlerType mode)
         {
-            m_eventHandlers = new MultiDictionary<int, System.EventHandler<T>>();
-            m_events = new Queue<Event>();
-            m_cachedNodes = new Dictionary<object, LinkedListNode<System.EventHandler<T>>>();
-            m_tempNodes = new Dictionary<object, LinkedListNode<System.EventHandler<T>>>();
-            m_mode = mode;
-            m_defaultHandler = null;
+            _eventHandlers = new MultiDictionary<int, System.EventHandler<T>>();
+            _events = new Queue<Event>();
+            _cachedNodes = new Dictionary<object, LinkedListNode<System.EventHandler<T>>>();
+            _tempNodes = new Dictionary<object, LinkedListNode<System.EventHandler<T>>>();
+            _mode = mode;
+            _defaultHandler = null;
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace NovaEngine
         /// </summary>
         public int EventHandlerCount
         {
-            get { return m_eventHandlers.Count; }
+            get { return _eventHandlers.Count; }
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace NovaEngine
         /// </summary>
         public int EventCount
         {
-            get { return m_events.Count; }
+            get { return _events.Count; }
         }
 
         /// <summary>
@@ -85,10 +85,10 @@ namespace NovaEngine
         {
             Clear();
 
-            m_eventHandlers.Clear();
-            m_cachedNodes.Clear();
-            m_tempNodes.Clear();
-            m_defaultHandler = null;
+            _eventHandlers.Clear();
+            _cachedNodes.Clear();
+            _tempNodes.Clear();
+            _defaultHandler = null;
         }
 
         /// <summary>
@@ -96,12 +96,12 @@ namespace NovaEngine
         /// </summary>
         public void Update()
         {
-            while (m_events.Count > 0)
+            while (_events.Count > 0)
             {
                 Event eventNode = null;
-                lock (m_events)
+                lock (_events)
                 {
-                    eventNode = m_events.Dequeue();
+                    eventNode = _events.Dequeue();
                     HandleEvent(eventNode.Sender, eventNode.EventArgs);
                 }
 
@@ -114,9 +114,9 @@ namespace NovaEngine
         /// </summary>
         public void Clear()
         {
-            lock (m_events)
+            lock (_events)
             {
-                m_events.Clear();
+                _events.Clear();
             }
         }
 
@@ -128,7 +128,7 @@ namespace NovaEngine
         public int Count(int id)
         {
             DoubleLinkedList<System.EventHandler<T>> range = default(DoubleLinkedList<System.EventHandler<T>>);
-            if (m_eventHandlers.TryGetValue(id, out range))
+            if (_eventHandlers.TryGetValue(id, out range))
             {
                 return range.Count;
             }
@@ -149,7 +149,7 @@ namespace NovaEngine
                 throw new CFrameworkException("Event handler is invalid.");
             }
 
-            return m_eventHandlers.Contains(id, handler);
+            return _eventHandlers.Contains(id, handler);
         }
 
         /// <summary>
@@ -164,21 +164,21 @@ namespace NovaEngine
                 throw new CFrameworkException("Event handler is invalid.");
             }
 
-            if (false == m_eventHandlers.Contains(id))
+            if (false == _eventHandlers.Contains(id))
             {
-                m_eventHandlers.Add(id, handler);
+                _eventHandlers.Add(id, handler);
             }
-            else if ((m_mode & AllowHandlerType.AllowMultiHandler) != AllowHandlerType.AllowMultiHandler)
+            else if ((_mode & AllowHandlerType.AllowMultiHandler) != AllowHandlerType.AllowMultiHandler)
             {
                 throw new CFrameworkException("Event '{0}' not allow multi handler.", id.ToString());
             }
-            else if ((m_mode & AllowHandlerType.AllowDuplicateHandler) != AllowHandlerType.AllowDuplicateHandler)
+            else if ((_mode & AllowHandlerType.AllowDuplicateHandler) != AllowHandlerType.AllowDuplicateHandler)
             {
                 throw new CFrameworkException("Event '{0}' not allow duplicate handler.", id.ToString());
             }
             else
             {
-                m_eventHandlers.Add(id, handler);
+                _eventHandlers.Add(id, handler);
             }
         }
 
@@ -194,28 +194,28 @@ namespace NovaEngine
                 throw new CFrameworkException("Event handler is invalid.");
             }
 
-            if (m_cachedNodes.Count > 0)
+            if (_cachedNodes.Count > 0)
             {
-                foreach (KeyValuePair<object, LinkedListNode<System.EventHandler<T>>> cachedNode in m_cachedNodes)
+                foreach (KeyValuePair<object, LinkedListNode<System.EventHandler<T>>> cachedNode in _cachedNodes)
                 {
                     if (cachedNode.Value != null && cachedNode.Value.Value == handler)
                     {
-                        m_tempNodes.Add(cachedNode.Key, cachedNode.Value.Next);
+                        _tempNodes.Add(cachedNode.Key, cachedNode.Value.Next);
                     }
                 }
 
-                if (m_tempNodes.Count > 0)
+                if (_tempNodes.Count > 0)
                 {
-                    foreach (KeyValuePair<object, LinkedListNode<System.EventHandler<T>>> cachedNode in m_tempNodes)
+                    foreach (KeyValuePair<object, LinkedListNode<System.EventHandler<T>>> cachedNode in _tempNodes)
                     {
-                        m_cachedNodes[cachedNode.Key] = cachedNode.Value;
+                        _cachedNodes[cachedNode.Key] = cachedNode.Value;
                     }
 
-                    m_tempNodes.Clear();
+                    _tempNodes.Clear();
                 }
             }
 
-            if (false == m_eventHandlers.Remove(id, handler))
+            if (false == _eventHandlers.Remove(id, handler))
             {
                 throw new CFrameworkException("Event '{0}' not exists specified handler.", id.ToString());
             }
@@ -227,7 +227,7 @@ namespace NovaEngine
         /// <param name="handler">待设置的事件处理函数</param>
         public void SetDefaultHandler(System.EventHandler<T> handler)
         {
-            m_defaultHandler = handler;
+            _defaultHandler = handler;
         }
 
         /// <summary>
@@ -243,9 +243,9 @@ namespace NovaEngine
             }
 
             Event eventNode = Event.Create(sender, e);
-            lock (m_events)
+            lock (_events)
             {
-                m_events.Enqueue(eventNode);
+                _events.Enqueue(eventNode);
             }
         }
 
@@ -273,23 +273,23 @@ namespace NovaEngine
         {
             bool noHandlerException = false;
             DoubleLinkedList<System.EventHandler<T>> range = default(DoubleLinkedList<System.EventHandler<T>>);
-            if (m_eventHandlers.TryGetValue(e.ID, out range))
+            if (_eventHandlers.TryGetValue(e.ID, out range))
             {
                 LinkedListNode<System.EventHandler<T>> current = range.First;
                 while (current != null && current != range.Terminal)
                 {
-                    m_cachedNodes[e] = current.Next != range.Terminal ? current.Next : null;
+                    _cachedNodes[e] = current.Next != range.Terminal ? current.Next : null;
                     current.Value(sender, e);
-                    current = m_cachedNodes[e];
+                    current = _cachedNodes[e];
                 }
 
-                m_cachedNodes.Remove(e);
+                _cachedNodes.Remove(e);
             }
-            else if (null != m_defaultHandler)
+            else if (null != _defaultHandler)
             {
-                m_defaultHandler(sender, e);
+                _defaultHandler(sender, e);
             }
-            else if ((m_mode & AllowHandlerType.AllowNoHandler) == 0)
+            else if ((_mode & AllowHandlerType.AllowNoHandler) == 0)
             {
                 noHandlerException = true;
             }

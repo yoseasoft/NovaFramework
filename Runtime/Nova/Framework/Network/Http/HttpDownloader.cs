@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -56,14 +56,14 @@ namespace NovaEngine.Network
         /// <summary>
         /// 当前HTTP对象下所有下载操作的运行状态标识
         /// </summary>
-        private static bool s_isDownloadRunning = false;
+        private static bool _isDownloadRunning = false;
 
         /// <summary>
         /// HTTP服务当前所有下载行为停止操作接口
         /// </summary>
         public static void StopDownload()
         {
-            s_isDownloadRunning = false;
+            _isDownloadRunning = false;
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace NovaEngine.Network
             OnHttpDownloadHandler progress, OnHttpDownloadHandler succeed, OnHttpDownloadHandler failed)
         {
             // 默认启动下载运行状态
-            s_isDownloadRunning = true;
+            _isDownloadRunning = true;
 
             SystemFileStream fstream = null;
             SystemStream respStream = null;
@@ -139,7 +139,7 @@ namespace NovaEngine.Network
                 int length = respStream.Read(buffer, 0, bufferLength);
                 while (length > 0)
                 {
-                    if (false == s_isDownloadRunning) { break; }
+                    if (false == _isDownloadRunning) { break; }
 
                     fstream.Write(buffer, 0, length);
                     fileLength += length;

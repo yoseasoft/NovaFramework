@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,23 +39,23 @@ namespace NovaEngine.ObjectPool
         private const float DefaultExpireTime = float.MaxValue;
         private const int DefaultPriority = 0;
 
-        private readonly IDictionary<TypeNamePair, ObjectPoolBase> m_objectPools;
-        private readonly IList<ObjectPoolBase> m_cachedAllObjectPools;
-        private readonly System.Comparison<ObjectPoolBase> m_objectPoolComparer;
+        private readonly IDictionary<TypeNamePair, ObjectPoolBase> _objectPools;
+        private readonly IList<ObjectPoolBase> _cachedAllObjectPools;
+        private readonly System.Comparison<ObjectPoolBase> _objectPoolComparer;
 
         /// <summary>
         /// 获取对象池的数量
         /// </summary>
         public int Count
         {
-            get { return m_objectPools.Count; }
+            get { return _objectPools.Count; }
         }
 
         public ObjectPoolManager()
         {
-            m_objectPools = new Dictionary<TypeNamePair, ObjectPoolBase>();
-            m_cachedAllObjectPools = new List<ObjectPoolBase>();
-            m_objectPoolComparer = ObjectPoolComparer;
+            _objectPools = new Dictionary<TypeNamePair, ObjectPoolBase>();
+            _cachedAllObjectPools = new List<ObjectPoolBase>();
+            _objectPoolComparer = ObjectPoolComparer;
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace NovaEngine.ObjectPool
                 throw new CFrameworkException("Condition is invalid.");
             }
 
-            foreach (KeyValuePair<TypeNamePair, ObjectPoolBase> objectPool in m_objectPools)
+            foreach (KeyValuePair<TypeNamePair, ObjectPoolBase> objectPool in _objectPools)
             {
                 if (condition(objectPool.Value))
                 {
@@ -217,7 +217,7 @@ namespace NovaEngine.ObjectPool
                 throw new CFrameworkException("Condition is invalid.");
             }
 
-            foreach (KeyValuePair<TypeNamePair, ObjectPoolBase> objectPool in m_objectPools)
+            foreach (KeyValuePair<TypeNamePair, ObjectPoolBase> objectPool in _objectPools)
             {
                 if (condition(objectPool.Value))
                 {
@@ -241,7 +241,7 @@ namespace NovaEngine.ObjectPool
             }
 
             List<ObjectPoolBase> results = new List<ObjectPoolBase>();
-            foreach (KeyValuePair<TypeNamePair, ObjectPoolBase> objectPool in m_objectPools)
+            foreach (KeyValuePair<TypeNamePair, ObjectPoolBase> objectPool in _objectPools)
             {
                 if (condition(objectPool.Value))
                 {
@@ -270,7 +270,7 @@ namespace NovaEngine.ObjectPool
             }
 
             results.Clear();
-            foreach (KeyValuePair<TypeNamePair, ObjectPoolBase> objectPool in m_objectPools)
+            foreach (KeyValuePair<TypeNamePair, ObjectPoolBase> objectPool in _objectPools)
             {
                 if (condition(objectPool.Value))
                 {
@@ -307,19 +307,19 @@ namespace NovaEngine.ObjectPool
             if (sort)
             {
                 List<ObjectPoolBase> results = new List<ObjectPoolBase>();
-                foreach (KeyValuePair<TypeNamePair, ObjectPoolBase> objectPool in m_objectPools)
+                foreach (KeyValuePair<TypeNamePair, ObjectPoolBase> objectPool in _objectPools)
                 {
                     results.Add(objectPool.Value);
                 }
 
-                results.Sort(m_objectPoolComparer);
+                results.Sort(_objectPoolComparer);
                 return results.ToArray();
             }
             else
             {
                 int index = 0;
-                ObjectPoolBase[] results = new ObjectPoolBase[m_objectPools.Count];
-                foreach (KeyValuePair<TypeNamePair, ObjectPoolBase> objectPool in m_objectPools)
+                ObjectPoolBase[] results = new ObjectPoolBase[_objectPools.Count];
+                foreach (KeyValuePair<TypeNamePair, ObjectPoolBase> objectPool in _objectPools)
                 {
                     results[index++] = objectPool.Value;
                 }
@@ -341,14 +341,14 @@ namespace NovaEngine.ObjectPool
             }
 
             results.Clear();
-            foreach (KeyValuePair<TypeNamePair, ObjectPoolBase> objectPool in m_objectPools)
+            foreach (KeyValuePair<TypeNamePair, ObjectPoolBase> objectPool in _objectPools)
             {
                 results.Add(objectPool.Value);
             }
 
             if (sort)
             {
-                results.Sort(m_objectPoolComparer);
+                results.Sort(_objectPoolComparer);
             }
         }
 
@@ -1186,8 +1186,8 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         public void Release()
         {
-            GetAllObjectPools(true, (List<ObjectPoolBase>) m_cachedAllObjectPools);
-            foreach (ObjectPoolBase objectPool in m_cachedAllObjectPools)
+            GetAllObjectPools(true, (List<ObjectPoolBase>) _cachedAllObjectPools);
+            foreach (ObjectPoolBase objectPool in _cachedAllObjectPools)
             {
                 objectPool.Release();
             }
@@ -1198,8 +1198,8 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         public void ReleaseAllUnused()
         {
-            GetAllObjectPools(true, (List<ObjectPoolBase>) m_cachedAllObjectPools);
-            foreach (ObjectPoolBase objectPool in m_cachedAllObjectPools)
+            GetAllObjectPools(true, (List<ObjectPoolBase>) _cachedAllObjectPools);
+            foreach (ObjectPoolBase objectPool in _cachedAllObjectPools)
             {
                 objectPool.ReleaseAllUnused();
             }
@@ -1207,13 +1207,13 @@ namespace NovaEngine.ObjectPool
 
         private bool InternalHasObjectPool(TypeNamePair typeNamePair)
         {
-            return m_objectPools.ContainsKey(typeNamePair);
+            return _objectPools.ContainsKey(typeNamePair);
         }
 
         private ObjectPoolBase InternalGetObjectPool(TypeNamePair typeNamePair)
         {
             ObjectPoolBase objectPool = null;
-            if (m_objectPools.TryGetValue(typeNamePair, out objectPool))
+            if (_objectPools.TryGetValue(typeNamePair, out objectPool))
             {
                 return objectPool;
             }
@@ -1230,7 +1230,7 @@ namespace NovaEngine.ObjectPool
             }
 
             ObjectPool<T> objectPool = new ObjectPool<T>(name, allowMultiSpawn, autoReleaseInterval, capacity, expireTime, priority);
-            m_objectPools.Add(typeNamePair, objectPool);
+            _objectPools.Add(typeNamePair, objectPool);
             return objectPool;
         }
 
@@ -1254,17 +1254,17 @@ namespace NovaEngine.ObjectPool
 
             SystemType objectPoolType = typeof(ObjectPool<>).MakeGenericType(objectType);
             ObjectPoolBase objectPool = (ObjectPoolBase) System.Activator.CreateInstance(objectPoolType, name, allowMultiSpawn, autoReleaseInterval, capacity, expireTime, priority);
-            m_objectPools.Add(typeNamePair, objectPool);
+            _objectPools.Add(typeNamePair, objectPool);
             return objectPool;
         }
 
         private bool InternalDestroyObjectPool(TypeNamePair typeNamePair)
         {
             ObjectPoolBase objectPool = null;
-            if (m_objectPools.TryGetValue(typeNamePair, out objectPool))
+            if (_objectPools.TryGetValue(typeNamePair, out objectPool))
             {
                 objectPool.Shutdown();
-                return m_objectPools.Remove(typeNamePair);
+                return _objectPools.Remove(typeNamePair);
             }
 
             return false;

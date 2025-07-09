@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -33,20 +33,20 @@ namespace NovaEngine
     /// <typeparam name="T">任务类型</typeparam>
     internal sealed partial class TaskPool<T> where T : TaskArgs
     {
-        private readonly Stack<ITaskAgent<T>> m_freeAgents;
-        private readonly CacheLinkedList<ITaskAgent<T>> m_workingAgents;
-        private readonly CacheLinkedList<T> m_waitingTasks;
-        private bool m_isPaused;
+        private readonly Stack<ITaskAgent<T>> _freeAgents;
+        private readonly CacheLinkedList<ITaskAgent<T>> _workingAgents;
+        private readonly CacheLinkedList<T> _waitingTasks;
+        private bool _isPaused;
 
         /// <summary>
         /// 任务缓冲池的新实例构建接口
         /// </summary>
         public TaskPool()
         {
-            m_freeAgents = new Stack<ITaskAgent<T>>();
-            m_workingAgents = new CacheLinkedList<ITaskAgent<T>>();
-            m_waitingTasks = new CacheLinkedList<T>();
-            m_isPaused = false;
+            _freeAgents = new Stack<ITaskAgent<T>>();
+            _workingAgents = new CacheLinkedList<ITaskAgent<T>>();
+            _waitingTasks = new CacheLinkedList<T>();
+            _isPaused = false;
         }
 
         /// <summary>
@@ -54,8 +54,8 @@ namespace NovaEngine
         /// </summary>
         public bool Paused
         {
-            get { return m_isPaused; }
-            set { m_isPaused = value; }
+            get { return _isPaused; }
+            set { _isPaused = value; }
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace NovaEngine
         /// </summary>
         public int FreeAgentCount
         {
-            get { return m_freeAgents.Count; }
+            get { return _freeAgents.Count; }
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace NovaEngine
         /// </summary>
         public int WorkingAgentCount
         {
-            get { return m_workingAgents.Count; }
+            get { return _workingAgents.Count; }
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace NovaEngine
         /// </summary>
         public int WaitingTaskCount
         {
-            get { return m_waitingTasks.Count; }
+            get { return _waitingTasks.Count; }
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace NovaEngine
         /// </summary>
         public void Update()
         {
-            if (m_isPaused)
+            if (_isPaused)
             {
                 return;
             }
@@ -116,7 +116,7 @@ namespace NovaEngine
             }
 
             agent.Initialize();
-            m_freeAgents.Push(agent);
+            _freeAgents.Push(agent);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace NovaEngine
         /// <param name="task">任务对象实例</param>
         public void AddTask(T task)
         {
-            LinkedListNode<T> current = m_waitingTasks.Last;
+            LinkedListNode<T> current = _waitingTasks.Last;
             while (null != current)
             {
                 if (task.Priority <= current.Value.Priority)
@@ -138,11 +138,11 @@ namespace NovaEngine
 
             if (null != current)
             {
-                m_waitingTasks.AddAfter(current, task);
+                _waitingTasks.AddAfter(current, task);
             }
             else
             {
-                m_waitingTasks.AddFirst(task);
+                _waitingTasks.AddFirst(task);
             }
         }
 
@@ -153,24 +153,24 @@ namespace NovaEngine
         /// <returns>若移除任务成功则返回true，否则返回false</returns>
         public bool RemoveTask(int serialID)
         {
-            foreach (T task in m_waitingTasks)
+            foreach (T task in _waitingTasks)
             {
                 if (task.SerialID == serialID)
                 {
-                    m_waitingTasks.Remove(task);
+                    _waitingTasks.Remove(task);
                     ReferencePool.Release(task);
                     return true;
                 }
             }
 
-            foreach (ITaskAgent<T> workingAgent in m_workingAgents)
+            foreach (ITaskAgent<T> workingAgent in _workingAgents)
             {
                 if (workingAgent.Task.SerialID == serialID)
                 {
                     T task = workingAgent.Task;
                     workingAgent.Reset();
-                    m_freeAgents.Push(workingAgent);
-                    m_workingAgents.Remove(workingAgent);
+                    _freeAgents.Push(workingAgent);
+                    _workingAgents.Remove(workingAgent);
                     ReferencePool.Release(task);
                     return true;
                 }
@@ -184,32 +184,32 @@ namespace NovaEngine
         /// </summary>
         public void RemoveAllTasks()
         {
-            foreach (T task in m_waitingTasks)
+            foreach (T task in _waitingTasks)
             {
                 ReferencePool.Release(task);
             }
-            m_waitingTasks.Clear();
+            _waitingTasks.Clear();
 
-            foreach (ITaskAgent<T> workingAgent in m_workingAgents)
+            foreach (ITaskAgent<T> workingAgent in _workingAgents)
             {
                 T task = workingAgent.Task;
                 workingAgent.Reset();
-                m_freeAgents.Push(workingAgent);
+                _freeAgents.Push(workingAgent);
                 ReferencePool.Release(task);
             }
-            m_workingAgents.Clear();
+            _workingAgents.Clear();
         }
 
         public TaskInfo[] GetAllTaskInfos()
         {
             List<TaskInfo> results = new List<TaskInfo>();
-            foreach (ITaskAgent<T> workingAgent in m_workingAgents)
+            foreach (ITaskAgent<T> workingAgent in _workingAgents)
             {
                 T workingTask = workingAgent.Task;
                 results.Add(new TaskInfo(workingTask.SerialID, workingTask.Priority, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description));
             }
 
-            foreach (T waitingTask in m_waitingTasks)
+            foreach (T waitingTask in _waitingTasks)
             {
                 results.Add(new TaskInfo(waitingTask.SerialID, waitingTask.Priority, TaskStatus.Todo, waitingTask.Description));
             }
@@ -219,7 +219,7 @@ namespace NovaEngine
 
         private void OnRunningTaskProcess()
         {
-            LinkedListNode<ITaskAgent<T>> current = m_workingAgents.First;
+            LinkedListNode<ITaskAgent<T>> current = _workingAgents.First;
             while (null != current)
             {
                 T task = current.Value.Task;
@@ -232,8 +232,8 @@ namespace NovaEngine
 
                 LinkedListNode<ITaskAgent<T>> next = current.Next;
                 current.Value.Reset();
-                m_freeAgents.Push(current.Value);
-                m_workingAgents.Remove(current);
+                _freeAgents.Push(current.Value);
+                _workingAgents.Remove(current);
                 ReferencePool.Release(task);
                 current = next;
             }
@@ -241,24 +241,24 @@ namespace NovaEngine
 
         private void OnWaitingTaskProcess()
         {
-            LinkedListNode<T> current = m_waitingTasks.First;
+            LinkedListNode<T> current = _waitingTasks.First;
             while (null != current && FreeAgentCount > 0)
             {
-                ITaskAgent<T> agent = m_freeAgents.Pop();
-                LinkedListNode<ITaskAgent<T>> agentNode = m_workingAgents.AddLast(agent);
+                ITaskAgent<T> agent = _freeAgents.Pop();
+                LinkedListNode<ITaskAgent<T>> agentNode = _workingAgents.AddLast(agent);
                 T task = current.Value;
                 LinkedListNode<T> next = current.Next;
                 TaskStartupResultType status = agent.Startup(task);
                 if (TaskStartupResultType.Done == status || TaskStartupResultType.OnWait == status || TaskStartupResultType.UnknownError == status)
                 {
                     agent.Reset();
-                    m_freeAgents.Push(agent);
-                    m_workingAgents.Remove(agentNode);
+                    _freeAgents.Push(agent);
+                    _workingAgents.Remove(agentNode);
                 }
 
                 if (TaskStartupResultType.Done == status || TaskStartupResultType.OnResume == status || TaskStartupResultType.UnknownError == status)
                 {
-                    m_waitingTasks.Remove(current);
+                    _waitingTasks.Remove(current);
                 }
 
                 if (TaskStartupResultType.Done == status || TaskStartupResultType.UnknownError == status)

@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,7 @@ namespace NovaEngine
         /// </summary>
         public static class Random
         {
-            private static SystemRandom s_random = new SystemRandom((int) SystemDateTime.Now.Ticks);
+            private static SystemRandom _random = new SystemRandom((int) SystemDateTime.Now.Ticks);
 
             /// <summary>
             /// 设置随机数种子
@@ -45,7 +45,7 @@ namespace NovaEngine
             /// <param name="seed">随机数种子</param>
             public static void SetSeed(int seed)
             {
-                s_random = new SystemRandom(seed);
+                _random = new SystemRandom(seed);
             }
 
             /// <summary>
@@ -54,7 +54,7 @@ namespace NovaEngine
             /// <returns>大于等于零且小于System.Int32.MaxValue的32位带符号整数</returns>
             public static int GetRandom()
             {
-                return s_random.Next();
+                return _random.Next();
             }
 
             /// <summary>
@@ -64,7 +64,7 @@ namespace NovaEngine
             /// <returns>大于等于零且小于maxValue的32位带符号整数，即：返回值的范围通常包括零但不包括maxValue；如果maxValue等于零，则返回maxValue</returns>
             public static int GetRandom(int maxValue)
             {
-                return s_random.Next(maxValue);
+                return _random.Next(maxValue);
             }
 
             /// <summary>
@@ -75,7 +75,7 @@ namespace NovaEngine
             /// <returns>一个大于等于minValue且小于maxValue的32位带符号整数，即：返回的值范围包括minValue但不包括maxValue；如果minValue等于maxValue，则返回minValue</returns>
             public static int GetRandom(int minValue, int maxValue)
             {
-                return s_random.Next(minValue, maxValue);
+                return _random.Next(minValue, maxValue);
             }
 
             /// <summary>
@@ -84,7 +84,7 @@ namespace NovaEngine
             /// <returns>大于等于0.0并且小于1.0的双精度浮点数</returns>
             public static double GetRandomDouble()
             {
-                return s_random.NextDouble();
+                return _random.NextDouble();
             }
 
             /// <summary>
@@ -93,7 +93,7 @@ namespace NovaEngine
             /// <param name="buffer">包含随机数的字节数组</param>
             public static void GetRandomBytes(byte[] buffer)
             {
-                s_random.NextBytes(buffer);
+                _random.NextBytes(buffer);
             }
         }
     }

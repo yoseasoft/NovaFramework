@@ -1,10 +1,10 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ namespace NovaEngine
         /// <summary>
         /// 当前活动任务实例的管理容器
         /// </summary>
-        private IList<TimerInfo> m_activeTaskQueue = null;
+        private IList<TimerInfo> _activeTaskQueue = null;
 
         /// <summary>
         /// 定时器模块事件类型
@@ -57,7 +57,7 @@ namespace NovaEngine
         /// </summary>
         protected override void OnInitialize()
         {
-            m_activeTaskQueue = new List<TimerInfo>();
+            _activeTaskQueue = new List<TimerInfo>();
         }
 
         /// <summary>
@@ -65,8 +65,8 @@ namespace NovaEngine
         /// </summary>
         protected override void OnCleanup()
         {
-            m_activeTaskQueue.Clear();
-            m_activeTaskQueue = null;
+            _activeTaskQueue.Clear();
+            _activeTaskQueue = null;
         }
 
         /// <summary>
@@ -96,11 +96,11 @@ namespace NovaEngine
         protected override void OnUpdate()
         {
             // 检查定时器超时及过期属性
-            if (m_activeTaskQueue.Count > 0)
+            if (_activeTaskQueue.Count > 0)
             {
-                for (int n = 0; n < m_activeTaskQueue.Count; ++n)
+                for (int n = 0; n < _activeTaskQueue.Count; ++n)
                 {
-                    TimerInfo info = m_activeTaskQueue[n];
+                    TimerInfo info = _activeTaskQueue[n];
                     info.Update();
                 }
 
@@ -128,9 +128,9 @@ namespace NovaEngine
                 return false;
             }
 
-            for (int n = 0; n < m_activeTaskQueue.Count; ++n)
+            for (int n = 0; n < _activeTaskQueue.Count; ++n)
             {
-                TimerInfo info = m_activeTaskQueue[n];
+                TimerInfo info = _activeTaskQueue[n];
                 if (null != info.Name && name.Equals(info.Name))
                 {
                     return true;
@@ -156,9 +156,9 @@ namespace NovaEngine
                 return false;
             }
 
-            for (int n = 0; n < m_activeTaskQueue.Count; ++n)
+            for (int n = 0; n < _activeTaskQueue.Count; ++n)
             {
-                TimerInfo _info = m_activeTaskQueue[n];
+                TimerInfo _info = _activeTaskQueue[n];
                 if (null != _info.Name && name.Equals(_info.Name))
                 {
                     info = _info;
@@ -214,7 +214,7 @@ namespace NovaEngine
             info.Counting = loop;
             info.Looper = (SCHEDULE_REPEAT_FOREVER == loop ? true : false);
             info.Initialize();
-            m_activeTaskQueue.Add(info);
+            _activeTaskQueue.Add(info);
 
             return (session, true);
         }
@@ -225,9 +225,9 @@ namespace NovaEngine
         /// <param name="session">会话标识</param>
         public void Unschedule(int session)
         {
-            for (int n = 0; n < m_activeTaskQueue.Count; ++n)
+            for (int n = 0; n < _activeTaskQueue.Count; ++n)
             {
-                TimerInfo info = m_activeTaskQueue[n];
+                TimerInfo info = _activeTaskQueue[n];
                 if (info.Session == session)
                 {
                     info.Expired = true;
@@ -248,9 +248,9 @@ namespace NovaEngine
                 return;
             }
 
-            for (int n = 0; n < m_activeTaskQueue.Count; ++n)
+            for (int n = 0; n < _activeTaskQueue.Count; ++n)
             {
-                TimerInfo info = m_activeTaskQueue[n];
+                TimerInfo info = _activeTaskQueue[n];
                 if (null != info.Name && name.Equals(info.Name))
                 {
                     info.Expired = true;
@@ -264,9 +264,9 @@ namespace NovaEngine
         /// </summary>
         public void UnscheduleAll()
         {
-            for (int n = 0; n < m_activeTaskQueue.Count; ++n)
+            for (int n = 0; n < _activeTaskQueue.Count; ++n)
             {
-                TimerInfo info = m_activeTaskQueue[n];
+                TimerInfo info = _activeTaskQueue[n];
                 info.Expired = true;
             }
         }
@@ -276,14 +276,14 @@ namespace NovaEngine
         /// </summary>
         private void CleanupExpiredTimer()
         {
-            for (int n = m_activeTaskQueue.Count - 1; n >= 0; --n)
+            for (int n = _activeTaskQueue.Count - 1; n >= 0; --n)
             {
-                TimerInfo info = m_activeTaskQueue[n];
+                TimerInfo info = _activeTaskQueue[n];
                 if (info.Expired)
                 {
                     info.Cleanup();
 
-                    m_activeTaskQueue.RemoveAt(n);
+                    _activeTaskQueue.RemoveAt(n);
                 }
             }
         }
@@ -296,14 +296,14 @@ namespace NovaEngine
         /// <param name="session">会话标识</param>
         public void RemoveTimerInfoBySession(int session)
         {
-            for (int n = m_activeTaskQueue.Count - 1; n >= 0; --n)
+            for (int n = _activeTaskQueue.Count - 1; n >= 0; --n)
             {
-                TimerInfo info = m_activeTaskQueue[n];
+                TimerInfo info = _activeTaskQueue[n];
                 if (info.Session == session)
                 {
                     info.Cleanup();
 
-                    m_activeTaskQueue.RemoveAt(n);
+                    _activeTaskQueue.RemoveAt(n);
                 }
             }
         }
@@ -315,9 +315,9 @@ namespace NovaEngine
         /// <returns>返回给定标识对应的任务名称，若不存在指定任务则返回null</returns>
         public string GetTimerNameBySession(int session)
         {
-            for (int n = m_activeTaskQueue.Count - 1; n >= 0; --n)
+            for (int n = _activeTaskQueue.Count - 1; n >= 0; --n)
             {
-                TimerInfo info = m_activeTaskQueue[n];
+                TimerInfo info = _activeTaskQueue[n];
                 if (info.Session == session)
                 {
                     return info.Name;

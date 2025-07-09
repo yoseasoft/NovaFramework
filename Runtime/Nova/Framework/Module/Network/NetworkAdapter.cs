@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -49,12 +49,12 @@ namespace NovaEngine
         /// <summary>
         /// 网络服务对象注册管理容器
         /// </summary>
-        private static readonly IDictionary<int, NetworkService> s_services = new Dictionary<int, NetworkService>();
+        private static readonly IDictionary<int, NetworkService> _services = new Dictionary<int, NetworkService>();
 
         /// <summary>
         /// 网络通道实例管理容器
         /// </summary>
-        private static readonly IDictionary<int, NetworkChannel> s_channels = new Dictionary<int, NetworkChannel>();
+        private static readonly IDictionary<int, NetworkChannel> _channels = new Dictionary<int, NetworkChannel>();
 
         /// <summary>
         /// ASCII字符集编码
@@ -109,7 +109,7 @@ namespace NovaEngine
         /// </summary>
         public static void Update()
         {
-            foreach (KeyValuePair<int, NetworkService> pair in s_services)
+            foreach (KeyValuePair<int, NetworkService> pair in _services)
             {
                 NetworkService service = pair.Value;
                 service.Update();
@@ -125,14 +125,14 @@ namespace NovaEngine
             NetworkService service = new T();
             int type = service.ServiceType;
 
-            if (s_services.ContainsKey(type))
+            if (_services.ContainsKey(type))
             {
                 Logger.Warn("The target service instance '{%d}' was already exists, repeat added it will be override old value.", type);
 
                 RemoveService(type);
             }
 
-            s_services.Add(type, service);
+            _services.Add(type, service);
         }
 
         /// <summary>
@@ -151,14 +151,14 @@ namespace NovaEngine
             NetworkService service = System.Activator.CreateInstance(serviceType) as NetworkService;
             int type = service.ServiceType;
 
-            if (s_services.ContainsKey(type))
+            if (_services.ContainsKey(type))
             {
                 Logger.Warn("The target service instance '{%d}' was already exists, repeat added it will be override old value.", type);
 
                 RemoveService(type);
             }
 
-            s_services.Add(type, service);
+            _services.Add(type, service);
         }
 
         /// <summary>
@@ -167,9 +167,9 @@ namespace NovaEngine
         /// <param name="type">网络类型</param>
         private static void RemoveService(int type)
         {
-            if (s_services.ContainsKey(type))
+            if (_services.ContainsKey(type))
             {
-                s_services.Remove(type);
+                _services.Remove(type);
             }
         }
 
@@ -178,13 +178,13 @@ namespace NovaEngine
         /// </summary>
         private static void RemoveAllServices()
         {
-            int[] keys = Utility.Collection.ToArray(s_services.Keys);
+            int[] keys = Utility.Collection.ToArray(_services.Keys);
             foreach (int key in keys)
             {
                 RemoveService(key);
             }
 
-            s_services.Clear();
+            _services.Clear();
         }
 
         /// <summary>
@@ -194,9 +194,9 @@ namespace NovaEngine
         /// <returns>返回网络服务注册实例</returns>
         public static NetworkService GetService(int type)
         {
-            if (s_services.ContainsKey(type))
+            if (_services.ContainsKey(type))
             {
-                return s_services[type];
+                return _services[type];
             }
 
             return null;
@@ -208,12 +208,12 @@ namespace NovaEngine
         /// <param name="channel">网络通道对象实例</param>
         private static void AddChannel(NetworkChannel channel)
         {
-            if (s_channels.ContainsKey(channel.ChannelID))
+            if (_channels.ContainsKey(channel.ChannelID))
             {
                 throw new CFrameworkException("The target channel '{%d}' was already exists.", channel.ChannelID);
             }
 
-            s_channels.Add(channel.ChannelID, channel);
+            _channels.Add(channel.ChannelID, channel);
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace NovaEngine
         /// <param name="channelID">网络通道对象标识</param>
         private static void RemoveChannel(int channelID)
         {
-            if (s_channels.TryGetValue(channelID, out NetworkChannel channel))
+            if (_channels.TryGetValue(channelID, out NetworkChannel channel))
             {
                 NetworkService service = GetService(channel.ServiceType);
                 service.ReleaseChannel(channelID);
@@ -230,7 +230,7 @@ namespace NovaEngine
                 // 网络通道关闭操作
                 channel.Close();
 
-                s_channels.Remove(channelID);
+                _channels.Remove(channelID);
             }
             else
             {
@@ -243,13 +243,13 @@ namespace NovaEngine
         /// </summary>
         private static void RemoveAllChannels()
         {
-            int[] keys = Utility.Collection.ToArray(s_channels.Keys);
+            int[] keys = Utility.Collection.ToArray(_channels.Keys);
             foreach (int key in keys)
             {
                 RemoveChannel(key);
             }
 
-            s_channels.Clear();
+            _channels.Clear();
         }
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace NovaEngine
         /// <returns>返回网络通道对象实例，若查找失败则返回null</returns>
         public static NetworkChannel GetChannel(int channelID)
         {
-            if (s_channels.TryGetValue(channelID, out NetworkChannel channel))
+            if (_channels.TryGetValue(channelID, out NetworkChannel channel))
             {
                 return channel;
             }

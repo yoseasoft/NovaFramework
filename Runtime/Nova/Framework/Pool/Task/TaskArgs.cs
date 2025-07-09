@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -35,18 +35,18 @@ namespace NovaEngine
         /// </summary>
         public const int DEFAULT_PRIORITY = 0;
 
-        private int m_serialID;
-        private int m_priority;
-        private bool m_isDone;
+        private int _serialID;
+        private int _priority;
+        private bool _isDone;
 
         /// <summary>
         /// 任务参数对象的新实例构建接口
         /// </summary>
         public TaskArgs()
         {
-            m_serialID = 0;
-            m_priority = DEFAULT_PRIORITY;
-            m_isDone = false;
+            _serialID = 0;
+            _priority = DEFAULT_PRIORITY;
+            _isDone = false;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace NovaEngine
         /// </summary>
         public int SerialID
         {
-            get { return m_serialID; }
+            get { return _serialID; }
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace NovaEngine
         /// </summary>
         public int Priority
         {
-            get { return m_priority; }
+            get { return _priority; }
         }
 
         /// <summary>
@@ -70,8 +70,8 @@ namespace NovaEngine
         /// </summary>
         public bool Done
         {
-            get { return m_isDone; }
-            set { m_isDone = value; }
+            get { return _isDone; }
+            set { _isDone = value; }
         }
 
         /// <summary>
@@ -97,9 +97,9 @@ namespace NovaEngine
         /// <param name="priority">任务的优先级</param>
         public void Initialize(int serialID, int priority)
         {
-            m_serialID = serialID;
-            m_priority = priority;
-            m_isDone = false;
+            _serialID = serialID;
+            _priority = priority;
+            _isDone = false;
         }
 
         /// <summary>
@@ -107,9 +107,9 @@ namespace NovaEngine
         /// </summary>
         public void Cleanup()
         {
-            m_serialID = 0;
-            m_priority = DEFAULT_PRIORITY;
-            m_isDone = false;
+            _serialID = 0;
+            _priority = DEFAULT_PRIORITY;
+            _isDone = false;
         }
     }
 }

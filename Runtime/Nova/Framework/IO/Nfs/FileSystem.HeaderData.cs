@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -42,73 +42,73 @@ namespace NovaEngine.IO.FileSystem
             private static readonly byte[] Header = new byte[HEADER_LENGTH] { (byte) 'G', (byte) 'F', (byte) 'F' };
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = HEADER_LENGTH)]
-            private readonly byte[] m_header;
+            private readonly byte[] _header;
 
-            private readonly byte m_version;
+            private readonly byte _version;
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = ENCRYPT_BYTES_LENGTH)]
-            private readonly byte[] m_encryptBytes;
+            private readonly byte[] _encryptBytes;
 
-            private readonly int m_maxFileCount;
-            private readonly int m_maxBlockCount;
-            private readonly int m_blockCount;
+            private readonly int _maxFileCount;
+            private readonly int _maxBlockCount;
+            private readonly int _blockCount;
 
             public HeaderData(int maxFileCount, int maxBlockCount)
                 : this(0, new byte[ENCRYPT_BYTES_LENGTH], maxFileCount, maxBlockCount, 0)
             {
-                Utility.Random.GetRandomBytes(this.m_encryptBytes);
+                Utility.Random.GetRandomBytes(this._encryptBytes);
             }
 
             public HeaderData(byte version, byte[] encryptBytes, int maxFileCount, int maxBlockCount, int blockCount)
             {
-                this.m_header = Header;
-                this.m_version = version;
-                this.m_encryptBytes = encryptBytes;
-                this.m_maxFileCount = maxFileCount;
-                this.m_maxBlockCount = maxBlockCount;
-                this.m_blockCount = blockCount;
+                this._header = Header;
+                this._version = version;
+                this._encryptBytes = encryptBytes;
+                this._maxFileCount = maxFileCount;
+                this._maxBlockCount = maxBlockCount;
+                this._blockCount = blockCount;
             }
 
             public bool IsValid
             {
                 get
                 {
-                    return m_header.Length == HEADER_LENGTH &&
-                           m_header[0] == Header[0] && m_header[1] == Header[1] && m_header[2] == Header[2] &&
-                           m_version == 0 && m_encryptBytes.Length == ENCRYPT_BYTES_LENGTH &&
-                           m_maxFileCount > 0 && m_maxBlockCount > 0 && m_maxFileCount <= m_maxBlockCount &&
-                           m_blockCount > 0 && m_blockCount <= m_maxBlockCount;
+                    return _header.Length == HEADER_LENGTH &&
+                           _header[0] == Header[0] && _header[1] == Header[1] && _header[2] == Header[2] &&
+                           _version == 0 && _encryptBytes.Length == ENCRYPT_BYTES_LENGTH &&
+                           _maxFileCount > 0 && _maxBlockCount > 0 && _maxFileCount <= _maxBlockCount &&
+                           _blockCount > 0 && _blockCount <= _maxBlockCount;
                 }
             }
 
             public byte Version
             {
-                get { return m_version; }
+                get { return _version; }
             }
 
             public int MaxFileCount
             {
-                get { return m_maxFileCount; }
+                get { return _maxFileCount; }
             }
 
             public int MaxBlockCount
             {
-                get { return m_maxBlockCount; }
+                get { return _maxBlockCount; }
             }
 
             public int BlockCount
             {
-                get { return m_blockCount; }
+                get { return _blockCount; }
             }
 
             public byte[] GetEncryptBytes()
             {
-                return m_encryptBytes;
+                return _encryptBytes;
             }
 
             public HeaderData SetBlockCount(int blockCount)
             {
-                return new HeaderData(m_version, m_encryptBytes, m_maxFileCount, m_maxBlockCount, blockCount);
+                return new HeaderData(_version, _encryptBytes, _maxFileCount, _maxBlockCount, blockCount);
             }
         }
     }

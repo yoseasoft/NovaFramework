@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ namespace NovaEngine
         /// <summary>
         /// 循环数据流管理对象
         /// </summary>
-        private readonly RecyclableMemoryStreamManager m_memoryStreamManager = new RecyclableMemoryStreamManager();
+        private readonly RecyclableMemoryStreamManager _memoryStreamManager = new RecyclableMemoryStreamManager();
 
         /// <summary>
         /// 获取网络通道的服务类型
@@ -48,7 +48,7 @@ namespace NovaEngine
         /// </summary>
         public RecyclableMemoryStreamManager MemoryStreamManager
         {
-            get { return m_memoryStreamManager; }
+            get { return _memoryStreamManager; }
         }
 
         /// <summary>

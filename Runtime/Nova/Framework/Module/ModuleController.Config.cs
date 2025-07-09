@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -45,30 +45,30 @@ namespace NovaEngine
             /// </summary>
             private class ModuleConfigureInfo
             {
-                string name;                // 模块名称
-                int type;                   // 模块类型
-                int priority;               // 模块优先级
-                SystemType reflectionType;  // 模块映射类型
+                string _name;                // 模块名称
+                int _type;                   // 模块类型
+                int _priority;               // 模块优先级
+                SystemType _reflectionType;  // 模块映射类型
 
                 /// <summary>
                 /// 模块名称属性访问Getter/Setter接口
                 /// </summary>
-                public string Name { get { return name; } set { name = value; } }
+                public string Name { get { return _name; } set { _name = value; } }
 
                 /// <summary>
                 /// 模块类型属性访问Getter/Setter接口
                 /// </summary>
-                public int Type { get { return type; } set { type = value; } }
+                public int Type { get { return _type; } set { _type = value; } }
 
                 /// <summary>
                 /// 模块优先级属性访问Getter/Setter接口
                 /// </summary>
-                public int Priority { get { return priority; } set { priority = value; } }
+                public int Priority { get { return _priority; } set { _priority = value; } }
 
                 /// <summary>
                 /// 模块映射类型属性访问Getter/Setter接口
                 /// </summary>
-                public SystemType ReflectionType { get { return reflectionType; } set { reflectionType = value; } }
+                public SystemType ReflectionType { get { return _reflectionType; } set { _reflectionType = value; } }
             }
 
             /// <summary>
@@ -87,7 +87,7 @@ namespace NovaEngine
             /// </summary>
             public static void InitModuleConfigure()
             {
-                if (ModuleController.s_isRunning)
+                if (ModuleController._isRunning)
                 {
                     throw new CFrameworkException("Cannot do reset on running state.");
                 }

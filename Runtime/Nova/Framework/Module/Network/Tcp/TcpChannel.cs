@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -44,32 +44,32 @@ namespace NovaEngine
     /// </summary>
     public sealed partial class TcpChannel : NetworkChannel
     {
-        private SystemSocket m_socket = null;
+        private SystemSocket _socket = null;
 
-        private SystemSocketAsyncEventArgs m_readEventArgs = null;
+        private SystemSocketAsyncEventArgs _readEventArgs = null;
 
-        private SystemSocketAsyncEventArgs m_writeEventArgs = null;
+        private SystemSocketAsyncEventArgs _writeEventArgs = null;
 
-        private readonly IO.CircularLinkedBuffer m_readBuffer = null;
+        private readonly IO.CircularLinkedBuffer _readBuffer = null;
 
-        private readonly IO.CircularLinkedBuffer m_writeBuffer = null;
+        private readonly IO.CircularLinkedBuffer _writeBuffer = null;
 
         /// <summary>
         /// 当前通道的包头长度
         /// </summary>
-        private readonly int m_headerSize = 0;
+        private readonly int _headerSize = 0;
 
         /// <summary>
         /// 数据包的包头缓冲区
         /// </summary>
-        private readonly byte[] m_packetHeaderCached = null;
+        private readonly byte[] _packetHeaderCached = null;
 
 
-        private readonly SystemMemoryStream m_memoryStream = null;
+        private readonly SystemMemoryStream _memoryStream = null;
 
-        private readonly MessagePacket m_packet = null;
+        private readonly MessagePacket _packet = null;
 
-        private readonly SystemIPEndPoint m_remoteIP = null;
+        private readonly SystemIPEndPoint _remoteIp = null;
 
         /// <summary>
         /// 网络通道当前连接状态标识
@@ -105,25 +105,25 @@ namespace NovaEngine
         /// <param name="service">服务对象实例</param>
         public TcpChannel(string name, string url, TcpService service) : base(name, url, service)
         {
-            this.m_headerSize = MessageConstant.HeaderSize2;
-            this.m_packetHeaderCached = new byte[this.m_headerSize];
+            this._headerSize = MessageConstant.HeaderSize2;
+            this._packetHeaderCached = new byte[this._headerSize];
 
-            this.m_readBuffer = new IO.CircularLinkedBuffer();
-            this.m_writeBuffer = new IO.CircularLinkedBuffer();
-            this.m_memoryStream = service.MemoryStreamManager.GetStream(name, ushort.MaxValue);
+            this._readBuffer = new IO.CircularLinkedBuffer();
+            this._writeBuffer = new IO.CircularLinkedBuffer();
+            this._memoryStream = service.MemoryStreamManager.GetStream(name, ushort.MaxValue);
 
-            this.m_socket = new SystemSocket(SystemAddressFamily.InterNetwork, SystemSocketType.Stream, SystemProtocolType.Tcp);
-            this.m_socket.NoDelay = true;
-            this.m_packet = new MessagePacket(this.m_headerSize, this.m_readBuffer, this.m_memoryStream);
-            this.m_readEventArgs = new SystemSocketAsyncEventArgs();
-            this.m_writeEventArgs = new SystemSocketAsyncEventArgs();
-            this.m_readEventArgs.Completed += this.OnOperationComplete;
-            this.m_writeEventArgs.Completed += this.OnOperationComplete;
+            this._socket = new SystemSocket(SystemAddressFamily.InterNetwork, SystemSocketType.Stream, SystemProtocolType.Tcp);
+            this._socket.NoDelay = true;
+            this._packet = new MessagePacket(this._headerSize, this._readBuffer, this._memoryStream);
+            this._readEventArgs = new SystemSocketAsyncEventArgs();
+            this._writeEventArgs = new SystemSocketAsyncEventArgs();
+            this._readEventArgs.Completed += this.OnOperationComplete;
+            this._writeEventArgs.Completed += this.OnOperationComplete;
 
             SystemIPEndPoint ip = Utility.Network.ToIPEndPoint(url);
 
             // this.m_url = ip.ToString();
-            this.m_remoteIP = ip;
+            this._remoteIp = ip;
             this.m_isConnected = false;
             this.m_isOnWriting = false;
         }
@@ -133,17 +133,17 @@ namespace NovaEngine
         /// </summary>
         protected override void OnClose()
         {
-            this.m_readEventArgs.Dispose();
-            this.m_writeEventArgs.Dispose();
-            this.m_readEventArgs = null;
-            this.m_writeEventArgs = null;
+            this._readEventArgs.Dispose();
+            this._writeEventArgs.Dispose();
+            this._readEventArgs = null;
+            this._writeEventArgs = null;
 
-            this.m_socket.Close();
-            this.m_socket = null;
+            this._socket.Close();
+            this._socket = null;
 
-            this.m_readBuffer.Clear();
-            this.m_writeBuffer.Clear();
-            this.m_memoryStream.Dispose();
+            this._readBuffer.Clear();
+            this._writeBuffer.Clear();
+            this._memoryStream.Dispose();
 
             base.OnClose();
         }
@@ -171,12 +171,12 @@ namespace NovaEngine
         /// <param name="message">消息内容</param>
         public override void Send(byte[] message)
         {
-            this.m_memoryStream.Seek(MessageConstant.MessageIndex, SystemSeekOrigin.Begin);
-            this.m_memoryStream.SetLength(message.Length);
+            this._memoryStream.Seek(MessageConstant.MessageIndex, SystemSeekOrigin.Begin);
+            this._memoryStream.SetLength(message.Length);
 
-            SystemArray.Copy(message, 0, this.m_memoryStream.GetBuffer(), 0, message.Length);
+            SystemArray.Copy(message, 0, this._memoryStream.GetBuffer(), 0, message.Length);
 
-            this.Send(this.m_memoryStream);
+            this.Send(this._memoryStream);
         }
 
         /// <summary>
@@ -192,43 +192,43 @@ namespace NovaEngine
 
             // 写入包头长度到缓冲区
             int packetSize = (int) memoryStream.Length;
-            switch (this.m_headerSize)
+            switch (this._headerSize)
             {
                 case MessageConstant.HeaderSize4:
                     if (packetSize > ushort.MaxValue * 16)
                     {
                         throw new CFrameworkException("send packet size '{0}' too large.", packetSize);
                     }
-                    this.m_packetHeaderCached.WriteTo(0, (int) packetSize);
+                    this._packetHeaderCached.WriteTo(0, (int) packetSize);
                     break;
                 case MessageConstant.HeaderSize2:
                     if (packetSize > ushort.MaxValue)
                     {
                         throw new CFrameworkException("send packet size '{0}' too large.", packetSize);
                     }
-                    this.m_packetHeaderCached.WriteToBig(0, (short) packetSize);
+                    this._packetHeaderCached.WriteToBig(0, (short) packetSize);
                     break;
                 default:
                     throw new CFrameworkException("packet size is invalid.");
             }
 
-            this.m_writeBuffer.Write(this.m_packetHeaderCached, 0, this.m_packetHeaderCached.Length);
-            this.m_writeBuffer.Write(memoryStream);
+            this._writeBuffer.Write(this._packetHeaderCached, 0, this._packetHeaderCached.Length);
+            this._writeBuffer.Write(memoryStream);
 
             // 记录当前通道为待发送状态
-            ((TcpService) this.Service).WaitingForSend(this.m_channelID);
+            ((TcpService) this.Service).WaitingForSend(this._channelID);
         }
 
         private void OnConnectAsync()
         {
-            this.m_writeEventArgs.RemoteEndPoint = this.m_remoteIP;
+            this._writeEventArgs.RemoteEndPoint = this._remoteIp;
 
-            if (this.m_socket.ConnectAsync(this.m_writeEventArgs))
+            if (this._socket.ConnectAsync(this._writeEventArgs))
             {
                 return;
             }
 
-            this.OnConnectionComplete(this.m_writeEventArgs);
+            this.OnConnectionComplete(this._writeEventArgs);
         }
 
         /// <summary>
@@ -236,8 +236,8 @@ namespace NovaEngine
         /// </summary>
         private void OnRecv()
         {
-            int size = IO.CircularLinkedBuffer.BUFFER_CHUNK_SIZE - this.m_readBuffer.LastIndex;
-            this.OnRecvAsync(this.m_readBuffer.Last, this.m_readBuffer.LastIndex, size);
+            int size = IO.CircularLinkedBuffer.BUFFER_CHUNK_SIZE - this._readBuffer.LastIndex;
+            this.OnRecvAsync(this._readBuffer.Last, this._readBuffer.LastIndex, size);
         }
 
         /// <summary>
@@ -250,18 +250,18 @@ namespace NovaEngine
         {
             try
             {
-                this.m_readEventArgs.SetBuffer(buffer, offset, count);
+                this._readEventArgs.SetBuffer(buffer, offset, count);
             }
             catch (SystemException e)
             {
                 throw new CFrameworkException("socket set buffer error.", e);
             }
 
-            if (this.m_socket.ReceiveAsync(this.m_readEventArgs))
+            if (this._socket.ReceiveAsync(this._readEventArgs))
             {
                 return;
             }
-            this.OnRecvComplete(this.m_readEventArgs);
+            this.OnRecvComplete(this._readEventArgs);
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace NovaEngine
             }
 
             // 没有待写入数据
-            if (0 == this.m_writeBuffer.Length)
+            if (0 == this._writeBuffer.Length)
             {
                 this.m_isOnWriting = false;
                 return;
@@ -283,12 +283,12 @@ namespace NovaEngine
 
             this.m_isOnWriting = true;
 
-            int size = IO.CircularLinkedBuffer.BUFFER_CHUNK_SIZE - this.m_writeBuffer.FirstIndex;
-            if (size > this.m_writeBuffer.Length)
+            int size = IO.CircularLinkedBuffer.BUFFER_CHUNK_SIZE - this._writeBuffer.FirstIndex;
+            if (size > this._writeBuffer.Length)
             {
-                size = (int) this.m_writeBuffer.Length;
+                size = (int) this._writeBuffer.Length;
             }
-            this.OnSendAsync(this.m_writeBuffer.First, this.m_writeBuffer.FirstIndex, size);
+            this.OnSendAsync(this._writeBuffer.First, this._writeBuffer.FirstIndex, size);
         }
 
         /// <summary>
@@ -301,25 +301,25 @@ namespace NovaEngine
         {
             try
             {
-                this.m_writeEventArgs.SetBuffer(buffer, offset, count);
+                this._writeEventArgs.SetBuffer(buffer, offset, count);
             }
             catch (SystemException e)
             {
                 throw new CFrameworkException("socket set buffer error.", e);
             }
 
-            if (this.m_socket.SendAsync(this.m_writeEventArgs))
+            if (this._socket.SendAsync(this._writeEventArgs))
             {
                 return;
             }
 
-            this.OnSendComplete(this.m_writeEventArgs);
+            this.OnSendComplete(this._writeEventArgs);
         }
 
         private void OnConnectionComplete(object o)
         {
             // 连接已被清除
-            if (null == this.m_socket)
+            if (null == this._socket)
             {
                 return;
             }
@@ -336,7 +336,7 @@ namespace NovaEngine
 
             this.OnRecv();
 
-            this.m_connectionCallback?.Invoke(this);
+            this._connectionCallback?.Invoke(this);
         }
 
         private void OnDisconnectionComplete(object o)
@@ -347,7 +347,7 @@ namespace NovaEngine
 
         private void OnRecvComplete(object o)
         {
-            if (null == this.m_socket)
+            if (null == this._socket)
             {
                 return;
             }
@@ -365,11 +365,11 @@ namespace NovaEngine
                 return;
             }
 
-            this.m_readBuffer.LastIndex += e.BytesTransferred;
-            if (IO.CircularLinkedBuffer.BUFFER_CHUNK_SIZE == this.m_readBuffer.LastIndex)
+            this._readBuffer.LastIndex += e.BytesTransferred;
+            if (IO.CircularLinkedBuffer.BUFFER_CHUNK_SIZE == this._readBuffer.LastIndex)
             {
-                this.m_readBuffer.AddLast();
-                this.m_readBuffer.LastIndex = 0;
+                this._readBuffer.AddLast();
+                this._readBuffer.LastIndex = 0;
             }
 
             // 收到消息回调
@@ -377,7 +377,7 @@ namespace NovaEngine
             {
                 try
                 {
-                    if (false == this.m_packet.ParsePacket())
+                    if (false == this._packet.ParsePacket())
                     {
                         break;
                     }
@@ -392,7 +392,7 @@ namespace NovaEngine
 
                 try
                 {
-                    this.m_readCallback.Invoke(this.m_packet.GetPacket(), MessageStreamCode.Byte);
+                    this._readCallback.Invoke(this._packet.GetPacket(), MessageStreamCode.Byte);
                 }
                 catch (SystemException ee)
                 {
@@ -400,7 +400,7 @@ namespace NovaEngine
                 }
             }
 
-            if (null != this.m_socket)
+            if (null != this._socket)
             {
                 this.OnRecv();
             }
@@ -408,7 +408,7 @@ namespace NovaEngine
 
         private void OnSendComplete(object o)
         {
-            if (null == this.m_socket)
+            if (null == this._socket)
             {
                 return;
             }
@@ -426,11 +426,11 @@ namespace NovaEngine
                 return;
             }
 
-            this.m_writeBuffer.FirstIndex += e.BytesTransferred;
-            if (IO.CircularLinkedBuffer.BUFFER_CHUNK_SIZE == this.m_writeBuffer.FirstIndex)
+            this._writeBuffer.FirstIndex += e.BytesTransferred;
+            if (IO.CircularLinkedBuffer.BUFFER_CHUNK_SIZE == this._writeBuffer.FirstIndex)
             {
-                this.m_writeBuffer.FirstIndex = 0;
-                this.m_writeBuffer.RemoveFirst();
+                this._writeBuffer.FirstIndex = 0;
+                this._writeBuffer.RemoveFirst();
             }
 
             this.OnSend();

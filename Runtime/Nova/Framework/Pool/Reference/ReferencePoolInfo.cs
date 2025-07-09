@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -33,13 +33,13 @@ namespace NovaEngine
     [System.Runtime.InteropServices.StructLayout(SystemLayoutKind.Auto)]
     public struct ReferencePoolInfo
     {
-        private readonly SystemType m_type;
-        private readonly int m_unusedReferenceCount;
-        private readonly int m_usingReferenceCount;
-        private readonly int m_acquireReferenceCount;
-        private readonly int m_releaseReferenceCount;
-        private readonly int m_addReferenceCount;
-        private readonly int m_removeReferenceCount;
+        private readonly SystemType _type;
+        private readonly int _unusedReferenceCount;
+        private readonly int _usingReferenceCount;
+        private readonly int _acquireReferenceCount;
+        private readonly int _releaseReferenceCount;
+        private readonly int _addReferenceCount;
+        private readonly int _removeReferenceCount;
 
         /// <summary>
         /// 引用对象池数据结构的新实例构建接口
@@ -59,13 +59,13 @@ namespace NovaEngine
                                  int addReferenceCount,
                                  int removeReferenceCount)
         {
-            m_type = type;
-            m_unusedReferenceCount = unusedReferenceCount;
-            m_usingReferenceCount = usingReferenceCount;
-            m_acquireReferenceCount = acquireReferenceCount;
-            m_releaseReferenceCount = releaseReferenceCount;
-            m_addReferenceCount = addReferenceCount;
-            m_removeReferenceCount = removeReferenceCount;
+            _type = type;
+            _unusedReferenceCount = unusedReferenceCount;
+            _usingReferenceCount = usingReferenceCount;
+            _acquireReferenceCount = acquireReferenceCount;
+            _releaseReferenceCount = releaseReferenceCount;
+            _addReferenceCount = addReferenceCount;
+            _removeReferenceCount = removeReferenceCount;
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace NovaEngine
         /// </summary>
         public SystemType Type
         {
-            get { return m_type; }
+            get { return _type; }
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace NovaEngine
         /// </summary>
         public int UnusedReferenceCount
         {
-            get { return m_unusedReferenceCount; }
+            get { return _unusedReferenceCount; }
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace NovaEngine
         /// </summary>
         public int UsingReferenceCount
         {
-            get { return m_usingReferenceCount; }
+            get { return _usingReferenceCount; }
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace NovaEngine
         /// </summary>
         public int AcquireReferenceCount
         {
-            get { return m_acquireReferenceCount; }
+            get { return _acquireReferenceCount; }
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace NovaEngine
         /// </summary>
         public int ReleaseReferenceCount
         {
-            get { return m_releaseReferenceCount; }
+            get { return _releaseReferenceCount; }
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace NovaEngine
         /// </summary>
         public int AddReferenceCount
         {
-            get { return m_addReferenceCount; }
+            get { return _addReferenceCount; }
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace NovaEngine
         /// </summary>
         public int RemoveReferenceCount
         {
-            get { return m_removeReferenceCount; }
+            get { return _removeReferenceCount; }
         }
     }
 }

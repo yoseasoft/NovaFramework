@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,29 +39,29 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         private struct StringData
         {
-            private static readonly byte[] s_cachedBytes = new byte[byte.MaxValue + 1];
+            private static readonly byte[] _cachedBytes = new byte[byte.MaxValue + 1];
 
-            private readonly byte m_length;
+            private readonly byte _length;
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = byte.MaxValue)]
-            private readonly byte[] m_bytes;
+            private readonly byte[] _bytes;
 
             public StringData(byte length, byte[] bytes)
             {
-                m_length = length;
-                m_bytes = bytes;
+                _length = length;
+                _bytes = bytes;
             }
 
             public string GetString(byte[] encryptBytes)
             {
-                if (this.m_length <= 0)
+                if (this._length <= 0)
                 {
                     return null;
                 }
 
-                SystemArray.Copy(this.m_bytes, 0, s_cachedBytes, 0, this.m_length);
-                Utility.Encryption.GetXorBytesOnSelf(s_cachedBytes, 0, this.m_length, encryptBytes);
-                return Utility.Convertion.GetString(s_cachedBytes, 0, this.m_length);
+                SystemArray.Copy(this._bytes, 0, _cachedBytes, 0, this._length);
+                Utility.Encryption.GetXorBytesOnSelf(_cachedBytes, 0, this._length, encryptBytes);
+                return Utility.Convertion.GetString(_cachedBytes, 0, this._length);
             }
 
             public StringData SetString(string value, byte[] encryptBytes)
@@ -71,20 +71,20 @@ namespace NovaEngine.IO.FileSystem
                     return this.Clear();
                 }
 
-                int length = Utility.Convertion.GetBytes(value, s_cachedBytes);
+                int length = Utility.Convertion.GetBytes(value, _cachedBytes);
                 if (length > byte.MaxValue)
                 {
                     throw new CFrameworkException("String '{0}' is too long.", value);
                 }
 
-                Utility.Encryption.GetXorBytesOnSelf(s_cachedBytes, encryptBytes);
-                SystemArray.Copy(s_cachedBytes, 0, this.m_bytes, 0, length);
-                return new StringData((byte) length, this.m_bytes);
+                Utility.Encryption.GetXorBytesOnSelf(_cachedBytes, encryptBytes);
+                SystemArray.Copy(_cachedBytes, 0, this._bytes, 0, length);
+                return new StringData((byte) length, this._bytes);
             }
 
             public StringData Clear()
             {
-                return new StringData(0, this.m_bytes);
+                return new StringData(0, this._bytes);
             }
         }
     }

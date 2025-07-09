@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -30,9 +30,9 @@ namespace NovaEngine.IO.FileSystem
     /// </summary>
     public struct FileInfo
     {
-        private readonly string m_name;
-        private readonly long m_offset;
-        private readonly int m_length;
+        private readonly string _name;
+        private readonly long _offset;
+        private readonly int _length;
 
         /// <summary>
         /// 文件描述信息的新实例构建接口
@@ -48,9 +48,9 @@ namespace NovaEngine.IO.FileSystem
 
             Logger.Assert(length < 0, "Length is invalid.");
 
-            this.m_name = name;
-            this.m_offset = offset;
-            this.m_length = length;
+            this._name = name;
+            this._offset = offset;
+            this._length = length;
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace NovaEngine.IO.FileSystem
         {
             get
             {
-                return !string.IsNullOrEmpty(this.m_name) && this.m_offset >= 0L && this.m_length >= 0;
+                return !string.IsNullOrEmpty(this._name) && this._offset >= 0L && this._length >= 0;
             }
         }
 
@@ -69,7 +69,7 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         public string Name
         {
-            get { return m_name; }
+            get { return _name; }
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         public long Offset
         {
-            get { return m_offset; }
+            get { return _offset; }
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         public int Length
         {
-            get { return m_length; }
+            get { return _length; }
         }
     }
 }

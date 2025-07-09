@@ -1,10 +1,10 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ namespace NovaEngine
         /// <summary>
         /// 按键编码列表
         /// </summary>
-        private SystemArray m_keyCodeArray = null;
+        private SystemArray _keyCodeArray = null;
 
         public InputModule() : base()
         {
@@ -72,7 +72,7 @@ namespace NovaEngine
                     keycode_list.Add(keycode);
                 }
             }
-            m_keyCodeArray = Utility.Collection.ToArray<UnityKeyCode>(keycode_list);
+            _keyCodeArray = Utility.Collection.ToArray<UnityKeyCode>(keycode_list);
 
             InitInputTrace();
         }
@@ -84,7 +84,7 @@ namespace NovaEngine
         {
             CleanupInputTrace();
 
-            m_keyCodeArray = null;
+            _keyCodeArray = null;
         }
 
         /// <summary>
@@ -121,9 +121,9 @@ namespace NovaEngine
                 {
                     UnityKeyCode code;
                     bool pressed, moved, released;
-                    for (int n = 0; n < m_keyCodeArray.Length; ++n)
+                    for (int n = 0; n < _keyCodeArray.Length; ++n)
                     {
-                        code = (UnityKeyCode) m_keyCodeArray.GetValue(n);
+                        code = (UnityKeyCode) _keyCodeArray.GetValue(n);
 
                         // 操作状态标识
                         pressed = false;
@@ -269,7 +269,7 @@ namespace NovaEngine
 
             // 当前帧按下行为通知的编码信息
             sb.Append("KeyCode Pressed = { ");
-            foreach (UnityKeyCode keyCode in m_keycodePressedOnThisFrame)
+            foreach (UnityKeyCode keyCode in _keycodePressedOnThisFrame)
             {
                 sb.Append(keyCode.ToString() + ", ");
             }
@@ -277,7 +277,7 @@ namespace NovaEngine
 
             // 当前帧长按行为通知的编码信息
             sb.Append("KeyCode Moved = { ");
-            foreach (UnityKeyCode keyCode in m_keycodeMovedOnThisFrame)
+            foreach (UnityKeyCode keyCode in _keycodeMovedOnThisFrame)
             {
                 sb.Append(keyCode.ToString() + ", ");
             }
@@ -285,7 +285,7 @@ namespace NovaEngine
 
             // 当前帧释放行为通知的编码信息
             sb.Append("KeyCode Released = { ");
-            foreach (UnityKeyCode keyCode in m_keycodeReleasedOnThisFrame)
+            foreach (UnityKeyCode keyCode in _keycodeReleasedOnThisFrame)
             {
                 sb.Append(keyCode.ToString() + ", ");
             }
@@ -293,7 +293,7 @@ namespace NovaEngine
 
             // 上一帧和当前帧之间的变化行为通知的编码信息
             sb.Append("KeyCode Changed = { ");
-            foreach (UnityKeyCode keyCode in m_keycodeChangedOnPreviousFrame)
+            foreach (UnityKeyCode keyCode in _keycodeChangedOnPreviousFrame)
             {
                 sb.Append(keyCode.ToString() + ", ");
             }

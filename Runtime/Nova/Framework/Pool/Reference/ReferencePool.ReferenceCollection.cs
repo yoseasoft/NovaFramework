@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -42,35 +42,35 @@ namespace NovaEngine
             /// <summary>
             /// 引用对象实例缓存队列
             /// </summary>
-            private readonly ReferenceQueue m_references;
+            private readonly ReferenceQueue _references;
             /// <summary>
             /// 引用对象类型标识
             /// </summary>
-            private readonly SystemType m_referenceType;
+            private readonly SystemType _referenceType;
             /// <summary>
             /// 引用对象后处理信息
             /// </summary>
-            private readonly ReferencePostProcessInfo m_postProcessInfo;
+            private readonly ReferencePostProcessInfo _postProcessInfo;
             /// <summary>
             /// 当前缓存容器中处于使用状态的引用对象计数
             /// </summary>
-            private int m_usingReferenceCount;
+            private int _usingReferenceCount;
             /// <summary>
             /// 当前缓存容器分配引用对象的计数
             /// </summary>
-            private int m_acquireReferenceCount;
+            private int _acquireReferenceCount;
             /// <summary>
             /// 当前缓存容器回收引用对象的计数
             /// </summary>
-            private int m_releaseReferenceCount;
+            private int _releaseReferenceCount;
             /// <summary>
             /// 当前缓存容器新增引用对象的计数
             /// </summary>
-            private int m_addReferenceCount;
+            private int _addReferenceCount;
             /// <summary>
             /// 当前缓存容器移除引用对象的计数
             /// </summary>
-            private int m_removeReferenceCount;
+            private int _removeReferenceCount;
 
             /// <summary>
             /// 缓存容器的构造函数
@@ -81,14 +81,14 @@ namespace NovaEngine
                 ReferencePostProcessInfo postProcessInfo;
                 TryGetReferencePostProcessInfo(referenceType, out postProcessInfo);
 
-                m_references = new ReferenceQueue();
-                m_referenceType = referenceType;
-                m_postProcessInfo = postProcessInfo;
-                m_usingReferenceCount = 0;
-                m_acquireReferenceCount = 0;
-                m_releaseReferenceCount = 0;
-                m_addReferenceCount = 0;
-                m_removeReferenceCount = 0;
+                _references = new ReferenceQueue();
+                _referenceType = referenceType;
+                _postProcessInfo = postProcessInfo;
+                _usingReferenceCount = 0;
+                _acquireReferenceCount = 0;
+                _releaseReferenceCount = 0;
+                _addReferenceCount = 0;
+                _removeReferenceCount = 0;
             }
 
             /// <summary>
@@ -96,7 +96,7 @@ namespace NovaEngine
             /// </summary>
             public SystemType ReferenceType
             {
-                get { return m_referenceType; }
+                get { return _referenceType; }
             }
 
             /// <summary>
@@ -104,7 +104,7 @@ namespace NovaEngine
             /// </summary>
             public int UnusedReferenceCount
             {
-                get { return m_references.Count; }
+                get { return _references.Count; }
             }
 
             /// <summary>
@@ -112,7 +112,7 @@ namespace NovaEngine
             /// </summary>
             public int UsingReferenceCount
             {
-                get { return m_usingReferenceCount; }
+                get { return _usingReferenceCount; }
             }
 
             /// <summary>
@@ -120,7 +120,7 @@ namespace NovaEngine
             /// </summary>
             public int AcquireReferenceCount
             {
-                get { return m_acquireReferenceCount; }
+                get { return _acquireReferenceCount; }
             }
 
             /// <summary>
@@ -128,7 +128,7 @@ namespace NovaEngine
             /// </summary>
             public int ReleaseReferenceCount
             {
-                get { return m_releaseReferenceCount; }
+                get { return _releaseReferenceCount; }
             }
 
             /// <summary>
@@ -136,7 +136,7 @@ namespace NovaEngine
             /// </summary>
             public int AddReferenceCount
             {
-                get { return m_addReferenceCount; }
+                get { return _addReferenceCount; }
             }
 
             /// <summary>
@@ -144,7 +144,7 @@ namespace NovaEngine
             /// </summary>
             public int RemoveReferenceCount
             {
-                get { return m_removeReferenceCount; }
+                get { return _removeReferenceCount; }
             }
 
             /// <summary>
@@ -155,24 +155,24 @@ namespace NovaEngine
             /// <exception cref="CFrameworkException"></exception>
             public T Acquire<T>() where T : class, IReference, new()
             {
-                if (typeof(T) != m_referenceType)
+                if (typeof(T) != _referenceType)
                 {
                     throw new CFrameworkException("Type is invalid.");
                 }
 
                 T inst = null;
 
-                m_usingReferenceCount++;
-                m_acquireReferenceCount++;
-                lock (m_references)
+                _usingReferenceCount++;
+                _acquireReferenceCount++;
+                lock (_references)
                 {
-                    if (m_references.Count > 0)
+                    if (_references.Count > 0)
                     {
-                        inst = (T) m_references.Dequeue();
+                        inst = (T) _references.Dequeue();
                     }
                     else
                     {
-                        m_addReferenceCount++;
+                        _addReferenceCount++;
                         inst = new T();
                     }
                 }
@@ -190,18 +190,18 @@ namespace NovaEngine
             {
                 IReference inst = null;
 
-                m_usingReferenceCount++;
-                m_acquireReferenceCount++;
-                lock (m_references)
+                _usingReferenceCount++;
+                _acquireReferenceCount++;
+                lock (_references)
                 {
-                    if (m_references.Count > 0)
+                    if (_references.Count > 0)
                     {
-                        inst = m_references.Dequeue();
+                        inst = _references.Dequeue();
                     }
                     else
                     {
-                        m_addReferenceCount++;
-                        inst = (IReference) SystemActivator.CreateInstance(m_referenceType);
+                        _addReferenceCount++;
+                        inst = (IReference) SystemActivator.CreateInstance(_referenceType);
                     }
                 }
 
@@ -219,18 +219,18 @@ namespace NovaEngine
             {
                 OnReferenceCleanup(reference);
 
-                lock (m_references)
+                lock (_references)
                 {
-                    if (s_strictCheckEnabled && m_references.Contains(reference))
+                    if (_strictCheckEnabled && _references.Contains(reference))
                     {
                         throw new CFrameworkException("The reference has been released.");
                     }
 
-                    m_references.Enqueue(reference);
+                    _references.Enqueue(reference);
                 }
 
-                m_releaseReferenceCount++;
-                m_usingReferenceCount--;
+                _releaseReferenceCount++;
+                _usingReferenceCount--;
             }
 
             /// <summary>
@@ -241,18 +241,18 @@ namespace NovaEngine
             /// <exception cref="CFrameworkException"></exception>
             public void Add<T>(int count) where T : class, IReference, new()
             {
-                if (typeof(T) != m_referenceType)
+                if (typeof(T) != _referenceType)
                 {
                     throw new CFrameworkException("Type is invalid.");
                 }
 
-                lock (m_references)
+                lock (_references)
                 {
-                    m_addReferenceCount += count;
+                    _addReferenceCount += count;
                     while (count > 0)
                     {
                         count--;
-                        m_references.Enqueue(new T());
+                        _references.Enqueue(new T());
                     }
                 }
             }
@@ -263,13 +263,13 @@ namespace NovaEngine
             /// <param name="count">缓存数量</param>
             public void Add(int count)
             {
-                lock (m_references)
+                lock (_references)
                 {
-                    m_addReferenceCount += count;
+                    _addReferenceCount += count;
                     while (count > 0)
                     {
                         count--;
-                        m_references.Enqueue((IReference) SystemActivator.CreateInstance(m_referenceType));
+                        _references.Enqueue((IReference) SystemActivator.CreateInstance(_referenceType));
                     }
                 }
             }
@@ -280,18 +280,18 @@ namespace NovaEngine
             /// <param name="count">缓存数量</param>
             public void Remove(int count)
             {
-                lock (m_references)
+                lock (_references)
                 {
-                    if (count > m_references.Count)
+                    if (count > _references.Count)
                     {
-                        count = m_references.Count;
+                        count = _references.Count;
                     }
 
-                    m_removeReferenceCount += count;
+                    _removeReferenceCount += count;
                     while (count > 0)
                     {
                         count--;
-                        m_references.Dequeue();
+                        _references.Dequeue();
                     }
                 }
             }
@@ -301,10 +301,10 @@ namespace NovaEngine
             /// </summary>
             public void RemoveAll()
             {
-                lock (m_references)
+                lock (_references)
                 {
-                    m_removeReferenceCount += m_references.Count;
-                    m_references.Clear();
+                    _removeReferenceCount += _references.Count;
+                    _references.Clear();
                 }
             }
 
@@ -314,13 +314,13 @@ namespace NovaEngine
             /// <param name="reference">引用对象实例</param>
             private void OnReferenceInitialize(IReference reference)
             {
-                if (null == m_postProcessInfo)
+                if (null == _postProcessInfo)
                 {
                     reference.Initialize();
                 }
                 else
                 {
-                    m_postProcessInfo.CreateCallback(reference);
+                    _postProcessInfo.CreateCallback(reference);
                 }
             }
 
@@ -330,13 +330,13 @@ namespace NovaEngine
             /// <param name="reference">引用对象实例</param>
             private void OnReferenceCleanup(IReference reference)
             {
-                if (null == m_postProcessInfo)
+                if (null == _postProcessInfo)
                 {
                     reference.Cleanup();
                 }
                 else
                 {
-                    m_postProcessInfo.ReleaseCallback(reference);
+                    _postProcessInfo.ReleaseCallback(reference);
                 }
             }
         }

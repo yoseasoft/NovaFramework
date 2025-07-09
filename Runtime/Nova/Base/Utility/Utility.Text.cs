@@ -130,7 +130,7 @@ namespace NovaEngine
             /// <summary>
             /// 文本格式转换的处理信息对象集合
             /// </summary>
-            private static TextFormatConvertionInfo[] s_textFormatConvertionInfos = new TextFormatConvertionInfo[(int) TextFormatParameterType.Max]
+            private static TextFormatConvertionInfo[] _textFormatConvertionInfos = new TextFormatConvertionInfo[(int) TextFormatParameterType.Max]
             {
             new TextFormatConvertionInfo {
                                             parameterType = TextFormatParameterType.Unknown,
@@ -194,11 +194,11 @@ namespace NovaEngine
                 // 转换为小写字符
                 symbolName = symbolName.ToLower();
 
-                for (int n = 0; n < s_textFormatConvertionInfos.Length; ++n)
+                for (int n = 0; n < _textFormatConvertionInfos.Length; ++n)
                 {
-                    if (symbolName.Equals(s_textFormatConvertionInfos[n].formatSymbol))
+                    if (symbolName.Equals(_textFormatConvertionInfos[n].formatSymbol))
                     {
-                        return s_textFormatConvertionInfos[n].parameterType;
+                        return _textFormatConvertionInfos[n].parameterType;
                     }
                 }
 
@@ -283,7 +283,7 @@ namespace NovaEngine
                         throw new CFrameworkException("Invalid format parameter type '{0}' within text \"{1}\" position '{2}'.", substr, text, match.Index);
                     }
 
-                    TextFormatConvertionInfo convertionInfo = s_textFormatConvertionInfos[(int) parameterType];
+                    TextFormatConvertionInfo convertionInfo = _textFormatConvertionInfos[(int) parameterType];
                     parameters[index] = convertionInfo.convertionCallback(args[index]);
 
                     sb.Append($"{{{index}}}");

@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,17 +39,17 @@ namespace NovaEngine
         /// <summary>
         /// 场景名称
         /// </summary>
-        private string m_name = string.Empty;
+        private string _name = string.Empty;
 
         /// <summary>
         /// 场景开启状态标识，若该标识未开启，则无法进行使用
         /// </summary>
-        private bool m_enabled = false;
+        private bool _enabled = false;
 
         /// <summary>
         /// 场景不可移除状态标识，该标识仅适用于主场景节点
         /// </summary>
-        private bool m_unmovabled = false;
+        private bool _unmovabled = false;
 
         /// <summary>
         /// 场景数据状态类型，用于标识场景数据当前状态是否可用
@@ -135,8 +135,8 @@ namespace NovaEngine
         /// </summary>
         public string Name
         {
-            set { m_name = value; }
-            get { return m_name; }
+            set { _name = value; }
+            get { return _name; }
         }
 
         /// <summary>
@@ -144,8 +144,8 @@ namespace NovaEngine
         /// </summary>
         public bool Enabled
         {
-            set { m_enabled = value; }
-            get { return m_enabled; }
+            set { _enabled = value; }
+            get { return _enabled; }
         }
 
         /// <summary>
@@ -153,8 +153,8 @@ namespace NovaEngine
         /// </summary>
         public bool Unmovabled
         {
-            set { m_unmovabled = value; }
-            get { return m_unmovabled; }
+            set { _unmovabled = value; }
+            get { return _unmovabled; }
         }
 
         /// <summary>

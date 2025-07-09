@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ namespace NovaEngine
         /// <summary>
         /// 等待发送的记录队列
         /// </summary>
-        private readonly IList<int> m_waitingSendQueue = new List<int>();
+        private readonly IList<int> _waitingSendQueue = new List<int>();
 
         /// <summary>
         /// 获取网络通道的服务类型
@@ -85,11 +85,11 @@ namespace NovaEngine
 
         public override void Update()
         {
-            if (m_waitingSendQueue.Count > 0)
+            if (_waitingSendQueue.Count > 0)
             {
-                for (int n = 0; n < m_waitingSendQueue.Count; ++n)
+                for (int n = 0; n < _waitingSendQueue.Count; ++n)
                 {
-                    int channelID = m_waitingSendQueue[n];
+                    int channelID = _waitingSendQueue[n];
                     TcpChannel channel = (TcpChannel) GetChannel(channelID);
 
                     if (channel.IsOnWriting)
@@ -127,16 +127,16 @@ namespace NovaEngine
         /// <param name="channelID">网络通道标识</param>
         private void AddWaitingSendChannel(int channelID)
         {
-            for (int n = 0; n < m_waitingSendQueue.Count; ++n)
+            for (int n = 0; n < _waitingSendQueue.Count; ++n)
             {
-                int v = m_waitingSendQueue[n];
+                int v = _waitingSendQueue[n];
                 if (v == channelID)
                 {
                     return;
                 }
             }
 
-            m_waitingSendQueue.Add(channelID);
+            _waitingSendQueue.Add(channelID);
         }
 
         /// <summary>
@@ -145,12 +145,12 @@ namespace NovaEngine
         /// <param name="channelID">网络通道标识</param>
         private void RemoveWaitingSendChannel(int channelID)
         {
-            for (int n = m_waitingSendQueue.Count - 1; n >= 0; --n)
+            for (int n = _waitingSendQueue.Count - 1; n >= 0; --n)
             {
-                int v = m_waitingSendQueue[n];
+                int v = _waitingSendQueue[n];
                 if (v == channelID)
                 {
-                    m_waitingSendQueue.RemoveAt(n);
+                    _waitingSendQueue.RemoveAt(n);
                 }
             }
         }
@@ -160,7 +160,7 @@ namespace NovaEngine
         /// </summary>
         private void RemoveAllWaitingSendChannels()
         {
-            m_waitingSendQueue.Clear();
+            _waitingSendQueue.Clear();
         }
     }
 }

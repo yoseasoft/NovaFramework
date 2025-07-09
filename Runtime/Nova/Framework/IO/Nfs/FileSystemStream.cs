@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,7 @@ namespace NovaEngine.IO.FileSystem
         /// <summary>
         /// 缓存二进制流的字节数组
         /// </summary>
-        protected static readonly byte[] s_cachedBytes = new byte[CACHED_BYTES_LENGTH];
+        protected static readonly byte[] _cachedBytes = new byte[CACHED_BYTES_LENGTH];
 
         /// <summary>
         /// 获取或设置文件系统数据流位置
@@ -99,13 +99,13 @@ namespace NovaEngine.IO.FileSystem
         {
             int bytesRead = 0;
             int bytesLeft = length;
-            while ((bytesRead = Read(s_cachedBytes, 0, bytesLeft < CACHED_BYTES_LENGTH ? bytesLeft : CACHED_BYTES_LENGTH)) > 0)
+            while ((bytesRead = Read(_cachedBytes, 0, bytesLeft < CACHED_BYTES_LENGTH ? bytesLeft : CACHED_BYTES_LENGTH)) > 0)
             {
                 bytesLeft -= bytesRead;
-                stream.Write(s_cachedBytes, 0, bytesRead);
+                stream.Write(_cachedBytes, 0, bytesRead);
             }
 
-            SystemArray.Clear(s_cachedBytes, 0, CACHED_BYTES_LENGTH);
+            SystemArray.Clear(_cachedBytes, 0, CACHED_BYTES_LENGTH);
             return length - bytesLeft;
         }
 
@@ -132,13 +132,13 @@ namespace NovaEngine.IO.FileSystem
         {
             int bytesRead = 0;
             int bytesLeft = length;
-            while ((bytesRead = stream.Read(s_cachedBytes, 0, bytesLeft < CACHED_BYTES_LENGTH ? bytesLeft : CACHED_BYTES_LENGTH)) > 0)
+            while ((bytesRead = stream.Read(_cachedBytes, 0, bytesLeft < CACHED_BYTES_LENGTH ? bytesLeft : CACHED_BYTES_LENGTH)) > 0)
             {
                 bytesLeft -= bytesRead;
-                Write(s_cachedBytes, 0, bytesRead);
+                Write(_cachedBytes, 0, bytesRead);
             }
 
-            SystemArray.Clear(s_cachedBytes, 0, CACHED_BYTES_LENGTH);
+            SystemArray.Clear(_cachedBytes, 0, CACHED_BYTES_LENGTH);
         }
 
         /// <summary>

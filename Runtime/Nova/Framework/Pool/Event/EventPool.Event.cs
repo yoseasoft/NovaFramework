@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,30 +36,30 @@ namespace NovaEngine
         /// </summary>
         private sealed class Event : IReference
         {
-            private object m_sender;
-            private T m_eventArgs;
+            private object _sender;
+            private T _eventArgs;
 
             public Event()
             {
-                m_sender = null;
-                m_eventArgs = null;
+                _sender = null;
+                _eventArgs = null;
             }
 
             public object Sender
             {
-                get { return m_sender; }
+                get { return _sender; }
             }
 
             public T EventArgs
             {
-                get { return m_eventArgs; }
+                get { return _eventArgs; }
             }
 
             public static Event Create(object sender, T e)
             {
                 Event eventNode = ReferencePool.Acquire<Event>();
-                eventNode.m_sender = sender;
-                eventNode.m_eventArgs = e;
+                eventNode._sender = sender;
+                eventNode._eventArgs = e;
                 eventNode.Initialize();
                 return eventNode;
             }
@@ -76,8 +76,8 @@ namespace NovaEngine
             /// </summary>
             public void Cleanup()
             {
-                m_sender = null;
-                m_eventArgs = null;
+                _sender = null;
+                _eventArgs = null;
             }
         }
     }

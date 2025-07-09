@@ -1,10 +1,10 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ namespace NovaEngine
         /// <summary>
         /// 处理HTTP模式的应用实例，对基于HTTP协议的网络请求进行封装实现
         /// </summary>
-        private Network.HttpClient m_httpClient = null;
+        private Network.HttpClient _httpClient = null;
 
         /// <summary>
         /// 网络模块事件类型
@@ -68,7 +68,7 @@ namespace NovaEngine
         {
             NetworkAdapter.Startup();
 
-            m_httpClient = new Network.HttpClient();
+            _httpClient = new Network.HttpClient();
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace NovaEngine
         /// </summary>
         protected override void OnShutdown()
         {
-            m_httpClient = null;
+            _httpClient = null;
 
             NetworkAdapter.Shutdown();
         }
@@ -181,7 +181,7 @@ namespace NovaEngine
         /// <param name="handler">消息响应通知句柄</param>
         public void SendRequest(int linkID, string url, Network.HttpClient.OnHttpResponseHandler handler)
         {
-            Facade.Instance.StartCoroutine(m_httpClient.SendRequest(linkID, url, handler));
+            Facade.Instance.StartCoroutine(_httpClient.SendRequest(linkID, url, handler));
         }
 
         /// <summary>
@@ -216,13 +216,13 @@ namespace NovaEngine
         /// <param name="handler">消息响应通知句柄</param>
         public void SendPostRequest(int linkID, string url, string fields, byte[] data, Network.HttpClient.OnHttpResponseHandler handler)
         {
-            Facade.Instance.StartCoroutine(m_httpClient.SendPostRequest(linkID, url, fields, data, handler));
+            Facade.Instance.StartCoroutine(_httpClient.SendPostRequest(linkID, url, fields, data, handler));
         }
 
 
         public void SendPostUploadRequest(int linkID, string url, string fields, string fileContent, string fileName, Network.HttpClient.OnHttpResponseHandler handler)
         {
-            Facade.Instance.StartCoroutine(m_httpClient.SendPostUploadRequest(linkID, url, fields, fileContent, fileName, handler));
+            Facade.Instance.StartCoroutine(_httpClient.SendPostUploadRequest(linkID, url, fields, fileContent, fileName, handler));
         }
 
         /// <summary>
@@ -234,7 +234,7 @@ namespace NovaEngine
         /// <param name="handler">消息响应通知句柄</param>
         public void SendJsonRequest(int linkID, string url, string data, Network.HttpClient.OnHttpResponseHandler handler)
         {
-            Facade.Instance.StartCoroutine(m_httpClient.SendJsonRequest(linkID, url, data, handler));
+            Facade.Instance.StartCoroutine(_httpClient.SendJsonRequest(linkID, url, data, handler));
         }
 
         #endregion

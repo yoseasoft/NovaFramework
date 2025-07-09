@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -70,41 +70,41 @@ namespace NovaEngine
 
 #if __USING_SystemNetWebsocket_LIBRARIES_TYPE
 
-        private SystemClientWebSocket m_webSocket;
-        private SystemCancellationTokenSource m_cancellationTokenSource;
+        private SystemClientWebSocket _webSocket;
+        private SystemCancellationTokenSource _cancellationTokenSource;
 
-        private readonly byte[] m_readBuffer = null;
+        private readonly byte[] _readBuffer = null;
 
 #elif __USING_WebSocketSharp_LIBRARIES_TYPE
 
-        private WebSocketSharp.WebSocket m_webSocket;
+        private WebSocketSharp.WebSocket _webSocket;
 
 #elif __USING_UnityWebSocket_LIBRARIES_TYPE
 
-        private UnityWebSocket.IWebSocket m_webSocket;
+        private UnityWebSocket.IWebSocket _webSocket;
 
 #endif
 
-        private readonly Queue<IO.MemoryBuffer> m_writeBuffer = null;
+        private readonly Queue<IO.MemoryBuffer> _writeBuffer = null;
 
-        private readonly Queue<IO.MemoryBuffer> m_bufferCached = null;
+        private readonly Queue<IO.MemoryBuffer> _bufferCached = null;
 
         /// <summary>
         /// 网络通道当前连接状态标识
         /// </summary>
-        private bool m_isConnected = false;
+        private bool _isConnected = false;
 
         /// <summary>
         /// 网络通道当前写入状态标识
         /// </summary>
-        private bool m_isOnWriting = false;
+        private bool _isOnWriting = false;
 
         /// <summary>
         /// 获取网络通道当前连接状态标识
         /// </summary>
         public bool IsConnected
         {
-            get { return m_isConnected; }
+            get { return _isConnected; }
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace NovaEngine
         /// </summary>
         public bool IsOnWriting
         {
-            get { return m_isOnWriting; }
+            get { return _isOnWriting; }
         }
 
         /// <summary>
@@ -124,32 +124,32 @@ namespace NovaEngine
         public WebSocketChannel(string name, string url, WebSocketService service) : base(name, url, service)
         {
 #if __USING_SystemNetWebsocket_LIBRARIES_TYPE
-            this.m_readBuffer = new byte[ushort.MaxValue];
+            this._readBuffer = new byte[ushort.MaxValue];
 #endif
-            this.m_writeBuffer = new Queue<IO.MemoryBuffer>();
-            this.m_bufferCached = new Queue<IO.MemoryBuffer>();
+            this._writeBuffer = new Queue<IO.MemoryBuffer>();
+            this._bufferCached = new Queue<IO.MemoryBuffer>();
 
 #if __USING_SystemNetWebsocket_LIBRARIES_TYPE
-            this.m_webSocket = new SystemClientWebSocket();
-            this.m_cancellationTokenSource = new SystemCancellationTokenSource();
+            this._webSocket = new SystemClientWebSocket();
+            this._cancellationTokenSource = new SystemCancellationTokenSource();
 #elif __USING_WebSocketSharp_LIBRARIES_TYPE
-            this.m_webSocket = new WebSocketSharp.WebSocket(url);
+            this._webSocket = new WebSocketSharp.WebSocket(url);
 
-            this.m_webSocket.OnOpen += OnConnectionComplete;
-            this.m_webSocket.OnClose += OnDisconnectionComplete;
-            this.m_webSocket.OnError += OnConnectionError;
-            this.m_webSocket.OnMessage += OnRecvMessage;
+            this._webSocket.OnOpen += OnConnectionComplete;
+            this._webSocket.OnClose += OnDisconnectionComplete;
+            this._webSocket.OnError += OnConnectionError;
+            this._webSocket.OnMessage += OnRecvMessage;
 #elif __USING_UnityWebSocket_LIBRARIES_TYPE
-            this.m_webSocket = new UnityWebSocket.WebSocket(url);
+            this._webSocket = new UnityWebSocket.WebSocket(url);
 
-            this.m_webSocket.OnOpen += OnConnectionComplete;
-            this.m_webSocket.OnClose += OnDisconnectionComplete;
-            this.m_webSocket.OnError += OnConnectionError;
-            this.m_webSocket.OnMessage += OnRecvMessage;
+            this._webSocket.OnOpen += OnConnectionComplete;
+            this._webSocket.OnClose += OnDisconnectionComplete;
+            this._webSocket.OnError += OnConnectionError;
+            this._webSocket.OnMessage += OnRecvMessage;
 #endif
 
-            this.m_isConnected = false;
-            this.m_isOnWriting = false;
+            this._isConnected = false;
+            this._isOnWriting = false;
         }
 
         /// <summary>
@@ -158,25 +158,25 @@ namespace NovaEngine
         protected override void OnClose()
         {
 #if __USING_SystemNetWebsocket_LIBRARIES_TYPE
-            this.m_cancellationTokenSource.Cancel();
-            this.m_cancellationTokenSource.Dispose();
-            this.m_cancellationTokenSource = null;
+            this._cancellationTokenSource.Cancel();
+            this._cancellationTokenSource.Dispose();
+            this._cancellationTokenSource = null;
 
-            this.m_webSocket.Dispose();
-            this.m_webSocket = null;
+            this._webSocket.Dispose();
+            this._webSocket = null;
 #elif __USING_WebSocketSharp_LIBRARIES_TYPE
-            this.m_webSocket.Close();
-            this.m_webSocket = null;
+            this._webSocket.Close();
+            this._webSocket = null;
 #elif __USING_UnityWebSocket_LIBRARIES_TYPE
-            this.m_webSocket.CloseAsync();
-            this.m_webSocket = null;
+            this._webSocket.CloseAsync();
+            this._webSocket = null;
 #endif
 
-            // this.m_readBuffer.Clear();
-            foreach (IO.MemoryBuffer v in this.m_writeBuffer) { v.Dispose(); }
-            this.m_writeBuffer.Clear();
-            foreach (IO.MemoryBuffer v in this.m_bufferCached) { v.Dispose(); }
-            this.m_bufferCached.Clear();
+            // this._readBuffer.Clear();
+            foreach (IO.MemoryBuffer v in this._writeBuffer) { v.Dispose(); }
+            this._writeBuffer.Clear();
+            foreach (IO.MemoryBuffer v in this._bufferCached) { v.Dispose(); }
+            this._bufferCached.Clear();
 
             base.OnClose();
         }
@@ -186,7 +186,7 @@ namespace NovaEngine
         /// </summary>
         public override void Connect()
         {
-            if (this.m_isConnected)
+            if (this._isConnected)
             {
                 return;
             }
@@ -194,9 +194,9 @@ namespace NovaEngine
 #if __USING_SystemNetWebsocket_LIBRARIES_TYPE
             OnConnectAsync();
 #elif __USING_WebSocketSharp_LIBRARIES_TYPE
-            m_webSocket.ConnectAsync();
+            _webSocket.ConnectAsync();
 #elif __USING_UnityWebSocket_LIBRARIES_TYPE
-            m_webSocket.ConnectAsync();
+            _webSocket.ConnectAsync();
 #endif
         }
 
@@ -205,9 +205,9 @@ namespace NovaEngine
         {
             try
             {
-                await m_webSocket.ConnectAsync(new SystemUri(m_url), m_cancellationTokenSource.Token);
+                await _webSocket.ConnectAsync(new SystemUri(_url), _cancellationTokenSource.Token);
 
-                // Logger.Info("The WebSocket connect state {0} for target url {1}.", m_webSocket.State, m_url);
+                // Logger.Info("The WebSocket connect state {0} for target url {1}.", _webSocket.State, _url);
 
                 OnConnectionComplete();
             }
@@ -225,22 +225,22 @@ namespace NovaEngine
         private void OnConnectionComplete()
         {
             // 连接已被清除
-            if (null == this.m_webSocket)
+            if (null == this._webSocket)
             {
                 return;
             }
 
-            if (m_webSocket.State != SystemWebSocketState.Open)
+            if (_webSocket.State != SystemWebSocketState.Open)
             {
                 this.OnError(NetworkErrorCode.SocketError);
                 return;
             }
 
-            this.m_isConnected = true;
+            this._isConnected = true;
 
             this.OnRecv();
 
-            this.m_connectionCallback?.Invoke(this);
+            this._connectionCallback?.Invoke(this);
         }
 
         /// <summary>
@@ -256,16 +256,16 @@ namespace NovaEngine
         /// </summary>
         private void OnConnectionComplete(object sender, System.EventArgs e)
         {
-            this.m_isConnected = true;
+            this._isConnected = true;
 
-            this.m_connectionCallback?.Invoke(this);
+            this._connectionCallback?.Invoke(this);
         }
 
         private void OnDisconnectionComplete(object sender, System.EventArgs e)
         {
-            this.m_isConnected = false;
+            this._isConnected = false;
 
-            this.m_disconnectionCallback?.Invoke(this);
+            this._disconnectionCallback?.Invoke(this);
         }
 
         /// <summary>
@@ -281,16 +281,16 @@ namespace NovaEngine
         /// </summary>
         private void OnConnectionComplete(object sender, UnityWebSocket.OpenEventArgs e)
         {
-            this.m_isConnected = true;
+            this._isConnected = true;
 
-            this.m_connectionCallback?.Invoke(this);
+            this._connectionCallback?.Invoke(this);
         }
 
         private void OnDisconnectionComplete(object sender, UnityWebSocket.CloseEventArgs e)
         {
-            this.m_isConnected = false;
+            this._isConnected = false;
 
-            this.m_disconnectionCallback?.Invoke(this);
+            this._disconnectionCallback?.Invoke(this);
         }
 
         /// <summary>
@@ -309,21 +309,21 @@ namespace NovaEngine
         /// <returns>若远程链接被关闭返回true，否则返回false</returns>
         private bool IsRemoteClosed()
         {
-            Logger.Assert(null != this.m_webSocket || null != this.m_cancellationTokenSource, "Invalid arguments.");
+            Logger.Assert(null != this._webSocket || null != this._cancellationTokenSource, "Invalid arguments.");
 
-            if (false == this.m_isConnected) // IsClosed
+            if (false == this._isConnected) // IsClosed
             {
                 return true;
             }
 
-            if (this.m_webSocket.State != SystemWebSocketState.Open || this.m_cancellationTokenSource.IsCancellationRequested)
+            if (this._webSocket.State != SystemWebSocketState.Open || this._cancellationTokenSource.IsCancellationRequested)
             {
                 return true;
             }
 
-            if (this.m_webSocket.CloseStatus.HasValue && this.m_webSocket.CloseStatus.Value != SystemWebSocketCloseStatus.Empty)
+            if (this._webSocket.CloseStatus.HasValue && this._webSocket.CloseStatus.Value != SystemWebSocketCloseStatus.Empty)
             {
-                Logger.Info("The WebSocket was closed by status {0}.", this.m_webSocket.CloseStatus.Value);
+                Logger.Info("The WebSocket was closed by status {0}.", this._webSocket.CloseStatus.Value);
                 return true;
             }
 
@@ -367,10 +367,10 @@ namespace NovaEngine
 
         private void Send(IO.MemoryBuffer memoryBuffer)
         {
-            this.m_writeBuffer.Enqueue(memoryBuffer);
+            this._writeBuffer.Enqueue(memoryBuffer);
 
             // 记录当前通道为待发送状态
-            ((WebSocketService) this.Service).WaitingForSend(this.m_channelID);
+            ((WebSocketService) this.Service).WaitingForSend(this._channelID);
         }
 
         /// <summary>
@@ -379,7 +379,7 @@ namespace NovaEngine
         internal void OnSend()
         {
 #if __USING_SystemNetWebsocket_LIBRARIES_TYPE
-            // if (false == this.m_isConnected)
+            // if (false == this._isConnected)
             if (IsRemoteClosed())
 #elif __USING_WebSocketSharp_LIBRARIES_TYPE || __USING_UnityWebSocket_LIBRARIES_TYPE
             if (!IsConnected)
@@ -390,13 +390,13 @@ namespace NovaEngine
             }
 
             // 没有待写入数据
-            if (0 == this.m_writeBuffer.Count)
+            if (0 == this._writeBuffer.Count)
             {
-                this.m_isOnWriting = false;
+                this._isOnWriting = false;
                 return;
             }
 
-            this.m_isOnWriting = true;
+            this._isOnWriting = true;
 
             this.OnSendAsync();
         }
@@ -413,9 +413,9 @@ namespace NovaEngine
         private void OnSendAsync()
 #endif
         {
-            while (this.m_writeBuffer.Count > 0)
+            while (this._writeBuffer.Count > 0)
             {
-                IO.MemoryBuffer stream = this.m_writeBuffer.Dequeue();
+                IO.MemoryBuffer stream = this._writeBuffer.Dequeue();
 
                 try
                 {
@@ -424,12 +424,12 @@ namespace NovaEngine
 #if __USING_SystemNetWebsocket_LIBRARIES_TYPE
                     // SystemCancellationTokenSource tokenSource = new SystemCancellationTokenSource();
                     // tokenSource.CancelAfter(5000);
-                    // await this.m_webSocket.SendAsync(stream.GetMemory(), SystemWebSocketMessageType.Text, true, tokenSource.Token);
-                    await this.m_webSocket.SendAsync(stream.GetMemory(), SystemWebSocketMessageType.Text, true, this.m_cancellationTokenSource.Token);
+                    // await this._webSocket.SendAsync(stream.GetMemory(), SystemWebSocketMessageType.Text, true, tokenSource.Token);
+                    await this._webSocket.SendAsync(stream.GetMemory(), SystemWebSocketMessageType.Text, true, this._cancellationTokenSource.Token);
 #elif __USING_WebSocketSharp_LIBRARIES_TYPE
-                    this.m_webSocket.Send(stream, (int) stream.Length);
+                    this._webSocket.Send(stream, (int) stream.Length);
 #elif __USING_UnityWebSocket_LIBRARIES_TYPE
-                    this.m_webSocket.SendAsync(stream.GetMemory().ToArray());
+                    this._webSocket.SendAsync(stream.GetMemory().ToArray());
 #endif
                 }
                 catch (System.Exception e)
@@ -444,7 +444,7 @@ namespace NovaEngine
                 }
             }
 
-            this.m_isOnWriting = false;
+            this._isOnWriting = false;
         }
 
 #if __USING_SystemNetWebsocket_LIBRARIES_TYPE
@@ -462,8 +462,8 @@ namespace NovaEngine
             int receiveCount = 0;
             do
             {
-                result = await m_webSocket.ReceiveAsync(new System.Memory<byte>(m_readBuffer, receiveCount, m_readBuffer.Length - receiveCount),
-                        this.m_cancellationTokenSource.Token);
+                result = await _webSocket.ReceiveAsync(new System.Memory<byte>(_readBuffer, receiveCount, _readBuffer.Length - receiveCount),
+                        this._cancellationTokenSource.Token);
                 receiveCount += result.Count;
             } while (false == result.EndOfMessage);
 
@@ -473,15 +473,15 @@ namespace NovaEngine
                 return;
             }
 
-            if (receiveCount > m_readBuffer.Length)
+            if (receiveCount > _readBuffer.Length)
             {
-                await this.m_webSocket.CloseAsync(SystemWebSocketCloseStatus.MessageTooBig, $"message too big: {receiveCount}",
-                        this.m_cancellationTokenSource.Token);
+                await this._webSocket.CloseAsync(SystemWebSocketCloseStatus.MessageTooBig, $"message too big: {receiveCount}",
+                        this._cancellationTokenSource.Token);
                 this.OnError(NetworkErrorCode.PacketReadError);
                 return;
             }
 
-            // Logger.Info($"Received Data = {System.Text.Encoding.UTF8.GetString(m_readBuffer, 0, result.Count)}, Count = {result.Count}, Result CloseStatus = {result.MessageType}.");
+            // Logger.Info($"Received Data = {System.Text.Encoding.UTF8.GetString(_readBuffer, 0, result.Count)}, Count = {result.Count}, Result CloseStatus = {result.MessageType}.");
 
             this.OnRecvComplete(receiveCount);
         }
@@ -497,10 +497,10 @@ namespace NovaEngine
             try
             {
                 IO.MemoryBuffer buffer = Acquire();
-                buffer.Write(this.m_readBuffer, 0, recvSize);
+                buffer.Write(this._readBuffer, 0, recvSize);
 
                 buffer.Seek(0, SystemSeekOrigin.Begin);
-                this.m_readCallback.Invoke(buffer, MessageStreamCode.Byte);
+                this._readCallback.Invoke(buffer, MessageStreamCode.Byte);
 
                 Recycle(buffer);
             }
@@ -527,7 +527,7 @@ namespace NovaEngine
             buffer.Write(e.RawData, 0, e.RawData.Length);
 
             buffer.Seek(0, SystemSeekOrigin.Begin);
-            this.m_readCallback.Invoke(buffer, MessageStreamCode.Byte);
+            this._readCallback.Invoke(buffer, MessageStreamCode.Byte);
 
             Recycle(buffer);
 
@@ -562,7 +562,7 @@ namespace NovaEngine
             }
 
             buffer.Seek(0, SystemSeekOrigin.Begin);
-            this.m_readCallback.Invoke(buffer, MessageStreamCode.Byte);
+            this._readCallback.Invoke(buffer, MessageStreamCode.Byte);
 
             Recycle(buffer);
 
@@ -587,12 +587,12 @@ namespace NovaEngine
                 size = BUFFER_CHUNK_SIZE;
             }
 
-            if (this.m_bufferCached.Count == 0)
+            if (this._bufferCached.Count == 0)
             {
                 return new IO.MemoryBuffer(size);
             }
 
-            return m_bufferCached.Dequeue();
+            return _bufferCached.Dequeue();
         }
 
         /// <summary>
@@ -606,7 +606,7 @@ namespace NovaEngine
                 return;
             }
 
-            if (this.m_bufferCached.Count > BUFFER_POOL_SIZE) // 这里不需要太大，其实Kcp跟Tcp,这里1就足够了
+            if (this._bufferCached.Count > BUFFER_POOL_SIZE) // 这里不需要太大，其实Kcp跟Tcp,这里1就足够了
             {
                 return;
             }
@@ -614,7 +614,7 @@ namespace NovaEngine
             memoryBuffer.Seek(0, SystemSeekOrigin.Begin);
             memoryBuffer.SetLength(0);
 
-            this.m_bufferCached.Enqueue(memoryBuffer);
+            this._bufferCached.Enqueue(memoryBuffer);
         }
     }
 }

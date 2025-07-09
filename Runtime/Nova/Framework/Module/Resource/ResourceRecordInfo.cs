@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,17 +37,17 @@ namespace NovaEngine
         /// <summary>
         /// 资源唯一标识
         /// </summary>
-        private int m_uid = 0;
+        private int _uid = 0;
 
         /// <summary>
         /// 资源名称
         /// </summary>
-        private string m_name = string.Empty;
+        private string _name = string.Empty;
 
         /// <summary>
         /// 资源实例化对象
         /// </summary>
-        private UnityObject m_object;
+        private UnityObject _object;
 
         /// <summary>
         /// 资源信息对象构造函数
@@ -102,8 +102,8 @@ namespace NovaEngine
         /// </summary>
         public int Uid
         {
-            set { m_uid = value; }
-            get { return m_uid; }
+            set { _uid = value; }
+            get { return _uid; }
         }
 
         /// <summary>
@@ -111,8 +111,8 @@ namespace NovaEngine
         /// </summary>
         public string Name
         {
-            set { m_name = value; }
-            get { return m_name; }
+            set { _name = value; }
+            get { return _name; }
         }
 
         /// <summary>
@@ -120,8 +120,8 @@ namespace NovaEngine
         /// </summary>
         public UnityObject Object
         {
-            set { m_object = value; }
-            get { return m_object; }
+            set { _object = value; }
+            get { return _object; }
         }
 
         #endregion

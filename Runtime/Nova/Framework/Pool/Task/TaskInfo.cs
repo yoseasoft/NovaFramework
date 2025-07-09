@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -30,10 +30,10 @@ namespace NovaEngine
     /// </summary>
     public struct TaskInfo
     {
-        private readonly int m_serialID;
-        private readonly int m_priority;
-        private readonly TaskStatus m_status;
-        private readonly string m_description;
+        private readonly int _serialID;
+        private readonly int _priority;
+        private readonly TaskStatus _status;
+        private readonly string _description;
 
         /// <summary>
         /// 初始化任务信息的新实例
@@ -44,10 +44,10 @@ namespace NovaEngine
         /// <param name="description">任务描述</param>
         public TaskInfo(int serialID, int priority, TaskStatus status, string description)
         {
-            this.m_serialID = serialID;
-            this.m_priority = priority;
-            this.m_status = status;
-            this.m_description = description;
+            this._serialID = serialID;
+            this._priority = priority;
+            this._status = status;
+            this._description = description;
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace NovaEngine
         /// </summary>
         public int SerialID
         {
-            get { return m_serialID; }
+            get { return _serialID; }
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace NovaEngine
         /// </summary>
         public int Priority
         {
-            get { return m_priority; }
+            get { return _priority; }
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace NovaEngine
         /// </summary>
         public TaskStatus Status
         {
-            get { return m_status; }
+            get { return _status; }
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace NovaEngine
         /// </summary>
         public string Description
         {
-            get { return m_description; }
+            get { return _description; }
         }
     }
 }

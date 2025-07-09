@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -53,25 +53,25 @@ namespace NovaEngine
             /// <summary>
             /// 消息包的包头长度
             /// </summary>
-            private readonly int m_headerSize = 0;
+            private readonly int _headerSize = 0;
 
-            private readonly IO.CircularLinkedBuffer m_buffer = null;
+            private readonly IO.CircularLinkedBuffer _buffer = null;
 
-            private SystemMemoryStream m_memoryStream = null;
+            private SystemMemoryStream _memoryStream = null;
 
-            private ParseStateType m_stateType;
-            private int m_packetSize = 0;
-            private bool m_isCompleted = false;
+            private ParseStateType _stateType;
+            private int _packetSize = 0;
+            private bool _isCompleted = false;
 
             public MessagePacket(int headerSize, IO.CircularLinkedBuffer buffer, SystemMemoryStream memoryStream)
             {
-                this.m_headerSize = headerSize;
-                this.m_buffer = buffer;
-                this.m_memoryStream = memoryStream;
+                this._headerSize = headerSize;
+                this._buffer = buffer;
+                this._memoryStream = memoryStream;
 
-                this.m_stateType = ParseStateType.Header;
-                this.m_packetSize = 0;
-                this.m_isCompleted = false;
+                this._stateType = ParseStateType.Header;
+                this._packetSize = 0;
+                this._isCompleted = false;
             }
 
             /// <summary>
@@ -80,7 +80,7 @@ namespace NovaEngine
             /// <returns>返回解析数据结果</returns>
             public bool ParsePacket()
             {
-                if (this.m_isCompleted)
+                if (this._isCompleted)
                 {
                     return true;
                 }
@@ -88,56 +88,56 @@ namespace NovaEngine
                 bool finished = false;
                 while (false == finished)
                 {
-                    switch (this.m_stateType)
+                    switch (this._stateType)
                     {
                         case ParseStateType.Header:
-                            if (this.m_buffer.Length < this.m_headerSize)
+                            if (this._buffer.Length < this._headerSize)
                             {
                                 finished = true;
                             }
                             else
                             {
-                                this.m_buffer.Read(this.m_memoryStream.GetBuffer(), 0, this.m_headerSize);
+                                this._buffer.Read(this._memoryStream.GetBuffer(), 0, this._headerSize);
 
-                                switch (this.m_headerSize)
+                                switch (this._headerSize)
                                 {
                                     case MessageConstant.HeaderSize4:
-                                        this.m_packetSize = SystemBitConverter.ToInt32(this.m_memoryStream.GetBuffer(), 0);
-                                        if (this.m_packetSize > ushort.MaxValue * 16 || this.m_packetSize < 2)
+                                        this._packetSize = SystemBitConverter.ToInt32(this._memoryStream.GetBuffer(), 0);
+                                        if (this._packetSize > ushort.MaxValue * 16 || this._packetSize < 2)
                                         {
-                                            throw new CFrameworkException("receive header size '{0}' out of the range.", this.m_packetSize);
+                                            throw new CFrameworkException("receive header size '{0}' out of the range.", this._packetSize);
                                         }
                                         break;
                                     case MessageConstant.HeaderSize2:
-                                        short messageLength = SystemBitConverter.ToInt16(this.m_memoryStream.GetBuffer(), 0);
-                                        this.m_packetSize = SystemIPAddress.NetworkToHostOrder(messageLength);
-                                        if (this.m_packetSize > ushort.MaxValue || this.m_packetSize < 2)
+                                        short messageLength = SystemBitConverter.ToInt16(this._memoryStream.GetBuffer(), 0);
+                                        this._packetSize = SystemIPAddress.NetworkToHostOrder(messageLength);
+                                        if (this._packetSize > ushort.MaxValue || this._packetSize < 2)
                                         {
-                                            throw new CFrameworkException("receive header size '{0}' out of the range.", this.m_packetSize);
+                                            throw new CFrameworkException("receive header size '{0}' out of the range.", this._packetSize);
                                         }
                                         break;
                                     default:
-                                        throw new CFrameworkException("network packet header size '{0}' error.", this.m_headerSize);
+                                        throw new CFrameworkException("network packet header size '{0}' error.", this._headerSize);
                                 }
 
-                                this.m_stateType = ParseStateType.Body;
+                                this._stateType = ParseStateType.Body;
                             }
                             break;
 
                         case ParseStateType.Body:
-                            if (this.m_buffer.Length < this.m_packetSize)
+                            if (this._buffer.Length < this._packetSize)
                             {
                                 finished = true;
                             }
                             else
                             {
-                                this.m_memoryStream.Seek(0, SystemSeekOrigin.Begin);
-                                this.m_memoryStream.SetLength(this.m_packetSize);
+                                this._memoryStream.Seek(0, SystemSeekOrigin.Begin);
+                                this._memoryStream.SetLength(this._packetSize);
 
-                                byte[] bytes = this.m_memoryStream.GetBuffer();
-                                this.m_buffer.Read(bytes, 0, this.m_packetSize);
-                                this.m_isCompleted = true;
-                                this.m_stateType = ParseStateType.Header;
+                                byte[] bytes = this._memoryStream.GetBuffer();
+                                this._buffer.Read(bytes, 0, this._packetSize);
+                                this._isCompleted = true;
+                                this._stateType = ParseStateType.Header;
 
                                 finished = true;
                             }
@@ -145,7 +145,7 @@ namespace NovaEngine
                     }
                 }
 
-                return this.m_isCompleted;
+                return this._isCompleted;
             }
 
             /// <summary>
@@ -154,13 +154,13 @@ namespace NovaEngine
             /// <returns>返回数据流</returns>
             public SystemMemoryStream GetPacket()
             {
-                if (false == this.m_isCompleted)
+                if (false == this._isCompleted)
                 {
                     return null;
                 }
 
-                this.m_isCompleted = false;
-                return this.m_memoryStream;
+                this._isCompleted = false;
+                return this._memoryStream;
             }
         }
     }

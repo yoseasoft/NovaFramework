@@ -44,14 +44,14 @@ namespace NovaEngine
         public static class Assembly
         {
             // private static readonly SystemAssembly[] s_assemblies = null;
-            private static readonly IDictionary<string, SystemAssembly> s_cachedAssemblies = null;
-            private static readonly IDictionary<string, SystemType> s_cachedTypes = new Dictionary<string, SystemType>(SystemStringComparer.Ordinal);
+            private static readonly IDictionary<string, SystemAssembly> _cachedAssemblies = null;
+            private static readonly IDictionary<string, SystemType> _cachedTypes = null;
 
             static Assembly()
             {
                 // s_assemblies = SystemAppDomain.CurrentDomain.GetAssemblies();
-                s_cachedAssemblies = new Dictionary<string, SystemAssembly>();
-                s_cachedTypes = new Dictionary<string, SystemType>(SystemStringComparer.Ordinal);
+                _cachedAssemblies = new Dictionary<string, SystemAssembly>();
+                _cachedTypes = new Dictionary<string, SystemType>(SystemStringComparer.Ordinal);
             }
 
             /// <summary>
@@ -83,17 +83,17 @@ namespace NovaEngine
                 foreach (KeyValuePair<string, SystemAssembly> kvp in assemblies)
                 {
                     // 在非重载模式下，重复加载将移除旧包
-                    if (s_cachedAssemblies.ContainsKey(kvp.Key))
+                    if (_cachedAssemblies.ContainsKey(kvp.Key))
                     {
                         if (!reload)
                         {
                             Logger.Error("当前域中的程序集缓存列表中已存在相同名称‘{%s}’的程序包，此处正在进行错误的重复添加操作，建议在非重载模式下先移除同名程序集后再进行注册操作！", kvp.Key);
                         }
 
-                        s_cachedAssemblies.Remove(kvp.Key);
+                        _cachedAssemblies.Remove(kvp.Key);
                     }
 
-                    s_cachedAssemblies.Add(kvp.Key, kvp.Value);
+                    _cachedAssemblies.Add(kvp.Key, kvp.Value);
                 }
             }
 
@@ -108,12 +108,12 @@ namespace NovaEngine
                 for (int n = 0; null != assemblyNames && n < assemblyNames.Count; ++n)
                 {
                     removed = true;
-                    s_cachedAssemblies.Remove(assemblyNames[n]);
+                    _cachedAssemblies.Remove(assemblyNames[n]);
                 }
 
                 if (removed)
                 {
-                    s_cachedTypes.Clear();
+                    _cachedTypes.Clear();
                 }
             }
 
@@ -122,8 +122,8 @@ namespace NovaEngine
             /// </summary>
             public static void UnregisterAllAssemblies()
             {
-                s_cachedAssemblies.Clear();
-                s_cachedTypes.Clear();
+                _cachedAssemblies.Clear();
+                _cachedTypes.Clear();
             }
 
             /// <summary>
@@ -133,7 +133,7 @@ namespace NovaEngine
             /// <returns>返回该名称对应的程序集实例，若不存在则返回null</returns>
             public static SystemAssembly GetAssembly(string assemblyName)
             {
-                if (s_cachedAssemblies.TryGetValue(assemblyName, out SystemAssembly assembly))
+                if (_cachedAssemblies.TryGetValue(assemblyName, out SystemAssembly assembly))
                 {
                     return assembly;
                 }
@@ -147,7 +147,7 @@ namespace NovaEngine
             /// <returns>返回当前加载的程序集列表</returns>
             public static IList<SystemAssembly> GetAllAssemblies()
             {
-                return Collection.ToListForValues<string, SystemAssembly>(s_cachedAssemblies);
+                return Collection.ToListForValues<string, SystemAssembly>(_cachedAssemblies);
             }
 
             /// <summary>
@@ -157,7 +157,7 @@ namespace NovaEngine
             public static SystemType[] GetTypes()
             {
                 List<SystemType> results = new List<SystemType>();
-                foreach (KeyValuePair<string, SystemAssembly> kvp in s_cachedAssemblies)
+                foreach (KeyValuePair<string, SystemAssembly> kvp in _cachedAssemblies)
                 {
                     results.AddRange(kvp.Value.GetTypes());
                 }
@@ -177,7 +177,7 @@ namespace NovaEngine
                 }
 
                 results.Clear();
-                foreach (KeyValuePair<string, SystemAssembly> kvp in s_cachedAssemblies)
+                foreach (KeyValuePair<string, SystemAssembly> kvp in _cachedAssemblies)
                 {
                     results.AddRange(kvp.Value.GetTypes());
                 }
@@ -196,7 +196,7 @@ namespace NovaEngine
                 }
 
                 SystemType type = null;
-                if (s_cachedTypes.TryGetValue(typeName, out type))
+                if (_cachedTypes.TryGetValue(typeName, out type))
                 {
                     return type;
                 }
@@ -204,16 +204,16 @@ namespace NovaEngine
                 type = SystemType.GetType(typeName);
                 if (null != type)
                 {
-                    s_cachedTypes.Add(typeName, type);
+                    _cachedTypes.Add(typeName, type);
                     return type;
                 }
 
-                foreach (KeyValuePair<string, SystemAssembly> kvp in s_cachedAssemblies)
+                foreach (KeyValuePair<string, SystemAssembly> kvp in _cachedAssemblies)
                 {
                     type = SystemType.GetType(Utility.Text.Format("{%s}, {%s}", typeName, kvp.Value.FullName));
                     if (null != type)
                     {
-                        s_cachedTypes.Add(typeName, type);
+                        _cachedTypes.Add(typeName, type);
                         return type;
                     }
                 }

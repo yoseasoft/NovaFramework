@@ -1,10 +1,10 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -41,39 +41,39 @@ namespace NovaEngine
         /// <summary>
         /// 模块实例管理队列
         /// </summary>
-        private static readonly LinkedList<ModuleObject> s_modules = new LinkedList<ModuleObject>();
-        private static readonly IDictionary<int, ModuleObject> s_moduleCollections = new Dictionary<int, ModuleObject>();
+        private static readonly LinkedList<ModuleObject> _modules = new LinkedList<ModuleObject>();
+        private static readonly IDictionary<int, ModuleObject> _moduleCollections = new Dictionary<int, ModuleObject>();
 
         /// <summary>
         /// 任务调度管理队列
         /// </summary>
-        private static readonly IList<TaskInvokeAction> s_runningActions = new List<TaskInvokeAction>();
-        private static readonly IList<TaskInvokeAction> s_waitingActions = new List<TaskInvokeAction>();
+        private static readonly IList<TaskInvokeAction> _runningActions = new List<TaskInvokeAction>();
+        private static readonly IList<TaskInvokeAction> _waitingActions = new List<TaskInvokeAction>();
 
-        private static bool s_isRunning = false;
-        private static CommandDispatcher s_commandDispatcher = null;
-        private static EventPool<ModuleEventArgs> s_eventHandler;
+        private static bool _isRunning = false;
+        private static CommandDispatcher _commandDispatcher = null;
+        private static EventPool<ModuleEventArgs> _eventHandler;
 
         /// <summary>
         /// 模块中控台启动管理，该操作将启动所有已经添加的模块实例
         /// </summary>
         public static void Startup()
         {
-            if (s_isRunning)
+            if (_isRunning)
             {
                 throw new CFrameworkException("Running status is invalid.");
             }
 
             // 在加载模块前先标记运行状态为启动模式
-            s_isRunning = true;
+            _isRunning = true;
 
             // 指令转发管理器初始化操作
-            s_commandDispatcher = new CommandDispatcher();
-            s_commandDispatcher.Initialize();
+            _commandDispatcher = new CommandDispatcher();
+            _commandDispatcher.Initialize();
 
             // 事件处理句柄初始化操作
-            s_eventHandler = new EventPool<ModuleEventArgs>(EventPool<ModuleEventArgs>.AllowHandlerType.Default);
-            s_eventHandler.Startup();
+            _eventHandler = new EventPool<ModuleEventArgs>(EventPool<ModuleEventArgs>.AllowHandlerType.Default);
+            _eventHandler.Startup();
 
             // 启动当前添加管理的全部模块
             LoadModuleOnStartup();
@@ -84,7 +84,7 @@ namespace NovaEngine
         /// </summary>
         public static void Shutdown()
         {
-            if (false == s_isRunning)
+            if (false == _isRunning)
             {
                 throw new CFrameworkException("Running status is invalid.");
             }
@@ -93,18 +93,18 @@ namespace NovaEngine
             UnloadModuleOnShutdown();
 
             // 事件处理句柄清理操作
-            s_eventHandler.Shutdown();
-            s_eventHandler = null;
+            _eventHandler.Shutdown();
+            _eventHandler = null;
 
             // 指令转发管理器清理操作
-            s_commandDispatcher.Cleanup();
-            s_commandDispatcher = null;
+            _commandDispatcher.Cleanup();
+            _commandDispatcher = null;
 
-            s_waitingActions.Clear();
-            s_runningActions.Clear();
+            _waitingActions.Clear();
+            _runningActions.Clear();
 
             // 在卸载模块之后再标记运行状态为停止模式
-            s_isRunning = false;
+            _isRunning = false;
         }
 
         /// <summary>
@@ -112,12 +112,12 @@ namespace NovaEngine
         /// </summary>
         public static void Dump()
         {
-            if (false == s_isRunning)
+            if (false == _isRunning)
             {
                 return;
             }
 
-            foreach (ModuleObject module in s_modules)
+            foreach (ModuleObject module in _modules)
             {
                 module.Dump();
             }
@@ -128,41 +128,41 @@ namespace NovaEngine
         /// </summary>
         public static void Update()
         {
-            if (false == s_isRunning)
+            if (false == _isRunning)
             {
                 return;
             }
 
-            foreach (ModuleObject module in s_modules)
+            foreach (ModuleObject module in _modules)
             {
                 module.Update();
             }
 
-            if (s_waitingActions.Count > 0)
+            if (_waitingActions.Count > 0)
             {
-                lock (s_waitingActions)
+                lock (_waitingActions)
                 {
                     float t = Timestamp.Time;
-                    for (int n = s_waitingActions.Count - 1; n >= 0; --n)
+                    for (int n = _waitingActions.Count - 1; n >= 0; --n)
                     {
-                        TaskInvokeAction task = s_waitingActions[n];
+                        TaskInvokeAction task = _waitingActions[n];
                         if (task._timestamp <= t)
                         {
-                            s_runningActions.Add(task);
-                            s_waitingActions.Remove(task);
+                            _runningActions.Add(task);
+                            _waitingActions.Remove(task);
                         }
                     }
                 }
 
-                for (int n = 0; n < s_runningActions.Count; ++n)
+                for (int n = 0; n < _runningActions.Count; ++n)
                 {
-                    s_runningActions[n]._action();
+                    _runningActions[n]._action();
                 }
 
-                s_runningActions.Clear();
+                _runningActions.Clear();
             }
 
-            s_eventHandler.Update();
+            _eventHandler.Update();
         }
 
         /// <summary>
@@ -170,12 +170,12 @@ namespace NovaEngine
         /// </summary>
         public static void LateUpdate()
         {
-            if (false == s_isRunning)
+            if (false == _isRunning)
             {
                 return;
             }
 
-            foreach (ModuleObject module in s_modules)
+            foreach (ModuleObject module in _modules)
             {
                 module.LateUpdate();
             }
@@ -222,9 +222,9 @@ namespace NovaEngine
         /// <returns>返回类型获取对应的对象实例</returns>
         public static ModuleObject GetModule(int moduleType)
         {
-            if (s_moduleCollections.ContainsKey(moduleType))
+            if (_moduleCollections.ContainsKey(moduleType))
             {
-                return s_moduleCollections[moduleType];
+                return _moduleCollections[moduleType];
             }
 
             return null;
@@ -247,9 +247,9 @@ namespace NovaEngine
         /// <returns>返回当前创建的模块新实例</returns>
         private static ModuleObject CreateModuleObject(int moduleType)
         {
-            Logger.Assert(s_isRunning);
+            Logger.Assert(_isRunning);
 
-            if (s_moduleCollections.ContainsKey(moduleType))
+            if (_moduleCollections.ContainsKey(moduleType))
             {
                 throw new CFrameworkException("Module type is already exists.");
             }
@@ -266,8 +266,8 @@ namespace NovaEngine
             // 启动模块实例
             module.Startup();
 
-            s_moduleCollections.Add(moduleType, module);
-            s_modules.AddLast(module);
+            _moduleCollections.Add(moduleType, module);
+            _modules.AddLast(module);
 
             return module;
         }
@@ -287,21 +287,21 @@ namespace NovaEngine
         /// <param name="moduleType">模块对象类型</param>
         private static void ReleaseModuleObject(int moduleType)
         {
-            Logger.Assert(s_isRunning);
+            Logger.Assert(_isRunning);
 
-            if (false == s_moduleCollections.ContainsKey(moduleType))
+            if (false == _moduleCollections.ContainsKey(moduleType))
             {
                 throw new CFrameworkException("Module type is invalid.");
             }
 
-            ModuleObject module = s_moduleCollections[moduleType];
+            ModuleObject module = _moduleCollections[moduleType];
             module.Cleanup();
 
             // 关闭模块实例
             module.Shutdown();
 
-            s_moduleCollections.Remove(moduleType);
-            s_modules.Remove(module);
+            _moduleCollections.Remove(moduleType);
+            _modules.Remove(module);
         }
 
         /// <summary>
@@ -312,7 +312,7 @@ namespace NovaEngine
             LinkedList<ModuleObject> result = new LinkedList<ModuleObject>();
 
             LinkedListNode<ModuleObject> lln;
-            foreach (ModuleObject m in s_modules)
+            foreach (ModuleObject m in _modules)
             {
                 lln = result.First;
                 while (true)
@@ -335,11 +335,11 @@ namespace NovaEngine
                 }
             }
 
-            s_modules.Clear();
+            _modules.Clear();
             lln = result.First;
             while (null != lln)
             {
-                s_modules.AddLast(lln.Value);
+                _modules.AddLast(lln.Value);
                 lln = lln.Next;
             }
         }
@@ -352,7 +352,7 @@ namespace NovaEngine
             IList<int> moduleTypes = Config.GetAllRegModuleTypes();
             foreach (int moduleType in moduleTypes)
             {
-                if (s_moduleCollections.ContainsKey(moduleType))
+                if (_moduleCollections.ContainsKey(moduleType))
                 {
                     ReleaseModuleObject(moduleType);
                 }
@@ -372,7 +372,7 @@ namespace NovaEngine
             IList<int> moduleTypes = Config.GetAllRegModuleTypes();
             foreach (int moduleType in moduleTypes)
             {
-                if (s_moduleCollections.ContainsKey(moduleType))
+                if (_moduleCollections.ContainsKey(moduleType))
                 {
                     ReleaseModuleObject(moduleType);
                 }
@@ -413,9 +413,9 @@ namespace NovaEngine
                 time = Timestamp.Time + delay;
             }
 
-            lock (s_waitingActions)
+            lock (_waitingActions)
             {
-                s_waitingActions.Add(new TaskInvokeAction { _timestamp = time, _action = action, });
+                _waitingActions.Add(new TaskInvokeAction { _timestamp = time, _action = action, });
             }
         }
 
@@ -440,12 +440,12 @@ namespace NovaEngine
             if (now)
             {
                 // 事件发送 - 立即处理模式
-                s_eventHandler.FireNow(sender, e);
+                _eventHandler.FireNow(sender, e);
             }
             else
             {
                 // 事件发送
-                s_eventHandler.Fire(sender, e);
+                _eventHandler.Fire(sender, e);
             }
         }
 
@@ -456,7 +456,7 @@ namespace NovaEngine
         /// <param name="handler">事件处理函数</param>
         public static void RegisterEventHandler(int id, System.EventHandler<ModuleEventArgs> handler)
         {
-            s_eventHandler.Subscribe(id, handler);
+            _eventHandler.Subscribe(id, handler);
         }
 
         /// <summary>
@@ -466,7 +466,7 @@ namespace NovaEngine
         /// <param name="handler">事件处理函数</param>
         public static void UnregisterEventHandler(int id, System.EventHandler<ModuleEventArgs> handler)
         {
-            s_eventHandler.Unsubscribe(id, handler);
+            _eventHandler.Unsubscribe(id, handler);
         }
 
         /// <summary>
@@ -476,9 +476,9 @@ namespace NovaEngine
         /// <param name="agent">代理对象实例</param>
         public static void AddCommandAgent(string cname, ICommandAgent agent)
         {
-            Logger.Assert(s_isRunning);
+            Logger.Assert(_isRunning);
 
-            s_commandDispatcher.AddAgent(cname, agent);
+            _commandDispatcher.AddAgent(cname, agent);
         }
 
         /// <summary>
@@ -487,9 +487,9 @@ namespace NovaEngine
         /// <param name="cname">代理对象名称</param>
         public static void RemoveCommandAgent(string cname)
         {
-            Logger.Assert(s_isRunning);
+            Logger.Assert(_isRunning);
 
-            s_commandDispatcher.RemoveAgent(cname);
+            _commandDispatcher.RemoveAgent(cname);
         }
 
         /// <summary>
@@ -499,7 +499,7 @@ namespace NovaEngine
         /// <param name="type">事件类型</param>
         public static void CallCommand(int id, int type)
         {
-            if (false == s_isRunning)
+            if (false == _isRunning)
             {
                 return;
             }
@@ -512,7 +512,7 @@ namespace NovaEngine
             c.SetType(e.EventID);
             c.SetData(e);
 
-            s_commandDispatcher.Call(c);
+            _commandDispatcher.Call(c);
 
             ReferencePool.Release(e);
         }
@@ -523,12 +523,12 @@ namespace NovaEngine
         /// <param name="args">指令参数实例</param>
         public static void CallCommand(ModuleCommandArgs args)
         {
-            if (false == s_isRunning)
+            if (false == _isRunning)
             {
                 return;
             }
 
-            s_commandDispatcher.Call(args);
+            _commandDispatcher.Call(args);
         }
 
         #endregion

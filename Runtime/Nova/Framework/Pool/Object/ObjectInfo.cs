@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,59 +37,59 @@ namespace NovaEngine.ObjectPool
         /// <summary>
         /// 对象的名称
         /// </summary>
-        private readonly string m_name;
+        private readonly string _name;
         /// <summary>
         /// 对象是否被加锁的状态标识
         /// </summary>
-        private readonly bool m_locked;
+        private readonly bool _locked;
         /// <summary>
         /// 对象自定义的可释放检查标记
         /// </summary>
-        private readonly bool m_releasabled;
+        private readonly bool _releasabled;
         /// <summary>
         /// 对象的优先级
         /// </summary>
-        private readonly int m_priority;
+        private readonly int _priority;
         /// <summary>
         /// 对象上次使用的时间
         /// </summary>
-        private readonly SystemDateTime m_lastUseTime;
+        private readonly SystemDateTime _lastUseTime;
         /// <summary>
         /// 对象的孵化计数
         /// </summary>
-        private readonly int m_spawnCount;
+        private readonly int _spawnCount;
 
         /// <summary>
         /// 获取对象的名称
         /// </summary>
-        public string Name => m_name;
+        public string Name => _name;
         /// <summary>
         /// 获取对象的加锁状态
         /// </summary>
-        public bool Locked => m_locked;
+        public bool Locked => _locked;
         /// <summary>
         /// 获取对象自定义的可释放检查标记
         /// </summary>
-        public bool Releasabled => m_releasabled;
+        public bool Releasabled => _releasabled;
         /// <summary>
         /// 获取对象的优先级
         /// </summary>
-        public int Priority => m_priority;
+        public int Priority => _priority;
         /// <summary>
         /// 获取对象的上次使用时间
         /// </summary>
-        public SystemDateTime LastUseTime => m_lastUseTime;
+        public SystemDateTime LastUseTime => _lastUseTime;
         /// <summary>
         /// 获取对象的孵化计数
         /// </summary>
-        public int SpawnCount => m_spawnCount;
+        public int SpawnCount => _spawnCount;
 
         /// <summary>
         /// 获取对象当前是否正在使用的状态
         /// </summary>
         public bool IsOnUsed
         {
-            get { return m_spawnCount > 0; }
+            get { return _spawnCount > 0; }
         }
 
         /// <summary>
@@ -103,12 +103,12 @@ namespace NovaEngine.ObjectPool
         /// <param name="spawnCount">对象孵化计数</param>
         public ObjectInfo(string name, bool locked, bool releasabled, int priority, SystemDateTime lastUseTime, int spawnCount)
         {
-            m_name = name;
-            m_locked = locked;
-            m_releasabled = releasabled;
-            m_priority = priority;
-            m_lastUseTime = lastUseTime;
-            m_spawnCount = spawnCount;
+            _name = name;
+            _locked = locked;
+            _releasabled = releasabled;
+            _priority = priority;
+            _lastUseTime = lastUseTime;
+            _spawnCount = spawnCount;
         }
     }
 }

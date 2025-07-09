@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -47,25 +47,25 @@ namespace NovaEngine.IO.FileSystem
         private const int CACHED_BYTES_LENGTH = 0x1000;
 
         private static readonly string[] EmptyStringArray = new string[] { };
-        private static readonly byte[] s_cachedBytes = new byte[CACHED_BYTES_LENGTH];
+        private static readonly byte[] _cachedBytes = new byte[CACHED_BYTES_LENGTH];
 
         private static readonly int HeaderDataSize = Marshal.SizeOf(typeof(HeaderData));
         private static readonly int BlockDataSize = Marshal.SizeOf(typeof(BlockData));
         private static readonly int StringDataSize = Marshal.SizeOf(typeof(StringData));
 
-        private readonly string m_fullPath;
-        private readonly FileSystemAccessType m_accessType;
-        private readonly FileSystemStream m_stream;
-        private readonly Dictionary<string, int> m_fileDatas;
-        private readonly List<BlockData> m_blockDatas;
-        private readonly MultiDictionary<int, int> m_freeBlockIndexes;
-        private readonly SortedDictionary<int, StringData> m_stringDatas;
-        private readonly Queue<KeyValuePair<int, StringData>> m_freeStringDatas;
+        private readonly string _fullPath;
+        private readonly FileSystemAccessType _accessType;
+        private readonly FileSystemStream _stream;
+        private readonly Dictionary<string, int> _fileDatas;
+        private readonly List<BlockData> _blockDatas;
+        private readonly MultiDictionary<int, int> _freeBlockIndexes;
+        private readonly SortedDictionary<int, StringData> _stringDatas;
+        private readonly Queue<KeyValuePair<int, StringData>> _freeStringDatas;
 
-        private HeaderData m_headerData;
-        private int m_blockDataOffset;
-        private int m_stringDataOffset;
-        private int m_fileDataOffset;
+        private HeaderData _headerData;
+        private int _blockDataOffset;
+        private int _stringDataOffset;
+        private int _fileDataOffset;
 
         /// <summary>
         /// 初始化文件系统的新实例
@@ -90,19 +90,19 @@ namespace NovaEngine.IO.FileSystem
                 throw new CFrameworkException("Stream is invalid.");
             }
 
-            this.m_fullPath = fullPath;
-            this.m_accessType = accessType;
-            this.m_stream = stream;
-            this.m_fileDatas = new Dictionary<string, int>(SystemStringComparer.Ordinal);
-            this.m_blockDatas = new List<BlockData>();
-            this.m_freeBlockIndexes = new MultiDictionary<int, int>();
-            this.m_stringDatas = new SortedDictionary<int, StringData>();
-            this.m_freeStringDatas = new Queue<KeyValuePair<int, StringData>>();
+            this._fullPath = fullPath;
+            this._accessType = accessType;
+            this._stream = stream;
+            this._fileDatas = new Dictionary<string, int>(SystemStringComparer.Ordinal);
+            this._blockDatas = new List<BlockData>();
+            this._freeBlockIndexes = new MultiDictionary<int, int>();
+            this._stringDatas = new SortedDictionary<int, StringData>();
+            this._freeStringDatas = new Queue<KeyValuePair<int, StringData>>();
 
-            this.m_headerData = default(HeaderData);
-            this.m_blockDataOffset = 0;
-            this.m_stringDataOffset = 0;
-            this.m_fileDataOffset = 0;
+            this._headerData = default(HeaderData);
+            this._blockDataOffset = 0;
+            this._stringDataOffset = 0;
+            this._fileDataOffset = 0;
 
             Utility.Marshal.EnsureCachedHGlobalSize(CACHED_BYTES_LENGTH);
         }
@@ -112,7 +112,7 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         public string FullPath
         {
-            get { return m_fullPath; }
+            get { return _fullPath; }
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         public FileSystemAccessType AccessType
         {
-            get { return m_accessType; }
+            get { return _accessType; }
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         public int FileCount
         {
-            get { return m_fileDatas.Count; }
+            get { return _fileDatas.Count; }
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         public int MaxFileCount
         {
-            get { return m_headerData.MaxFileCount; }
+            get { return _headerData.MaxFileCount; }
         }
 
         /// <summary>
@@ -166,14 +166,14 @@ namespace NovaEngine.IO.FileSystem
             }
 
             FileSystem fileSystem = new FileSystem(fullPath, accessType, stream);
-            fileSystem.m_headerData = new HeaderData(maxFileCount, maxBlockCount);
+            fileSystem._headerData = new HeaderData(maxFileCount, maxBlockCount);
             CalcOffsets(fileSystem);
-            Utility.Marshal.StructureToBytes(fileSystem.m_headerData, HeaderDataSize, s_cachedBytes);
+            Utility.Marshal.StructureToBytes(fileSystem._headerData, HeaderDataSize, _cachedBytes);
 
             try
             {
-                stream.Write(s_cachedBytes, 0, HeaderDataSize);
-                stream.SetLength(fileSystem.m_fileDataOffset);
+                stream.Write(_cachedBytes, 0, HeaderDataSize);
+                stream.SetLength(fileSystem._fileDataOffset);
                 return fileSystem;
             }
             catch
@@ -194,34 +194,34 @@ namespace NovaEngine.IO.FileSystem
         {
             FileSystem fileSystem = new FileSystem(fullPath, accessType, stream);
 
-            stream.Read(s_cachedBytes, 0, HeaderDataSize);
-            fileSystem.m_headerData = Utility.Marshal.BytesToStructure<HeaderData>(HeaderDataSize, s_cachedBytes);
+            stream.Read(_cachedBytes, 0, HeaderDataSize);
+            fileSystem._headerData = Utility.Marshal.BytesToStructure<HeaderData>(HeaderDataSize, _cachedBytes);
             CalcOffsets(fileSystem);
 
-            if (fileSystem.m_blockDatas.Capacity < fileSystem.m_headerData.BlockCount)
+            if (fileSystem._blockDatas.Capacity < fileSystem._headerData.BlockCount)
             {
-                fileSystem.m_blockDatas.Capacity = fileSystem.m_headerData.BlockCount;
+                fileSystem._blockDatas.Capacity = fileSystem._headerData.BlockCount;
             }
 
-            for (int n = 0; n < fileSystem.m_headerData.BlockCount; ++n)
+            for (int n = 0; n < fileSystem._headerData.BlockCount; ++n)
             {
-                stream.Read(s_cachedBytes, 0, BlockDataSize);
-                BlockData blockData = Utility.Marshal.BytesToStructure<BlockData>(BlockDataSize, s_cachedBytes);
-                fileSystem.m_blockDatas.Add(blockData);
+                stream.Read(_cachedBytes, 0, BlockDataSize);
+                BlockData blockData = Utility.Marshal.BytesToStructure<BlockData>(BlockDataSize, _cachedBytes);
+                fileSystem._blockDatas.Add(blockData);
             }
 
-            for (int n = 0; n < fileSystem.m_blockDatas.Count; ++n)
+            for (int n = 0; n < fileSystem._blockDatas.Count; ++n)
             {
-                BlockData blockData = fileSystem.m_blockDatas[n];
+                BlockData blockData = fileSystem._blockDatas[n];
                 if (blockData.Using)
                 {
                     StringData stringData = fileSystem.ReadStringData(blockData.StringIndex);
-                    fileSystem.m_stringDatas.Add(blockData.StringIndex, stringData);
-                    fileSystem.m_fileDatas.Add(stringData.GetString(fileSystem.m_headerData.GetEncryptBytes()), n);
+                    fileSystem._stringDatas.Add(blockData.StringIndex, stringData);
+                    fileSystem._fileDatas.Add(stringData.GetString(fileSystem._headerData.GetEncryptBytes()), n);
                 }
                 else
                 {
-                    fileSystem.m_freeBlockIndexes.Add(blockData.Length, n);
+                    fileSystem._freeBlockIndexes.Add(blockData.Length, n);
                 }
             }
 
@@ -233,17 +233,17 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         public void Shutdown()
         {
-            this.m_stream.Close();
+            this._stream.Close();
 
-            this.m_fileDatas.Clear();
-            this.m_blockDatas.Clear();
-            this.m_freeBlockIndexes.Clear();
-            this.m_stringDatas.Clear();
-            this.m_freeStringDatas.Clear();
+            this._fileDatas.Clear();
+            this._blockDatas.Clear();
+            this._freeBlockIndexes.Clear();
+            this._stringDatas.Clear();
+            this._freeStringDatas.Clear();
 
-            this.m_blockDataOffset = 0;
-            this.m_stringDataOffset = 0;
-            this.m_fileDataOffset = 0;
+            this._blockDataOffset = 0;
+            this._stringDataOffset = 0;
+            this._fileDataOffset = 0;
         }
 
         /// <summary>
@@ -258,12 +258,12 @@ namespace NovaEngine.IO.FileSystem
                 throw new CFrameworkException("Name is invalid.");
             }
 
-            if (false == m_fileDatas.TryGetValue(name, out int blockIndex))
+            if (false == _fileDatas.TryGetValue(name, out int blockIndex))
             {
                 return default(FileInfo);
             }
 
-            BlockData blockData = m_blockDatas[blockIndex];
+            BlockData blockData = _blockDatas[blockIndex];
             return new FileInfo(name, GetClusterOffset(blockData.ClusterIndex), blockData.Length);
         }
 
@@ -274,10 +274,10 @@ namespace NovaEngine.IO.FileSystem
         public FileInfo[] GetAllFileInfos()
         {
             int index = 0;
-            FileInfo[] results = new FileInfo[m_fileDatas.Count];
-            foreach (KeyValuePair<string, int> fileData in m_fileDatas)
+            FileInfo[] results = new FileInfo[_fileDatas.Count];
+            foreach (KeyValuePair<string, int> fileData in _fileDatas)
             {
-                BlockData blockData = m_blockDatas[fileData.Value];
+                BlockData blockData = _blockDatas[fileData.Value];
                 results[index++] = new FileInfo(fileData.Key, GetClusterOffset(blockData.ClusterIndex), blockData.Length);
             }
 
@@ -296,9 +296,9 @@ namespace NovaEngine.IO.FileSystem
             }
 
             results.Clear();
-            foreach (KeyValuePair<string, int> fileData in m_fileDatas)
+            foreach (KeyValuePair<string, int> fileData in _fileDatas)
             {
-                BlockData blockData = m_blockDatas[fileData.Value];
+                BlockData blockData = _blockDatas[fileData.Value];
                 results.Add(new FileInfo(fileData.Key, GetClusterOffset(blockData.ClusterIndex), blockData.Length));
             }
         }
@@ -315,7 +315,7 @@ namespace NovaEngine.IO.FileSystem
                 throw new CFrameworkException("Name is invalid.");
             }
 
-            return m_fileDatas.ContainsKey(name);
+            return _fileDatas.ContainsKey(name);
         }
 
         /// <summary>
@@ -325,7 +325,7 @@ namespace NovaEngine.IO.FileSystem
         /// <returns>返回读取文件内容的二进制流</returns>
         public byte[] ReadFile(string name)
         {
-            if (m_accessType != FileSystemAccessType.ReadOnly && m_accessType != FileSystemAccessType.ReadWrite)
+            if (_accessType != FileSystemAccessType.ReadOnly && _accessType != FileSystemAccessType.ReadWrite)
             {
                 throw new CFrameworkException("File system is not readable.");
             }
@@ -345,8 +345,8 @@ namespace NovaEngine.IO.FileSystem
             byte[] buffer = new byte[length];
             if (length > 0)
             {
-                m_stream.Position = fileInfo.Offset;
-                m_stream.Read(buffer, 0, length);
+                _stream.Position = fileInfo.Offset;
+                _stream.Read(buffer, 0, length);
             }
 
             return buffer;
@@ -395,7 +395,7 @@ namespace NovaEngine.IO.FileSystem
         /// <returns>返回实际读取的文件字节数</returns>
         public int ReadFile(string name, byte[] buffer, int startIndex, int length)
         {
-            if (m_accessType != FileSystemAccessType.ReadOnly && m_accessType != FileSystemAccessType.ReadWrite)
+            if (_accessType != FileSystemAccessType.ReadOnly && _accessType != FileSystemAccessType.ReadWrite)
             {
                 throw new CFrameworkException("File system is not readable.");
             }
@@ -421,7 +421,7 @@ namespace NovaEngine.IO.FileSystem
                 return 0;
             }
 
-            m_stream.Position = fileInfo.Offset;
+            _stream.Position = fileInfo.Offset;
             if (length > fileInfo.Length)
             {
                 length = fileInfo.Length;
@@ -429,7 +429,7 @@ namespace NovaEngine.IO.FileSystem
 
             if (length > 0)
             {
-                return m_stream.Read(buffer, startIndex, length);
+                return _stream.Read(buffer, startIndex, length);
             }
 
             return 0;
@@ -443,7 +443,7 @@ namespace NovaEngine.IO.FileSystem
         /// <returns>返回实际读取的文件字节数</returns>
         public int ReadFile(string name, SystemStream stream)
         {
-            if (m_accessType != FileSystemAccessType.ReadOnly && m_accessType != FileSystemAccessType.ReadWrite)
+            if (_accessType != FileSystemAccessType.ReadOnly && _accessType != FileSystemAccessType.ReadWrite)
             {
                 throw new CFrameworkException("File system is not readable.");
             }
@@ -472,8 +472,8 @@ namespace NovaEngine.IO.FileSystem
             int length = fileInfo.Length;
             if (length > 0)
             {
-                m_stream.Position = fileInfo.Offset;
-                return m_stream.Read(stream, length);
+                _stream.Position = fileInfo.Offset;
+                return _stream.Read(stream, length);
             }
 
             return 0;
@@ -499,7 +499,7 @@ namespace NovaEngine.IO.FileSystem
         /// <returns>返回读取文件片段内容的二进制流</returns>
         public byte[] ReadFileSegment(string name, int offset, int length)
         {
-            if (m_accessType != FileSystemAccessType.ReadOnly && m_accessType != FileSystemAccessType.ReadWrite)
+            if (_accessType != FileSystemAccessType.ReadOnly && _accessType != FileSystemAccessType.ReadWrite)
             {
                 throw new CFrameworkException("File system is not readable.");
             }
@@ -539,8 +539,8 @@ namespace NovaEngine.IO.FileSystem
             byte[] buffer = new byte[length];
             if (length > 0)
             {
-                m_stream.Position = fileInfo.Offset + offset;
-                m_stream.Read(buffer, 0, length);
+                _stream.Position = fileInfo.Offset + offset;
+                _stream.Read(buffer, 0, length);
             }
 
             return buffer;
@@ -628,7 +628,7 @@ namespace NovaEngine.IO.FileSystem
         /// <returns>返回实际读取的文件片段字节数</returns>
         public int ReadFileSegment(string name, int offset, byte[] buffer, int startIndex, int length)
         {
-            if (m_accessType != FileSystemAccessType.ReadOnly && m_accessType != FileSystemAccessType.ReadWrite)
+            if (_accessType != FileSystemAccessType.ReadOnly && _accessType != FileSystemAccessType.ReadWrite)
             {
                 throw new CFrameworkException("File system is not readable.");
             }
@@ -672,8 +672,8 @@ namespace NovaEngine.IO.FileSystem
 
             if (length > 0)
             {
-                m_stream.Position = fileInfo.Offset + offset;
-                return m_stream.Read(buffer, startIndex, length);
+                _stream.Position = fileInfo.Offset + offset;
+                return _stream.Read(buffer, startIndex, length);
             }
 
             return 0;
@@ -701,7 +701,7 @@ namespace NovaEngine.IO.FileSystem
         /// <returns>返回实际读取的文件片段字节数</returns>
         public int ReadFileSegment(string name, int offset, SystemStream stream, int length)
         {
-            if (m_accessType != FileSystemAccessType.ReadOnly && m_accessType != FileSystemAccessType.ReadWrite)
+            if (_accessType != FileSystemAccessType.ReadOnly && _accessType != FileSystemAccessType.ReadWrite)
             {
                 throw new CFrameworkException("File system is not readable.");
             }
@@ -750,8 +750,8 @@ namespace NovaEngine.IO.FileSystem
 
             if (length > 0)
             {
-                m_stream.Position = fileInfo.Offset + offset;
-                return m_stream.Read(stream, length);
+                _stream.Position = fileInfo.Offset + offset;
+                return _stream.Read(stream, length);
             }
 
             return 0;
@@ -800,7 +800,7 @@ namespace NovaEngine.IO.FileSystem
         /// <returns>返回写入指定文件是否成功</returns>
         public bool WriteFile(string name, byte[] buffer, int startIndex, int length)
         {
-            if (m_accessType != FileSystemAccessType.WriteOnly && m_accessType != FileSystemAccessType.ReadWrite)
+            if (_accessType != FileSystemAccessType.WriteOnly && _accessType != FileSystemAccessType.ReadWrite)
             {
                 throw new CFrameworkException("File system is not writable.");
             }
@@ -827,12 +827,12 @@ namespace NovaEngine.IO.FileSystem
 
             bool hasFile = false;
             int oldBlockIndex = -1;
-            if (m_fileDatas.TryGetValue(name, out oldBlockIndex))
+            if (_fileDatas.TryGetValue(name, out oldBlockIndex))
             {
                 hasFile = true;
             }
 
-            if (false == hasFile && m_fileDatas.Count >= m_headerData.MaxFileCount)
+            if (false == hasFile && _fileDatas.Count >= _headerData.MaxFileCount)
             {
                 return false;
             }
@@ -845,12 +845,12 @@ namespace NovaEngine.IO.FileSystem
 
             if (length > 0)
             {
-                m_stream.Position = GetClusterOffset(m_blockDatas[blockIndex].ClusterIndex);
-                m_stream.Write(buffer, startIndex, length);
+                _stream.Position = GetClusterOffset(_blockDatas[blockIndex].ClusterIndex);
+                _stream.Write(buffer, startIndex, length);
             }
 
             ProcessWriteFile(name, hasFile, oldBlockIndex, blockIndex, length);
-            m_stream.Flush();
+            _stream.Flush();
             return true;
         }
 
@@ -862,7 +862,7 @@ namespace NovaEngine.IO.FileSystem
         /// <returns>返回写入指定文件是否成功</returns>
         public bool WriteFile(string name, SystemStream stream)
         {
-            if (m_accessType != FileSystemAccessType.WriteOnly && m_accessType != FileSystemAccessType.ReadWrite)
+            if (_accessType != FileSystemAccessType.WriteOnly && _accessType != FileSystemAccessType.ReadWrite)
             {
                 throw new CFrameworkException("File system is not writable.");
             }
@@ -889,12 +889,12 @@ namespace NovaEngine.IO.FileSystem
 
             bool hasFile = false;
             int oldBlockIndex = -1;
-            if (m_fileDatas.TryGetValue(name, out oldBlockIndex))
+            if (_fileDatas.TryGetValue(name, out oldBlockIndex))
             {
                 hasFile = true;
             }
 
-            if (false == hasFile && m_fileDatas.Count >= m_headerData.MaxFileCount)
+            if (false == hasFile && _fileDatas.Count >= _headerData.MaxFileCount)
             {
                 return false;
             }
@@ -908,12 +908,12 @@ namespace NovaEngine.IO.FileSystem
 
             if (length > 0)
             {
-                m_stream.Position = GetClusterOffset(m_blockDatas[blockIndex].ClusterIndex);
-                m_stream.Write(stream, length);
+                _stream.Position = GetClusterOffset(_blockDatas[blockIndex].ClusterIndex);
+                _stream.Write(stream, length);
             }
 
             ProcessWriteFile(name, hasFile, oldBlockIndex, blockIndex, length);
-            m_stream.Flush();
+            _stream.Flush();
             return true;
         }
 
@@ -949,7 +949,7 @@ namespace NovaEngine.IO.FileSystem
         /// <returns>返回将指定文件另存为物理文件是否成功</returns>
         public bool SaveAsFile(string name, string filePath)
         {
-            if (m_accessType != FileSystemAccessType.ReadOnly && m_accessType != FileSystemAccessType.ReadWrite)
+            if (_accessType != FileSystemAccessType.ReadOnly && _accessType != FileSystemAccessType.ReadWrite)
             {
                 throw new CFrameworkException("File system is not readable.");
             }
@@ -988,8 +988,8 @@ namespace NovaEngine.IO.FileSystem
                     int length = fileInfo.Length;
                     if (length > 0)
                     {
-                        m_stream.Position = fileInfo.Offset;
-                        return m_stream.Read(fileStream, length) == length;
+                        _stream.Position = fileInfo.Offset;
+                        return _stream.Read(fileStream, length) == length;
                     }
 
                     return true;
@@ -1009,7 +1009,7 @@ namespace NovaEngine.IO.FileSystem
         /// <returns>返回重命名指定文件是否成功</returns>
         public bool RenameFile(string oldName, string newName)
         {
-            if (m_accessType != FileSystemAccessType.WriteOnly && m_accessType != FileSystemAccessType.ReadWrite)
+            if (_accessType != FileSystemAccessType.WriteOnly && _accessType != FileSystemAccessType.ReadWrite)
             {
                 throw new CFrameworkException("File system is not writable.");
             }
@@ -1034,23 +1034,23 @@ namespace NovaEngine.IO.FileSystem
                 return true;
             }
 
-            if (m_fileDatas.ContainsKey(newName))
+            if (_fileDatas.ContainsKey(newName))
             {
                 return false;
             }
 
-            if (false == m_fileDatas.TryGetValue(oldName, out int blockIndex))
+            if (false == _fileDatas.TryGetValue(oldName, out int blockIndex))
             {
                 return false;
             }
 
-            int stringIndex = m_blockDatas[blockIndex].StringIndex;
-            StringData stringData = m_stringDatas[stringIndex].SetString(newName, m_headerData.GetEncryptBytes());
-            m_stringDatas[stringIndex] = stringData;
+            int stringIndex = _blockDatas[blockIndex].StringIndex;
+            StringData stringData = _stringDatas[stringIndex].SetString(newName, _headerData.GetEncryptBytes());
+            _stringDatas[stringIndex] = stringData;
             WriteStringData(stringIndex, stringData);
-            m_fileDatas.Add(newName, blockIndex);
-            m_fileDatas.Remove(oldName);
-            m_stream.Flush();
+            _fileDatas.Add(newName, blockIndex);
+            _fileDatas.Remove(oldName);
+            _stream.Flush();
             return true;
         }
 
@@ -1061,7 +1061,7 @@ namespace NovaEngine.IO.FileSystem
         /// <returns>返回删除指定文件是否成功</returns>
         public bool DeleteFile(string name)
         {
-            if (m_accessType != FileSystemAccessType.WriteOnly && m_accessType != FileSystemAccessType.ReadWrite)
+            if (_accessType != FileSystemAccessType.WriteOnly && _accessType != FileSystemAccessType.ReadWrite)
             {
                 throw new CFrameworkException("File system is not writable.");
             }
@@ -1071,47 +1071,47 @@ namespace NovaEngine.IO.FileSystem
                 throw new CFrameworkException("Name is invalid.");
             }
 
-            if (false == m_fileDatas.TryGetValue(name, out int blockIndex))
+            if (false == _fileDatas.TryGetValue(name, out int blockIndex))
             {
                 return false;
             }
 
-            m_fileDatas.Remove(name);
+            _fileDatas.Remove(name);
 
-            BlockData blockData = m_blockDatas[blockIndex];
+            BlockData blockData = _blockDatas[blockIndex];
             int stringIndex = blockData.StringIndex;
-            StringData stringData = m_stringDatas[stringIndex].Clear();
-            m_freeStringDatas.Enqueue(new KeyValuePair<int, StringData>(stringIndex, stringData));
-            m_stringDatas.Remove(stringIndex);
+            StringData stringData = _stringDatas[stringIndex].Clear();
+            _freeStringDatas.Enqueue(new KeyValuePair<int, StringData>(stringIndex, stringData));
+            _stringDatas.Remove(stringIndex);
             WriteStringData(stringIndex, stringData);
 
             blockData = blockData.Free();
-            m_blockDatas[blockIndex] = blockData;
+            _blockDatas[blockIndex] = blockData;
             if (false == TryCombineFreeBlocks(blockIndex))
             {
-                m_freeBlockIndexes.Add(blockData.Length, blockIndex);
+                _freeBlockIndexes.Add(blockData.Length, blockIndex);
                 WriteBlockData(blockIndex);
             }
 
-            m_stream.Flush();
+            _stream.Flush();
             return true;
         }
 
         private void ProcessWriteFile(string name, bool hasFile, int oldBlockIndex, int blockIndex, int length)
         {
-            BlockData blockData = m_blockDatas[blockIndex];
+            BlockData blockData = _blockDatas[blockIndex];
             if (hasFile)
             {
-                BlockData oldBlockData = m_blockDatas[oldBlockIndex];
+                BlockData oldBlockData = _blockDatas[oldBlockIndex];
                 blockData = new BlockData(oldBlockData.StringIndex, blockData.ClusterIndex, length);
-                m_blockDatas[blockIndex] = blockData;
+                _blockDatas[blockIndex] = blockData;
                 WriteBlockData(blockIndex);
 
                 oldBlockData = oldBlockData.Free();
-                m_blockDatas[oldBlockIndex] = oldBlockData;
+                _blockDatas[oldBlockIndex] = oldBlockData;
                 if (false == TryCombineFreeBlocks(oldBlockIndex))
                 {
-                    m_freeBlockIndexes.Add(oldBlockData.Length, oldBlockIndex);
+                    _freeBlockIndexes.Add(oldBlockData.Length, oldBlockIndex);
                     WriteBlockData(oldBlockIndex);
                 }
             }
@@ -1119,23 +1119,23 @@ namespace NovaEngine.IO.FileSystem
             {
                 int stringIndex = AllocString(name);
                 blockData = new BlockData(stringIndex, blockData.ClusterIndex, length);
-                m_blockDatas[blockIndex] = blockData;
+                _blockDatas[blockIndex] = blockData;
                 WriteBlockData(blockIndex);
             }
 
             if (hasFile)
             {
-                m_fileDatas[name] = blockIndex;
+                _fileDatas[name] = blockIndex;
             }
             else
             {
-                m_fileDatas.Add(name, blockIndex);
+                _fileDatas.Add(name, blockIndex);
             }
         }
 
         private bool TryCombineFreeBlocks(int freeBlockIndex)
         {
-            BlockData freeBlockData = m_blockDatas[freeBlockIndex];
+            BlockData freeBlockData = _blockDatas[freeBlockIndex];
             if (freeBlockData.Length <= 0)
             {
                 return false;
@@ -1144,7 +1144,7 @@ namespace NovaEngine.IO.FileSystem
             int previousFreeBlockIndex = -1;
             int nextFreeBlockIndex = -1;
             int nextBlockDataClusterIndex = freeBlockData.ClusterIndex + GetUpBoundClusterCount(freeBlockData.Length);
-            foreach (KeyValuePair<int, DoubleLinkedList<int>> blockIndexes in m_freeBlockIndexes)
+            foreach (KeyValuePair<int, DoubleLinkedList<int>> blockIndexes in _freeBlockIndexes)
             {
                 if (blockIndexes.Key <= 0)
                 {
@@ -1154,7 +1154,7 @@ namespace NovaEngine.IO.FileSystem
                 int blockDataClusterCount = GetUpBoundClusterCount(blockIndexes.Key);
                 foreach (int blockIndex in blockIndexes.Value)
                 {
-                    BlockData blockData = m_blockDatas[blockIndex];
+                    BlockData blockData = _blockDatas[blockIndex];
                     if (blockData.ClusterIndex + blockDataClusterCount == freeBlockData.ClusterIndex)
                     {
                         previousFreeBlockIndex = blockIndex;
@@ -1171,29 +1171,29 @@ namespace NovaEngine.IO.FileSystem
                 return false;
             }
 
-            m_freeBlockIndexes.Remove(freeBlockData.Length, freeBlockIndex);
+            _freeBlockIndexes.Remove(freeBlockData.Length, freeBlockIndex);
             if (previousFreeBlockIndex >= 0)
             {
-                BlockData previousFreeBlockData = m_blockDatas[previousFreeBlockIndex];
-                m_freeBlockIndexes.Remove(previousFreeBlockData.Length, previousFreeBlockIndex);
+                BlockData previousFreeBlockData = _blockDatas[previousFreeBlockIndex];
+                _freeBlockIndexes.Remove(previousFreeBlockData.Length, previousFreeBlockIndex);
                 freeBlockData = new BlockData(previousFreeBlockData.ClusterIndex, previousFreeBlockData.Length + freeBlockData.Length);
-                m_blockDatas[previousFreeBlockIndex] = BlockData.Empty;
-                m_freeBlockIndexes.Add(0, previousFreeBlockIndex);
+                _blockDatas[previousFreeBlockIndex] = BlockData.Empty;
+                _freeBlockIndexes.Add(0, previousFreeBlockIndex);
                 WriteBlockData(previousFreeBlockIndex);
             }
 
             if (nextFreeBlockIndex >= 0)
             {
-                BlockData nextFreeBlockData = m_blockDatas[nextFreeBlockIndex];
-                m_freeBlockIndexes.Remove(nextFreeBlockData.Length, nextFreeBlockIndex);
+                BlockData nextFreeBlockData = _blockDatas[nextFreeBlockIndex];
+                _freeBlockIndexes.Remove(nextFreeBlockData.Length, nextFreeBlockIndex);
                 freeBlockData = new BlockData(freeBlockData.ClusterIndex, freeBlockData.Length + nextFreeBlockData.Length);
-                m_blockDatas[nextFreeBlockIndex] = BlockData.Empty;
-                m_freeBlockIndexes.Add(0, nextFreeBlockIndex);
+                _blockDatas[nextFreeBlockIndex] = BlockData.Empty;
+                _freeBlockIndexes.Add(0, nextFreeBlockIndex);
                 WriteBlockData(nextFreeBlockIndex);
             }
 
-            m_blockDatas[freeBlockIndex] = freeBlockData;
-            m_freeBlockIndexes.Add(freeBlockData.Length, freeBlockIndex);
+            _blockDatas[freeBlockIndex] = freeBlockData;
+            _freeBlockIndexes.Add(freeBlockData.Length, freeBlockIndex);
             WriteBlockData(freeBlockIndex);
             return true;
         }
@@ -1201,17 +1201,17 @@ namespace NovaEngine.IO.FileSystem
         private int GetEmptyBlockIndex()
         {
             DoubleLinkedList<int> lengthRange = default(DoubleLinkedList<int>);
-            if (m_freeBlockIndexes.TryGetValue(0, out lengthRange))
+            if (_freeBlockIndexes.TryGetValue(0, out lengthRange))
             {
                 int blockIndex = lengthRange.First.Value;
-                m_freeBlockIndexes.Remove(0, blockIndex);
+                _freeBlockIndexes.Remove(0, blockIndex);
                 return blockIndex;
             }
 
-            if (m_blockDatas.Count < m_headerData.MaxBlockCount)
+            if (_blockDatas.Count < _headerData.MaxBlockCount)
             {
-                int blockIndex = m_blockDatas.Count;
-                m_blockDatas.Add(BlockData.Empty);
+                int blockIndex = _blockDatas.Count;
+                _blockDatas.Add(BlockData.Empty);
                 WriteHeaderData();
                 return blockIndex;
             }
@@ -1230,7 +1230,7 @@ namespace NovaEngine.IO.FileSystem
 
             int lengthFound = -1;
             DoubleLinkedList<int> lengthRange = default(DoubleLinkedList<int>);
-            foreach (KeyValuePair<int, DoubleLinkedList<int>> i in m_freeBlockIndexes)
+            foreach (KeyValuePair<int, DoubleLinkedList<int>> i in _freeBlockIndexes)
             {
                 if (i.Key < length)
                 {
@@ -1248,23 +1248,23 @@ namespace NovaEngine.IO.FileSystem
 
             if (lengthFound >= 0)
             {
-                if (lengthFound > length && m_blockDatas.Count >= m_headerData.MaxBlockCount)
+                if (lengthFound > length && _blockDatas.Count >= _headerData.MaxBlockCount)
                 {
                     return -1;
                 }
 
                 int blockIndex = lengthRange.First.Value;
-                m_freeBlockIndexes.Remove(lengthFound, blockIndex);
+                _freeBlockIndexes.Remove(lengthFound, blockIndex);
                 if (lengthFound > length)
                 {
-                    BlockData blockData = m_blockDatas[blockIndex];
-                    m_blockDatas[blockIndex] = new BlockData(blockData.ClusterIndex, length);
+                    BlockData blockData = _blockDatas[blockIndex];
+                    _blockDatas[blockIndex] = new BlockData(blockData.ClusterIndex, length);
                     WriteBlockData(blockIndex);
 
                     int deltaLength = lengthFound - length;
                     int anotherBlockIndex = GetEmptyBlockIndex();
-                    m_blockDatas[anotherBlockIndex] = new BlockData(blockData.ClusterIndex + GetUpBoundClusterCount(length), deltaLength);
-                    m_freeBlockIndexes.Add(deltaLength, anotherBlockIndex);
+                    _blockDatas[anotherBlockIndex] = new BlockData(blockData.ClusterIndex + GetUpBoundClusterCount(length), deltaLength);
+                    _freeBlockIndexes.Add(deltaLength, anotherBlockIndex);
                     WriteBlockData(anotherBlockIndex);
                 }
 
@@ -1278,17 +1278,17 @@ namespace NovaEngine.IO.FileSystem
                     return -1;
                 }
 
-                long fileLength = m_stream.Length;
+                long fileLength = _stream.Length;
                 try
                 {
-                    m_stream.SetLength(fileLength + length);
+                    _stream.SetLength(fileLength + length);
                 }
                 catch
                 {
                     return -1;
                 }
 
-                m_blockDatas[blockIndex] = new BlockData(GetUpBoundClusterCount(fileLength), length);
+                _blockDatas[blockIndex] = new BlockData(GetUpBoundClusterCount(fileLength), length);
                 WriteBlockData(blockIndex);
                 return blockIndex;
             }
@@ -1299,16 +1299,16 @@ namespace NovaEngine.IO.FileSystem
             int stringIndex = -1;
             StringData stringData = default(StringData);
 
-            if (m_freeStringDatas.Count > 0)
+            if (_freeStringDatas.Count > 0)
             {
-                KeyValuePair<int, StringData> freeStringData = m_freeStringDatas.Dequeue();
+                KeyValuePair<int, StringData> freeStringData = _freeStringDatas.Dequeue();
                 stringIndex = freeStringData.Key;
                 stringData = freeStringData.Value;
             }
             else
             {
                 int index = 0;
-                foreach (KeyValuePair<int, StringData> k in m_stringDatas)
+                foreach (KeyValuePair<int, StringData> k in _stringDatas)
                 {
                     if (k.Key == index)
                     {
@@ -1319,7 +1319,7 @@ namespace NovaEngine.IO.FileSystem
                     break;
                 }
 
-                if (index < m_headerData.MaxFileCount)
+                if (index < _headerData.MaxFileCount)
                 {
                     stringIndex = index;
                     byte[] bytes = new byte[byte.MaxValue];
@@ -1333,46 +1333,46 @@ namespace NovaEngine.IO.FileSystem
                 throw new CFrameworkException("Alloc string internal error.");
             }
 
-            stringData = stringData.SetString(value, m_headerData.GetEncryptBytes());
-            m_stringDatas.Add(stringIndex, stringData);
+            stringData = stringData.SetString(value, _headerData.GetEncryptBytes());
+            _stringDatas.Add(stringIndex, stringData);
             WriteStringData(stringIndex, stringData);
             return stringIndex;
         }
 
         private void WriteHeaderData()
         {
-            m_headerData = m_headerData.SetBlockCount(m_blockDatas.Count);
-            Utility.Marshal.StructureToBytes(m_headerData, HeaderDataSize, s_cachedBytes);
-            m_stream.Position = 0L;
-            m_stream.Write(s_cachedBytes, 0, HeaderDataSize);
+            _headerData = _headerData.SetBlockCount(_blockDatas.Count);
+            Utility.Marshal.StructureToBytes(_headerData, HeaderDataSize, _cachedBytes);
+            _stream.Position = 0L;
+            _stream.Write(_cachedBytes, 0, HeaderDataSize);
         }
 
         private void WriteBlockData(int blockIndex)
         {
-            Utility.Marshal.StructureToBytes(m_blockDatas[blockIndex], BlockDataSize, s_cachedBytes);
-            m_stream.Position = m_blockDataOffset + BlockDataSize * blockIndex;
-            m_stream.Write(s_cachedBytes, 0, BlockDataSize);
+            Utility.Marshal.StructureToBytes(_blockDatas[blockIndex], BlockDataSize, _cachedBytes);
+            _stream.Position = _blockDataOffset + BlockDataSize * blockIndex;
+            _stream.Write(_cachedBytes, 0, BlockDataSize);
         }
 
         private StringData ReadStringData(int stringIndex)
         {
-            m_stream.Position = m_stringDataOffset + StringDataSize * stringIndex;
-            m_stream.Read(s_cachedBytes, 0, StringDataSize);
-            return Utility.Marshal.BytesToStructure<StringData>(StringDataSize, s_cachedBytes);
+            _stream.Position = _stringDataOffset + StringDataSize * stringIndex;
+            _stream.Read(_cachedBytes, 0, StringDataSize);
+            return Utility.Marshal.BytesToStructure<StringData>(StringDataSize, _cachedBytes);
         }
 
         private void WriteStringData(int stringIndex, StringData stringData)
         {
-            Utility.Marshal.StructureToBytes(stringData, StringDataSize, s_cachedBytes);
-            m_stream.Position = m_stringDataOffset + StringDataSize * stringIndex;
-            m_stream.Write(s_cachedBytes, 0, StringDataSize);
+            Utility.Marshal.StructureToBytes(stringData, StringDataSize, _cachedBytes);
+            _stream.Position = _stringDataOffset + StringDataSize * stringIndex;
+            _stream.Write(_cachedBytes, 0, StringDataSize);
         }
 
         private static void CalcOffsets(FileSystem fileSystem)
         {
-            fileSystem.m_blockDataOffset = HeaderDataSize;
-            fileSystem.m_stringDataOffset = fileSystem.m_blockDataOffset + BlockDataSize * fileSystem.m_headerData.MaxBlockCount;
-            fileSystem.m_fileDataOffset = (int) GetUpBoundClusterOffset(fileSystem.m_stringDataOffset + StringDataSize * fileSystem.m_headerData.MaxFileCount);
+            fileSystem._blockDataOffset = HeaderDataSize;
+            fileSystem._stringDataOffset = fileSystem._blockDataOffset + BlockDataSize * fileSystem._headerData.MaxBlockCount;
+            fileSystem._fileDataOffset = (int) GetUpBoundClusterOffset(fileSystem._stringDataOffset + StringDataSize * fileSystem._headerData.MaxFileCount);
         }
 
         private static long GetUpBoundClusterOffset(long offset)

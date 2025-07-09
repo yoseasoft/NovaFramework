@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,9 +37,9 @@ namespace NovaEngine.IO.FileSystem
         {
             public static readonly BlockData Empty = new BlockData(0, 0);
 
-            private readonly int m_stringIndex;
-            private readonly int m_clusterIndex;
-            private readonly int m_length;
+            private readonly int _stringIndex;
+            private readonly int _clusterIndex;
+            private readonly int _length;
 
             public BlockData(int clusterIndex, int length)
                 : this(-1, clusterIndex, length)
@@ -48,34 +48,34 @@ namespace NovaEngine.IO.FileSystem
 
             public BlockData(int stringIndex, int clusterIndex, int length)
             {
-                this.m_stringIndex = stringIndex;
-                this.m_clusterIndex = clusterIndex;
-                this.m_length = length;
+                this._stringIndex = stringIndex;
+                this._clusterIndex = clusterIndex;
+                this._length = length;
             }
 
             public bool Using
             {
-                get { return m_stringIndex >= 0; }
+                get { return _stringIndex >= 0; }
             }
 
             public int StringIndex
             {
-                get { return m_stringIndex; }
+                get { return _stringIndex; }
             }
 
             public int ClusterIndex
             {
-                get { return m_clusterIndex; }
+                get { return _clusterIndex; }
             }
 
             public int Length
             {
-                get { return m_length; }
+                get { return _length; }
             }
 
             public BlockData Free()
             {
-                return new BlockData(m_clusterIndex, (int) GetUpBoundClusterOffset(m_length));
+                return new BlockData(_clusterIndex, (int) GetUpBoundClusterOffset(_length));
             }
         }
     }

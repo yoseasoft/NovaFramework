@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -35,17 +35,17 @@ namespace NovaEngine.IO.FileSystem
     /// </summary>
     internal sealed class FileSystemController : IFileSystemController
     {
-        private readonly Dictionary<string, FileSystem> m_fileSystems;
+        private readonly Dictionary<string, FileSystem> _fileSystems;
 
-        private IFileSystemHelper m_fileSystemHelper;
+        private IFileSystemHelper _fileSystemHelper;
 
         /// <summary>
         /// 初始化文件系统管理器的新实例
         /// </summary>
         public FileSystemController()
         {
-            m_fileSystems = new Dictionary<string, FileSystem>(SystemStringComparer.Ordinal);
-            m_fileSystemHelper = null;
+            _fileSystems = new Dictionary<string, FileSystem>(SystemStringComparer.Ordinal);
+            _fileSystemHelper = null;
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         public int Count
         {
-            get { return m_fileSystems.Count; }
+            get { return _fileSystems.Count; }
         }
 
         /// <summary>
@@ -61,9 +61,9 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         internal void Shutdown()
         {
-            while (m_fileSystems.Count > 0)
+            while (_fileSystems.Count > 0)
             {
-                foreach (KeyValuePair<string, FileSystem> fileSystem in m_fileSystems)
+                foreach (KeyValuePair<string, FileSystem> fileSystem in _fileSystems)
                 {
                     DestroyFileSystem(fileSystem.Value, false);
                     break;
@@ -82,7 +82,7 @@ namespace NovaEngine.IO.FileSystem
                 throw new CFrameworkException("File system helper is invalid.");
             }
 
-            this.m_fileSystemHelper = fileSystemHelper;
+            this._fileSystemHelper = fileSystemHelper;
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace NovaEngine.IO.FileSystem
                 throw new CFrameworkException("Full path is invalid.");
             }
 
-            return m_fileSystems.ContainsKey(Utility.Path.GetRegularPath(fullPath));
+            return _fileSystems.ContainsKey(Utility.Path.GetRegularPath(fullPath));
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace NovaEngine.IO.FileSystem
             }
 
             FileSystem fileSystem = null;
-            if (m_fileSystems.TryGetValue(Utility.Path.GetRegularPath(fullPath), out fileSystem))
+            if (_fileSystems.TryGetValue(Utility.Path.GetRegularPath(fullPath), out fileSystem))
             {
                 return fileSystem;
             }
@@ -131,7 +131,7 @@ namespace NovaEngine.IO.FileSystem
         /// <returns>返回创建的文件系统</returns>
         public IFileSystem CreateFileSystem(string fullPath, FileSystemAccessType accessType, int maxFileCount, int maxBlockCount)
         {
-            if (null == m_fileSystemHelper)
+            if (null == _fileSystemHelper)
             {
                 throw new CFrameworkException("File system helper is invalid.");
             }
@@ -152,12 +152,12 @@ namespace NovaEngine.IO.FileSystem
             }
 
             fullPath = Utility.Path.GetRegularPath(fullPath);
-            if (m_fileSystems.ContainsKey(fullPath))
+            if (_fileSystems.ContainsKey(fullPath))
             {
                 throw new CFrameworkException("File system '{0}' is already exist.", fullPath);
             }
 
-            FileSystemStream fileSystemStream = m_fileSystemHelper.CreateFileSystemStream(fullPath, accessType, true);
+            FileSystemStream fileSystemStream = _fileSystemHelper.CreateFileSystemStream(fullPath, accessType, true);
             if (null == fileSystemStream)
             {
                 throw new CFrameworkException("Create file system stream for '{0}' failure.", fullPath);
@@ -169,7 +169,7 @@ namespace NovaEngine.IO.FileSystem
                 throw new CFrameworkException("Create file system '{0}' failure.", fullPath);
             }
 
-            m_fileSystems.Add(fullPath, fileSystem);
+            _fileSystems.Add(fullPath, fileSystem);
             return fileSystem;
         }
 
@@ -181,7 +181,7 @@ namespace NovaEngine.IO.FileSystem
         /// <returns>返回加载的文件系统</returns>
         public IFileSystem LoadFileSystem(string fullPath, FileSystemAccessType accessType)
         {
-            if (null == m_fileSystemHelper)
+            if (null == _fileSystemHelper)
             {
                 throw new CFrameworkException("File system helper is invalid.");
             }
@@ -197,12 +197,12 @@ namespace NovaEngine.IO.FileSystem
             }
 
             fullPath = Utility.Path.GetRegularPath(fullPath);
-            if (m_fileSystems.ContainsKey(fullPath))
+            if (_fileSystems.ContainsKey(fullPath))
             {
                 throw new CFrameworkException("File system '{0}' is already exist.", fullPath);
             }
 
-            FileSystemStream fileSystemStream = m_fileSystemHelper.CreateFileSystemStream(fullPath, accessType, false);
+            FileSystemStream fileSystemStream = _fileSystemHelper.CreateFileSystemStream(fullPath, accessType, false);
             if (null == fileSystemStream)
             {
                 throw new CFrameworkException("Create file system stream for '{0}' failure.", fullPath);
@@ -214,7 +214,7 @@ namespace NovaEngine.IO.FileSystem
                 throw new CFrameworkException("Load file system '{0}' failure.", fullPath);
             }
 
-            m_fileSystems.Add(fullPath, fileSystem);
+            _fileSystems.Add(fullPath, fileSystem);
             return fileSystem;
         }
 
@@ -232,7 +232,7 @@ namespace NovaEngine.IO.FileSystem
 
             string fullPath = fileSystem.FullPath;
             ((FileSystem) fileSystem).Shutdown();
-            m_fileSystems.Remove(fullPath);
+            _fileSystems.Remove(fullPath);
 
             if (deletePhysicalFile && SystemFile.Exists(fullPath))
             {
@@ -247,8 +247,8 @@ namespace NovaEngine.IO.FileSystem
         public IFileSystem[] GetAllFileSystems()
         {
             int index = 0;
-            IFileSystem[] results = new IFileSystem[m_fileSystems.Count];
-            foreach (KeyValuePair<string, FileSystem> fileSystem in m_fileSystems)
+            IFileSystem[] results = new IFileSystem[_fileSystems.Count];
+            foreach (KeyValuePair<string, FileSystem> fileSystem in _fileSystems)
             {
                 results[index++] = fileSystem.Value;
             }
@@ -268,7 +268,7 @@ namespace NovaEngine.IO.FileSystem
             }
 
             results.Clear();
-            foreach (KeyValuePair<string, FileSystem> fileSystem in m_fileSystems)
+            foreach (KeyValuePair<string, FileSystem> fileSystem in _fileSystems)
             {
                 results.Add(fileSystem.Value);
             }

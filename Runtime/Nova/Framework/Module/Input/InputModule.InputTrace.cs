@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -38,32 +38,32 @@ namespace NovaEngine
         /// <summary>
         /// 当前帧按下操作产生的按键编码
         /// </summary>
-        private IList<UnityKeyCode> m_keycodePressedOnThisFrame;
+        private IList<UnityKeyCode> _keycodePressedOnThisFrame;
 
         /// <summary>
         /// 当前帧长按操作产生的按键编码
         /// </summary>
-        private IList<UnityKeyCode> m_keycodeMovedOnThisFrame;
+        private IList<UnityKeyCode> _keycodeMovedOnThisFrame;
 
         /// <summary>
         /// 当前帧释放操作产生的按键编码
         /// </summary>
-        private IList<UnityKeyCode> m_keycodeReleasedOnThisFrame;
+        private IList<UnityKeyCode> _keycodeReleasedOnThisFrame;
 
         /// <summary>
         /// 上一帧按下操作保留的按键编码
         /// </summary>
-        private IList<UnityKeyCode> m_keycodeChangedOnPreviousFrame;
+        private IList<UnityKeyCode> _keycodeChangedOnPreviousFrame;
 
         /// <summary>
         /// 输入信息相关属性初始化函数
         /// </summary>
         private void InitInputTrace()
         {
-            m_keycodePressedOnThisFrame = new List<UnityKeyCode>();
-            m_keycodeMovedOnThisFrame = new List<UnityKeyCode>();
-            m_keycodeReleasedOnThisFrame = new List<UnityKeyCode>();
-            m_keycodeChangedOnPreviousFrame = new List<UnityKeyCode>();
+            _keycodePressedOnThisFrame = new List<UnityKeyCode>();
+            _keycodeMovedOnThisFrame = new List<UnityKeyCode>();
+            _keycodeReleasedOnThisFrame = new List<UnityKeyCode>();
+            _keycodeChangedOnPreviousFrame = new List<UnityKeyCode>();
         }
 
         /// <summary>
@@ -72,12 +72,12 @@ namespace NovaEngine
         private void CleanupInputTrace()
         {
             RemoveAllInputKeycodes();
-            m_keycodePressedOnThisFrame = null;
-            m_keycodeMovedOnThisFrame = null;
-            m_keycodeReleasedOnThisFrame = null;
+            _keycodePressedOnThisFrame = null;
+            _keycodeMovedOnThisFrame = null;
+            _keycodeReleasedOnThisFrame = null;
 
-            m_keycodeChangedOnPreviousFrame.Clear();
-            m_keycodeChangedOnPreviousFrame = null;
+            _keycodeChangedOnPreviousFrame.Clear();
+            _keycodeChangedOnPreviousFrame = null;
         }
 
         #region 按键编码触发回调响应接口函数
@@ -88,7 +88,7 @@ namespace NovaEngine
         /// <param name="code">按键编码</param>
         private void OnKeycodePressed(UnityKeyCode code)
         {
-            m_keycodePressedOnThisFrame.Add(code);
+            _keycodePressedOnThisFrame.Add(code);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace NovaEngine
         /// <param name="code">按键编码</param>
         private void OnKeycodeUnpressed(UnityKeyCode code)
         {
-            m_keycodePressedOnThisFrame.Remove(code);
+            _keycodePressedOnThisFrame.Remove(code);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace NovaEngine
         /// <param name="code">按键编码</param>
         private void OnKeycodeMoved(UnityKeyCode code)
         {
-            m_keycodeMovedOnThisFrame.Add(code);
+            _keycodeMovedOnThisFrame.Add(code);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace NovaEngine
         /// <param name="code">按键编码</param>
         private void OnKeycodeReleased(UnityKeyCode code)
         {
-            m_keycodeReleasedOnThisFrame.Add(code);
+            _keycodeReleasedOnThisFrame.Add(code);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace NovaEngine
         /// <param name="code">按键编码</param>
         private void OnKeycodeUnreleased(UnityKeyCode code)
         {
-            m_keycodeReleasedOnThisFrame.Remove(code);
+            _keycodeReleasedOnThisFrame.Remove(code);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace NovaEngine
         /// <param name="code">按键编码</param>
         private void OnKeycodeChanged(UnityKeyCode code)
         {
-            m_keycodeChangedOnPreviousFrame.Add(code);
+            _keycodeChangedOnPreviousFrame.Add(code);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace NovaEngine
         /// <param name="code">按键编码</param>
         private void OnKeycodeUnchanged(UnityKeyCode code)
         {
-            m_keycodeChangedOnPreviousFrame.Remove(code);
+            _keycodeChangedOnPreviousFrame.Remove(code);
         }
 
         #endregion
@@ -182,7 +182,7 @@ namespace NovaEngine
         /// <returns>若触发了任意按键编码的按下操作则返回true，否则返回false</returns>
         public bool IsAnyKeycodePressed()
         {
-            return (m_keycodePressedOnThisFrame.Count > 0);
+            return (_keycodePressedOnThisFrame.Count > 0);
         }
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace NovaEngine
         /// <returns>若触发了给定按键编码的按下操作则返回true，否则返回false</returns>
         public bool IsKeycodePressed(UnityKeyCode code)
         {
-            return m_keycodePressedOnThisFrame.Contains(code);
+            return _keycodePressedOnThisFrame.Contains(code);
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace NovaEngine
         /// <returns>若触发了任意按键编码的长按操作则返回true，否则返回false</returns>
         public bool IsAnyKeycodeMoved()
         {
-            return (m_keycodeMovedOnThisFrame.Count > 0);
+            return (_keycodeMovedOnThisFrame.Count > 0);
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace NovaEngine
         /// <returns>若触发了给定按键编码的长按操作则返回true，否则返回false</returns>
         public bool IsKeycodeMoved(UnityKeyCode code)
         {
-            return m_keycodeMovedOnThisFrame.Contains(code);
+            return _keycodeMovedOnThisFrame.Contains(code);
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace NovaEngine
         /// <returns>若触发了任意按键编码的释放操作则返回true，否则返回false</returns>
         public bool IsAnyKeycodeReleased()
         {
-            return (m_keycodeReleasedOnThisFrame.Count > 0);
+            return (_keycodeReleasedOnThisFrame.Count > 0);
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace NovaEngine
         /// <returns>若触发了给定按键编码的释放操作则返回true，否则返回false</returns>
         public bool IsKeycodeReleased(UnityKeyCode code)
         {
-            return m_keycodeReleasedOnThisFrame.Contains(code);
+            return _keycodeReleasedOnThisFrame.Contains(code);
         }
 
         /// <summary>
@@ -239,7 +239,7 @@ namespace NovaEngine
         /// <returns>若触发了任意按键编码的改变操作则返回true，否则返回false</returns>
         public bool IsAnyKeycodeChanged()
         {
-            return (m_keycodeChangedOnPreviousFrame.Count > 0);
+            return (_keycodeChangedOnPreviousFrame.Count > 0);
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace NovaEngine
         /// <returns>若触发了给定按键编码的改变操作则返回true，否则返回false</returns>
         public bool IsKeycodeChanged(UnityKeyCode code)
         {
-            return m_keycodeChangedOnPreviousFrame.Contains(code);
+            return _keycodeChangedOnPreviousFrame.Contains(code);
         }
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace NovaEngine
         /// <returns>返回按键编码列表</returns>
         public IList<UnityKeyCode> GetAllPressedKeycodes()
         {
-            return m_keycodePressedOnThisFrame;
+            return _keycodePressedOnThisFrame;
         }
 
         /// <summary>
@@ -267,7 +267,7 @@ namespace NovaEngine
         /// <returns>返回按键编码列表</returns>
         public IList<UnityKeyCode> GetAllMovedKeycodes()
         {
-            return m_keycodeMovedOnThisFrame;
+            return _keycodeMovedOnThisFrame;
         }
 
         /// <summary>
@@ -276,7 +276,7 @@ namespace NovaEngine
         /// <returns>返回按键编码列表</returns>
         public IList<UnityKeyCode> GetAllReleasedKeycodes()
         {
-            return m_keycodeReleasedOnThisFrame;
+            return _keycodeReleasedOnThisFrame;
         }
 
         /// <summary>
@@ -284,9 +284,9 @@ namespace NovaEngine
         /// </summary>
         private void RemoveAllInputKeycodes()
         {
-            m_keycodePressedOnThisFrame.Clear();
-            m_keycodeMovedOnThisFrame.Clear();
-            m_keycodeReleasedOnThisFrame.Clear();
+            _keycodePressedOnThisFrame.Clear();
+            _keycodeMovedOnThisFrame.Clear();
+            _keycodeReleasedOnThisFrame.Clear();
         }
     }
 }

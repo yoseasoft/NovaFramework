@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +44,7 @@ namespace NovaEngine
             private const int MAX_RUNNING_THREAD_COUNTS = 8;
 
             // 当前运行线程的实际计数
-            private static int s_runningThreads;
+            private static int _runningThreads;
 
             /// <summary>
             /// 当前线程休眠指定的毫秒值
@@ -106,12 +106,12 @@ namespace NovaEngine
             /// <param name="action">目标任务项</param>
             public static void RunAsync(SystemAction action)
             {
-                while (s_runningThreads >= MAX_RUNNING_THREAD_COUNTS)
+                while (_runningThreads >= MAX_RUNNING_THREAD_COUNTS)
                 {
                     SystemThread.Sleep(100);
                 }
 
-                SystemInterlocked.Increment(ref s_runningThreads);
+                SystemInterlocked.Increment(ref _runningThreads);
                 SystemThreadPool.QueueUserWorkItem(RunAction, action);
             }
 
@@ -131,7 +131,7 @@ namespace NovaEngine
                 }
                 finally
                 {
-                    SystemInterlocked.Decrement(ref s_runningThreads);
+                    SystemInterlocked.Decrement(ref _runningThreads);
                 }
             }
         }

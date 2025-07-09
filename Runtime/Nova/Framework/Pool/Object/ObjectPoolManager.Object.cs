@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -44,18 +44,18 @@ namespace NovaEngine.ObjectPool
             /// <summary>
             /// 引用对象实例
             /// </summary>
-            private T m_object;
+            private T _object;
             /// <summary>
             /// 对象实例的孵化计数
             /// </summary>
-            private int m_spawnCount;
+            private int _spawnCount;
 
             /// <summary>
             /// 获取对象的名称
             /// </summary>
             public string Name
             {
-                get { return m_object.Name; }
+                get { return _object.Name; }
             }
 
             /// <summary>
@@ -63,8 +63,8 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             public bool Locked
             {
-                get { return m_object.Locked; }
-                internal set { m_object.Locked = value; }
+                get { return _object.Locked; }
+                internal set { _object.Locked = value; }
             }
 
             /// <summary>
@@ -72,8 +72,8 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             public int Priority
             {
-                get { return m_object.Priority; }
-                internal set { m_object.Priority = value; }
+                get { return _object.Priority; }
+                internal set { _object.Priority = value; }
             }
 
             /// <summary>
@@ -81,7 +81,7 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             public bool Releasabled
             {
-                get { return m_object.Releasabled; }
+                get { return _object.Releasabled; }
             }
 
             /// <summary>
@@ -89,7 +89,7 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             public SystemDateTime LastUseTime
             {
-                get { return m_object.LastUseTime; }
+                get { return _object.LastUseTime; }
             }
 
             /// <summary>
@@ -97,7 +97,7 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             public int SpawnCount
             {
-                get { return m_spawnCount; }
+                get { return _spawnCount; }
             }
 
             /// <summary>
@@ -105,13 +105,13 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             public bool IsOnUsed
             {
-                get { return m_spawnCount > 0; }
+                get { return _spawnCount > 0; }
             }
 
             public Object()
             {
-                m_object = null;
-                m_spawnCount = 0;
+                _object = null;
+                _spawnCount = 0;
             }
 
             /// <summary>
@@ -126,8 +126,8 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             public void Cleanup()
             {
-                m_object = null;
-                m_spawnCount = 0;
+                _object = null;
+                _spawnCount = 0;
             }
 
             /// <summary>
@@ -144,8 +144,8 @@ namespace NovaEngine.ObjectPool
                 }
 
                 Object<T> internalObject = ReferencePool.Acquire<Object<T>>();
-                internalObject.m_object = obj;
-                internalObject.m_spawnCount = spawned ? 1 : 0;
+                internalObject._object = obj;
+                internalObject._spawnCount = spawned ? 1 : 0;
                 if (spawned)
                 {
                     obj.OnSpawn();
@@ -160,7 +160,7 @@ namespace NovaEngine.ObjectPool
             /// <returns>返回托管的对象实例</returns>
             public T Peek()
             {
-                return m_object;
+                return _object;
             }
 
             /// <summary>
@@ -169,10 +169,10 @@ namespace NovaEngine.ObjectPool
             /// <returns>返回孵化的对象实例</returns>
             public T Spawn()
             {
-                m_spawnCount++;
-                m_object.LastUseTime = SystemDateTime.UtcNow;
-                m_object.OnSpawn();
-                return m_object;
+                _spawnCount++;
+                _object.LastUseTime = SystemDateTime.UtcNow;
+                _object.OnSpawn();
+                return _object;
             }
 
             /// <summary>
@@ -180,10 +180,10 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             public void Unspawn()
             {
-                m_object.OnUnspawn();
-                m_object.LastUseTime = SystemDateTime.UtcNow;
-                m_spawnCount--;
-                if (m_spawnCount < 0)
+                _object.OnUnspawn();
+                _object.LastUseTime = SystemDateTime.UtcNow;
+                _spawnCount--;
+                if (_spawnCount < 0)
                 {
                     throw new CFrameworkException("Object '{0}' spawn count is less than zero.", Name);
                 }
@@ -195,8 +195,8 @@ namespace NovaEngine.ObjectPool
             /// <param name="shutdown">关闭对象池时触发的状态标识</param>
             public void Release(bool shutdown)
             {
-                m_object.Release(shutdown);
-                ReferencePool.Release(m_object);
+                _object.Release(shutdown);
+                ReferencePool.Release(_object);
             }
         }
     }

@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -34,12 +34,12 @@ namespace NovaEngine
         /// <summary>
         /// 当前指令参数的类型
         /// </summary>
-        private int m_type;
+        private int _type;
 
         /// <summary>
         /// 当前指令参数的数据实例
         /// </summary>
-        private ModuleEventArgs m_data;
+        private ModuleEventArgs _data;
 
         /// <summary>
         /// 模块类指令参数对象的新实例构建接口
@@ -53,7 +53,7 @@ namespace NovaEngine
         /// </summary>
         public int Type
         {
-            get { return m_type; }
+            get { return _type; }
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace NovaEngine
         /// </summary>
         public ModuleEventArgs Data
         {
-            get { return m_data; }
+            get { return _data; }
         }
 
         /// <summary>
@@ -76,9 +76,9 @@ namespace NovaEngine
         /// </summary>
         public override void Cleanup()
         {
-            m_type = 0;
+            _type = 0;
 
-            m_data = null;
+            _data = null;
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace NovaEngine
         /// <param name="type">模块参数类型</param>
         public void SetType(int type)
         {
-            m_type = type;
+            _type = type;
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace NovaEngine
             // m_data = ReferencePool.Acquire<T>();
             // e.CopyTo(m_data);
 
-            m_data = e;
+            _data = e;
         }
     }
 }

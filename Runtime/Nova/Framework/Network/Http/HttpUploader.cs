@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -59,14 +59,14 @@ namespace NovaEngine.Network
         /// <summary>
         /// 当前HTTP对象下所有上传操作的运行状态标识
         /// </summary>
-        private static bool s_isUploadRunning = false;
+        private static bool _isUploadRunning = false;
 
         /// <summary>
         /// HTTP服务当前所有上传行为停止操作接口
         /// </summary>
         public static void StopUpload()
         {
-            s_isUploadRunning = false;
+            _isUploadRunning = false;
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace NovaEngine.Network
             OnHttpUploadHandler progress, OnHttpUploadHandler succeed, OnHttpUploadHandler failed)
         {
             // 默认启动上传运行状态
-            s_isUploadRunning = true;
+            _isUploadRunning = true;
 
             SystemFileStream fstream = new SystemFileStream(path, SystemFileMode.Open, SystemFileAccess.Read);
 
@@ -201,7 +201,7 @@ namespace NovaEngine.Network
 
                 while (size > 0)
                 {
-                    if (false == s_isUploadRunning)
+                    if (false == _isUploadRunning)
                     {
                         throw new SystemException("The upload process was stopped!");
                     }

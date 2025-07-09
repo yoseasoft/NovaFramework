@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,7 @@ namespace NovaEngine.IO.FileSystem
     /// </summary>
     public sealed class CommonFileSystemStream : FileSystemStream, SystemIDisposable
     {
-        private readonly SystemFileStream m_fileStream;
+        private readonly SystemFileStream _fileStream;
 
         /// <summary>
         /// 初始化通用文件系统数据流的新实例
@@ -55,15 +55,15 @@ namespace NovaEngine.IO.FileSystem
             switch (accessType)
             {
                 case FileSystemAccessType.ReadOnly:
-                    m_fileStream = new SystemFileStream(fullPath, SystemFileMode.Open, SystemFileAccess.Read, SystemFileShare.Read);
+                    _fileStream = new SystemFileStream(fullPath, SystemFileMode.Open, SystemFileAccess.Read, SystemFileShare.Read);
                     break;
 
                 case FileSystemAccessType.WriteOnly:
-                    m_fileStream = new SystemFileStream(fullPath, createNew ? SystemFileMode.Create : SystemFileMode.Open, SystemFileAccess.Write, SystemFileShare.Read);
+                    _fileStream = new SystemFileStream(fullPath, createNew ? SystemFileMode.Create : SystemFileMode.Open, SystemFileAccess.Write, SystemFileShare.Read);
                     break;
 
                 case FileSystemAccessType.ReadWrite:
-                    m_fileStream = new SystemFileStream(fullPath, createNew ? SystemFileMode.Create : SystemFileMode.Open, SystemFileAccess.ReadWrite, SystemFileShare.Read);
+                    _fileStream = new SystemFileStream(fullPath, createNew ? SystemFileMode.Create : SystemFileMode.Open, SystemFileAccess.ReadWrite, SystemFileShare.Read);
                     break;
 
                 default:
@@ -78,11 +78,11 @@ namespace NovaEngine.IO.FileSystem
         {
             get
             {
-                return m_fileStream.Position;
+                return _fileStream.Position;
             }
             set
             {
-                m_fileStream.Position = value;
+                _fileStream.Position = value;
             }
         }
 
@@ -93,7 +93,7 @@ namespace NovaEngine.IO.FileSystem
         {
             get
             {
-                return m_fileStream.Length;
+                return _fileStream.Length;
             }
         }
 
@@ -103,7 +103,7 @@ namespace NovaEngine.IO.FileSystem
         /// <param name="length">要设置的文件系统数据流的长度</param>
         protected internal override void SetLength(long length)
         {
-            m_fileStream.SetLength(length);
+            _fileStream.SetLength(length);
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace NovaEngine.IO.FileSystem
         /// <param name="origin">要定位的文件系统流位置的方式</param>
         protected internal override void Seek(long offset, SystemSeekOrigin origin)
         {
-            m_fileStream.Seek(offset, origin);
+            _fileStream.Seek(offset, origin);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace NovaEngine.IO.FileSystem
         /// <returns>返回读取的字节，若已经到达文件结尾，则返回-1</returns>
         protected internal override int ReadByte()
         {
-            return m_fileStream.ReadByte();
+            return _fileStream.ReadByte();
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace NovaEngine.IO.FileSystem
         /// <returns>返回实际读取的字节数</returns>
         protected internal override int Read(byte[] buffer, int startIndex, int length)
         {
-            return m_fileStream.Read(buffer, startIndex, length);
+            return _fileStream.Read(buffer, startIndex, length);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace NovaEngine.IO.FileSystem
         /// <param name="value">要写入的字节</param>
         protected internal override void WriteByte(byte value)
         {
-            m_fileStream.WriteByte(value);
+            _fileStream.WriteByte(value);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace NovaEngine.IO.FileSystem
         /// <param name="length">存储写入文件内容的二进制流的长度</param>
         protected internal override void Write(byte[] buffer, int startIndex, int length)
         {
-            m_fileStream.Write(buffer, startIndex, length);
+            _fileStream.Write(buffer, startIndex, length);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         protected internal override void Flush()
         {
-            m_fileStream.Flush();
+            _fileStream.Flush();
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         protected internal override void Close()
         {
-            m_fileStream.Close();
+            _fileStream.Close();
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         public void Dispose()
         {
-            m_fileStream.Dispose();
+            _fileStream.Dispose();
         }
     }
 }

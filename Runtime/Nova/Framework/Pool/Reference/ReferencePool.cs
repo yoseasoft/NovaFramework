@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,20 +36,20 @@ namespace NovaEngine
         /// <summary>
         /// 引用对象缓冲池数据集合
         /// </summary>
-        private static readonly Dictionary<SystemType, ReferenceCollection> s_referenceCollections = new Dictionary<SystemType, ReferenceCollection>();
+        private static readonly Dictionary<SystemType, ReferenceCollection> _referenceCollections = new Dictionary<SystemType, ReferenceCollection>();
 
         /// <summary>
         /// 强制检查启动标识
         /// </summary>
-        private static bool s_strictCheckEnabled = false;
+        private static bool _strictCheckEnabled = false;
 
         /// <summary>
         /// 获取或设置是否开启强制检查标识
         /// </summary>
         public static bool StrictCheckEnabled
         {
-            get { return s_strictCheckEnabled; }
-            set { s_strictCheckEnabled = value; }
+            get { return _strictCheckEnabled; }
+            set { _strictCheckEnabled = value; }
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace NovaEngine
         /// </summary>
         public static int Count
         {
-            get { return s_referenceCollections.Count; }
+            get { return _referenceCollections.Count; }
         }
 
         /// <summary>
@@ -68,12 +68,12 @@ namespace NovaEngine
         {
             ReferencePoolInfo[] results = null;
 
-            lock (s_referenceCollections)
+            lock (_referenceCollections)
             {
                 int index = 0;
 
-                results = new ReferencePoolInfo[s_referenceCollections.Count];
-                foreach (KeyValuePair<SystemType, ReferenceCollection> referenceCollection in s_referenceCollections)
+                results = new ReferencePoolInfo[_referenceCollections.Count];
+                foreach (KeyValuePair<SystemType, ReferenceCollection> referenceCollection in _referenceCollections)
                 {
                     ReferenceCollection collection = referenceCollection.Value;
                     results[index] = new ReferencePoolInfo(referenceCollection.Key,
@@ -96,14 +96,14 @@ namespace NovaEngine
         /// </summary>
         public static void ClearAllCollections()
         {
-            lock (s_referenceCollections)
+            lock (_referenceCollections)
             {
-                foreach (KeyValuePair<SystemType, ReferenceCollection> referenceCollection in s_referenceCollections)
+                foreach (KeyValuePair<SystemType, ReferenceCollection> referenceCollection in _referenceCollections)
                 {
                     referenceCollection.Value.RemoveAll();
                 }
 
-                s_referenceCollections.Clear();
+                _referenceCollections.Clear();
             }
         }
 
@@ -207,7 +207,7 @@ namespace NovaEngine
 
         private static void InternalCheckReferenceType(SystemType referenceType)
         {
-            if (false == s_strictCheckEnabled)
+            if (false == _strictCheckEnabled)
             {
                 return;
             }
@@ -236,12 +236,12 @@ namespace NovaEngine
             }
 
             ReferenceCollection referenceCollection = null;
-            lock (s_referenceCollections)
+            lock (_referenceCollections)
             {
-                if (false == s_referenceCollections.TryGetValue(referenceType, out referenceCollection))
+                if (false == _referenceCollections.TryGetValue(referenceType, out referenceCollection))
                 {
                     referenceCollection = new ReferenceCollection(referenceType);
-                    s_referenceCollections.Add(referenceType, referenceCollection);
+                    _referenceCollections.Add(referenceType, referenceCollection);
                 }
             }
 
