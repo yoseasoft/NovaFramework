@@ -31,35 +31,13 @@ using SystemAttributeTargets = System.AttributeTargets;
 namespace GameEngine
 {
     /// <summary>
-    /// 键码系统的属性类型定义
+    /// 输入系统的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class KeycodeSystemAttribute : SystemAttribute
+    public class InputSystemAttribute : SystemAttribute
     {
-        public KeycodeSystemAttribute()
+        public InputSystemAttribute()
         {
-        }
-    }
-
-    /// <summary>
-    /// 键码声明属性类型定义
-    /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class DeclareKeycodeClassAttribute : SystemAttribute
-    {
-        /// <summary>
-        /// 键码值
-        /// </summary>
-        private readonly int _keycode;
-
-        /// <summary>
-        /// 键码值获取函数
-        /// </summary>
-        public int Keycode => _keycode;
-
-        public DeclareKeycodeClassAttribute(int keycode) : base()
-        {
-            _keycode = keycode;
         }
     }
 }

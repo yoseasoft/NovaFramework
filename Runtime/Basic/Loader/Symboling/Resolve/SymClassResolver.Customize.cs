@@ -75,7 +75,7 @@ namespace GameEngine.Loader.Symboling
         private static void AutoFillSystemClassFeatures(SymClass symClass)
         {
             bool on_extend_supported = false;
-            bool on_keycode_system = false;
+            bool on_input_system = false;
             bool on_event_system = false;
             bool on_message_system = false;
 
@@ -97,11 +97,11 @@ namespace GameEngine.Loader.Symboling
                     }
                 }
 
-                if (!on_keycode_system)
+                if (!on_input_system)
                 {
-                    if (false == method.IsExtension && method.HasAttribute(typeof(OnKeycodeDispatchCallAttribute)))
+                    if (false == method.IsExtension && method.HasAttribute(typeof(OnInputDispatchCallAttribute)))
                     {
-                        on_keycode_system = true;
+                        on_input_system = true;
                     }
                 }
 
@@ -129,11 +129,11 @@ namespace GameEngine.Loader.Symboling
                 Debugger.Info(LogGroupTag.CodeLoader, "Automatically adding extend supported feature type to target symbol class '{%s}'.", symClass.ClassName);
             }
 
-            if (on_keycode_system)
+            if (on_input_system)
             {
                 // 装配编码系统
-                symClass.AddFeatureType(typeof(KeycodeSystemAttribute));
-                Debugger.Info(LogGroupTag.CodeLoader, "Automatically adding keycode system feature type to target symbol class '{%s}'.", symClass.ClassName);
+                symClass.AddFeatureType(typeof(InputSystemAttribute));
+                Debugger.Info(LogGroupTag.CodeLoader, "Automatically adding input system feature type to target symbol class '{%s}'.", symClass.ClassName);
             }
 
             if (on_event_system)

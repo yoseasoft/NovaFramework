@@ -31,21 +31,21 @@ using SystemAttributeTargets = System.AttributeTargets;
 namespace GameEngine
 {
     /// <summary>
-    /// 键码响应类型注册函数的属性类型定义
+    /// 输入转发类型注册函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class OnKeycodeDispatchCallAttribute : SystemAttribute
+    public class OnInputDispatchCallAttribute : SystemAttribute
     {
         /// <summary>
-        /// 响应键码的目标对象类型
+        /// 输入响应的目标对象类型
         /// </summary>
         private readonly SystemType _classType;
         /// <summary>
-        /// 键码唯一标识
+        /// 输入编码唯一标识
         /// </summary>
         private readonly int _keycode;
         /// <summary>
-        /// 键码操作类型
+        /// 输入操作类型
         /// </summary>
         private readonly InputOperationType _operationType;
         /// <summary>
@@ -58,11 +58,11 @@ namespace GameEngine
         /// </summary>
         public SystemType ClassType => _classType;
         /// <summary>
-        /// 键码获取函数
+        /// 输入编码获取函数
         /// </summary>
         public int Keycode => _keycode;
         /// <summary>
-        /// 操作类型获取函数
+        /// 输入操作类型获取函数
         /// </summary>
         public InputOperationType OperationType => _operationType;
         /// <summary>
@@ -70,25 +70,25 @@ namespace GameEngine
         /// </summary>
         public SystemType InputDataType => _inputDataType;
 
-        public OnKeycodeDispatchCallAttribute(int keycode) : this(null, keycode, InputOperationType.Unknown, null)
+        public OnInputDispatchCallAttribute(int keycode) : this(null, keycode, InputOperationType.Unknown, null)
         { }
 
-        public OnKeycodeDispatchCallAttribute(int keycode, InputOperationType operationType) : this(null, keycode, operationType, null)
+        public OnInputDispatchCallAttribute(int keycode, InputOperationType operationType) : this(null, keycode, operationType, null)
         { }
 
-        public OnKeycodeDispatchCallAttribute(SystemType inputDataType) : this(null, 0, InputOperationType.Unknown, inputDataType)
+        public OnInputDispatchCallAttribute(SystemType inputDataType) : this(null, 0, InputOperationType.Unknown, inputDataType)
         { }
 
-        public OnKeycodeDispatchCallAttribute(SystemType classType, int keycode) : this(classType, keycode, InputOperationType.Unknown, null)
+        public OnInputDispatchCallAttribute(SystemType classType, int keycode) : this(classType, keycode, InputOperationType.Unknown, null)
         { }
 
-        public OnKeycodeDispatchCallAttribute(SystemType classType, int keycode, InputOperationType operationType) : this(classType, keycode, operationType, null)
+        public OnInputDispatchCallAttribute(SystemType classType, int keycode, InputOperationType operationType) : this(classType, keycode, operationType, null)
         { }
 
-        public OnKeycodeDispatchCallAttribute(SystemType classType, SystemType inputDataType) : this(classType, 0, InputOperationType.Unknown, inputDataType)
+        public OnInputDispatchCallAttribute(SystemType classType, SystemType inputDataType) : this(classType, 0, InputOperationType.Unknown, inputDataType)
         { }
 
-        private OnKeycodeDispatchCallAttribute(SystemType classType, int keycode, InputOperationType operationType, SystemType inputDataType) : base()
+        private OnInputDispatchCallAttribute(SystemType classType, int keycode, InputOperationType operationType, SystemType inputDataType) : base()
         {
             _classType = classType;
             _keycode = keycode;
@@ -98,17 +98,17 @@ namespace GameEngine
     }
 
     /// <summary>
-    /// 键码监听绑定函数的属性类型定义
+    /// 输入的监听绑定函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class KeycodeListenerBindingOfTargetAttribute : SystemAttribute
+    public class InputListenerBindingOfTargetAttribute : SystemAttribute
     {
         /// <summary>
-        /// 键码唯一标识
+        /// 输入编码唯一标识
         /// </summary>
         private readonly int _keycode;
         /// <summary>
-        /// 键码操作类型
+        /// 输入操作类型
         /// </summary>
         private readonly InputOperationType _operationType;
         /// <summary>
@@ -125,25 +125,25 @@ namespace GameEngine
         public SystemType InputDataType => _inputDataType;
         public AspectBehaviourType BehaviourType => _behaviourType;
 
-        public KeycodeListenerBindingOfTargetAttribute(int keycode) : this(keycode, InputOperationType.Unknown, null, AspectBehaviourType.Initialize)
+        public InputListenerBindingOfTargetAttribute(int keycode) : this(keycode, InputOperationType.Unknown, null, AspectBehaviourType.Initialize)
         { }
 
-        public KeycodeListenerBindingOfTargetAttribute(int keycode, AspectBehaviourType behaviourType) : this(keycode, InputOperationType.Unknown, null, behaviourType)
+        public InputListenerBindingOfTargetAttribute(int keycode, AspectBehaviourType behaviourType) : this(keycode, InputOperationType.Unknown, null, behaviourType)
         { }
 
-        public KeycodeListenerBindingOfTargetAttribute(int keycode, InputOperationType operationType) : this(keycode, operationType, null, AspectBehaviourType.Initialize)
+        public InputListenerBindingOfTargetAttribute(int keycode, InputOperationType operationType) : this(keycode, operationType, null, AspectBehaviourType.Initialize)
         { }
 
-        public KeycodeListenerBindingOfTargetAttribute(int keycode, InputOperationType operationType, AspectBehaviourType behaviourType) : this(keycode, operationType, null, behaviourType)
+        public InputListenerBindingOfTargetAttribute(int keycode, InputOperationType operationType, AspectBehaviourType behaviourType) : this(keycode, operationType, null, behaviourType)
         { }
 
-        public KeycodeListenerBindingOfTargetAttribute(SystemType inputDataType) : this(0, InputOperationType.Unknown, inputDataType, AspectBehaviourType.Initialize)
+        public InputListenerBindingOfTargetAttribute(SystemType inputDataType) : this(0, InputOperationType.Unknown, inputDataType, AspectBehaviourType.Initialize)
         { }
 
-        public KeycodeListenerBindingOfTargetAttribute(SystemType inputDataType, AspectBehaviourType behaviourType) : this(0, InputOperationType.Unknown, inputDataType, behaviourType)
+        public InputListenerBindingOfTargetAttribute(SystemType inputDataType, AspectBehaviourType behaviourType) : this(0, InputOperationType.Unknown, inputDataType, behaviourType)
         { }
 
-        private KeycodeListenerBindingOfTargetAttribute(int keycode, InputOperationType operationType, SystemType inputDataType, AspectBehaviourType behaviourType) : base()
+        private InputListenerBindingOfTargetAttribute(int keycode, InputOperationType operationType, SystemType inputDataType, AspectBehaviourType behaviourType) : base()
         {
             _keycode = keycode;
             _operationType = operationType;

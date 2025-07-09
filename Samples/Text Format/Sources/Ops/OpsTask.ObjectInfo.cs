@@ -32,7 +32,7 @@ namespace Game.Sample.TextFormat
     /// </summary>
     static partial class OpsTask
     {
-        [GameEngine.OnKeycodeDispatchCall(TaskCode_ObjectInfo, GameEngine.InputOperationType.Released)]
+        [GameEngine.OnInputDispatchCall(TaskCode_ObjectInfo, GameEngine.InputOperationType.Released)]
         static void TestObjectInfo(int keycode, int operationType)
         {
             Player player = CreatePlayer();

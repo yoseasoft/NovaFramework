@@ -176,7 +176,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static IDictionary<SystemType, InputCallCodeInfo> s_inputCallCodeInfos = new Dictionary<SystemType, InputCallCodeInfo>();
 
-        [OnInputClassLoadOfTarget(typeof(KeycodeSystemAttribute))]
+        [OnInputClassLoadOfTarget(typeof(InputSystemAttribute))]
         private static bool LoadInputCallClass(Symboling.SymClass symClass, bool reload)
         {
             InputCallCodeInfo info = new InputCallCodeInfo();
@@ -199,9 +199,9 @@ namespace GameEngine.Loader
                 {
                     SystemAttribute attr = attrs[m];
 
-                    if (attr is OnKeycodeDispatchCallAttribute)
+                    if (attr is OnInputDispatchCallAttribute)
                     {
-                        OnKeycodeDispatchCallAttribute _attr = (OnKeycodeDispatchCallAttribute) attr;
+                        OnInputDispatchCallAttribute _attr = (OnInputDispatchCallAttribute) attr;
 
                         InputCallMethodTypeCodeInfo callMethodInfo = new InputCallMethodTypeCodeInfo();
                         callMethodInfo.TargetType = _attr.ClassType;
@@ -302,13 +302,13 @@ namespace GameEngine.Loader
             return true;
         }
 
-        [OnInputClassCleanupOfTarget(typeof(KeycodeSystemAttribute))]
+        [OnInputClassCleanupOfTarget(typeof(InputSystemAttribute))]
         private static void CleanupAllInputCallClasses()
         {
             s_inputCallCodeInfos.Clear();
         }
 
-        [OnInputCodeInfoLookupOfTarget(typeof(KeycodeSystemAttribute))]
+        [OnInputCodeInfoLookupOfTarget(typeof(InputSystemAttribute))]
         private static InputCallCodeInfo LookupInputCallCodeInfo(Symboling.SymClass symClass)
         {
             foreach (KeyValuePair<SystemType, InputCallCodeInfo> pair in s_inputCallCodeInfos)

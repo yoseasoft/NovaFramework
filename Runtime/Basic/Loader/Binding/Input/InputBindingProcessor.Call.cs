@@ -42,7 +42,7 @@ namespace GameEngine
         /// <param name="targetType">对象类型</param>
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
-        [OnInputCallRegisterClassOfTarget(typeof(KeycodeSystemAttribute))]
+        [OnInputCallRegisterClassOfTarget(typeof(InputSystemAttribute))]
         private static void LoadCallBindCodeType(SystemType targetType, Loader.GeneralCodeInfo codeInfo, bool reload)
         {
             if (null == codeInfo)
@@ -89,7 +89,7 @@ namespace GameEngine
         /// <summary>
         /// 输入响应类型的全部代码的注销回调函数
         /// </summary>
-        [OnInputCallUnregisterClassOfTarget(typeof(KeycodeSystemAttribute))]
+        [OnInputCallUnregisterClassOfTarget(typeof(InputSystemAttribute))]
         private static void UnloadAllCallBindCodeTypes()
         {
             Instance.RemoveAllInputDistributeCalls();
