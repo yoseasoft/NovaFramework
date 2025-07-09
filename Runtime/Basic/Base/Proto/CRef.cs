@@ -45,11 +45,11 @@ namespace GameEngine
         /// <summary>
         /// 对象内部订阅事件的监听回调的映射容器列表
         /// </summary>
-        private IDictionary<int, IDictionary<string, EventCallSyntaxInfo>> _eventCallInfosForId;
+        // private IDictionary<int, IDictionary<string, EventCallSyntaxInfo>> _eventCallInfosForId;
         /// <summary>
         /// 对象内部订阅事件的监听回调的映射容器列表
         /// </summary>
-        private IDictionary<SystemType, IDictionary<string, EventCallSyntaxInfo>> _eventCallInfosForType;
+        // private IDictionary<SystemType, IDictionary<string, EventCallSyntaxInfo>> _eventCallInfosForType;
 
         /// <summary>
         /// 对象内部监听消息的协议码管理容器
@@ -59,7 +59,7 @@ namespace GameEngine
         /// <summary>
         /// 对象内部消息通知的监听回调的映射容器列表
         /// </summary>
-        private IDictionary<int, IDictionary<string, MessageCallSyntaxInfo>> _messageCallInfosForType;
+        // private IDictionary<int, IDictionary<string, MessageCallSyntaxInfo>> _messageCallInfosForType;
 
         /// <summary>
         /// 对象内部定时任务的会话管理容器
@@ -78,13 +78,13 @@ namespace GameEngine
             // 事件类型容器初始化
             _eventTypes = new List<SystemType>();
             // 事件监听回调映射容器初始化
-            _eventCallInfosForId = new Dictionary<int, IDictionary<string, EventCallSyntaxInfo>>();
-            _eventCallInfosForType = new Dictionary<SystemType, IDictionary<string, EventCallSyntaxInfo>>();
+            // _eventCallInfosForId = new Dictionary<int, IDictionary<string, EventCallSyntaxInfo>>();
+            // _eventCallInfosForType = new Dictionary<SystemType, IDictionary<string, EventCallSyntaxInfo>>();
 
             // 消息协议码容器初始化
             _messageTypes = new List<int>();
             // 消息监听回调映射容器初始化
-            _messageCallInfosForType = new Dictionary<int, IDictionary<string, MessageCallSyntaxInfo>>();
+            // _messageCallInfosForType = new Dictionary<int, IDictionary<string, MessageCallSyntaxInfo>>();
 
             // 任务会话容器初始化
             m_schedules = new List<int>();

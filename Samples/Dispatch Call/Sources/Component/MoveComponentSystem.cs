@@ -46,7 +46,12 @@ namespace Game.Sample.DispatchCall
         {
             if (self.escape_time > 0)
             {
-                self.MoveTo();
+                if (false == self.MoveTo())
+                {
+                    Debugger.Info("角色对象‘{%s}’移动目标丢失，无法正确进行移动操作！", self.GetComponent<IdentityComponent>().objectName);
+                    self.escape_time = 0;
+                    return;
+                }
 
                 self.escape_time--;
                 if (self.escape_time <= 0)
@@ -64,7 +69,7 @@ namespace Game.Sample.DispatchCall
         {
         }
 
-        static void MoveTo(this MoveComponent self)
+        static bool MoveTo(this MoveComponent self)
         {
             AttackComponent attackComponent = self.GetComponent<AttackComponent>();
             Monster monster = null;
@@ -76,7 +81,7 @@ namespace Game.Sample.DispatchCall
 
             if (null == monster)
             {
-                return;
+                return false;
             }
 
             TransformComponent ownerTransformComponent = self.GetComponent<TransformComponent>();
@@ -98,6 +103,12 @@ namespace Game.Sample.DispatchCall
                 //    old_position.x, old_position.y, old_position.z,
                 //    ownerTransformComponent.position.x, ownerTransformComponent.position.y, ownerTransformComponent.position.z);
             }
+            else
+            {
+                self.escape_time = 0;
+            }
+
+            return true;
         }
 
         public static void OnMovingStart(this MoveComponent self)
