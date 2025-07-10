@@ -77,7 +77,7 @@ namespace NovaEngine
         /// <summary>
         /// 网络错误回调通知代理接口
         /// </summary>
-        protected System.Action<NetworkChannel, int> m_errorCallback;
+        protected System.Action<NetworkChannel, int> _errorCallback;
 
         /// <summary>
         /// 网络数据读入操作回调接口代理接口
@@ -169,8 +169,8 @@ namespace NovaEngine
         /// </summary>
         public event System.Action<NetworkChannel, int> ErrorCallback
         {
-            add { m_errorCallback += value; }
-            remove { m_errorCallback -= value; }
+            add { _errorCallback += value; }
+            remove { _errorCallback -= value; }
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace NovaEngine
         protected void OnError(int e)
         {
             this._errorCode = e;
-            this.m_errorCallback?.Invoke(this, e);
+            this._errorCallback?.Invoke(this, e);
         }
 
         /// <summary>

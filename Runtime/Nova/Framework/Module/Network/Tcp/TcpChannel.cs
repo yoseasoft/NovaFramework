@@ -74,19 +74,19 @@ namespace NovaEngine
         /// <summary>
         /// 网络通道当前连接状态标识
         /// </summary>
-        private bool m_isConnected = false;
+        private bool _isConnected = false;
 
         /// <summary>
         /// 网络通道当前写入状态标识
         /// </summary>
-        private bool m_isOnWriting = false;
+        private bool _isOnWriting = false;
 
         /// <summary>
         /// 获取网络通道当前连接状态标识
         /// </summary>
         public bool IsConnected
         {
-            get { return m_isConnected; }
+            get { return _isConnected; }
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace NovaEngine
         /// </summary>
         public bool IsOnWriting
         {
-            get { return m_isOnWriting; }
+            get { return _isOnWriting; }
         }
 
         /// <summary>
@@ -122,10 +122,10 @@ namespace NovaEngine
 
             SystemIPEndPoint ip = Utility.Network.ToIPEndPoint(url);
 
-            // this.m_url = ip.ToString();
+            // this._url = ip.ToString();
             this._remoteIp = ip;
-            this.m_isConnected = false;
-            this.m_isOnWriting = false;
+            this._isConnected = false;
+            this._isOnWriting = false;
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace NovaEngine
         /// </summary>
         internal void OnSend()
         {
-            if (false == this.m_isConnected)
+            if (false == this._isConnected)
             {
                 return;
             }
@@ -277,11 +277,11 @@ namespace NovaEngine
             // 没有待写入数据
             if (0 == this._writeBuffer.Length)
             {
-                this.m_isOnWriting = false;
+                this._isOnWriting = false;
                 return;
             }
 
-            this.m_isOnWriting = true;
+            this._isOnWriting = true;
 
             int size = IO.CircularLinkedBuffer.BUFFER_CHUNK_SIZE - this._writeBuffer.FirstIndex;
             if (size > this._writeBuffer.Length)
@@ -332,7 +332,7 @@ namespace NovaEngine
             }
 
             e.RemoteEndPoint = null;
-            this.m_isConnected = true;
+            this._isConnected = true;
 
             this.OnRecv();
 

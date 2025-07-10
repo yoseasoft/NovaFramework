@@ -54,17 +54,17 @@ namespace NovaEngine
         /// <summary>
         /// 场景数据状态类型，用于标识场景数据当前状态是否可用
         /// </summary>
-        private EStateType m_stateType = EStateType.None;
+        private EStateType _stateType = EStateType.None;
 
         /// <summary>
         /// 场景元素对象实例
         /// </summary>
-        private UnityScene m_scene;
+        private UnityScene _scene;
 
         /// <summary>
         /// 场景资源信息对象实例
         /// </summary>
-        private AssetModule.Scene m_assetScene = null;
+        private AssetModule.Scene _assetScene = null;
 
         /// <summary>
         /// 场景信息对象构造函数
@@ -94,10 +94,10 @@ namespace NovaEngine
         /// </summary>
         protected void Cleanup()
         {
-            if (m_assetScene != null)
+            if (_assetScene != null)
             {
-                ResourceModule.UnloadScene(m_assetScene);
-                m_assetScene = null;
+                ResourceModule.UnloadScene(_assetScene);
+                _assetScene = null;
             }
         }
 
@@ -162,8 +162,8 @@ namespace NovaEngine
         /// </summary>
         public EStateType StateType
         {
-            set { m_stateType = value; }
-            get { return m_stateType; }
+            set { _stateType = value; }
+            get { return _stateType; }
         }
 
         /// <summary>
@@ -171,8 +171,8 @@ namespace NovaEngine
         /// </summary>
         public UnityScene Scene
         {
-            set { m_scene = value; }
-            get { return m_scene; }
+            set { _scene = value; }
+            get { return _scene; }
         }
 
         /// <summary>
@@ -180,8 +180,8 @@ namespace NovaEngine
         /// </summary>
         public AssetModule.Scene AssetScene
         {
-            set { m_assetScene = value; }
-            get { return m_assetScene; }
+            set { _assetScene = value; }
+            get { return _assetScene; }
         }
 
         #endregion

@@ -100,7 +100,7 @@ namespace NovaEngine
         /// <summary>
         /// Unity对象和资源对象的对照表
         /// </summary>
-        static ObjectAssetMapping m_objectAssets = new ObjectAssetMapping();
+        static ObjectAssetMapping _objectAssets = new ObjectAssetMapping();
 
         /// <summary>
         /// 同步加载资源
@@ -111,8 +111,8 @@ namespace NovaEngine
         {
             Asset asset = AssetManagement.LoadAsset(url, type);
             UnityObject Object = asset?.result;
-            if (Object != null && !m_objectAssets.ContainsKey(Object))
-                m_objectAssets.Add(Object, asset);
+            if (Object != null && !_objectAssets.ContainsKey(Object))
+                _objectAssets.Add(Object, asset);
             return Object;
         }
 
@@ -126,8 +126,8 @@ namespace NovaEngine
         {
             Asset asset = AssetManagement.LoadAssetAsync(url, type, a =>
             {
-                if (a.result != null && !m_objectAssets.ContainsKey(a.result))
-                    m_objectAssets.Add(a.result, a);
+                if (a.result != null && !_objectAssets.ContainsKey(a.result))
+                    _objectAssets.Add(a.result, a);
 
                 completed?.Invoke(a.result);
             });
@@ -152,12 +152,12 @@ namespace NovaEngine
         /// <param name="Object">Unity对象</param>
         public static void UnloadAsset(UnityObject Object)
         {
-            if (Object == null || !m_objectAssets.TryGetValue(Object, out Asset asset))
+            if (Object == null || !_objectAssets.TryGetValue(Object, out Asset asset))
                 return;
 
             asset.Release();
             if (asset.reference.IsUnused)
-                m_objectAssets.Remove(Object);
+                _objectAssets.Remove(Object);
         }
 
         /// <summary>
@@ -165,12 +165,12 @@ namespace NovaEngine
         /// </summary>
         public static void RemoveAllAssets()
         {
-            foreach (Asset asset in m_objectAssets.Values)
+            foreach (Asset asset in _objectAssets.Values)
             {
                 asset.Release();
             }
 
-            m_objectAssets.Clear();
+            _objectAssets.Clear();
         }
 
         #endregion

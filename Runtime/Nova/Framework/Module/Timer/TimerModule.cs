@@ -376,62 +376,62 @@ namespace NovaEngine
             /// <summary>
             /// 定时任务对应的会话标识
             /// </summary>
-            private int m_session = 0;
+            private int _session = 0;
 
             /// <summary>
             /// 定时任务的名称，可以重复定义
             /// </summary>
-            private string m_name = null;
+            private string _name = null;
 
             /// <summary>
             /// 任务当次执行启动时间
             /// </summary>
-            private int m_timeStartup = 0;
+            private int _timeStartup = 0;
 
             /// <summary>
             /// 任务当前执行结束时间
             /// </summary>
-            private int m_timeFinished = 0;
+            private int _timeFinished = 0;
 
             /// <summary>
             /// 任务调度的间隔时间，以毫秒为单位
             /// </summary>
-            private int m_interval = 0;
+            private int _interval = 0;
 
             /// <summary>
             /// 任务累计回调次数计数
             /// </summary>
-            private int m_counting = 0;
+            private int _counting = 0;
 
             /// <summary>
             /// 任务计时未缩放状态标识
             /// </summary>
-            private bool m_unscaled = false;
+            private bool _unscaled = false;
 
             /// <summary>
             /// 任务循环执行处理标识
             /// </summary>
-            private bool m_looper = false;
+            private bool _looper = false;
 
             /// <summary>
             /// 任务运行过期处理标识
             /// </summary>
-            private bool m_expired = false;
+            private bool _expired = false;
 
             /// <summary>
             /// 任务重新开始运行处理标识
             /// </summary>
-            private bool m_restarted = false;
+            private bool _restarted = false;
 
             /// <summary>
             /// 定时任务管理器实例
             /// </summary>
-            private TimerModule m_timerModule = null;
+            private TimerModule _timerModule = null;
 
             public TimerInfo(TimerModule module)
             {
                 Logger.Assert(null != module, "构建定时任务对象必须依附于一个模块载体实例，该实例不能为空！");
-                m_timerModule = module;
+                _timerModule = module;
             }
 
             /// <summary>
@@ -441,7 +441,7 @@ namespace NovaEngine
             {
                 ResetTime();
 
-                m_timerModule.SendEvent((int) ProtocolType.Startup, m_session);
+                _timerModule.SendEvent((int) ProtocolType.Startup, _session);
             }
 
             /// <summary>
@@ -449,7 +449,7 @@ namespace NovaEngine
             /// </summary>
             public void Cleanup()
             {
-                m_timerModule.SendEvent((int) ProtocolType.Finished, m_session);
+                _timerModule.SendEvent((int) ProtocolType.Finished, _session);
             }
 
             /// <summary>
@@ -457,9 +457,9 @@ namespace NovaEngine
             /// </summary>
             private void ResetTime()
             {
-                // m_timeStartup = Timestamp.RealtimeSinceStartup;
-                m_timeStartup = Timestamp.TimeOfMilliseconds;
-                m_timeFinished = m_timeStartup + m_interval;
+                // _timeStartup = Timestamp.RealtimeSinceStartup;
+                _timeStartup = Timestamp.TimeOfMilliseconds;
+                _timeFinished = _timeStartup + _interval;
             }
 
             /// <summary>
@@ -471,10 +471,10 @@ namespace NovaEngine
                 ResetTime();
 
                 // 重置过期状态标识，针对同一个定时器在同一帧重新调度的情况
-                m_expired = false;
+                _expired = false;
 
                 // 每次重置定时器，都开启该标识
-                m_restarted = true;
+                _restarted = true;
             }
 
             /// <summary>
@@ -483,42 +483,42 @@ namespace NovaEngine
             public void Update()
             {
                 // 定时任务可能会被其它服务主动关闭，在此提前判定，若已被关闭则直接退出
-                if (m_expired)
+                if (_expired)
                 {
                     return;
                 }
 
                 // 重置标识
-                m_restarted = false;
+                _restarted = false;
 
-                // if (Timestamp.RealtimeSinceStartup >= m_timeFinished)
-                if (Timestamp.TimeOfMilliseconds >= m_timeFinished)
+                // if (Timestamp.RealtimeSinceStartup >= _timeFinished)
+                if (Timestamp.TimeOfMilliseconds >= _timeFinished)
                 {
                     // 当前调度接口由于是在主刷新接口中被执行，因此不用加入事件队列，直接发送消息指令即可
-                    // m_timerModule.OnSchedule(m_session);
-                    m_timerModule.SendEvent((int) ProtocolType.Dispatched, m_session);
+                    // _timerModule.OnSchedule(_session);
+                    _timerModule.SendEvent((int) ProtocolType.Dispatched, _session);
 
-                    if (m_restarted)
+                    if (_restarted)
                     {
                         // 若在此次转发通知中重新启动了定时器，则简单的进行标识重置
                         // 因为定时相关参数已经被重新赋值了
-                        m_restarted = false;
+                        _restarted = false;
                     }
-                    else if (m_looper)
+                    else if (_looper)
                     {
                         // 循环定时器直接重置计时参数即可
                         this.ResetTime();
                     }
                     else // no loop
                     {
-                        --m_counting;
-                        if (m_counting > 0)
+                        --_counting;
+                        if (_counting > 0)
                         {
                             this.ResetTime();
                         }
                         else
                         {
-                            m_expired = true;
+                            _expired = true;
                         }
                     }
                 }
@@ -526,19 +526,19 @@ namespace NovaEngine
 
             #region 定时数据对象基础属性快捷访问操作接口
 
-            public int Session { get { return m_session; } set { m_session = value; } }
+            public int Session { get { return _session; } set { _session = value; } }
 
-            public string Name { get { return m_name; } set { m_name = value; } }
+            public string Name { get { return _name; } set { _name = value; } }
 
-            public int Interval { get { return m_interval; } set { m_interval = value; } }
+            public int Interval { get { return _interval; } set { _interval = value; } }
 
-            public int Counting { get { return m_counting; } set { m_counting = value; } }
+            public int Counting { get { return _counting; } set { _counting = value; } }
 
-            public bool Unscaled { get { return m_unscaled; } set { m_unscaled = value; } }
+            public bool Unscaled { get { return _unscaled; } set { _unscaled = value; } }
 
-            public bool Looper { get { return m_looper; } set { m_looper = value; } }
+            public bool Looper { get { return _looper; } set { _looper = value; } }
 
-            public bool Expired { get { return m_expired; } set { m_expired = value; } }
+            public bool Expired { get { return _expired; } set { _expired = value; } }
 
             #endregion
         }

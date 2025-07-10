@@ -158,7 +158,7 @@ namespace NovaEngine.IO
         public byte[] ReadBytes()
         {
             // int count = this.ReadInt();
-            // return m_reader.ReadBytes(count);
+            // return _reader.ReadBytes(count);
             return _reader.ReadBytes((int) _stream.Length);
         }
 
@@ -231,7 +231,7 @@ namespace NovaEngine.IO
         /// <param name="v">字节数组数值</param>
         public void WriteBytes(byte[] v)
         {
-            // m_writer.Write((int) v.Length);
+            // _writer.Write((int) v.Length);
             _writer.Write(v);
         }
 

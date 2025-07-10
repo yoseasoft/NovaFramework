@@ -96,8 +96,8 @@ namespace NovaEngine
         /// <param name="e">事件参数对象实例</param>
         public void SetData(ModuleEventArgs e)
         {
-            // m_data = ReferencePool.Acquire<T>();
-            // e.CopyTo(m_data);
+            // _data = ReferencePool.Acquire<T>();
+            // e.CopyTo(_data);
 
             _data = e;
         }

@@ -435,7 +435,7 @@ namespace NovaEngine.Network
             byte[] message = r.ReadBytes((int) (ms.Length - ms.Position));
             // int msglen = message.Length;
 
-            // m_notification.OnReceivedMessage(m_sequenceID, message);
+            // _notification.OnReceivedMessage(_sequenceID, message);
         }
     }
 }
