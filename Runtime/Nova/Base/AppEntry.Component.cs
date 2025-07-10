@@ -38,11 +38,11 @@ namespace NovaEngine
         /// <summary>
         /// 节点对象的映射容器
         /// </summary>
-        private static readonly IDictionary<string, UnityGameObject> s_frameworkGameObjects = new Dictionary<string, UnityGameObject>();
+        private static readonly IDictionary<string, UnityGameObject> _frameworkGameObjects = new Dictionary<string, UnityGameObject>();
         /// <summary>
         /// 组件对象的映射容器
         /// </summary>
-        private static readonly IDictionary<string, CFrameworkComponent> s_frameworkComponents = new Dictionary<string, CFrameworkComponent>();
+        private static readonly IDictionary<string, CFrameworkComponent> _frameworkComponents = new Dictionary<string, CFrameworkComponent>();
 
         /// <summary>
         /// 通过指定的对象类型声明获取对应的组件对象实例
@@ -61,7 +61,7 @@ namespace NovaEngine
         /// <returns>返回类型标识对应的组件实例，若不存在则返回null</returns>
         public static CFrameworkComponent GetComponent(SystemType componentType)
         {
-            foreach (KeyValuePair<string, CFrameworkComponent> pair in s_frameworkComponents)
+            foreach (KeyValuePair<string, CFrameworkComponent> pair in _frameworkComponents)
             {
                 if (pair.Value.GetType() == componentType)
                 {
@@ -80,7 +80,7 @@ namespace NovaEngine
         public static CFrameworkComponent GetComponent(string name)
         {
             CFrameworkComponent component = null;
-            if (s_frameworkComponents.TryGetValue(name, out component))
+            if (_frameworkComponents.TryGetValue(name, out component))
             {
                 return component;
             }
@@ -142,10 +142,10 @@ namespace NovaEngine
             }
 
             // 每个GameObject仅能容许一个CFrameworkComponent实例
-            if (s_frameworkGameObjects.ContainsKey(name))
+            if (_frameworkGameObjects.ContainsKey(name))
             {
                 Logger.Error("The register component name '{0}' is already exist, cannot repeat register it.", name);
-                CFrameworkComponent c = s_frameworkComponents[name];
+                CFrameworkComponent c = _frameworkComponents[name];
                 if (c.GetType() == componentType)
                 {
                     return c;
@@ -174,8 +174,8 @@ namespace NovaEngine
                 Logger.Warn("Could not found root game object, setting component's parent failed.");
             }
 
-            s_frameworkGameObjects.Add(name, gameObject);
-            s_frameworkComponents.Add(name, component);
+            _frameworkGameObjects.Add(name, gameObject);
+            _frameworkComponents.Add(name, component);
 
             return component;
         }
@@ -192,19 +192,19 @@ namespace NovaEngine
                 return;
             }
 
-            if (false == s_frameworkGameObjects.ContainsKey(name))
+            if (false == _frameworkGameObjects.ContainsKey(name))
             {
                 Logger.Error("Could not found any component name '{0}' in current framework, unregister it failed.", name);
                 return;
             }
 
-            UnityGameObject gameObject = s_frameworkGameObjects[name];
-            CFrameworkComponent component = s_frameworkComponents[name];
+            UnityGameObject gameObject = _frameworkGameObjects[name];
+            CFrameworkComponent component = _frameworkComponents[name];
             UnityEngine.Object.Destroy(component);
             UnityEngine.GameObject.Destroy(gameObject);
 
-            s_frameworkGameObjects.Remove(name);
-            s_frameworkComponents.Remove(name);
+            _frameworkGameObjects.Remove(name);
+            _frameworkComponents.Remove(name);
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace NovaEngine
         /// <param name="componentType">组件类型</param>
         public static void UnregisterComponent(SystemType componentType)
         {
-            foreach (KeyValuePair<string, CFrameworkComponent> pair in s_frameworkComponents)
+            foreach (KeyValuePair<string, CFrameworkComponent> pair in _frameworkComponents)
             {
                 if (pair.Value.GetType() == componentType)
                 {
@@ -237,7 +237,7 @@ namespace NovaEngine
         /// </summary>
         private static void RemoveAllComponents()
         {
-            IList<string> keys = Utility.Collection.ToList<string>(s_frameworkGameObjects.Keys);
+            IList<string> keys = Utility.Collection.ToList<string>(_frameworkGameObjects.Keys);
             for (int n = 0; null != keys && n < keys.Count; ++n)
             {
                 UnregisterComponent(keys[n]);

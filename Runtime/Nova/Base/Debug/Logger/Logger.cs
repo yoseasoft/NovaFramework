@@ -82,7 +82,7 @@ namespace NovaEngine
 
         // internal static void AddOutputChannel(OutputHandler output)
         // {
-        // s_logOutputHandler += output;
+        // _logOutputHandler += output;
         // }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace NovaEngine
 
         // internal static void RemoveOutputChannel(OutputHandler output)
         // {
-        // s_logOutputHandler -= output;
+        // _logOutputHandler -= output;
         // }
 
         /// <summary>

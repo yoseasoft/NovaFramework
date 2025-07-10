@@ -37,22 +37,22 @@ namespace NovaEngine
         /// <summary>
         /// 管理器对象的链表容器
         /// </summary>
-        private static readonly CacheLinkedList<IManager> s_frameworkManagers = new CacheLinkedList<IManager>();
+        private static readonly CacheLinkedList<IManager> _frameworkManagers = new CacheLinkedList<IManager>();
 
         /// <summary>
         /// 管理器对象的可更新列表容器
         /// </summary>
-        private static readonly CacheLinkedList<IUpdatable> s_updatedManagers = new CacheLinkedList<IUpdatable>();
+        private static readonly CacheLinkedList<IUpdatable> _updatedManagers = new CacheLinkedList<IUpdatable>();
 
         /// <summary>
         /// 管理器对象的过期列表容器
         /// </summary>
-        private static readonly IList<IManager> s_expiredManagers = new List<IManager>();
+        private static readonly IList<IManager> _expiredManagers = new List<IManager>();
 
         /// <summary>
         /// 管理器对象处于刷新调度中的状态标识
         /// </summary>
-        private static bool s_isManagerUpdating = false;
+        private static bool _isManagerUpdating = false;
 
         /// <summary>
         /// 检查当前容器中是否已注册指定类型的管理器实例
@@ -74,7 +74,7 @@ namespace NovaEngine
         public static bool HasManager(SystemType managerType)
         {
             // 检查是否存在相同类型的管理器实例
-            foreach (IManager v in s_frameworkManagers)
+            foreach (IManager v in _frameworkManagers)
             {
                 if (v.GetType() == managerType) { return true; }
             }
@@ -123,7 +123,7 @@ namespace NovaEngine
         private static IManager CreateManager(SystemType managerType)
         {
             // 检查是否存在相同类型的管理器实例
-            foreach (IManager v in s_frameworkManagers)
+            foreach (IManager v in _frameworkManagers)
             {
                 if (v.GetType() == managerType) { return v; }
             }
@@ -141,7 +141,7 @@ namespace NovaEngine
             }
 
             // 按优先级排序
-            LinkedListNode<IManager> current = s_frameworkManagers.First;
+            LinkedListNode<IManager> current = _frameworkManagers.First;
             while (null != current)
             {
                 if (manager.Priority > current.Value.Priority)
@@ -154,11 +154,11 @@ namespace NovaEngine
 
             if (null != current)
             {
-                s_frameworkManagers.AddBefore(current, manager);
+                _frameworkManagers.AddBefore(current, manager);
             }
             else
             {
-                s_frameworkManagers.AddLast(manager);
+                _frameworkManagers.AddLast(manager);
             }
 
             // 更新管理器实例的刷新列表
@@ -172,13 +172,13 @@ namespace NovaEngine
         /// </summary>
         private static void RefreshManagerUpdateList()
         {
-            s_updatedManagers.Clear();
+            _updatedManagers.Clear();
 
-            foreach (IManager manager in s_frameworkManagers)
+            foreach (IManager manager in _frameworkManagers)
             {
                 if (typeof(IUpdatable).IsAssignableFrom(manager.GetType()) && false == IsExpiredManager(manager))
                 {
-                    s_updatedManagers.AddLast(manager as IUpdatable);
+                    _updatedManagers.AddLast(manager as IUpdatable);
                 }
             }
         }
@@ -221,7 +221,7 @@ namespace NovaEngine
             Logger.Assert(null != manager, "Invalid manager instance.");
 
             // 处于更新中
-            if (s_isManagerUpdating)
+            if (_isManagerUpdating)
             {
                 if (IsExpiredManager(manager))
                 {
@@ -229,19 +229,19 @@ namespace NovaEngine
                 }
                 else
                 {
-                    s_expiredManagers.Add(manager);
+                    _expiredManagers.Add(manager);
                 }
                 return;
             }
 
             bool changed = false;
-            for (LinkedListNode<IManager> current = s_frameworkManagers.First; null != current; current = current.Next)
+            for (LinkedListNode<IManager> current = _frameworkManagers.First; null != current; current = current.Next)
             {
                 if (current.Value == manager)
                 {
                     DestroyManager(current.Value);
 
-                    s_frameworkManagers.Remove(current);
+                    _frameworkManagers.Remove(current);
                     changed = true;
                     break;
                 }
@@ -259,14 +259,14 @@ namespace NovaEngine
         /// </summary>
         private static void RemoveAllManagers()
         {
-            Logger.Assert(!s_isManagerUpdating, "Cannot remove manager within update progressing!");
-            for (LinkedListNode<IManager> current = s_frameworkManagers.Last; null != current; current = current.Next)
+            Logger.Assert(!_isManagerUpdating, "Cannot remove manager within update progressing!");
+            for (LinkedListNode<IManager> current = _frameworkManagers.Last; null != current; current = current.Next)
             {
                 DestroyManager(current.Value);
             }
 
-            s_frameworkManagers.Clear();
-            s_updatedManagers.Clear();
+            _frameworkManagers.Clear();
+            _updatedManagers.Clear();
         }
 
         /// <summary>
@@ -274,12 +274,12 @@ namespace NovaEngine
         /// </summary>
         private static void RemoveAllExpiredManagers()
         {
-            for (int n = s_expiredManagers.Count - 1; n >= 0; --n)
+            for (int n = _expiredManagers.Count - 1; n >= 0; --n)
             {
-                RemoveManager(s_expiredManagers[n]);
+                RemoveManager(_expiredManagers[n]);
             }
 
-            s_expiredManagers.Clear();
+            _expiredManagers.Clear();
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace NovaEngine
         /// <returns>若给定管理器实例为过期状态则返回true，否则返回false</returns>
         private static bool IsExpiredManager(IManager manager)
         {
-            if (s_expiredManagers.Contains(manager))
+            if (_expiredManagers.Contains(manager))
             {
                 return true;
             }
@@ -316,9 +316,9 @@ namespace NovaEngine
         /// </summary>
         private static void UpdateAllManagers()
         {
-            s_isManagerUpdating = true;
+            _isManagerUpdating = true;
 
-            foreach (IUpdatable v in s_updatedManagers)
+            foreach (IUpdatable v in _updatedManagers)
             {
                 if (IsExpiredManager(v as IManager))
                 {
@@ -328,7 +328,7 @@ namespace NovaEngine
                 v.Update();
             }
 
-            s_isManagerUpdating = false;
+            _isManagerUpdating = false;
         }
 
         /// <summary>
@@ -337,9 +337,9 @@ namespace NovaEngine
         /// </summary>
         private static void LateUpdateAllManagers()
         {
-            s_isManagerUpdating = true;
+            _isManagerUpdating = true;
 
-            foreach (IUpdatable v in s_updatedManagers)
+            foreach (IUpdatable v in _updatedManagers)
             {
                 if (IsExpiredManager(v as IManager))
                 {
@@ -349,7 +349,7 @@ namespace NovaEngine
                 v.LateUpdate();
             }
 
-            s_isManagerUpdating = false;
+            _isManagerUpdating = false;
 
             // 在更新结束标识后，移除过期管理器实例
             RemoveAllExpiredManagers();
@@ -370,8 +370,8 @@ namespace NovaEngine
 
                 string managerName = Utility.Text.Format("{0}.{1}", actualType.Namespace, actualType.Name.Substring(1));
 
-                System.Reflection.Assembly[] s_assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
-                foreach (System.Reflection.Assembly assembly in s_assemblies)
+                System.Reflection.Assembly[] _assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
+                foreach (System.Reflection.Assembly assembly in _assemblies)
                 {
                     actualType = SystemType.GetType(string.Format("{0}, {1}", managerName, assembly.FullName));
                     if (null != actualType)

@@ -79,7 +79,7 @@ namespace NovaEngine
             /// <summary>
             /// 模块对象配置信息
             /// </summary>
-            private static IList<ModuleConfigureInfo> s_configureInfos;
+            private static IList<ModuleConfigureInfo> _configureInfos;
 
             /// <summary>
             /// 对当前引擎框架中所有模块对象的配置参数进行初始化
@@ -93,7 +93,7 @@ namespace NovaEngine
                 }
 
                 // 配置容器初始化
-                s_configureInfos = new List<ModuleConfigureInfo>();
+                _configureInfos = new List<ModuleConfigureInfo>();
 
                 // 获取当前命名空间
                 string namespace_tag = typeof(ModuleController).Namespace;
@@ -136,7 +136,7 @@ namespace NovaEngine
             /// <returns>若给定的模块类型是错误的则返回true，否则返回false</returns>
             public static bool IsUnresolvedModuleType(int type)
             {
-                IEnumerator<ModuleConfigureInfo> e = s_configureInfos.GetEnumerator();
+                IEnumerator<ModuleConfigureInfo> e = _configureInfos.GetEnumerator();
                 while (e.MoveNext())
                 {
                     if (e.Current.Type == type)
@@ -169,7 +169,7 @@ namespace NovaEngine
                 mbi.Priority = ModuleObject.GetModulePriorityWithEventType(moduleType);
                 mbi.ReflectionType = clsType;
 
-                s_configureInfos.Add(mbi);
+                _configureInfos.Add(mbi);
             }
 
             /// <summary>
@@ -189,7 +189,7 @@ namespace NovaEngine
             /// <returns>返回指定类型的模块配置信息，若查找失败返回null</returns>
             private static ModuleConfigureInfo GetModuleConfigureInfoByType(int type)
             {
-                IEnumerator<ModuleConfigureInfo> e = s_configureInfos.GetEnumerator();
+                IEnumerator<ModuleConfigureInfo> e = _configureInfos.GetEnumerator();
                 while (e.MoveNext())
                 {
                     if (e.Current.Type == type)
@@ -222,7 +222,7 @@ namespace NovaEngine
             /// <returns>返回给定映射类型模块的名称</returns>
             public static string GetModuleName(SystemType clsType)
             {
-                IEnumerator<ModuleConfigureInfo> e = s_configureInfos.GetEnumerator();
+                IEnumerator<ModuleConfigureInfo> e = _configureInfos.GetEnumerator();
                 while (e.MoveNext())
                 {
                     if (clsType.IsAssignableFrom(e.Current.ReflectionType))
@@ -239,7 +239,7 @@ namespace NovaEngine
             /// <returns>返回给定名称模块的对象类型</returns>
             public static int GetModuleType(string name)
             {
-                IEnumerator<ModuleConfigureInfo> e = s_configureInfos.GetEnumerator();
+                IEnumerator<ModuleConfigureInfo> e = _configureInfos.GetEnumerator();
                 while (e.MoveNext())
                 {
                     if (e.Current.Name == name)
@@ -256,7 +256,7 @@ namespace NovaEngine
             /// <returns>返回给定映射类型模块的对象类型</returns>
             public static int GetModuleType(SystemType clsType)
             {
-                IEnumerator<ModuleConfigureInfo> e = s_configureInfos.GetEnumerator();
+                IEnumerator<ModuleConfigureInfo> e = _configureInfos.GetEnumerator();
                 while (e.MoveNext())
                 {
                     if (clsType.IsAssignableFrom(e.Current.ReflectionType))
@@ -304,8 +304,8 @@ namespace NovaEngine
             /// <returns>返回模块对象类型列表</returns>
             public static IList<int> GetAllRegModuleTypes()
             {
-                IList<int> moduleTypes = new List<int>(s_configureInfos.Count);
-                IEnumerator<ModuleConfigureInfo> e = s_configureInfos.GetEnumerator();
+                IList<int> moduleTypes = new List<int>(_configureInfos.Count);
+                IEnumerator<ModuleConfigureInfo> e = _configureInfos.GetEnumerator();
                 while (e.MoveNext())
                 {
                     moduleTypes.Add(e.Current.Type);

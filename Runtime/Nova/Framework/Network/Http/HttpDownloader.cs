@@ -209,7 +209,7 @@ namespace NovaEngine.Network
                 catch (SystemException e) { Logger.Error(e.ToString()); }
             }
 
-            // if (false == s_isDownloadRunning) { return; }
+            // if (false == _isDownloadRunning) { return; }
 
             if (isDone)
             {

@@ -92,7 +92,7 @@ namespace NovaEngine
         /// <summary>
         /// 文本格式转换的处理信息对象集合
         /// </summary>
-        private static TextFormatConvertionInfo[] s_textFormatConvertionInfos = new TextFormatConvertionInfo[(int) TextFormatParameterType.Max]
+        private static TextFormatConvertionInfo[] _textFormatConvertionInfos = new TextFormatConvertionInfo[(int) TextFormatParameterType.Max]
         {
             new TextFormatConvertionInfo {
                                             parameterType = TextFormatParameterType.Unknown,

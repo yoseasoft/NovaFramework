@@ -43,13 +43,13 @@ namespace NovaEngine
         /// </summary>
         public static class Assembly
         {
-            // private static readonly SystemAssembly[] s_assemblies = null;
+            // private static readonly SystemAssembly[] _assemblies = null;
             private static readonly IDictionary<string, SystemAssembly> _cachedAssemblies = null;
             private static readonly IDictionary<string, SystemType> _cachedTypes = null;
 
             static Assembly()
             {
-                // s_assemblies = SystemAppDomain.CurrentDomain.GetAssemblies();
+                // _assemblies = SystemAppDomain.CurrentDomain.GetAssemblies();
                 _cachedAssemblies = new Dictionary<string, SystemAssembly>();
                 _cachedTypes = new Dictionary<string, SystemType>(SystemStringComparer.Ordinal);
             }
