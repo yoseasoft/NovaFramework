@@ -256,7 +256,7 @@ namespace NovaEngine
         /// </summary>
         public struct Enumerator : IEnumerator<TValue>, IEnumerator
         {
-            private Dictionary<TClassKey, TValue>.ValueCollection.Enumerator m_enumerator;
+            private Dictionary<TClassKey, TValue>.ValueCollection.Enumerator _enumerator;
 
             internal Enumerator(Dictionary<TClassKey, TValue>.ValueCollection collection)
             {
@@ -265,25 +265,25 @@ namespace NovaEngine
                     throw new CFrameworkException("Dictionary's value collection is invalid.");
                 }
 
-                m_enumerator = collection.GetEnumerator();
+                _enumerator = collection.GetEnumerator();
             }
 
             /// <summary>
             /// 获取当前节点
             /// </summary>
-            public TValue Current { get { return m_enumerator.Current; } }
+            public TValue Current { get { return _enumerator.Current; } }
 
             /// <summary>
             /// 获取当前的枚举数
             /// </summary>
-            object IEnumerator.Current { get { return m_enumerator.Current; } }
+            object IEnumerator.Current { get { return _enumerator.Current; } }
 
             /// <summary>
             /// 清理枚举数
             /// </summary>
             public void Dispose()
             {
-                m_enumerator.Dispose();
+                _enumerator.Dispose();
             }
 
             /// <summary>
@@ -292,7 +292,7 @@ namespace NovaEngine
             /// <returns>返回下一个节点</returns>
             public bool MoveNext()
             {
-                return m_enumerator.MoveNext();
+                return _enumerator.MoveNext();
             }
 
             /// <summary>
@@ -300,7 +300,7 @@ namespace NovaEngine
             /// </summary>
             void IEnumerator.Reset()
             {
-                ((IEnumerator<TValue>) m_enumerator).Reset();
+                ((IEnumerator<TValue>) _enumerator).Reset();
             }
         }
     }

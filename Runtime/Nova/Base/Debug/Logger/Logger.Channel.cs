@@ -112,16 +112,16 @@ namespace NovaEngine
             /// <summary>
             /// 日志通道类型标识
             /// </summary>
-            private LogOutputChannelType m_channelType;
+            private LogOutputChannelType _channelType;
 
             /// <summary>
             /// 日志通道类型标识获取函数
             /// </summary>
-            public LogOutputChannelType ChannelType => m_channelType;
+            public LogOutputChannelType ChannelType => _channelType;
 
             public LogOutputChannelBindingAttribute(LogOutputChannelType channelType)
             {
-                m_channelType = channelType;
+                _channelType = channelType;
             }
         }
 
@@ -133,37 +133,37 @@ namespace NovaEngine
             /// <summary>
             /// 日志通道类型标识
             /// </summary>
-            private LogOutputChannelType m_channelType;
+            private LogOutputChannelType _channelType;
             /// <summary>
             /// 日志通道对象的启用回调接口
             /// </summary>
-            private Definition.Delegate.EmptyFunctionHandler m_startupCallback;
+            private Definition.Delegate.EmptyFunctionHandler _startupCallback;
             /// <summary>
             /// 日志通道对象的关闭回调接口
             /// </summary>
-            private Definition.Delegate.EmptyFunctionHandler m_shutdownCallback;
+            private Definition.Delegate.EmptyFunctionHandler _shutdownCallback;
             /// <summary>
             /// 日志通道对象当前的启用状态标识
             /// </summary>
-            private bool m_enabled;
+            private bool _enabled;
 
             /// <summary>
             /// 日志通道类型标识获取函数
             /// </summary>
-            public LogOutputChannelType ChannelType => m_channelType;
+            public LogOutputChannelType ChannelType => _channelType;
             /// <summary>
             /// 日志通道对象当前的启用状态标识获取函数
             /// </summary>
-            public bool Enabled => m_enabled;
+            public bool Enabled => _enabled;
 
             public LogOutputChannelBindingInfo(LogOutputChannelType channelType,
                                                Definition.Delegate.EmptyFunctionHandler startupCallback,
                                                Definition.Delegate.EmptyFunctionHandler shutdownCallback)
             {
-                m_channelType = channelType;
-                m_startupCallback = startupCallback;
-                m_shutdownCallback = shutdownCallback;
-                m_enabled = false;
+                _channelType = channelType;
+                _startupCallback = startupCallback;
+                _shutdownCallback = shutdownCallback;
+                _enabled = false;
             }
 
             /// <summary>
@@ -171,14 +171,14 @@ namespace NovaEngine
             /// </summary>
             public void OnChannelStartup()
             {
-                if (m_enabled)
+                if (_enabled)
                 {
                     // 通道已被启动，无需重复调用
                     return;
                 }
 
-                m_startupCallback?.Invoke();
-                m_enabled = true;
+                _startupCallback?.Invoke();
+                _enabled = true;
             }
 
             /// <summary>
@@ -186,10 +186,10 @@ namespace NovaEngine
             /// </summary>
             public void OnChannelShutdown()
             {
-                if (m_enabled)
+                if (_enabled)
                 {
-                    m_shutdownCallback?.Invoke();
-                    m_enabled = false;
+                    _shutdownCallback?.Invoke();
+                    _enabled = false;
                 }
             }
         }

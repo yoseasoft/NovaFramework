@@ -403,7 +403,7 @@ namespace NovaEngine
         /// </summary>
         public struct Enumerator : IEnumerator<T>, IEnumerator
         {
-            private LinkedList<T>.Enumerator m_enumerator;
+            private LinkedList<T>.Enumerator _enumerator;
 
             internal Enumerator(LinkedList<T> linkedList)
             {
@@ -412,7 +412,7 @@ namespace NovaEngine
                     throw new CFrameworkException("Linked list is invalid.");
                 }
 
-                m_enumerator = linkedList.GetEnumerator();
+                _enumerator = linkedList.GetEnumerator();
             }
 
             /// <summary>
@@ -420,7 +420,7 @@ namespace NovaEngine
             /// </summary>
             public T Current
             {
-                get { return m_enumerator.Current; }
+                get { return _enumerator.Current; }
             }
 
             /// <summary>
@@ -428,7 +428,7 @@ namespace NovaEngine
             /// </summary>
             object IEnumerator.Current
             {
-                get { return m_enumerator.Current; }
+                get { return _enumerator.Current; }
             }
 
             /// <summary>
@@ -436,7 +436,7 @@ namespace NovaEngine
             /// </summary>
             public void Dispose()
             {
-                m_enumerator.Dispose();
+                _enumerator.Dispose();
             }
 
             /// <summary>
@@ -445,7 +445,7 @@ namespace NovaEngine
             /// <returns>返回下一个节点</returns>
             public bool MoveNext()
             {
-                return m_enumerator.MoveNext();
+                return _enumerator.MoveNext();
             }
 
             /// <summary>
@@ -453,7 +453,7 @@ namespace NovaEngine
             /// </summary>
             void IEnumerator.Reset()
             {
-                ((IEnumerator<T>) m_enumerator).Reset();
+                ((IEnumerator<T>) _enumerator).Reset();
             }
         }
     }

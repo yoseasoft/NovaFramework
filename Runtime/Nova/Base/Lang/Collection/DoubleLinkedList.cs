@@ -153,9 +153,9 @@ namespace NovaEngine
         /// </summary>
         public struct Enumerator : IEnumerator<T>, IEnumerator
         {
-            private readonly DoubleLinkedList<T> m_linkedListRange;
-            private LinkedListNode<T> m_current;
-            private T m_currentValue;
+            private readonly DoubleLinkedList<T> _linkedListRange;
+            private LinkedListNode<T> _current;
+            private T _currentValue;
 
             internal Enumerator(DoubleLinkedList<T> range)
             {
@@ -164,9 +164,9 @@ namespace NovaEngine
                     throw new CFrameworkException("Range is invalid.");
                 }
 
-                m_linkedListRange = range;
-                m_current = m_linkedListRange._first;
-                m_currentValue = default(T);
+                _linkedListRange = range;
+                _current = _linkedListRange._first;
+                _currentValue = default(T);
             }
 
             /// <summary>
@@ -176,7 +176,7 @@ namespace NovaEngine
             {
                 get
                 {
-                    return m_currentValue;
+                    return _currentValue;
                 }
             }
 
@@ -187,7 +187,7 @@ namespace NovaEngine
             {
                 get
                 {
-                    return m_currentValue;
+                    return _currentValue;
                 }
             }
 
@@ -204,13 +204,13 @@ namespace NovaEngine
             /// <returns>返回下一个节点</returns>
             public bool MoveNext()
             {
-                if (null == m_current || m_current == m_linkedListRange._terminal)
+                if (null == _current || _current == _linkedListRange._terminal)
                 {
                     return false;
                 }
 
-                m_currentValue = m_current.Value;
-                m_current = m_current.Next;
+                _currentValue = _current.Value;
+                _current = _current.Next;
                 return true;
             }
 
@@ -219,8 +219,8 @@ namespace NovaEngine
             /// </summary>
             void IEnumerator.Reset()
             {
-                m_current = m_linkedListRange._first;
-                m_currentValue = default(T);
+                _current = _linkedListRange._first;
+                _currentValue = default(T);
             }
         }
     }

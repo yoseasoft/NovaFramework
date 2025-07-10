@@ -242,7 +242,7 @@ namespace NovaEngine
         /// </summary>
         public struct Enumerator : IEnumerator<KeyValuePair<TKey, DoubleLinkedList<TValue>>>, IEnumerator
         {
-            private Dictionary<TKey, DoubleLinkedList<TValue>>.Enumerator m_enumerator;
+            private Dictionary<TKey, DoubleLinkedList<TValue>>.Enumerator _enumerator;
 
             internal Enumerator(Dictionary<TKey, DoubleLinkedList<TValue>> dictionary)
             {
@@ -251,7 +251,7 @@ namespace NovaEngine
                     throw new CFrameworkException("Dictionary is invalid.");
                 }
 
-                m_enumerator = dictionary.GetEnumerator();
+                _enumerator = dictionary.GetEnumerator();
             }
 
             /// <summary>
@@ -261,7 +261,7 @@ namespace NovaEngine
             {
                 get
                 {
-                    return m_enumerator.Current;
+                    return _enumerator.Current;
                 }
             }
 
@@ -272,7 +272,7 @@ namespace NovaEngine
             {
                 get
                 {
-                    return m_enumerator.Current;
+                    return _enumerator.Current;
                 }
             }
 
@@ -281,7 +281,7 @@ namespace NovaEngine
             /// </summary>
             public void Dispose()
             {
-                m_enumerator.Dispose();
+                _enumerator.Dispose();
             }
 
             /// <summary>
@@ -290,7 +290,7 @@ namespace NovaEngine
             /// <returns>返回下一个节点</returns>
             public bool MoveNext()
             {
-                return m_enumerator.MoveNext();
+                return _enumerator.MoveNext();
             }
 
             /// <summary>
@@ -298,7 +298,7 @@ namespace NovaEngine
             /// </summary>
             void IEnumerator.Reset()
             {
-                ((IEnumerator<KeyValuePair<TKey, DoubleLinkedList<TValue>>>) m_enumerator).Reset();
+                ((IEnumerator<KeyValuePair<TKey, DoubleLinkedList<TValue>>>) _enumerator).Reset();
             }
         }
     }

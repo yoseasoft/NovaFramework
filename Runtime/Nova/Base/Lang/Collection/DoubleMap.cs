@@ -103,7 +103,7 @@ namespace NovaEngine
                 return;
             }
 
-            // Dictionary<TKey, TValue>.KeyCollection keys = m_kv.Keys;
+            // Dictionary<TKey, TValue>.KeyCollection keys = _kv.Keys;
             ICollection<TKey> keys = _kv.Keys;
             foreach (TKey key in keys)
             {
