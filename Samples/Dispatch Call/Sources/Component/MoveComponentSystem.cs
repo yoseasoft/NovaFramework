@@ -48,9 +48,7 @@ namespace Game.Sample.DispatchCall
             {
                 if (false == self.MoveTo())
                 {
-                    Debugger.Info("角色对象‘{%s}’移动目标丢失，无法正确进行移动操作！", self.GetComponent<IdentityComponent>().objectName);
                     self.escape_time = 0;
-                    return;
                 }
 
                 self.escape_time--;
@@ -60,6 +58,10 @@ namespace Game.Sample.DispatchCall
                     Debugger.Info("角色对象‘{%s}’移动结束，当前位置{{{%d},{%d},{%d}}}！",
                         self.GetComponent<IdentityComponent>().objectName,
                         transformComponent.position.x, transformComponent.position.y, transformComponent.position.z);
+
+                    self.escape_time = 0;
+                    self.destination = UnityEngine.Vector3.zero;
+                    self.direction = UnityEngine.Vector3.zero;
                 }
             }
         }
@@ -71,44 +73,28 @@ namespace Game.Sample.DispatchCall
 
         static bool MoveTo(this MoveComponent self)
         {
-            AttackComponent attackComponent = self.GetComponent<AttackComponent>();
-            Monster monster = null;
-            if (attackComponent.targetId > 0)
-            {
-                MainDataComponent mainDataComponent = GameEngine.SceneHandler.Instance.GetCurrentScene().GetComponent<MainDataComponent>();
-                monster = mainDataComponent.GetSoldierByUid(attackComponent.targetId) as Monster;
-            }
-
-            if (null == monster)
-            {
-                return false;
-            }
-
             TransformComponent ownerTransformComponent = self.GetComponent<TransformComponent>();
-            TransformComponent targetTransformComponent = monster.GetComponent<TransformComponent>();
-            float distance = UnityEngine.Vector3.Distance(ownerTransformComponent.position, targetTransformComponent.position);
+            float distance = UnityEngine.Vector3.Distance(ownerTransformComponent.position, self.destination);
             if (distance >= 2f)
             {
-                UnityEngine.Vector3 direction = UnityEngine.Vector3.Normalize(targetTransformComponent.position - ownerTransformComponent.position);
+                //UnityEngine.Vector3 direction = UnityEngine.Vector3.Normalize(targetTransformComponent.position - ownerTransformComponent.position);
                 const float speed = 5f;
 
                 float move_distance = speed * NovaEngine.Timestamp.DeltaTime;
                 move_distance = UnityEngine.Mathf.Min(move_distance, distance / 2f);
 
                 UnityEngine.Vector3 old_position = ownerTransformComponent.position;
-                ownerTransformComponent.position += direction * move_distance;
+                ownerTransformComponent.position += self.direction * move_distance;
 
                 //Debugger.Info("角色对象‘{%s}’从源位置{{{%d},{%d},{%d}}}移动到目标位置{{{%d},{%d},{%d}}}！",
                 //    self.GetComponent<IdentityComponent>().objectName,
                 //    old_position.x, old_position.y, old_position.z,
                 //    ownerTransformComponent.position.x, ownerTransformComponent.position.y, ownerTransformComponent.position.z);
-            }
-            else
-            {
-                self.escape_time = 0;
+
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         public static void OnMovingStart(this MoveComponent self)
@@ -119,7 +105,42 @@ namespace Game.Sample.DispatchCall
                 return;
             }
 
-            self.escape_time = 5;
+            MainDataComponent mainDataComponent = GameEngine.SceneHandler.Instance.GetCurrentScene().GetComponent<MainDataComponent>();
+            Soldier soldier = null;
+
+            AttackComponent attackComponent = self.GetComponent<AttackComponent>();
+            if (null == attackComponent)
+            {
+                soldier = mainDataComponent.player;
+            }
+            else
+            {
+                soldier = mainDataComponent.GetSoldierByUid(attackComponent.targetId);
+            }
+
+            if (null == soldier)
+            {
+                Debugger.Info("角色对象‘{%s}’移动目标丢失，无法正确进行移动操作！", self.GetComponent<IdentityComponent>().objectName);
+                return;
+            }
+
+            TransformComponent ownerTransformComponent = self.GetComponent<TransformComponent>();
+            TransformComponent targetTransformComponent = soldier.GetComponent<TransformComponent>();
+
+            self.destination = targetTransformComponent.position;
+            self.direction = UnityEngine.Vector3.Normalize(self.destination - ownerTransformComponent.position);
+
+            self.escape_time = 10;
+        }
+
+        public static void OnMoveAlongTheDirection(this MoveComponent self, UnityEngine.Vector3 dir)
+        {
+            TransformComponent ownerTransformComponent = self.GetComponent<TransformComponent>();
+
+            self.destination = ownerTransformComponent.position + 100f * dir;
+            self.direction = dir;
+
+            self.escape_time = 10;
         }
     }
 }

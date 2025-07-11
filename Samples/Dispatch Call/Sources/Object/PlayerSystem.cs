@@ -98,15 +98,34 @@ namespace Game.Sample.DispatchCall
         [GameEngine.EventSubscribeBindingOfTarget(EventNotify.PlayerChaseTarget)]
         private static void OnPlayerChaseTarget(this Player self)
         {
-            self.GetComponent<MoveComponent>().OnMovingStart();
-
             Debugger.Info("玩家对象‘{%s}’开始移动！", self.GetComponent<IdentityComponent>().objectName);
+
+            self.GetComponent<MoveComponent>().OnMovingStart();
         }
 
-        [GameEngine.InputResponseBindingOfTarget((int) UnityEngine.KeyCode.O, GameEngine.InputOperationType.Released)]
-        private static void OnPlayerInputObserve(this Player self, int keycode, int operationType)
+        [GameEngine.InputResponseBindingOfTarget((int) UnityEngine.KeyCode.UpArrow, GameEngine.InputOperationType.Released)]
+        [GameEngine.InputResponseBindingOfTarget((int) UnityEngine.KeyCode.DownArrow, GameEngine.InputOperationType.Released)]
+        [GameEngine.InputResponseBindingOfTarget((int) UnityEngine.KeyCode.LeftArrow, GameEngine.InputOperationType.Released)]
+        [GameEngine.InputResponseBindingOfTarget((int) UnityEngine.KeyCode.RightArrow, GameEngine.InputOperationType.Released)]
+        private static void OnPlayerMoveTo(this Player self, int keycode, int operationType)
         {
-            Debugger.Warn("OnPlayerInputObserve: {%s} - {%d}.", self.GetComponent<IdentityComponent>().objectName, keycode);
+            Debugger.Info("玩家对象‘{%s}’开始移动！", self.GetComponent<IdentityComponent>().objectName);
+
+            switch (keycode)
+            {
+                case (int) UnityEngine.KeyCode.UpArrow:
+                    self.GetComponent<MoveComponent>().OnMoveAlongTheDirection(UnityEngine.Vector3.up);
+                    break;
+                case (int) UnityEngine.KeyCode.DownArrow:
+                    self.GetComponent<MoveComponent>().OnMoveAlongTheDirection(UnityEngine.Vector3.down);
+                    break;
+                case (int) UnityEngine.KeyCode.LeftArrow:
+                    self.GetComponent<MoveComponent>().OnMoveAlongTheDirection(UnityEngine.Vector3.left);
+                    break;
+                case (int) UnityEngine.KeyCode.RightArrow:
+                    self.GetComponent<MoveComponent>().OnMoveAlongTheDirection(UnityEngine.Vector3.right);
+                    break;
+            }
         }
 
         public static string ToPlayerString(this Player self)

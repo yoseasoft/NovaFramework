@@ -32,5 +32,8 @@ namespace Game.Sample.DispatchCall
     public class MoveComponent : GameEngine.CComponent, GameEngine.IUpdateActivation
     {
         public int escape_time;
+
+        public UnityEngine.Vector3 destination;
+        public UnityEngine.Vector3 direction;
     }
 }
