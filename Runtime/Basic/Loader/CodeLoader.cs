@@ -57,17 +57,17 @@ namespace GameEngine.Loader
         /// <summary>
         /// 程序集的版本记录容器
         /// </summary>
-        private static readonly IDictionary<string, SystemAssembly> s_assemblyLibraryCaches = new Dictionary<string, SystemAssembly>();
+        private static readonly IDictionary<string, SystemAssembly> _assemblyLibraryCaches = new Dictionary<string, SystemAssembly>();
 
         /// <summary>
         /// 程序集的类类型统计列表
         /// </summary>
-        private static readonly IList<SystemType> s_assemblyClassTypes = new List<SystemType>();
+        private static readonly IList<SystemType> _assemblyClassTypes = new List<SystemType>();
 
         /// <summary>
         /// 对象类的编码类型加载回调句柄映射容器
         /// </summary>
-        private static readonly IDictionary<SystemType, LinkedList<OnCodeTypeLoadedHandler>> s_codeTypeLoadedCallbacks = new Dictionary<SystemType, LinkedList<OnCodeTypeLoadedHandler>>();
+        private static readonly IDictionary<SystemType, LinkedList<OnCodeTypeLoadedHandler>> _codeTypeLoadedCallbacks = new Dictionary<SystemType, LinkedList<OnCodeTypeLoadedHandler>>();
 
         /// <summary>
         /// 程序集加载器的启动函数
@@ -125,13 +125,13 @@ namespace GameEngine.Loader
         {
             // string assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName().FullName;
             string assemblyName = assembly.FullName;
-            if (s_assemblyLibraryCaches.TryGetValue(assemblyName, out SystemAssembly assemblyVersion))
+            if (_assemblyLibraryCaches.TryGetValue(assemblyName, out SystemAssembly assemblyVersion))
             {
                 Debugger.Warn("The target assembly '{%s}' was already loaded, repeat load it failed.", assemblyName);
                 return;
             }
 
-            s_assemblyLibraryCaches.Add(assemblyName, assembly);
+            _assemblyLibraryCaches.Add(assemblyName, assembly);
 
             SystemType[] allTypes = assembly.GetTypes();
 
@@ -141,8 +141,8 @@ namespace GameEngine.Loader
             for (int n = 0; null != allTypes && n < allTypes.Length; ++n)
             {
                 SystemType type = allTypes[n];
-                Debugger.Assert(false == s_assemblyClassTypes.Contains(type), "Invalid class type {0}.", type.FullName);
-                s_assemblyClassTypes.Add(type);
+                Debugger.Assert(false == _assemblyClassTypes.Contains(type), "Invalid class type {0}.", type.FullName);
+                _assemblyClassTypes.Add(type);
 
                 // 过滤忽略加载的目标对象类型
                 if (false == IsLoadableClassType(type))
@@ -277,7 +277,7 @@ namespace GameEngine.Loader
             handler = null;
 
             Symboling.SymClass symClass = GetSymClassByType(targetType);
-            IEnumerator<KeyValuePair<SystemType, LinkedList<OnCodeTypeLoadedHandler>>> e = s_codeTypeLoadedCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, LinkedList<OnCodeTypeLoadedHandler>>> e = _codeTypeLoadedCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 if (e.Current.Key.IsSubclassOf(typeof(SystemAttribute)))
@@ -326,7 +326,7 @@ namespace GameEngine.Loader
             IDictionary<SystemType, IList<OnCodeTypeLoadedHandler>> dict = null;
 
             Symboling.SymClass symClass = GetSymClassByType(targetType);
-            IEnumerator<KeyValuePair<SystemType, LinkedList<OnCodeTypeLoadedHandler>>> e = s_codeTypeLoadedCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, LinkedList<OnCodeTypeLoadedHandler>>> e = _codeTypeLoadedCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 if (e.Current.Key.IsSubclassOf(typeof(SystemAttribute)))
@@ -397,9 +397,9 @@ namespace GameEngine.Loader
         {
             IList<SystemType> result = new List<SystemType>();
 
-            for (int n = 0; n < s_assemblyClassTypes.Count; ++n)
+            for (int n = 0; n < _assemblyClassTypes.Count; ++n)
             {
-                SystemType targetType = s_assemblyClassTypes[n];
+                SystemType targetType = _assemblyClassTypes[n];
                 if (func(targetType))
                 {
                     result.Add(targetType);
@@ -418,8 +418,8 @@ namespace GameEngine.Loader
         {
             UnloadAllSymClasses();
 
-            s_assemblyLibraryCaches.Clear();
-            s_assemblyClassTypes.Clear();
+            _assemblyLibraryCaches.Clear();
+            _assemblyClassTypes.Clear();
         }
 
         #endregion
@@ -434,12 +434,12 @@ namespace GameEngine.Loader
         public static void AddCodeTypeLoadedCallback(SystemType targetType, OnCodeTypeLoadedHandler callback)
         {
             LinkedList<OnCodeTypeLoadedHandler> handlers = null;
-            if (false == s_codeTypeLoadedCallbacks.TryGetValue(targetType, out handlers))
+            if (false == _codeTypeLoadedCallbacks.TryGetValue(targetType, out handlers))
             {
                 handlers = new LinkedList<OnCodeTypeLoadedHandler>();
                 handlers.AddLast(callback);
 
-                s_codeTypeLoadedCallbacks.Add(targetType, handlers);
+                _codeTypeLoadedCallbacks.Add(targetType, handlers);
                 return;
             }
 
@@ -460,7 +460,7 @@ namespace GameEngine.Loader
         public static void RemoveCodeTypeLoadedCallback(SystemType targetType, OnCodeTypeLoadedHandler callback)
         {
             LinkedList<OnCodeTypeLoadedHandler> handlers = null;
-            if (false == s_codeTypeLoadedCallbacks.TryGetValue(targetType, out handlers))
+            if (false == _codeTypeLoadedCallbacks.TryGetValue(targetType, out handlers))
             {
                 Debugger.Warn("Could not found any load callback from this type '{0}', remove it failed.", targetType.FullName);
                 return;
@@ -469,7 +469,7 @@ namespace GameEngine.Loader
             handlers.Remove(callback);
             if (handlers.Count <= 0)
             {
-                s_codeTypeLoadedCallbacks.Remove(targetType);
+                _codeTypeLoadedCallbacks.Remove(targetType);
             }
         }
 
@@ -478,7 +478,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static void RemoveAllCodeTypeLoadedCallbacks()
         {
-            s_codeTypeLoadedCallbacks.Clear();
+            _codeTypeLoadedCallbacks.Clear();
         }
 
         #endregion

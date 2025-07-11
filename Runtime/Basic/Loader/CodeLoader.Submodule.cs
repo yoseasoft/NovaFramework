@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -61,7 +61,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 加载对象类的子模块行为流程回调的缓存队列
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_cachedSubmoduleActionCallbacks = null;
+        private static IDictionary<SystemType, SystemDelegate> _cachedSubmoduleActionCallbacks = null;
 
         #region 加载对象的子模块调度管理接口函数
 
@@ -70,7 +70,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static void OnCodeLoaderSubmoduleInitCallback()
         {
-            s_cachedSubmoduleActionCallbacks = new Dictionary<SystemType, SystemDelegate>();
+            _cachedSubmoduleActionCallbacks = new Dictionary<SystemType, SystemDelegate>();
 
             OnCodeLoaderSubmoduleActionCallbackOfTargetAttribute(typeof(OnCodeLoaderSubmoduleInitCallbackAttribute));
         }
@@ -82,8 +82,8 @@ namespace GameEngine.Loader
         {
             OnCodeLoaderSubmoduleActionCallbackOfTargetAttribute(typeof(OnCodeLoaderSubmoduleCleanupCallbackAttribute));
 
-            s_cachedSubmoduleActionCallbacks.Clear();
-            s_cachedSubmoduleActionCallbacks = null;
+            _cachedSubmoduleActionCallbacks.Clear();
+            _cachedSubmoduleActionCallbacks = null;
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace GameEngine.Loader
         private static bool TryGetCodeLoaderSubmoduleActionCallback(SystemType targetType, out SystemDelegate callback)
         {
             SystemDelegate handler;
-            if (s_cachedSubmoduleActionCallbacks.TryGetValue(targetType, out handler))
+            if (_cachedSubmoduleActionCallbacks.TryGetValue(targetType, out handler))
             {
                 callback = handler;
                 return null == callback ? false : true;
@@ -140,11 +140,11 @@ namespace GameEngine.Loader
                     }
                 }
 
-                s_cachedSubmoduleActionCallbacks.Add(targetType, callback);
+                _cachedSubmoduleActionCallbacks.Add(targetType, callback);
                 return true;
             }
 
-            s_cachedSubmoduleActionCallbacks.Add(targetType, callback);
+            _cachedSubmoduleActionCallbacks.Add(targetType, callback);
             return false;
         }
 

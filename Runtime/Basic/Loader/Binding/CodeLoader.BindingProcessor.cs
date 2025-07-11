@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -76,11 +76,11 @@ namespace GameEngine.Loader
         /// <summary>
         /// 初始化绑定处理服务类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_codeBindingProcessorInitCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _codeBindingProcessorInitCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 清理绑定处理服务类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_codeBindingProcessorCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _codeBindingProcessorCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
 
         /// <summary>
         /// 初始化针对所有绑定处理类声明的全部绑定回调接口
@@ -119,7 +119,7 @@ namespace GameEngine.Loader
                 AddBindingProcessorTypeImplementedClass(processorType);
             }
 
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = s_codeBindingProcessorInitCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _codeBindingProcessorInitCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 OnInitAllBindingProcessorClassesHandler handler = e.Current.Value as OnInitAllBindingProcessorClassesHandler;
@@ -135,7 +135,7 @@ namespace GameEngine.Loader
         [OnCodeLoaderSubmoduleCleanupCallback]
         private static void CleanupAllBindingProcessorClassLoadingCallbacks()
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = s_codeBindingProcessorCleanupCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _codeBindingProcessorCleanupCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 OnCleanupAllBindingProcessorClassesHandler handler = e.Current.Value as OnCleanupAllBindingProcessorClassesHandler;
@@ -144,8 +144,8 @@ namespace GameEngine.Loader
                 handler.Invoke();
             }
 
-            s_codeBindingProcessorInitCallbacks.Clear();
-            s_codeBindingProcessorCleanupCallbacks.Clear();
+            _codeBindingProcessorInitCallbacks.Clear();
+            _codeBindingProcessorCleanupCallbacks.Clear();
         }
 
         /// <summary>
@@ -183,8 +183,8 @@ namespace GameEngine.Loader
                 return;
             }
 
-            s_codeBindingProcessorInitCallbacks.Add(targetType, initCallback);
-            s_codeBindingProcessorCleanupCallbacks.Add(targetType, cleanupCallback);
+            _codeBindingProcessorInitCallbacks.Add(targetType, initCallback);
+            _codeBindingProcessorCleanupCallbacks.Add(targetType, cleanupCallback);
 
             Debugger.Log(LogGroupTag.CodeLoader, "Add binding processor implemented class '{0}' to loader list.", targetType.FullName);
         }

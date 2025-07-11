@@ -39,57 +39,57 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// Bean对象的宿主标记对象
         /// </summary>
-        private SymClass m_targetClass;
+        private SymClass _targetClass;
         /// <summary>
         /// Bean对象的目标名称
         /// </summary>
-        private string m_beanName;
+        private string _beanName;
         /// <summary>
         /// 对象的单例模式
         /// </summary>
-        private bool m_singleton;
+        private bool _singleton;
         /// <summary>
         /// 对象的继承模式
         /// </summary>
-        private bool m_inherited;
+        private bool _inherited;
 
         /// <summary>
         /// 对象的数据来自于配置文件的状态标识
         /// </summary>
-        private bool m_fromConfigure;
+        private bool _fromConfigure;
 
         /// <summary>
         /// Bean对象包含的字段信息
         /// </summary>
-        private IDictionary<string, BeanField> m_fields;
+        private IDictionary<string, BeanField> _fields;
         /// <summary>
         /// Bean对象包含的属性信息
         /// </summary>
-        private IDictionary<string, BeanProperty> m_properties;
+        private IDictionary<string, BeanProperty> _properties;
         /// <summary>
         /// Bean对象包含的组件信息
         /// </summary>
-        private IList<BeanComponent> m_components;
+        private IList<BeanComponent> _components;
 
-        public SymClass TargetClass => m_targetClass;
+        public SymClass TargetClass => _targetClass;
 
-        public string BeanName { get { return m_beanName; } internal set { m_beanName = value; } }
-        public bool Singleton { get { return m_singleton; } internal set { m_singleton = value; } }
-        public bool Inherited { get { return m_inherited; } internal set { m_inherited = value; } }
-        public bool FromConfigure { get { return m_fromConfigure; } internal set { m_fromConfigure = value; } }
+        public string BeanName { get { return _beanName; } internal set { _beanName = value; } }
+        public bool Singleton { get { return _singleton; } internal set { _singleton = value; } }
+        public bool Inherited { get { return _inherited; } internal set { _inherited = value; } }
+        public bool FromConfigure { get { return _fromConfigure; } internal set { _fromConfigure = value; } }
 
-        public IDictionary<string, BeanField> Fields => m_fields;
-        public IDictionary<string, BeanProperty> Properties => m_properties;
-        public IList<BeanComponent> Components => m_components;
+        public IDictionary<string, BeanField> Fields => _fields;
+        public IDictionary<string, BeanProperty> Properties => _properties;
+        public IList<BeanComponent> Components => _components;
 
         public Bean(SymClass targetClass)
         {
-            m_targetClass = targetClass;
+            _targetClass = targetClass;
         }
 
         ~Bean()
         {
-            m_targetClass = null;
+            _targetClass = null;
 
             RemoveAllFields();
             RemoveAllProperties();
@@ -106,18 +106,18 @@ namespace GameEngine.Loader.Symboling
         {
             Debugger.Assert(null != field && false == string.IsNullOrEmpty(field.FieldName), "Invalid arguments.");
 
-            if (null == m_fields)
+            if (null == _fields)
             {
-                m_fields = new Dictionary<string, BeanField>();
+                _fields = new Dictionary<string, BeanField>();
             }
 
-            if (m_fields.ContainsKey(field.FieldName))
+            if (_fields.ContainsKey(field.FieldName))
             {
-                Debugger.Warn("The bean object '{0}' field name '{1}' was already exist, repeat added it failed.", m_beanName, field.FieldName);
-                m_fields.Remove(field.FieldName);
+                Debugger.Warn("The bean object '{0}' field name '{1}' was already exist, repeat added it failed.", _beanName, field.FieldName);
+                _fields.Remove(field.FieldName);
             }
 
-            m_fields.Add(field.FieldName, field);
+            _fields.Add(field.FieldName, field);
         }
 
         /// <summary>
@@ -129,12 +129,12 @@ namespace GameEngine.Loader.Symboling
         {
             Debugger.Assert(false == string.IsNullOrEmpty(fieldName), "Invalid arguments.");
 
-            if (null == m_fields)
+            if (null == _fields)
             {
                 return false;
             }
 
-            return m_fields.ContainsKey(fieldName);
+            return _fields.ContainsKey(fieldName);
         }
 
         /// <summary>
@@ -143,12 +143,12 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回Bean对象中字段信息的数量</returns>
         public int GetFieldCount()
         {
-            if (null == m_fields)
+            if (null == _fields)
             {
                 return 0;
             }
 
-            return m_fields.Count;
+            return _fields.Count;
         }
 
         /// <summary>
@@ -158,12 +158,12 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回查找的字段信息实例，若查找失败返回null</returns>
         public BeanField GetFieldByName(string fieldName)
         {
-            if (null == m_fields)
+            if (null == _fields)
             {
                 return null;
             }
 
-            if (m_fields.TryGetValue(fieldName, out BeanField field))
+            if (_fields.TryGetValue(fieldName, out BeanField field))
             {
                 return field;
             }
@@ -177,7 +177,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回Bean对象的字段迭代器</returns>
         public IEnumerator<KeyValuePair<string, BeanField>> GetFieldEnumerator()
         {
-            return m_fields?.GetEnumerator();
+            return _fields?.GetEnumerator();
         }
 
         /// <summary>
@@ -186,18 +186,18 @@ namespace GameEngine.Loader.Symboling
         /// <param name="field">字段信息</param>
         public void RemoveField(BeanField field)
         {
-            if (null == m_fields)
+            if (null == _fields)
             {
                 return;
             }
 
-            if (false == m_fields.ContainsKey(field.FieldName))
+            if (false == _fields.ContainsKey(field.FieldName))
             {
-                Debugger.Warn("Could not found any field name '{0}' from target bean object '{1}', removed it failed.", field.FieldName, m_beanName);
+                Debugger.Warn("Could not found any field name '{0}' from target bean object '{1}', removed it failed.", field.FieldName, _beanName);
                 return;
             }
 
-            m_fields.Remove(field.FieldName);
+            _fields.Remove(field.FieldName);
         }
 
         /// <summary>
@@ -206,14 +206,14 @@ namespace GameEngine.Loader.Symboling
         /// <param name="fieldName">字段名称</param>
         public void RemoveFieldByName(string fieldName)
         {
-            if (null == m_fields)
+            if (null == _fields)
             {
                 return;
             }
 
-            if (m_fields.ContainsKey(fieldName))
+            if (_fields.ContainsKey(fieldName))
             {
-                m_fields.Remove(fieldName);
+                _fields.Remove(fieldName);
             }
         }
 
@@ -222,8 +222,8 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         private void RemoveAllFields()
         {
-            m_fields?.Clear();
-            m_fields = null;
+            _fields?.Clear();
+            _fields = null;
         }
 
         #endregion
@@ -238,18 +238,18 @@ namespace GameEngine.Loader.Symboling
         {
             Debugger.Assert(null != property && false == string.IsNullOrEmpty(property.PropertyName), "Invalid arguments.");
 
-            if (null == m_properties)
+            if (null == _properties)
             {
-                m_properties = new Dictionary<string, BeanProperty>();
+                _properties = new Dictionary<string, BeanProperty>();
             }
 
-            if (m_properties.ContainsKey(property.PropertyName))
+            if (_properties.ContainsKey(property.PropertyName))
             {
-                Debugger.Warn("The bean object '{0}' property name '{1}' was already exist, repeat added it failed.", m_beanName, property.PropertyName);
-                m_properties.Remove(property.PropertyName);
+                Debugger.Warn("The bean object '{0}' property name '{1}' was already exist, repeat added it failed.", _beanName, property.PropertyName);
+                _properties.Remove(property.PropertyName);
             }
 
-            m_properties.Add(property.PropertyName, property);
+            _properties.Add(property.PropertyName, property);
         }
 
         /// <summary>
@@ -261,12 +261,12 @@ namespace GameEngine.Loader.Symboling
         {
             Debugger.Assert(false == string.IsNullOrEmpty(propertyName), "Invalid arguments.");
 
-            if (null == m_properties)
+            if (null == _properties)
             {
                 return false;
             }
 
-            return m_properties.ContainsKey(propertyName);
+            return _properties.ContainsKey(propertyName);
         }
 
         /// <summary>
@@ -275,12 +275,12 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回Bean对象中属性信息的数量</returns>
         public int GetPropertyCount()
         {
-            if (null == m_properties)
+            if (null == _properties)
             {
                 return 0;
             }
 
-            return m_properties.Count;
+            return _properties.Count;
         }
 
         /// <summary>
@@ -290,12 +290,12 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回查找的属性信息实例，若查找失败返回null</returns>
         public BeanProperty GetPropertyByName(string propertyName)
         {
-            if (null == m_properties)
+            if (null == _properties)
             {
                 return null;
             }
 
-            if (m_properties.TryGetValue(propertyName, out BeanProperty field))
+            if (_properties.TryGetValue(propertyName, out BeanProperty field))
             {
                 return field;
             }
@@ -309,7 +309,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回Bean对象的属性迭代器</returns>
         public IEnumerator<KeyValuePair<string, BeanProperty>> GetPropertyEnumerator()
         {
-            return m_properties?.GetEnumerator();
+            return _properties?.GetEnumerator();
         }
 
         /// <summary>
@@ -318,18 +318,18 @@ namespace GameEngine.Loader.Symboling
         /// <param name="property">属性信息</param>
         public void RemoveProperty(BeanProperty property)
         {
-            if (null == m_properties)
+            if (null == _properties)
             {
                 return;
             }
 
-            if (false == m_properties.ContainsKey(property.PropertyName))
+            if (false == _properties.ContainsKey(property.PropertyName))
             {
-                Debugger.Warn("Could not found any property name '{0}' from target bean object '{1}', removed it failed.", property.PropertyName, m_beanName);
+                Debugger.Warn("Could not found any property name '{0}' from target bean object '{1}', removed it failed.", property.PropertyName, _beanName);
                 return;
             }
 
-            m_properties.Remove(property.PropertyName);
+            _properties.Remove(property.PropertyName);
         }
 
         /// <summary>
@@ -338,14 +338,14 @@ namespace GameEngine.Loader.Symboling
         /// <param name="propertyName">属性名称</param>
         public void RemovePropertyByName(string propertyName)
         {
-            if (null == m_properties)
+            if (null == _properties)
             {
                 return;
             }
 
-            if (m_properties.ContainsKey(propertyName))
+            if (_properties.ContainsKey(propertyName))
             {
-                m_properties.Remove(propertyName);
+                _properties.Remove(propertyName);
             }
         }
 
@@ -354,8 +354,8 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         private void RemoveAllProperties()
         {
-            m_properties?.Clear();
-            m_properties = null;
+            _properties?.Clear();
+            _properties = null;
         }
 
         #endregion
@@ -368,19 +368,19 @@ namespace GameEngine.Loader.Symboling
         /// <param name="component">组件信息</param>
         public void AddComponent(BeanComponent component)
         {
-            if (null == m_components)
+            if (null == _components)
             {
-                m_components = new List<BeanComponent>();
+                _components = new List<BeanComponent>();
             }
 
             if (HasComponentByReferenceType(component.ReferenceClassType) || HasComponentByReferenceName(component.ReferenceBeanName))
             {
                 Debugger.Warn("The bean object '{0}' was already exist with target reference class type '{1}' or reference bean name '{2}', repeat added it failed.",
-                        m_beanName, NovaEngine.Utility.Text.ToString(component.ReferenceClassType), component.ReferenceBeanName);
+                        _beanName, NovaEngine.Utility.Text.ToString(component.ReferenceClassType), component.ReferenceBeanName);
                 return;
             }
 
-            m_components.Add(component);
+            _components.Add(component);
         }
 
         /// <summary>
@@ -390,14 +390,14 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若存在目标组件信息实例则返回true，否则返回false</returns>
         public bool HasComponentByReferenceType(SystemType componentType)
         {
-            if (null == m_components || null == componentType)
+            if (null == _components || null == componentType)
             {
                 return false;
             }
 
-            for (int n = 0; n < m_components.Count; ++n)
+            for (int n = 0; n < _components.Count; ++n)
             {
-                BeanComponent componentInfo = m_components[n];
+                BeanComponent componentInfo = _components[n];
                 if (componentInfo.ReferenceClassType == componentType)
                 {
                     return true;
@@ -414,14 +414,14 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若存在目标组件信息实例则返回true，否则返回false</returns>
         public bool HasComponentByReferenceName(string beanName)
         {
-            if (null == m_components || null == beanName)
+            if (null == _components || null == beanName)
             {
                 return false;
             }
 
-            for (int n = 0; n < m_components.Count; ++n)
+            for (int n = 0; n < _components.Count; ++n)
             {
-                BeanComponent componentInfo = m_components[n];
+                BeanComponent componentInfo = _components[n];
                 if (null != componentInfo.ReferenceBeanName && componentInfo.ReferenceBeanName.Equals(beanName))
                 {
                     return true;
@@ -437,12 +437,12 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回Bean对象中组件信息的数量</returns>
         public int GetComponentCount()
         {
-            if (null == m_components)
+            if (null == _components)
             {
                 return 0;
             }
 
-            return m_components.Count;
+            return _components.Count;
         }
 
         /// <summary>
@@ -452,13 +452,13 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回给定索引对应的组件信息实例，若不存在实例则返回null</returns>
         public BeanComponent GetComponentAt(int index)
         {
-            if (null == m_components || index < 0 || index >= m_components.Count)
+            if (null == _components || index < 0 || index >= _components.Count)
             {
                 Debugger.Warn("Invalid index ({0}) for bean object component list.", index);
                 return null;
             }
 
-            return m_components[index];
+            return _components[index];
         }
 
         /// <summary>
@@ -468,14 +468,14 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回查找的组件信息实例，若查找失败返回null</returns>
         public BeanComponent GetComponentByReferenceType(SystemType componentType)
         {
-            if (null == m_components || null == componentType)
+            if (null == _components || null == componentType)
             {
                 return null;
             }
 
-            for (int n = 0; n < m_components.Count; ++n)
+            for (int n = 0; n < _components.Count; ++n)
             {
-                BeanComponent componentInfo = m_components[n];
+                BeanComponent componentInfo = _components[n];
                 if (componentInfo.ReferenceClassType == componentType)
                 {
                     return componentInfo;
@@ -492,14 +492,14 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回查找的组件信息实例，若查找失败返回null</returns>
         public BeanComponent GetComponentByReferenceName(string beanName)
         {
-            if (null == m_components || null == beanName)
+            if (null == _components || null == beanName)
             {
                 return null;
             }
 
-            for (int n = 0; n < m_components.Count; ++n)
+            for (int n = 0; n < _components.Count; ++n)
             {
-                BeanComponent componentInfo = m_components[n];
+                BeanComponent componentInfo = _components[n];
                 if (null != componentInfo.ReferenceBeanName && componentInfo.ReferenceBeanName.Equals(beanName))
                 {
                     return componentInfo;
@@ -515,19 +515,19 @@ namespace GameEngine.Loader.Symboling
         /// <param name="component">组件信息</param>
         public void RemoveComponent(BeanComponent component)
         {
-            if (null == m_components)
+            if (null == _components)
             {
                 return;
             }
 
-            if (false == m_components.Contains(component))
+            if (false == _components.Contains(component))
             {
                 Debugger.Warn("Could not found any component type '{0}' from target bean object '{1}', removed it failed.",
-                        NovaEngine.Utility.Text.ToString(component.ReferenceClassType), m_beanName);
+                        NovaEngine.Utility.Text.ToString(component.ReferenceClassType), _beanName);
                 return;
             }
 
-            m_components.Remove(component);
+            _components.Remove(component);
         }
 
         /// <summary>
@@ -536,17 +536,17 @@ namespace GameEngine.Loader.Symboling
         /// <param name="componentType">组件类型</param>
         public void RemoveComponentByReferenceType(SystemType componentType)
         {
-            if (null == m_components)
+            if (null == _components)
             {
                 return;
             }
 
-            for (int n = m_components.Count - 1; n >= 0; --n)
+            for (int n = _components.Count - 1; n >= 0; --n)
             {
-                BeanComponent componentInfo = m_components[n];
+                BeanComponent componentInfo = _components[n];
                 if (componentInfo.ReferenceClassType == componentType)
                 {
-                    m_components.RemoveAt(n);
+                    _components.RemoveAt(n);
                 }
             }
         }
@@ -557,17 +557,17 @@ namespace GameEngine.Loader.Symboling
         /// <param name="beanName">实体名称</param>
         public void RemoveComponentByReferenceName(string beanName)
         {
-            if (null == m_components)
+            if (null == _components)
             {
                 return;
             }
 
-            for (int n = m_components.Count - 1; n >= 0; --n)
+            for (int n = _components.Count - 1; n >= 0; --n)
             {
-                BeanComponent componentInfo = m_components[n];
+                BeanComponent componentInfo = _components[n];
                 if (null != componentInfo.ReferenceBeanName && componentInfo.ReferenceBeanName.Equals(beanName))
                 {
-                    m_components.RemoveAt(n);
+                    _components.RemoveAt(n);
                 }
             }
         }
@@ -577,8 +577,8 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         private void RemoveAllComponents()
         {
-            m_components?.Clear();
-            m_components = null;
+            _components?.Clear();
+            _components = null;
         }
 
         #endregion

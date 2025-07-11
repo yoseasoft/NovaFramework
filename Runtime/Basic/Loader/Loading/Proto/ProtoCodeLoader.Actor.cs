@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -38,22 +38,22 @@ namespace GameEngine.Loader
         /// <summary>
         /// 角色名称
         /// </summary>
-        private string m_actorName;
+        private string _actorName;
         /// <summary>
         /// 角色功能类型
         /// </summary>
-        private int m_funcType;
+        private int _funcType;
 
-        public string ActorName { get { return m_actorName; } internal set { m_actorName = value; } }
-        public int FuncType { get { return m_funcType; } internal set { m_funcType = value; } }
+        public string ActorName { get { return _actorName; } internal set { _actorName = value; } }
+        public int FuncType { get { return _funcType; } internal set { _funcType = value; } }
 
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("Actor = { ");
             sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("Name = {0}, ", m_actorName ?? NovaEngine.Definition.CString.Unknown);
-            sb.AppendFormat("FuncType = {0}, ", m_funcType);
+            sb.AppendFormat("Name = {0}, ", _actorName ?? NovaEngine.Definition.CString.Unknown);
+            sb.AppendFormat("FuncType = {0}, ", _funcType);
             sb.Append("}");
             return sb.ToString();
         }
@@ -67,7 +67,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 对象类的结构信息管理容器
         /// </summary>
-        private static IDictionary<string, ActorCodeInfo> s_actorCodeInfos = new Dictionary<string, ActorCodeInfo>();
+        private static IDictionary<string, ActorCodeInfo> _actorCodeInfos = new Dictionary<string, ActorCodeInfo>();
 
         [OnProtoClassLoadOfTarget(typeof(CActor))]
         private static bool LoadActorClass(Symboling.SymClass symClass, bool reload)
@@ -131,11 +131,11 @@ namespace GameEngine.Loader
                 info.ActorName = symClass.ClassName;
             }
 
-            if (s_actorCodeInfos.ContainsKey(info.ActorName))
+            if (_actorCodeInfos.ContainsKey(info.ActorName))
             {
                 if (reload)
                 {
-                    s_actorCodeInfos.Remove(info.ActorName);
+                    _actorCodeInfos.Remove(info.ActorName);
                 }
                 else
                 {
@@ -144,7 +144,7 @@ namespace GameEngine.Loader
                 }
             }
 
-            s_actorCodeInfos.Add(info.ActorName, info);
+            _actorCodeInfos.Add(info.ActorName, info);
             Debugger.Log(LogGroupTag.CodeLoader, "Load 'CActor' code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
 
             return true;
@@ -170,13 +170,13 @@ namespace GameEngine.Loader
         [OnProtoClassCleanupOfTarget(typeof(CActor))]
         private static void CleanupAllActorClasses()
         {
-            s_actorCodeInfos.Clear();
+            _actorCodeInfos.Clear();
         }
 
         [OnProtoCodeInfoLookupOfTarget(typeof(CActor))]
         private static ActorCodeInfo LookupActorCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<string, ActorCodeInfo> pair in s_actorCodeInfos)
+            foreach (KeyValuePair<string, ActorCodeInfo> pair in _actorCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

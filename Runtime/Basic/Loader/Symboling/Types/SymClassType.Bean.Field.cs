@@ -36,24 +36,24 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// 字段对象的名称
         /// </summary>
-        private string m_fieldName;
+        private string _fieldName;
         /// <summary>
         /// 字段引用的实例类型
         /// </summary>
-        private SystemType m_referenceClassType;
+        private SystemType _referenceClassType;
         /// <summary>
         /// 字段引用的实例名称
         /// </summary>
-        private string m_referenceBeanName;
+        private string _referenceBeanName;
         /// <summary>
         /// 字段引用的对象实例
         /// </summary>
-        private object m_referenceValue;
+        private object _referenceValue;
 
-        public string FieldName { get { return m_fieldName; } internal set { m_fieldName = value; } }
-        public SystemType ReferenceClassType { get { return m_referenceClassType; } internal set { m_referenceClassType = value; } }
-        public string ReferenceBeanName { get { return m_referenceBeanName; } internal set { m_referenceBeanName = value; } }
-        public object ReferenceValue { get { return m_referenceValue; } internal set { m_referenceValue = value; } }
+        public string FieldName { get { return _fieldName; } internal set { _fieldName = value; } }
+        public SystemType ReferenceClassType { get { return _referenceClassType; } internal set { _referenceClassType = value; } }
+        public string ReferenceBeanName { get { return _referenceBeanName; } internal set { _referenceBeanName = value; } }
+        public object ReferenceValue { get { return _referenceValue; } internal set { _referenceValue = value; } }
 
         /// <summary>
         /// 获取字段配置对应的字段标记实例
@@ -64,7 +64,7 @@ namespace GameEngine.Loader.Symboling
             {
                 Debugger.Assert(null != this.BeanObject && null != this.BeanObject.TargetClass, "The bean object instance must be non-null.");
 
-                return this.BeanObject.TargetClass.GetFieldByName(m_fieldName);
+                return this.BeanObject.TargetClass.GetFieldByName(_fieldName);
             }
         }
 
@@ -83,7 +83,7 @@ namespace GameEngine.Loader.Symboling
 
         public bool Equals(BeanField other)
         {
-            return null != m_fieldName && m_fieldName == other.m_fieldName;
+            return null != _fieldName && _fieldName == other._fieldName;
         }
 
         public override int GetHashCode()
@@ -91,10 +91,10 @@ namespace GameEngine.Loader.Symboling
             unchecked
             {
                 int hash = 17;
-                hash = hash * 23 + m_fieldName?.GetHashCode() ?? 0;
-                hash = hash * 23 + m_referenceBeanName?.GetHashCode() ?? 0;
-                hash = hash * 23 + m_referenceClassType?.GetHashCode() ?? 0;
-                hash = hash * 23 + m_referenceValue?.GetHashCode() ?? 0;
+                hash = hash * 23 + _fieldName?.GetHashCode() ?? 0;
+                hash = hash * 23 + _referenceBeanName?.GetHashCode() ?? 0;
+                hash = hash * 23 + _referenceClassType?.GetHashCode() ?? 0;
+                hash = hash * 23 + _referenceValue?.GetHashCode() ?? 0;
                 return hash;
             }
         }

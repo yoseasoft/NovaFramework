@@ -46,15 +46,15 @@ namespace GameEngine.Loader
         /// <summary>
         /// 网络消息类的类型标识
         /// </summary>
-        protected SystemType m_classType;
+        protected SystemType _classType;
 
-        public SystemType ClassType { get { return m_classType; } internal set { m_classType = value; } }
+        public SystemType ClassType { get { return _classType; } internal set { _classType = value; } }
 
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("{ ");
-            sb.AppendFormat("Class = {0}, ", m_classType.FullName);
+            sb.AppendFormat("Class = {0}, ", _classType.FullName);
             sb.Append("}");
             return sb.ToString();
         }
@@ -68,15 +68,15 @@ namespace GameEngine.Loader
         /// <summary>
         /// 加载网络消息类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_networkClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _networkClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 清理网络消息类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_networkClassCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _networkClassCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 查找网络消息类结构信息相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_networkCodeInfoLookupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _networkCodeInfoLookupCallbacks = new Dictionary<SystemType, SystemDelegate>();
 
         /// <summary>
         /// 加载网络消息类相关函数的属性定义
@@ -124,22 +124,22 @@ namespace GameEngine.Loader
                     {
                         OnNetworkClassLoadOfTargetAttribute _attr = (OnNetworkClassLoadOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_networkClassLoadCallbacks.ContainsKey(_attr.ClassType), "Invalid network class load type");
-                        s_networkClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLoadHandler)));
+                        Debugger.Assert(!_networkClassLoadCallbacks.ContainsKey(_attr.ClassType), "Invalid network class load type");
+                        _networkClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLoadHandler)));
                     }
                     else if (typeof(OnNetworkClassCleanupOfTargetAttribute) == attrType)
                     {
                         OnNetworkClassCleanupOfTargetAttribute _attr = (OnNetworkClassCleanupOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_networkClassCleanupCallbacks.ContainsKey(_attr.ClassType), "Invalid network class cleanup type");
-                        s_networkClassCleanupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllGeneralCodeLoaderHandler)));
+                        Debugger.Assert(!_networkClassCleanupCallbacks.ContainsKey(_attr.ClassType), "Invalid network class cleanup type");
+                        _networkClassCleanupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllGeneralCodeLoaderHandler)));
                     }
                     else if (typeof(OnNetworkCodeInfoLookupOfTargetAttribute) == attrType)
                     {
                         OnNetworkCodeInfoLookupOfTargetAttribute _attr = (OnNetworkCodeInfoLookupOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_networkCodeInfoLookupCallbacks.ContainsKey(_attr.ClassType), "Invalid network class lookup type");
-                        s_networkCodeInfoLookupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLookupHandler)));
+                        Debugger.Assert(!_networkCodeInfoLookupCallbacks.ContainsKey(_attr.ClassType), "Invalid network class lookup type");
+                        _networkCodeInfoLookupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLookupHandler)));
                     }
                 }
             }
@@ -151,7 +151,7 @@ namespace GameEngine.Loader
         [CodeLoader.OnGeneralCodeLoaderCleanup]
         private static void CleanupAllNetworkClassLoadingCallbacks()
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = s_networkClassCleanupCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _networkClassCleanupCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = e.Current.Value as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
@@ -160,9 +160,9 @@ namespace GameEngine.Loader
                 handler.Invoke();
             }
 
-            s_networkClassLoadCallbacks.Clear();
-            s_networkClassCleanupCallbacks.Clear();
-            s_networkCodeInfoLookupCallbacks.Clear();
+            _networkClassLoadCallbacks.Clear();
+            _networkClassCleanupCallbacks.Clear();
+            _networkCodeInfoLookupCallbacks.Clear();
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace GameEngine.Loader
             {
                 SystemType attrType = attrTypes[n];
                 // if (TryGetNetworkClassCallbackForTargetContainer(attr.GetType(), out callback, s_networkClassLoadCallbacks))
-                if (TryGetNetworkClassCallbackForTargetContainer(attrType, out callback, s_networkClassLoadCallbacks))
+                if (TryGetNetworkClassCallbackForTargetContainer(attrType, out callback, _networkClassLoadCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
                     Debugger.Assert(null != handler, "Invalid network class load handler.");
@@ -239,7 +239,7 @@ namespace GameEngine.Loader
             {
                 SystemType attrType = attrTypes[n];
                 // if (TryGetNetworkClassCallbackForTargetContainer(attr.GetType(), out callback, s_networkCodeInfoLookupCallbacks))
-                if (TryGetNetworkClassCallbackForTargetContainer(attrType, out callback, s_networkCodeInfoLookupCallbacks))
+                if (TryGetNetworkClassCallbackForTargetContainer(attrType, out callback, _networkCodeInfoLookupCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;
                     Debugger.Assert(null != handler, "Invalid network class lookup handler.");
@@ -257,7 +257,7 @@ namespace GameEngine.Loader
         /// <returns>若存在给定类型对应的回调句柄则返回true，否则返回false</returns>
         private static bool IsNetworkClassCallbackExist(SystemType targetType)
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = s_networkClassLoadCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _networkClassLoadCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 // 这里的类型为属性定义的类型，因此直接作相等比较即可

@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -63,33 +63,33 @@ namespace GameEngine.Loader
             /// <summary>
             /// 解析的目标节点类型
             /// </summary>
-            private SystemXmlNodeType m_nodeType;
+            private SystemXmlNodeType _nodeType;
             /// <summary>
             /// 解析的目标节点名称
             /// </summary>
-            private string m_nodeName;
+            private string _nodeName;
 
-            public SystemXmlNodeType NodeType => m_nodeType;
-            public string NodeName => m_nodeName;
+            public SystemXmlNodeType NodeType => _nodeType;
+            public string NodeName => _nodeName;
 
             public OnConfigureResolvingCallbackAttribute(string nodeName) : this(SystemXmlNodeType.Element, nodeName) { }
 
             public OnConfigureResolvingCallbackAttribute(SystemXmlNodeType nodeType, string nodeName) : base()
             {
-                m_nodeType = nodeType;
-                m_nodeName = nodeName;
+                _nodeType = nodeType;
+                _nodeName = nodeName;
             }
         }
 
         /// <summary>
         /// 配置解析回调句柄管理容器
         /// </summary>
-        private static IDictionary<SystemXmlNodeType, IDictionary<string, OnConfigureObjectLoadhHandler>> s_codeConfigureResolveCallbacks = null;
+        private static IDictionary<SystemXmlNodeType, IDictionary<string, OnConfigureObjectLoadhHandler>> _codeConfigureResolveCallbacks = null;
 
         /// <summary>
         /// 配置基础对象类管理容器
         /// </summary>
-        private static IDictionary<string, Configuring.BaseConfigureInfo> s_nodeConfigureInfos = null;
+        private static IDictionary<string, Configuring.BaseConfigureInfo> _nodeConfigureInfos = null;
 
         /// <summary>
         /// 初始化针对所有配置解析类声明的全部绑定回调接口
@@ -98,9 +98,9 @@ namespace GameEngine.Loader
         private static void InitAllCodeConfigureLoadingCallbacks()
         {
             // 初始化解析容器
-            s_codeConfigureResolveCallbacks = new Dictionary<SystemXmlNodeType, IDictionary<string, OnConfigureObjectLoadhHandler>>();
+            _codeConfigureResolveCallbacks = new Dictionary<SystemXmlNodeType, IDictionary<string, OnConfigureObjectLoadhHandler>>();
             // 初始化实例容器
-            s_nodeConfigureInfos = new Dictionary<string, Configuring.BaseConfigureInfo>();
+            _nodeConfigureInfos = new Dictionary<string, Configuring.BaseConfigureInfo>();
 
             SystemType targetType = typeof(Configuring.CodeConfigureResolver);
             SystemMethodInfo[] methods = targetType.GetMethods(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
@@ -128,10 +128,10 @@ namespace GameEngine.Loader
         {
             // 清理实例容器
             UnloadAllConfigureContents();
-            s_nodeConfigureInfos = null;
+            _nodeConfigureInfos = null;
             // 清理解析容器
             RemoveAllCodeConfigureResolveCallbacks();
-            s_codeConfigureResolveCallbacks = null;
+            _codeConfigureResolveCallbacks = null;
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace GameEngine.Loader
             SystemXmlNodeType nodeType = node.NodeType;
             string nodeName = node.Name;
 
-            if (false == s_codeConfigureResolveCallbacks.TryGetValue(nodeType, out IDictionary<string, OnConfigureObjectLoadhHandler> callbacks))
+            if (false == _codeConfigureResolveCallbacks.TryGetValue(nodeType, out IDictionary<string, OnConfigureObjectLoadhHandler> callbacks))
             {
                 Debugger.Error("Could not resolve target node type '{0}', loaded content failed.", nodeType);
                 return;
@@ -202,13 +202,13 @@ namespace GameEngine.Loader
                 return;
             }
 
-            if (s_nodeConfigureInfos.ContainsKey(info.Name))
+            if (_nodeConfigureInfos.ContainsKey(info.Name))
             {
                 Debugger.Warn("The resolve configure info '{0}' was already exist, repeat added it will be override old value.", info.Name);
-                s_nodeConfigureInfos.Remove(info.Name);
+                _nodeConfigureInfos.Remove(info.Name);
             }
 
-            s_nodeConfigureInfos.Add(info.Name, info);
+            _nodeConfigureInfos.Add(info.Name, info);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static void UnloadAllConfigureContents()
         {
-            s_nodeConfigureInfos.Clear();
+            _nodeConfigureInfos.Clear();
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace GameEngine.Loader
         /// <returns>返回配置数据实例，若查找失败返回null</returns>
         internal static Configuring.BaseConfigureInfo GetConfigureContentByName(string targetName)
         {
-            if (s_nodeConfigureInfos.TryGetValue(targetName, out Configuring.BaseConfigureInfo info))
+            if (_nodeConfigureInfos.TryGetValue(targetName, out Configuring.BaseConfigureInfo info))
             {
                 return info;
             }
@@ -245,10 +245,10 @@ namespace GameEngine.Loader
         private static void AddCodeConfigureResolveCallback(SystemXmlNodeType nodeType, string nodeName, OnConfigureObjectLoadhHandler callback)
         {
             IDictionary<string, OnConfigureObjectLoadhHandler> callbacks;
-            if (false == s_codeConfigureResolveCallbacks.TryGetValue(nodeType, out callbacks))
+            if (false == _codeConfigureResolveCallbacks.TryGetValue(nodeType, out callbacks))
             {
                 callbacks = new Dictionary<string, OnConfigureObjectLoadhHandler>();
-                s_codeConfigureResolveCallbacks.Add(nodeType, callbacks);
+                _codeConfigureResolveCallbacks.Add(nodeType, callbacks);
             }
 
             if (callbacks.ContainsKey(nodeName))
@@ -265,7 +265,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static void RemoveAllCodeConfigureResolveCallbacks()
         {
-            s_codeConfigureResolveCallbacks.Clear();
+            _codeConfigureResolveCallbacks.Clear();
         }
 
         #endregion

@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,22 +39,22 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// 标记的唯一声明ID
         /// </summary>
-        private int m_uid;
+        private int _uid;
 
         /// <summary>
         /// 标记包含的属性信息
         /// </summary>
-        private IList<SystemAttribute> m_attributes;
+        private IList<SystemAttribute> _attributes;
 
         /// <summary>
         /// 唯一声明ID获取函数
         /// </summary>
-        public int Uid => m_uid;
+        public int Uid => _uid;
 
         /// <summary>
         /// 属性信息获取函数
         /// </summary>
-        public IList<SystemAttribute> Attributes => m_attributes;
+        public IList<SystemAttribute> Attributes => _attributes;
 
         protected SymBase() { }
 
@@ -71,12 +71,12 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回标记中属性实例的数量</returns>
         public int GetAttributeCount()
         {
-            if (null == m_attributes)
+            if (null == _attributes)
             {
                 return 0;
             }
 
-            return m_attributes.Count;
+            return _attributes.Count;
         }
 
         /// <summary>
@@ -86,14 +86,14 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若属性列表中存在给定类型的实例则返回true，否则返回false</returns>
         public bool HasAttribute(SystemType attributeType)
         {
-            if (null == m_attributes)
+            if (null == _attributes)
             {
                 return false;
             }
 
-            for (int n = 0; n < m_attributes.Count; ++n)
+            for (int n = 0; n < _attributes.Count; ++n)
             {
-                if (attributeType == m_attributes[n].GetType())
+                if (attributeType == _attributes[n].GetType())
                 {
                     return true;
                 }
@@ -109,14 +109,14 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若类对象存在给定属性则返回其实例，否则返回null</returns>
         public SystemAttribute GetAttribute(string attributeName)
         {
-            if (null == m_attributes || string.IsNullOrEmpty(attributeName))
+            if (null == _attributes || string.IsNullOrEmpty(attributeName))
             {
                 return null;
             }
 
-            for (int n = 0; n < m_attributes.Count; ++n)
+            for (int n = 0; n < _attributes.Count; ++n)
             {
-                SystemAttribute attribute = m_attributes[n];
+                SystemAttribute attribute = _attributes[n];
                 if (attributeName.Equals(attribute.GetType().Name))
                 {
                     return attribute;
@@ -133,15 +133,15 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回属性对象实例列表，若不存在则返回null</returns>
         public IList<SystemAttribute> GetAttributes(string attributeName)
         {
-            if (null == m_attributes || string.IsNullOrEmpty(attributeName))
+            if (null == _attributes || string.IsNullOrEmpty(attributeName))
             {
                 return null;
             }
 
             IList<SystemAttribute> attributes = null;
-            for (int n = 0; n < m_attributes.Count; ++n)
+            for (int n = 0; n < _attributes.Count; ++n)
             {
-                SystemAttribute attribute = m_attributes[n];
+                SystemAttribute attribute = _attributes[n];
                 if (attributeName.Equals(attribute.GetType().Name))
                 {
                     if (null == attributes)
@@ -173,14 +173,14 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若类对象存在给定属性则返回其实例，否则返回null</returns>
         public SystemAttribute GetAttribute(SystemType attributeType)
         {
-            if (null == m_attributes || null == attributeType)
+            if (null == _attributes || null == attributeType)
             {
                 return null;
             }
 
-            for (int n = 0; n < m_attributes.Count; ++n)
+            for (int n = 0; n < _attributes.Count; ++n)
             {
-                SystemAttribute attribute = m_attributes[n];
+                SystemAttribute attribute = _attributes[n];
                 if (attribute.GetType() == attributeType)
                 {
                     return attribute;
@@ -207,15 +207,15 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回属性对象实例列表，若不存在则返回null</returns>
         public IList<SystemAttribute> GetAttributes(SystemType attributeType)
         {
-            if (null == m_attributes || null == attributeType)
+            if (null == _attributes || null == attributeType)
             {
                 return null;
             }
 
             IList<SystemAttribute> attributes = null;
-            for (int n = 0; n < m_attributes.Count; ++n)
+            for (int n = 0; n < _attributes.Count; ++n)
             {
-                SystemAttribute attribute = m_attributes[n];
+                SystemAttribute attribute = _attributes[n];
                 if (attribute.GetType() == attributeType)
                 {
                     if (null == attributes)
@@ -287,18 +287,18 @@ namespace GameEngine.Loader.Symboling
         /// <param name="attribute">属性实例</param>
         public void AddAttribute(SystemAttribute attribute)
         {
-            if (null == m_attributes)
+            if (null == _attributes)
             {
-                m_attributes = new List<SystemAttribute>();
+                _attributes = new List<SystemAttribute>();
             }
 
-            if (m_attributes.Contains(attribute))
+            if (_attributes.Contains(attribute))
             {
                 Debugger.Warn("The attribute '{0}' was already exist within symbol instance, repeat added it failed.", NovaEngine.Utility.Text.ToString(attribute.GetType()));
                 return;
             }
 
-            m_attributes.Add(attribute);
+            _attributes.Add(attribute);
         }
 
         /// <summary>
@@ -307,18 +307,18 @@ namespace GameEngine.Loader.Symboling
         /// <param name="attribute">属性实例</param>
         public void RemoveAttribute(SystemAttribute attribute)
         {
-            if (null == m_attributes)
+            if (null == _attributes)
             {
                 return;
             }
 
-            if (false == m_attributes.Contains(attribute))
+            if (false == _attributes.Contains(attribute))
             {
                 Debugger.Warn("Could not found any attribute '{0}' from symbol instance, removed it failed.", NovaEngine.Utility.Text.ToString(attribute.GetType()));
                 return;
             }
 
-            m_attributes.Remove(attribute);
+            _attributes.Remove(attribute);
         }
 
         /// <summary>
@@ -326,8 +326,8 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         public void RemoveAllAttributes()
         {
-            m_attributes?.Clear();
-            m_attributes = null;
+            _attributes?.Clear();
+            _attributes = null;
         }
 
         #endregion

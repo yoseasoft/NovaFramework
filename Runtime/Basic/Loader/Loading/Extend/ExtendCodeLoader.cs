@@ -46,15 +46,15 @@ namespace GameEngine.Loader
         /// <summary>
         /// 扩展定义类的类型标识
         /// </summary>
-        protected SystemType m_classType;
+        protected SystemType _classType;
 
-        public SystemType ClassType { get { return m_classType; } set { m_classType = value; } }
+        public SystemType ClassType { get { return _classType; } set { _classType = value; } }
 
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("{ ");
-            sb.AppendFormat("Class = {0}, ", m_classType.FullName);
+            sb.AppendFormat("Class = {0}, ", _classType.FullName);
             sb.Append("}");
             return sb.ToString();
         }
@@ -68,15 +68,15 @@ namespace GameEngine.Loader
         /// <summary>
         /// 加载扩展定义类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_extendClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _extendClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 清理扩展定义类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_extendClassCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _extendClassCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 查找扩展定义类结构信息相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_extendCodeInfoLookupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _extendCodeInfoLookupCallbacks = new Dictionary<SystemType, SystemDelegate>();
 
         /// <summary>
         /// 加载扩展定义类相关函数的属性定义
@@ -124,22 +124,22 @@ namespace GameEngine.Loader
                     {
                         OnExtendClassLoadOfTargetAttribute _attr = (OnExtendClassLoadOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_extendClassLoadCallbacks.ContainsKey(_attr.ClassType), "Invalid extend class load type");
-                        s_extendClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLoadHandler)));
+                        Debugger.Assert(!_extendClassLoadCallbacks.ContainsKey(_attr.ClassType), "Invalid extend class load type");
+                        _extendClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLoadHandler)));
                     }
                     else if (typeof(OnExtendClassCleanupOfTargetAttribute) == attrType)
                     {
                         OnExtendClassCleanupOfTargetAttribute _attr = (OnExtendClassCleanupOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_extendClassCleanupCallbacks.ContainsKey(_attr.ClassType), "Invalid extend class cleanup type");
-                        s_extendClassCleanupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllGeneralCodeLoaderHandler)));
+                        Debugger.Assert(!_extendClassCleanupCallbacks.ContainsKey(_attr.ClassType), "Invalid extend class cleanup type");
+                        _extendClassCleanupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllGeneralCodeLoaderHandler)));
                     }
                     else if (typeof(OnExtendCodeInfoLookupOfTargetAttribute) == attrType)
                     {
                         OnExtendCodeInfoLookupOfTargetAttribute _attr = (OnExtendCodeInfoLookupOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_extendCodeInfoLookupCallbacks.ContainsKey(_attr.ClassType), "Invalid extend class lookup type");
-                        s_extendCodeInfoLookupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLookupHandler)));
+                        Debugger.Assert(!_extendCodeInfoLookupCallbacks.ContainsKey(_attr.ClassType), "Invalid extend class lookup type");
+                        _extendCodeInfoLookupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLookupHandler)));
                     }
                 }
             }
@@ -151,7 +151,7 @@ namespace GameEngine.Loader
         [CodeLoader.OnGeneralCodeLoaderCleanup]
         private static void CleanupAllExtendClassLoadingCallbacks()
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = s_extendClassCleanupCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _extendClassCleanupCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = e.Current.Value as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
@@ -160,9 +160,9 @@ namespace GameEngine.Loader
                 handler.Invoke();
             }
 
-            s_extendClassLoadCallbacks.Clear();
-            s_extendClassCleanupCallbacks.Clear();
-            s_extendCodeInfoLookupCallbacks.Clear();
+            _extendClassLoadCallbacks.Clear();
+            _extendClassCleanupCallbacks.Clear();
+            _extendCodeInfoLookupCallbacks.Clear();
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace GameEngine.Loader
             {
                 SystemType attrType = attrTypes[n];
                 // if (TryGetExtendClassCallbackForTargetContainer(attr.GetType(), out callback, s_extendClassLoadCallbacks))
-                if (TryGetExtendClassCallbackForTargetContainer(attrType, out callback, s_extendClassLoadCallbacks))
+                if (TryGetExtendClassCallbackForTargetContainer(attrType, out callback, _extendClassLoadCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
                     Debugger.Assert(null != handler, "Invalid extend class load handler.");
@@ -245,7 +245,7 @@ namespace GameEngine.Loader
             {
                 SystemType attrType = attrTypes[n];
                 // if (TryGetExtendClassCallbackForTargetContainer(attr.GetType(), out callback, s_extendCodeInfoLookupCallbacks))
-                if (TryGetExtendClassCallbackForTargetContainer(attrType, out callback, s_extendCodeInfoLookupCallbacks))
+                if (TryGetExtendClassCallbackForTargetContainer(attrType, out callback, _extendCodeInfoLookupCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;
                     Debugger.Assert(null != handler, "Invalid extend class lookup handler.");
@@ -263,7 +263,7 @@ namespace GameEngine.Loader
         /// <returns>若存在给定类型对应的回调句柄则返回true，否则返回false</returns>
         private static bool IsExtendClassCallbackExist(SystemType targetType)
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = s_extendClassLoadCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _extendClassLoadCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 // 这里的属性类型允许继承，因此不能直接作相等比较

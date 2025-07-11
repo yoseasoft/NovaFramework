@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,24 +37,24 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// 组件引用的实例类型
         /// </summary>
-        private SystemType m_referenceClassType;
+        private SystemType _referenceClassType;
         /// <summary>
         /// 组件引用的实体名称
         /// </summary>
-        private string m_referenceBeanName;
+        private string _referenceBeanName;
         /// <summary>
         /// 组件的调度优先级
         /// </summary>
-        private int m_priority;
+        private int _priority;
         /// <summary>
         /// 组件的激活行为类型
         /// </summary>
-        private AspectBehaviourType m_activationBehaviourType;
+        private AspectBehaviourType _activationBehaviourType;
 
-        public SystemType ReferenceClassType { get { return m_referenceClassType; } internal set { m_referenceClassType = value; } }
-        public string ReferenceBeanName { get { return m_referenceBeanName; } internal set { m_referenceBeanName = value; } }
-        public int Priority { get { return m_priority; } internal set { m_priority = value; } }
-        public AspectBehaviourType ActivationBehaviourType { get { return m_activationBehaviourType; } internal set { m_activationBehaviourType = value; } }
+        public SystemType ReferenceClassType { get { return _referenceClassType; } internal set { _referenceClassType = value; } }
+        public string ReferenceBeanName { get { return _referenceBeanName; } internal set { _referenceBeanName = value; } }
+        public int Priority { get { return _priority; } internal set { _priority = value; } }
+        public AspectBehaviourType ActivationBehaviourType { get { return _activationBehaviourType; } internal set { _activationBehaviourType = value; } }
 
         public BeanComponent(Bean beanObject) : base(beanObject)
         { }
@@ -71,8 +71,8 @@ namespace GameEngine.Loader.Symboling
 
         public bool Equals(BeanComponent other)
         {
-            return (null != m_referenceClassType && m_referenceClassType == other.m_referenceClassType) ||
-                   (null != m_referenceBeanName && m_referenceBeanName.Equals(other.m_referenceBeanName));
+            return (null != _referenceClassType && _referenceClassType == other._referenceClassType) ||
+                   (null != _referenceBeanName && _referenceBeanName.Equals(other._referenceBeanName));
         }
 
         public override int GetHashCode()
@@ -80,10 +80,10 @@ namespace GameEngine.Loader.Symboling
             unchecked
             {
                 int hash = 17;
-                hash = hash * 23 + m_referenceClassType?.GetHashCode() ?? 0;
-                hash = hash * 23 + m_referenceBeanName?.GetHashCode() ?? 0;
-                hash = hash * 23 + m_priority;
-                hash = hash * 23 + m_activationBehaviourType.GetHashCode();
+                hash = hash * 23 + _referenceClassType?.GetHashCode() ?? 0;
+                hash = hash * 23 + _referenceBeanName?.GetHashCode() ?? 0;
+                hash = hash * 23 + _priority;
+                hash = hash * 23 + _activationBehaviourType.GetHashCode();
                 return hash;
             }
         }

@@ -61,17 +61,17 @@ namespace GameEngine.Loader
         /// <summary>
         /// 加载程序集的过滤处理的回调函数管理容器
         /// </summary>
-        private static IList<AssemblyLoadFiltingProcessor> s_assemblyLoadFiltingProcessorCallbacks;
+        private static IList<AssemblyLoadFiltingProcessor> _assemblyLoadFiltingProcessorCallbacks;
 
         /// <summary>
         /// 加载程序集的进度通知的回调函数管理容器
         /// </summary>
-        private static IList<LoadClassProgress> s_loadClassProgressCallbacks;
+        private static IList<LoadClassProgress> _loadClassProgressCallbacks;
 
         /// <summary>
         /// 加载程序集的完成通知的回调函数管理容器
         /// </summary>
-        private static IList<LoadAssemblyCompleted> s_loadAssemblyCompletedCallbacks;
+        private static IList<LoadAssemblyCompleted> _loadAssemblyCompletedCallbacks;
 
         /// <summary>
         /// 程序集过滤处理转发
@@ -81,10 +81,10 @@ namespace GameEngine.Loader
         /// <returns>若目标类需要加载则返回true，否则返回false</returns>
         private static bool CallAssemblyLoadFiltingProcessor(string assemblyName, SystemType classType)
         {
-            for (int n = 0; null != s_assemblyLoadFiltingProcessorCallbacks && n < s_assemblyLoadFiltingProcessorCallbacks.Count; ++n)
+            for (int n = 0; null != _assemblyLoadFiltingProcessorCallbacks && n < _assemblyLoadFiltingProcessorCallbacks.Count; ++n)
             {
                 // 当某一个过滤条件满足时，就可以直接忽略该类
-                if (false == s_assemblyLoadFiltingProcessorCallbacks[n].Invoke(assemblyName, classType))
+                if (false == _assemblyLoadFiltingProcessorCallbacks[n].Invoke(assemblyName, classType))
                     return false;
             }
 
@@ -100,9 +100,9 @@ namespace GameEngine.Loader
         /// <param name="max">上限值</param>
         private static void CallLoadClassProgress(string assemblyName, SystemType classType, int current, int max)
         {
-            for (int n = 0; null != s_loadClassProgressCallbacks && n < s_loadClassProgressCallbacks.Count; ++n)
+            for (int n = 0; null != _loadClassProgressCallbacks && n < _loadClassProgressCallbacks.Count; ++n)
             {
-                s_loadClassProgressCallbacks[n].Invoke(assemblyName, classType, current, max);
+                _loadClassProgressCallbacks[n].Invoke(assemblyName, classType, current, max);
             }
         }
 
@@ -112,9 +112,9 @@ namespace GameEngine.Loader
         /// <param name="assemblyName">程序集名称</param>
         private static void CallLoadAssemblyCompleted(string assemblyName)
         {
-            for (int n = 0; null != s_loadAssemblyCompletedCallbacks && n < s_loadAssemblyCompletedCallbacks.Count; ++n)
+            for (int n = 0; null != _loadAssemblyCompletedCallbacks && n < _loadAssemblyCompletedCallbacks.Count; ++n)
             {
-                s_loadAssemblyCompletedCallbacks[n].Invoke(assemblyName);
+                _loadAssemblyCompletedCallbacks[n].Invoke(assemblyName);
             }
         }
 
@@ -124,18 +124,18 @@ namespace GameEngine.Loader
         /// <param name="callback">函数接口</param>
         public static void AddAssemblyLoadFiltingProcessorCallback(AssemblyLoadFiltingProcessor callback)
         {
-            if (null == s_assemblyLoadFiltingProcessorCallbacks)
+            if (null == _assemblyLoadFiltingProcessorCallbacks)
             {
-                s_assemblyLoadFiltingProcessorCallbacks = new List<AssemblyLoadFiltingProcessor>();
+                _assemblyLoadFiltingProcessorCallbacks = new List<AssemblyLoadFiltingProcessor>();
             }
 
-            if (s_assemblyLoadFiltingProcessorCallbacks.Contains(callback))
+            if (_assemblyLoadFiltingProcessorCallbacks.Contains(callback))
             {
                 Debugger.Warn("The assembly load filting processor callback '{0}' was already exist, repeat added it failed.", NovaEngine.Utility.Text.ToString(callback));
                 return;
             }
 
-            s_assemblyLoadFiltingProcessorCallbacks.Add(callback);
+            _assemblyLoadFiltingProcessorCallbacks.Add(callback);
         }
 
         /// <summary>
@@ -144,14 +144,14 @@ namespace GameEngine.Loader
         /// <param name="callback">函数接口</param>
         public static void RemoveAssemblyLoadFiltingProcessorCallback(AssemblyLoadFiltingProcessor callback)
         {
-            if (null == s_assemblyLoadFiltingProcessorCallbacks)
+            if (null == _assemblyLoadFiltingProcessorCallbacks)
             {
                 return;
             }
 
-            if (s_assemblyLoadFiltingProcessorCallbacks.Contains(callback))
+            if (_assemblyLoadFiltingProcessorCallbacks.Contains(callback))
             {
-                s_assemblyLoadFiltingProcessorCallbacks.Remove(callback);
+                _assemblyLoadFiltingProcessorCallbacks.Remove(callback);
             }
         }
 
@@ -161,18 +161,18 @@ namespace GameEngine.Loader
         /// <param name="callback">函数接口</param>
         internal static void AddLoadClassProgressCallback(LoadClassProgress callback)
         {
-            if (null == s_loadClassProgressCallbacks)
+            if (null == _loadClassProgressCallbacks)
             {
-                s_loadClassProgressCallbacks = new List<LoadClassProgress>();
+                _loadClassProgressCallbacks = new List<LoadClassProgress>();
             }
 
-            if (s_loadClassProgressCallbacks.Contains(callback))
+            if (_loadClassProgressCallbacks.Contains(callback))
             {
                 Debugger.Warn("The load class progress callback '{0}' was already exist, repeat added it failed.", NovaEngine.Utility.Text.ToString(callback));
                 return;
             }
 
-            s_loadClassProgressCallbacks.Add(callback);
+            _loadClassProgressCallbacks.Add(callback);
         }
 
         /// <summary>
@@ -181,14 +181,14 @@ namespace GameEngine.Loader
         /// <param name="callback">函数接口</param>
         internal static void RemoveLoadClassProgressCallback(LoadClassProgress callback)
         {
-            if (null == s_loadClassProgressCallbacks)
+            if (null == _loadClassProgressCallbacks)
             {
                 return;
             }
 
-            if (s_loadClassProgressCallbacks.Contains(callback))
+            if (_loadClassProgressCallbacks.Contains(callback))
             {
-                s_loadClassProgressCallbacks.Remove(callback);
+                _loadClassProgressCallbacks.Remove(callback);
             }
         }
 
@@ -198,18 +198,18 @@ namespace GameEngine.Loader
         /// <param name="callback">函数接口</param>
         internal static void AddLoadAssemblyCompletedCallback(LoadAssemblyCompleted callback)
         {
-            if (null == s_loadAssemblyCompletedCallbacks)
+            if (null == _loadAssemblyCompletedCallbacks)
             {
-                s_loadAssemblyCompletedCallbacks = new List<LoadAssemblyCompleted>();
+                _loadAssemblyCompletedCallbacks = new List<LoadAssemblyCompleted>();
             }
 
-            if (s_loadAssemblyCompletedCallbacks.Contains(callback))
+            if (_loadAssemblyCompletedCallbacks.Contains(callback))
             {
                 Debugger.Warn("The load assembly completed callback '{0}' was already exist, repeat added it failed.", NovaEngine.Utility.Text.ToString(callback));
                 return;
             }
 
-            s_loadAssemblyCompletedCallbacks.Add(callback);
+            _loadAssemblyCompletedCallbacks.Add(callback);
         }
 
         /// <summary>
@@ -218,14 +218,14 @@ namespace GameEngine.Loader
         /// <param name="callback">函数接口</param>
         internal static void RemoveLoadAssemblyCompletedCallback(LoadAssemblyCompleted callback)
         {
-            if (null == s_loadAssemblyCompletedCallbacks)
+            if (null == _loadAssemblyCompletedCallbacks)
             {
                 return;
             }
 
-            if (s_loadAssemblyCompletedCallbacks.Contains(callback))
+            if (_loadAssemblyCompletedCallbacks.Contains(callback))
             {
-                s_loadAssemblyCompletedCallbacks.Remove(callback);
+                _loadAssemblyCompletedCallbacks.Remove(callback);
             }
         }
 
@@ -234,21 +234,21 @@ namespace GameEngine.Loader
         /// </summary>
         private static void RemoveAllListenerLoadedCallbacks()
         {
-            if (null != s_assemblyLoadFiltingProcessorCallbacks)
+            if (null != _assemblyLoadFiltingProcessorCallbacks)
             {
-                s_assemblyLoadFiltingProcessorCallbacks.Clear();
-                s_assemblyLoadFiltingProcessorCallbacks = null;
+                _assemblyLoadFiltingProcessorCallbacks.Clear();
+                _assemblyLoadFiltingProcessorCallbacks = null;
             }
-            if (null != s_loadClassProgressCallbacks)
+            if (null != _loadClassProgressCallbacks)
             {
-                s_loadClassProgressCallbacks.Clear();
-                s_loadClassProgressCallbacks = null;
+                _loadClassProgressCallbacks.Clear();
+                _loadClassProgressCallbacks = null;
             }
 
-            if (null != s_loadAssemblyCompletedCallbacks)
+            if (null != _loadAssemblyCompletedCallbacks)
             {
-                s_loadAssemblyCompletedCallbacks.Clear();
-                s_loadAssemblyCompletedCallbacks = null;
+                _loadAssemblyCompletedCallbacks.Clear();
+                _loadAssemblyCompletedCallbacks = null;
             }
         }
     }

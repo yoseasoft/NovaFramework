@@ -36,24 +36,24 @@ namespace GameEngine.Loader.Configuring
         /// <summary>
         /// 节点属性的完整名称
         /// </summary>
-        private string m_propertyName;
+        private string _propertyName;
         /// <summary>
         /// 节点属性的引用名称
         /// </summary>
-        private string m_referenceName;
+        private string _referenceName;
         /// <summary>
         /// 节点属性的引用类型
         /// </summary>
-        private SystemType m_referenceType;
+        private SystemType _referenceType;
         /// <summary>
         /// 节点属性的配置值
         /// </summary>
-        private string m_referenceValue;
+        private string _referenceValue;
 
-        public string PropertyName { get { return m_propertyName; } internal set { m_propertyName = value; } }
-        public string ReferenceName { get { return m_referenceName; } internal set { m_referenceName = value; } }
-        public SystemType ReferenceType { get { return m_referenceType; } internal set { m_referenceType = value; } }
-        public string ReferenceValue { get { return m_referenceValue; } internal set { m_referenceValue = value; } }
+        public string PropertyName { get { return _propertyName; } internal set { _propertyName = value; } }
+        public string ReferenceName { get { return _referenceName; } internal set { _referenceName = value; } }
+        public SystemType ReferenceType { get { return _referenceType; } internal set { _referenceType = value; } }
+        public string ReferenceValue { get { return _referenceValue; } internal set { _referenceValue = value; } }
 
         /// <summary>
         /// 该配置对象是否有效的检测接口函数
@@ -65,13 +65,13 @@ namespace GameEngine.Loader.Configuring
 
             // 属性的引用名称，引用类型或引用值，必须要配置一项
 
-            if (null == m_referenceName)
+            if (null == _referenceName)
                 ++c;
 
-            if (null != m_referenceType)
+            if (null != _referenceType)
                 ++c;
 
-            if (null == m_referenceValue)
+            if (null == _referenceValue)
                 ++c;
 
             if (c <= 0 || c > 1)
@@ -84,10 +84,10 @@ namespace GameEngine.Loader.Configuring
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("{ ");
-            sb.AppendFormat("PropertyName = {0}, ", m_propertyName);
-            sb.AppendFormat("ReferenceName = {0}, ", m_referenceName);
-            sb.AppendFormat("ReferenceType = {0}, ", NovaEngine.Utility.Text.ToString(m_referenceType));
-            sb.AppendFormat("ReferenceValue = {0}, ", m_referenceValue);
+            sb.AppendFormat("PropertyName = {0}, ", _propertyName);
+            sb.AppendFormat("ReferenceName = {0}, ", _referenceName);
+            sb.AppendFormat("ReferenceType = {0}, ", NovaEngine.Utility.Text.ToString(_referenceType));
+            sb.AppendFormat("ReferenceValue = {0}, ", _referenceValue);
             sb.Append("}");
             return sb.ToString();
         }

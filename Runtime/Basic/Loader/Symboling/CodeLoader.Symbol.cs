@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,12 +36,12 @@ namespace GameEngine.Loader
         /// <summary>
         /// 对象类的标记信息管理容器
         /// </summary>
-        private static Symboling.SymClassMap s_symClassMaps = null;
+        private static Symboling.SymClassMap _symClassMaps = null;
 
         /// <summary>
         /// 对象类的Bean信息管理容器
         /// </summary>
-        private static IDictionary<string, Symboling.Bean> s_beanClassMaps = null;
+        private static IDictionary<string, Symboling.Bean> _beanClassMaps = null;
 
         /// <summary>
         /// 初始化针对所有标记对象类声明的全部绑定回调接口
@@ -50,9 +50,9 @@ namespace GameEngine.Loader
         private static void InitAllSymClassLoadingCallbacks()
         {
             // 初始化标记数据容器
-            s_symClassMaps = new Symboling.SymClassMap();
+            _symClassMaps = new Symboling.SymClassMap();
             // 初始化Bean数据容器
-            s_beanClassMaps = new Dictionary<string, Symboling.Bean>();
+            _beanClassMaps = new Dictionary<string, Symboling.Bean>();
         }
 
         /// <summary>
@@ -64,8 +64,8 @@ namespace GameEngine.Loader
             // 清理标识数据容器
             UnloadAllSymClasses();
 
-            s_symClassMaps = null;
-            s_beanClassMaps = null;
+            _symClassMaps = null;
+            _beanClassMaps = null;
         }
 
         /// <summary>
@@ -85,9 +85,9 @@ namespace GameEngine.Loader
 
             if (reload)
             {
-                if (s_symClassMaps.ContainsKey(symbol.ClassName))
+                if (_symClassMaps.ContainsKey(symbol.ClassName))
                 {
-                    s_symClassMaps.Remove(symbol.ClassName);
+                    _symClassMaps.Remove(symbol.ClassName);
                 }
                 else
                 {
@@ -97,12 +97,12 @@ namespace GameEngine.Loader
             }
 
             // 安全检查
-            Debugger.Assert(false == s_symClassMaps.ContainsKey(symbol.ClassName), $"Load class symbol {symbol.ClassName} error.");
+            Debugger.Assert(false == _symClassMaps.ContainsKey(symbol.ClassName), $"Load class symbol {symbol.ClassName} error.");
 
             Debugger.Log(LogGroupTag.CodeLoader, "Load class symbol '{%s}' succeed from target class type '{%f}'.", Symboling.Formatter.ToString(symbol), targetType);
 
             // 添加标记信息
-            s_symClassMaps.Add(symbol);
+            _symClassMaps.Add(symbol);
 
             // 添加Bean信息
             IEnumerator<KeyValuePair<string, Symboling.Bean>> beans = symbol.GetBeanEnumerator();
@@ -124,8 +124,8 @@ namespace GameEngine.Loader
         /// </summary>
         private static void UnloadAllSymClasses()
         {
-            s_symClassMaps.Clear();
-            s_beanClassMaps.Clear();
+            _symClassMaps.Clear();
+            _beanClassMaps.Clear();
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace GameEngine.Loader
         private static void RegisterBeanObjectOfSymClass(Symboling.Bean bean)
         {
             string beanName = bean.BeanName;
-            if (s_beanClassMaps.ContainsKey(beanName))
+            if (_beanClassMaps.ContainsKey(beanName))
             {
                 Debugger.Warn("The bean object '{0}' was already exist within class map, repeat added it failed.", beanName);
                 return;
@@ -143,7 +143,7 @@ namespace GameEngine.Loader
 
             Debugger.Info(LogGroupTag.CodeLoader, "Register new bean object '{0}' to target symbol class '{1}'.", beanName, bean.TargetClass.FullName);
 
-            s_beanClassMaps.Add(beanName, bean);
+            _beanClassMaps.Add(beanName, bean);
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace GameEngine.Loader
         /// <returns>返回对应的标记数据实例，若查找失败返回null</returns>
         public static Symboling.SymClass GetSymClassByName(string className)
         {
-            if (s_symClassMaps.TryGetValue(className, out Symboling.SymClass symbol))
+            if (_symClassMaps.TryGetValue(className, out Symboling.SymClass symbol))
             {
                 return symbol;
             }
@@ -168,7 +168,7 @@ namespace GameEngine.Loader
         /// <returns>返回对应的标记数据实例，若查找失败返回null</returns>
         public static Symboling.SymClass GetSymClassByType(SystemType targetType)
         {
-            if (s_symClassMaps.TryGetValue(targetType, out Symboling.SymClass symbol))
+            if (_symClassMaps.TryGetValue(targetType, out Symboling.SymClass symbol))
             {
                 return symbol;
             }
@@ -185,7 +185,7 @@ namespace GameEngine.Loader
         {
             IList<Symboling.SymClass> results = null;
 
-            IEnumerator<Symboling.SymClass> e = s_symClassMaps.GetEnumerator();
+            IEnumerator<Symboling.SymClass> e = _symClassMaps.GetEnumerator();
             while (e.MoveNext())
             {
                 if (e.Current.HasFeatureType(featureType))
@@ -208,7 +208,7 @@ namespace GameEngine.Loader
         {
             IList<Symboling.SymClass> results = null;
 
-            IEnumerator<Symboling.SymClass> e = s_symClassMaps.GetEnumerator();
+            IEnumerator<Symboling.SymClass> e = _symClassMaps.GetEnumerator();
             while (e.MoveNext())
             {
                 if (e.Current.HasInterfaceType(interfaceType))
@@ -229,7 +229,7 @@ namespace GameEngine.Loader
         /// <returns>返回对应的Bean信息数据实例，若查找失败返回null</returns>
         public static Symboling.Bean GetBeanClassByName(string beanName)
         {
-            if (s_beanClassMaps.TryGetValue(beanName, out Symboling.Bean bean))
+            if (_beanClassMaps.TryGetValue(beanName, out Symboling.Bean bean))
             {
                 return bean;
             }

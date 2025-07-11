@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -38,15 +38,15 @@ namespace GameEngine.Loader
         /// <summary>
         /// 对象池类的类型标识
         /// </summary>
-        protected SystemType m_classType;
+        protected SystemType _classType;
 
-        public SystemType ClassType { get { return m_classType; } internal set { m_classType = value; } }
+        public SystemType ClassType { get { return _classType; } internal set { _classType = value; } }
 
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("PoolMark = { ");
-            sb.AppendFormat("Class = {0}, ", m_classType.FullName);
+            sb.AppendFormat("Class = {0}, ", _classType.FullName);
             sb.Append("}");
             return sb.ToString();
         }
@@ -60,7 +60,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 对象池管理类的结构信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, PoolMarkCodeInfo> s_poolMarkCodeInfos = new Dictionary<SystemType, PoolMarkCodeInfo>();
+        private static IDictionary<SystemType, PoolMarkCodeInfo> _poolMarkCodeInfos = new Dictionary<SystemType, PoolMarkCodeInfo>();
 
         [OnPoolClassLoadOfTarget(typeof(PoolSupportedAttribute))]
         private static bool LoadPoolMarkClass(Symboling.SymClass symClass, bool reload)
@@ -74,12 +74,12 @@ namespace GameEngine.Loader
                 return false;
             }
 
-            if (s_poolMarkCodeInfos.ContainsKey(symClass.ClassType))
+            if (_poolMarkCodeInfos.ContainsKey(symClass.ClassType))
             {
                 if (reload)
                 {
                     // 重载模式下，先移除旧的记录
-                    s_poolMarkCodeInfos.Remove(symClass.ClassType);
+                    _poolMarkCodeInfos.Remove(symClass.ClassType);
                 }
                 else
                 {
@@ -88,7 +88,7 @@ namespace GameEngine.Loader
                 }
             }
 
-            s_poolMarkCodeInfos.Add(symClass.ClassType, info);
+            _poolMarkCodeInfos.Add(symClass.ClassType, info);
             Debugger.Log(LogGroupTag.CodeLoader, "Load pool mark code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
 
             return true;
@@ -97,13 +97,13 @@ namespace GameEngine.Loader
         [OnPoolClassCleanupOfTarget(typeof(PoolSupportedAttribute))]
         private static void CleanupAllPoolMarkClasses()
         {
-            s_poolMarkCodeInfos.Clear();
+            _poolMarkCodeInfos.Clear();
         }
 
         [OnPoolCodeInfoLookupOfTarget(typeof(PoolSupportedAttribute))]
         private static PoolMarkCodeInfo LookupPoolMarkCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<SystemType, PoolMarkCodeInfo> pair in s_poolMarkCodeInfos)
+            foreach (KeyValuePair<SystemType, PoolMarkCodeInfo> pair in _poolMarkCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

@@ -40,7 +40,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 事件调用类的数据引用对象
         /// </summary>
-        private IList<InputCallMethodTypeCodeInfo> m_methodTypes;
+        private IList<InputCallMethodTypeCodeInfo> _methodTypes;
 
         /// <summary>
         /// 新增指定函数的回调句柄相关的结构信息
@@ -48,18 +48,18 @@ namespace GameEngine.Loader
         /// <param name="invoke">函数的结构信息</param>
         internal void AddMethodType(InputCallMethodTypeCodeInfo invoke)
         {
-            if (null == m_methodTypes)
+            if (null == _methodTypes)
             {
-                m_methodTypes = new List<InputCallMethodTypeCodeInfo>();
+                _methodTypes = new List<InputCallMethodTypeCodeInfo>();
             }
 
-            if (m_methodTypes.Contains(invoke))
+            if (_methodTypes.Contains(invoke))
             {
-                Debugger.Warn("The input call class type '{0}' was already registed target keycode '{1}', repeat added it failed.", m_classType.FullName, invoke.InputCode);
+                Debugger.Warn("The input call class type '{0}' was already registed target keycode '{1}', repeat added it failed.", _classType.FullName, invoke.InputCode);
                 return;
             }
 
-            m_methodTypes.Add(invoke);
+            _methodTypes.Add(invoke);
         }
 
         /// <summary>
@@ -67,8 +67,8 @@ namespace GameEngine.Loader
         /// </summary>
         internal void RemoveAllMethodTypes()
         {
-            m_methodTypes?.Clear();
-            m_methodTypes = null;
+            _methodTypes?.Clear();
+            _methodTypes = null;
         }
 
         /// <summary>
@@ -77,9 +77,9 @@ namespace GameEngine.Loader
         /// <returns>返回函数回调句柄的结构信息数量</returns>
         internal int GetMethodTypeCount()
         {
-            if (null != m_methodTypes)
+            if (null != _methodTypes)
             {
-                return m_methodTypes.Count;
+                return _methodTypes.Count;
             }
 
             return 0;
@@ -92,13 +92,13 @@ namespace GameEngine.Loader
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
         internal InputCallMethodTypeCodeInfo GetMethodType(int index)
         {
-            if (null == m_methodTypes || index < 0 || index >= m_methodTypes.Count)
+            if (null == _methodTypes || index < 0 || index >= _methodTypes.Count)
             {
                 Debugger.Warn("Invalid index ({0}) for input call method type code info list.", index);
                 return null;
             }
 
-            return m_methodTypes[index];
+            return _methodTypes[index];
         }
 
         public override string ToString()
@@ -107,7 +107,7 @@ namespace GameEngine.Loader
             sb.Append("InputCall = { ");
             sb.AppendFormat("Parent = {0}, ", base.ToString());
 
-            sb.AppendFormat("MethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<InputCallMethodTypeCodeInfo>(m_methodTypes));
+            sb.AppendFormat("MethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<InputCallMethodTypeCodeInfo>(_methodTypes));
 
             sb.Append("}");
             return sb.ToString();
@@ -122,45 +122,45 @@ namespace GameEngine.Loader
         /// <summary>
         /// 输入响应类的完整名称
         /// </summary>
-        private string m_fullname;
+        private string _fullname;
         /// <summary>
         /// 输入响应类的目标对象类型
         /// </summary>
-        private SystemType m_targetType;
+        private SystemType _targetType;
         /// <summary>
         /// 输入响应类的监听键码标识
         /// </summary>
-        private int m_inputCode;
+        private int _inputCode;
         /// <summary>
         /// 输入响应类的监听操作数据类型
         /// </summary>
-        private InputOperationType m_operationType;
+        private InputOperationType _operationType;
         /// <summary>
         /// 输入响应类的监听键码集合数据类型
         /// </summary>
-        private SystemType m_inputDataType;
+        private SystemType _inputDataType;
         /// <summary>
         /// 输入响应类的回调函数
         /// </summary>
-        private SystemMethodInfo m_method;
+        private SystemMethodInfo _method;
 
-        public string Fullname { get { return m_fullname; } internal set { m_fullname = value; } }
-        public SystemType TargetType { get { return m_targetType; } internal set { m_targetType = value; } }
-        public int InputCode { get { return m_inputCode; } internal set { m_inputCode = value; } }
-        public InputOperationType OperationType { get { return m_operationType; } internal set { m_operationType = value; } }
-        public SystemType InputDataType { get { return m_inputDataType; } internal set { m_inputDataType = value; } }
-        public SystemMethodInfo Method { get { return m_method; } internal set { m_method = value; } }
+        public string Fullname { get { return _fullname; } internal set { _fullname = value; } }
+        public SystemType TargetType { get { return _targetType; } internal set { _targetType = value; } }
+        public int InputCode { get { return _inputCode; } internal set { _inputCode = value; } }
+        public InputOperationType OperationType { get { return _operationType; } internal set { _operationType = value; } }
+        public SystemType InputDataType { get { return _inputDataType; } internal set { _inputDataType = value; } }
+        public SystemMethodInfo Method { get { return _method; } internal set { _method = value; } }
 
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("{ ");
-            sb.AppendFormat("Fullname = {0}, ", m_fullname);
-            sb.AppendFormat("TargetType = {0}, ", NovaEngine.Utility.Text.ToString(m_targetType));
-            sb.AppendFormat("InputCode = {0}, ", m_inputCode);
-            sb.AppendFormat("OperationType = {0}, ", m_operationType);
-            sb.AppendFormat("InputDataType = {0}, ", NovaEngine.Utility.Text.ToString(m_inputDataType));
-            sb.AppendFormat("Method = {0}, ", NovaEngine.Utility.Text.ToString(m_method));
+            sb.AppendFormat("Fullname = {0}, ", _fullname);
+            sb.AppendFormat("TargetType = {0}, ", NovaEngine.Utility.Text.ToString(_targetType));
+            sb.AppendFormat("InputCode = {0}, ", _inputCode);
+            sb.AppendFormat("OperationType = {0}, ", _operationType);
+            sb.AppendFormat("InputDataType = {0}, ", NovaEngine.Utility.Text.ToString(_inputDataType));
+            sb.AppendFormat("Method = {0}, ", NovaEngine.Utility.Text.ToString(_method));
             sb.Append("}");
             return sb.ToString();
         }
@@ -174,7 +174,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 输入响应类的结构信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, InputCallCodeInfo> s_inputCallCodeInfos = new Dictionary<SystemType, InputCallCodeInfo>();
+        private static IDictionary<SystemType, InputCallCodeInfo> _inputCallCodeInfos = new Dictionary<SystemType, InputCallCodeInfo>();
 
         [OnInputClassLoadOfTarget(typeof(InputSystemAttribute))]
         private static bool LoadInputCallClass(Symboling.SymClass symClass, bool reload)
@@ -283,11 +283,11 @@ namespace GameEngine.Loader
                 return false;
             }
 
-            if (s_inputCallCodeInfos.ContainsKey(symClass.ClassType))
+            if (_inputCallCodeInfos.ContainsKey(symClass.ClassType))
             {
                 if (reload)
                 {
-                    s_inputCallCodeInfos.Remove(symClass.ClassType);
+                    _inputCallCodeInfos.Remove(symClass.ClassType);
                 }
                 else
                 {
@@ -296,7 +296,7 @@ namespace GameEngine.Loader
                 }
             }
 
-            s_inputCallCodeInfos.Add(symClass.ClassType, info);
+            _inputCallCodeInfos.Add(symClass.ClassType, info);
             Debugger.Log(LogGroupTag.CodeLoader, "Load input call code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
 
             return true;
@@ -305,13 +305,13 @@ namespace GameEngine.Loader
         [OnInputClassCleanupOfTarget(typeof(InputSystemAttribute))]
         private static void CleanupAllInputCallClasses()
         {
-            s_inputCallCodeInfos.Clear();
+            _inputCallCodeInfos.Clear();
         }
 
         [OnInputCodeInfoLookupOfTarget(typeof(InputSystemAttribute))]
         private static InputCallCodeInfo LookupInputCallCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<SystemType, InputCallCodeInfo> pair in s_inputCallCodeInfos)
+            foreach (KeyValuePair<SystemType, InputCallCodeInfo> pair in _inputCallCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

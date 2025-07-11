@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -38,16 +38,16 @@ namespace GameEngine.Loader
         /// <summary>
         /// 组件名称
         /// </summary>
-        private string m_componentName;
+        private string _componentName;
 
-        public string ComponentName { get { return m_componentName; } internal set { m_componentName = value; } }
+        public string ComponentName { get { return _componentName; } internal set { _componentName = value; } }
 
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("Component = { ");
             sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("Name = {0}, ", m_componentName ?? NovaEngine.Definition.CString.Unknown);
+            sb.AppendFormat("Name = {0}, ", _componentName ?? NovaEngine.Definition.CString.Unknown);
             sb.Append("}");
             return sb.ToString();
         }
@@ -61,7 +61,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 组件类的结构信息管理容器
         /// </summary>
-        private static IDictionary<string, ComponentCodeInfo> s_componentCodeInfos = new Dictionary<string, ComponentCodeInfo>();
+        private static IDictionary<string, ComponentCodeInfo> _componentCodeInfos = new Dictionary<string, ComponentCodeInfo>();
 
         [OnProtoClassLoadOfTarget(typeof(CComponent))]
         private static bool LoadComponentClass(Symboling.SymClass symClass, bool reload)
@@ -120,11 +120,11 @@ namespace GameEngine.Loader
                 info.ComponentName = symClass.ClassName;
             }
 
-            if (s_componentCodeInfos.ContainsKey(info.ComponentName))
+            if (_componentCodeInfos.ContainsKey(info.ComponentName))
             {
                 if (reload)
                 {
-                    s_componentCodeInfos.Remove(info.ComponentName);
+                    _componentCodeInfos.Remove(info.ComponentName);
                 }
                 else
                 {
@@ -133,7 +133,7 @@ namespace GameEngine.Loader
                 }
             }
 
-            s_componentCodeInfos.Add(info.ComponentName, info);
+            _componentCodeInfos.Add(info.ComponentName, info);
             Debugger.Log(LogGroupTag.CodeLoader, "Load 'CComponent' code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
 
             return true;
@@ -159,13 +159,13 @@ namespace GameEngine.Loader
         [OnProtoClassCleanupOfTarget(typeof(CComponent))]
         private static void CleanupAllComponentClasses()
         {
-            s_componentCodeInfos.Clear();
+            _componentCodeInfos.Clear();
         }
 
         [OnProtoCodeInfoLookupOfTarget(typeof(CComponent))]
         private static ComponentCodeInfo LookupComponentCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<string, ComponentCodeInfo> pair in s_componentCodeInfos)
+            foreach (KeyValuePair<string, ComponentCodeInfo> pair in _componentCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

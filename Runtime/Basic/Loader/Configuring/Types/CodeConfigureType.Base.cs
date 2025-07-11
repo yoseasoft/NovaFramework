@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -35,16 +35,16 @@ namespace GameEngine.Loader.Configuring
         /// <summary>
         /// 配置名称
         /// </summary>
-        private string m_name;
+        private string _name;
 
         public abstract ConfigureInfoType Type { get; }
-        public string Name { get { return m_name; } internal set { m_name = value; } }
+        public string Name { get { return _name; } internal set { _name = value; } }
 
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.AppendFormat("Type = {0}, ", Type.ToString());
-            sb.AppendFormat("Name = {0}, ", m_name);
+            sb.AppendFormat("Name = {0}, ", _name);
             return sb.ToString();
         }
     }

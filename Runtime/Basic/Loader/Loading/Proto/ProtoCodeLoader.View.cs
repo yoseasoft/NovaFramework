@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -38,31 +38,31 @@ namespace GameEngine.Loader
         /// <summary>
         /// 视图名称
         /// </summary>
-        private string m_viewName;
+        private string _viewName;
         /// <summary>
         /// 视图功能类型
         /// </summary>
-        private int m_funcType;
+        private int _funcType;
 
         /// <summary>
         /// 共生关系的视图名称列表
         /// </summary>
-        private IList<string> m_groupOfSymbioticViewNames;
+        private IList<string> _groupOfSymbioticViewNames;
 
         /// <summary>
         /// 视图缓存状态标识
         /// </summary>
-        private bool m_cachedStatus = false;
+        private bool _cachedStatus = false;
         /// <summary>
         /// 视图蒙版状态标识
         /// </summary>
-        private bool m_maskedStatus = false;
+        private bool _maskedStatus = false;
 
-        public string ViewName { get { return m_viewName; } internal set { m_viewName = value; } }
-        public int FuncType { get { return m_funcType; } internal set { m_funcType = value; } }
+        public string ViewName { get { return _viewName; } internal set { _viewName = value; } }
+        public int FuncType { get { return _funcType; } internal set { _funcType = value; } }
 
-        public bool CachedStatus { get { return m_cachedStatus; } internal set { m_cachedStatus = value; } }
-        public bool MaskedStatus { get { return m_maskedStatus; } internal set { m_cachedStatus = value; } }
+        public bool CachedStatus { get { return _cachedStatus; } internal set { _cachedStatus = value; } }
+        public bool MaskedStatus { get { return _maskedStatus; } internal set { _cachedStatus = value; } }
 
         /// <summary>
         /// 新增与当前视图具备共生关系的目标视图名称
@@ -70,18 +70,18 @@ namespace GameEngine.Loader
         /// <param name="viewName">视图名称</param>
         internal void AddGroupOfSymbioticViewName(string viewName)
         {
-            if (null == m_groupOfSymbioticViewNames)
+            if (null == _groupOfSymbioticViewNames)
             {
-                m_groupOfSymbioticViewNames = new List<string>();
+                _groupOfSymbioticViewNames = new List<string>();
             }
 
-            if (m_groupOfSymbioticViewNames.Contains(viewName))
+            if (_groupOfSymbioticViewNames.Contains(viewName))
             {
                 Debugger.Warn("The group of symbiotic view name '{0}' was already existed, repeat added it failed.", viewName);
                 return;
             }
 
-            m_groupOfSymbioticViewNames.Add(viewName);
+            _groupOfSymbioticViewNames.Add(viewName);
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace GameEngine.Loader
         /// </summary>
         internal void RemoveAllGroupOfSymbioticViewNames()
         {
-            m_groupOfSymbioticViewNames?.Clear();
-            m_groupOfSymbioticViewNames = null;
+            _groupOfSymbioticViewNames?.Clear();
+            _groupOfSymbioticViewNames = null;
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace GameEngine.Loader
         /// <returns>若具备共生关系则返回true，否则返回false</returns>
         public bool IsGroupOfSymbioticForTargetView(string viewName)
         {
-            if (null == m_groupOfSymbioticViewNames || false == m_groupOfSymbioticViewNames.Contains(viewName))
+            if (null == _groupOfSymbioticViewNames || false == _groupOfSymbioticViewNames.Contains(viewName))
             {
                 return false;
             }
@@ -114,9 +114,9 @@ namespace GameEngine.Loader
         /// <returns>返回具备共生关系的视图名称数量</returns>
         internal int GetGroupOfSymbioticViewNamesCount()
         {
-            if (null != m_groupOfSymbioticViewNames)
+            if (null != _groupOfSymbioticViewNames)
             {
-                return m_groupOfSymbioticViewNames.Count;
+                return _groupOfSymbioticViewNames.Count;
             }
 
             return 0;
@@ -129,13 +129,13 @@ namespace GameEngine.Loader
         /// <returns>返回给定索引值对应的名称，若不存在对应值则返回null</returns>
         internal string GetGroupOfSymbioticViewName(int index)
         {
-            if (null == m_groupOfSymbioticViewNames || index < 0 || index >= m_groupOfSymbioticViewNames.Count)
+            if (null == _groupOfSymbioticViewNames || index < 0 || index >= _groupOfSymbioticViewNames.Count)
             {
                 Debugger.Warn("Invalid index ({0}) for group of symbiotic view name list.", index);
                 return null;
             }
 
-            return m_groupOfSymbioticViewNames[index];
+            return _groupOfSymbioticViewNames[index];
         }
 
         public override string ToString()
@@ -143,12 +143,12 @@ namespace GameEngine.Loader
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("View = { ");
             sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("Name = {0}, ", m_viewName ?? NovaEngine.Definition.CString.Unknown);
-            sb.AppendFormat("FuncType = {0}, ", m_funcType);
-            sb.AppendFormat("CachedStatus = {0}, ", m_cachedStatus);
-            sb.AppendFormat("MaskedStatus = {0}, ", m_maskedStatus);
+            sb.AppendFormat("Name = {0}, ", _viewName ?? NovaEngine.Definition.CString.Unknown);
+            sb.AppendFormat("FuncType = {0}, ", _funcType);
+            sb.AppendFormat("CachedStatus = {0}, ", _cachedStatus);
+            sb.AppendFormat("MaskedStatus = {0}, ", _maskedStatus);
 
-            sb.AppendFormat("GroupViews = {{{0}}}, ", NovaEngine.Utility.Text.ToString(m_groupOfSymbioticViewNames));
+            sb.AppendFormat("GroupViews = {{{0}}}, ", NovaEngine.Utility.Text.ToString(_groupOfSymbioticViewNames));
 
             sb.Append("}");
             return sb.ToString();
@@ -163,7 +163,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 视图类的结构信息管理容器
         /// </summary>
-        private static IDictionary<string, ViewCodeInfo> s_viewCodeInfos = new Dictionary<string, ViewCodeInfo>();
+        private static IDictionary<string, ViewCodeInfo> _viewCodeInfos = new Dictionary<string, ViewCodeInfo>();
 
         [OnProtoClassLoadOfTarget(typeof(CView))]
         private static bool LoadViewClass(Symboling.SymClass symClass, bool reload)
@@ -240,11 +240,11 @@ namespace GameEngine.Loader
                 info.ViewName = symClass.ClassName;
             }
 
-            if (s_viewCodeInfos.ContainsKey(info.ViewName))
+            if (_viewCodeInfos.ContainsKey(info.ViewName))
             {
                 if (reload)
                 {
-                    s_viewCodeInfos.Remove(info.ViewName);
+                    _viewCodeInfos.Remove(info.ViewName);
                 }
                 else
                 {
@@ -253,7 +253,7 @@ namespace GameEngine.Loader
                 }
             }
 
-            s_viewCodeInfos.Add(info.ViewName, info);
+            _viewCodeInfos.Add(info.ViewName, info);
             Debugger.Log(LogGroupTag.CodeLoader, "Load 'CView' code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
 
             return true;
@@ -279,13 +279,13 @@ namespace GameEngine.Loader
         [OnProtoClassCleanupOfTarget(typeof(CView))]
         private static void CleanupAllViewClasses()
         {
-            s_viewCodeInfos.Clear();
+            _viewCodeInfos.Clear();
         }
 
         [OnProtoCodeInfoLookupOfTarget(typeof(CView))]
         private static ViewCodeInfo LookupViewCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<string, ViewCodeInfo> pair in s_viewCodeInfos)
+            foreach (KeyValuePair<string, ViewCodeInfo> pair in _viewCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

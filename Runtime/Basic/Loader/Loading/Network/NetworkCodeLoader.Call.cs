@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 网络消息接收类的数据引用对象
         /// </summary>
-        private IList<MessageCallMethodTypeCodeInfo> m_methodTypes;
+        private IList<MessageCallMethodTypeCodeInfo> _methodTypes;
 
         /// <summary>
         /// 新增接收消息的回调句柄相关的结构信息
@@ -47,18 +47,18 @@ namespace GameEngine.Loader
         /// <param name="codeInfo">接收回调的结构信息</param>
         internal void AddMethodType(MessageCallMethodTypeCodeInfo codeInfo)
         {
-            if (null == m_methodTypes)
+            if (null == _methodTypes)
             {
-                m_methodTypes = new List<MessageCallMethodTypeCodeInfo>();
+                _methodTypes = new List<MessageCallMethodTypeCodeInfo>();
             }
 
-            if (m_methodTypes.Contains(codeInfo))
+            if (_methodTypes.Contains(codeInfo))
             {
-                Debugger.Warn("The message call class type '{0}' was already registed target code '{1}', repeat added it failed.", m_classType.FullName, codeInfo.Opcode);
+                Debugger.Warn("The message call class type '{0}' was already registed target code '{1}', repeat added it failed.", _classType.FullName, codeInfo.Opcode);
                 return;
             }
 
-            m_methodTypes.Add(codeInfo);
+            _methodTypes.Add(codeInfo);
         }
 
         /// <summary>
@@ -66,8 +66,8 @@ namespace GameEngine.Loader
         /// </summary>
         internal void RemoveAllMethodTypes()
         {
-            m_methodTypes?.Clear();
-            m_methodTypes = null;
+            _methodTypes?.Clear();
+            _methodTypes = null;
         }
 
         /// <summary>
@@ -76,9 +76,9 @@ namespace GameEngine.Loader
         /// <returns>返回接收消息回调句柄的结构信息数量</returns>
         internal int GetMethodTypeCount()
         {
-            if (null != m_methodTypes)
+            if (null != _methodTypes)
             {
-                return m_methodTypes.Count;
+                return _methodTypes.Count;
             }
 
             return 0;
@@ -91,13 +91,13 @@ namespace GameEngine.Loader
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
         internal MessageCallMethodTypeCodeInfo GetMethodType(int index)
         {
-            if (null == m_methodTypes || index < 0 || index >= m_methodTypes.Count)
+            if (null == _methodTypes || index < 0 || index >= _methodTypes.Count)
             {
                 Debugger.Warn("Invalid index ({0}) for message call method type code info list.", index);
                 return null;
             }
 
-            return m_methodTypes[index];
+            return _methodTypes[index];
         }
 
         public override string ToString()
@@ -106,7 +106,7 @@ namespace GameEngine.Loader
             sb.Append("MessageCall = { ");
             sb.AppendFormat("Parent = {0}, ", base.ToString());
 
-            sb.AppendFormat("MethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<MessageCallMethodTypeCodeInfo>(m_methodTypes));
+            sb.AppendFormat("MethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<MessageCallMethodTypeCodeInfo>(_methodTypes));
 
             sb.Append("}");
             return sb.ToString();
@@ -121,39 +121,39 @@ namespace GameEngine.Loader
         /// <summary>
         /// 消息调用类的完整名称
         /// </summary>
-        private string m_fullname;
+        private string _fullname;
         /// <summary>
         /// 消息调用类的目标对象类型
         /// </summary>
-        private SystemType m_targetType;
+        private SystemType _targetType;
         /// <summary>
         /// 消息处理类的协议编码
         /// </summary>
-        protected int m_opcode;
+        protected int _opcode;
         /// <summary>
         /// 消息处理类的消息对象类型
         /// </summary>
-        protected SystemType m_messageType;
+        protected SystemType _messageType;
         /// <summary>
         /// 消息处理类的回调函数
         /// </summary>
-        private SystemMethodInfo m_method;
+        private SystemMethodInfo _method;
 
-        public string Fullname { get { return m_fullname; } internal set { m_fullname = value; } }
-        public SystemType TargetType { get { return m_targetType; } internal set { m_targetType = value; } }
-        public int Opcode { get { return m_opcode; } internal set { m_opcode = value; } }
-        public SystemType MessageType { get { return m_messageType; } internal set { m_messageType = value; } }
-        public SystemMethodInfo Method { get { return m_method; } internal set { m_method = value; } }
+        public string Fullname { get { return _fullname; } internal set { _fullname = value; } }
+        public SystemType TargetType { get { return _targetType; } internal set { _targetType = value; } }
+        public int Opcode { get { return _opcode; } internal set { _opcode = value; } }
+        public SystemType MessageType { get { return _messageType; } internal set { _messageType = value; } }
+        public SystemMethodInfo Method { get { return _method; } internal set { _method = value; } }
 
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("{ ");
-            sb.AppendFormat("Fullname = {0}, ", m_fullname);
-            sb.AppendFormat("TargetType = {0}, ", NovaEngine.Utility.Text.ToString(m_targetType));
-            sb.AppendFormat("Opcode = {0}, ", m_opcode);
-            sb.AppendFormat("MessageType = {0}, ", NovaEngine.Utility.Text.ToString(m_messageType));
-            sb.AppendFormat("Method = {0}, ", NovaEngine.Utility.Text.ToString(m_method));
+            sb.AppendFormat("Fullname = {0}, ", _fullname);
+            sb.AppendFormat("TargetType = {0}, ", NovaEngine.Utility.Text.ToString(_targetType));
+            sb.AppendFormat("Opcode = {0}, ", _opcode);
+            sb.AppendFormat("MessageType = {0}, ", NovaEngine.Utility.Text.ToString(_messageType));
+            sb.AppendFormat("Method = {0}, ", NovaEngine.Utility.Text.ToString(_method));
             sb.Append("}");
             return sb.ToString();
         }
@@ -167,7 +167,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 网络消息接收类的结构信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, MessageCallCodeInfo> s_messageCallCodeInfos = new Dictionary<SystemType, MessageCallCodeInfo>();
+        private static IDictionary<SystemType, MessageCallCodeInfo> _messageCallCodeInfos = new Dictionary<SystemType, MessageCallCodeInfo>();
 
         [OnNetworkClassLoadOfTarget(typeof(MessageSystemAttribute))]
         private static bool LoadMessageCallClass(Symboling.SymClass symClass, bool reload)
@@ -272,12 +272,12 @@ namespace GameEngine.Loader
                 return false;
             }
 
-            if (s_messageCallCodeInfos.ContainsKey(symClass.ClassType))
+            if (_messageCallCodeInfos.ContainsKey(symClass.ClassType))
             {
                 if (reload)
                 {
                     // 重载模式下，先移除旧的记录
-                    s_messageCallCodeInfos.Remove(symClass.ClassType);
+                    _messageCallCodeInfos.Remove(symClass.ClassType);
                 }
                 else
                 {
@@ -286,7 +286,7 @@ namespace GameEngine.Loader
                 }
             }
 
-            s_messageCallCodeInfos.Add(symClass.ClassType, info);
+            _messageCallCodeInfos.Add(symClass.ClassType, info);
             Debugger.Log(LogGroupTag.CodeLoader, "Load message call code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
 
             return true;
@@ -295,13 +295,13 @@ namespace GameEngine.Loader
         [OnNetworkClassCleanupOfTarget(typeof(MessageSystemAttribute))]
         private static void CleanupAllMessageCallClasses()
         {
-            s_messageCallCodeInfos.Clear();
+            _messageCallCodeInfos.Clear();
         }
 
         [OnNetworkCodeInfoLookupOfTarget(typeof(MessageSystemAttribute))]
         private static MessageCallCodeInfo LookupMessageCallCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<SystemType, MessageCallCodeInfo> pair in s_messageCallCodeInfos)
+            foreach (KeyValuePair<SystemType, MessageCallCodeInfo> pair in _messageCallCodeInfos)
             {
                 if (pair.Key == symClass.ClassType)
                 {

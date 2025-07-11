@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -44,15 +44,15 @@ namespace GameEngine.Loader
         /// <summary>
         /// 原型类的类型标识
         /// </summary>
-        protected SystemType m_classType;
+        protected SystemType _classType;
 
-        public SystemType ClassType { get { return m_classType; } set { m_classType = value; } }
+        public SystemType ClassType { get { return _classType; } set { _classType = value; } }
 
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("{ ");
-            sb.AppendFormat("Class = {0}, ", m_classType.FullName);
+            sb.AppendFormat("Class = {0}, ", _classType.FullName);
             sb.Append("}");
             return sb.ToString();
         }
@@ -66,15 +66,15 @@ namespace GameEngine.Loader
         /// <summary>
         /// 加载原型类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_protoClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _protoClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 清理原型类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_protoClassCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _protoClassCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 查找原型类结构信息相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_protoCodeInfoLookupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _protoCodeInfoLookupCallbacks = new Dictionary<SystemType, SystemDelegate>();
 
         /// <summary>
         /// 加载原型类相关函数的属性定义
@@ -122,22 +122,22 @@ namespace GameEngine.Loader
                     {
                         OnProtoClassLoadOfTargetAttribute _attr = (OnProtoClassLoadOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_protoClassLoadCallbacks.ContainsKey(_attr.ClassType), "Invalid proto class load type");
-                        s_protoClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLoadHandler)));
+                        Debugger.Assert(!_protoClassLoadCallbacks.ContainsKey(_attr.ClassType), "Invalid proto class load type");
+                        _protoClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLoadHandler)));
                     }
                     else if (typeof(OnProtoClassCleanupOfTargetAttribute) == attrType)
                     {
                         OnProtoClassCleanupOfTargetAttribute _attr = (OnProtoClassCleanupOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_protoClassCleanupCallbacks.ContainsKey(_attr.ClassType), "Invalid proto class cleanup type");
-                        s_protoClassCleanupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllGeneralCodeLoaderHandler)));
+                        Debugger.Assert(!_protoClassCleanupCallbacks.ContainsKey(_attr.ClassType), "Invalid proto class cleanup type");
+                        _protoClassCleanupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllGeneralCodeLoaderHandler)));
                     }
                     else if (typeof(OnProtoCodeInfoLookupOfTargetAttribute) == attrType)
                     {
                         OnProtoCodeInfoLookupOfTargetAttribute _attr = (OnProtoCodeInfoLookupOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_protoCodeInfoLookupCallbacks.ContainsKey(_attr.ClassType), "Invalid proto class lookup type");
-                        s_protoCodeInfoLookupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLookupHandler)));
+                        Debugger.Assert(!_protoCodeInfoLookupCallbacks.ContainsKey(_attr.ClassType), "Invalid proto class lookup type");
+                        _protoCodeInfoLookupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLookupHandler)));
                     }
                 }
             }
@@ -149,7 +149,7 @@ namespace GameEngine.Loader
         [CodeLoader.OnGeneralCodeLoaderCleanup]
         private static void CleanupAllProtoClassLoadingCallbacks()
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = s_protoClassCleanupCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _protoClassCleanupCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = e.Current.Value as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
@@ -158,9 +158,9 @@ namespace GameEngine.Loader
                 handler.Invoke();
             }
 
-            s_protoClassLoadCallbacks.Clear();
-            s_protoClassCleanupCallbacks.Clear();
-            s_protoCodeInfoLookupCallbacks.Clear();
+            _protoClassLoadCallbacks.Clear();
+            _protoClassCleanupCallbacks.Clear();
+            _protoCodeInfoLookupCallbacks.Clear();
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace GameEngine.Loader
         {
             SystemDelegate callback = null;
 
-            if (TryGetProtoClassCallbackForTargetContainer(symClass.ClassType, out callback, s_protoClassLoadCallbacks))
+            if (TryGetProtoClassCallbackForTargetContainer(symClass.ClassType, out callback, _protoClassLoadCallbacks))
             {
                 CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
                 Debugger.Assert(null != handler, "Invalid proto class load handler.");
@@ -224,7 +224,7 @@ namespace GameEngine.Loader
         {
             SystemDelegate callback = null;
 
-            if (TryGetProtoClassCallbackForTargetContainer(symClass.ClassType, out callback, s_protoCodeInfoLookupCallbacks))
+            if (TryGetProtoClassCallbackForTargetContainer(symClass.ClassType, out callback, _protoCodeInfoLookupCallbacks))
             {
                 CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;
                 Debugger.Assert(null != handler, "Invalid proto class lookup handler.");

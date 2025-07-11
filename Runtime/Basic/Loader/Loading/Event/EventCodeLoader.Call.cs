@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 事件调用类的数据引用对象
         /// </summary>
-        private IList<EventCallMethodTypeCodeInfo> m_methodTypes;
+        private IList<EventCallMethodTypeCodeInfo> _methodTypes;
 
         /// <summary>
         /// 新增指定函数的回调句柄相关的结构信息
@@ -47,18 +47,18 @@ namespace GameEngine.Loader
         /// <param name="invoke">函数的结构信息</param>
         internal void AddMethodType(EventCallMethodTypeCodeInfo invoke)
         {
-            if (null == m_methodTypes)
+            if (null == _methodTypes)
             {
-                m_methodTypes = new List<EventCallMethodTypeCodeInfo>();
+                _methodTypes = new List<EventCallMethodTypeCodeInfo>();
             }
 
-            if (m_methodTypes.Contains(invoke))
+            if (_methodTypes.Contains(invoke))
             {
-                Debugger.Warn("The event call class type '{0}' was already registed target event '{1}', repeat added it failed.", m_classType.FullName, invoke.EventID);
+                Debugger.Warn("The event call class type '{0}' was already registed target event '{1}', repeat added it failed.", _classType.FullName, invoke.EventID);
                 return;
             }
 
-            m_methodTypes.Add(invoke);
+            _methodTypes.Add(invoke);
         }
 
         /// <summary>
@@ -66,8 +66,8 @@ namespace GameEngine.Loader
         /// </summary>
         internal void RemoveAllMethodTypes()
         {
-            m_methodTypes?.Clear();
-            m_methodTypes = null;
+            _methodTypes?.Clear();
+            _methodTypes = null;
         }
 
         /// <summary>
@@ -76,9 +76,9 @@ namespace GameEngine.Loader
         /// <returns>返回函数回调句柄的结构信息数量</returns>
         internal int GetMethodTypeCount()
         {
-            if (null != m_methodTypes)
+            if (null != _methodTypes)
             {
-                return m_methodTypes.Count;
+                return _methodTypes.Count;
             }
 
             return 0;
@@ -91,13 +91,13 @@ namespace GameEngine.Loader
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
         internal EventCallMethodTypeCodeInfo GetMethodType(int index)
         {
-            if (null == m_methodTypes || index < 0 || index >= m_methodTypes.Count)
+            if (null == _methodTypes || index < 0 || index >= _methodTypes.Count)
             {
                 Debugger.Warn("Invalid index ({0}) for event call method type code info list.", index);
                 return null;
             }
 
-            return m_methodTypes[index];
+            return _methodTypes[index];
         }
 
         public override string ToString()
@@ -106,7 +106,7 @@ namespace GameEngine.Loader
             sb.Append("EventCall = { ");
             sb.AppendFormat("Parent = {0}, ", base.ToString());
 
-            sb.AppendFormat("MethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<EventCallMethodTypeCodeInfo>(m_methodTypes));
+            sb.AppendFormat("MethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<EventCallMethodTypeCodeInfo>(_methodTypes));
 
             sb.Append("}");
             return sb.ToString();
@@ -121,39 +121,39 @@ namespace GameEngine.Loader
         /// <summary>
         /// 事件调用类的完整名称
         /// </summary>
-        private string m_fullname;
+        private string _fullname;
         /// <summary>
         /// 事件调用类的目标对象类型
         /// </summary>
-        private SystemType m_targetType;
+        private SystemType _targetType;
         /// <summary>
         /// 事件调用类的监听事件标识
         /// </summary>
-        private int m_eventID;
+        private int _eventID;
         /// <summary>
         /// 事件调用类的监听事件数据类型
         /// </summary>
-        private SystemType m_eventDataType;
+        private SystemType _eventDataType;
         /// <summary>
         /// 事件调用类的回调函数
         /// </summary>
-        private SystemMethodInfo m_method;
+        private SystemMethodInfo _method;
 
-        public string Fullname { get { return m_fullname; } internal set { m_fullname = value; } }
-        public SystemType TargetType { get { return m_targetType; } internal set { m_targetType = value; } }
-        public int EventID { get { return m_eventID; } internal set { m_eventID = value; } }
-        public SystemType EventDataType { get { return m_eventDataType; } internal set { m_eventDataType = value; } }
-        public SystemMethodInfo Method { get { return m_method; } internal set { m_method = value; } }
+        public string Fullname { get { return _fullname; } internal set { _fullname = value; } }
+        public SystemType TargetType { get { return _targetType; } internal set { _targetType = value; } }
+        public int EventID { get { return _eventID; } internal set { _eventID = value; } }
+        public SystemType EventDataType { get { return _eventDataType; } internal set { _eventDataType = value; } }
+        public SystemMethodInfo Method { get { return _method; } internal set { _method = value; } }
 
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("{ ");
-            sb.AppendFormat("Fullname = {0}, ", m_fullname);
-            sb.AppendFormat("TargetType = {0}, ", NovaEngine.Utility.Text.ToString(m_targetType));
-            sb.AppendFormat("EventID = {0}, ", m_eventID);
-            sb.AppendFormat("EventDataType = {0}, ", NovaEngine.Utility.Text.ToString(m_eventDataType));
-            sb.AppendFormat("Method = {0}, ", NovaEngine.Utility.Text.ToString(m_method));
+            sb.AppendFormat("Fullname = {0}, ", _fullname);
+            sb.AppendFormat("TargetType = {0}, ", NovaEngine.Utility.Text.ToString(_targetType));
+            sb.AppendFormat("EventID = {0}, ", _eventID);
+            sb.AppendFormat("EventDataType = {0}, ", NovaEngine.Utility.Text.ToString(_eventDataType));
+            sb.AppendFormat("Method = {0}, ", NovaEngine.Utility.Text.ToString(_method));
             sb.Append("}");
             return sb.ToString();
         }
@@ -167,7 +167,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 事件调用类的结构信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, EventCallCodeInfo> s_eventCallCodeInfos = new Dictionary<SystemType, EventCallCodeInfo>();
+        private static IDictionary<SystemType, EventCallCodeInfo> _eventCallCodeInfos = new Dictionary<SystemType, EventCallCodeInfo>();
 
         [OnEventClassLoadOfTarget(typeof(EventSystemAttribute))]
         private static bool LoadEventCallClass(Symboling.SymClass symClass, bool reload)
@@ -275,11 +275,11 @@ namespace GameEngine.Loader
                 return false;
             }
 
-            if (s_eventCallCodeInfos.ContainsKey(symClass.ClassType))
+            if (_eventCallCodeInfos.ContainsKey(symClass.ClassType))
             {
                 if (reload)
                 {
-                    s_eventCallCodeInfos.Remove(symClass.ClassType);
+                    _eventCallCodeInfos.Remove(symClass.ClassType);
                 }
                 else
                 {
@@ -288,7 +288,7 @@ namespace GameEngine.Loader
                 }
             }
 
-            s_eventCallCodeInfos.Add(symClass.ClassType, info);
+            _eventCallCodeInfos.Add(symClass.ClassType, info);
             Debugger.Log(LogGroupTag.CodeLoader, "Load event call code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
 
             return true;
@@ -297,13 +297,13 @@ namespace GameEngine.Loader
         [OnEventClassCleanupOfTarget(typeof(EventSystemAttribute))]
         private static void CleanupAllEventCallClasses()
         {
-            s_eventCallCodeInfos.Clear();
+            _eventCallCodeInfos.Clear();
         }
 
         [OnEventCodeInfoLookupOfTarget(typeof(EventSystemAttribute))]
         private static EventCallCodeInfo LookupEventCallCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<SystemType, EventCallCodeInfo> pair in s_eventCallCodeInfos)
+            foreach (KeyValuePair<SystemType, EventCallCodeInfo> pair in _eventCallCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

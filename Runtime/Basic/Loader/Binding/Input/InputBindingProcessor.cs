@@ -43,11 +43,11 @@ namespace GameEngine.Loader
         /// <summary>
         /// 加载输入响应类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_inputRegisterClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _inputRegisterClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 清理输入响应类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_inputRegisterClassUnloadCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _inputRegisterClassUnloadCallbacks = new Dictionary<SystemType, SystemDelegate>();
 
         /// <summary>
         /// 初始化针对绑定类声明的全部回调接口
@@ -69,7 +69,7 @@ namespace GameEngine.Loader
                         Debugger.Assert(method.IsStatic);
 
                         OnInputCallRegisterClassOfTargetAttribute _attr = (OnInputCallRegisterClassOfTargetAttribute) attr;
-                        s_inputRegisterClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCodeTypeLoadedHandler)));
+                        _inputRegisterClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCodeTypeLoadedHandler)));
 
                         CodeLoader.AddCodeTypeLoadedCallback(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCodeTypeLoadedHandler)) as CodeLoader.OnCodeTypeLoadedHandler);
                     }
@@ -78,7 +78,7 @@ namespace GameEngine.Loader
                         Debugger.Assert(method.IsStatic);
 
                         OnInputCallUnregisterClassOfTargetAttribute _attr = (OnInputCallUnregisterClassOfTargetAttribute) attr;
-                        s_inputRegisterClassUnloadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllCodeTypesHandler)));
+                        _inputRegisterClassUnloadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllCodeTypesHandler)));
                     }
                 }
             }
@@ -90,7 +90,7 @@ namespace GameEngine.Loader
         [CodeLoader.OnBindingProcessorCleanup]
         private static void CleanupAllCodeBindingCallbacks()
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = s_inputRegisterClassUnloadCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _inputRegisterClassUnloadCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 CodeLoader.OnCleanupAllCodeTypesHandler handler = e.Current.Value as CodeLoader.OnCleanupAllCodeTypesHandler;
@@ -99,8 +99,8 @@ namespace GameEngine.Loader
                 handler.Invoke();
             }
 
-            s_inputRegisterClassLoadCallbacks.Clear();
-            s_inputRegisterClassUnloadCallbacks.Clear();
+            _inputRegisterClassLoadCallbacks.Clear();
+            _inputRegisterClassUnloadCallbacks.Clear();
         }
     }
 }

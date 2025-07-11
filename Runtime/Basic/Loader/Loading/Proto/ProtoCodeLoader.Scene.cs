@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -38,18 +38,18 @@ namespace GameEngine.Loader
         /// <summary>
         /// 场景名称
         /// </summary>
-        private string m_sceneName;
+        private string _sceneName;
         /// <summary>
         /// 场景功能类型
         /// </summary>
-        private int m_funcType;
+        private int _funcType;
         /// <summary>
         /// 自动展示的场景名称列表
         /// </summary>
-        private IList<string> m_autoDisplayViewNames;
+        private IList<string> _autoDisplayViewNames;
 
-        public string SceneName { get { return m_sceneName; } internal set { m_sceneName = value; } }
-        public int FuncType { get { return m_funcType; } internal set { m_funcType = value; } }
+        public string SceneName { get { return _sceneName; } internal set { _sceneName = value; } }
+        public int FuncType { get { return _funcType; } internal set { _funcType = value; } }
 
         /// <summary>
         /// 新增需要自动展示在当前场景的目标视图名称
@@ -57,18 +57,18 @@ namespace GameEngine.Loader
         /// <param name="viewName">视图名称</param>
         internal void AddAutoDisplayViewName(string viewName)
         {
-            if (null == m_autoDisplayViewNames)
+            if (null == _autoDisplayViewNames)
             {
-                m_autoDisplayViewNames = new List<string>();
+                _autoDisplayViewNames = new List<string>();
             }
 
-            if (m_autoDisplayViewNames.Contains(viewName))
+            if (_autoDisplayViewNames.Contains(viewName))
             {
                 Debugger.Warn("The auto display view name '{0}' was already existed, repeat added it failed.", viewName);
                 return;
             }
 
-            m_autoDisplayViewNames.Add(viewName);
+            _autoDisplayViewNames.Add(viewName);
         }
 
         /// <summary>
@@ -76,8 +76,8 @@ namespace GameEngine.Loader
         /// </summary>
         internal void RemoveAllAutoDisplayViewNames()
         {
-            m_autoDisplayViewNames?.Clear();
-            m_autoDisplayViewNames = null;
+            _autoDisplayViewNames?.Clear();
+            _autoDisplayViewNames = null;
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace GameEngine.Loader
         /// <returns>若需要自动展示则返回true，否则返回false</returns>
         public bool IsAutoDisplayForTargetView(string viewName)
         {
-            if (null == m_autoDisplayViewNames || false == m_autoDisplayViewNames.Contains(viewName))
+            if (null == _autoDisplayViewNames || false == _autoDisplayViewNames.Contains(viewName))
             {
                 return false;
             }
@@ -101,9 +101,9 @@ namespace GameEngine.Loader
         /// <returns>返回需要自动展示在当前场景的视图名称数量</returns>
         internal int GetAutoDisplayViewNamesCount()
         {
-            if (null != m_autoDisplayViewNames)
+            if (null != _autoDisplayViewNames)
             {
-                return m_autoDisplayViewNames.Count;
+                return _autoDisplayViewNames.Count;
             }
 
             return 0;
@@ -116,13 +116,13 @@ namespace GameEngine.Loader
         /// <returns>返回给定索引值对应的名称，若不存在对应值则返回null</returns>
         internal string GetAutoDisplayViewName(int index)
         {
-            if (null == m_autoDisplayViewNames || index < 0 || index >= m_autoDisplayViewNames.Count)
+            if (null == _autoDisplayViewNames || index < 0 || index >= _autoDisplayViewNames.Count)
             {
                 Debugger.Warn("Invalid index ({0}) for auto display view name list.", index);
                 return null;
             }
 
-            return m_autoDisplayViewNames[index];
+            return _autoDisplayViewNames[index];
         }
 
         public override string ToString()
@@ -130,10 +130,10 @@ namespace GameEngine.Loader
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("Scene = { ");
             sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("Name = {0}, ", m_sceneName ?? NovaEngine.Definition.CString.Unknown);
-            sb.AppendFormat("FuncType = {0}, ", m_funcType);
+            sb.AppendFormat("Name = {0}, ", _sceneName ?? NovaEngine.Definition.CString.Unknown);
+            sb.AppendFormat("FuncType = {0}, ", _funcType);
 
-            sb.AppendFormat("AutoDisplayViews = {{{0}}}, ", NovaEngine.Utility.Text.ToString(m_autoDisplayViewNames));
+            sb.AppendFormat("AutoDisplayViews = {{{0}}}, ", NovaEngine.Utility.Text.ToString(_autoDisplayViewNames));
 
             sb.Append("}");
             return sb.ToString();
@@ -148,7 +148,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 场景类的结构信息管理容器
         /// </summary>
-        private static IDictionary<string, SceneCodeInfo> s_sceneCodeInfos = new Dictionary<string, SceneCodeInfo>();
+        private static IDictionary<string, SceneCodeInfo> _sceneCodeInfos = new Dictionary<string, SceneCodeInfo>();
 
         [OnProtoClassLoadOfTarget(typeof(CScene))]
         private static bool LoadSceneClass(Symboling.SymClass symClass, bool reload)
@@ -217,11 +217,11 @@ namespace GameEngine.Loader
                 info.SceneName = symClass.ClassName;
             }
 
-            if (s_sceneCodeInfos.ContainsKey(info.SceneName))
+            if (_sceneCodeInfos.ContainsKey(info.SceneName))
             {
                 if (reload)
                 {
-                    s_sceneCodeInfos.Remove(info.SceneName);
+                    _sceneCodeInfos.Remove(info.SceneName);
                 }
                 else
                 {
@@ -230,7 +230,7 @@ namespace GameEngine.Loader
                 }
             }
 
-            s_sceneCodeInfos.Add(info.SceneName, info);
+            _sceneCodeInfos.Add(info.SceneName, info);
             Debugger.Log(LogGroupTag.CodeLoader, "Load 'CScene' code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
 
             return true;
@@ -256,13 +256,13 @@ namespace GameEngine.Loader
         [OnProtoClassCleanupOfTarget(typeof(CScene))]
         private static void CleanupAllSceneClasses()
         {
-            s_sceneCodeInfos.Clear();
+            _sceneCodeInfos.Clear();
         }
 
         [OnProtoCodeInfoLookupOfTarget(typeof(CScene))]
         private static SceneCodeInfo LookupSceneCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<string, SceneCodeInfo> pair in s_sceneCodeInfos)
+            foreach (KeyValuePair<string, SceneCodeInfo> pair in _sceneCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

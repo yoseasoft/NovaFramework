@@ -40,49 +40,49 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// 属性的名称
         /// </summary>
-        private string m_propertyName;
+        private string _propertyName;
         /// <summary>
         /// 属性的类型
         /// </summary>
-        private SystemType m_propertyType;
+        private SystemType _propertyType;
         /// <summary>
         /// 属性的获取接口函数
         /// </summary>
-        private MethodInfo m_getMethodInfo;
+        private MethodInfo _getMethodInfo;
         /// <summary>
         /// 属性的设置接口函数
         /// </summary>
-        private MethodInfo m_setMethodInfo;
+        private MethodInfo _setMethodInfo;
         /// <summary>
         /// 属性对象实例
         /// </summary>
-        private PropertyInfo m_propertyInfo;
+        private PropertyInfo _propertyInfo;
 
         public PropertyInfo PropertyInfo
         {
-            get { return m_propertyInfo; }
+            get { return _propertyInfo; }
             internal set
             {
-                m_propertyInfo = value;
+                _propertyInfo = value;
 
-                m_propertyName = m_propertyInfo.Name;
-                m_propertyType = m_propertyInfo.PropertyType;
+                _propertyName = _propertyInfo.Name;
+                _propertyType = _propertyInfo.PropertyType;
 
-                m_getMethodInfo = m_propertyInfo.GetGetMethod();
-                m_setMethodInfo = m_propertyInfo.GetSetMethod();
+                _getMethodInfo = _propertyInfo.GetGetMethod();
+                _setMethodInfo = _propertyInfo.GetSetMethod();
             }
         }
 
-        public string PropertyName => m_propertyName;
-        public SystemType PropertyType => m_propertyType;
-        public MethodInfo GetMethodInfo => m_getMethodInfo;
-        public MethodInfo SetMethodInfo => m_setMethodInfo;
+        public string PropertyName => _propertyName;
+        public SystemType PropertyType => _propertyType;
+        public MethodInfo GetMethodInfo => _getMethodInfo;
+        public MethodInfo SetMethodInfo => _setMethodInfo;
 
         public SymProperty() : base() { }
 
         ~SymProperty()
         {
-            m_propertyInfo = null;
+            _propertyInfo = null;
         }
     }
 }

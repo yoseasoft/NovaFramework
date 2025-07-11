@@ -46,15 +46,15 @@ namespace GameEngine.Loader
         /// <summary>
         /// 消息事件类的类型标识
         /// </summary>
-        protected SystemType m_classType;
+        protected SystemType _classType;
 
-        public SystemType ClassType { get { return m_classType; } internal set { m_classType = value; } }
+        public SystemType ClassType { get { return _classType; } internal set { _classType = value; } }
 
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("{ ");
-            sb.AppendFormat("Class = {0}, ", m_classType.FullName);
+            sb.AppendFormat("Class = {0}, ", _classType.FullName);
             sb.Append("}");
             return sb.ToString();
         }
@@ -68,15 +68,15 @@ namespace GameEngine.Loader
         /// <summary>
         /// 加载消息事件调度类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_eventClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _eventClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 清理消息事件调度类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_eventClassCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _eventClassCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 查找消息事件调度类结构信息相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_eventCodeInfoLookupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _eventCodeInfoLookupCallbacks = new Dictionary<SystemType, SystemDelegate>();
 
         /// <summary>
         /// 加载消息事件调度类相关函数的属性定义
@@ -124,22 +124,22 @@ namespace GameEngine.Loader
                     {
                         OnEventClassLoadOfTargetAttribute _attr = (OnEventClassLoadOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_eventClassLoadCallbacks.ContainsKey(_attr.ClassType), "Invalid event class load type");
-                        s_eventClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLoadHandler)));
+                        Debugger.Assert(!_eventClassLoadCallbacks.ContainsKey(_attr.ClassType), "Invalid event class load type");
+                        _eventClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLoadHandler)));
                     }
                     else if (typeof(OnEventClassCleanupOfTargetAttribute) == attrType)
                     {
                         OnEventClassCleanupOfTargetAttribute _attr = (OnEventClassCleanupOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_eventClassCleanupCallbacks.ContainsKey(_attr.ClassType), "Invalid event class cleanup type");
-                        s_eventClassCleanupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllGeneralCodeLoaderHandler)));
+                        Debugger.Assert(!_eventClassCleanupCallbacks.ContainsKey(_attr.ClassType), "Invalid event class cleanup type");
+                        _eventClassCleanupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllGeneralCodeLoaderHandler)));
                     }
                     else if (typeof(OnEventCodeInfoLookupOfTargetAttribute) == attrType)
                     {
                         OnEventCodeInfoLookupOfTargetAttribute _attr = (OnEventCodeInfoLookupOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_eventCodeInfoLookupCallbacks.ContainsKey(_attr.ClassType), "Invalid event class lookup type");
-                        s_eventCodeInfoLookupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLookupHandler)));
+                        Debugger.Assert(!_eventCodeInfoLookupCallbacks.ContainsKey(_attr.ClassType), "Invalid event class lookup type");
+                        _eventCodeInfoLookupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLookupHandler)));
                     }
                 }
             }
@@ -151,7 +151,7 @@ namespace GameEngine.Loader
         [CodeLoader.OnGeneralCodeLoaderCleanup]
         private static void CleanupAllEventClassLoadingCallbacks()
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = s_eventClassCleanupCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _eventClassCleanupCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = e.Current.Value as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
@@ -160,9 +160,9 @@ namespace GameEngine.Loader
                 handler.Invoke();
             }
 
-            s_eventClassLoadCallbacks.Clear();
-            s_eventClassCleanupCallbacks.Clear();
-            s_eventCodeInfoLookupCallbacks.Clear();
+            _eventClassLoadCallbacks.Clear();
+            _eventClassCleanupCallbacks.Clear();
+            _eventCodeInfoLookupCallbacks.Clear();
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace GameEngine.Loader
             {
                 SystemType attrType = attrTypes[n];
                 // if (TryGetEventClassCallbackForTargetContainer(attr.GetType(), out callback, s_eventClassLoadCallbacks))
-                if (TryGetEventClassCallbackForTargetContainer(attrType, out callback, s_eventClassLoadCallbacks))
+                if (TryGetEventClassCallbackForTargetContainer(attrType, out callback, _eventClassLoadCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
                     Debugger.Assert(null != handler, "Invalid event class load handler.");
@@ -239,7 +239,7 @@ namespace GameEngine.Loader
             {
                 SystemType attrType = attrTypes[n];
                 // if (TryGetEventClassCallbackForTargetContainer(attr.GetType(), out callback, s_eventCodeInfoLookupCallbacks))
-                if (TryGetEventClassCallbackForTargetContainer(attrType, out callback, s_eventCodeInfoLookupCallbacks))
+                if (TryGetEventClassCallbackForTargetContainer(attrType, out callback, _eventCodeInfoLookupCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;
                     Debugger.Assert(null != handler, "Invalid event class lookup handler.");
@@ -257,7 +257,7 @@ namespace GameEngine.Loader
         /// <returns>若存在给定类型对应的回调句柄则返回true，否则返回false</returns>
         private static bool IsEventClassCallbackExist(SystemType targetType)
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = s_eventClassLoadCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _eventClassLoadCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 // 这里的类型为属性定义的类型，因此直接作相等比较即可

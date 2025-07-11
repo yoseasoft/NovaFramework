@@ -40,17 +40,17 @@ namespace GameEngine.Loader
         /// <summary>
         /// 原型对象输入响应的扩展定义调用类的数据管理容器
         /// </summary>
-        private IList<InputResponsingMethodTypeCodeInfo> m_inputCallMethodTypes;
+        private IList<InputResponsingMethodTypeCodeInfo> _inputCallMethodTypes;
 
         /// <summary>
         /// 原型对象事件订阅的扩展定义调用类的数据管理容器
         /// </summary>
-        private IList<EventSubscribingMethodTypeCodeInfo> m_eventCallMethodTypes;
+        private IList<EventSubscribingMethodTypeCodeInfo> _eventCallMethodTypes;
 
         /// <summary>
         /// 原型对象消息处理的扩展定义调用类的数据管理容器
         /// </summary>
-        private IList<MessageBindingMethodTypeCodeInfo> m_messageCallMethodTypes;
+        private IList<MessageBindingMethodTypeCodeInfo> _messageCallMethodTypes;
 
         #region 扩展输入调用类结构信息操作函数
 
@@ -60,18 +60,18 @@ namespace GameEngine.Loader
         /// <param name="invoke">函数的结构信息</param>
         public void AddInputCallMethodType(InputResponsingMethodTypeCodeInfo invoke)
         {
-            if (null == m_inputCallMethodTypes)
+            if (null == _inputCallMethodTypes)
             {
-                m_inputCallMethodTypes = new List<InputResponsingMethodTypeCodeInfo>();
+                _inputCallMethodTypes = new List<InputResponsingMethodTypeCodeInfo>();
             }
 
-            if (m_inputCallMethodTypes.Contains(invoke))
+            if (_inputCallMethodTypes.Contains(invoke))
             {
-                Debugger.Warn("The extend input call class type '{0}' was already registed target input '{1}', repeat added it failed.", m_classType.FullName, invoke.InputCode);
+                Debugger.Warn("The extend input call class type '{0}' was already registed target input '{1}', repeat added it failed.", _classType.FullName, invoke.InputCode);
                 return;
             }
 
-            m_inputCallMethodTypes.Add(invoke);
+            _inputCallMethodTypes.Add(invoke);
         }
 
         /// <summary>
@@ -79,8 +79,8 @@ namespace GameEngine.Loader
         /// </summary>
         public void RemoveAllInputCallMethodTypes()
         {
-            m_inputCallMethodTypes?.Clear();
-            m_inputCallMethodTypes = null;
+            _inputCallMethodTypes?.Clear();
+            _inputCallMethodTypes = null;
         }
 
         /// <summary>
@@ -89,9 +89,9 @@ namespace GameEngine.Loader
         /// <returns>返回函数回调句柄的结构信息数量</returns>
         public int GetInputCallMethodTypeCount()
         {
-            if (null != m_inputCallMethodTypes)
+            if (null != _inputCallMethodTypes)
             {
-                return m_inputCallMethodTypes.Count;
+                return _inputCallMethodTypes.Count;
             }
 
             return 0;
@@ -104,13 +104,13 @@ namespace GameEngine.Loader
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
         public InputResponsingMethodTypeCodeInfo GetInputCallMethodType(int index)
         {
-            if (null == m_inputCallMethodTypes || index < 0 || index >= m_inputCallMethodTypes.Count)
+            if (null == _inputCallMethodTypes || index < 0 || index >= _inputCallMethodTypes.Count)
             {
                 Debugger.Warn("Invalid index ({0}) for extend input call method type code info list.", index);
                 return null;
             }
 
-            return m_inputCallMethodTypes[index];
+            return _inputCallMethodTypes[index];
         }
 
         #endregion
@@ -123,18 +123,18 @@ namespace GameEngine.Loader
         /// <param name="invoke">函数的结构信息</param>
         public void AddEventCallMethodType(EventSubscribingMethodTypeCodeInfo invoke)
         {
-            if (null == m_eventCallMethodTypes)
+            if (null == _eventCallMethodTypes)
             {
-                m_eventCallMethodTypes = new List<EventSubscribingMethodTypeCodeInfo>();
+                _eventCallMethodTypes = new List<EventSubscribingMethodTypeCodeInfo>();
             }
 
-            if (m_eventCallMethodTypes.Contains(invoke))
+            if (_eventCallMethodTypes.Contains(invoke))
             {
-                Debugger.Warn("The extend event call class type '{0}' was already registed target event '{1}', repeat added it failed.", m_classType.FullName, invoke.EventID);
+                Debugger.Warn("The extend event call class type '{0}' was already registed target event '{1}', repeat added it failed.", _classType.FullName, invoke.EventID);
                 return;
             }
 
-            m_eventCallMethodTypes.Add(invoke);
+            _eventCallMethodTypes.Add(invoke);
         }
 
         /// <summary>
@@ -142,8 +142,8 @@ namespace GameEngine.Loader
         /// </summary>
         public void RemoveAllEventCallMethodTypes()
         {
-            m_eventCallMethodTypes?.Clear();
-            m_eventCallMethodTypes = null;
+            _eventCallMethodTypes?.Clear();
+            _eventCallMethodTypes = null;
         }
 
         /// <summary>
@@ -152,9 +152,9 @@ namespace GameEngine.Loader
         /// <returns>返回函数回调句柄的结构信息数量</returns>
         public int GetEventCallMethodTypeCount()
         {
-            if (null != m_eventCallMethodTypes)
+            if (null != _eventCallMethodTypes)
             {
-                return m_eventCallMethodTypes.Count;
+                return _eventCallMethodTypes.Count;
             }
 
             return 0;
@@ -167,13 +167,13 @@ namespace GameEngine.Loader
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
         public EventSubscribingMethodTypeCodeInfo GetEventCallMethodType(int index)
         {
-            if (null == m_eventCallMethodTypes || index < 0 || index >= m_eventCallMethodTypes.Count)
+            if (null == _eventCallMethodTypes || index < 0 || index >= _eventCallMethodTypes.Count)
             {
                 Debugger.Warn("Invalid index ({0}) for extend event call method type code info list.", index);
                 return null;
             }
 
-            return m_eventCallMethodTypes[index];
+            return _eventCallMethodTypes[index];
         }
 
         #endregion
@@ -186,18 +186,18 @@ namespace GameEngine.Loader
         /// <param name="invoke">函数的结构信息</param>
         public void AddMessageCallMethodType(MessageBindingMethodTypeCodeInfo invoke)
         {
-            if (null == m_messageCallMethodTypes)
+            if (null == _messageCallMethodTypes)
             {
-                m_messageCallMethodTypes = new List<MessageBindingMethodTypeCodeInfo>();
+                _messageCallMethodTypes = new List<MessageBindingMethodTypeCodeInfo>();
             }
 
-            if (m_messageCallMethodTypes.Contains(invoke))
+            if (_messageCallMethodTypes.Contains(invoke))
             {
-                Debugger.Warn("The extend message call class type '{0}' was already registed target event '{1}', repeat added it failed.", m_classType.FullName, invoke.Opcode);
+                Debugger.Warn("The extend message call class type '{0}' was already registed target event '{1}', repeat added it failed.", _classType.FullName, invoke.Opcode);
                 return;
             }
 
-            m_messageCallMethodTypes.Add(invoke);
+            _messageCallMethodTypes.Add(invoke);
         }
 
         /// <summary>
@@ -205,8 +205,8 @@ namespace GameEngine.Loader
         /// </summary>
         public void RemoveAllMessageCallMethodTypes()
         {
-            m_messageCallMethodTypes?.Clear();
-            m_messageCallMethodTypes = null;
+            _messageCallMethodTypes?.Clear();
+            _messageCallMethodTypes = null;
         }
 
         /// <summary>
@@ -215,9 +215,9 @@ namespace GameEngine.Loader
         /// <returns>返回函数回调句柄的结构信息数量</returns>
         public int GetMessageCallMethodTypeCount()
         {
-            if (null != m_messageCallMethodTypes)
+            if (null != _messageCallMethodTypes)
             {
-                return m_messageCallMethodTypes.Count;
+                return _messageCallMethodTypes.Count;
             }
 
             return 0;
@@ -230,13 +230,13 @@ namespace GameEngine.Loader
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
         public MessageBindingMethodTypeCodeInfo GetMessageCallMethodType(int index)
         {
-            if (null == m_messageCallMethodTypes || index < 0 || index >= m_messageCallMethodTypes.Count)
+            if (null == _messageCallMethodTypes || index < 0 || index >= _messageCallMethodTypes.Count)
             {
                 Debugger.Warn("Invalid index ({0}) for extend message call method type code info list.", index);
                 return null;
             }
 
-            return m_messageCallMethodTypes[index];
+            return _messageCallMethodTypes[index];
         }
 
         #endregion
@@ -247,9 +247,9 @@ namespace GameEngine.Loader
             sb.Append("ExtendCall = { ");
             sb.AppendFormat("Parent = {0}, ", base.ToString());
 
-            sb.AppendFormat("InputCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<InputResponsingMethodTypeCodeInfo>(m_inputCallMethodTypes));
-            sb.AppendFormat("EventCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<EventSubscribingMethodTypeCodeInfo>(m_eventCallMethodTypes));
-            sb.AppendFormat("MessageCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<MessageBindingMethodTypeCodeInfo>(m_messageCallMethodTypes));
+            sb.AppendFormat("InputCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<InputResponsingMethodTypeCodeInfo>(_inputCallMethodTypes));
+            sb.AppendFormat("EventCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<EventSubscribingMethodTypeCodeInfo>(_eventCallMethodTypes));
+            sb.AppendFormat("MessageCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<MessageBindingMethodTypeCodeInfo>(_messageCallMethodTypes));
 
             sb.Append("}");
             return sb.ToString();
@@ -264,7 +264,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 扩展定义调用类的结构信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, ExtendCallCodeInfo> s_extendCallCodeInfos = new Dictionary<SystemType, ExtendCallCodeInfo>();
+        private static IDictionary<SystemType, ExtendCallCodeInfo> _extendCallCodeInfos = new Dictionary<SystemType, ExtendCallCodeInfo>();
 
         [OnExtendClassLoadOfTarget(typeof(ExtendSupportedAttribute))]
         private static bool LoadExtendCallClass(Symboling.SymClass symClass, bool reload)
@@ -478,11 +478,11 @@ namespace GameEngine.Loader
                 return false;
             }
 
-            if (s_extendCallCodeInfos.ContainsKey(symClass.ClassType))
+            if (_extendCallCodeInfos.ContainsKey(symClass.ClassType))
             {
                 if (reload)
                 {
-                    s_extendCallCodeInfos.Remove(symClass.ClassType);
+                    _extendCallCodeInfos.Remove(symClass.ClassType);
                 }
                 else
                 {
@@ -491,7 +491,7 @@ namespace GameEngine.Loader
                 }
             }
 
-            s_extendCallCodeInfos.Add(symClass.ClassType, info);
+            _extendCallCodeInfos.Add(symClass.ClassType, info);
             Debugger.Log(LogGroupTag.CodeLoader, "Load extend call code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
 
             return true;
@@ -500,13 +500,13 @@ namespace GameEngine.Loader
         [OnExtendClassCleanupOfTarget(typeof(ExtendSupportedAttribute))]
         private static void CleanupAllExtendCallClasses()
         {
-            s_extendCallCodeInfos.Clear();
+            _extendCallCodeInfos.Clear();
         }
 
         [OnExtendCodeInfoLookupOfTarget(typeof(ExtendSupportedAttribute))]
         private static ExtendCallCodeInfo LookupExtendCallCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<SystemType, ExtendCallCodeInfo> pair in s_extendCallCodeInfos)
+            foreach (KeyValuePair<SystemType, ExtendCallCodeInfo> pair in _extendCallCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

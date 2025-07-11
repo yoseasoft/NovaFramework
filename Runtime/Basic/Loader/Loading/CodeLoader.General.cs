@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -131,29 +131,29 @@ namespace GameEngine.Loader
             /// <summary>
             /// 第三方加载器的初始化回调函数
             /// </summary>
-            private OnInitAllGeneralCodeLoaderHandler m_initCallback;
+            private OnInitAllGeneralCodeLoaderHandler _initCallback;
             /// <summary>
             /// 第三方加载器的清理回调函数
             /// </summary>
-            private OnCleanupAllGeneralCodeLoaderHandler m_cleanupCallback;
+            private OnCleanupAllGeneralCodeLoaderHandler _cleanupCallback;
             /// <summary>
             /// 第三方加载器的匹配回调函数
             /// </summary>
-            private OnGeneralCodeLoaderMatchHandler m_matchCallback;
+            private OnGeneralCodeLoaderMatchHandler _matchCallback;
             /// <summary>
             /// 第三方加载器的加载回调函数
             /// </summary>
-            private OnGeneralCodeLoaderLoadHandler m_loadCallback;
+            private OnGeneralCodeLoaderLoadHandler _loadCallback;
             /// <summary>
             /// 第三方加载器的查找回调函数
             /// </summary>
-            private OnGeneralCodeLoaderLookupHandler m_lookupCallback;
+            private OnGeneralCodeLoaderLookupHandler _lookupCallback;
 
-            public OnInitAllGeneralCodeLoaderHandler InitCallback => m_initCallback;
-            public OnCleanupAllGeneralCodeLoaderHandler CleanupCallback => m_cleanupCallback;
-            public OnGeneralCodeLoaderMatchHandler MatchCallback => m_matchCallback;
-            public OnGeneralCodeLoaderLoadHandler LoadCallback => m_loadCallback;
-            public OnGeneralCodeLoaderLookupHandler LookupCallback => m_lookupCallback;
+            public OnInitAllGeneralCodeLoaderHandler InitCallback => _initCallback;
+            public OnCleanupAllGeneralCodeLoaderHandler CleanupCallback => _cleanupCallback;
+            public OnGeneralCodeLoaderMatchHandler MatchCallback => _matchCallback;
+            public OnGeneralCodeLoaderLoadHandler LoadCallback => _loadCallback;
+            public OnGeneralCodeLoaderLookupHandler LookupCallback => _lookupCallback;
 
             public GeneralLoaderClassReflectionHolder(OnInitAllGeneralCodeLoaderHandler initCallback,
                                                       OnCleanupAllGeneralCodeLoaderHandler cleanupCallback,
@@ -161,11 +161,11 @@ namespace GameEngine.Loader
                                                       OnGeneralCodeLoaderLoadHandler loadCallback,
                                                       OnGeneralCodeLoaderLookupHandler lookupCallback)
             {
-                m_initCallback = initCallback;
-                m_cleanupCallback = cleanupCallback;
-                m_matchCallback = matchCallback;
-                m_loadCallback = loadCallback;
-                m_lookupCallback = lookupCallback;
+                _initCallback = initCallback;
+                _cleanupCallback = cleanupCallback;
+                _matchCallback = matchCallback;
+                _loadCallback = loadCallback;
+                _lookupCallback = lookupCallback;
             }
         }
 
@@ -177,7 +177,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 通用类加载器类的反射管理容器列表
         /// </summary>
-        private static IList<GeneralLoaderClassReflectionHolder> s_generalLoaderList = new List<GeneralLoaderClassReflectionHolder>();
+        private static IList<GeneralLoaderClassReflectionHolder> _generalLoaderList = new List<GeneralLoaderClassReflectionHolder>();
 
         /// <summary>
         /// 初始化针对所有标准核心类声明的全部绑定回调接口
@@ -216,7 +216,7 @@ namespace GameEngine.Loader
                 AddGeneralTypeImplementedClass(loaderType);
             }
 
-            foreach (GeneralLoaderClassReflectionHolder v in s_generalLoaderList)
+            foreach (GeneralLoaderClassReflectionHolder v in _generalLoaderList)
             {
                 v.InitCallback();
             }
@@ -228,12 +228,12 @@ namespace GameEngine.Loader
         [OnCodeLoaderSubmoduleCleanupCallback]
         private static void CleanupAllGeneralClassLoadingCallbacks()
         {
-            foreach (GeneralLoaderClassReflectionHolder v in s_generalLoaderList)
+            foreach (GeneralLoaderClassReflectionHolder v in _generalLoaderList)
             {
                 v.CleanupCallback();
             }
 
-            s_generalLoaderList.Clear();
+            _generalLoaderList.Clear();
         }
 
         /// <summary>
@@ -258,9 +258,9 @@ namespace GameEngine.Loader
         private static bool LoadGeneralClass(Symboling.SymClass symClass, bool reload)
         {
             bool result = false;
-            for (int n = 0; n < s_generalLoaderList.Count; n++)
+            for (int n = 0; n < _generalLoaderList.Count; n++)
             {
-                GeneralLoaderClassReflectionHolder holder = s_generalLoaderList[n];
+                GeneralLoaderClassReflectionHolder holder = _generalLoaderList[n];
                 if (holder.MatchCallback(symClass, null))
                 {
                     if (holder.LoadCallback(symClass, reload))
@@ -294,9 +294,9 @@ namespace GameEngine.Loader
         /// <returns>返回类型对应的结构信息</returns>
         public static GeneralCodeInfo LookupGeneralCodeInfo(Symboling.SymClass symClass, SystemType filterType = null)
         {
-            for (int n = 0; n < s_generalLoaderList.Count; ++n)
+            for (int n = 0; n < _generalLoaderList.Count; ++n)
             {
-                GeneralLoaderClassReflectionHolder holder = s_generalLoaderList[n];
+                GeneralLoaderClassReflectionHolder holder = _generalLoaderList[n];
                 if (holder.MatchCallback(symClass, filterType))
                 {
                     return holder.LookupCallback(symClass);
@@ -361,7 +361,7 @@ namespace GameEngine.Loader
             }
 
             GeneralLoaderClassReflectionHolder holder = new GeneralLoaderClassReflectionHolder(initCallback, cleanupCallback, matchCallback, loadCallback, lookupCallback);
-            s_generalLoaderList.Add(holder);
+            _generalLoaderList.Add(holder);
 
             Debugger.Log(LogGroupTag.CodeLoader, "Add general implemented class '{0}' to loader list.", targetType.FullName);
         }

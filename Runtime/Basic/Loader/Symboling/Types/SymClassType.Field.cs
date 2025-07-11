@@ -40,36 +40,36 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// 字段的名称
         /// </summary>
-        private string m_fieldName;
+        private string _fieldName;
         /// <summary>
         /// 字段的类型
         /// </summary>
-        private SystemType m_fieldType;
+        private SystemType _fieldType;
         /// <summary>
         /// 字段对象实例
         /// </summary>
-        private FieldInfo m_fieldInfo;
+        private FieldInfo _fieldInfo;
 
         public FieldInfo FieldInfo
         {
-            get { return m_fieldInfo; }
+            get { return _fieldInfo; }
             internal set
             {
-                m_fieldInfo = value;
+                _fieldInfo = value;
 
-                m_fieldName = m_fieldInfo.Name;
-                m_fieldType = m_fieldInfo.FieldType;
+                _fieldName = _fieldInfo.Name;
+                _fieldType = _fieldInfo.FieldType;
             }
         }
 
-        public string FieldName => m_fieldName;
-        public SystemType FieldType => m_fieldType;
+        public string FieldName => _fieldName;
+        public SystemType FieldType => _fieldType;
 
         public SymField() : base() { }
 
         ~SymField()
         {
-            m_fieldInfo = null;
+            _fieldInfo = null;
         }
     }
 }

@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ namespace GameEngine.Loader
                 return null;
             }
 
-            if (s_nodeConfigureInfos.TryGetValue(beanName, out Configuring.BaseConfigureInfo configureBaseInfo))
+            if (_nodeConfigureInfos.TryGetValue(beanName, out Configuring.BaseConfigureInfo configureBaseInfo))
             {
                 return configureBaseInfo as Configuring.BeanConfigureInfo;
             }
@@ -66,7 +66,7 @@ namespace GameEngine.Loader
             }
 
             IList<Configuring.BeanConfigureInfo> result = null;
-            IEnumerator<Configuring.BaseConfigureInfo> e = s_nodeConfigureInfos.Values.GetEnumerator();
+            IEnumerator<Configuring.BaseConfigureInfo> e = _nodeConfigureInfos.Values.GetEnumerator();
             while (e.MoveNext())
             {
                 if (Configuring.ConfigureInfoType.Bean == e.Current.Type)

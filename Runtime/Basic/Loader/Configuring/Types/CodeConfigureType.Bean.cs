@@ -38,40 +38,40 @@ namespace GameEngine.Loader.Configuring
         /// <summary>
         /// 节点对应的对象类型
         /// </summary>
-        private SystemType m_classType;
+        private SystemType _classType;
         /// <summary>
         /// 节点对象的父节点名称
         /// </summary>
-        private string m_parentName;
+        private string _parentName;
         /// <summary>
         /// 节点对象的单例模式
         /// </summary>
-        private bool m_singleton;
+        private bool _singleton;
         /// <summary>
         /// 节点对象的继承模式
         /// </summary>
-        private bool m_inherited;
+        private bool _inherited;
         /// <summary>
         /// 节点对象的字段列表
         /// </summary>
-        private IDictionary<string, BeanFieldConfigureInfo> m_fields;
+        private IDictionary<string, BeanFieldConfigureInfo> _fields;
         /// <summary>
         /// 节点对象的属性列表
         /// </summary>
-        private IDictionary<string, BeanPropertyConfigureInfo> m_properties;
+        private IDictionary<string, BeanPropertyConfigureInfo> _properties;
         /// <summary>
         /// 节点对象的组件列表
         /// </summary>
-        private IList<BeanComponentConfigureInfo> m_components;
+        private IList<BeanComponentConfigureInfo> _components;
 
         public override ConfigureInfoType Type => ConfigureInfoType.Bean;
-        public SystemType ClassType { get { return m_classType; } internal set { m_classType = value; } }
-        public string ParentName { get { return m_parentName; } internal set { m_parentName = value; } }
-        public bool Singleton { get { return m_singleton; } internal set { m_singleton = value; } }
-        public bool Inherited { get { return m_inherited; } internal set { m_inherited = value; } }
-        public IDictionary<string, BeanFieldConfigureInfo> Fields { get { return m_fields; } }
-        public IDictionary<string, BeanPropertyConfigureInfo> Properties { get { return m_properties; } }
-        public IList<BeanComponentConfigureInfo> Components { get { return m_components; } }
+        public SystemType ClassType { get { return _classType; } internal set { _classType = value; } }
+        public string ParentName { get { return _parentName; } internal set { _parentName = value; } }
+        public bool Singleton { get { return _singleton; } internal set { _singleton = value; } }
+        public bool Inherited { get { return _inherited; } internal set { _inherited = value; } }
+        public IDictionary<string, BeanFieldConfigureInfo> Fields { get { return _fields; } }
+        public IDictionary<string, BeanPropertyConfigureInfo> Properties { get { return _properties; } }
+        public IList<BeanComponentConfigureInfo> Components { get { return _components; } }
 
         ~BeanConfigureInfo()
         {
@@ -92,18 +92,18 @@ namespace GameEngine.Loader.Configuring
                 return false;
             }
 
-            if (null == m_fields)
+            if (null == _fields)
             {
-                m_fields = new Dictionary<string, BeanFieldConfigureInfo>();
+                _fields = new Dictionary<string, BeanFieldConfigureInfo>();
             }
-            else if (m_fields.ContainsKey(fieldInfo.FieldName))
+            else if (_fields.ContainsKey(fieldInfo.FieldName))
             {
                 Debugger.Warn("The bean '{0}' class's field '{1}' was already exist, repeat added it will be override old value.",
-                        NovaEngine.Utility.Text.ToString(m_classType), fieldInfo.FieldName);
-                m_fields.Remove(fieldInfo.FieldName);
+                        NovaEngine.Utility.Text.ToString(_classType), fieldInfo.FieldName);
+                _fields.Remove(fieldInfo.FieldName);
             }
 
-            m_fields.Add(fieldInfo.FieldName, fieldInfo);
+            _fields.Add(fieldInfo.FieldName, fieldInfo);
             return true;
         }
 
@@ -113,9 +113,9 @@ namespace GameEngine.Loader.Configuring
         /// <param name="fieldName">字段名称</param>
         public void RemoveFieldInfo(string fieldName)
         {
-            if (null != m_fields && m_fields.ContainsKey(fieldName))
+            if (null != _fields && _fields.ContainsKey(fieldName))
             {
-                m_fields.Remove(fieldName);
+                _fields.Remove(fieldName);
             }
         }
 
@@ -124,8 +124,8 @@ namespace GameEngine.Loader.Configuring
         /// </summary>
         private void RemoveAllFieldInfos()
         {
-            m_fields?.Clear();
-            m_fields = null;
+            _fields?.Clear();
+            _fields = null;
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace GameEngine.Loader.Configuring
         /// <returns>返回节点对象的字段迭代器</returns>
         public IEnumerator<KeyValuePair<string, BeanFieldConfigureInfo>> GetFieldInfoEnumerator()
         {
-            return m_fields?.GetEnumerator();
+            return _fields?.GetEnumerator();
         }
 
         /// <summary>
@@ -149,18 +149,18 @@ namespace GameEngine.Loader.Configuring
                 return false;
             }
 
-            if (null == m_properties)
+            if (null == _properties)
             {
-                m_properties = new Dictionary<string, BeanPropertyConfigureInfo>();
+                _properties = new Dictionary<string, BeanPropertyConfigureInfo>();
             }
-            else if (m_properties.ContainsKey(propertyInfo.PropertyName))
+            else if (_properties.ContainsKey(propertyInfo.PropertyName))
             {
                 Debugger.Warn("The bean '{0}' class's property '{1}' was already exist, repeat added it will be override old value.",
-                        NovaEngine.Utility.Text.ToString(m_classType), propertyInfo.PropertyName);
-                m_properties.Remove(propertyInfo.PropertyName);
+                        NovaEngine.Utility.Text.ToString(_classType), propertyInfo.PropertyName);
+                _properties.Remove(propertyInfo.PropertyName);
             }
 
-            m_properties.Add(propertyInfo.PropertyName, propertyInfo);
+            _properties.Add(propertyInfo.PropertyName, propertyInfo);
             return true;
         }
 
@@ -170,9 +170,9 @@ namespace GameEngine.Loader.Configuring
         /// <param name="propertyName">属性名称</param>
         public void RemovePropertyInfo(string propertyName)
         {
-            if (null != m_properties && m_properties.ContainsKey(propertyName))
+            if (null != _properties && _properties.ContainsKey(propertyName))
             {
-                m_properties.Remove(propertyName);
+                _properties.Remove(propertyName);
             }
         }
 
@@ -181,8 +181,8 @@ namespace GameEngine.Loader.Configuring
         /// </summary>
         private void RemoveAllPropertyInfos()
         {
-            m_properties?.Clear();
-            m_properties = null;
+            _properties?.Clear();
+            _properties = null;
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace GameEngine.Loader.Configuring
         /// <returns>返回节点对象的属性迭代器</returns>
         public IEnumerator<KeyValuePair<string, BeanPropertyConfigureInfo>> GetPropertyInfoEnumerator()
         {
-            return m_properties?.GetEnumerator();
+            return _properties?.GetEnumerator();
         }
 
         /// <summary>
@@ -206,18 +206,18 @@ namespace GameEngine.Loader.Configuring
                 return false;
             }
 
-            if (null == m_components)
+            if (null == _components)
             {
-                m_components = new List<BeanComponentConfigureInfo>();
+                _components = new List<BeanComponentConfigureInfo>();
             }
-            else if (m_components.Contains(componentInfo))
+            else if (_components.Contains(componentInfo))
             {
                 Debugger.Warn("The bean '{0}' class's component '{1}' was already exist, repeat added it will be override old value.",
-                        NovaEngine.Utility.Text.ToString(m_classType), componentInfo.ToString());
-                m_components.Remove(componentInfo);
+                        NovaEngine.Utility.Text.ToString(_classType), componentInfo.ToString());
+                _components.Remove(componentInfo);
             }
 
-            m_components.Add(componentInfo);
+            _components.Add(componentInfo);
             return true;
         }
 
@@ -226,8 +226,8 @@ namespace GameEngine.Loader.Configuring
         /// </summary>
         private void RemoveAllComponentInfos()
         {
-            m_components?.Clear();
-            m_components = null;
+            _components?.Clear();
+            _components = null;
         }
 
         /// <summary>
@@ -236,9 +236,9 @@ namespace GameEngine.Loader.Configuring
         /// <returns>返回组件解析数据的结构信息数量</returns>
         internal int GetComponentInfoCount()
         {
-            if (null != m_components)
+            if (null != _components)
             {
-                return m_components.Count;
+                return _components.Count;
             }
 
             return 0;
@@ -251,13 +251,13 @@ namespace GameEngine.Loader.Configuring
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
         internal BeanComponentConfigureInfo GetComponentInfo(int index)
         {
-            if (null == m_components || index < 0 || index >= m_components.Count)
+            if (null == _components || index < 0 || index >= _components.Count)
             {
                 Debugger.Warn("Invalid index ({0}) for configure bean component info list.", index);
                 return null;
             }
 
-            return m_components[index];
+            return _components[index];
         }
 
         public override string ToString()
@@ -265,12 +265,12 @@ namespace GameEngine.Loader.Configuring
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("Bean = { ");
             sb.AppendFormat("Base = {{{0}}}, ", base.ToString());
-            sb.AppendFormat("ClassType = {0}, ", NovaEngine.Utility.Text.ToString(m_classType));
-            sb.AppendFormat("ParentName = {0}, ", m_parentName);
-            sb.AppendFormat("Singleton = {0}, ", m_singleton);
-            sb.AppendFormat("Inherited = {0}, ", m_inherited);
-            sb.AppendFormat("Fields = {{{0}}}, ", NovaEngine.Utility.Text.ToString<string, BeanFieldConfigureInfo>(m_fields));
-            sb.AppendFormat("Components = {{{0}}}, ", NovaEngine.Utility.Text.ToString<BeanComponentConfigureInfo>(m_components));
+            sb.AppendFormat("ClassType = {0}, ", NovaEngine.Utility.Text.ToString(_classType));
+            sb.AppendFormat("ParentName = {0}, ", _parentName);
+            sb.AppendFormat("Singleton = {0}, ", _singleton);
+            sb.AppendFormat("Inherited = {0}, ", _inherited);
+            sb.AppendFormat("Fields = {{{0}}}, ", NovaEngine.Utility.Text.ToString<string, BeanFieldConfigureInfo>(_fields));
+            sb.AppendFormat("Components = {{{0}}}, ", NovaEngine.Utility.Text.ToString<BeanComponentConfigureInfo>(_components));
             sb.Append("}");
             return sb.ToString();
         }

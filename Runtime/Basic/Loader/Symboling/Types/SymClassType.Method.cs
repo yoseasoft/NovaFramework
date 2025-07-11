@@ -40,100 +40,100 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// 函数的名称
         /// </summary>
-        private string m_methodName;
+        private string _methodName;
         /// <summary>
         /// 函数的完整名称
         /// </summary>
-        private string m_fullName;
+        private string _fullName;
         /// <summary>
         /// 函数的返回类型
         /// </summary>
-        private SystemType m_returnType;
+        private SystemType _returnType;
         /// <summary>
         /// 函数对象实例
         /// </summary>
-        private MethodInfo m_methodInfo;
+        private MethodInfo _methodInfo;
 
         /// <summary>
         /// 函数参数列表
         /// </summary>
-        private ParameterInfo[] m_parameters;
+        private ParameterInfo[] _parameters;
 
         /// <summary>
         /// 函数参数类型
         /// </summary>
-        private SystemType[] m_parameterTypes;
+        private SystemType[] _parameterTypes;
 
         /// <summary>
         /// 函数扩展参数类型
         /// 该参数仅当函数为扩展函数类型时有效
         /// </summary>
-        private SystemType m_extensionParameterType;
+        private SystemType _extensionParameterType;
 
         /// <summary>
         /// 函数是否为静态类型
         /// </summary>
-        private bool m_isStatic;
+        private bool _isStatic;
 
         /// <summary>
         /// 函数是否为扩展类型
         /// </summary>
-        private bool m_isExtension;
+        private bool _isExtension;
 
         public MethodInfo MethodInfo
         {
-            get { return m_methodInfo; }
+            get { return _methodInfo; }
             internal set
             {
-                m_methodInfo = value;
+                _methodInfo = value;
 
-                m_methodName = m_methodInfo.Name;
-                m_fullName = NovaEngine.Utility.Text.GetFullName(m_methodInfo);
-                m_returnType = m_methodInfo.ReturnType;
+                _methodName = _methodInfo.Name;
+                _fullName = NovaEngine.Utility.Text.GetFullName(_methodInfo);
+                _returnType = _methodInfo.ReturnType;
 
-                ParameterInfo[] parameters = m_methodInfo.GetParameters();
-                m_parameters = new ParameterInfo[parameters.Length];
-                m_parameterTypes = new SystemType[parameters.Length];
-                m_extensionParameterType = null;
+                ParameterInfo[] parameters = _methodInfo.GetParameters();
+                _parameters = new ParameterInfo[parameters.Length];
+                _parameterTypes = new SystemType[parameters.Length];
+                _extensionParameterType = null;
                 for (int n = 0; n < parameters.Length; ++n)
                 {
-                    m_parameters[n] = parameters[n];
-                    m_parameterTypes[n] = parameters[n].ParameterType;
+                    _parameters[n] = parameters[n];
+                    _parameterTypes[n] = parameters[n].ParameterType;
                 }
 
-                m_isStatic = m_methodInfo.IsStatic;
-                m_isExtension = NovaEngine.Utility.Reflection.IsTypeOfExtension(m_methodInfo);
+                _isStatic = _methodInfo.IsStatic;
+                _isExtension = NovaEngine.Utility.Reflection.IsTypeOfExtension(_methodInfo);
 
-                if (m_isExtension)
+                if (_isExtension)
                 {
-                    Debugger.Assert(m_parameterTypes.Length > 0, "Parameters index out of range.");
+                    Debugger.Assert(_parameterTypes.Length > 0, "Parameters index out of range.");
 
                     // 扩展的this参数固定为函数的第一个参数
-                    m_extensionParameterType = m_parameterTypes[0];
+                    _extensionParameterType = _parameterTypes[0];
                 }
             }
         }
 
-        public string MethodName => m_methodName;
-        public string FullName => m_fullName;
-        public SystemType ReturnType => m_returnType;
+        public string MethodName => _methodName;
+        public string FullName => _fullName;
+        public SystemType ReturnType => _returnType;
 
-        public ParameterInfo[] Parameters => m_parameters;
-        public SystemType[] ParameterTypes => m_parameterTypes;
-        public SystemType ExtensionParameterType => m_extensionParameterType;
+        public ParameterInfo[] Parameters => _parameters;
+        public SystemType[] ParameterTypes => _parameterTypes;
+        public SystemType ExtensionParameterType => _extensionParameterType;
 
-        public bool IsStatic => m_isStatic;
-        public bool IsExtension => m_isExtension;
+        public bool IsStatic => _isStatic;
+        public bool IsExtension => _isExtension;
 
         public SymMethod() : base() { }
 
         ~SymMethod()
         {
-            m_methodInfo = null;
+            _methodInfo = null;
 
-            m_parameters = null;
-            m_parameterTypes = null;
-            m_extensionParameterType = null;
+            _parameters = null;
+            _parameterTypes = null;
+            _extensionParameterType = null;
         }
 
         /// <summary>
@@ -143,13 +143,13 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回给定索引的参数信息，若不存在返回null</returns>
         public ParameterInfo GetParameter(int index)
         {
-            if (index < 0 || index >= m_parameters.Length)
+            if (index < 0 || index >= _parameters.Length)
             {
                 Debugger.Warn("The method parameter search index '{0}' out of the range, getted it failed.", index);
                 return null;
             }
 
-            return m_parameters[index];
+            return _parameters[index];
         }
 
         /// <summary>
@@ -159,13 +159,13 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回给定索引的参数类型，若不存在返回null</returns>
         public SystemType GetParameterType(int index)
         {
-            if (index < 0 || index >= m_parameterTypes.Length)
+            if (index < 0 || index >= _parameterTypes.Length)
             {
                 Debugger.Warn("The method parameter type search index '{0}' out of the range, getted it failed.", index);
                 return null;
             }
 
-            return m_parameterTypes[index];
+            return _parameterTypes[index];
         }
     }
 }

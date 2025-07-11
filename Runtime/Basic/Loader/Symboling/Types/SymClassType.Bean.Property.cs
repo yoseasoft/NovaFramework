@@ -36,24 +36,24 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// 属性对象的名称
         /// </summary>
-        private string m_propertyName;
+        private string _propertyName;
         /// <summary>
         /// 属性引用的实例类型
         /// </summary>
-        private SystemType m_referenceClassType;
+        private SystemType _referenceClassType;
         /// <summary>
         /// 属性引用的实例名称
         /// </summary>
-        private string m_referenceBeanName;
+        private string _referenceBeanName;
         /// <summary>
         /// 属性引用的对象实例
         /// </summary>
-        private object m_referenceValue;
+        private object _referenceValue;
 
-        public string PropertyName { get { return m_propertyName; } internal set { m_propertyName = value; } }
-        public SystemType ReferenceClassType { get { return m_referenceClassType; } internal set { m_referenceClassType = value; } }
-        public string ReferenceBeanName { get { return m_referenceBeanName; } internal set { m_referenceBeanName = value; } }
-        public object ReferenceValue { get { return m_referenceValue; } internal set { m_referenceValue = value; } }
+        public string PropertyName { get { return _propertyName; } internal set { _propertyName = value; } }
+        public SystemType ReferenceClassType { get { return _referenceClassType; } internal set { _referenceClassType = value; } }
+        public string ReferenceBeanName { get { return _referenceBeanName; } internal set { _referenceBeanName = value; } }
+        public object ReferenceValue { get { return _referenceValue; } internal set { _referenceValue = value; } }
 
         /// <summary>
         /// 获取属性配置对应的属性标记实例
@@ -64,7 +64,7 @@ namespace GameEngine.Loader.Symboling
             {
                 Debugger.Assert(null != this.BeanObject && null != this.BeanObject.TargetClass, "The bean object instance must be non-null.");
 
-                return this.BeanObject.TargetClass.GetPropertyByName(m_propertyName);
+                return this.BeanObject.TargetClass.GetPropertyByName(_propertyName);
             }
         }
 
@@ -83,7 +83,7 @@ namespace GameEngine.Loader.Symboling
 
         public bool Equals(BeanProperty other)
         {
-            return null != m_propertyName && m_propertyName == other.m_propertyName;
+            return null != _propertyName && _propertyName == other._propertyName;
         }
 
         public override int GetHashCode()
@@ -91,10 +91,10 @@ namespace GameEngine.Loader.Symboling
             unchecked
             {
                 int hash = 17;
-                hash = hash * 23 + m_propertyName?.GetHashCode() ?? 0;
-                hash = hash * 23 + m_referenceBeanName?.GetHashCode() ?? 0;
-                hash = hash * 23 + m_referenceClassType?.GetHashCode() ?? 0;
-                hash = hash * 23 + m_referenceValue?.GetHashCode() ?? 0;
+                hash = hash * 23 + _propertyName?.GetHashCode() ?? 0;
+                hash = hash * 23 + _referenceBeanName?.GetHashCode() ?? 0;
+                hash = hash * 23 + _referenceClassType?.GetHashCode() ?? 0;
+                hash = hash * 23 + _referenceValue?.GetHashCode() ?? 0;
                 return hash;
             }
         }

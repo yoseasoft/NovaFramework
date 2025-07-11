@@ -45,15 +45,15 @@ namespace GameEngine.Loader
         /// <summary>
         /// 输入信息类的类型标识
         /// </summary>
-        protected SystemType m_classType;
+        protected SystemType _classType;
 
-        public SystemType ClassType { get { return m_classType; } internal set { m_classType = value; } }
+        public SystemType ClassType { get { return _classType; } internal set { _classType = value; } }
 
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("{ ");
-            sb.AppendFormat("Class = {0}, ", m_classType.FullName);
+            sb.AppendFormat("Class = {0}, ", _classType.FullName);
             sb.Append("}");
             return sb.ToString();
         }
@@ -67,15 +67,15 @@ namespace GameEngine.Loader
         /// <summary>
         /// 加载输入通知调度类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_inputClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _inputClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 清理输入通知调度类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_inputClassCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _inputClassCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 查找输入通知调度类结构信息相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_inputCodeInfoLookupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _inputCodeInfoLookupCallbacks = new Dictionary<SystemType, SystemDelegate>();
 
         /// <summary>
         /// 加载输入通知调度类相关函数的属性定义
@@ -123,22 +123,22 @@ namespace GameEngine.Loader
                     {
                         OnInputClassLoadOfTargetAttribute _attr = (OnInputClassLoadOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_inputClassLoadCallbacks.ContainsKey(_attr.ClassType), "Invalid input class load type");
-                        s_inputClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLoadHandler)));
+                        Debugger.Assert(!_inputClassLoadCallbacks.ContainsKey(_attr.ClassType), "Invalid input class load type");
+                        _inputClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLoadHandler)));
                     }
                     else if (typeof(OnInputClassCleanupOfTargetAttribute) == attrType)
                     {
                         OnInputClassCleanupOfTargetAttribute _attr = (OnInputClassCleanupOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_inputClassCleanupCallbacks.ContainsKey(_attr.ClassType), "Invalid input class cleanup type");
-                        s_inputClassCleanupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllGeneralCodeLoaderHandler)));
+                        Debugger.Assert(!_inputClassCleanupCallbacks.ContainsKey(_attr.ClassType), "Invalid input class cleanup type");
+                        _inputClassCleanupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllGeneralCodeLoaderHandler)));
                     }
                     else if (typeof(OnInputCodeInfoLookupOfTargetAttribute) == attrType)
                     {
                         OnInputCodeInfoLookupOfTargetAttribute _attr = (OnInputCodeInfoLookupOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_inputCodeInfoLookupCallbacks.ContainsKey(_attr.ClassType), "Invalid input class lookup type");
-                        s_inputCodeInfoLookupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLookupHandler)));
+                        Debugger.Assert(!_inputCodeInfoLookupCallbacks.ContainsKey(_attr.ClassType), "Invalid input class lookup type");
+                        _inputCodeInfoLookupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLookupHandler)));
                     }
                 }
             }
@@ -150,7 +150,7 @@ namespace GameEngine.Loader
         [CodeLoader.OnGeneralCodeLoaderCleanup]
         private static void CleanupAllInputClassLoadingCallbacks()
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = s_inputClassCleanupCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _inputClassCleanupCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = e.Current.Value as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
@@ -159,9 +159,9 @@ namespace GameEngine.Loader
                 handler.Invoke();
             }
 
-            s_inputClassLoadCallbacks.Clear();
-            s_inputClassCleanupCallbacks.Clear();
-            s_inputCodeInfoLookupCallbacks.Clear();
+            _inputClassLoadCallbacks.Clear();
+            _inputClassCleanupCallbacks.Clear();
+            _inputCodeInfoLookupCallbacks.Clear();
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace GameEngine.Loader
             {
                 SystemType attrType = attrTypes[n];
                 // if (TryGetInputClassCallbackForTargetContainer(attr.GetType(), out callback, s_inputClassLoadCallbacks))
-                if (TryGetInputClassCallbackForTargetContainer(attrType, out callback, s_inputClassLoadCallbacks))
+                if (TryGetInputClassCallbackForTargetContainer(attrType, out callback, _inputClassLoadCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
                     Debugger.Assert(null != handler, "Invalid input class load handler.");
@@ -238,7 +238,7 @@ namespace GameEngine.Loader
             {
                 SystemType attrType = attrTypes[n];
                 // if (TryGetInputClassCallbackForTargetContainer(attr.GetType(), out callback, s_inputCodeInfoLookupCallbacks))
-                if (TryGetInputClassCallbackForTargetContainer(attrType, out callback, s_inputCodeInfoLookupCallbacks))
+                if (TryGetInputClassCallbackForTargetContainer(attrType, out callback, _inputCodeInfoLookupCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;
                     Debugger.Assert(null != handler, "Invalid input class lookup handler.");
@@ -256,7 +256,7 @@ namespace GameEngine.Loader
         /// <returns>若存在给定类型对应的回调句柄则返回true，否则返回false</returns>
         private static bool IsInputClassCallbackExist(SystemType targetType)
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = s_inputClassLoadCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _inputClassLoadCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 // 这里的类型为属性定义的类型，因此直接作相等比较即可

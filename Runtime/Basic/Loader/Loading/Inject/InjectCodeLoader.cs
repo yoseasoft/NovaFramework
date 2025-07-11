@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -44,15 +44,15 @@ namespace GameEngine.Loader
         /// <summary>
         /// 注入控制类的类型标识
         /// </summary>
-        protected SystemType m_classType;
+        protected SystemType _classType;
 
-        public SystemType ClassType { get { return m_classType; } internal set { m_classType = value; } }
+        public SystemType ClassType { get { return _classType; } internal set { _classType = value; } }
 
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("{ ");
-            sb.AppendFormat("Class = {0}, ", m_classType.FullName);
+            sb.AppendFormat("Class = {0}, ", _classType.FullName);
             sb.Append("}");
             return sb.ToString();
         }
@@ -66,15 +66,15 @@ namespace GameEngine.Loader
         /// <summary>
         /// 加载注入控制类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_injectClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _injectClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 清理注入控制类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_injectClassCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _injectClassCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 查找注入控制类结构信息相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> s_injectCodeInfoLookupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _injectCodeInfoLookupCallbacks = new Dictionary<SystemType, SystemDelegate>();
 
         /// <summary>
         /// 加载注入控制类相关函数的属性定义
@@ -122,22 +122,22 @@ namespace GameEngine.Loader
                     {
                         OnInjectClassLoadOfTargetAttribute _attr = (OnInjectClassLoadOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_injectClassLoadCallbacks.ContainsKey(_attr.ClassType), "Invalid inject class load type");
-                        s_injectClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLoadHandler)));
+                        Debugger.Assert(!_injectClassLoadCallbacks.ContainsKey(_attr.ClassType), "Invalid inject class load type");
+                        _injectClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLoadHandler)));
                     }
                     else if (typeof(OnInjectClassCleanupOfTargetAttribute) == attrType)
                     {
                         OnInjectClassCleanupOfTargetAttribute _attr = (OnInjectClassCleanupOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_injectClassCleanupCallbacks.ContainsKey(_attr.ClassType), "Invalid inject class cleanup type");
-                        s_injectClassCleanupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllGeneralCodeLoaderHandler)));
+                        Debugger.Assert(!_injectClassCleanupCallbacks.ContainsKey(_attr.ClassType), "Invalid inject class cleanup type");
+                        _injectClassCleanupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllGeneralCodeLoaderHandler)));
                     }
                     else if (typeof(OnInjectCodeInfoLookupOfTargetAttribute) == attrType)
                     {
                         OnInjectCodeInfoLookupOfTargetAttribute _attr = (OnInjectCodeInfoLookupOfTargetAttribute) attr;
 
-                        Debugger.Assert(!s_injectCodeInfoLookupCallbacks.ContainsKey(_attr.ClassType), "Invalid inject class lookup type");
-                        s_injectCodeInfoLookupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLookupHandler)));
+                        Debugger.Assert(!_injectCodeInfoLookupCallbacks.ContainsKey(_attr.ClassType), "Invalid inject class lookup type");
+                        _injectCodeInfoLookupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLookupHandler)));
                     }
                 }
             }
@@ -149,7 +149,7 @@ namespace GameEngine.Loader
         [CodeLoader.OnGeneralCodeLoaderCleanup]
         private static void CleanupAllInjectClassLoadingCallbacks()
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = s_injectClassCleanupCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _injectClassCleanupCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = e.Current.Value as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
@@ -158,9 +158,9 @@ namespace GameEngine.Loader
                 handler.Invoke();
             }
 
-            s_injectClassLoadCallbacks.Clear();
-            s_injectClassCleanupCallbacks.Clear();
-            s_injectCodeInfoLookupCallbacks.Clear();
+            _injectClassLoadCallbacks.Clear();
+            _injectClassCleanupCallbacks.Clear();
+            _injectCodeInfoLookupCallbacks.Clear();
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
                 SystemAttribute attr = attrs[n];
-                if (TryGetInjectClassCallbackForTargetContainer(attr.GetType(), out callback, s_injectClassLoadCallbacks))
+                if (TryGetInjectClassCallbackForTargetContainer(attr.GetType(), out callback, _injectClassLoadCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
                     Debugger.Assert(null != handler, "Invalid inject class load handler.");
@@ -231,7 +231,7 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
                 SystemAttribute attr = attrs[n];
-                if (TryGetInjectClassCallbackForTargetContainer(attr.GetType(), out callback, s_injectCodeInfoLookupCallbacks))
+                if (TryGetInjectClassCallbackForTargetContainer(attr.GetType(), out callback, _injectCodeInfoLookupCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;
                     Debugger.Assert(null != handler, "Invalid inject class lookup handler.");
@@ -249,7 +249,7 @@ namespace GameEngine.Loader
         /// <returns>若存在给定类型对应的回调句柄则返回true，否则返回false</returns>
         private static bool IsInjectClassCallbackExist(SystemType targetType)
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = s_injectClassLoadCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _injectClassLoadCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 // 这里的类型为属性定义的类型，因此直接作相等比较即可

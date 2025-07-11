@@ -40,91 +40,91 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// 对象类的名称
         /// </summary>
-        private string m_className;
+        private string _className;
         /// <summary>
         /// 对象类的完整名称
         /// </summary>
-        private string m_fullName;
+        private string _fullName;
         /// <summary>
         /// 对象类的类型
         /// </summary>
-        private SystemType m_classType;
+        private SystemType _classType;
         /// <summary>
         /// 对象类的父类类型
         /// </summary>
-        private SystemType m_baseType;
+        private SystemType _baseType;
 
         /// <summary>
         /// 对象类的默认Bean实例名称，该名称由类标记对象自动生成，不可主动赋值
         /// </summary>
-        private string m_defaultBeanName;
+        private string _defaultBeanName;
 
         /// <summary>
         /// 对象是否为接口类型
         /// </summary>
-        private bool m_isInterface;
+        private bool _isInterface;
         /// <summary>
         /// 对象是否为类类型
         /// </summary>
-        private bool m_isClass;
+        private bool _isClass;
         /// <summary>
         /// 对象是否为抽象类型
         /// </summary>
-        private bool m_isAbstract;
+        private bool _isAbstract;
         /// <summary>
         /// 对象是否为静态类型
         /// </summary>
-        private bool m_isStatic;
+        private bool _isStatic;
         /// <summary>
         /// 对象是否为可实例化的类型
         /// </summary>
-        private bool m_isInstantiate;
+        private bool _isInstantiate;
 
         /// <summary>
         /// 对象类包含的特性信息
         /// </summary>
-        private IList<SystemType> m_featureTypes;
+        private IList<SystemType> _featureTypes;
         /// <summary>
         /// 对象类包含的接口信息
         /// </summary>
-        private IList<SystemType> m_interfaceTypes;
+        private IList<SystemType> _interfaceTypes;
 
         /// <summary>
         /// 对象类包含的字段信息
         /// </summary>
-        private IDictionary<string, SymField> m_fields;
+        private IDictionary<string, SymField> _fields;
         /// <summary>
         /// 对象类包含的属性信息
         /// </summary>
-        private IDictionary<string, SymProperty> m_properties;
+        private IDictionary<string, SymProperty> _properties;
         /// <summary>
         /// 对象类包含的函数信息
         /// </summary>
-        private IDictionary<string, SymMethod> m_methods;
+        private IDictionary<string, SymMethod> _methods;
 
         /// <summary>
         /// 对象类的Bean实例列表
         /// </summary>
-        private IDictionary<string, Bean> m_beans;
+        private IDictionary<string, Bean> _beans;
 
         public SystemType ClassType
         {
-            get { return m_classType; }
+            get { return _classType; }
             internal set
             {
-                m_classType = value;
+                _classType = value;
 
                 // 对象类的名称及它的完整类名
-                m_className = m_classType.Name;
-                m_fullName = NovaEngine.Utility.Text.GetFullName(m_classType);
+                _className = _classType.Name;
+                _fullName = NovaEngine.Utility.Text.GetFullName(_classType);
 
-                m_baseType = m_classType.BaseType;
+                _baseType = _classType.BaseType;
 
-                m_isInterface = m_classType.IsInterface;
-                m_isClass = m_classType.IsClass;
-                m_isAbstract = m_classType.IsAbstract;
-                m_isStatic = NovaEngine.Utility.Reflection.IsTypeOfStaticClass(m_classType);
-                m_isInstantiate = NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(m_classType);
+                _isInterface = _classType.IsInterface;
+                _isClass = _classType.IsClass;
+                _isAbstract = _classType.IsAbstract;
+                _isStatic = NovaEngine.Utility.Reflection.IsTypeOfStaticClass(_classType);
+                _isInstantiate = NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(_classType);
             }
         }
 
@@ -132,32 +132,32 @@ namespace GameEngine.Loader.Symboling
         {
             get
             {
-                if (null == m_defaultBeanName)
+                if (null == _defaultBeanName)
                 {
                     // 前缀+类的完整名称
-                    m_defaultBeanName = string.Format("__internal_{0}", NovaEngine.Utility.Text.GetFullName(m_classType));
+                    _defaultBeanName = string.Format("__internal_{0}", NovaEngine.Utility.Text.GetFullName(_classType));
                 }
 
-                return m_defaultBeanName;
+                return _defaultBeanName;
             }
         }
 
-        public string ClassName => m_className;
-        public string FullName => m_fullName;
-        public SystemType BaseType => m_baseType;
+        public string ClassName => _className;
+        public string FullName => _fullName;
+        public SystemType BaseType => _baseType;
 
-        public bool IsInterface => m_isInterface;
-        public bool IsClass => m_isClass;
-        public bool IsAbstract => m_isAbstract;
-        public bool IsStatic => m_isStatic;
-        public bool IsInstantiate => m_isInstantiate;
+        public bool IsInterface => _isInterface;
+        public bool IsClass => _isClass;
+        public bool IsAbstract => _isAbstract;
+        public bool IsStatic => _isStatic;
+        public bool IsInstantiate => _isInstantiate;
 
-        public IList<SystemType> FeatureTypes => m_featureTypes;
-        public IList<SystemType> InterfaceTypes => m_interfaceTypes;
+        public IList<SystemType> FeatureTypes => _featureTypes;
+        public IList<SystemType> InterfaceTypes => _interfaceTypes;
 
-        public IDictionary<string, SymField> Fields => m_fields;
-        public IDictionary<string, SymProperty> Properties => m_properties;
-        public IDictionary<string, SymMethod> Methods => m_methods;
+        public IDictionary<string, SymField> Fields => _fields;
+        public IDictionary<string, SymProperty> Properties => _properties;
+        public IDictionary<string, SymMethod> Methods => _methods;
 
         public SymClass() : base() { }
 
@@ -181,18 +181,18 @@ namespace GameEngine.Loader.Symboling
         /// <param name="featureType">类特性实例</param>
         public void AddFeatureType(SystemType featureType)
         {
-            if (null == m_featureTypes)
+            if (null == _featureTypes)
             {
-                m_featureTypes = new List<SystemType>();
+                _featureTypes = new List<SystemType>();
             }
 
-            if (m_featureTypes.Contains(featureType))
+            if (_featureTypes.Contains(featureType))
             {
                 // Debugger.Warn("The symbol class '{%f}' feature type '{%f}' was already exist, repeat added it failed.", m_classType, featureType);
                 return;
             }
 
-            m_featureTypes.Add(featureType);
+            _featureTypes.Add(featureType);
         }
 
         /// <summary>
@@ -202,12 +202,12 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若存在目标特性实例则返回true，否则返回false</returns>
         public bool HasFeatureType(SystemType featureType)
         {
-            if (null == m_featureTypes)
+            if (null == _featureTypes)
             {
                 return false;
             }
 
-            return m_featureTypes.Contains(featureType);
+            return _featureTypes.Contains(featureType);
         }
 
         /// <summary>
@@ -216,18 +216,18 @@ namespace GameEngine.Loader.Symboling
         /// <param name="featureType">特性类型</param>
         public void RemoveFeatureType(SystemType featureType)
         {
-            if (null == m_featureTypes)
+            if (null == _featureTypes)
             {
                 return;
             }
 
-            if (false == m_featureTypes.Contains(featureType))
+            if (false == _featureTypes.Contains(featureType))
             {
-                Debugger.Warn("Could not found any feature type '{%f}' from target symbol class '{%f}', removed it failed.", featureType, m_classType);
+                Debugger.Warn("Could not found any feature type '{%f}' from target symbol class '{%f}', removed it failed.", featureType, _classType);
                 return;
             }
 
-            m_featureTypes.Remove(featureType);
+            _featureTypes.Remove(featureType);
         }
 
         /// <summary>
@@ -235,8 +235,8 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         private void RemoveAllFeatureTypes()
         {
-            m_featureTypes?.Clear();
-            m_featureTypes = null;
+            _featureTypes?.Clear();
+            _featureTypes = null;
         }
 
         #endregion
@@ -249,18 +249,18 @@ namespace GameEngine.Loader.Symboling
         /// <param name="interfaceType">类接口实例</param>
         public void AddInterfaceType(SystemType interfaceType)
         {
-            if (null == m_interfaceTypes)
+            if (null == _interfaceTypes)
             {
-                m_interfaceTypes = new List<SystemType>();
+                _interfaceTypes = new List<SystemType>();
             }
 
-            if (m_interfaceTypes.Contains(interfaceType))
+            if (_interfaceTypes.Contains(interfaceType))
             {
-                Debugger.Warn("The symbol class '{%f}' interface type '{%f}' was already exist, repeat added it failed.", m_classType, interfaceType);
+                Debugger.Warn("The symbol class '{%f}' interface type '{%f}' was already exist, repeat added it failed.", _classType, interfaceType);
                 return;
             }
 
-            m_interfaceTypes.Add(interfaceType);
+            _interfaceTypes.Add(interfaceType);
         }
 
         /// <summary>
@@ -270,12 +270,12 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若存在目标接口实例则返回true，否则返回false</returns>
         public bool HasInterfaceType(SystemType interfaceType)
         {
-            if (null == m_interfaceTypes)
+            if (null == _interfaceTypes)
             {
                 return false;
             }
 
-            return m_interfaceTypes.Contains(interfaceType);
+            return _interfaceTypes.Contains(interfaceType);
         }
 
         /// <summary>
@@ -284,18 +284,18 @@ namespace GameEngine.Loader.Symboling
         /// <param name="interfaceType">接口类型</param>
         public void RemoveInterfaceType(SystemType interfaceType)
         {
-            if (null == m_interfaceTypes)
+            if (null == _interfaceTypes)
             {
                 return;
             }
 
-            if (false == m_interfaceTypes.Contains(interfaceType))
+            if (false == _interfaceTypes.Contains(interfaceType))
             {
-                Debugger.Warn("Could not found any interface type '{%f}' from target symbol class '{%f}', removed it failed.", interfaceType, m_classType);
+                Debugger.Warn("Could not found any interface type '{%f}' from target symbol class '{%f}', removed it failed.", interfaceType, _classType);
                 return;
             }
 
-            m_interfaceTypes.Remove(interfaceType);
+            _interfaceTypes.Remove(interfaceType);
         }
 
         /// <summary>
@@ -303,8 +303,8 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         private void RemoveAllInterfaceTypes()
         {
-            m_interfaceTypes?.Clear();
-            m_interfaceTypes = null;
+            _interfaceTypes?.Clear();
+            _interfaceTypes = null;
         }
 
         #endregion
@@ -317,19 +317,19 @@ namespace GameEngine.Loader.Symboling
         /// <param name="interfaceType">类字段实例</param>
         public void AddField(SymField field)
         {
-            if (null == m_fields)
+            if (null == _fields)
             {
-                m_fields = new Dictionary<string, SymField>();
+                _fields = new Dictionary<string, SymField>();
             }
 
-            if (m_fields.ContainsKey(field.FieldName))
+            if (_fields.ContainsKey(field.FieldName))
             {
                 Debugger.Warn("The symbol class '{0}' field '{1}' was already exist, repeat added it failed.",
-                        NovaEngine.Utility.Text.ToString(m_classType), field.FieldName);
+                        NovaEngine.Utility.Text.ToString(_classType), field.FieldName);
                 return;
             }
 
-            m_fields.Add(field.FieldName, field);
+            _fields.Add(field.FieldName, field);
         }
 
         /// <summary>
@@ -341,12 +341,12 @@ namespace GameEngine.Loader.Symboling
         {
             Debugger.Assert(false == string.IsNullOrEmpty(fieldName), "Invalid arguments.");
 
-            if (null == m_fields)
+            if (null == _fields)
             {
                 return false;
             }
 
-            return m_fields.ContainsKey(fieldName);
+            return _fields.ContainsKey(fieldName);
         }
 
         /// <summary>
@@ -355,12 +355,12 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回类标记中字段实例的数量</returns>
         public int GetFieldCount()
         {
-            if (null == m_fields)
+            if (null == _fields)
             {
                 return 0;
             }
 
-            return m_fields.Count;
+            return _fields.Count;
         }
 
         /// <summary>
@@ -370,12 +370,12 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若查找标记对象成功则返回该实例，否则返回null</returns>
         public SymField GetFieldByName(string fieldName)
         {
-            if (null == m_fields || false == m_fields.ContainsKey(fieldName))
+            if (null == _fields || false == _fields.ContainsKey(fieldName))
             {
                 return null;
             }
 
-            return m_fields[fieldName];
+            return _fields[fieldName];
         }
 
         /// <summary>
@@ -386,13 +386,13 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若查找标记对象成功则返回true，否则返回false</returns>
         public bool TryGetFieldByName(string fieldName, out SymField symField)
         {
-            if (null == m_fields)
+            if (null == _fields)
             {
                 symField = null;
                 return false;
             }
 
-            return m_fields.TryGetValue(fieldName, out symField);
+            return _fields.TryGetValue(fieldName, out symField);
         }
 
         /// <summary>
@@ -401,7 +401,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回类标记对象的字段列表</returns>
         public IList<SymField> GetAllFields()
         {
-            return NovaEngine.Utility.Collection.ToListForValues<string, SymField>(m_fields);
+            return NovaEngine.Utility.Collection.ToListForValues<string, SymField>(_fields);
         }
 
         /// <summary>
@@ -410,7 +410,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回类标记对象的字段迭代器</returns>
         public IEnumerator<KeyValuePair<string, SymField>> GetFieldEnumerator()
         {
-            return m_fields?.GetEnumerator();
+            return _fields?.GetEnumerator();
         }
 
         /// <summary>
@@ -428,19 +428,19 @@ namespace GameEngine.Loader.Symboling
         /// <param name="fieldName">字段名称</param>
         public void RemoveField(string fieldName)
         {
-            if (null == m_fields)
+            if (null == _fields)
             {
                 return;
             }
 
-            if (false == m_fields.ContainsKey(fieldName))
+            if (false == _fields.ContainsKey(fieldName))
             {
                 Debugger.Warn("Could not found any field instance '{0}' from target symbol class '{1}', removed it failed.",
-                        fieldName, NovaEngine.Utility.Text.ToString(m_classType));
+                        fieldName, NovaEngine.Utility.Text.ToString(_classType));
                 return;
             }
 
-            m_fields.Remove(fieldName);
+            _fields.Remove(fieldName);
         }
 
         /// <summary>
@@ -448,8 +448,8 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         private void RemoveAllFields()
         {
-            m_fields?.Clear();
-            m_fields = null;
+            _fields?.Clear();
+            _fields = null;
         }
 
         #endregion
@@ -462,19 +462,19 @@ namespace GameEngine.Loader.Symboling
         /// <param name="property">类属性实例</param>
         public void AddProperty(SymProperty property)
         {
-            if (null == m_properties)
+            if (null == _properties)
             {
-                m_properties = new Dictionary<string, SymProperty>();
+                _properties = new Dictionary<string, SymProperty>();
             }
 
-            if (m_properties.ContainsKey(property.PropertyName))
+            if (_properties.ContainsKey(property.PropertyName))
             {
                 Debugger.Warn("The symbol class '{0}' property '{1}' was already exist, repeat added it failed.",
-                        NovaEngine.Utility.Text.ToString(m_classType), property.PropertyName);
+                        NovaEngine.Utility.Text.ToString(_classType), property.PropertyName);
                 return;
             }
 
-            m_properties.Add(property.PropertyName, property);
+            _properties.Add(property.PropertyName, property);
         }
 
         /// <summary>
@@ -483,12 +483,12 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回类标记中属性实例的数量</returns>
         public int GetPropertyCount()
         {
-            if (null == m_properties)
+            if (null == _properties)
             {
                 return 0;
             }
 
-            return m_properties.Count;
+            return _properties.Count;
         }
 
         /// <summary>
@@ -498,12 +498,12 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若查找标记对象成功则返回该实例，否则返回null</returns>
         public SymProperty GetPropertyByName(string propertyName)
         {
-            if (null == m_properties || false == m_properties.ContainsKey(propertyName))
+            if (null == _properties || false == _properties.ContainsKey(propertyName))
             {
                 return null;
             }
 
-            return m_properties[propertyName];
+            return _properties[propertyName];
         }
 
         /// <summary>
@@ -514,13 +514,13 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若查找标记对象成功则返回true，否则返回false</returns>
         public bool TryGetPropertyByName(string propertyName, out SymProperty symProperty)
         {
-            if (null == m_properties)
+            if (null == _properties)
             {
                 symProperty = null;
                 return false;
             }
 
-            return m_properties.TryGetValue(propertyName, out symProperty);
+            return _properties.TryGetValue(propertyName, out symProperty);
         }
 
         /// <summary>
@@ -529,7 +529,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回类标记对象的属性列表</returns>
         public IList<SymProperty> GetAllProperties()
         {
-            return NovaEngine.Utility.Collection.ToListForValues<string, SymProperty>(m_properties);
+            return NovaEngine.Utility.Collection.ToListForValues<string, SymProperty>(_properties);
         }
 
         /// <summary>
@@ -538,7 +538,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回类标记对象的属性迭代器</returns>
         public IEnumerator<KeyValuePair<string, SymProperty>> GetPropertyEnumerator()
         {
-            return m_properties?.GetEnumerator();
+            return _properties?.GetEnumerator();
         }
 
         /// <summary>
@@ -556,19 +556,19 @@ namespace GameEngine.Loader.Symboling
         /// <param name="propertyName">属性名称</param>
         public void RemoveProperty(string propertyName)
         {
-            if (null == m_properties)
+            if (null == _properties)
             {
                 return;
             }
 
-            if (false == m_properties.ContainsKey(propertyName))
+            if (false == _properties.ContainsKey(propertyName))
             {
                 Debugger.Warn("Could not found any property instance '{0}' from target symbol class '{1}', removed it failed.",
-                        propertyName, NovaEngine.Utility.Text.ToString(m_classType));
+                        propertyName, NovaEngine.Utility.Text.ToString(_classType));
                 return;
             }
 
-            m_properties.Remove(propertyName);
+            _properties.Remove(propertyName);
         }
 
         /// <summary>
@@ -576,8 +576,8 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         private void RemoveAllProperties()
         {
-            m_properties?.Clear();
-            m_properties = null;
+            _properties?.Clear();
+            _properties = null;
         }
 
         #endregion
@@ -590,19 +590,19 @@ namespace GameEngine.Loader.Symboling
         /// <param name="method">类函数实例</param>
         public void AddMethod(SymMethod method)
         {
-            if (null == m_methods)
+            if (null == _methods)
             {
-                m_methods = new Dictionary<string, SymMethod>();
+                _methods = new Dictionary<string, SymMethod>();
             }
 
-            if (m_methods.ContainsKey(method.FullName))
+            if (_methods.ContainsKey(method.FullName))
             {
                 Debugger.Warn("The symbol class '{0}' method '{1}' was already exist, repeat added it failed.",
-                        NovaEngine.Utility.Text.ToString(m_classType), method.FullName);
+                        NovaEngine.Utility.Text.ToString(_classType), method.FullName);
                 return;
             }
 
-            m_methods.Add(method.FullName, method);
+            _methods.Add(method.FullName, method);
         }
 
         /// <summary>
@@ -611,12 +611,12 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回类标记中函数实例的数量</returns>
         public int GetMethodCount()
         {
-            if (null == m_methods)
+            if (null == _methods)
             {
                 return 0;
             }
 
-            return m_methods.Count;
+            return _methods.Count;
         }
 
         /// <summary>
@@ -627,13 +627,13 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若查找标记对象成功则返回true，否则返回false</returns>
         public bool TryGetMethodByName(string methodName, out SymMethod symMethod)
         {
-            if (null == m_methods)
+            if (null == _methods)
             {
                 symMethod = null;
                 return false;
             }
 
-            return m_methods.TryGetValue(methodName, out symMethod);
+            return _methods.TryGetValue(methodName, out symMethod);
         }
 
         /// <summary>
@@ -642,7 +642,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回类标记对象的函数列表</returns>
         public IList<SymMethod> GetAllMethods()
         {
-            return NovaEngine.Utility.Collection.ToListForValues<string, SymMethod>(m_methods);
+            return NovaEngine.Utility.Collection.ToListForValues<string, SymMethod>(_methods);
         }
 
         /// <summary>
@@ -651,7 +651,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回类标记对象的函数迭代器</returns>
         public IEnumerator<KeyValuePair<string, SymMethod>> GetMethodEnumerator()
         {
-            return m_methods?.GetEnumerator();
+            return _methods?.GetEnumerator();
         }
 
         /// <summary>
@@ -669,19 +669,19 @@ namespace GameEngine.Loader.Symboling
         /// <param name="methodName">函数名称</param>
         public void RemoveMethod(string methodName)
         {
-            if (null == m_methods)
+            if (null == _methods)
             {
                 return;
             }
 
-            if (false == m_methods.ContainsKey(methodName))
+            if (false == _methods.ContainsKey(methodName))
             {
                 Debugger.Warn("Could not found any method instance '{0}' from target symbol class '{1}', removed it failed.",
-                        methodName, NovaEngine.Utility.Text.ToString(m_classType));
+                        methodName, NovaEngine.Utility.Text.ToString(_classType));
                 return;
             }
 
-            m_methods.Remove(methodName);
+            _methods.Remove(methodName);
         }
 
         /// <summary>
@@ -689,8 +689,8 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         private void RemoveAllMethods()
         {
-            m_methods?.Clear();
-            m_methods = null;
+            _methods?.Clear();
+            _methods = null;
         }
 
         #endregion
@@ -708,18 +708,18 @@ namespace GameEngine.Loader.Symboling
                 bean.BeanName = this.DefaultBeanName;
             }
 
-            if (null == m_beans)
+            if (null == _beans)
             {
-                m_beans = new Dictionary<string, Bean>();
+                _beans = new Dictionary<string, Bean>();
             }
 
-            if (m_beans.ContainsKey(bean.BeanName))
+            if (_beans.ContainsKey(bean.BeanName))
             {
-                Debugger.Warn("The bean object '{0}' was already exist in symbol class '{1}', repeat added it will be override old value.", bean.BeanName, m_className);
-                m_beans.Remove(bean.BeanName);
+                Debugger.Warn("The bean object '{0}' was already exist in symbol class '{1}', repeat added it will be override old value.", bean.BeanName, _className);
+                _beans.Remove(bean.BeanName);
             }
 
-            m_beans.Add(bean.BeanName, bean);
+            _beans.Add(bean.BeanName, bean);
         }
 
         /// <summary>
@@ -734,7 +734,7 @@ namespace GameEngine.Loader.Symboling
                 beanName = this.DefaultBeanName;
             }
 
-            if (null != m_beans && m_beans.ContainsKey(beanName))
+            if (null != _beans && _beans.ContainsKey(beanName))
             {
                 return true;
             }
@@ -763,12 +763,12 @@ namespace GameEngine.Loader.Symboling
                 return GetBean();
             }
 
-            if (null == m_beans)
+            if (null == _beans)
             {
                 return null;
             }
 
-            if (m_beans.TryGetValue(beanName, out Bean bean))
+            if (_beans.TryGetValue(beanName, out Bean bean))
             {
                 return bean;
             }
@@ -782,7 +782,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回类标记对象的Bean实例列表</returns>
         public IList<Bean> GetAllBeans()
         {
-            return NovaEngine.Utility.Collection.ToListForValues<string, Bean>(m_beans);
+            return NovaEngine.Utility.Collection.ToListForValues<string, Bean>(_beans);
         }
 
         /// <summary>
@@ -791,7 +791,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回类标记对象的函数迭代器</returns>
         public IEnumerator<KeyValuePair<string, Bean>> GetBeanEnumerator()
         {
-            return m_beans?.GetEnumerator();
+            return _beans?.GetEnumerator();
         }
 
         /// <summary>
@@ -799,8 +799,8 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         private void RemoveAllBeans()
         {
-            m_beans?.Clear();
-            m_beans = null;
+            _beans?.Clear();
+            _beans = null;
         }
 
         #endregion
