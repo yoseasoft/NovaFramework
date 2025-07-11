@@ -59,9 +59,9 @@ namespace GameEngine.Loader.Inspecting
             }
 
             // 输入响应函数有两种格式:
-            // 1. [static] void OnInput(int keycode, int operationType);
+            // 1. [static] void OnInput(int inputCode, int operationType);
             // 2. [static] void OnInput(object inputData);
-            // 3. static void OnInput(IProto obj, int keycode, int operationType);
+            // 3. static void OnInput(IProto obj, int inputCode, int operationType);
             // 4. static void OnInput(IProto obj, object inputData);
             //
             // 无参类型的输入响应函数接口格式:
@@ -157,7 +157,7 @@ namespace GameEngine.Loader.Inspecting
             }
 
             // 输入响应函数的格式:
-            // 1. static void OnInput(this IProto self, int keycode, int operationType);
+            // 1. static void OnInput(this IProto self, int inputCode, int operationType);
             // 2. static void OnInput(this IProto self, object inputData);
             //
             // 无参类型的输入响应函数接口格式:

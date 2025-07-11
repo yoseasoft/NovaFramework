@@ -65,14 +65,14 @@ namespace GameEngine
                     continue;
                 }
 
-                if (callMethodInfo.Keycode > 0)
+                if (callMethodInfo.InputCode > 0)
                 {
                     if (reload)
                     {
-                        Instance.RemoveInputDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.Keycode, callMethodInfo.OperationType);
+                        Instance.RemoveInputDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.InputCode, (int) callMethodInfo.OperationType);
                     }
 
-                    Instance.AddInputDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.Keycode, callMethodInfo.OperationType, callback);
+                    Instance.AddInputDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.InputCode, (int) callMethodInfo.OperationType, callback);
                 }
                 else
                 {

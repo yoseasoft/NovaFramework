@@ -1,7 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,6 +41,11 @@ namespace GameEngine.Loader
     public abstract class ProtoBaseCodeInfo : ProtoCodeInfo
     {
         /// <summary>
+        /// 输入响应类的函数结构信息管理容器
+        /// </summary>
+        private IList<InputResponsingMethodTypeCodeInfo> m_inputResponsingMethodTypes;
+
+        /// <summary>
         /// 事件订阅类的函数结构信息管理容器
         /// </summary>
         private IList<EventSubscribingMethodTypeCodeInfo> m_eventSubscribingMethodTypes;
@@ -47,6 +54,70 @@ namespace GameEngine.Loader
         /// 消息绑定类的函数结构信息管理容器
         /// </summary>
         private IList<MessageBindingMethodTypeCodeInfo> m_messageBindingMethodTypes;
+
+        #region 输入响应类结构信息操作函数
+
+        /// <summary>
+        /// 新增指定响应输入函数的回调句柄相关的结构信息
+        /// </summary>
+        /// <param name="codeInfo">函数的结构信息</param>
+        internal void AddInputResponsingMethodType(InputResponsingMethodTypeCodeInfo codeInfo)
+        {
+            if (null == m_inputResponsingMethodTypes)
+            {
+                m_inputResponsingMethodTypes = new List<InputResponsingMethodTypeCodeInfo>();
+            }
+
+            if (m_inputResponsingMethodTypes.Contains(codeInfo))
+            {
+                Debugger.Warn("The input responsing class type '{0}' was already registed target method '{1}', repeat added it failed.",
+                        m_classType.FullName, NovaEngine.Utility.Text.ToString(codeInfo.Method));
+                return;
+            }
+
+            m_inputResponsingMethodTypes.Add(codeInfo);
+        }
+
+        /// <summary>
+        /// 移除所有响应输入函数的回调句柄相关的结构信息
+        /// </summary>
+        internal void RemoveAllInputResponsingMethodTypes()
+        {
+            m_inputResponsingMethodTypes?.Clear();
+            m_inputResponsingMethodTypes = null;
+        }
+
+        /// <summary>
+        /// 获取当前响应输入函数回调句柄的结构信息数量
+        /// </summary>
+        /// <returns>返回函数回调句柄的结构信息数量</returns>
+        internal int GetInputResponsingMethodTypeCount()
+        {
+            if (null != m_inputResponsingMethodTypes)
+            {
+                return m_inputResponsingMethodTypes.Count;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// 获取当前响应输入函数回调句柄的结构信息容器中指索引对应的实例
+        /// </summary>
+        /// <param name="index">索引值</param>
+        /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
+        internal InputResponsingMethodTypeCodeInfo GetInputResponsingMethodType(int index)
+        {
+            if (null == m_inputResponsingMethodTypes || index < 0 || index >= m_inputResponsingMethodTypes.Count)
+            {
+                Debugger.Warn("Invalid index ({0}) for input responsing method type code info list.", index);
+                return null;
+            }
+
+            return m_inputResponsingMethodTypes[index];
+        }
+
+        #endregion
 
         #region 事件订阅类结构信息操作函数
 
@@ -182,9 +253,33 @@ namespace GameEngine.Loader
             sb.Append("{ ");
             sb.AppendFormat("Parent = {0}, ", base.ToString());
 
+            sb.AppendFormat("InputResponsingMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<InputResponsingMethodTypeCodeInfo>(m_inputResponsingMethodTypes));
             sb.AppendFormat("EventSubscribingMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<EventSubscribingMethodTypeCodeInfo>(m_eventSubscribingMethodTypes));
             sb.AppendFormat("MessageBindingMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<MessageBindingMethodTypeCodeInfo>(m_messageBindingMethodTypes));
 
+            sb.Append("}");
+            return sb.ToString();
+        }
+    }
+
+    /// <summary>
+    /// 标准输入响应函数结构信息
+    /// </summary>
+    public class InputResponsingMethodTypeCodeInfo : InputCallMethodTypeCodeInfo
+    {
+        /// <summary>
+        /// 响应绑定的观察行为类型
+        /// </summary>
+        private AspectBehaviourType m_behaviourType;
+
+        public AspectBehaviourType BehaviourType { get { return m_behaviourType; } internal set { m_behaviourType = value; } }
+
+        public override string ToString()
+        {
+            SystemStringBuilder sb = new SystemStringBuilder();
+            sb.Append("{ ");
+            sb.AppendFormat("Parent = {0}, ", base.ToString());
+            sb.AppendFormat("BehaviourType = {0}, ", m_behaviourType.ToString());
             sb.Append("}");
             return sb.ToString();
         }
@@ -260,7 +355,57 @@ namespace GameEngine.Loader
         /// <param name="attribute">属性对象</param>
         private static void LoadBaseMethodByAttributeType(Symboling.SymClass symClass, ProtoBaseCodeInfo codeInfo, Symboling.SymMethod symMethod, SystemAttribute attribute)
         {
-            if (attribute is EventSubscribeBindingOfTargetAttribute)
+            if (attribute is InputResponseBindingOfTargetAttribute)
+            {
+                InputResponseBindingOfTargetAttribute _attr = (InputResponseBindingOfTargetAttribute) attribute;
+
+                if (symMethod.IsStatic || false == Inspecting.CodeInspector.IsValidFormatOfInputCallFunction(symMethod.MethodInfo))
+                {
+                    Debugger.Warn("The input responsing method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    return;
+                }
+
+                InputResponsingMethodTypeCodeInfo methodTypeCodeInfo = new InputResponsingMethodTypeCodeInfo();
+                methodTypeCodeInfo.InputCode = _attr.InputCode;
+                methodTypeCodeInfo.OperationType = _attr.OperationType;
+                methodTypeCodeInfo.InputDataType = _attr.InputDataType;
+                methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                methodTypeCodeInfo.Method = symMethod.MethodInfo;
+
+                // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
+                if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+                {
+                    bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                            Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo), symMethod.MethodInfo);
+
+                    if (Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo))
+                    {
+                        // null parameter type, skip other check process
+                    }
+                    else if (methodTypeCodeInfo.InputCode > 0)
+                    {
+                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                            false == Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo),
+                                            symMethod.MethodInfo, typeof(int), typeof(int));
+                    }
+                    else
+                    {
+                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                            false == Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo),
+                                            symMethod.MethodInfo, methodTypeCodeInfo.InputDataType);
+                    }
+
+                    // 校验失败
+                    if (false == verificated)
+                    {
+                        Debugger.Error("Cannot verificated from method info '{0}' to input responsing call, loaded this method failed.", symMethod.FullName);
+                        return;
+                    }
+                }
+
+                codeInfo.AddInputResponsingMethodType(methodTypeCodeInfo);
+            }
+            else if (attribute is EventSubscribeBindingOfTargetAttribute)
             {
                 EventSubscribeBindingOfTargetAttribute _attr = (EventSubscribeBindingOfTargetAttribute) attribute;
 

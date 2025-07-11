@@ -36,6 +36,24 @@ namespace GameEngine
     public abstract partial class CRef : CBase
     {
         /// <summary>
+        /// 对象内部输入响应的编码管理容器
+        /// </summary>
+        private IList<int> _inputCodes;
+        /// <summary>
+        /// 对象内部输入响应的类型管理容器
+        /// </summary>
+        private IList<SystemType> _inputTypes;
+
+        /// <summary>
+        /// 基础对象内部输入编码的监听回调容器列表
+        /// </summary>
+        // private IDictionary<int, IDictionary<string, InputCallSyntaxInfo>> _inputCallInfosForCode;
+        /// <summary>
+        /// 基础对象内部输入编码的监听回调容器列表
+        /// </summary>
+        // private IDictionary<SystemType, IDictionary<string, InputCallSyntaxInfo>> _inputCallInfosForType;
+
+        /// <summary>
         /// 对象内部订阅事件的标识管理容器
         /// </summary>
         private IList<int> _eventIds;
@@ -75,6 +93,14 @@ namespace GameEngine
         {
             base.Initialize();
 
+            // 输入编码容器初始化
+            _inputCodes = new List<int>();
+            // 输入类型容器初始化
+            _inputTypes = new List<SystemType>();
+            // 输入监听回调映射容器初始化
+            // _inputCallInfosForCode = new Dictionary<int, IDictionary<string, InputCallSyntaxInfo>>();
+            // _inputCallInfosForType = new Dictionary<SystemType, IDictionary<string, InputCallSyntaxInfo>>();
+
             // 事件标识容器初始化
             _eventIds = new List<int>();
             // 事件类型容器初始化
@@ -104,6 +130,11 @@ namespace GameEngine
 
             base.Cleanup();
 
+            // 移除所有输入响应
+            Debugger.Assert(_inputCodes.Count == 0 && _inputTypes.Count == 0);
+            _inputCodes = null;
+            _inputTypes = null;
+
             // 移除所有订阅事件
             Debugger.Assert(_eventIds.Count == 0 && _eventTypes.Count == 0);
             _eventIds = null;
@@ -113,6 +144,177 @@ namespace GameEngine
             Debugger.Assert(_messageTypes.Count == 0);
             _messageTypes = null;
         }
+
+        #region 引用对象输入响应相关操作函数合集
+
+        /// <summary>
+        /// 发送输入编码到自己的输入管理器中进行派发
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        public void SimulateKeycodeForSelf(int inputCode, int operationType)
+        {
+            OnInputDispatchForCode(inputCode, operationType);
+        }
+
+        /// <summary>
+        /// 发送输入数据到自己的输入管理器中进行派发
+        /// </summary>
+        /// <param name="inputData">输入数据</param>
+        public void SimulateKeycodeForSelf<T>(T inputData) where T : struct
+        {
+            OnEventDispatchForType(inputData);
+        }
+
+        /// <summary>
+        /// 用户自定义的输入处理函数，您可以通过重写该函数处理自定义输入行为
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        protected override void OnInput(int inputCode, int operationType) { }
+
+        /// <summary>
+        /// 用户自定义的输入处理函数，您可以通过重写该函数处理自定义输入行为
+        /// </summary>
+        /// <param name="inputData">输入数据</param>
+        protected override void OnInput(object inputData) { }
+
+        /// <summary>
+        /// 针对指定输入编码新增输入响应的后处理程序
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        /// <returns>返回后处理的操作结果</returns>
+        protected override bool OnInputResponseAddedActionPostProcess(int inputCode, int operationType)
+        {
+            return AddInputResponse(inputCode, operationType);
+        }
+
+        /// <summary>
+        /// 针对指定输入类型新增输入响应的后处理程序
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        /// <returns>返回后处理的操作结果</returns>
+        protected override bool OnInputResponseAddedActionPostProcess(SystemType inputType)
+        {
+            return AddInputResponse(inputType);
+        }
+
+        /// <summary>
+        /// 针对指定输入编码移除输入响应的后处理程序
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        protected override void OnInputResponseRemovedActionPostProcess(int inputCode, int operationType)
+        { }
+
+        /// <summary>
+        /// 针对指定输入类型移除输入响应的后处理程序
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        protected override void OnInputResponseRemovedActionPostProcess(SystemType inputType)
+        { }
+
+        /// <summary>
+        /// 引用对象的输入响应函数接口，对一个指定的输入编码进行响应监听
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        /// <returns>若输入响应成功则返回true，否则返回false</returns>
+        public override sealed bool AddInputResponse(int inputCode, int operationType)
+        {
+            if (_inputCodes.Contains(inputCode))
+            {
+                Debugger.Warn("The 'CRef' instance input '{0}' was already added, repeat do it failed.", inputCode);
+                return true;
+            }
+
+            if (false == InputHandler.Instance.AddInputResponse(inputCode, this))
+            {
+                Debugger.Warn("The 'CRef' instance add input response '{0}' failed.", inputCode);
+                return false;
+            }
+
+            _inputCodes.Add(inputCode);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 引用对象的输入响应函数接口，对一个指定的输入类型进行响应监听
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        /// <returns>若输入响应成功则返回true，否则返回false</returns>
+        public override sealed bool AddInputResponse(SystemType inputType)
+        {
+            if (_inputTypes.Contains(inputType))
+            {
+                // Debugger.Warn("The 'CRef' instance's input '{0}' was already added, repeat do it failed.", inputType.FullName);
+                return true;
+            }
+
+            if (false == InputHandler.Instance.AddInputResponse(inputType, this))
+            {
+                Debugger.Warn("The 'CRef' instance add input response '{0}' failed.", inputType.FullName);
+                return false;
+            }
+
+            _inputTypes.Add(inputType);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 取消当前引用对象对指定输入的响应
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        public override sealed void RemoveInputResponse(int inputCode, int operationType)
+        {
+            if (false == _inputCodes.Contains(inputCode))
+            {
+                // Debugger.Warn("Could not found any input '{0}' for target 'CRef' instance with on added, do removed it failed.", inputCode);
+                return;
+            }
+
+            InputHandler.Instance.RemoveInputResponse(inputCode, this);
+            _inputCodes.Remove(inputCode);
+
+            base.RemoveInputResponse(inputCode, operationType);
+        }
+
+        /// <summary>
+        /// 取消当前引用对象对指定输入的响应
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        public override sealed void RemoveInputResponse(SystemType inputType)
+        {
+            if (false == _inputTypes.Contains(inputType))
+            {
+                // Debugger.Warn("Could not found any input '{0}' for target 'CRef' instance with on added, do removed it failed.", inputType.FullName);
+                return;
+            }
+
+            InputHandler.Instance.RemoveInputResponse(inputType, this);
+            _inputTypes.Remove(inputType);
+
+            base.RemoveInputResponse(inputType);
+        }
+
+        /// <summary>
+        /// 取消当前引用对象的所有输入响应
+        /// </summary>
+        public override sealed void RemoveAllInputResponses()
+        {
+            base.RemoveAllInputResponses();
+
+            InputHandler.Instance.RemoveInputResponseForTarget(this);
+
+            _inputCodes.Clear();
+            _inputTypes.Clear();
+        }
+
+        #endregion
 
         #region 引用对象事件订阅相关操作函数合集
 
@@ -129,10 +331,10 @@ namespace GameEngine
         /// <summary>
         /// 发送事件消息到自己的事件管理器中进行派发
         /// </summary>
-        /// <param name="arg">事件数据</param>
-        public void SendToSelf<T>(T arg) where T : struct
+        /// <param name="eventData">事件数据</param>
+        public void SendToSelf<T>(T eventData) where T : struct
         {
-            OnEventDispatchForType(arg);
+            OnEventDispatchForType(eventData);
         }
 
         /// <summary>

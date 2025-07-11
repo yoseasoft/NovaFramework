@@ -1,7 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -57,6 +59,23 @@ namespace GameEngine.Loader
             ExtendCallCodeInfo extendCodeInfo = codeInfo as ExtendCallCodeInfo;
             Debugger.Assert(null != extendCodeInfo, "Invalid extend call code info.");
 
+            for (int n = 0; n < extendCodeInfo.GetInputCallMethodTypeCount(); ++n)
+            {
+                InputResponsingMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetInputCallMethodType(n);
+
+                Debugger.Info(LogGroupTag.CodeLoader, "Load extend input call {0} with target class type {1}.", callMethodInfo.Method.Name, callMethodInfo.TargetType.FullName);
+
+                GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IProto));
+                if (_lookupCodeInfo is ProtoBaseCodeInfo baseCodeInfo)
+                {
+                    baseCodeInfo.AddInputResponsingMethodType(callMethodInfo);
+                }
+                else
+                {
+                    Debugger.Warn("Could not found any general code info with target type '{0}', binded input call failed.", callMethodInfo.TargetType.FullName);
+                }
+            }
+
             for (int n = 0; n < extendCodeInfo.GetEventCallMethodTypeCount(); ++n)
             {
                 EventSubscribingMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetEventCallMethodType(n);
@@ -70,7 +89,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("Could not found any general code info with target type '{0}', subscribed event call failed.", callMethodInfo.TargetType.FullName);
+                    Debugger.Warn("Could not found any general code info with target type '{0}', binded event call failed.", callMethodInfo.TargetType.FullName);
                 }
             }
 

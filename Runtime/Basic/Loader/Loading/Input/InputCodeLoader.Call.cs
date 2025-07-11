@@ -55,7 +55,7 @@ namespace GameEngine.Loader
 
             if (m_methodTypes.Contains(invoke))
             {
-                Debugger.Warn("The input call class type '{0}' was already registed target keycode '{1}', repeat added it failed.", m_classType.FullName, invoke.Keycode);
+                Debugger.Warn("The input call class type '{0}' was already registed target keycode '{1}', repeat added it failed.", m_classType.FullName, invoke.InputCode);
                 return;
             }
 
@@ -130,11 +130,11 @@ namespace GameEngine.Loader
         /// <summary>
         /// 输入响应类的监听键码标识
         /// </summary>
-        private int m_keycode;
+        private int m_inputCode;
         /// <summary>
         /// 输入响应类的监听操作数据类型
         /// </summary>
-        private int m_operationType;
+        private InputOperationType m_operationType;
         /// <summary>
         /// 输入响应类的监听键码集合数据类型
         /// </summary>
@@ -146,8 +146,8 @@ namespace GameEngine.Loader
 
         public string Fullname { get { return m_fullname; } internal set { m_fullname = value; } }
         public SystemType TargetType { get { return m_targetType; } internal set { m_targetType = value; } }
-        public int Keycode { get { return m_keycode; } internal set { m_keycode = value; } }
-        public int OperationType { get { return m_operationType; } internal set { m_operationType = value; } }
+        public int InputCode { get { return m_inputCode; } internal set { m_inputCode = value; } }
+        public InputOperationType OperationType { get { return m_operationType; } internal set { m_operationType = value; } }
         public SystemType InputDataType { get { return m_inputDataType; } internal set { m_inputDataType = value; } }
         public SystemMethodInfo Method { get { return m_method; } internal set { m_method = value; } }
 
@@ -157,7 +157,7 @@ namespace GameEngine.Loader
             sb.Append("{ ");
             sb.AppendFormat("Fullname = {0}, ", m_fullname);
             sb.AppendFormat("TargetType = {0}, ", NovaEngine.Utility.Text.ToString(m_targetType));
-            sb.AppendFormat("Keycode = {0}, ", m_keycode);
+            sb.AppendFormat("InputCode = {0}, ", m_inputCode);
             sb.AppendFormat("OperationType = {0}, ", m_operationType);
             sb.AppendFormat("InputDataType = {0}, ", NovaEngine.Utility.Text.ToString(m_inputDataType));
             sb.AppendFormat("Method = {0}, ", NovaEngine.Utility.Text.ToString(m_method));
@@ -205,11 +205,11 @@ namespace GameEngine.Loader
 
                         InputCallMethodTypeCodeInfo callMethodInfo = new InputCallMethodTypeCodeInfo();
                         callMethodInfo.TargetType = _attr.ClassType;
-                        callMethodInfo.Keycode = _attr.Keycode;
-                        callMethodInfo.OperationType = (int) _attr.OperationType;
+                        callMethodInfo.InputCode = _attr.InputCode;
+                        callMethodInfo.OperationType = _attr.OperationType;
                         callMethodInfo.InputDataType = _attr.InputDataType;
 
-                        if (callMethodInfo.Keycode <= 0 && callMethodInfo.OperationType <= 0)
+                        if (callMethodInfo.InputCode <= 0 && callMethodInfo.OperationType <= 0)
                         {
                             // 未进行合法标识的函数忽略它
                             continue;
@@ -231,7 +231,7 @@ namespace GameEngine.Loader
                                     // 无参类型的输入响应函数
                                     verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
                                 }
-                                else if (callMethodInfo.Keycode > 0)
+                                else if (callMethodInfo.InputCode > 0)
                                 {
                                     // 输入键码和操作类型派发
                                     verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, typeof(int), typeof(int));
@@ -249,7 +249,7 @@ namespace GameEngine.Loader
                                     // 无参类型的输入响应函数
                                     verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType);
                                 }
-                                else if (callMethodInfo.Keycode > 0)
+                                else if (callMethodInfo.InputCode > 0)
                                 {
                                     // 输入键码和操作类型派发
                                     verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType, typeof(int), typeof(int));

@@ -103,6 +103,12 @@ namespace Game.Sample.DispatchCall
             Debugger.Info("玩家对象‘{%s}’开始移动！", self.GetComponent<IdentityComponent>().objectName);
         }
 
+        [GameEngine.InputResponseBindingOfTarget((int) UnityEngine.KeyCode.O, GameEngine.InputOperationType.Released)]
+        private static void OnPlayerInputObserve(this Player self, int keycode, int operationType)
+        {
+            Debugger.Warn("OnPlayerInputObserve: {%s} - {%d}.", self.GetComponent<IdentityComponent>().objectName, keycode);
+        }
+
         public static string ToPlayerString(this Player self)
         {
             SystemStringBuilder sb = new SystemStringBuilder();

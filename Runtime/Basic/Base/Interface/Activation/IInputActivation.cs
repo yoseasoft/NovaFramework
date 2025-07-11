@@ -26,9 +26,9 @@
 namespace GameEngine
 {
     /// <summary>
-    /// 编码监听行为激活标识接口类，用于定义指定类是否激活监听编码的函数接口
+    /// 输入监听行为激活标识接口类，用于定义指定类是否激活监听输入的函数接口
     /// </summary>
-    public interface IKeycodeActivation : IActivation
+    public interface IInputActivation : IActivation
     {
     }
 }

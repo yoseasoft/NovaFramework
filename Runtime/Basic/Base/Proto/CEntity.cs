@@ -56,6 +56,11 @@ namespace GameEngine
         protected IList<CComponent> _componentUpdateList = null;
 
         /// <summary>
+        /// 实体对象内部组件实例的输入分发列表
+        /// </summary>
+        protected IList<CComponent> _componentInputDispatchList = null;
+
+        /// <summary>
         /// 实体对象内部组件实例的事件分发列表
         /// </summary>
         protected IList<CComponent> _componentEventDispatchList = null;
@@ -91,6 +96,8 @@ namespace GameEngine
             _components = new Dictionary<string, CComponent>();
             // 组件刷新列表初始化
             _componentUpdateList = new List<CComponent>();
+            // 组件输入分发列表初始化
+            _componentInputDispatchList = new List<CComponent>();
             // 组件事件分发列表初始化
             _componentEventDispatchList = new List<CComponent>();
             // 组件消息分发列表初始化
@@ -118,6 +125,7 @@ namespace GameEngine
             RemoveAllComponents();
             _components = null;
             _componentUpdateList = null;
+            _componentInputDispatchList = null;
             _componentEventDispatchList = null;
             _componentMessageDispatchList = null;
 
@@ -254,6 +262,171 @@ namespace GameEngine
             ProtoController.Instance.RegProtoLifecycleNotification(AspectBehaviourType.Destroy, this);
         }
 
+        #region 实体对象输入响应相关操作函数合集
+
+        /// <summary>
+        /// 实体对象的响应输入的监听回调函数<br/>
+        /// 该函数针对输入转发接口的标准实现，禁止子类重写该函数<br/>
+        /// 若子类需要根据需要自行解析输入数据，可以通过重写<see cref="GameEngine.CEntity.OnInput(int, int)"/>实现输入的自定义处理逻辑
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        public override sealed void OnInputDispatchForCode(int inputCode, int operationType)
+        {
+            base.OnInputDispatchForCode(inputCode, operationType);
+
+            for (int n = 0; null != _componentInputDispatchList && n < _componentInputDispatchList.Count; ++n)
+            {
+                CComponent component = _componentInputDispatchList[n];
+                if (component.IsOnAwakingStatus())
+                {
+                    component.OnInputDispatchForCode(inputCode, operationType);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 实体对象的响应输入的监听回调函数<br/>
+        /// 该函数针对输入转发接口的标准实现，禁止子类重写该函数<br/>
+        /// 若子类需要根据需要自行解析输入数据，可以通过重写<see cref="GameEngine.CEntity.OnInput(object)"/>实现输入的自定义处理逻辑
+        /// </summary>
+        /// <param name="inputData">输入数据</param>
+        public override sealed void OnInputDispatchForType(object inputData)
+        {
+            base.OnInputDispatchForType(inputData);
+
+            for (int n = 0; null != _componentInputDispatchList && n < _componentInputDispatchList.Count; ++n)
+            {
+                CComponent component = _componentInputDispatchList[n];
+                if (component.IsOnAwakingStatus())
+                {
+                    component.OnInputDispatchForType(inputData);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 检测当前实体对象是否响应了目标输入编码
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        /// <returns>若响应了给定输入编码则返回true，否则返回false</returns>
+        protected internal override sealed bool IsInputResponsedOfTargetCode(int inputCode, int operationType)
+        {
+            if (base.IsInputResponsedOfTargetCode(inputCode, operationType))
+            {
+                return true;
+            }
+
+            for (int n = 0; n < _componentInputDispatchList.Count; ++n)
+            {
+                CComponent component = _componentInputDispatchList[n];
+                if (component.IsInputResponsedOfTargetCode(inputCode, operationType))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 检测当前实体对象是否响应了目标输入类型
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        /// <returns>若响应了给定输入类型则返回true，否则返回false</returns>
+        protected internal override sealed bool IsInputResponsedOfTargetType(SystemType inputType)
+        {
+            if (base.IsInputResponsedOfTargetType(inputType))
+            {
+                return true;
+            }
+
+            for (int n = 0; n < _componentInputDispatchList.Count; ++n)
+            {
+                CComponent component = _componentInputDispatchList[n];
+                if (component.IsInputResponsedOfTargetType(inputType))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 当前实体对象的组件实例进行的输入响应行为通知
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        /// <returns>若输入响应成功则返回true，否则返回false</returns>
+        protected internal bool AddInputResponseFromComponent(int inputCode, int operationType)
+        {
+            return AddInputResponse(inputCode, operationType);
+        }
+
+        /// <summary>
+        /// 当前实体对象的组件实例进行的输入响应行为通知
+        /// </summary>
+        /// <typeparam name="T">输入类型</typeparam>
+        /// <returns>若输入响应成功则返回true，否则返回false</returns>
+        protected internal bool AddInputResponseFromComponent<T>() where T : struct
+        {
+            return AddInputResponseFromComponent(typeof(T));
+        }
+
+        /// <summary>
+        /// 当前实体对象的组件实例进行的输入响应行为通知
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        /// <returns>若输入响应成功则返回true，否则返回false</returns>
+        protected internal bool AddInputResponseFromComponent(SystemType inputType)
+        {
+            return AddInputResponse(inputType);
+        }
+
+        /// <summary>
+        /// 当前实体对象的组件实例进行的取消输入响应行为通知
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        protected internal void RemoveInputResponseFromComponent(int inputCode, int operationType)
+        {
+            if (IsInputResponsedOfTargetCode(inputCode, operationType))
+            {
+                return;
+            }
+
+            // 实体对象没有任何响应回调，移除该输入的响应
+            RemoveInputResponse(inputCode, operationType);
+        }
+
+        /// <summary>
+        /// 当前实体对象的组件实例进行的取消输入响应行为通知
+        /// </summary>
+        /// <typeparam name="T">输入类型</typeparam>
+        protected internal void RemoveInputResponseFromComponent<T>() where T : struct
+        {
+            RemoveInputResponseFromComponent(typeof(T));
+        }
+
+        /// <summary>
+        /// 当前实体对象的组件实例进行的取消输入响应行为通知
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        protected internal void RemoveInputResponseFromComponent(SystemType inputType)
+        {
+            if (IsInputResponsedOfTargetType(inputType))
+            {
+                return;
+            }
+
+            // 实体对象没有任何响应回调，移除该输入的响应
+            RemoveInputResponse(inputType);
+        }
+
+        #endregion
+
         #region 实体对象事件订阅相关操作函数合集
 
         /// <summary>
@@ -311,7 +484,7 @@ namespace GameEngine
 
             for (int n = 0; n < _componentEventDispatchList.Count; ++n)
             {
-                CComponent component = _componentEventDispatchList[n] as CComponent;
+                CComponent component = _componentEventDispatchList[n];
                 if (component.IsSubscribedOfTargetId(eventID))
                 {
                     return true;
@@ -335,7 +508,7 @@ namespace GameEngine
 
             for (int n = 0; n < _componentEventDispatchList.Count; ++n)
             {
-                CComponent component = _componentEventDispatchList[n] as CComponent;
+                CComponent component = _componentEventDispatchList[n];
                 if (component.IsSubscribedOfTargetType(eventType))
                 {
                     return true;
@@ -453,7 +626,7 @@ namespace GameEngine
 
             for (int n = 0; n < _componentMessageDispatchList.Count; ++n)
             {
-                CComponent component = _componentMessageDispatchList[n] as CComponent;
+                CComponent component = _componentMessageDispatchList[n];
                 if (component.IsMessageListenedOfTargetType(opcode))
                 {
                     return true;
@@ -687,6 +860,12 @@ namespace GameEngine
 
             _components.Add(componentName, component);
 
+            // 如果组件激活了输入分发接口，则添加到输入分发队列中
+            if (typeof(IInputActivation).IsAssignableFrom(component.GetType()))
+            {
+                _componentInputDispatchList.Add(component);
+            }
+
             // 如果组件激活了事件分发接口，则添加到事件分发队列中
             if (typeof(IEventActivation).IsAssignableFrom(component.GetType()))
             {
@@ -858,6 +1037,7 @@ namespace GameEngine
             // 关闭组件实例
             Call(component.Shutdown, LifecycleKeypointType.Shutdown);
 
+            _componentInputDispatchList.Remove(component);
             _componentEventDispatchList.Remove(component);
             _componentMessageDispatchList.Remove(component);
             _components.Remove(name);

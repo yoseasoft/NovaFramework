@@ -2,6 +2,8 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +33,7 @@ namespace GameEngine
     /// <summary>
     /// 基础对象抽象类，对需要进行对象定义的场景提供一个通用的基类
     /// </summary>
-    public abstract partial class CBase : CBean, NovaEngine.IReference, NovaEngine.ILaunchable, IEventDispatch, IMessageDispatch
+    public abstract partial class CBase : CBean, NovaEngine.IReference, NovaEngine.ILaunchable, IInputDispatch, IEventDispatch, IMessageDispatch
     {
         /// <summary>
         /// 对象生命周期关键点类型的枚举定义

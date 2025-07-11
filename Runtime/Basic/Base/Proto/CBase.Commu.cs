@@ -65,6 +65,10 @@ namespace GameEngine
         /// </summary>
         private void OnCommuPackageInitialize()
         {
+            // 输入监听回调映射容器初始化
+            _inputCallInfosForCode = new Dictionary<int, IDictionary<string, InputCallSyntaxInfo>>();
+            _inputCallInfosForType = new Dictionary<SystemType, IDictionary<string, InputCallSyntaxInfo>>();
+
             // 事件监听回调映射容器初始化
             _eventCallInfosForId = new Dictionary<int, IDictionary<string, EventCallSyntaxInfo>>();
             _eventCallInfosForType = new Dictionary<SystemType, IDictionary<string, EventCallSyntaxInfo>>();
@@ -78,6 +82,11 @@ namespace GameEngine
         /// </summary>
         private void OnCommuPackageCleanup()
         {
+            // 移除所有输入响应
+            RemoveAllInputResponses();
+            _inputCallInfosForCode = null;
+            _inputCallInfosForType = null;
+
             // 移除所有订阅事件
             UnsubscribeAllEvents();
             _eventCallInfosForId = null;
@@ -87,6 +96,473 @@ namespace GameEngine
             RemoveAllMessageListeners();
             _messageCallInfosForType = null;
         }
+
+        #region 基础对象输入响应相关操作函数合集
+
+        /// <summary>
+        /// 基础对象的输入编码的监听回调函数<br/>
+        /// 该函数针对输入响应接口的标准实现，禁止子类重写该函数<br/>
+        /// 若子类需要根据需要自行解析输入编码，可以通过重写<see cref="GameEngine.CBase.OnInput(int, int)"/>实现输入编码的自定义处理逻辑
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        public virtual void OnInputDispatchForCode(int inputCode, int operationType)
+        {
+            if (_inputCallInfosForCode.TryGetValue(inputCode, out IDictionary<string, InputCallSyntaxInfo> infos))
+            {
+                IEnumerator<InputCallSyntaxInfo> e = infos.Values.GetEnumerator();
+                while (e.MoveNext())
+                {
+                    e.Current.Invoke(inputCode, operationType);
+                }
+            }
+
+            OnInput(inputCode, operationType);
+        }
+
+        /// <summary>
+        /// 基础对象的输入编码的监听回调函数<br/>
+        /// 该函数针对输入响应接口的标准实现，禁止子类重写该函数<br/>
+        /// 若子类需要根据需要自行解析输入编码，可以通过重写<see cref="GameEngine.CBase.OnInput(object)"/>实现输入编码的自定义处理逻辑
+        /// </summary>
+        /// <param name="inputData">事件数据</param>
+        public virtual void OnInputDispatchForType(object inputData)
+        {
+            if (_inputCallInfosForType.TryGetValue(inputData.GetType(), out IDictionary<string, InputCallSyntaxInfo> infos))
+            {
+                IEnumerator<InputCallSyntaxInfo> e = infos.Values.GetEnumerator();
+                while (e.MoveNext())
+                {
+                    e.Current.Invoke(inputData);
+                }
+            }
+
+            OnInput(inputData);
+        }
+
+        /// <summary>
+        /// 用户自定义的输入处理函数，您可以通过重写该函数处理自定义输入行为
+        /// </summary>
+        /// <param name="inputCode">事件标识</param>
+        /// <param name="operationType">事件数据参数</param>
+        protected abstract void OnInput(int inputCode, int operationType);
+
+        /// <summary>
+        /// 用户自定义的输入处理函数，您可以通过重写该函数处理自定义输入行为
+        /// </summary>
+        /// <param name="inputData">事件数据</param>
+        protected abstract void OnInput(object inputData);
+
+        /// <summary>
+        /// 针对指定编码标识新增输入监听的后处理程序
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">事件数据参数</param>
+        /// <returns>返回后处理的操作结果</returns>
+        protected abstract bool OnInputResponseAddedActionPostProcess(int inputCode, int operationType);
+        /// <summary>
+        /// 针对指定编码类型新增输入监听的后处理程序
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        /// <returns>返回后处理的操作结果</returns>
+        protected abstract bool OnInputResponseAddedActionPostProcess(SystemType inputType);
+        /// <summary>
+        /// 针对指定编码标识移除输入监听的后处理程序
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">事件数据参数</param>
+        protected abstract void OnInputResponseRemovedActionPostProcess(int inputCode, int operationType);
+        /// <summary>
+        /// 针对指定编码类型移除输入监听的后处理程序
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        protected abstract void OnInputResponseRemovedActionPostProcess(SystemType inputType);
+
+        /// <summary>
+        /// 检测当前基础对象是否响应了目标输入标识
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        /// <returns>若响应了给定编码标识则返回true，否则返回false</returns>
+        protected internal virtual bool IsInputResponsedOfTargetCode(int inputCode, int operationType)
+        {
+            if (_inputCallInfosForCode.ContainsKey(inputCode) && _inputCallInfosForCode[inputCode].Count > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 检测当前基础对象是否响应了目标输入类型
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        /// <returns>若响应了给定输入类型则返回true，否则返回false</returns>
+        protected internal virtual bool IsInputResponsedOfTargetType(SystemType inputType)
+        {
+            if (_inputCallInfosForType.ContainsKey(inputType) && _inputCallInfosForType[inputType].Count > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 基础对象的输入响应函数接口，对一个指定的编码进行响应监听
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        /// <returns>若输入响应成功则返回true，否则返回false</returns>
+        public virtual bool AddInputResponse(int inputCode, int operationType)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// 基础对象的输入响应函数接口，将一个指定的输入绑定到给定的监听回调函数上
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        /// <param name="methodInfo">监听回调函数</param>
+        /// <returns>若输入响应成功则返回true，否则返回false</returns>
+        public bool AddInputResponse(int inputCode, int operationType, SystemMethodInfo methodInfo)
+        {
+            return AddInputResponse(inputCode, operationType, methodInfo, false);
+        }
+
+        /// <summary>
+        /// 基础对象的输入响应函数接口，将一个指定的输入绑定到给定的监听回调函数上
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        /// <param name="methodInfo">监听回调函数</param>
+        /// <param name="automatically">自动装载状态标识</param>
+        /// <returns>若输入响应成功则返回true，否则返回false</returns>
+        protected internal bool AddInputResponse(int inputCode, int operationType, SystemMethodInfo methodInfo, bool automatically)
+        {
+            // 函数格式校验
+            if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+            {
+                bool verificated = false;
+                if (NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
+                {
+                    verificated = Loader.Inspecting.CodeInspector.IsValidFormatOfProtoExtendInputCallFunction(methodInfo);
+                }
+                else
+                {
+                    verificated = Loader.Inspecting.CodeInspector.IsValidFormatOfInputCallFunction(methodInfo);
+                }
+
+                // 校验失败
+                if (false == verificated)
+                {
+                    Debugger.Error("The input listener '{0}' was invalid format, added it failed.", NovaEngine.Utility.Text.ToString(methodInfo));
+                    return false;
+                }
+            }
+
+            InputCallSyntaxInfo info = new InputCallSyntaxInfo(this, inputCode, operationType, methodInfo, automatically);
+
+            if (false == _inputCallInfosForCode.TryGetValue(inputCode, out IDictionary<string, InputCallSyntaxInfo> infos))
+            {
+                // 创建监听列表
+                infos = new Dictionary<string, InputCallSyntaxInfo>();
+                infos.Add(info.Fullname, info);
+
+                _inputCallInfosForCode.Add(inputCode, infos);
+
+                // 新增输入响应的后处理程序
+                return OnInputResponseAddedActionPostProcess(inputCode, operationType);
+            }
+
+            if (infos.ContainsKey(info.Fullname))
+            {
+                Debugger.Warn("The '{0}' instance's input '{1}' was already add same listener by name '{2}', repeat do it failed.",
+                        NovaEngine.Utility.Text.ToString(GetType()), inputCode, info.Fullname);
+                return false;
+            }
+
+            infos.Add(info.Fullname, info);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 基础对象的输入响应函数接口，对一个指定的类型进行响应监听
+        /// </summary>
+        /// <typeparam name="T">输入类型</typeparam>
+        /// <returns>若输入响应成功则返回true，否则返回false</returns>
+        public bool AddInputResponse<T>() where T : struct
+        {
+            return AddInputResponse(typeof(T));
+        }
+
+        /// <summary>
+        /// 基础对象的输入响应函数接口，对一个指定的类型进行响应监听
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        /// <returns>若输入响应成功则返回true，否则返回false</returns>
+        public virtual bool AddInputResponse(SystemType inputType)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// 基础对象的输入响应函数接口，将一个指定的输入绑定到给定的监听回调函数上
+        /// </summary>
+        /// <typeparam name="T">输入类型</typeparam>
+        /// <param name="func">监听回调函数</param>
+        /// <returns>若输入响应成功则返回true，否则返回false</returns>
+        public bool AddInputResponse<T>(System.Action<T> func) where T : struct
+        {
+            return AddInputResponse(typeof(T), func.Method);
+        }
+
+        /// <summary>
+        /// 基础对象的输入响应函数接口，将一个指定的输入绑定到给定的监听回调函数上
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        /// <param name="methodInfo">监听回调函数</param>
+        /// <returns>若输入响应成功则返回true，否则返回false</returns>
+        public bool AddInputResponse(SystemType inputType, SystemMethodInfo methodInfo)
+        {
+            return AddInputResponse(inputType, methodInfo, false);
+        }
+
+        /// <summary>
+        /// 基础对象的输入响应函数接口，将一个指定的输入绑定到给定的监听回调函数上
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        /// <param name="methodInfo">监听回调函数</param>
+        /// <param name="automatically">自动装载状态标识</param>
+        /// <returns>若输入响应成功则返回true，否则返回false</returns>
+        protected internal bool AddInputResponse(SystemType inputType, SystemMethodInfo methodInfo, bool automatically)
+        {
+            // 函数格式校验
+            if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+            {
+                bool verificated = false;
+                if (NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
+                {
+                    verificated = Loader.Inspecting.CodeInspector.IsValidFormatOfProtoExtendInputCallFunction(methodInfo);
+                }
+                else
+                {
+                    verificated = Loader.Inspecting.CodeInspector.IsValidFormatOfInputCallFunction(methodInfo);
+                }
+
+                // 校验失败
+                if (false == verificated)
+                {
+                    Debugger.Error("The input listener '{0}' was invalid format, added it failed.", NovaEngine.Utility.Text.ToString(methodInfo));
+                    return false;
+                }
+            }
+
+            InputCallSyntaxInfo info = new InputCallSyntaxInfo(this, inputType, methodInfo, automatically);
+
+            if (false == _inputCallInfosForType.TryGetValue(inputType, out IDictionary<string, InputCallSyntaxInfo> infos))
+            {
+                // 创建监听列表
+                infos = new Dictionary<string, InputCallSyntaxInfo>();
+                infos.Add(info.Fullname, info);
+
+                _inputCallInfosForType.Add(inputType, infos);
+
+                // 新增输入响应的后处理程序
+                return OnInputResponseAddedActionPostProcess(inputType);
+            }
+
+            if (infos.ContainsKey(info.Fullname))
+            {
+                Debugger.Warn("The '{0}' instance's input '{1}' was already add same listener by name '{2}', repeat do it failed.",
+                        NovaEngine.Utility.Text.ToString(GetType()), inputType.FullName, info.Fullname);
+                return false;
+            }
+
+            infos.Add(info.Fullname, info);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 取消当前基础对象对指定编码的响应
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        public void RemoveInputResponse(int inputCode)
+        {
+            RemoveInputResponse(inputCode, 0);
+        }
+
+        /// <summary>
+        /// 取消当前基础对象对指定编码的响应
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        public virtual void RemoveInputResponse(int inputCode, int operationType)
+        {
+            // 若针对特定编码绑定了监听回调，则移除相应的回调句柄
+            if (_inputCallInfosForCode.ContainsKey(inputCode))
+            {
+                _inputCallInfosForCode.Remove(inputCode);
+            }
+
+            // 移除输入响应的后处理程序
+            OnInputResponseRemovedActionPostProcess(inputCode, operationType);
+        }
+
+        /// <summary>
+        /// 取消当前基础对象对指定编码的监听回调函数
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        /// <param name="methodInfo">监听回调函数</param>
+        public void RemoveInputResponse(int inputCode, int operationType, SystemMethodInfo methodInfo)
+        {
+            string funcName = InputCallSyntaxInfo.GenCallName(methodInfo);
+
+            RemoveInputResponse(inputCode, operationType, funcName);
+        }
+
+        /// <summary>
+        /// 取消当前基础对象对指定编码的监听回调函数
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="funcName">函数名称</param>
+        protected internal void RemoveInputResponse(int inputCode, string funcName)
+        {
+            RemoveInputResponse(inputCode, 0, funcName);
+        }
+
+        /// <summary>
+        /// 取消当前基础对象对指定编码的监听回调函数
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        /// <param name="funcName">函数名称</param>
+        protected internal void RemoveInputResponse(int inputCode, int operationType, string funcName)
+        {
+            if (_inputCallInfosForCode.TryGetValue(inputCode, out IDictionary<string, InputCallSyntaxInfo> infos))
+            {
+                if (infos.ContainsKey(funcName))
+                {
+                    infos.Remove(funcName);
+                }
+            }
+
+            // 当前监听列表为空时，移除该编码的监听
+            if (false == IsInputResponsedOfTargetCode(inputCode, operationType))
+            {
+                RemoveInputResponse(inputCode, operationType);
+            }
+        }
+
+        /// <summary>
+        /// 取消当前基础对象对指定输入类型的响应
+        /// </summary>
+        /// <typeparam name="T">输入类型</typeparam>
+        public void RemoveInputResponse<T>()
+        {
+            RemoveInputResponse(typeof(T));
+        }
+
+        /// <summary>
+        /// 取消当前基础对象对指定输入类型的响应
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        public virtual void RemoveInputResponse(SystemType inputType)
+        {
+            // 若针对特定输入绑定了监听回调，则移除相应的回调句柄
+            if (_eventCallInfosForType.ContainsKey(inputType))
+            {
+                _eventCallInfosForType.Remove(inputType);
+            }
+
+            // 移除输入响应的后处理程序
+            OnInputResponseRemovedActionPostProcess(inputType);
+        }
+
+        /// <summary>
+        /// 取消当前基础对象对指定输入类型的监听回调函数
+        /// </summary>
+        /// <typeparam name="T">输入类型</typeparam>
+        /// <param name="methodInfo">监听回调函数</param>
+        public void RemoveInputResponse<T>(SystemMethodInfo methodInfo)
+        {
+            RemoveInputResponse(typeof(T), methodInfo);
+        }
+
+        /// <summary>
+        /// 取消当前基础对象对指定输入类型的响应
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        /// <param name="methodInfo">监听回调函数</param>
+        public void RemoveInputResponse(SystemType inputType, SystemMethodInfo methodInfo)
+        {
+            string funcName = InputCallSyntaxInfo.GenCallName(methodInfo);
+
+            RemoveInputResponse(inputType, funcName);
+        }
+
+        /// <summary>
+        /// 取消当前基础对象对指定输入类型的监听回调函数
+        /// </summary>
+        /// <typeparam name="T">输入类型</typeparam>
+        /// <param name="funcName">函数名称</param>
+        protected internal void RemoveInputResponse<T>(string funcName)
+        {
+            RemoveInputResponse(typeof(T), funcName);
+        }
+
+        /// <summary>
+        /// 取消当前基础对象对指定输入类型的监听回调函数
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        /// <param name="funcName">函数名称</param>
+        protected internal void RemoveInputResponse(SystemType inputType, string funcName)
+        {
+            if (_inputCallInfosForType.TryGetValue(inputType, out IDictionary<string, InputCallSyntaxInfo> infos))
+            {
+                if (infos.ContainsKey(funcName))
+                {
+                    infos.Remove(funcName);
+                }
+            }
+
+            // 当前监听列表为空时，移除该事件的监听
+            if (false == IsInputResponsedOfTargetType(inputType))
+            {
+                RemoveInputResponse(inputType);
+            }
+        }
+
+        /// <summary>
+        /// 移除所有自动注册的输入响应回调接口
+        /// </summary>
+        protected internal void RemoveAllAutomaticallyInputResponses()
+        {
+            OnAutomaticallyCallSyntaxInfoProcessHandler<int, InputCallSyntaxInfo>(_inputCallInfosForCode, RemoveInputResponse);
+            OnAutomaticallyCallSyntaxInfoProcessHandler<SystemType, InputCallSyntaxInfo>(_inputCallInfosForType, RemoveInputResponse);
+        }
+
+        /// <summary>
+        /// 取消当前基础对象的所有输入响应
+        /// </summary>
+        public virtual void RemoveAllInputResponses()
+        {
+            IList<int> id_keys = NovaEngine.Utility.Collection.ToListForKeys<int, IDictionary<string, InputCallSyntaxInfo>>(_inputCallInfosForCode);
+            for (int n = 0; null != id_keys && n < id_keys.Count; ++n) { RemoveInputResponse(id_keys[n]); }
+
+            IList<SystemType> type_keys = NovaEngine.Utility.Collection.ToListForKeys<SystemType, IDictionary<string, InputCallSyntaxInfo>>(_inputCallInfosForType);
+            for (int n = 0; null != type_keys && n < type_keys.Count; ++n) { RemoveInputResponse(type_keys[n]); }
+
+            _inputCallInfosForCode.Clear();
+            _inputCallInfosForType.Clear();
+        }
+
+        #endregion
 
         #region 基础对象事件转发相关操作函数合集
 
@@ -651,7 +1127,8 @@ namespace GameEngine
 
             if (infos.ContainsKey(info.Fullname))
             {
-                Debugger.Warn("The 'CComponent' instance's message type '{0}' was already add same listener by name '{1}', repeat added it failed.", opcode, info.Fullname);
+                Debugger.Warn("The '{0}' instance's message type '{1}' was already add same listener by name '{2}', repeat added it failed.",
+                    NovaEngine.Utility.Text.ToString(GetType()), opcode, info.Fullname);
                 return false;
             }
 
@@ -944,29 +1421,40 @@ namespace GameEngine
             /// </summary>
             private readonly int _inputCode;
             /// <summary>
+            /// 输入回调绑定的操作类型
+            /// </summary>
+            private readonly int _operationType;
+            /// <summary>
             /// 输入回调绑定的输入数据类型
             /// </summary>
-            private readonly SystemType _inputType;
+            private readonly SystemType _inputDataType;
 
             public int InputCode => _inputCode;
-            public SystemType InputType => _inputType;
+            public int OperationType => _operationType;
+            public SystemType InputDataType => _inputDataType;
 
-            public InputCallSyntaxInfo(CBase targetObject, int inputCode, SystemMethodInfo methodInfo) : this(targetObject, inputCode, methodInfo, false)
+            public InputCallSyntaxInfo(CBase targetObject, int inputCode, int operationType, SystemMethodInfo methodInfo) :
+                this(targetObject, inputCode, operationType, methodInfo, false)
             { }
 
-            public InputCallSyntaxInfo(CBase targetObject, int inputCode, SystemMethodInfo methodInfo, bool automatically) : this(targetObject, inputCode, null, methodInfo, automatically)
+            public InputCallSyntaxInfo(CBase targetObject, int inputCode, int operationType, SystemMethodInfo methodInfo, bool automatically) :
+                this(targetObject, inputCode, operationType, null, methodInfo, automatically)
             { }
 
-            public InputCallSyntaxInfo(CBase targetObject, SystemType inputType, SystemMethodInfo methodInfo) : this(targetObject, inputType, methodInfo, false)
+            public InputCallSyntaxInfo(CBase targetObject, SystemType inputDataType, SystemMethodInfo methodInfo) :
+                this(targetObject, inputDataType, methodInfo, false)
             { }
 
-            public InputCallSyntaxInfo(CBase targetObject, SystemType inputType, SystemMethodInfo methodInfo, bool automatically) : this(targetObject, 0, inputType, methodInfo, automatically)
+            public InputCallSyntaxInfo(CBase targetObject, SystemType inputDataType, SystemMethodInfo methodInfo, bool automatically) :
+                this(targetObject, 0, 0, inputDataType, methodInfo, automatically)
             { }
 
-            private InputCallSyntaxInfo(CBase targetObject, int inputCode, SystemType inputType, SystemMethodInfo methodInfo, bool automatically) : base(targetObject, methodInfo, automatically)
+            private InputCallSyntaxInfo(CBase targetObject, int inputCode, int operationType, SystemType inputDataType, SystemMethodInfo methodInfo, bool automatically) :
+                base(targetObject, methodInfo, automatically)
             {
                 _inputCode = inputCode;
-                _inputType = inputType;
+                _operationType = operationType;
+                _inputDataType = inputDataType;
             }
 
             /// <summary>
@@ -976,6 +1464,12 @@ namespace GameEngine
             /// <param name="operationType">输入操作类型</param>
             public void Invoke(int inputCode, int operationType)
             {
+                if (_operationType == 0 || (_operationType & operationType) == 0)
+                {
+                    // ignore
+                    return;
+                }
+
                 if (_isExtensionType)
                 {
                     if (_isNullParameterType)

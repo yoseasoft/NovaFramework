@@ -29,7 +29,7 @@ namespace Game.Sample.DispatchCall
     /// 攻击组件类
     /// </summary>
     [GameEngine.DeclareComponentClass("AttackComponent")]
-    public class AttackComponent : GameEngine.CComponent
+    public class AttackComponent : GameEngine.CComponent, GameEngine.IInputActivation
     {
         public int targetId;
     }

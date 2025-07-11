@@ -1,7 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -87,6 +89,37 @@ namespace GameEngine
                 return;
             }
 
+            // 输入响应信息
+            for (int n = 0; n < componentCodeInfo.GetInputResponsingMethodTypeCount(); ++n)
+            {
+                Loader.InputResponsingMethodTypeCodeInfo methodTypeCodeInfo = componentCodeInfo.GetInputResponsingMethodType(n);
+                if (methodTypeCodeInfo.BehaviourType != behaviourType) continue;
+
+                if (false == NovaEngine.Utility.Reflection.IsTypeOfExtension(methodTypeCodeInfo.Method) && reload)
+                {
+                    // 针对对象内部的成员函数，在重载模式下不能对其撤销后再次注册
+                    continue;
+                }
+
+                // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
+                // Debugger.Assert(null != callback, "Invalid method type.");
+
+                Debugger.Info(LogGroupTag.Controller, "Register component '{0}' input listener with target method '{1}'.", targetType.FullName, NovaEngine.Utility.Text.ToString(methodTypeCodeInfo.Method));
+
+                if (methodTypeCodeInfo.InputCode > 0)
+                {
+                    // if (reload) { component.RemoveInputResponse(methodTypeCodeInfo.InputCode, (int) methodTypeCodeInfo.OperationType); }
+
+                    component.AddInputResponse(methodTypeCodeInfo.InputCode, (int) methodTypeCodeInfo.OperationType, methodTypeCodeInfo.Method, true);
+                }
+                else
+                {
+                    // if (reload) { component.RemoveInputResponse(methodTypeCodeInfo.InputDataType); }
+
+                    component.AddInputResponse(methodTypeCodeInfo.InputDataType, methodTypeCodeInfo.Method, true);
+                }
+            }
+
             // 订阅事件信息
             for (int n = 0; n < componentCodeInfo.GetEventSubscribingMethodTypeCount(); ++n)
             {
@@ -118,7 +151,7 @@ namespace GameEngine
                 }
             }
 
-            // 消息绑定信息
+            // 消息派发信息
             for (int n = 0; n < componentCodeInfo.GetMessageBindingMethodTypeCount(); ++n)
             {
                 Loader.MessageBindingMethodTypeCodeInfo methodTypeCodeInfo = componentCodeInfo.GetMessageBindingMethodType(n);

@@ -136,6 +136,65 @@ namespace GameEngine
 
         #endregion
 
+        #region 组件对象输入响应相关操作函数合集
+
+        /// <summary>
+        /// 用户自定义的输入处理函数，您可以通过重写该函数处理自定义输入行为
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        protected override void OnInput(int inputCode, int operationType) { }
+
+        /// <summary>
+        /// 用户自定义的输入处理函数，您可以通过重写该函数处理自定义输入行为
+        /// </summary>
+        /// <param name="inputData">输入数据</param>
+        protected override void OnInput(object inputData) { }
+
+        /// <summary>
+        /// 针对指定输入编码新增输入响应的后处理程序
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        /// <returns>返回后处理的操作结果</returns>
+        protected override bool OnInputResponseAddedActionPostProcess(int inputCode, int operationType)
+        {
+            return Entity.AddInputResponseFromComponent(inputCode, operationType);
+        }
+
+        /// <summary>
+        /// 针对指定输入类型新增输入响应的后处理程序
+        /// </summary>
+        /// <param name="inputType">输入类型</param>
+        /// <returns>返回后处理的操作结果</returns>
+        protected override bool OnInputResponseAddedActionPostProcess(SystemType inputType)
+        {
+            return Entity.AddInputResponseFromComponent(inputType);
+        }
+
+        /// <summary>
+        /// 针对指定输入编码移除输入响应的后处理程序
+        /// </summary>
+        /// <param name="inputCode">输入编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        protected override void OnInputResponseRemovedActionPostProcess(int inputCode, int operationType)
+        {
+            // 移除实体中对应的输入响应
+            Entity?.RemoveInputResponseFromComponent(inputCode, operationType);
+        }
+
+        /// <summary>
+        /// 针对指定输入类型移除输入响应的后处理程序
+        /// </summary>
+        /// <param name="inputType">输入类型类型</param>
+        protected override void OnInputResponseRemovedActionPostProcess(SystemType inputType)
+        {
+            // 移除实体中对应的输入响应
+            Entity?.RemoveInputResponseFromComponent(inputType);
+        }
+
+        #endregion
+
         #region 组件对象事件转发相关操作函数合集
 
         /// <summary>

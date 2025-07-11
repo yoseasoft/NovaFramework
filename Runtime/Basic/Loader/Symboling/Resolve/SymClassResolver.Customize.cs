@@ -90,6 +90,7 @@ namespace GameEngine.Loader.Symboling
                 if (!on_extend_supported)
                 {
                     if (method.IsExtension && (
+                        method.HasAttribute(typeof(InputResponseBindingOfTargetAttribute)) ||
                         method.HasAttribute(typeof(EventSubscribeBindingOfTargetAttribute)) ||
                         method.HasAttribute(typeof(MessageListenerBindingOfTargetAttribute))))
                     {

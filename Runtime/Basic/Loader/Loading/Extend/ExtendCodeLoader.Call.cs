@@ -1,7 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +38,11 @@ namespace GameEngine.Loader
     public class ExtendCallCodeInfo : ExtendCodeInfo
     {
         /// <summary>
+        /// 原型对象输入响应的扩展定义调用类的数据管理容器
+        /// </summary>
+        private IList<InputResponsingMethodTypeCodeInfo> m_inputCallMethodTypes;
+
+        /// <summary>
         /// 原型对象事件订阅的扩展定义调用类的数据管理容器
         /// </summary>
         private IList<EventSubscribingMethodTypeCodeInfo> m_eventCallMethodTypes;
@@ -44,6 +51,69 @@ namespace GameEngine.Loader
         /// 原型对象消息处理的扩展定义调用类的数据管理容器
         /// </summary>
         private IList<MessageBindingMethodTypeCodeInfo> m_messageCallMethodTypes;
+
+        #region 扩展输入调用类结构信息操作函数
+
+        /// <summary>
+        /// 新增指定函数的回调句柄相关的结构信息
+        /// </summary>
+        /// <param name="invoke">函数的结构信息</param>
+        public void AddInputCallMethodType(InputResponsingMethodTypeCodeInfo invoke)
+        {
+            if (null == m_inputCallMethodTypes)
+            {
+                m_inputCallMethodTypes = new List<InputResponsingMethodTypeCodeInfo>();
+            }
+
+            if (m_inputCallMethodTypes.Contains(invoke))
+            {
+                Debugger.Warn("The extend input call class type '{0}' was already registed target input '{1}', repeat added it failed.", m_classType.FullName, invoke.InputCode);
+                return;
+            }
+
+            m_inputCallMethodTypes.Add(invoke);
+        }
+
+        /// <summary>
+        /// 移除所有函数的回调句柄相关的结构信息
+        /// </summary>
+        public void RemoveAllInputCallMethodTypes()
+        {
+            m_inputCallMethodTypes?.Clear();
+            m_inputCallMethodTypes = null;
+        }
+
+        /// <summary>
+        /// 获取当前函数回调句柄的结构信息数量
+        /// </summary>
+        /// <returns>返回函数回调句柄的结构信息数量</returns>
+        public int GetInputCallMethodTypeCount()
+        {
+            if (null != m_inputCallMethodTypes)
+            {
+                return m_inputCallMethodTypes.Count;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// 获取当前函数回调句柄的结构信息容器中指索引对应的实例
+        /// </summary>
+        /// <param name="index">索引值</param>
+        /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
+        public InputResponsingMethodTypeCodeInfo GetInputCallMethodType(int index)
+        {
+            if (null == m_inputCallMethodTypes || index < 0 || index >= m_inputCallMethodTypes.Count)
+            {
+                Debugger.Warn("Invalid index ({0}) for extend input call method type code info list.", index);
+                return null;
+            }
+
+            return m_inputCallMethodTypes[index];
+        }
+
+        #endregion
 
         #region 扩展事件调用类结构信息操作函数
 
@@ -174,9 +244,10 @@ namespace GameEngine.Loader
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("EventCall = { ");
+            sb.Append("ExtendCall = { ");
             sb.AppendFormat("Parent = {0}, ", base.ToString());
 
+            sb.AppendFormat("InputCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<InputResponsingMethodTypeCodeInfo>(m_inputCallMethodTypes));
             sb.AppendFormat("EventCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<EventSubscribingMethodTypeCodeInfo>(m_eventCallMethodTypes));
             sb.AppendFormat("MessageCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<MessageBindingMethodTypeCodeInfo>(m_messageCallMethodTypes));
 
@@ -218,7 +289,67 @@ namespace GameEngine.Loader
                 {
                     SystemAttribute attr = attrs[m];
 
-                    if (attr is EventSubscribeBindingOfTargetAttribute)
+                    if (attr is InputResponseBindingOfTargetAttribute)
+                    {
+                        InputResponseBindingOfTargetAttribute _attr = (InputResponseBindingOfTargetAttribute) attr;
+
+                        if (_attr.InputCode <= 0 && null == _attr.InputDataType)
+                        {
+                            Debugger.Warn("The extend input response method '{0}.{1}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
+                            continue;
+                        }
+
+                        if (false == Inspecting.CodeInspector.IsValidFormatOfProtoExtendInputCallFunction(symMethod.MethodInfo))
+                        {
+                            Debugger.Warn("The extend input response method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                            continue;
+                        }
+
+                        SystemType extendClassType = symMethod.GetParameter(0).ParameterType;
+
+                        InputResponsingMethodTypeCodeInfo methodTypeCodeInfo = new InputResponsingMethodTypeCodeInfo();
+                        methodTypeCodeInfo.TargetType = extendClassType;
+                        methodTypeCodeInfo.InputCode = _attr.InputCode;
+                        methodTypeCodeInfo.OperationType = _attr.OperationType;
+                        methodTypeCodeInfo.InputDataType = _attr.InputDataType;
+                        methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                        methodTypeCodeInfo.Method = symMethod.MethodInfo;
+
+                        // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
+                        if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+                        {
+                            bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                                    Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo),
+                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
+
+                            if (Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo))
+                            {
+                                // null parameter type, skip other check process
+                            }
+                            else if (methodTypeCodeInfo.InputCode > 0)
+                            {
+                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                                    false == Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo),
+                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType, typeof(int), typeof(int));
+                            }
+                            else
+                            {
+                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                                    false == Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo),
+                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType, methodTypeCodeInfo.InputDataType);
+                            }
+
+                            // 校验失败
+                            if (false == verificated)
+                            {
+                                Debugger.Error("Cannot verificated from method info '{0}' to extend input responsing call, loaded this method failed.", symMethod.MethodName);
+                                continue;
+                            }
+                        }
+
+                        info.AddInputCallMethodType(methodTypeCodeInfo);
+                    }
+                    else if (attr is EventSubscribeBindingOfTargetAttribute)
                     {
                         EventSubscribeBindingOfTargetAttribute _attr = (EventSubscribeBindingOfTargetAttribute) attr;
 
@@ -339,7 +470,9 @@ namespace GameEngine.Loader
                 }
             }
 
-            if (info.GetEventCallMethodTypeCount() <= 0 && info.GetMessageCallMethodTypeCount() <= 0)
+            if (info.GetInputCallMethodTypeCount() <= 0 &&
+                info.GetEventCallMethodTypeCount() <= 0 &&
+                info.GetMessageCallMethodTypeCount() <= 0)
             {
                 Debugger.Warn("The extend call method types count must be great than zero, newly added class '{0}' failed.", info.ClassType.FullName);
                 return false;
