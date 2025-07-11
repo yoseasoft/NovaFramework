@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -42,11 +42,11 @@ namespace GameEngine
         /// <summary>
         /// 通过事件标识分发调度接口的数据结构容器
         /// </summary>
-        private IDictionary<int, IList<EventCallInfo>> m_eventIdDistributeCallInfos = null;
+        private IDictionary<int, IList<EventCallInfo>> _eventIdDistributeCallInfos = null;
         /// <summary>
         /// 通过事件数据分发调度接口的数据结构容器
         /// </summary>
-        private IDictionary<SystemType, IList<EventCallInfo>> m_eventDataDistributeCallInfos = null;
+        private IDictionary<SystemType, IList<EventCallInfo>> _eventDataDistributeCallInfos = null;
 
         /// <summary>
         /// 事件分发回调管理模块的初始化函数
@@ -55,9 +55,9 @@ namespace GameEngine
         private void InitializeForEventCall()
         {
             // 事件标识分发容器初始化
-            m_eventIdDistributeCallInfos = new Dictionary<int, IList<EventCallInfo>>();
+            _eventIdDistributeCallInfos = new Dictionary<int, IList<EventCallInfo>>();
             // 事件数据分发容器初始化
-            m_eventDataDistributeCallInfos = new Dictionary<SystemType, IList<EventCallInfo>>();
+            _eventDataDistributeCallInfos = new Dictionary<SystemType, IList<EventCallInfo>>();
         }
 
         /// <summary>
@@ -70,11 +70,11 @@ namespace GameEngine
             RemoveAllEventDistributeCalls();
 
             // 事件标识分发容器清理
-            m_eventIdDistributeCallInfos.Clear();
-            m_eventIdDistributeCallInfos = null;
+            _eventIdDistributeCallInfos.Clear();
+            _eventIdDistributeCallInfos = null;
             // 事件数据分发容器清理
-            m_eventDataDistributeCallInfos.Clear();
-            m_eventDataDistributeCallInfos = null;
+            _eventDataDistributeCallInfos.Clear();
+            _eventDataDistributeCallInfos = null;
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace GameEngine
         private void OnEventDistributeCallDispatched(int eventID, params object[] args)
         {
             IList<EventCallInfo> list = null;
-            if (m_eventIdDistributeCallInfos.TryGetValue(eventID, out list))
+            if (_eventIdDistributeCallInfos.TryGetValue(eventID, out list))
             {
                 IEnumerator<EventCallInfo> e_info = list.GetEnumerator();
                 while (e_info.MoveNext())
@@ -121,7 +121,7 @@ namespace GameEngine
             SystemType eventDataType = eventData.GetType();
 
             IList<EventCallInfo> list = null;
-            if (m_eventDataDistributeCallInfos.TryGetValue(eventDataType, out list))
+            if (_eventDataDistributeCallInfos.TryGetValue(eventDataType, out list))
             {
                 IEnumerator<EventCallInfo> e_info = list.GetEnumerator();
                 while (e_info.MoveNext())
@@ -161,16 +161,16 @@ namespace GameEngine
 
             Debugger.Info(LogGroupTag.Controller, "Add new event distribute call '{0}' to target ID '{1}' of the class type '{2}'.",
                     fullname, eventID, NovaEngine.Utility.Text.ToString(targetType));
-            if (m_eventIdDistributeCallInfos.ContainsKey(eventID))
+            if (_eventIdDistributeCallInfos.ContainsKey(eventID))
             {
-                IList<EventCallInfo> list = m_eventIdDistributeCallInfos[eventID];
+                IList<EventCallInfo> list = _eventIdDistributeCallInfos[eventID];
                 list.Add(info);
             }
             else
             {
                 IList<EventCallInfo> list = new List<EventCallInfo>();
                 list.Add(info);
-                m_eventIdDistributeCallInfos.Add(eventID, list);
+                _eventIdDistributeCallInfos.Add(eventID, list);
             }
         }
 
@@ -187,16 +187,16 @@ namespace GameEngine
 
             Debugger.Info(LogGroupTag.Controller, "Add new event distribute call '{0}' to target data type '{1}' of the class type '{2}'.",
                     fullname, NovaEngine.Utility.Text.ToString(eventDataType), NovaEngine.Utility.Text.ToString(targetType));
-            if (m_eventDataDistributeCallInfos.ContainsKey(eventDataType))
+            if (_eventDataDistributeCallInfos.ContainsKey(eventDataType))
             {
-                IList<EventCallInfo> list = m_eventDataDistributeCallInfos[eventDataType];
+                IList<EventCallInfo> list = _eventDataDistributeCallInfos[eventDataType];
                 list.Add(info);
             }
             else
             {
                 IList<EventCallInfo> list = new List<EventCallInfo>();
                 list.Add(info);
-                m_eventDataDistributeCallInfos.Add(eventDataType, list);
+                _eventDataDistributeCallInfos.Add(eventDataType, list);
             }
         }
 
@@ -210,13 +210,13 @@ namespace GameEngine
         {
             Debugger.Info(LogGroupTag.Controller, "Remove event distribute call '{0}' with target ID '{1}' and class type '{2}'.",
                     fullname, eventID, NovaEngine.Utility.Text.ToString(targetType));
-            if (false == m_eventIdDistributeCallInfos.ContainsKey(eventID))
+            if (false == _eventIdDistributeCallInfos.ContainsKey(eventID))
             {
                 Debugger.Warn(LogGroupTag.Controller, "Could not found any event distribute call '{0}' with target ID '{1}', removed it failed.", fullname, eventID);
                 return;
             }
 
-            IList<EventCallInfo> list = m_eventIdDistributeCallInfos[eventID];
+            IList<EventCallInfo> list = _eventIdDistributeCallInfos[eventID];
             for (int n = 0; n < list.Count; ++n)
             {
                 EventCallInfo info = list[n];
@@ -227,7 +227,7 @@ namespace GameEngine
                     list.RemoveAt(n);
                     if (list.Count <= 0)
                     {
-                        m_eventIdDistributeCallInfos.Remove(eventID);
+                        _eventIdDistributeCallInfos.Remove(eventID);
                     }
 
                     return;
@@ -248,14 +248,14 @@ namespace GameEngine
         {
             Debugger.Info(LogGroupTag.Controller, "Remove event distribute call '{0}' with target data type '{1}' and class type '{2}'.",
                     fullname, NovaEngine.Utility.Text.ToString(eventDataType), NovaEngine.Utility.Text.ToString(targetType));
-            if (false == m_eventDataDistributeCallInfos.ContainsKey(eventDataType))
+            if (false == _eventDataDistributeCallInfos.ContainsKey(eventDataType))
             {
                 Debugger.Warn(LogGroupTag.Controller, "Could not found any event distribute call '{0}' with target data type '{1}', removed it failed.",
                         fullname, NovaEngine.Utility.Text.ToString(eventDataType));
                 return;
             }
 
-            IList<EventCallInfo> list = m_eventDataDistributeCallInfos[eventDataType];
+            IList<EventCallInfo> list = _eventDataDistributeCallInfos[eventDataType];
             for (int n = 0; n < list.Count; ++n)
             {
                 EventCallInfo info = list[n];
@@ -266,7 +266,7 @@ namespace GameEngine
                     list.RemoveAt(n);
                     if (list.Count <= 0)
                     {
-                        m_eventDataDistributeCallInfos.Remove(eventDataType);
+                        _eventDataDistributeCallInfos.Remove(eventDataType);
                     }
 
                     return;
@@ -282,8 +282,8 @@ namespace GameEngine
         /// </summary>
         private void RemoveAllEventDistributeCalls()
         {
-            m_eventIdDistributeCallInfos.Clear();
-            m_eventDataDistributeCallInfos.Clear();
+            _eventIdDistributeCallInfos.Clear();
+            _eventDataDistributeCallInfos.Clear();
         }
 
         #region 事件调度的数据信息结构对象声明
@@ -296,34 +296,34 @@ namespace GameEngine
             /// <summary>
             /// 事件调度类的完整名称
             /// </summary>
-            private string m_fullname;
+            private string _fullname;
             /// <summary>
             /// 事件调度类的目标对象类型
             /// </summary>
-            private SystemType m_targetType;
+            private SystemType _targetType;
             /// <summary>
             /// 事件调度类的事件标识
             /// </summary>
-            private int m_eventID;
+            private int _eventID;
             /// <summary>
             /// 事件调用类的事件数据类型
             /// </summary>
-            private SystemType m_eventDataType;
+            private SystemType _eventDataType;
             /// <summary>
             /// 事件调度类的回调句柄
             /// </summary>
-            private SystemDelegate m_callback;
+            private SystemDelegate _callback;
             /// <summary>
             /// 事件调度回调函数的无参状态标识
             /// </summary>
-            private bool m_isNullParameterType;
+            private bool _isNullParameterType;
 
-            public string Fullname => m_fullname;
-            public SystemType TargetType => m_targetType;
-            public int EventID => m_eventID;
-            public SystemType EventDataType => m_eventDataType;
-            public SystemDelegate Callback => m_callback;
-            public bool IsNullParameterType => m_isNullParameterType;
+            public string Fullname => _fullname;
+            public SystemType TargetType => _targetType;
+            public int EventID => _eventID;
+            public SystemType EventDataType => _eventDataType;
+            public SystemDelegate Callback => _callback;
+            public bool IsNullParameterType => _isNullParameterType;
 
             public EventCallInfo(string fullname, SystemType targetType, int eventID, SystemDelegate callback)
                 : this(fullname, targetType, eventID, null, callback)
@@ -339,12 +339,12 @@ namespace GameEngine
             {
                 Debugger.Assert(null != callback, "Invalid arguments.");
 
-                m_fullname = fullname;
-                m_targetType = targetType;
-                m_eventID = eventID;
-                m_eventDataType = eventDataType;
-                m_callback = callback;
-                m_isNullParameterType = Loader.Inspecting.CodeInspector.IsNullParameterTypeOfEventCallFunction(callback.Method);
+                _fullname = fullname;
+                _targetType = targetType;
+                _eventID = eventID;
+                _eventDataType = eventDataType;
+                _callback = callback;
+                _isNullParameterType = Loader.Inspecting.CodeInspector.IsNullParameterTypeOfEventCallFunction(callback.Method);
             }
 
             /// <summary>
@@ -354,13 +354,13 @@ namespace GameEngine
             /// <param name="args">事件参数列表</param>
             public void Invoke(int eventID, params object[] args)
             {
-                if (m_isNullParameterType)
+                if (_isNullParameterType)
                 {
-                    m_callback.DynamicInvoke();
+                    _callback.DynamicInvoke();
                 }
                 else
                 {
-                    m_callback.DynamicInvoke(eventID, args);
+                    _callback.DynamicInvoke(eventID, args);
                 }
             }
 
@@ -372,13 +372,13 @@ namespace GameEngine
             /// <param name="args">事件参数列表</param>
             public void Invoke(IProto proto, int eventID, params object[] args)
             {
-                if (m_isNullParameterType)
+                if (_isNullParameterType)
                 {
-                    m_callback.DynamicInvoke(proto);
+                    _callback.DynamicInvoke(proto);
                 }
                 else
                 {
-                    m_callback.DynamicInvoke(proto, eventID, args);
+                    _callback.DynamicInvoke(proto, eventID, args);
                 }
             }
 
@@ -388,13 +388,13 @@ namespace GameEngine
             /// <param name="eventData">事件数据</param>
             public void Invoke(object eventData)
             {
-                if (m_isNullParameterType)
+                if (_isNullParameterType)
                 {
-                    m_callback.DynamicInvoke();
+                    _callback.DynamicInvoke();
                 }
                 else
                 {
-                    m_callback.DynamicInvoke(eventData);
+                    _callback.DynamicInvoke(eventData);
                 }
             }
 
@@ -405,13 +405,13 @@ namespace GameEngine
             /// <param name="eventData">事件数据</param>
             public void Invoke(IProto proto, object eventData)
             {
-                if (m_isNullParameterType)
+                if (_isNullParameterType)
                 {
-                    m_callback.DynamicInvoke(proto);
+                    _callback.DynamicInvoke(proto);
                 }
                 else
                 {
-                    m_callback.DynamicInvoke(proto, eventData);
+                    _callback.DynamicInvoke(proto, eventData);
                 }
             }
         }

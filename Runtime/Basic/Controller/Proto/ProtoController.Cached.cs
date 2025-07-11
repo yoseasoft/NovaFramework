@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -34,11 +34,11 @@ namespace GameEngine
         /// <summary>
         /// 原型对象函数调用前对应生命周期类型的缓存容器
         /// </summary>
-        private IDictionary<string, CBase.LifecycleKeypointType> m_protoMethodCallBeforeLifecycleTypes = null;
+        private IDictionary<string, CBase.LifecycleKeypointType> _protoMethodCallBeforeLifecycleTypes = null;
         /// <summary>
         /// 原型对象函数调用后对应生命周期类型的缓存容器
         /// </summary>
-        private IDictionary<string, CBase.LifecycleKeypointType> m_protoMethodCallAfterLifecycleTypes = null;
+        private IDictionary<string, CBase.LifecycleKeypointType> _protoMethodCallAfterLifecycleTypes = null;
 
         /// <summary>
         /// 原型管理对象的查找操作初始化通知接口函数
@@ -47,8 +47,8 @@ namespace GameEngine
         private void OnProtoCachedInitialize()
         {
             // 初始化原型对象函数对应生命周期类型的管理容器
-            m_protoMethodCallBeforeLifecycleTypes = new Dictionary<string, CBase.LifecycleKeypointType>();
-            m_protoMethodCallAfterLifecycleTypes = new Dictionary<string, CBase.LifecycleKeypointType>();
+            _protoMethodCallBeforeLifecycleTypes = new Dictionary<string, CBase.LifecycleKeypointType>();
+            _protoMethodCallAfterLifecycleTypes = new Dictionary<string, CBase.LifecycleKeypointType>();
         }
 
         /// <summary>
@@ -58,11 +58,11 @@ namespace GameEngine
         private void OnProtoCachedCleanup()
         {
             // 清理原型对象函数对应生命周期类型的管理容器
-            m_protoMethodCallBeforeLifecycleTypes.Clear();
-            m_protoMethodCallAfterLifecycleTypes.Clear();
+            _protoMethodCallBeforeLifecycleTypes.Clear();
+            _protoMethodCallAfterLifecycleTypes.Clear();
 
-            m_protoMethodCallBeforeLifecycleTypes = null;
-            m_protoMethodCallAfterLifecycleTypes = null;
+            _protoMethodCallBeforeLifecycleTypes = null;
+            _protoMethodCallAfterLifecycleTypes = null;
         }
 
         #region 原型对象函数对应生命周期的映射绑定及查询接口函数
@@ -78,14 +78,14 @@ namespace GameEngine
         {
             if (isBefore)
             {
-                if (m_protoMethodCallBeforeLifecycleTypes.TryGetValue(methodName, out type))
+                if (_protoMethodCallBeforeLifecycleTypes.TryGetValue(methodName, out type))
                 {
                     return true;
                 }
             }
             else
             {
-                if (m_protoMethodCallAfterLifecycleTypes.TryGetValue(methodName, out type))
+                if (_protoMethodCallAfterLifecycleTypes.TryGetValue(methodName, out type))
                 {
                     return true;
                 }
@@ -103,10 +103,10 @@ namespace GameEngine
         /// <param name="type">生命周期类型</param>
         internal void AddProtoMethodLifecycleType(string methodName, bool isBefore, CBase.LifecycleKeypointType type)
         {
-            IDictionary<string, CBase.LifecycleKeypointType> container = m_protoMethodCallAfterLifecycleTypes;
+            IDictionary<string, CBase.LifecycleKeypointType> container = _protoMethodCallAfterLifecycleTypes;
             if (isBefore)
             {
-                container = m_protoMethodCallBeforeLifecycleTypes;
+                container = _protoMethodCallBeforeLifecycleTypes;
             }
 
             if (container.ContainsKey(methodName))
@@ -126,10 +126,10 @@ namespace GameEngine
         /// <param name="isBefore">前置状态标识</param>
         internal void RemoveProtoMethodLifecycleType(string methodName, bool isBefore)
         {
-            IDictionary<string, CBase.LifecycleKeypointType> container = m_protoMethodCallAfterLifecycleTypes;
+            IDictionary<string, CBase.LifecycleKeypointType> container = _protoMethodCallAfterLifecycleTypes;
             if (isBefore)
             {
-                container = m_protoMethodCallBeforeLifecycleTypes;
+                container = _protoMethodCallBeforeLifecycleTypes;
             }
 
             if (false == container.ContainsKey(methodName))

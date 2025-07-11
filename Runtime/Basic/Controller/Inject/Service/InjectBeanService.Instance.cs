@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ namespace GameEngine
         /// <summary>
         /// 注入实体对象的信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, IDictionary<string, GeneralInstantiateGenerator>> s_beanInstanceInfos = null;
+        private static IDictionary<SystemType, IDictionary<string, GeneralInstantiateGenerator>> _beanInstanceInfos = null;
 
         /// <summary>
         /// 实体对象实例的管理信息初始化接口函数
@@ -44,7 +44,7 @@ namespace GameEngine
         [OnServiceProcessInitCallback]
         private static void InitBeanInstanceInfos()
         {
-            s_beanInstanceInfos = new Dictionary<SystemType, IDictionary<string, GeneralInstantiateGenerator>>();
+            _beanInstanceInfos = new Dictionary<SystemType, IDictionary<string, GeneralInstantiateGenerator>>();
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace GameEngine
         [OnServiceProcessCleanupCallback]
         private static void CleanupBeanInstanceInfos()
         {
-            s_beanInstanceInfos.Clear();
-            s_beanInstanceInfos = null;
+            _beanInstanceInfos.Clear();
+            _beanInstanceInfos = null;
         }
 
         #region 对象实例的创建/销毁接口函数
@@ -133,10 +133,10 @@ namespace GameEngine
 
             Debugger.Assert(classType.IsClass && false == string.IsNullOrEmpty(beanName), "Invalid arguments.");
 
-            if (false == s_beanInstanceInfos.TryGetValue(classType, out IDictionary<string, GeneralInstantiateGenerator> classInfos))
+            if (false == _beanInstanceInfos.TryGetValue(classType, out IDictionary<string, GeneralInstantiateGenerator> classInfos))
             {
                 classInfos = new Dictionary<string, GeneralInstantiateGenerator>();
-                s_beanInstanceInfos.Add(classType, classInfos);
+                _beanInstanceInfos.Add(classType, classInfos);
             }
 
             if (false == classInfos.TryGetValue(beanName, out GeneralInstantiateGenerator instanceInfo))
@@ -186,7 +186,7 @@ namespace GameEngine
             }
 
             SystemType beanType = bean.GetType();
-            if (false == s_beanInstanceInfos.TryGetValue(beanType, out IDictionary<string, GeneralInstantiateGenerator> classInfos))
+            if (false == _beanInstanceInfos.TryGetValue(beanType, out IDictionary<string, GeneralInstantiateGenerator> classInfos))
             {
                 Debugger.Warn("Could not found any bean instance info with target class '{0}', released it failed.", NovaEngine.Utility.Text.ToString(beanType));
                 return;
@@ -213,11 +213,11 @@ namespace GameEngine
             /// <summary>
             /// 对象类型声明
             /// </summary>
-            protected SystemType m_classType = null;
+            protected SystemType _classType = null;
             /// <summary>
             /// 对象实体名称
             /// </summary>
-            protected string m_beanName = null;
+            protected string _beanName = null;
 
             /// <summary>
             /// 对象是否为单例模式的状态标识
@@ -228,8 +228,8 @@ namespace GameEngine
             {
                 Debugger.Assert(typeof(CBean).IsAssignableFrom(classType), "Invalid arguments.");
 
-                m_classType = classType;
-                m_beanName = beanName;
+                _classType = classType;
+                _beanName = beanName;
             }
 
             /// <summary>
@@ -257,24 +257,24 @@ namespace GameEngine
             {
                 CBean obj = null;
 
-                if (typeof(CScene).IsAssignableFrom(m_classType))
+                if (typeof(CScene).IsAssignableFrom(_classType))
                 {
                     // obj = SceneHandler.Instance.CreateScene(m_classType);
                     throw new System.ArgumentException();
                 }
-                else if (typeof(CActor).IsAssignableFrom(m_classType))
+                else if (typeof(CActor).IsAssignableFrom(_classType))
                 {
-                    obj = ActorHandler.Instance.CreateActor(m_classType);
+                    obj = ActorHandler.Instance.CreateActor(_classType);
                 }
                 else
                 {
-                    obj = System.Activator.CreateInstance(m_classType) as CBean;
+                    obj = System.Activator.CreateInstance(_classType) as CBean;
 
                     AspectController.Instance.Call(obj.Initialize);
                 }
 
                 // 记录对象实例的映射名称
-                obj.BeanName = m_beanName;
+                obj.BeanName = _beanName;
 
                 // 自动装配新创建的对象实例
                 AutowiredProcessingOnCreateTargetObject(obj);
@@ -288,7 +288,7 @@ namespace GameEngine
             /// <param name="obj">目标对象实例</param>
             protected void DestroyInstance(CBean obj)
             {
-                Debugger.Assert(obj.GetType() == m_classType, "Invalid arguments.");
+                Debugger.Assert(obj.GetType() == _classType, "Invalid arguments.");
 
                 // 卸载待销毁的对象实例
                 AutowiredProcessingOnReleaseTargetObject(obj);
@@ -296,7 +296,7 @@ namespace GameEngine
                 // 移除对象实例的映射名称
                 obj.BeanName = null;
 
-                if (typeof(CActor).IsAssignableFrom(m_classType))
+                if (typeof(CActor).IsAssignableFrom(_classType))
                 {
                     ActorHandler.Instance.DestroyActor(obj as CActor);
                 }
@@ -315,7 +315,7 @@ namespace GameEngine
             /// <summary>
             /// 对象实例的管理容器
             /// </summary>
-            private IList<CBean> m_objects;
+            private IList<CBean> _objects;
 
             /// <summary>
             /// 对象是否为单例模式的状态标识
@@ -324,13 +324,13 @@ namespace GameEngine
 
             public MultipleInstantiateGenerator(SystemType classType, string beanName) : base(classType, beanName)
             {
-                m_objects = new List<CBean>();
+                _objects = new List<CBean>();
             }
 
             ~MultipleInstantiateGenerator()
             {
                 Release();
-                m_objects = null;
+                _objects = null;
             }
 
             /// <summary>
@@ -340,9 +340,9 @@ namespace GameEngine
             public override CBean Alloc()
             {
                 CBean obj = CreateInstance();
-                Debugger.Assert(null != obj, "Invalid class type {0}.", NovaEngine.Utility.Text.ToString(m_classType));
+                Debugger.Assert(null != obj, "Invalid class type {0}.", NovaEngine.Utility.Text.ToString(_classType));
 
-                m_objects.Add(obj);
+                _objects.Add(obj);
 
                 return obj;
             }
@@ -352,12 +352,12 @@ namespace GameEngine
             /// </summary>
             public override void Release()
             {
-                while (m_objects.Count > 0)
+                while (_objects.Count > 0)
                 {
-                    Release(m_objects[0]);
+                    Release(_objects[0]);
                 }
 
-                m_objects.Clear();
+                _objects.Clear();
             }
 
             /// <summary>
@@ -368,7 +368,7 @@ namespace GameEngine
             {
                 Debugger.Assert(null != obj, "Invalid arguments.");
 
-                m_objects.Remove(obj);
+                _objects.Remove(obj);
                 DestroyInstance(obj);
             }
         }
@@ -381,11 +381,11 @@ namespace GameEngine
             /// <summary>
             /// 对象实例
             /// </summary>
-            private CBean m_instance = null;
+            private CBean _instance = null;
             /// <summary>
             /// 对象实例的引用计数
             /// </summary>
-            private int m_referenceCount = 0;
+            private int _referenceCount = 0;
 
             /// <summary>
             /// 对象是否为单例模式的状态标识
@@ -394,8 +394,8 @@ namespace GameEngine
 
             public SingletonInstantiateGenerator(SystemType classType, string beanName) : base(classType, beanName)
             {
-                m_instance = null;
-                m_referenceCount = 0;
+                _instance = null;
+                _referenceCount = 0;
             }
 
             ~SingletonInstantiateGenerator()
@@ -409,14 +409,14 @@ namespace GameEngine
             /// <returns>返回分配的对象实例</returns>
             public override CBean Alloc()
             {
-                if (null == m_instance)
+                if (null == _instance)
                 {
-                    m_instance = CreateInstance();
-                    Debugger.Assert(null != m_instance, "Invalid class type {0}.", NovaEngine.Utility.Text.ToString(m_classType));
+                    _instance = CreateInstance();
+                    Debugger.Assert(null != _instance, "Invalid class type {0}.", NovaEngine.Utility.Text.ToString(_classType));
                 }
 
-                ++m_referenceCount;
-                return m_instance;
+                ++_referenceCount;
+                return _instance;
             }
 
             /// <summary>
@@ -424,7 +424,7 @@ namespace GameEngine
             /// </summary>
             public override void Release()
             {
-                Release(m_instance);
+                Release(_instance);
             }
 
             /// <summary>
@@ -433,7 +433,7 @@ namespace GameEngine
             /// <param name="obj">目标对象实例</param>
             public override void Release(CBean obj)
             {
-                Debugger.Assert(obj == m_instance, "Invalid arguments.");
+                Debugger.Assert(obj == _instance, "Invalid arguments.");
 
                 if (null == obj)
                 {
@@ -441,12 +441,12 @@ namespace GameEngine
                     return;
                 }
 
-                --m_referenceCount;
-                if (m_referenceCount <= 0)
+                --_referenceCount;
+                if (_referenceCount <= 0)
                 {
                     DestroyInstance(obj);
-                    m_instance = null;
-                    m_referenceCount = 0;
+                    _instance = null;
+                    _referenceCount = 0;
                 }
             }
         }

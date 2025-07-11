@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ namespace GameEngine
         /// <summary>
         /// 对象激活状态管理容器
         /// </summary>
-        private IDictionary<SystemType, AspectBehaviourType> m_objectActivationStatus = null;
+        private IDictionary<SystemType, AspectBehaviourType> _objectActivationStatus = null;
 
         /// <summary>
         /// 对象注入状态标识的初始化回调函数
@@ -45,7 +45,7 @@ namespace GameEngine
         private void InitInjectObjectStatuss()
         {
             // 对象激活状态管理容器初始化
-            m_objectActivationStatus = new Dictionary<SystemType, AspectBehaviourType>();
+            _objectActivationStatus = new Dictionary<SystemType, AspectBehaviourType>();
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace GameEngine
             // 移除全部对象的激活状态信息
             RemoveAllObjectActivationStatuses();
 
-            m_objectActivationStatus = null;
+            _objectActivationStatus = null;
         }
 
         #region 对象类注入状态标识激活管理接口函数
@@ -69,14 +69,14 @@ namespace GameEngine
         /// <param name="behaviourType">行为类型</param>
         private void SetObjectActivationStatus(SystemType targetType, AspectBehaviourType behaviourType)
         {
-            if (m_objectActivationStatus.ContainsKey(targetType))
+            if (_objectActivationStatus.ContainsKey(targetType))
             {
                 Debugger.Warn("The target object status '{0}' was already exist, repeat added it will be override old value.", NovaEngine.Utility.Text.ToString(targetType));
 
-                m_objectActivationStatus.Remove(targetType);
+                _objectActivationStatus.Remove(targetType);
             }
 
-            m_objectActivationStatus.Add(targetType, behaviourType);
+            _objectActivationStatus.Add(targetType, behaviourType);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace GameEngine
         /// <returns>返回对象的行为标识，若该对象为注册则返回默认行为标识</returns>
         public AspectBehaviourType GetObjectActivationBehaviourByType(SystemType targetType)
         {
-            if (m_objectActivationStatus.TryGetValue(targetType, out AspectBehaviourType result))
+            if (_objectActivationStatus.TryGetValue(targetType, out AspectBehaviourType result))
             {
                 return result;
             }
@@ -100,13 +100,13 @@ namespace GameEngine
         /// <param name="targetType">目标对象类型</param>
         private void RemoveObjectActivationStatus(SystemType targetType)
         {
-            if (false == m_objectActivationStatus.ContainsKey(targetType))
+            if (false == _objectActivationStatus.ContainsKey(targetType))
             {
                 Debugger.Warn("Could not found any activation status with target type '{0}', removed it failed.", NovaEngine.Utility.Text.ToString(targetType));
                 return;
             }
 
-            m_objectActivationStatus.Remove(targetType);
+            _objectActivationStatus.Remove(targetType);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace GameEngine
         /// </summary>
         private void RemoveAllObjectActivationStatuses()
         {
-            m_objectActivationStatus.Clear();
+            _objectActivationStatus.Clear();
         }
 
         #endregion

@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,7 @@ namespace GameEngine
         /// <summary>
         /// 原型对象开启通知管理容器
         /// </summary>
-        private IList<IProto> m_protoStartNotificationList = null;
+        private IList<IProto> _protoStartNotificationList = null;
 
         /// <summary>
         /// 原型管理对象的开启流程初始化通知接口函数
@@ -43,7 +43,7 @@ namespace GameEngine
         private void OnProtoStartInitialize()
         {
             // 初始化开启对象通知容器
-            m_protoStartNotificationList = new List<IProto>();
+            _protoStartNotificationList = new List<IProto>();
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace GameEngine
         private void OnProtoStartCleanup()
         {
             // 清理开启对象通知容器
-            m_protoStartNotificationList.Clear();
-            m_protoStartNotificationList = null;
+            _protoStartNotificationList.Clear();
+            _protoStartNotificationList = null;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace GameEngine
         [OnControllerSubmoduleUpdateCallback]
         private void OnProtoStartUpdate()
         {
-            if (m_protoStartNotificationList.Count > 0)
+            if (_protoStartNotificationList.Count > 0)
             {
                 OnProtoStartProcess();
             }
@@ -84,13 +84,13 @@ namespace GameEngine
                 return;
             }
 
-            if (m_protoStartNotificationList.Contains(proto))
+            if (_protoStartNotificationList.Contains(proto))
             {
                 Debugger.Warn("The register start notification proto object '{0}' was already exist, repeat added it failed.", proto.GetType().FullName);
                 return;
             }
 
-            m_protoStartNotificationList.Add(proto);
+            _protoStartNotificationList.Add(proto);
         }
 
         /// <summary>
@@ -106,9 +106,9 @@ namespace GameEngine
                 return;
             }
 
-            if (m_protoStartNotificationList.Contains(proto))
+            if (_protoStartNotificationList.Contains(proto))
             {
-                m_protoStartNotificationList.Remove(proto);
+                _protoStartNotificationList.Remove(proto);
             }
         }
 
@@ -118,9 +118,9 @@ namespace GameEngine
         private void OnProtoStartProcess()
         {
             List<IProto> list = new List<IProto>();
-            list.AddRange(m_protoStartNotificationList);
+            list.AddRange(_protoStartNotificationList);
 
-            m_protoStartNotificationList.Clear();
+            _protoStartNotificationList.Clear();
 
             for (int n = 0; n < list.Count; ++n)
             {

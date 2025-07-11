@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,22 +37,22 @@ namespace GameEngine
             /// <summary>
             /// 事件对象唯一标识
             /// </summary>
-            private int m_eventID;
+            private int _eventID;
             /// <summary>
             /// 事件处理参数列表
             /// </summary>
-            private object[] m_params;
+            private object[] _params;
 
-            public int EventID => m_eventID;
-            public object[] Params => m_params;
+            public int EventID => _eventID;
+            public object[] Params => _params;
 
             /// <summary>
             /// 事件数据对象的构造函数
             /// </summary>
             public EventData()
             {
-                m_eventID = 0;
-                m_params = null;
+                _eventID = 0;
+                _params = null;
             }
 
             /// <summary>
@@ -62,8 +62,8 @@ namespace GameEngine
             /// <param name="_params">事件参数列表</param>
             public EventData(int _eventID, params object[] _params)
             {
-                m_eventID = _eventID;
-                m_params = _params;
+                this._eventID = _eventID;
+                this._params = _params;
             }
 
             /// <summary>
@@ -72,8 +72,8 @@ namespace GameEngine
             /// <param name="param">事件数据</param>
             public EventData(object param)
             {
-                m_eventID = 0;
-                m_params = new object[] { param };
+                _eventID = 0;
+                _params = new object[] { param };
             }
 
             /// <summary>
@@ -88,8 +88,8 @@ namespace GameEngine
             /// </summary>
             public void Cleanup()
             {
-                m_eventID = 0;
-                m_params = null;
+                _eventID = 0;
+                _params = null;
             }
         }
     }

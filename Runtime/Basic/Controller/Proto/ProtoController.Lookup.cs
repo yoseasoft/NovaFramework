@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -55,20 +55,20 @@ namespace GameEngine
             /// <summary>
             /// 匹配查找操作服务的目标对象类型
             /// </summary>
-            private readonly SystemType m_classType;
+            private readonly SystemType _classType;
 
-            public SystemType ClassType => m_classType;
+            public SystemType ClassType => _classType;
 
             public OnProtoLookupProcessRegisterOfTargetAttribute(SystemType classType)
             {
-                m_classType = classType;
+                _classType = classType;
             }
         }
 
         /// <summary>
         /// 原型对象查找操作处理句柄列表容器
         /// </summary>
-        private IDictionary<SystemType, SystemDelegate> m_protoLookupProcessingCallbacks = null;
+        private IDictionary<SystemType, SystemDelegate> _protoLookupProcessingCallbacks = null;
 
         /// <summary>
         /// 原型管理对象的查找操作初始化通知接口函数
@@ -77,7 +77,7 @@ namespace GameEngine
         private void OnProtoLookupInitialize()
         {
             // 初始化原型对象查找操作句柄列表容器
-            m_protoLookupProcessingCallbacks = new Dictionary<SystemType, SystemDelegate>();
+            _protoLookupProcessingCallbacks = new Dictionary<SystemType, SystemDelegate>();
 
             SystemType classType = typeof(ProtoController);
             SystemMethodInfo[] methods = classType.GetMethods(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Instance);
@@ -111,8 +111,8 @@ namespace GameEngine
         private void OnProtoLookupCleanup()
         {
             // 清理原型对象查找操作句柄列表容器
-            m_protoLookupProcessingCallbacks.Clear();
-            m_protoLookupProcessingCallbacks = null;
+            _protoLookupProcessingCallbacks.Clear();
+            _protoLookupProcessingCallbacks = null;
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace GameEngine
         {
             callback = null;
 
-            foreach (KeyValuePair<SystemType, SystemDelegate> pair in m_protoLookupProcessingCallbacks)
+            foreach (KeyValuePair<SystemType, SystemDelegate> pair in _protoLookupProcessingCallbacks)
             {
                 if (pair.Key.IsAssignableFrom(targetType))
                 {
@@ -177,15 +177,15 @@ namespace GameEngine
         /// <param name="callback">回调句柄</param>
         private void AddProtoLookupProcessingCallHandler(SystemType targetType, SystemDelegate callback)
         {
-            if (m_protoLookupProcessingCallbacks.ContainsKey(targetType))
+            if (_protoLookupProcessingCallbacks.ContainsKey(targetType))
             {
                 Debugger.Warn("The callback '{0}' was already exists for target type '{1}', repeated add it will be override old handler.",
                         NovaEngine.Utility.Text.ToString(callback), targetType.FullName);
 
-                m_protoLookupProcessingCallbacks.Remove(targetType);
+                _protoLookupProcessingCallbacks.Remove(targetType);
             }
 
-            m_protoLookupProcessingCallbacks.Add(targetType, callback);
+            _protoLookupProcessingCallbacks.Add(targetType, callback);
         }
 
         #endregion
@@ -202,7 +202,7 @@ namespace GameEngine
             SystemType entityType = typeof(CEntity);
             List<CEntity> entities = new List<CEntity>();
 
-            foreach (KeyValuePair<SystemType, SystemDelegate> pair in m_protoLookupProcessingCallbacks)
+            foreach (KeyValuePair<SystemType, SystemDelegate> pair in _protoLookupProcessingCallbacks)
             {
                 if (entityType.IsAssignableFrom(pair.Key))
                 {

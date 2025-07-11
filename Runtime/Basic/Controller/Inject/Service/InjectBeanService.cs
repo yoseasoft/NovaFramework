@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -61,19 +61,19 @@ namespace GameEngine
         /// <summary>
         /// 服务初始化处理回调的函数容器
         /// </summary>
-        private static IList<SystemDelegate> s_serviceProcessInitCallbacks = null;
+        private static IList<SystemDelegate> _serviceProcessInitCallbacks = null;
         /// <summary>
         /// 服务清理处理回调的函数容器
         /// </summary>
-        private static IList<SystemDelegate> s_serviceProcessCleanupCallbacks = null;
+        private static IList<SystemDelegate> _serviceProcessCleanupCallbacks = null;
 
         /// <summary>
         /// 初始化注入服务处理类声明的全部回调接口
         /// </summary>
         internal static void InitAllServiceProcessingCallbacks()
         {
-            s_serviceProcessInitCallbacks = new List<SystemDelegate>();
-            s_serviceProcessCleanupCallbacks = new List<SystemDelegate>();
+            _serviceProcessInitCallbacks = new List<SystemDelegate>();
+            _serviceProcessCleanupCallbacks = new List<SystemDelegate>();
 
             SystemType classType = typeof(InjectBeanService);
             SystemMethodInfo[] methods = classType.GetMethods(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
@@ -88,20 +88,20 @@ namespace GameEngine
                     {
                         SystemDelegate callback = method.CreateDelegate(typeof(NovaEngine.Definition.Delegate.EmptyFunctionHandler));
 
-                        s_serviceProcessInitCallbacks.Add(callback);
+                        _serviceProcessInitCallbacks.Add(callback);
                     }
                     else if (typeof(OnServiceProcessCleanupCallbackAttribute) == attrType)
                     {
                         SystemDelegate callback = method.CreateDelegate(typeof(NovaEngine.Definition.Delegate.EmptyFunctionHandler));
 
-                        s_serviceProcessCleanupCallbacks.Add(callback);
+                        _serviceProcessCleanupCallbacks.Add(callback);
                     }
                 }
             }
 
-            for (int n = 0; n < s_serviceProcessInitCallbacks.Count; ++n)
+            for (int n = 0; n < _serviceProcessInitCallbacks.Count; ++n)
             {
-                s_serviceProcessInitCallbacks[n].DynamicInvoke();
+                _serviceProcessInitCallbacks[n].DynamicInvoke();
             }
         }
 
@@ -110,16 +110,16 @@ namespace GameEngine
         /// </summary>
         internal static void CleanupAllServiceProcessingCallbacks()
         {
-            for (int n = 0; n < s_serviceProcessCleanupCallbacks.Count; ++n)
+            for (int n = 0; n < _serviceProcessCleanupCallbacks.Count; ++n)
             {
-                s_serviceProcessCleanupCallbacks[n].DynamicInvoke();
+                _serviceProcessCleanupCallbacks[n].DynamicInvoke();
             }
 
-            s_serviceProcessInitCallbacks.Clear();
-            s_serviceProcessInitCallbacks = null;
+            _serviceProcessInitCallbacks.Clear();
+            _serviceProcessInitCallbacks = null;
 
-            s_serviceProcessCleanupCallbacks.Clear();
-            s_serviceProcessCleanupCallbacks = null;
+            _serviceProcessCleanupCallbacks.Clear();
+            _serviceProcessCleanupCallbacks = null;
         }
     }
 }

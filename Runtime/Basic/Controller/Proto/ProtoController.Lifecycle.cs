@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -55,11 +55,11 @@ namespace GameEngine
             /// <summary>
             /// 管理生命周期对象的行为类型
             /// </summary>
-            private readonly AspectBehaviourType m_behaviourType;
+            private readonly AspectBehaviourType _behaviourType;
 
-            public AspectBehaviourType BehaviourType => m_behaviourType;
+            public AspectBehaviourType BehaviourType => _behaviourType;
 
-            public OnProtoLifecycleRegisterAttribute(AspectBehaviourType behaviourType) { m_behaviourType = behaviourType; }
+            public OnProtoLifecycleRegisterAttribute(AspectBehaviourType behaviourType) { _behaviourType = behaviourType; }
         }
 
         /// <summary>
@@ -71,11 +71,11 @@ namespace GameEngine
             /// <summary>
             /// 管理生命周期对象的行为类型
             /// </summary>
-            private readonly AspectBehaviourType m_behaviourType;
+            private readonly AspectBehaviourType _behaviourType;
 
-            public AspectBehaviourType BehaviourType => m_behaviourType;
+            public AspectBehaviourType BehaviourType => _behaviourType;
 
-            public OnProtoLifecycleUnregisterAttribute(AspectBehaviourType behaviourType) { m_behaviourType = behaviourType; }
+            public OnProtoLifecycleUnregisterAttribute(AspectBehaviourType behaviourType) { _behaviourType = behaviourType; }
         }
 
         /// <summary>
@@ -87,35 +87,35 @@ namespace GameEngine
             /// <summary>
             /// 匹配生命周期处理服务的目标对象类型
             /// </summary>
-            private readonly SystemType m_classType;
+            private readonly SystemType _classType;
             /// <summary>
             /// 执行生命周期处理服务的行为类型
             /// </summary>
-            private readonly AspectBehaviourType m_behaviourType;
+            private readonly AspectBehaviourType _behaviourType;
 
-            public SystemType ClassType => m_classType;
-            public AspectBehaviourType BehaviourType => m_behaviourType;
+            public SystemType ClassType => _classType;
+            public AspectBehaviourType BehaviourType => _behaviourType;
 
             public OnProtoLifecycleProcessRegisterOfTargetAttribute(SystemType classType, AspectBehaviourType behaviourType)
             {
-                m_classType = classType;
-                m_behaviourType = behaviourType;
+                _classType = classType;
+                _behaviourType = behaviourType;
             }
         }
 
         /// <summary>
         /// 原型对象生命周期服务处理句柄列表容器
         /// </summary>
-        private IDictionary<SystemType, IDictionary<AspectBehaviourType, OnProtoLifecycleProcessingHandler>> m_protoLifecycleProcessingCallbacks = null;
+        private IDictionary<SystemType, IDictionary<AspectBehaviourType, OnProtoLifecycleProcessingHandler>> _protoLifecycleProcessingCallbacks = null;
 
         /// <summary>
         /// 原型对象生命周期注册函数列表容器
         /// </summary>
-        private IDictionary<AspectBehaviourType, OnProtoLifecycleProcessingHandler> m_protoLifecycleRegisterCallbacks = null;
+        private IDictionary<AspectBehaviourType, OnProtoLifecycleProcessingHandler> _protoLifecycleRegisterCallbacks = null;
         /// <summary>
         /// 原型对象生命周期注销函数列表容器
         /// </summary>
-        private IDictionary<AspectBehaviourType, OnProtoLifecycleProcessingHandler> m_protoLifecycleUnregisterCallbacks = null;
+        private IDictionary<AspectBehaviourType, OnProtoLifecycleProcessingHandler> _protoLifecycleUnregisterCallbacks = null;
 
         /// <summary>
         /// 原型管理对象的生命周期管理初始化通知接口函数
@@ -124,11 +124,11 @@ namespace GameEngine
         private void OnProtoLifecycleInitialize()
         {
             // 初始化原型对象生命周期句柄列表容器
-            m_protoLifecycleProcessingCallbacks = new Dictionary<SystemType, IDictionary<AspectBehaviourType, OnProtoLifecycleProcessingHandler>>();
+            _protoLifecycleProcessingCallbacks = new Dictionary<SystemType, IDictionary<AspectBehaviourType, OnProtoLifecycleProcessingHandler>>();
             // 初始化原型对象生命周期注册函数列表容器
-            m_protoLifecycleRegisterCallbacks = new Dictionary<AspectBehaviourType, OnProtoLifecycleProcessingHandler>();
+            _protoLifecycleRegisterCallbacks = new Dictionary<AspectBehaviourType, OnProtoLifecycleProcessingHandler>();
             // 初始化原型对象生命周期注销函数列表容器
-            m_protoLifecycleUnregisterCallbacks = new Dictionary<AspectBehaviourType, OnProtoLifecycleProcessingHandler>();
+            _protoLifecycleUnregisterCallbacks = new Dictionary<AspectBehaviourType, OnProtoLifecycleProcessingHandler>();
 
             SystemType classType = typeof(ProtoController);
             SystemMethodInfo[] methods = classType.GetMethods(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Instance);
@@ -186,15 +186,15 @@ namespace GameEngine
         private void OnProtoLifecycleCleanup()
         {
             // 清理原型对象生命周期句柄列表容器
-            m_protoLifecycleProcessingCallbacks.Clear();
-            m_protoLifecycleProcessingCallbacks = null;
+            _protoLifecycleProcessingCallbacks.Clear();
+            _protoLifecycleProcessingCallbacks = null;
 
             // 清理原型对象生命周期注册函数列表容器
-            m_protoLifecycleRegisterCallbacks.Clear();
-            m_protoLifecycleRegisterCallbacks = null;
+            _protoLifecycleRegisterCallbacks.Clear();
+            _protoLifecycleRegisterCallbacks = null;
             // 清理原型对象生命周期注销函数列表容器
-            m_protoLifecycleUnregisterCallbacks.Clear();
-            m_protoLifecycleUnregisterCallbacks = null;
+            _protoLifecycleUnregisterCallbacks.Clear();
+            _protoLifecycleUnregisterCallbacks = null;
         }
 
         /// <summary>
@@ -214,13 +214,13 @@ namespace GameEngine
         /// <param name="callback">回调函数句柄</param>
         private void AddProtoLifecycleRegisterCallback(AspectBehaviourType behaviourType, OnProtoLifecycleProcessingHandler callback)
         {
-            if (m_protoLifecycleRegisterCallbacks.ContainsKey(behaviourType))
+            if (_protoLifecycleRegisterCallbacks.ContainsKey(behaviourType))
             {
                 Debugger.Warn("The proto lifecycle register callback for target behaviour type '{0}' was already exist, repeat added it will be override old value.", behaviourType.ToString());
-                m_protoLifecycleRegisterCallbacks.Remove(behaviourType);
+                _protoLifecycleRegisterCallbacks.Remove(behaviourType);
             }
 
-            m_protoLifecycleRegisterCallbacks.Add(behaviourType, callback);
+            _protoLifecycleRegisterCallbacks.Add(behaviourType, callback);
         }
 
         /// <summary>
@@ -230,13 +230,13 @@ namespace GameEngine
         /// <param name="callback">回调函数句柄</param>
         private void AddProtoLifecycleUnregisterCallback(AspectBehaviourType behaviourType, OnProtoLifecycleProcessingHandler callback)
         {
-            if (m_protoLifecycleUnregisterCallbacks.ContainsKey(behaviourType))
+            if (_protoLifecycleUnregisterCallbacks.ContainsKey(behaviourType))
             {
                 Debugger.Warn("The proto lifecycle unregister callback for target behaviour type '{0}' was already exist, repeat added it will be override old value.", behaviourType.ToString());
-                m_protoLifecycleUnregisterCallbacks.Remove(behaviourType);
+                _protoLifecycleUnregisterCallbacks.Remove(behaviourType);
             }
 
-            m_protoLifecycleUnregisterCallbacks.Add(behaviourType, callback);
+            _protoLifecycleUnregisterCallbacks.Add(behaviourType, callback);
         }
 
         /// <summary>
@@ -246,7 +246,7 @@ namespace GameEngine
         /// <param name="proto">原型对象实例</param>
         public void RegProtoLifecycleNotification(AspectBehaviourType behaviourType, IProto proto)
         {
-            if (false == m_protoLifecycleRegisterCallbacks.TryGetValue(behaviourType, out OnProtoLifecycleProcessingHandler callback))
+            if (false == _protoLifecycleRegisterCallbacks.TryGetValue(behaviourType, out OnProtoLifecycleProcessingHandler callback))
             {
                 Debugger.Error("Could not found any lifecycle notfication callback with target behaviour type '{0}', register proto lifecycle notification failed.", behaviourType.ToString());
                 return;
@@ -261,7 +261,7 @@ namespace GameEngine
         /// <param name="proto">原型对象实例</param>
         public void UnregProtoLifecycleNotification(IProto proto)
         {
-            IEnumerator<OnProtoLifecycleProcessingHandler> e = m_protoLifecycleUnregisterCallbacks.Values.GetEnumerator();
+            IEnumerator<OnProtoLifecycleProcessingHandler> e = _protoLifecycleUnregisterCallbacks.Values.GetEnumerator();
             while (e.MoveNext())
             {
                 e.Current(proto);
@@ -326,7 +326,7 @@ namespace GameEngine
         {
             callback = null;
 
-            foreach (KeyValuePair<SystemType, IDictionary<AspectBehaviourType, OnProtoLifecycleProcessingHandler>> pair in m_protoLifecycleProcessingCallbacks)
+            foreach (KeyValuePair<SystemType, IDictionary<AspectBehaviourType, OnProtoLifecycleProcessingHandler>> pair in _protoLifecycleProcessingCallbacks)
             {
                 if (pair.Key.IsAssignableFrom(targetType))
                 {
@@ -352,11 +352,11 @@ namespace GameEngine
         private void AddProtoLifecycleProcessingCallHandler(SystemType targetType, AspectBehaviourType behaviourType, OnProtoLifecycleProcessingHandler callback)
         {
             IDictionary<AspectBehaviourType, OnProtoLifecycleProcessingHandler> dict;
-            if (false == m_protoLifecycleProcessingCallbacks.TryGetValue(targetType, out dict))
+            if (false == _protoLifecycleProcessingCallbacks.TryGetValue(targetType, out dict))
             {
                 dict = new Dictionary<AspectBehaviourType, OnProtoLifecycleProcessingHandler>();
 
-                m_protoLifecycleProcessingCallbacks.Add(targetType, dict);
+                _protoLifecycleProcessingCallbacks.Add(targetType, dict);
             }
 
             if (dict.ContainsKey(behaviourType))

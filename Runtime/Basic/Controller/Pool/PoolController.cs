@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -38,12 +38,12 @@ namespace GameEngine
         /// <summary>
         /// 池对象类型统计列表
         /// </summary>
-        private IList<SystemType> m_poolObjectTypes = null;
+        private IList<SystemType> _poolObjectTypes = null;
 
         /// <summary>
         /// 池对象处理信息管理列表
         /// </summary>
-        private IDictionary<SystemType, PoolObjectProcessInfo> m_poolObjectProcessInfos = null;
+        private IDictionary<SystemType, PoolObjectProcessInfo> _poolObjectProcessInfos = null;
 
         /// <summary>
         /// 池管理对象初始化通知接口函数
@@ -51,10 +51,10 @@ namespace GameEngine
         protected override sealed void OnInitialize()
         {
             // 初始化池对象类型列表
-            m_poolObjectTypes = new List<SystemType>();
+            _poolObjectTypes = new List<SystemType>();
 
             // 初始化池对象处理信息管理列表
-            m_poolObjectProcessInfos = new Dictionary<SystemType, PoolObjectProcessInfo>();
+            _poolObjectProcessInfos = new Dictionary<SystemType, PoolObjectProcessInfo>();
         }
 
         /// <summary>
@@ -64,11 +64,11 @@ namespace GameEngine
         {
             // 清理池对象处理信息管理列表
             RemoveAllPoolObjectProcessInfos();
-            m_poolObjectProcessInfos = null;
+            _poolObjectProcessInfos = null;
 
             // 清理池对象类型列表
             RemoveAllPoolObjectTypes();
-            m_poolObjectTypes = null;
+            _poolObjectTypes = null;
         }
 
         /// <summary>
@@ -167,9 +167,9 @@ namespace GameEngine
         /// <returns>若给定类型为池化对象则返回true，否则返回false</returns>
         private bool IsPoolObjectType(SystemType targetType)
         {
-            for (int n = 0; n < m_poolObjectTypes.Count; ++n)
+            for (int n = 0; n < _poolObjectTypes.Count; ++n)
             {
-                if (m_poolObjectTypes[n] == targetType || m_poolObjectTypes[n].IsAssignableFrom(targetType))
+                if (_poolObjectTypes[n] == targetType || _poolObjectTypes[n].IsAssignableFrom(targetType))
                 {
                     return true;
                 }
@@ -185,14 +185,14 @@ namespace GameEngine
         /// <param name="targetType">对象类型</param>
         public void AddPoolObjectType(SystemType targetType)
         {
-            if (m_poolObjectTypes.Contains(targetType))
+            if (_poolObjectTypes.Contains(targetType))
             {
                 Debugger.Warn("The target object type '{0}' was already exist within pool controller, repeat added it failed.",
                         NovaEngine.Utility.Text.ToString(targetType));
                 return;
             }
 
-            m_poolObjectTypes.Add(targetType);
+            _poolObjectTypes.Add(targetType);
         }
 
         /// <summary>
@@ -201,9 +201,9 @@ namespace GameEngine
         /// <param name="targetType">对象类型</param>
         private void RemovePoolObjectType(SystemType targetType)
         {
-            if (m_poolObjectTypes.Contains(targetType))
+            if (_poolObjectTypes.Contains(targetType))
             {
-                m_poolObjectTypes.Remove(targetType);
+                _poolObjectTypes.Remove(targetType);
             }
         }
 
@@ -212,7 +212,7 @@ namespace GameEngine
         /// </summary>
         private void RemoveAllPoolObjectTypes()
         {
-            m_poolObjectTypes.Clear();
+            _poolObjectTypes.Clear();
         }
 
         #endregion
@@ -241,7 +241,7 @@ namespace GameEngine
         /// <param name="releaseCallback">释放对象回调函数</param>
         private void AddPoolObjectProcessInfo(SystemType targetType, SystemDelegate createCallback, SystemDelegate releaseCallback)
         {
-            if (m_poolObjectProcessInfos.ContainsKey(targetType))
+            if (_poolObjectProcessInfos.ContainsKey(targetType))
             {
                 Debugger.Warn("The target object type '{0}' was already exist within pool controller's processing map, repeat added it failed.",
                         NovaEngine.Utility.Text.ToString(targetType));
@@ -249,7 +249,7 @@ namespace GameEngine
             }
 
             PoolObjectProcessInfo info = new PoolObjectProcessInfo(createCallback, releaseCallback);
-            m_poolObjectProcessInfos.Add(targetType, info);
+            _poolObjectProcessInfos.Add(targetType, info);
         }
 
         /// <summary>
@@ -260,12 +260,12 @@ namespace GameEngine
         /// <returns>若存在指定的对象类型则返回true，否则返回false</returns>
         private bool TryGetPoolObjectProcessByType(SystemType targetType, out PoolObjectProcessInfo info)
         {
-            IEnumerator<SystemType> e = m_poolObjectProcessInfos.Keys.GetEnumerator();
+            IEnumerator<SystemType> e = _poolObjectProcessInfos.Keys.GetEnumerator();
             while (e.MoveNext())
             {
                 if (e.Current == targetType || e.Current.IsAssignableFrom(targetType))
                 {
-                    info = m_poolObjectProcessInfos[e.Current];
+                    info = _poolObjectProcessInfos[e.Current];
                     return true;
                 }
             }
@@ -290,9 +290,9 @@ namespace GameEngine
         /// <param name="targetType">对象类型</param>
         private void RemovePoolObjectProcessInfo(SystemType targetType)
         {
-            if (m_poolObjectProcessInfos.ContainsKey(targetType))
+            if (_poolObjectProcessInfos.ContainsKey(targetType))
             {
-                m_poolObjectProcessInfos.Remove(targetType);
+                _poolObjectProcessInfos.Remove(targetType);
             }
         }
 
@@ -301,7 +301,7 @@ namespace GameEngine
         /// </summary>
         private void RemoveAllPoolObjectProcessInfos()
         {
-            m_poolObjectProcessInfos.Clear();
+            _poolObjectProcessInfos.Clear();
         }
 
         /// <summary>
@@ -312,19 +312,19 @@ namespace GameEngine
             /// <summary>
             /// 对象创建回调函数
             /// </summary>
-            private readonly SystemDelegate m_objectCreateCallback;
+            private readonly SystemDelegate _objectCreateCallback;
             /// <summary>
             /// 对象释放回调函数
             /// </summary>
-            private readonly SystemDelegate m_objectReleaseCallback;
+            private readonly SystemDelegate _objectReleaseCallback;
 
-            public SystemDelegate ObjectCreateCallback => m_objectCreateCallback;
-            public SystemDelegate ObjectReleaseCallback => m_objectReleaseCallback;
+            public SystemDelegate ObjectCreateCallback => _objectCreateCallback;
+            public SystemDelegate ObjectReleaseCallback => _objectReleaseCallback;
 
             public PoolObjectProcessInfo(SystemDelegate objectCreateCallback, SystemDelegate objectReleaseCallback)
             {
-                m_objectCreateCallback = objectCreateCallback;
-                m_objectReleaseCallback = objectReleaseCallback;
+                _objectCreateCallback = objectCreateCallback;
+                _objectReleaseCallback = objectReleaseCallback;
             }
         }
 

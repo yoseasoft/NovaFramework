@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ namespace GameEngine
         /// <summary>
         /// 组件对象类型映射注册管理容器
         /// </summary>
-        private NovaEngine.DoubleMap<string, SystemType> m_componentClassTypes = null;
+        private NovaEngine.DoubleMap<string, SystemType> _componentClassTypes = null;
 
         /// <summary>
         /// 原型管理对象的组件模块初始化通知接口函数
@@ -45,7 +45,7 @@ namespace GameEngine
         private void OnComponentInitialize()
         {
             // 初始化组件类注册容器
-            m_componentClassTypes = new NovaEngine.DoubleMap<string, SystemType>();
+            _componentClassTypes = new NovaEngine.DoubleMap<string, SystemType>();
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace GameEngine
         {
             // 清理组件类注册容器
             UnregisterAllComponentClasses();
-            m_componentClassTypes = null;
+            _componentClassTypes = null;
         }
 
         #region 组件类注册访问接口函数
@@ -68,7 +68,7 @@ namespace GameEngine
         /// <returns>返回名称对应的组件对象类型，若不存在则返回null</returns>
         public SystemType FindComponentTypeByName(string componentName)
         {
-            if (m_componentClassTypes.TryGetValueByKey(componentName, out SystemType componentType))
+            if (_componentClassTypes.TryGetValueByKey(componentName, out SystemType componentType))
             {
                 return componentType;
             }
@@ -83,7 +83,7 @@ namespace GameEngine
         /// <returns>返回给定组件类型对应的名称</returns>
         public string GetComponentNameByType(SystemType componentType)
         {
-            if (m_componentClassTypes.TryGetKeyByValue(componentType, out string componentName))
+            if (_componentClassTypes.TryGetKeyByValue(componentType, out string componentName))
             {
                 return componentName;
             }
@@ -108,13 +108,13 @@ namespace GameEngine
                 return false;
             }
 
-            if (m_componentClassTypes.ContainsKey(componentName))
+            if (_componentClassTypes.ContainsKey(componentName))
             {
                 Debugger.Warn("The component name '{0}' was already registed, repeat add will be override old name.", componentName);
-                m_componentClassTypes.RemoveByKey(componentName);
+                _componentClassTypes.RemoveByKey(componentName);
             }
 
-            m_componentClassTypes.Add(componentName, clsType);
+            _componentClassTypes.Add(componentName, clsType);
 
             return true;
         }
@@ -125,13 +125,13 @@ namespace GameEngine
         /// <param name="componentName">组件名称</param>
         internal void UnregisterComponentClass(string componentName)
         {
-            if (false == m_componentClassTypes.ContainsKey(componentName))
+            if (false == _componentClassTypes.ContainsKey(componentName))
             {
                 Debugger.Warn("Could not found any component with target name '{0}', removed it failed.", componentName);
                 return;
             }
 
-            m_componentClassTypes.RemoveByKey(componentName);
+            _componentClassTypes.RemoveByKey(componentName);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace GameEngine
         /// </summary>
         internal void UnregisterAllComponentClasses()
         {
-            m_componentClassTypes.Clear();
+            _componentClassTypes.Clear();
         }
 
         #endregion

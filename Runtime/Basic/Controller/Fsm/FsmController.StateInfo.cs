@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,11 +39,11 @@ namespace GameEngine
         /// </summary>
         private sealed class StateInfo
         {
-            private string m_name;
-            private SystemType m_classType;
-            private int m_priority;
-            private bool m_isInstanceType;
-            private bool m_isStaticType;
+            private string _name;
+            private SystemType _classType;
+            private int _priority;
+            private bool _isInstanceType;
+            private bool _isStaticType;
 
             internal StateInfo(string name, SystemType classType) : this(name, 0, false, classType)
             { }
@@ -56,13 +56,13 @@ namespace GameEngine
 
             internal StateInfo(string name, int priority, bool isInstanceType, SystemType classType)
             {
-                m_name = name;
-                m_priority = priority;
-                m_isInstanceType = isInstanceType;
+                _name = name;
+                _priority = priority;
+                _isInstanceType = isInstanceType;
 
-                m_classType = classType;
+                _classType = classType;
 
-                m_isStaticType = NovaEngine.Utility.Reflection.IsTypeOfStaticClass(classType);
+                _isStaticType = NovaEngine.Utility.Reflection.IsTypeOfStaticClass(classType);
             }
         }
     }

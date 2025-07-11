@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,7 @@ namespace GameEngine
         /// <summary>
         /// 原型对象销毁通知管理容器
         /// </summary>
-        private IList<IProto> m_protoDestroyNotificationList = null;
+        private IList<IProto> _protoDestroyNotificationList = null;
 
         /// <summary>
         /// 原型管理对象的销毁流程初始化通知接口函数
@@ -43,7 +43,7 @@ namespace GameEngine
         private void OnProtoDestroyInitialize()
         {
             // 初始化销毁对象通知容器
-            m_protoDestroyNotificationList = new List<IProto>();
+            _protoDestroyNotificationList = new List<IProto>();
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace GameEngine
         private void OnProtoDestroyCleanup()
         {
             // 清理销毁对象通知容器
-            m_protoDestroyNotificationList.Clear();
-            m_protoDestroyNotificationList = null;
+            _protoDestroyNotificationList.Clear();
+            _protoDestroyNotificationList = null;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace GameEngine
         [OnControllerSubmoduleDumpCallback]
         private void OnProtoDestroyDump()
         {
-            if (m_protoDestroyNotificationList.Count > 0)
+            if (_protoDestroyNotificationList.Count > 0)
             {
                 OnProtoDestroyProcess();
             }
@@ -84,7 +84,7 @@ namespace GameEngine
                 return;
             }
 
-            if (m_protoDestroyNotificationList.Contains(proto))
+            if (_protoDestroyNotificationList.Contains(proto))
             {
                 Debugger.Warn("The register destroy notification proto object '{0}' was already exist, repeat added it failed.", proto.GetType().FullName);
                 return;
@@ -93,7 +93,7 @@ namespace GameEngine
             // 撤销其它通知
             OnProtoDestroyLifecycleNotifyPostProcess(proto);
 
-            m_protoDestroyNotificationList.Add(proto);
+            _protoDestroyNotificationList.Add(proto);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace GameEngine
         /// <param name="proto">原型对象实例</param>
         private void OnProtoDestroyLifecycleNotifyPostProcess(IProto proto)
         {
-            foreach (KeyValuePair<AspectBehaviourType, OnProtoLifecycleProcessingHandler> pair in m_protoLifecycleUnregisterCallbacks)
+            foreach (KeyValuePair<AspectBehaviourType, OnProtoLifecycleProcessingHandler> pair in _protoLifecycleUnregisterCallbacks)
             {
                 if (AspectBehaviourType.Destroy == pair.Key)
                 {
@@ -126,9 +126,9 @@ namespace GameEngine
                 return;
             }
 
-            if (m_protoDestroyNotificationList.Contains(proto))
+            if (_protoDestroyNotificationList.Contains(proto))
             {
-                m_protoDestroyNotificationList.Remove(proto);
+                _protoDestroyNotificationList.Remove(proto);
             }
         }
 
@@ -137,12 +137,12 @@ namespace GameEngine
         /// </summary>
         private void OnProtoDestroyProcess()
         {
-            while (m_protoDestroyNotificationList.Count > 0)
+            while (_protoDestroyNotificationList.Count > 0)
             {
-                IProto proto = m_protoDestroyNotificationList[0];
+                IProto proto = _protoDestroyNotificationList[0];
 
                 // 先从队列中移除目标对象
-                m_protoDestroyNotificationList.Remove(proto);
+                _protoDestroyNotificationList.Remove(proto);
 
                 OnProtoLifecycleProcessingHandler callback;
                 if (false == TryGetProtoLifecycleProcessingCallback(proto.GetType(), AspectBehaviourType.Destroy, out callback))
@@ -167,7 +167,7 @@ namespace GameEngine
             CActor actor = proto as CActor;
             Debugger.Assert(null != actor, "Invalid arguments.");
 
-            RemoveAllComponentsBelongingToTargetEntityFromTheContainer(actor, m_protoDestroyNotificationList);
+            RemoveAllComponentsBelongingToTargetEntityFromTheContainer(actor, _protoDestroyNotificationList);
 
             ActorHandler.Instance.RemoveActor(actor);
         }
@@ -178,7 +178,7 @@ namespace GameEngine
             CView view = proto as CView;
             Debugger.Assert(null != view, "Invalid arguments.");
 
-            RemoveAllComponentsBelongingToTargetEntityFromTheContainer(view, m_protoDestroyNotificationList);
+            RemoveAllComponentsBelongingToTargetEntityFromTheContainer(view, _protoDestroyNotificationList);
 
             GuiHandler.Instance.RemoveUI(view);
         }

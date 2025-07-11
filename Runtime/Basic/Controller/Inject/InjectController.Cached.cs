@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,11 +37,11 @@ namespace GameEngine
         /// <summary>
         /// 多例模式的实体对象的缓存管理容器
         /// </summary>
-        private IList<CBean> m_multipleBeanInstanceCaches = null;
+        private IList<CBean> _multipleBeanInstanceCaches = null;
         /// <summary>
         /// 单例模式的实体对象的缓存管理容器
         /// </summary>
-        private static IDictionary<string, CBean> m_singletonBeanInstanceCaches = null;
+        private static IDictionary<string, CBean> _singletonBeanInstanceCaches = null;
 
         /// <summary>
         /// 实体注入缓存相关的初始化回调函数
@@ -50,9 +50,9 @@ namespace GameEngine
         private void InitInjectBeanCaches()
         {
             // 多例实体对象缓存容器初始化
-            m_multipleBeanInstanceCaches = new List<CBean>();
+            _multipleBeanInstanceCaches = new List<CBean>();
             // 单例实体对象缓存容器初始化
-            m_singletonBeanInstanceCaches = new Dictionary<string, CBean>();
+            _singletonBeanInstanceCaches = new Dictionary<string, CBean>();
         }
 
         /// <summary>
@@ -67,8 +67,8 @@ namespace GameEngine
             RemoveAllSingletonBeanInstancesFromCache();
 
             // 移除数据容器
-            m_multipleBeanInstanceCaches = null;
-            m_singletonBeanInstanceCaches = null;
+            _multipleBeanInstanceCaches = null;
+            _singletonBeanInstanceCaches = null;
         }
 
         #region 实体对象实例的缓存管理接口函数
@@ -79,13 +79,13 @@ namespace GameEngine
         /// <param name="obj">对象实例</param>
         private void AddMultipleBeanInstanceToCache(CBean obj)
         {
-            if (m_multipleBeanInstanceCaches.Contains(obj))
+            if (_multipleBeanInstanceCaches.Contains(obj))
             {
                 Debugger.Warn("The target bean object '{0}' was already exist within multiple bean instance cache, repeat added it failed.", obj.BeanName);
                 return;
             }
 
-            m_multipleBeanInstanceCaches.Add(obj);
+            _multipleBeanInstanceCaches.Add(obj);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace GameEngine
         private void AddSingletonBeanInstanceToCache(CBean obj)
         {
             string beanName = obj.BeanName;
-            if (m_singletonBeanInstanceCaches.ContainsKey(beanName))
+            if (_singletonBeanInstanceCaches.ContainsKey(beanName))
             {
                 Debugger.Warn("The target bean name '{0}' was already exist within singleton bean instance cache, repeat added it will be override old value.", beanName);
 
@@ -103,7 +103,7 @@ namespace GameEngine
                 RemoveCachedSingletonBeanInstanceByName(beanName);
             }
 
-            m_singletonBeanInstanceCaches.Add(beanName, obj);
+            _singletonBeanInstanceCaches.Add(beanName, obj);
         }
 
         /// <summary>
@@ -120,9 +120,9 @@ namespace GameEngine
                 return list;
             }
 
-            for (int n = 0; n < m_multipleBeanInstanceCaches.Count; ++n)
+            for (int n = 0; n < _multipleBeanInstanceCaches.Count; ++n)
             {
-                CBean bean = m_multipleBeanInstanceCaches[n];
+                CBean bean = _multipleBeanInstanceCaches[n];
                 if (null != bean.BeanName && bean.BeanName.Equals(beanName))
                 {
                     list.Add(bean);
@@ -139,7 +139,7 @@ namespace GameEngine
         /// <returns>返回单例实体对象实例</returns>
         private CBean FindSingletonBeanInstanceByName(string beanName)
         {
-            if (m_singletonBeanInstanceCaches.TryGetValue(beanName, out CBean obj))
+            if (_singletonBeanInstanceCaches.TryGetValue(beanName, out CBean obj))
             {
                 return obj;
             }
@@ -158,12 +158,12 @@ namespace GameEngine
                 return;
             }
 
-            for (int n = m_multipleBeanInstanceCaches.Count - 1; n >= 0; --n)
+            for (int n = _multipleBeanInstanceCaches.Count - 1; n >= 0; --n)
             {
-                CBean bean = m_multipleBeanInstanceCaches[n];
+                CBean bean = _multipleBeanInstanceCaches[n];
                 if (null != bean.BeanName && bean.BeanName.Equals(beanName))
                 {
-                    m_multipleBeanInstanceCaches.RemoveAt(n);
+                    _multipleBeanInstanceCaches.RemoveAt(n);
                 }
             }
         }
@@ -174,13 +174,13 @@ namespace GameEngine
         /// <param name="obj">对象实例</param>
         private void RemoveCachedMultipleBeanInstanceByTarget(CBean obj)
         {
-            if (false == m_multipleBeanInstanceCaches.Contains(obj))
+            if (false == _multipleBeanInstanceCaches.Contains(obj))
             {
                 Debugger.Warn("Could not found any bean instance '{0}' within multiple cache, removed it failed.", obj.BeanName);
                 return;
             }
 
-            m_multipleBeanInstanceCaches.Remove(obj);
+            _multipleBeanInstanceCaches.Remove(obj);
         }
 
         /// <summary>
@@ -189,13 +189,13 @@ namespace GameEngine
         /// <param name="beanName">实体名称</param>
         private void RemoveCachedSingletonBeanInstanceByName(string beanName)
         {
-            if (false == m_singletonBeanInstanceCaches.TryGetValue(beanName, out CBean obj))
+            if (false == _singletonBeanInstanceCaches.TryGetValue(beanName, out CBean obj))
             {
                 Debugger.Warn("Could not found any bean record with target name '{0}' from singleton bean instance cache, removed it failed.", beanName);
                 return;
             }
 
-            m_singletonBeanInstanceCaches.Remove(beanName);
+            _singletonBeanInstanceCaches.Remove(beanName);
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace GameEngine
         /// <param name="obj">对象实例</param>
         private void ReleaseMultipleBeanInstanceFromCache(CBean obj)
         {
-            if (false == m_multipleBeanInstanceCaches.Contains(obj))
+            if (false == _multipleBeanInstanceCaches.Contains(obj))
             {
                 Debugger.Warn("Could not found any bean instance '{0}' within multiple cache, removed it failed.", obj.BeanName);
                 return;
@@ -223,7 +223,7 @@ namespace GameEngine
         /// <param name="beanName">实体名称</param>
         private void ReleaseSingletonBeanInstanceFromCache(string beanName)
         {
-            if (false == m_singletonBeanInstanceCaches.TryGetValue(beanName, out CBean obj))
+            if (false == _singletonBeanInstanceCaches.TryGetValue(beanName, out CBean obj))
             {
                 Debugger.Warn("Could not found any bean record with target name '{0}' from singleton bean instance cache, released it failed.", beanName);
                 return;
@@ -241,9 +241,9 @@ namespace GameEngine
         /// </summary>
         private void RemoveAllMultipleBeanInstanceFromCache()
         {
-            while (m_multipleBeanInstanceCaches.Count > 0)
+            while (_multipleBeanInstanceCaches.Count > 0)
             {
-                ReleaseMultipleBeanInstanceFromCache(m_multipleBeanInstanceCaches[0]);
+                ReleaseMultipleBeanInstanceFromCache(_multipleBeanInstanceCaches[0]);
             }
         }
 
@@ -252,9 +252,9 @@ namespace GameEngine
         /// </summary>
         private void RemoveAllSingletonBeanInstancesFromCache()
         {
-            while (m_singletonBeanInstanceCaches.Count > 0)
+            while (_singletonBeanInstanceCaches.Count > 0)
             {
-                string beanName = m_singletonBeanInstanceCaches.First().Key;
+                string beanName = _singletonBeanInstanceCaches.First().Key;
                 ReleaseSingletonBeanInstanceFromCache(beanName);
             }
         }

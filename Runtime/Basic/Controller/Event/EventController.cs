@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,17 +36,17 @@ namespace GameEngine
         /// <summary>
         /// 针对事件标识进行分发的监听对象管理列表容器
         /// </summary>
-        private IDictionary<int, IList<IEventDispatch>> m_eventListenersForId = null;
+        private IDictionary<int, IList<IEventDispatch>> _eventListenersForId = null;
 
         /// <summary>
         /// 针对事件类型进行分发的监听对象管理列表容器
         /// </summary>
-        private IDictionary<SystemType, IList<IEventDispatch>> m_eventListenersForType = null;
+        private IDictionary<SystemType, IList<IEventDispatch>> _eventListenersForType = null;
 
         /// <summary>
         /// 事件分发数据的缓冲管理队列
         /// </summary>
-        private Queue<EventData> m_eventBuffers = null;
+        private Queue<EventData> _eventBuffers = null;
 
         /// <summary>
         /// 事件分发对象初始化通知接口函数
@@ -54,11 +54,11 @@ namespace GameEngine
         protected override void OnInitialize()
         {
             // 初始化监听列表
-            m_eventListenersForId = new Dictionary<int, IList<IEventDispatch>>();
-            m_eventListenersForType = new Dictionary<SystemType, IList<IEventDispatch>>();
+            _eventListenersForId = new Dictionary<int, IList<IEventDispatch>>();
+            _eventListenersForType = new Dictionary<SystemType, IList<IEventDispatch>>();
 
             // 初始化事件数据缓冲队列
-            m_eventBuffers = new Queue<EventData>();
+            _eventBuffers = new Queue<EventData>();
         }
 
         /// <summary>
@@ -67,14 +67,14 @@ namespace GameEngine
         protected override void OnCleanup()
         {
             // 清理事件数据缓冲队列
-            m_eventBuffers.Clear();
-            m_eventBuffers = null;
+            _eventBuffers.Clear();
+            _eventBuffers = null;
 
             // 清理监听列表
-            m_eventListenersForId.Clear();
-            m_eventListenersForId = null;
-            m_eventListenersForType.Clear();
-            m_eventListenersForType = null;
+            _eventListenersForId.Clear();
+            _eventListenersForId = null;
+            _eventListenersForType.Clear();
+            _eventListenersForType = null;
         }
 
         /// <summary>
@@ -82,10 +82,10 @@ namespace GameEngine
         /// </summary>
         protected override sealed void OnUpdate()
         {
-            if (m_eventBuffers.Count > 0)
+            if (_eventBuffers.Count > 0)
             {
-                Queue<EventData> queue = new Queue<EventData>(m_eventBuffers);
-                m_eventBuffers.Clear();
+                Queue<EventData> queue = new Queue<EventData>(_eventBuffers);
+                _eventBuffers.Clear();
 
                 while (queue.Count > 0)
                 {
@@ -117,7 +117,7 @@ namespace GameEngine
         public void Send(int eventID, params object[] args)
         {
             EventData eventData = new EventData(eventID, args);
-            m_eventBuffers.Enqueue(eventData);
+            _eventBuffers.Enqueue(eventData);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace GameEngine
         public void Send<T>(T arg) where T : struct
         {
             EventData eventData = new EventData(arg);
-            m_eventBuffers.Enqueue(eventData);
+            _eventBuffers.Enqueue(eventData);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace GameEngine
             OnEventDistributeCallDispatched(eventID, args);
 
             IList<IEventDispatch> listeners;
-            if (m_eventListenersForId.TryGetValue(eventID, out listeners))
+            if (_eventListenersForId.TryGetValue(eventID, out listeners))
             {
                 // 2024-06-22:
                 // 因为网络消息处理逻辑中存在删除对象对象的情况，
@@ -215,7 +215,7 @@ namespace GameEngine
             OnEventDistributeCallDispatched(eventData);
 
             IList<IEventDispatch> listeners;
-            if (m_eventListenersForType.TryGetValue(eventData.GetType(), out listeners))
+            if (_eventListenersForType.TryGetValue(eventData.GetType(), out listeners))
             {
                 // 2024-06-22:
                 // 因为网络消息处理逻辑中存在删除对象对象的情况，
@@ -253,12 +253,12 @@ namespace GameEngine
         public bool Subscribe(int eventID, IEventDispatch listener)
         {
             IList<IEventDispatch> list;
-            if (false == m_eventListenersForId.TryGetValue(eventID, out list))
+            if (false == _eventListenersForId.TryGetValue(eventID, out list))
             {
                 list = new List<IEventDispatch>();
                 list.Add(listener);
 
-                m_eventListenersForId.Add(eventID, list);
+                _eventListenersForId.Add(eventID, list);
                 return true;
             }
 
@@ -283,12 +283,12 @@ namespace GameEngine
         public bool Subscribe(SystemType eventType, IEventDispatch listener)
         {
             IList<IEventDispatch> list;
-            if (false == m_eventListenersForType.TryGetValue(eventType, out list))
+            if (false == _eventListenersForType.TryGetValue(eventType, out list))
             {
                 list = new List<IEventDispatch>();
                 list.Add(listener);
 
-                m_eventListenersForType.Add(eventType, list);
+                _eventListenersForType.Add(eventType, list);
                 return true;
             }
 
@@ -312,7 +312,7 @@ namespace GameEngine
         public void Unsubscribe(int eventID, IEventDispatch listener)
         {
             IList<IEventDispatch> list;
-            if (false == m_eventListenersForId.TryGetValue(eventID, out list))
+            if (false == _eventListenersForId.TryGetValue(eventID, out list))
             {
                 Debugger.Warn("Could not found any listener for target event '{0}' with on subscribed, do unsubscribe failed.", eventID);
                 return;
@@ -322,7 +322,7 @@ namespace GameEngine
             // 列表为空则移除对应的事件监听列表实例
             if (list.Count == 0)
             {
-                m_eventListenersForId.Remove(eventID);
+                _eventListenersForId.Remove(eventID);
             }
         }
 
@@ -334,7 +334,7 @@ namespace GameEngine
         public void Unsubscribe(SystemType eventType, IEventDispatch listener)
         {
             IList<IEventDispatch> list;
-            if (false == m_eventListenersForType.TryGetValue(eventType, out list))
+            if (false == _eventListenersForType.TryGetValue(eventType, out list))
             {
                 Debugger.Warn("Could not found any listener for target event '{0}' with on subscribed, do unsubscribe failed.", eventType.FullName);
                 return;
@@ -344,7 +344,7 @@ namespace GameEngine
             // 列表为空则移除对应的事件监听列表实例
             if (list.Count == 0)
             {
-                m_eventListenersForType.Remove(eventType);
+                _eventListenersForType.Remove(eventType);
             }
         }
 
@@ -353,13 +353,13 @@ namespace GameEngine
         /// </summary>
         public void UnsubscribeAll(IEventDispatch listener)
         {
-            IList<int> ids = NovaEngine.Utility.Collection.ToListForKeys<int, IList<IEventDispatch>>(m_eventListenersForId);
+            IList<int> ids = NovaEngine.Utility.Collection.ToListForKeys<int, IList<IEventDispatch>>(_eventListenersForId);
             for (int n = 0; null != ids && n < ids.Count; ++n)
             {
                 Unsubscribe(ids[n], listener);
             }
 
-            IList<SystemType> types = NovaEngine.Utility.Collection.ToListForKeys<SystemType, IList<IEventDispatch>>(m_eventListenersForType);
+            IList<SystemType> types = NovaEngine.Utility.Collection.ToListForKeys<SystemType, IList<IEventDispatch>>(_eventListenersForType);
             for (int n = 0; null != types && n < types.Count; ++n)
             {
                 Unsubscribe(types[n], listener);
