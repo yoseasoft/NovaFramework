@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -35,58 +35,58 @@ namespace GameEngine
         /// <summary>
         /// 角色记录索引标识
         /// </summary>
-        private readonly int m_uid;
+        private readonly int _uid;
         /// <summary>
         /// 角色名称
         /// </summary>
-        private readonly string m_actorName;
+        private readonly string _actorName;
         /// <summary>
         /// 角色的哈希码，用来确保角色唯一性
         /// </summary>
-        private readonly int m_hashCode;
+        private readonly int _hashCode;
         /// <summary>
         /// 角色的创建时间
         /// </summary>
-        private SystemDateTime m_createTime;
+        private SystemDateTime _createTime;
         /// <summary>
         /// 角色的释放时间
         /// </summary>
-        private SystemDateTime m_releaseTime;
+        private SystemDateTime _releaseTime;
 
         public ActorStatInfo(int uid, string objectName, int hashCode)
         {
-            m_uid = uid;
-            m_actorName = objectName;
-            m_hashCode = hashCode;
-            m_createTime = SystemDateTime.MinValue;
-            m_releaseTime = SystemDateTime.MinValue;
+            _uid = uid;
+            _actorName = objectName;
+            _hashCode = hashCode;
+            _createTime = SystemDateTime.MinValue;
+            _releaseTime = SystemDateTime.MinValue;
         }
 
         public int Uid
         {
-            get { return m_uid; }
+            get { return _uid; }
         }
 
         public string ActorName
         {
-            get { return m_actorName; }
+            get { return _actorName; }
         }
 
         public int HashCode
         {
-            get { return m_hashCode; }
+            get { return _hashCode; }
         }
 
         public SystemDateTime CreateTime
         {
-            get { return m_createTime; }
-            set { m_createTime = value; }
+            get { return _createTime; }
+            set { _createTime = value; }
         }
 
         public SystemDateTime ReleaseTime
         {
-            get { return m_releaseTime; }
-            set { m_releaseTime = value; }
+            get { return _releaseTime; }
+            set { _releaseTime = value; }
         }
     }
 }

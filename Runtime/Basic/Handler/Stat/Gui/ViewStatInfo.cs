@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -35,59 +35,59 @@ namespace GameEngine
         /// <summary>
         /// 视图记录索引标识
         /// </summary>
-        private readonly int m_uid;
+        private readonly int _uid;
         /// <summary>
         /// 视图名称
         /// </summary>
-        private readonly string m_viewName;
+        private readonly string _viewName;
         /// <summary>
         /// 视图的哈希码，用来确保视图唯一性
         /// </summary>
-        private readonly int m_hashCode;
+        private readonly int _hashCode;
         /// <summary>
         /// 视图的创建时间
         /// </summary>
-        private SystemDateTime m_createTime;
+        private SystemDateTime _createTime;
         /// <summary>
         /// 视图的关闭时间
         /// </summary>
-        private SystemDateTime m_closeTime;
+        private SystemDateTime _closeTime;
 
         public ViewStatInfo(int uid, string viewName, int hashCode)
         {
-            m_uid = uid;
-            m_viewName = viewName;
-            m_hashCode = hashCode;
-            m_createTime = SystemDateTime.MinValue;
-            m_closeTime = SystemDateTime.MinValue;
+            _uid = uid;
+            _viewName = viewName;
+            _hashCode = hashCode;
+            _createTime = SystemDateTime.MinValue;
+            _closeTime = SystemDateTime.MinValue;
 
         }
 
         public int Uid
         {
-            get { return m_uid; }
+            get { return _uid; }
         }
 
         public string ViewName
         {
-            get { return m_viewName; }
+            get { return _viewName; }
         }
 
         public int HashCode
         {
-            get { return m_hashCode; }
+            get { return _hashCode; }
         }
 
         public SystemDateTime CreateTime
         {
-            get { return m_createTime; }
-            set { m_createTime = value; }
+            get { return _createTime; }
+            set { _createTime = value; }
         }
 
         public SystemDateTime CloseTime
         {
-            get { return m_closeTime; }
-            set { m_closeTime = value; }
+            get { return _closeTime; }
+            set { _closeTime = value; }
         }
     }
 }

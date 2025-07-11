@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -56,21 +56,21 @@ namespace GameEngine
         /// <summary>
         /// 模块统计对象类的类型映射管理容器
         /// </summary>
-        private static IDictionary<int, SystemType> s_statModuleClassTypes;
+        private static IDictionary<int, SystemType> _statModuleClassTypes;
 
         /// <summary>
         /// 模块统计对象实例的映射容器
         /// </summary>
-        private static IDictionary<int, IStatModule> s_statModuleObjects;
+        private static IDictionary<int, IStatModule> _statModuleObjects;
 
         /// <summary>
         /// 模块统计对象类的创建函数回调句柄管理容器
         /// </summary>
-        private static IDictionary<int, StatModuleCreateHandler> s_statModuleCreateCallbacks;
+        private static IDictionary<int, StatModuleCreateHandler> _statModuleCreateCallbacks;
         /// <summary>
         /// 模块统计对象类的销毁函数回调句柄管理容器
         /// </summary>
-        private static IDictionary<int, StatModuleDestroyHandler> s_statModuleDestroyCallbacks;
+        private static IDictionary<int, StatModuleDestroyHandler> _statModuleDestroyCallbacks;
 
         /// <summary>
         /// 初始化句柄对象的全部统计模块
@@ -78,20 +78,20 @@ namespace GameEngine
         private static void InitAllStatModules()
         {
             // 管理容器初始化
-            s_statModuleClassTypes = new Dictionary<int, SystemType>();
-            s_statModuleObjects = new Dictionary<int, IStatModule>();
-            s_statModuleCreateCallbacks = new Dictionary<int, StatModuleCreateHandler>();
-            s_statModuleDestroyCallbacks = new Dictionary<int, StatModuleDestroyHandler>();
+            _statModuleClassTypes = new Dictionary<int, SystemType>();
+            _statModuleObjects = new Dictionary<int, IStatModule>();
+            _statModuleCreateCallbacks = new Dictionary<int, StatModuleCreateHandler>();
+            _statModuleDestroyCallbacks = new Dictionary<int, StatModuleDestroyHandler>();
 
             // 加载全部统计模块
             LoadAllStatModules();
 
-            foreach (KeyValuePair<int, StatModuleCreateHandler> pair in s_statModuleCreateCallbacks)
+            foreach (KeyValuePair<int, StatModuleCreateHandler> pair in _statModuleCreateCallbacks)
             {
                 // 创建统计模块实例
                 /*object stat_module = */
                 pair.Value(GetHandler(pair.Key));
-                if (false == s_statModuleObjects.ContainsKey(pair.Key))
+                if (false == _statModuleObjects.ContainsKey(pair.Key))
                 {
                     Debugger.Warn("Could not found any stat module class '{0}' from manager list, created it failed.", pair.Key);
 
@@ -105,22 +105,22 @@ namespace GameEngine
         /// </summary>
         private static void CleanupAllStatModules()
         {
-            foreach (KeyValuePair<int, StatModuleDestroyHandler> pair in s_statModuleDestroyCallbacks)
+            foreach (KeyValuePair<int, StatModuleDestroyHandler> pair in _statModuleDestroyCallbacks)
             {
                 // 销毁统计模块实例
                 pair.Value();
             }
 
             // 容器清理
-            s_statModuleClassTypes.Clear();
-            s_statModuleClassTypes = null;
-            s_statModuleObjects.Clear();
-            s_statModuleObjects = null;
+            _statModuleClassTypes.Clear();
+            _statModuleClassTypes = null;
+            _statModuleObjects.Clear();
+            _statModuleObjects = null;
 
-            s_statModuleCreateCallbacks.Clear();
-            s_statModuleCreateCallbacks = null;
-            s_statModuleDestroyCallbacks.Clear();
-            s_statModuleDestroyCallbacks = null;
+            _statModuleCreateCallbacks.Clear();
+            _statModuleCreateCallbacks = null;
+            _statModuleDestroyCallbacks.Clear();
+            _statModuleDestroyCallbacks = null;
         }
 
         /// <summary>
@@ -174,9 +174,9 @@ namespace GameEngine
 
                 Debugger.Log(LogGroupTag.Module, "Load handler stat module type '{0}' succeed.", statModuleType.FullName);
 
-                s_statModuleClassTypes.Add(enumType, statModuleType);
-                s_statModuleCreateCallbacks.Add(enumType, statModuleCreateCallback);
-                s_statModuleDestroyCallbacks.Add(enumType, statModuleDestroyCallback);
+                _statModuleClassTypes.Add(enumType, statModuleType);
+                _statModuleCreateCallbacks.Add(enumType, statModuleCreateCallback);
+                _statModuleDestroyCallbacks.Add(enumType, statModuleDestroyCallback);
             }
         }
 
@@ -189,13 +189,13 @@ namespace GameEngine
         /// <param name="statModule">统计模块对象实例</param>
         internal static void RegisterStatModule(int moduleType, IStatModule statModule)
         {
-            if (s_statModuleObjects.ContainsKey(moduleType))
+            if (_statModuleObjects.ContainsKey(moduleType))
             {
                 Debugger.Warn("The stat module object '{0}' is already exist, cannot repeat register it.", moduleType);
                 return;
             }
 
-            s_statModuleObjects.Add(moduleType, statModule);
+            _statModuleObjects.Add(moduleType, statModule);
         }
 
         /// <summary>
@@ -204,13 +204,13 @@ namespace GameEngine
         /// <param name="moduleType">统计模块对象类型</param>
         internal static void UnregisterStatModule(int moduleType)
         {
-            if (false == s_statModuleObjects.ContainsKey(moduleType))
+            if (false == _statModuleObjects.ContainsKey(moduleType))
             {
                 Debugger.Warn("Could not found any stat module object '{0}' in this container, unregister it failed.", moduleType);
                 return;
             }
 
-            s_statModuleObjects.Remove(moduleType);
+            _statModuleObjects.Remove(moduleType);
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace GameEngine
         /// <returns>返回类型名称获取对应的对象实例</returns>
         public static IStatModule GetStatModule(SystemType clsType)
         {
-            foreach (KeyValuePair<int, IStatModule> pair in s_statModuleObjects)
+            foreach (KeyValuePair<int, IStatModule> pair in _statModuleObjects)
             {
                 if (clsType.IsAssignableFrom(pair.Value.GetType()))
                     return pair.Value;
@@ -246,9 +246,9 @@ namespace GameEngine
         /// <returns>返回类型获取对应的对象实例</returns>
         public static IStatModule GetStatModule(int moduleType)
         {
-            if (s_statModuleObjects.ContainsKey(moduleType))
+            if (_statModuleObjects.ContainsKey(moduleType))
             {
-                return s_statModuleObjects[moduleType];
+                return _statModuleObjects[moduleType];
             }
 
             return null;

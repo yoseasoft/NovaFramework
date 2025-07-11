@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -45,24 +45,24 @@ namespace GameEngine
         /// <summary>
         /// 统计模块的模块类型标识
         /// </summary>
-        private int m_moduleType;
+        private int _moduleType;
 
         /// <summary>
         /// 统计模块对象启动状态标识
         /// </summary>
-        private bool m_enabled = false;
+        private bool _enabled = false;
 
-        private IDictionary<int, SystemMethodInfo> m_regStatMethodTypes;
+        private IDictionary<int, SystemMethodInfo> _regStatMethodTypes;
 
         /// <summary>
         /// 获取统计模块的模块类型标识
         /// </summary>
-        public int ModuleType => m_moduleType;
+        public int ModuleType => _moduleType;
 
         /// <summary>
         /// 获取统计模块对象的启动状态
         /// </summary>
-        public bool Enabled => m_enabled;
+        public bool Enabled => _enabled;
 
         /// <summary>
         /// 单例对象的默认构造函数<br/>
@@ -132,20 +132,20 @@ namespace GameEngine
         {
             Debugger.Assert(null != handler, "Invalid arguments.");
 
-            m_moduleType = handler.HandlerType;
-            m_regStatMethodTypes = new Dictionary<int, SystemMethodInfo>();
+            _moduleType = handler.HandlerType;
+            _regStatMethodTypes = new Dictionary<int, SystemMethodInfo>();
 
             // 仅在调试模块下开启统计功能
             if (NovaEngine.Environment.debugMode)
             {
-                m_enabled = true;
+                _enabled = true;
             }
 
             // 统计接口初始化绑定
             InitAllStatMethods();
 
             // 注册统计模块实例
-            HandlerManagement.RegisterStatModule(m_moduleType, _instance);
+            HandlerManagement.RegisterStatModule(_moduleType, _instance);
 
             OnInitialize();
         }
@@ -158,11 +158,11 @@ namespace GameEngine
             OnCleanup();
 
             // 注销统计模块实例
-            HandlerManagement.UnregisterStatModule(m_moduleType);
+            HandlerManagement.UnregisterStatModule(_moduleType);
 
             // 注销所有统计回调函数
             UnregisterAllStatMethods();
-            m_regStatMethodTypes = null;
+            _regStatMethodTypes = null;
         }
 
         /// <summary>
@@ -223,15 +223,15 @@ namespace GameEngine
         /// <param name="method">函数信息</param>
         protected void RegisterStatMethod(int funcType, SystemMethodInfo method)
         {
-            Debugger.Assert(null != m_regStatMethodTypes, "The register method container must be non-null.");
+            Debugger.Assert(null != _regStatMethodTypes, "The register method container must be non-null.");
 
-            if (m_regStatMethodTypes.ContainsKey(funcType))
+            if (_regStatMethodTypes.ContainsKey(funcType))
             {
                 Debugger.Warn("The stat method type '{0}' was already register, repeat do it will be override old value.", funcType);
-                m_regStatMethodTypes.Remove(funcType);
+                _regStatMethodTypes.Remove(funcType);
             }
 
-            m_regStatMethodTypes.Add(funcType, method);
+            _regStatMethodTypes.Add(funcType, method);
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace GameEngine
         private void UnregisterAllStatMethods()
         {
             // 清空容器
-            m_regStatMethodTypes.Clear();
+            _regStatMethodTypes.Clear();
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace GameEngine
             if (false == IsActivated()) return;
 
             SystemMethodInfo method = null;
-            if (false == (HandlerStatSingleton<T>._instance as HandlerStatSingleton<T>).m_regStatMethodTypes.TryGetValue(funcType, out method))
+            if (false == (HandlerStatSingleton<T>._instance as HandlerStatSingleton<T>)._regStatMethodTypes.TryGetValue(funcType, out method))
             {
                 Debugger.Warn("Could not found any register stat method with type '{0}', invoke it failed.", funcType);
                 return;

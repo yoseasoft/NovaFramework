@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -41,14 +41,14 @@ namespace GameEngine
         /// <summary>
         /// 定时任务统计信息容器列表
         /// </summary>
-        private IDictionary<int, TimerStatInfo> m_timerStatInfos = null;
+        private IDictionary<int, TimerStatInfo> _timerStatInfos = null;
 
         /// <summary>
         /// 初始化统计模块实例的回调接口
         /// </summary>
         protected override void OnInitialize()
         {
-            m_timerStatInfos = new Dictionary<int, TimerStatInfo>();
+            _timerStatInfos = new Dictionary<int, TimerStatInfo>();
         }
 
         /// <summary>
@@ -56,8 +56,8 @@ namespace GameEngine
         /// </summary>
         protected override void OnCleanup()
         {
-            m_timerStatInfos.Clear();
-            m_timerStatInfos = null;
+            _timerStatInfos.Clear();
+            _timerStatInfos = null;
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace GameEngine
         /// </summary>
         public void Dump()
         {
-            m_timerStatInfos.Clear();
+            _timerStatInfos.Clear();
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace GameEngine
         public IList<IStatInfo> GetAllStatInfos()
         {
             List<IStatInfo> results = new List<IStatInfo>();
-            results.AddRange(m_timerStatInfos.Values);
+            results.AddRange(_timerStatInfos.Values);
 
             return results;
         }
@@ -84,10 +84,10 @@ namespace GameEngine
         private void OnTimerStartup(int session, string name)
         {
             TimerStatInfo info = null;
-            if (false == m_timerStatInfos.TryGetValue(session, out info))
+            if (false == _timerStatInfos.TryGetValue(session, out info))
             {
                 info = new TimerStatInfo(session);
-                m_timerStatInfos.Add(session, info);
+                _timerStatInfos.Add(session, info);
             }
 
             info.TimerName = name??NovaEngine.Definition.CString.Unknown;
@@ -100,7 +100,7 @@ namespace GameEngine
         private void OnTimerFinished(int session)
         {
             TimerStatInfo info = null;
-            if (false == m_timerStatInfos.TryGetValue(session, out info))
+            if (false == _timerStatInfos.TryGetValue(session, out info))
             {
                 Debugger.Warn("Could not found any timer stat info with session '{0}', finished it failed.", session);
                 return;
@@ -113,7 +113,7 @@ namespace GameEngine
         private void OnTimerDispatched(int session)
         {
             TimerStatInfo info = null;
-            if (false == m_timerStatInfos.TryGetValue(session, out info))
+            if (false == _timerStatInfos.TryGetValue(session, out info))
             {
                 Debugger.Warn("Could not found any timer stat info with session '{0}', dispatched it failed.", session);
                 return;

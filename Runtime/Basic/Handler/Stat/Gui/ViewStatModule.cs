@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -40,14 +40,14 @@ namespace GameEngine
         /// <summary>
         /// 视图访问统计信息容器列表
         /// </summary>
-        private IList<ViewStatInfo> m_viewStatInfos = null;
+        private IList<ViewStatInfo> _viewStatInfos = null;
 
         /// <summary>
         /// 初始化统计模块实例的回调接口
         /// </summary>
         protected override void OnInitialize()
         {
-            m_viewStatInfos = new List<ViewStatInfo>();
+            _viewStatInfos = new List<ViewStatInfo>();
         }
 
         /// <summary>
@@ -55,8 +55,8 @@ namespace GameEngine
         /// </summary>
         protected override void OnCleanup()
         {
-            m_viewStatInfos.Clear();
-            m_viewStatInfos = null;
+            _viewStatInfos.Clear();
+            _viewStatInfos = null;
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace GameEngine
         /// </summary>
         public void Dump()
         {
-            m_viewStatInfos.Clear();
+            _viewStatInfos.Clear();
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace GameEngine
         public IList<IStatInfo> GetAllStatInfos()
         {
             List<IStatInfo> results = new List<IStatInfo>();
-            results.AddRange(m_viewStatInfos);
+            results.AddRange(_viewStatInfos);
 
             return results;
         }
@@ -84,11 +84,11 @@ namespace GameEngine
         {
             ViewStatInfo info = null;
 
-            int uid = m_viewStatInfos.Count + 1;
+            int uid = _viewStatInfos.Count + 1;
 
             info = new ViewStatInfo(uid, view.Name, view.GetHashCode());
             info.CreateTime = SystemDateTime.UtcNow;
-            m_viewStatInfos.Add(info);
+            _viewStatInfos.Add(info);
         }
 
         [IStatModule.OnStatModuleRegisterCallback(ON_VIEW_CLOSE_CALL)]
@@ -106,9 +106,9 @@ namespace GameEngine
 
         private bool TryGetViewStatInfoByHashCode(int hashCode, out ViewStatInfo info)
         {
-            for (int n = m_viewStatInfos.Count - 1; n >= 0; --n)
+            for (int n = _viewStatInfos.Count - 1; n >= 0; --n)
             {
-                ViewStatInfo found = m_viewStatInfos[n];
+                ViewStatInfo found = _viewStatInfos[n];
                 if (found.HashCode == hashCode)
                 {
                     info = found;

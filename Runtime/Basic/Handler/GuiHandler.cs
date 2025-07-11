@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -42,17 +42,17 @@ namespace GameEngine
         /// <summary>
         /// 视图对象类型映射注册管理容器
         /// </summary>
-        private readonly IDictionary<string, SystemType> m_viewClassTypes;
+        private readonly IDictionary<string, SystemType> _viewClassTypes;
 
         /// <summary>
         /// 视图功能类型映射注册管理容器
         /// </summary>
-        private readonly IDictionary<string, int> m_viewFunctionTypes;
+        private readonly IDictionary<string, int> _viewFunctionTypes;
 
         /// <summary>
         /// 当前环境下所有实例化的视图对象
         /// </summary>
-        private readonly IList<CView> m_views;
+        private readonly IList<CView> _views;
 
         /// <summary>
         /// 句柄对象的单例访问获取接口
@@ -65,11 +65,11 @@ namespace GameEngine
         public GuiHandler()
         {
             // 初始化视图类注册容器
-            m_viewClassTypes = new Dictionary<string, SystemType>();
-            m_viewFunctionTypes = new Dictionary<string, int>();
+            _viewClassTypes = new Dictionary<string, SystemType>();
+            _viewFunctionTypes = new Dictionary<string, int>();
 
             // 初始化视图实例容器
-            m_views = new List<CView>();
+            _views = new List<CView>();
         }
 
         /// <summary>
@@ -78,8 +78,8 @@ namespace GameEngine
         ~GuiHandler()
         {
             // 清理视图类注册容器
-            m_viewClassTypes.Clear();
-            m_viewFunctionTypes.Clear();
+            _viewClassTypes.Clear();
+            _viewFunctionTypes.Clear();
         }
 
         /// <summary>
@@ -160,16 +160,16 @@ namespace GameEngine
                 return false;
             }
 
-            if (m_viewClassTypes.ContainsKey(viewName))
+            if (_viewClassTypes.ContainsKey(viewName))
             {
                 Debugger.Warn("The view name '{0}' was already registed, repeat add will be override old name.", viewName);
-                m_viewClassTypes.Remove(viewName);
+                _viewClassTypes.Remove(viewName);
             }
 
-            m_viewClassTypes.Add(viewName, clsType);
+            _viewClassTypes.Add(viewName, clsType);
             if (funcType > 0)
             {
-                m_viewFunctionTypes.Add(viewName, funcType);
+                _viewFunctionTypes.Add(viewName, funcType);
             }
 
             return true;
@@ -180,8 +180,8 @@ namespace GameEngine
         /// </summary>
         private void UnregisterAllViewClasses()
         {
-            m_viewClassTypes.Clear();
-            m_viewFunctionTypes.Clear();
+            _viewClassTypes.Clear();
+            _viewFunctionTypes.Clear();
         }
 
         #endregion
@@ -194,7 +194,7 @@ namespace GameEngine
         public async Cysharp.Threading.Tasks.UniTask<CView> OpenUI(string viewName)
         {
             SystemType viewType;
-            if (false == m_viewClassTypes.TryGetValue(viewName, out viewType))
+            if (false == _viewClassTypes.TryGetValue(viewName, out viewType))
             {
                 Debugger.Warn("Could not found any correct view class with target name '{0}', opened view failed.", viewName);
                 return null;
@@ -211,7 +211,7 @@ namespace GameEngine
         public async Cysharp.Threading.Tasks.UniTask<T> OpenUI<T>() where T : CView
         {
             SystemType viewType = typeof(T);
-            if (false == m_viewClassTypes.Values.Contains(viewType))
+            if (false == _viewClassTypes.Values.Contains(viewType))
             {
                 Debugger.Error("Could not found any correct view class with target type '{0}', opened view failed.", viewType.FullName);
                 return null;
@@ -229,7 +229,7 @@ namespace GameEngine
         public async Cysharp.Threading.Tasks.UniTask<CView> OpenUI(SystemType viewType)
         {
             Debugger.Assert(null != viewType, "Invalid arguments.");
-            if (false == m_viewClassTypes.Values.Contains(viewType))
+            if (false == _viewClassTypes.Values.Contains(viewType))
             {
                 Debugger.Error("Could not found any correct view class with target type '{0}', opened view failed.", viewType.FullName);
 
@@ -255,12 +255,12 @@ namespace GameEngine
             }
 
             // 添加实例到管理容器中
-            m_views.Add(view);
+            _views.Add(view);
 
             await view.CreateWindow();
             if (!view.IsLoaded)
             {
-                m_views.Remove(view);
+                _views.Remove(view);
                 RemoveEntity(view);
 
                 // 回收视图实例
@@ -290,7 +290,7 @@ namespace GameEngine
         /// </summary>
         public bool HasUI<T>() where T : CView
         {
-            return m_views.OfType<T>().Any();
+            return _views.OfType<T>().Any();
         }
 
         /// <summary>
@@ -301,7 +301,7 @@ namespace GameEngine
         public T FindUI<T>() where T : CView
         {
             SystemType viewType = typeof(T);
-            if (false == m_viewClassTypes.Values.Contains(viewType))
+            if (false == _viewClassTypes.Values.Contains(viewType))
             {
                 Debugger.Error("Could not found any correct view class with target type '{0}', found view failed.", viewType.FullName);
                 return null;
@@ -318,7 +318,7 @@ namespace GameEngine
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
         public CView FindUI(SystemType viewType)
         {
-            foreach (CView view in m_views)
+            foreach (CView view in _views)
             {
                 if (view.GetType() == viewType)
                 {
@@ -343,7 +343,7 @@ namespace GameEngine
         public async UniTask<T> FindUIAsync<T>() where T : CView
         {
             SystemType viewType = typeof(T);
-            if (false == m_viewClassTypes.Values.Contains(viewType))
+            if (false == _viewClassTypes.Values.Contains(viewType))
             {
                 Debugger.Error("Could not found any correct view class with target type '{0}', found view failed.", viewType.FullName);
                 return null;
@@ -360,7 +360,7 @@ namespace GameEngine
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
         public async UniTask<CView> FindUIAsync(SystemType viewType)
         {
-            foreach (CView view in m_views)
+            foreach (CView view in _views)
             {
                 if (view.GetType() == viewType)
                 {
@@ -383,7 +383,7 @@ namespace GameEngine
         /// <param name="view">视图对象实例</param>
         internal void RemoveUI(CView view)
         {
-            if (false == m_views.Contains(view))
+            if (false == _views.Contains(view))
             {
                 Debugger.Error("Could not found any view reference '{0}' with manage container, removed it failed.", view.GetType().FullName);
                 return;
@@ -402,7 +402,7 @@ namespace GameEngine
                 return;
             }
 
-            m_views.Remove(view);
+            _views.Remove(view);
             // 移除视图实例
             RemoveEntity(view);
 
@@ -415,9 +415,9 @@ namespace GameEngine
         /// </summary>
         internal void RemoveAllUI()
         {
-            while (m_views.Count > 0)
+            while (_views.Count > 0)
             {
-                RemoveUI(m_views[0]);
+                RemoveUI(_views[0]);
             }
         }
 
@@ -427,7 +427,7 @@ namespace GameEngine
         /// <param name="view">视图对象实例</param>
         public void CloseUI(CView view)
         {
-            if (false == m_views.Contains(view))
+            if (false == _views.Contains(view))
             {
                 Debugger.Error("Could not found any view reference '{0}' with manage container, removed it failed.", view.GetType().FullName);
                 return;
@@ -453,7 +453,7 @@ namespace GameEngine
         public void CloseUI(string viewName)
         {
             SystemType viewType;
-            if (false == m_viewClassTypes.TryGetValue(viewName, out viewType))
+            if (false == _viewClassTypes.TryGetValue(viewName, out viewType))
             {
                 Debugger.Warn("Could not found any correct view class with target name '{0}', closed view failed.", viewName);
                 return;
@@ -481,7 +481,7 @@ namespace GameEngine
         /// <param name="viewType">视图类型</param>
         public void CloseUI(SystemType viewType)
         {
-            foreach (CView view in m_views.Reverse<CView>())
+            foreach (CView view in _views.Reverse<CView>())
             {
                 if (view.GetType() == viewType)
                 {
@@ -495,9 +495,9 @@ namespace GameEngine
         /// </summary>
         public void CloseAllUI()
         {
-            for (int n = m_views.Count - 1; n >= 0; --n)
+            for (int n = _views.Count - 1; n >= 0; --n)
             {
-                m_views[n].Close();
+                _views[n].Close();
             }
         }
 
@@ -520,7 +520,7 @@ namespace GameEngine
         /// <returns>返回对应视图的名称，若视图不存在则返回null</returns>
         internal string GetViewNameForType(SystemType viewType)
         {
-            foreach (KeyValuePair<string, SystemType> pair in m_viewClassTypes)
+            foreach (KeyValuePair<string, SystemType> pair in _viewClassTypes)
             {
                 if (pair.Value == viewType)
                 {
@@ -537,7 +537,7 @@ namespace GameEngine
         /// <returns>返回已创建的全部视图对象实例</returns>
         public IList<CView> GetAllViews()
         {
-            return m_views;
+            return _views;
         }
 
         /// <summary>
@@ -549,7 +549,7 @@ namespace GameEngine
         internal IList<CView> FindAllViewsByType(SystemType viewType)
         {
             IList<CView> result = new List<CView>();
-            IEnumerator<CView> e = m_views.GetEnumerator();
+            IEnumerator<CView> e = _views.GetEnumerator();
             while (e.MoveNext())
             {
                 CView view = e.Current;

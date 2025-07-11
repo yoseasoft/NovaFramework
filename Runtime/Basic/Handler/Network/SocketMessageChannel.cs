@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,7 @@ namespace GameEngine
         /// <summary>
         /// 异步消息接收的缓冲容器
         /// </summary>
-        private IDictionary<int, UniTaskCompletionSourceForMessage> m_waitingForResponseMessages = null;
+        private IDictionary<int, UniTaskCompletionSourceForMessage> _waitingForResponseMessages = null;
 
         protected SocketMessageChannel(int channelID, int channelType) : base(channelID, channelType)
         { }
@@ -65,7 +65,7 @@ namespace GameEngine
             base.Initialize();
 
             // 初始化异步消息缓冲容器
-            m_waitingForResponseMessages = new Dictionary<int, UniTaskCompletionSourceForMessage>();
+            _waitingForResponseMessages = new Dictionary<int, UniTaskCompletionSourceForMessage>();
         }
 
         /// <summary>
@@ -73,15 +73,15 @@ namespace GameEngine
         /// </summary>
         protected override void Cleanup()
         {
-            int[] codes = NovaEngine.Utility.Collection.ToArrayForKeys<int, UniTaskCompletionSourceForMessage>(m_waitingForResponseMessages);
+            int[] codes = NovaEngine.Utility.Collection.ToArrayForKeys<int, UniTaskCompletionSourceForMessage>(_waitingForResponseMessages);
             for (int n = 0; null != codes && n < codes.Length; ++n)
             {
-                m_waitingForResponseMessages[codes[n]].TrySetCanceled();
+                _waitingForResponseMessages[codes[n]].TrySetCanceled();
             }
 
             // 清理异步消息缓冲容器
-            m_waitingForResponseMessages.Clear();
-            m_waitingForResponseMessages = null;
+            _waitingForResponseMessages.Clear();
+            _waitingForResponseMessages = null;
 
             base.Cleanup();
         }
@@ -93,7 +93,7 @@ namespace GameEngine
         /// <returns>若正在待命给定的协议操作码则返回true，否则返回false</returns>
         internal bool IsWaitingForTargetCode(int opcode)
         {
-            if (m_waitingForResponseMessages.ContainsKey(opcode))
+            if (_waitingForResponseMessages.ContainsKey(opcode))
             {
                 return true;
             }
@@ -107,14 +107,14 @@ namespace GameEngine
         /// <param name="message">消息内容</param>
         internal void OnMessageDispatched(int opcode, object message)
         {
-            Debugger.Assert(m_waitingForResponseMessages.ContainsKey(opcode), "The waiting for response message was invalid opcode '{0}'.", opcode);
+            Debugger.Assert(_waitingForResponseMessages.ContainsKey(opcode), "The waiting for response message was invalid opcode '{0}'.", opcode);
 
-            m_waitingForResponseMessages[opcode].TrySetResult(message as ProtoBuf.Extension.IMessage);
+            _waitingForResponseMessages[opcode].TrySetResult(message as ProtoBuf.Extension.IMessage);
         }
 
         public void Send(ProtoBuf.Extension.IMessage message)
         {
-            byte[] buffer = m_messageTranslator.Encode(message);
+            byte[] buffer = _messageTranslator.Encode(message);
             Send(buffer);
         }
 
@@ -155,8 +155,8 @@ namespace GameEngine
             {
                 Debugger.Warn("Send target message opcode '{0}' was timeout, awaited it response failed.", opcode);
 
-                Debugger.Assert(m_waitingForResponseMessages.ContainsKey(responseCode), "The waiting for response message was invalid opcode '{0}'.", opcode);
-                m_waitingForResponseMessages.Remove(responseCode);
+                Debugger.Assert(_waitingForResponseMessages.ContainsKey(responseCode), "The waiting for response message was invalid opcode '{0}'.", opcode);
+                _waitingForResponseMessages.Remove(responseCode);
 
                 return null;
             }
@@ -171,13 +171,13 @@ namespace GameEngine
         /// <returns>返回异步任务对象实例</returns>
         private UniTaskForMessage SendAwaitOfTargetResponse(int responseCode)
         {
-            Debugger.Assert(false == m_waitingForResponseMessages.ContainsKey(responseCode), "The channel was waiting for target code '{0}' now.", responseCode);
+            Debugger.Assert(false == _waitingForResponseMessages.ContainsKey(responseCode), "The channel was waiting for target code '{0}' now.", responseCode);
 
             UniTaskCompletionSourceForMessage completionSource = new UniTaskCompletionSourceForMessage();
             // 注册成功回调
-            completionSource.OnCompleted(o => { m_waitingForResponseMessages.Remove((int) o); }, responseCode, 1);
+            completionSource.OnCompleted(o => { _waitingForResponseMessages.Remove((int) o); }, responseCode, 1);
 
-            m_waitingForResponseMessages.Add(responseCode, completionSource);
+            _waitingForResponseMessages.Add(responseCode, completionSource);
 
             return completionSource.Task;
         }

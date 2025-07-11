@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,41 +37,41 @@ namespace GameEngine
         /// <summary>
         /// 实体对象映射管理容器
         /// </summary>
-        private IList<CEntity> m_entities = null;
+        private IList<CEntity> _entities = null;
         /// <summary>
         /// 实体对象唤醒列表容器
         /// </summary>
-        private IList<CEntity> m_awakeEntitiesList = null;
+        private IList<CEntity> _awakeEntitiesList = null;
         /// <summary>
         /// 实体对象刷新列表容器
         /// </summary>
-        private IList<CEntity> m_updateEntitiesList = null;
+        private IList<CEntity> _updateEntitiesList = null;
 
         /// <summary>
         /// 系统对象注册列表容器
         /// </summary>
-        private IList<ISystem> m_systems = null;
+        private IList<ISystem> _systems = null;
         /// <summary>
         /// 系统对象初始化回调列表容器
         /// </summary>
-        private IList<IInitializeSystem> m_initializeSystems = null;
+        private IList<IInitializeSystem> _initializeSystems = null;
         /// <summary>
         /// 系统对象清理回调列表容器
         /// </summary>
-        private IList<ICleanupSystem> m_cleanupSystems = null;
+        private IList<ICleanupSystem> _cleanupSystems = null;
         /// <summary>
         /// 系统对象刷新回调列表容器
         /// </summary>
-        private IList<IUpdateSystem> m_updateSystems = null;
+        private IList<IUpdateSystem> _updateSystems = null;
         /// <summary>
         /// 系统对象后置刷新回调列表容器
         /// </summary>
-        private IList<ILateUpdateSystem> m_lateUpdateSystems = null;
+        private IList<ILateUpdateSystem> _lateUpdateSystems = null;
 
         /// <summary>
         /// 获取当前记录的全部实体对象实例
         /// </summary>
-        protected IList<CEntity> Entities => m_entities;
+        protected IList<CEntity> Entities => _entities;
 
         /// <summary>
         /// 句柄对象默认构造函数
@@ -94,22 +94,22 @@ namespace GameEngine
         protected override bool OnInitialize()
         {
             // 实体映射容器初始化
-            m_entities = new List<CEntity>();
+            _entities = new List<CEntity>();
             // 实体唤醒列表初始化
-            m_awakeEntitiesList = new List<CEntity>();
+            _awakeEntitiesList = new List<CEntity>();
             // 实体刷新列表初始化
-            m_updateEntitiesList = new List<CEntity>();
+            _updateEntitiesList = new List<CEntity>();
 
             // 系统注册列表初始化
-            m_systems = new List<ISystem>();
+            _systems = new List<ISystem>();
             // 系统初始化列表初始化
-            m_initializeSystems = new List<IInitializeSystem>();
+            _initializeSystems = new List<IInitializeSystem>();
             // 系统清理列表初始化
-            m_cleanupSystems = new List<ICleanupSystem>();
+            _cleanupSystems = new List<ICleanupSystem>();
             // 系统刷新列表初始化
-            m_updateSystems = new List<IUpdateSystem>();
+            _updateSystems = new List<IUpdateSystem>();
             // 系统后置刷新列表初始化
-            m_lateUpdateSystems = new List<ILateUpdateSystem>();
+            _lateUpdateSystems = new List<ILateUpdateSystem>();
 
             return true;
         }
@@ -122,18 +122,18 @@ namespace GameEngine
             // 移除所有实体对象实例
             RemoveAllEntities();
 
-            m_entities = null;
-            m_awakeEntitiesList = null;
-            m_updateEntitiesList = null;
+            _entities = null;
+            _awakeEntitiesList = null;
+            _updateEntitiesList = null;
 
             // 移除所有系统对象实例
             RemoveAllSystems();
 
-            m_systems = null;
-            m_initializeSystems = null;
-            m_cleanupSystems = null;
-            m_updateSystems = null;
-            m_lateUpdateSystems = null;
+            _systems = null;
+            _initializeSystems = null;
+            _cleanupSystems = null;
+            _updateSystems = null;
+            _lateUpdateSystems = null;
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace GameEngine
         /// <returns>返回当前记录的全部实体对象实例列表</returns>
         protected IList<CEntity> GetAllEntities()
         {
-            IList<CEntity> entities = new List<CEntity>(m_entities);
+            IList<CEntity> entities = new List<CEntity>(_entities);
             return entities;
         }
 
@@ -205,7 +205,7 @@ namespace GameEngine
                 return false;
             }
 
-            if (m_entities.Contains(entity))
+            if (_entities.Contains(entity))
             {
                 Debugger.Warn("The entity instance was already added, repeat add it failed.");
                 return false;
@@ -217,7 +217,7 @@ namespace GameEngine
             // 调用系统初始化回调接口
             CallInitializeForSystem(entity);
 
-            m_entities.Add(entity);
+            _entities.Add(entity);
 
             return true;
         }
@@ -242,16 +242,16 @@ namespace GameEngine
                 return;
             }
 
-            if (false == m_entities.Contains(entity))
+            if (false == _entities.Contains(entity))
             {
                 Debugger.Warn("Could not found any entity instance in this container, remove it failed.");
                 return;
             }
 
             // 以防万一，先删为敬
-            m_awakeEntitiesList.Remove(entity);
-            m_updateEntitiesList.Remove(entity);
-            m_entities.Remove(entity);
+            _awakeEntitiesList.Remove(entity);
+            _updateEntitiesList.Remove(entity);
+            _entities.Remove(entity);
 
             // 调用系统清理回调接口
             CallCleanupForSystem(entity);
@@ -265,9 +265,9 @@ namespace GameEngine
         /// </summary>
         protected void RemoveAllExpiredEntities()
         {
-            for (int n = m_entities.Count - 1; n >= 0; --n)
+            for (int n = _entities.Count - 1; n >= 0; --n)
             {
-                CEntity entity = m_entities[n];
+                CEntity entity = _entities[n];
                 if (entity.IsOnExpired)
                 {
                     RemoveEntity(entity);
@@ -280,10 +280,10 @@ namespace GameEngine
         /// </summary>
         protected void RemoveAllEntities()
         {
-            while (m_entities.Count > 0)
+            while (_entities.Count > 0)
             {
                 // 从最后一个元素开始进行删除
-                RemoveEntity(m_entities[m_entities.Count - 1]);
+                RemoveEntity(_entities[_entities.Count - 1]);
             }
         }
 
@@ -294,7 +294,7 @@ namespace GameEngine
         /// <param name="entity">实体对象实例</param>
         protected void CallEntityAwakeProcess(CEntity entity)
         {
-            if (false == m_entities.Contains(entity))
+            if (false == _entities.Contains(entity))
             {
                 Debugger.Error("Could not found any entity instance '{0}' from current instantiation list, wakeup it failed.", entity.GetType().FullName);
                 return;
@@ -339,7 +339,7 @@ namespace GameEngine
         /// <param name="entity">实体对象实例</param>
         protected internal void OnEntityStartProcessing(CEntity entity)
         {
-            if (false == m_entities.Contains(entity))
+            if (false == _entities.Contains(entity))
             {
                 Debugger.Error("Could not found any added record of the entity instance '{0}', calling start process failed.", entity.GetType().FullName);
                 return;
@@ -351,7 +351,7 @@ namespace GameEngine
             // 激活刷新接口的对象实例，放入到刷新队列中
             if (typeof(IUpdateActivation).IsAssignableFrom(entity.GetType()))
             {
-                m_updateEntitiesList.Add(entity);
+                _updateEntitiesList.Add(entity);
             }
         }
 
@@ -360,9 +360,9 @@ namespace GameEngine
         /// </summary>
         protected void OnEntitiesUpdate()
         {
-            for (int n = 0; n < m_updateEntitiesList.Count; ++n)
+            for (int n = 0; n < _updateEntitiesList.Count; ++n)
             {
-                CEntity entity = m_updateEntitiesList[n];
+                CEntity entity = _updateEntitiesList[n];
                 // 过期对象跳过该操作
                 if (entity.IsOnExpired)
                 {
@@ -382,9 +382,9 @@ namespace GameEngine
         /// </summary>
         protected void OnEntitiesLateUpdate()
         {
-            for (int n = 0; n < m_updateEntitiesList.Count; ++n)
+            for (int n = 0; n < _updateEntitiesList.Count; ++n)
             {
-                CEntity entity = m_updateEntitiesList[n];
+                CEntity entity = _updateEntitiesList[n];
                 // 过期对象跳过该操作
                 if (entity.IsOnExpired)
                 {
@@ -410,36 +410,36 @@ namespace GameEngine
         /// <returns>若添加系统成功则返回true，否则返回false</returns>
         public bool AddSystem(ISystem system)
         {
-            if (m_systems.Contains(system))
+            if (_systems.Contains(system))
             {
                 Debugger.Warn("The system instance was already added, repeat add it failed.");
                 return false;
             }
 
-            m_systems.Add(system);
+            _systems.Add(system);
 
             // 注册初始化回调接口
             if (typeof(IInitializeSystem).IsAssignableFrom(system.GetType()))
             {
-                m_initializeSystems.Add(system as IInitializeSystem);
+                _initializeSystems.Add(system as IInitializeSystem);
             }
 
             // 注册清理回调接口
             if (typeof(ICleanupSystem).IsAssignableFrom(system.GetType()))
             {
-                m_cleanupSystems.Add(system as ICleanupSystem);
+                _cleanupSystems.Add(system as ICleanupSystem);
             }
 
             // 注册刷新回调接口
             if (typeof(IUpdateSystem).IsAssignableFrom(system.GetType()))
             {
-                m_updateSystems.Add(system as IUpdateSystem);
+                _updateSystems.Add(system as IUpdateSystem);
             }
 
             // 注册后置刷新回调接口
             if (typeof(ILateUpdateSystem).IsAssignableFrom(system.GetType()))
             {
-                m_lateUpdateSystems.Add(system as ILateUpdateSystem);
+                _lateUpdateSystems.Add(system as ILateUpdateSystem);
             }
 
             return true;
@@ -451,17 +451,17 @@ namespace GameEngine
         /// <param name="system">系统对象实例</param>
         public void RemoveSystem(ISystem system)
         {
-            if (false == m_systems.Contains(system))
+            if (false == _systems.Contains(system))
             {
                 Debugger.Warn("Could not found any system instance in this container, remove it failed.");
                 return;
             }
 
-            m_systems.Remove(system);
-            m_initializeSystems.Remove(system as IInitializeSystem);
-            m_cleanupSystems.Remove(system as ICleanupSystem);
-            m_updateSystems.Remove(system as IUpdateSystem);
-            m_lateUpdateSystems.Remove(system as ILateUpdateSystem);
+            _systems.Remove(system);
+            _initializeSystems.Remove(system as IInitializeSystem);
+            _cleanupSystems.Remove(system as ICleanupSystem);
+            _updateSystems.Remove(system as IUpdateSystem);
+            _lateUpdateSystems.Remove(system as ILateUpdateSystem);
         }
 
         /// <summary>
@@ -469,10 +469,10 @@ namespace GameEngine
         /// </summary>
         protected void RemoveAllSystems()
         {
-            while (m_systems.Count > 0)
+            while (_systems.Count > 0)
             {
                 // 从最后一个元素开始进行删除
-                RemoveSystem(m_systems[m_systems.Count - 1]);
+                RemoveSystem(_systems[_systems.Count - 1]);
             }
         }
 
@@ -482,9 +482,9 @@ namespace GameEngine
         /// <param name="entity">实体对象实例</param>
         protected void CallInitializeForSystem(CEntity entity)
         {
-            for (int n = 0; n < m_initializeSystems.Count; ++n)
+            for (int n = 0; n < _initializeSystems.Count; ++n)
             {
-                m_initializeSystems[n].Initialize(entity);
+                _initializeSystems[n].Initialize(entity);
             }
         }
 
@@ -494,9 +494,9 @@ namespace GameEngine
         /// <param name="entity">实体对象实例</param>
         protected void CallCleanupForSystem(CEntity entity)
         {
-            for (int n = 0; n < m_cleanupSystems.Count; ++n)
+            for (int n = 0; n < _cleanupSystems.Count; ++n)
             {
-                m_cleanupSystems[n].Cleanup(entity);
+                _cleanupSystems[n].Cleanup(entity);
             }
         }
 
@@ -506,9 +506,9 @@ namespace GameEngine
         /// <param name="entity">实体对象实例</param>
         protected void CallUpdateForSystem(CEntity entity)
         {
-            for (int n = 0; n < m_updateSystems.Count; ++n)
+            for (int n = 0; n < _updateSystems.Count; ++n)
             {
-                m_updateSystems[n].Update(entity);
+                _updateSystems[n].Update(entity);
             }
         }
 
@@ -518,9 +518,9 @@ namespace GameEngine
         /// <param name="entity">实体对象实例</param>
         protected void CallLateUpdateForSystem(CEntity entity)
         {
-            for (int n = 0; n < m_lateUpdateSystems.Count; ++n)
+            for (int n = 0; n < _lateUpdateSystems.Count; ++n)
             {
-                m_lateUpdateSystems[n].LateUpdate(entity);
+                _lateUpdateSystems[n].LateUpdate(entity);
             }
         }
 

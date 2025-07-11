@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -42,14 +42,14 @@ namespace GameEngine
         /// <summary>
         /// 网络数据统计信息容器列表
         /// </summary>
-        private IDictionary<int, NetworkStatInfo> m_networkStatInfos = null;
+        private IDictionary<int, NetworkStatInfo> _networkStatInfos = null;
 
         /// <summary>
         /// 初始化统计模块实例的回调接口
         /// </summary>
         protected override void OnInitialize()
         {
-            m_networkStatInfos = new Dictionary<int, NetworkStatInfo>();
+            _networkStatInfos = new Dictionary<int, NetworkStatInfo>();
         }
 
         /// <summary>
@@ -57,8 +57,8 @@ namespace GameEngine
         /// </summary>
         protected override void OnCleanup()
         {
-            m_networkStatInfos.Clear();
-            m_networkStatInfos = null;
+            _networkStatInfos.Clear();
+            _networkStatInfos = null;
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace GameEngine
         /// </summary>
         public void Dump()
         {
-            m_networkStatInfos.Clear();
+            _networkStatInfos.Clear();
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace GameEngine
         public IList<IStatInfo> GetAllStatInfos()
         {
             List<IStatInfo> results = new List<IStatInfo>();
-            results.AddRange(m_networkStatInfos.Values);
+            results.AddRange(_networkStatInfos.Values);
 
             return results;
         }
@@ -87,10 +87,10 @@ namespace GameEngine
             if (!IsActivated()) return;
 
             NetworkStatInfo info = null;
-            if (false == Instance.m_networkStatInfos.TryGetValue(session, out info))
+            if (false == Instance._networkStatInfos.TryGetValue(session, out info))
             {
                 info = new NetworkStatInfo(session);
-                Instance.m_networkStatInfos.Add(session, info);
+                Instance._networkStatInfos.Add(session, info);
             }
 
             info.ConnectTime = SystemDateTime.UtcNow;
@@ -102,7 +102,7 @@ namespace GameEngine
             if (!IsActivated()) return;
 
             NetworkStatInfo info = null;
-            if (false == Instance.m_networkStatInfos.TryGetValue(session, out info))
+            if (false == Instance._networkStatInfos.TryGetValue(session, out info))
             {
                 Debugger.Warn("Could not found any network stat info with session '{0}', disconnect it failed.", session);
                 return;
@@ -117,7 +117,7 @@ namespace GameEngine
             if (!IsActivated()) return;
 
             NetworkStatInfo info = null;
-            if (false == Instance.m_networkStatInfos.TryGetValue(session, out info))
+            if (false == Instance._networkStatInfos.TryGetValue(session, out info))
             {
                 Debugger.Warn("Could not found any network stat info with session '{0}', send data failed.", session);
                 return;
@@ -133,7 +133,7 @@ namespace GameEngine
             if (!IsActivated()) return;
 
             NetworkStatInfo info = null;
-            if (false == Instance.m_networkStatInfos.TryGetValue(session, out info))
+            if (false == Instance._networkStatInfos.TryGetValue(session, out info))
             {
                 Debugger.Warn("Could not found any network stat info with session '{0}', recv data failed.", session);
                 return;

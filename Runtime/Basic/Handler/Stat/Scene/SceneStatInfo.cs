@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -35,59 +35,59 @@ namespace GameEngine
         /// <summary>
         /// 场景记录索引标识
         /// </summary>
-        private readonly int m_uid;
+        private readonly int _uid;
         /// <summary>
         /// 场景名称
         /// </summary>
-        private readonly string m_sceneName;
+        private readonly string _sceneName;
         /// <summary>
         /// 场景的哈希码，用来确保场景唯一性
         /// </summary>
-        private readonly int m_hashCode;
+        private readonly int _hashCode;
         /// <summary>
         /// 场景的进入时间
         /// </summary>
-        private SystemDateTime m_enterTime;
+        private SystemDateTime _enterTime;
         /// <summary>
         /// 场景的退出时间
         /// </summary>
-        private SystemDateTime m_exitTime;
+        private SystemDateTime _exitTime;
 
         public SceneStatInfo(int uid, string sceneName, int hashCode)
         {
-            m_uid = uid;
-            m_sceneName = sceneName;
-            m_hashCode = hashCode;
-            m_enterTime = SystemDateTime.MinValue;
-            m_exitTime = SystemDateTime.MinValue;
+            _uid = uid;
+            _sceneName = sceneName;
+            _hashCode = hashCode;
+            _enterTime = SystemDateTime.MinValue;
+            _exitTime = SystemDateTime.MinValue;
 
         }
 
         public int Uid
         {
-            get { return m_uid; }
+            get { return _uid; }
         }
 
         public string SceneName
         {
-            get { return m_sceneName; }
+            get { return _sceneName; }
         }
 
         public int HashCode
         {
-            get { return m_hashCode; }
+            get { return _hashCode; }
         }
 
         public SystemDateTime EnterTime
         {
-            get { return m_enterTime; }
-            set { m_enterTime = value; }
+            get { return _enterTime; }
+            set { _enterTime = value; }
         }
 
         public SystemDateTime ExitTime
         {
-            get { return m_exitTime; }
-            set { m_exitTime = value; }
+            get { return _exitTime; }
+            set { _exitTime = value; }
         }
     }
 }

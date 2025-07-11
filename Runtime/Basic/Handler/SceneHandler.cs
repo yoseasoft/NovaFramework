@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -42,25 +42,25 @@ namespace GameEngine
         /// <summary>
         /// 句柄对象锁实例
         /// </summary>
-        private readonly object m_lock = new object();
+        private readonly object _lock = new object();
 
         /// <summary>
         /// 场景对象类型映射注册管理容器
         /// </summary>
-        private readonly IDictionary<string, SystemType> m_sceneClassTypes;
+        private readonly IDictionary<string, SystemType> _sceneClassTypes;
         /// <summary>
         /// 场景功能类型映射注册管理容器
         /// </summary>
-        private readonly IDictionary<string, int> m_sceneFunctionTypes;
+        private readonly IDictionary<string, int> _sceneFunctionTypes;
 
         /// <summary>
         /// 当前运行的场景对象类型
         /// </summary>
-        private SystemType m_currentSceneType;
+        private SystemType _currentSceneType;
         /// <summary>
         /// 当前待命的场景对象类型
         /// </summary>
-        private SystemType m_waitingSceneType;
+        private SystemType _waitingSceneType;
 
         /// <summary>
         /// 句柄对象的单例访问获取接口
@@ -73,8 +73,8 @@ namespace GameEngine
         public SceneHandler()
         {
             // 初始化场景类注册容器
-            m_sceneClassTypes = new Dictionary<string, SystemType>();
-            m_sceneFunctionTypes = new Dictionary<string, int>();
+            _sceneClassTypes = new Dictionary<string, SystemType>();
+            _sceneFunctionTypes = new Dictionary<string, int>();
         }
 
         /// <summary>
@@ -83,8 +83,8 @@ namespace GameEngine
         ~SceneHandler()
         {
             // 清理场景类注册容器
-            m_sceneClassTypes.Clear();
-            m_sceneFunctionTypes.Clear();
+            _sceneClassTypes.Clear();
+            _sceneFunctionTypes.Clear();
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace GameEngine
                 // 回收场景实例
                 ReleaseInstance(scene);
 
-                m_currentSceneType = null;
+                _currentSceneType = null;
             }
 
             // 清理场景类型注册列表
@@ -127,11 +127,11 @@ namespace GameEngine
         /// </summary>
         protected override void OnUpdate()
         {
-            if (null != m_waitingSceneType)
+            if (null != _waitingSceneType)
             {
-                lock (m_lock)
+                lock (_lock)
                 {
-                    ChangeScene(m_waitingSceneType);
+                    ChangeScene(_waitingSceneType);
                 }
             }
 
@@ -182,7 +182,7 @@ namespace GameEngine
         public void ReplaceScene(string sceneName)
         {
             SystemType sceneType;
-            if (m_sceneClassTypes.TryGetValue(sceneName, out sceneType))
+            if (_sceneClassTypes.TryGetValue(sceneName, out sceneType))
             {
                 ReplaceScene(sceneType);
             }
@@ -209,25 +209,25 @@ namespace GameEngine
         public void ReplaceScene(SystemType sceneType)
         {
             Debugger.Assert(null != sceneType, "Invalid arguments.");
-            if (sceneType == m_currentSceneType)
+            if (sceneType == _currentSceneType)
             {
                 Debugger.Warn("The replace scene '{0}' must be not equals to current scene, replaced it failed.", sceneType.FullName);
                 return;
             }
 
-            if (false == m_sceneClassTypes.Values.Contains(sceneType))
+            if (false == _sceneClassTypes.Values.Contains(sceneType))
             {
                 Debugger.Error("Could not found any correct scene class with target type '{0}', replaced scene failed.", sceneType.FullName);
                 return;
             }
 
-            if (sceneType == m_waitingSceneType)
+            if (sceneType == _waitingSceneType)
             {
                 Debugger.Warn("The target scene '{0}' was already in a waiting state, repeat setted it failed.", sceneType.FullName);
                 return;
             }
 
-            m_waitingSceneType = sceneType;
+            _waitingSceneType = sceneType;
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace GameEngine
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
         private CScene CreateScene(SystemType sceneType)
         {
-            if (false == m_sceneClassTypes.Values.Contains(sceneType))
+            if (false == _sceneClassTypes.Values.Contains(sceneType))
             {
                 Debugger.Error("Unknown scene type '{0}', create the scene instance failed.", sceneType.FullName);
                 return null;
@@ -254,7 +254,7 @@ namespace GameEngine
         public CScene ChangeScene(string sceneName)
         {
             SystemType sceneType;
-            if (m_sceneClassTypes.TryGetValue(sceneName, out sceneType))
+            if (_sceneClassTypes.TryGetValue(sceneName, out sceneType))
             {
                 return ChangeScene(sceneType);
             }
@@ -298,7 +298,7 @@ namespace GameEngine
                 // 回收场景实例
                 ReleaseInstance(scene);
 
-                m_currentSceneType = null;
+                _currentSceneType = null;
             }
 
             scene = CreateScene(sceneType);
@@ -308,9 +308,9 @@ namespace GameEngine
                 return null;
             }
 
-            m_currentSceneType = sceneType;
+            _currentSceneType = sceneType;
             // 每次替换场景后，都将待命的场景重置掉
-            m_waitingSceneType = null;
+            _waitingSceneType = null;
 
             // 设置当前场景后再启动场景
             Call(scene.Startup);
@@ -370,7 +370,7 @@ namespace GameEngine
         /// <returns>返回对应场景的名称，若场景不存在则返回null</returns>
         internal string GetSceneNameForType(SystemType sceneType)
         {
-            foreach (KeyValuePair<string, SystemType> pair in m_sceneClassTypes)
+            foreach (KeyValuePair<string, SystemType> pair in _sceneClassTypes)
             {
                 if (pair.Value == sceneType)
                 {
@@ -401,16 +401,16 @@ namespace GameEngine
                 return false;
             }
 
-            if (m_sceneClassTypes.ContainsKey(sceneName))
+            if (_sceneClassTypes.ContainsKey(sceneName))
             {
                 Debugger.Warn("The scene name '{0}' was already registed, repeat add will be override old name.", sceneName);
-                m_sceneClassTypes.Remove(sceneName);
+                _sceneClassTypes.Remove(sceneName);
             }
 
-            m_sceneClassTypes.Add(sceneName, clsType);
+            _sceneClassTypes.Add(sceneName, clsType);
             if (funcType > 0)
             {
-                m_sceneFunctionTypes.Add(sceneName, funcType);
+                _sceneFunctionTypes.Add(sceneName, funcType);
             }
 
             return true;
@@ -421,8 +421,8 @@ namespace GameEngine
         /// </summary>
         private void UnregisterAllSceneClasses()
         {
-            m_sceneClassTypes.Clear();
-            m_sceneFunctionTypes.Clear();
+            _sceneClassTypes.Clear();
+            _sceneFunctionTypes.Clear();
         }
 
         #endregion

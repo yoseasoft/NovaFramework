@@ -35,82 +35,82 @@ namespace GameEngine
         /// <summary>
         /// 任务的会话标识
         /// </summary>
-        private readonly int m_session;
+        private readonly int _session;
         /// <summary>
         /// 任务名称
         /// </summary>
-        private string m_timerName;
+        private string _timerName;
         /// <summary>
         /// 任务的创建时间
         /// </summary>
-        private SystemDateTime m_createTime;
+        private SystemDateTime _createTime;
         /// <summary>
         /// 任务的最后使用时间
         /// </summary>
-        private SystemDateTime m_lastUseTime;
+        private SystemDateTime _lastUseTime;
         /// <summary>
         /// 任务的调度次数
         /// </summary>
-        private int m_scheduleCount;
+        private int _scheduleCount;
         /// <summary>
         /// 任务的结束次数
         /// </summary>
-        private int m_finishedCount;
+        private int _finishedCount;
         /// <summary>
         /// 任务的心跳次数
         /// </summary>
-        private int m_blinkCount;
+        private int _blinkCount;
 
         public TimerStatInfo(int session)
         {
-            m_session = session;
-            m_timerName = string.Empty;
-            m_createTime = SystemDateTime.MinValue;
-            m_lastUseTime = SystemDateTime.MinValue;
-            m_scheduleCount = 0;
-            m_finishedCount = 0;
-            m_blinkCount = 0;
+            _session = session;
+            _timerName = string.Empty;
+            _createTime = SystemDateTime.MinValue;
+            _lastUseTime = SystemDateTime.MinValue;
+            _scheduleCount = 0;
+            _finishedCount = 0;
+            _blinkCount = 0;
         }
 
         public int Session
         {
-            get { return m_session; }
+            get { return _session; }
         }
 
         public string TimerName
         {
-            get { return m_timerName; }
-            set { m_timerName = value; }
+            get { return _timerName; }
+            set { _timerName = value; }
         }
 
         public SystemDateTime CreateTime
         {
-            get { return m_createTime; }
-            set { m_createTime = value; }
+            get { return _createTime; }
+            set { _createTime = value; }
         }
 
         public SystemDateTime LastUseTime
         {
-            get { return m_lastUseTime; }
-            set { m_lastUseTime = value; }
+            get { return _lastUseTime; }
+            set { _lastUseTime = value; }
         }
 
         public int ScheduleCount
         {
-            get { return m_scheduleCount; }
-            set { m_scheduleCount = value; }
+            get { return _scheduleCount; }
+            set { _scheduleCount = value; }
         }
 
         public int FinishedCount
         {
-            get { return m_finishedCount; }
-            set { m_finishedCount = value; }
+            get { return _finishedCount; }
+            set { _finishedCount = value; }
         }
 
         public int BlinkCount
         {
-            get { return m_blinkCount; }
-            set { m_blinkCount = value; }
+            get { return _blinkCount; }
+            set { _blinkCount = value; }
         }
     }
 }

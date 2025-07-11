@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,39 +39,39 @@ namespace GameEngine
         /// <summary>
         /// 用于映射对应通道的唯一标识
         /// </summary>
-        protected int m_channelID;
+        protected int _channelID;
 
         /// <summary>
         /// 网络通道的类型标识
         /// </summary>
-        protected int m_channelType;
+        protected int _channelType;
 
         /// <summary>
         /// 消息通道的名称
         /// </summary>
-        protected string m_name;
+        protected string _name;
 
         /// <summary>
         /// 消息通道的远程访问地址
         /// </summary>
-        protected string m_url;
+        protected string _url;
 
         /// <summary>
         /// 消息通道的数据解析实例
         /// </summary>
-        protected IMessageTranslator m_messageTranslator;
+        protected IMessageTranslator _messageTranslator;
 
         /// <summary>
         /// 消息通信对象当前连接状态标识
         /// </summary>
-        protected bool m_isConnected;
+        protected bool _isConnected;
 
-        public int ChannelID { get { return m_channelID; } }
-        public int ChannelType { get { return m_channelType; } }
-        public string Name { get { return m_name; } internal set { m_name = value; } }
-        public string Url { get { return m_url; } internal set { m_url = value; } }
-        public IMessageTranslator MessageTranslator { get { return m_messageTranslator; } }
-        public bool IsConnected { get { return m_isConnected; } }
+        public int ChannelID { get { return _channelID; } }
+        public int ChannelType { get { return _channelType; } }
+        public string Name { get { return _name; } internal set { _name = value; } }
+        public string Url { get { return _url; } internal set { _url = value; } }
+        public IMessageTranslator MessageTranslator { get { return _messageTranslator; } }
+        public bool IsConnected { get { return _isConnected; } }
 
         protected MessageChannel(int channelID, int channelType) : this(channelID, channelType, string.Empty)
         { }
@@ -81,12 +81,12 @@ namespace GameEngine
 
         protected MessageChannel(int channelID, int channelType, string name, string url)
         {
-            m_channelID = channelID;
-            m_channelType = channelType;
-            m_name = name;
-            m_url = url;
+            _channelID = channelID;
+            _channelType = channelType;
+            _name = name;
+            _url = url;
 
-            m_isConnected = false;
+            _isConnected = false;
         }
 
         /// <summary>
@@ -94,10 +94,10 @@ namespace GameEngine
         /// </summary>
         protected virtual void Initialize()
         {
-            m_messageTranslator = NetworkHandler.Instance.GetMessageTranslatorByServiceType(m_channelType);
-            if (null == m_messageTranslator)
+            _messageTranslator = NetworkHandler.Instance.GetMessageTranslatorByServiceType(_channelType);
+            if (null == _messageTranslator)
             {
-                Debugger.Warn("Could not found any valid message translator with target service type '{0}', initialized channel instance failed.", m_channelType);
+                Debugger.Warn("Could not found any valid message translator with target service type '{0}', initialized channel instance failed.", _channelType);
             }
         }
 
@@ -107,7 +107,7 @@ namespace GameEngine
         protected virtual void Cleanup()
         {
             // 重置消息解析器
-            m_messageTranslator = null;
+            _messageTranslator = null;
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace GameEngine
         /// </summary>
         internal void OnConnected()
         {
-            m_isConnected = true;
+            _isConnected = true;
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace GameEngine
         /// </summary>
         internal void OnDisconnected()
         {
-            m_isConnected = false;
+            _isConnected = false;
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace GameEngine
         /// <param name="buffer">消息字符串</param>
         protected void Send(string buffer)
         {
-            NetworkHandler.Instance.SendMessage(m_channelID, buffer);
+            NetworkHandler.Instance.SendMessage(_channelID, buffer);
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace GameEngine
         /// <param name="buffer">消息字节流</param>
         protected void Send(byte[] buffer)
         {
-            NetworkHandler.Instance.SendMessage(m_channelID, buffer);
+            NetworkHandler.Instance.SendMessage(_channelID, buffer);
         }
     }
 }

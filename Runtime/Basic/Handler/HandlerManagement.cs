@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -42,19 +42,19 @@ namespace GameEngine
         /// <summary>
         /// 句柄定义类型的管理容器
         /// </summary>
-        private static IList<SystemType> s_handlerDeclaringTypes = null;
+        private static IList<SystemType> _handlerDeclaringTypes = null;
         /// <summary>
         /// 句柄对象类型的管理容器
         /// </summary>
-        private static IDictionary<int, SystemType> s_handlerClassTypes = null;
+        private static IDictionary<int, SystemType> _handlerClassTypes = null;
         /// <summary>
         /// 句柄对象实例的管理容器
         /// </summary>
-        private static IDictionary<int, IHandler> s_handlerRegisterObjects = null;
+        private static IDictionary<int, IHandler> _handlerRegisterObjects = null;
         /// <summary>
         /// 句柄对象实例的排序容器
         /// </summary>
-        private static LinkedList<IHandler> s_handlerSortingList = null;
+        private static LinkedList<IHandler> _handlerSortingList = null;
 
         /// <summary>
         /// 句柄管理器启动操作函数
@@ -64,13 +64,13 @@ namespace GameEngine
             string namespaceTag = typeof(HandlerManagement).Namespace;
 
             // 定义类型管理容器初始化
-            s_handlerDeclaringTypes = new List<SystemType>();
+            _handlerDeclaringTypes = new List<SystemType>();
             // 对象类型管理容器初始化
-            s_handlerClassTypes = new Dictionary<int, SystemType>();
+            _handlerClassTypes = new Dictionary<int, SystemType>();
             // 实例管理容器初始化
-            s_handlerRegisterObjects = new Dictionary<int, IHandler>();
+            _handlerRegisterObjects = new Dictionary<int, IHandler>();
             // 排序容器初始化
-            s_handlerSortingList = new LinkedList<IHandler>();
+            _handlerSortingList = new LinkedList<IHandler>();
 
             foreach (HandlerClassType enumValue in SystemEnum.GetValues(typeof(HandlerClassType)))
             {
@@ -120,11 +120,11 @@ namespace GameEngine
                 // Debugger.Info("Register new handler {0} to target class type {1}.", handlerName, handler.HandlerType);
 
                 // 添加的管理容器
-                s_handlerDeclaringTypes.Add(handlerType);
-                s_handlerClassTypes.Add(handler.HandlerType, handlerType);
-                s_handlerRegisterObjects.Add(handler.HandlerType, handler);
+                _handlerDeclaringTypes.Add(handlerType);
+                _handlerClassTypes.Add(handler.HandlerType, handlerType);
+                _handlerRegisterObjects.Add(handler.HandlerType, handler);
                 // 添加到排序列表
-                s_handlerSortingList.AddLast(handler);
+                _handlerSortingList.AddLast(handler);
 
                 // 添加所有定义的句柄基类
                 SystemType baseType = handlerType.BaseType;
@@ -135,9 +135,9 @@ namespace GameEngine
                         break;
                     }
 
-                    if (false == s_handlerDeclaringTypes.Contains(baseType))
+                    if (false == _handlerDeclaringTypes.Contains(baseType))
                     {
-                        s_handlerDeclaringTypes.Add(baseType);
+                        _handlerDeclaringTypes.Add(baseType);
                     }
 
                     baseType = baseType.BaseType;
@@ -168,7 +168,7 @@ namespace GameEngine
 
             // 遍历执行清理函数
             // foreach (KeyValuePair<int, IHandler> pair in s_handlerRegisterObjects.Reverse())
-            IEnumerable<IHandler> enumerable = NovaEngine.Utility.Collection.Reverse<IHandler>(s_handlerSortingList);
+            IEnumerable<IHandler> enumerable = NovaEngine.Utility.Collection.Reverse<IHandler>(_handlerSortingList);
             foreach (IHandler handler in enumerable)
             {
                 handler.Cleanup();
@@ -177,17 +177,17 @@ namespace GameEngine
             // 移除句柄相关指令事件代理
             NovaEngine.ModuleController.RemoveCommandAgent(HandlerDispatchedCommandAgent.COMMAND_AGENT_NAME);
 
-            s_handlerDeclaringTypes.Clear();
-            s_handlerDeclaringTypes = null;
+            _handlerDeclaringTypes.Clear();
+            _handlerDeclaringTypes = null;
 
-            s_handlerClassTypes.Clear();
-            s_handlerClassTypes = null;
+            _handlerClassTypes.Clear();
+            _handlerClassTypes = null;
 
-            s_handlerRegisterObjects.Clear();
-            s_handlerRegisterObjects = null;
+            _handlerRegisterObjects.Clear();
+            _handlerRegisterObjects = null;
 
-            s_handlerSortingList.Clear();
-            s_handlerSortingList = null;
+            _handlerSortingList.Clear();
+            _handlerSortingList = null;
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace GameEngine
         /// </summary>
         public static void Update()
         {
-            foreach (IHandler handler in s_handlerSortingList)
+            foreach (IHandler handler in _handlerSortingList)
             {
                 handler.Update();
             }
@@ -206,7 +206,7 @@ namespace GameEngine
         /// </summary>
         public static void LateUpdate()
         {
-            foreach (IHandler handler in s_handlerSortingList)
+            foreach (IHandler handler in _handlerSortingList)
             {
                 handler.LateUpdate();
             }
@@ -220,7 +220,7 @@ namespace GameEngine
             LinkedList<IHandler> result = new LinkedList<IHandler>();
 
             LinkedListNode<IHandler> lln;
-            foreach (IHandler handler in s_handlerSortingList)
+            foreach (IHandler handler in _handlerSortingList)
             {
                 lln = result.First;
                 while (true)
@@ -243,11 +243,11 @@ namespace GameEngine
                 }
             }
 
-            s_handlerSortingList.Clear();
+            _handlerSortingList.Clear();
             lln = result.First;
             while (null != lln)
             {
-                s_handlerSortingList.AddLast(lln.Value);
+                _handlerSortingList.AddLast(lln.Value);
                 lln = lln.Next;
             }
         }
@@ -259,7 +259,7 @@ namespace GameEngine
         internal static IList<SystemType> GetAllHandlerTypes()
         {
             IList<SystemType> result = null;
-            result = NovaEngine.Utility.Collection.ToListForValues<int, SystemType>(s_handlerClassTypes);
+            result = NovaEngine.Utility.Collection.ToListForValues<int, SystemType>(_handlerClassTypes);
             return result;
         }
 
@@ -269,7 +269,7 @@ namespace GameEngine
         /// <returns>返回句柄类型列表</returns>
         internal static IList<SystemType> GetAllHandlerDeclaringTypes()
         {
-            return s_handlerDeclaringTypes;
+            return _handlerDeclaringTypes;
         }
 
         /// <summary>
@@ -280,7 +280,7 @@ namespace GameEngine
         internal static SystemType GetHandlerType(int handlerType)
         {
             SystemType classType = null;
-            if (false == s_handlerClassTypes.TryGetValue(handlerType, out classType))
+            if (false == _handlerClassTypes.TryGetValue(handlerType, out classType))
             {
                 return null;
             }
@@ -296,7 +296,7 @@ namespace GameEngine
         public static IHandler GetHandler(int handlerType)
         {
             IHandler handler = null;
-            if (false == s_handlerRegisterObjects.TryGetValue(handlerType, out handler))
+            if (false == _handlerRegisterObjects.TryGetValue(handlerType, out handler))
             {
                 return null;
             }
@@ -313,7 +313,7 @@ namespace GameEngine
         {
             SystemType clsType = typeof(T);
 
-            foreach (KeyValuePair<int, IHandler> pair in s_handlerRegisterObjects)
+            foreach (KeyValuePair<int, IHandler> pair in _handlerRegisterObjects)
             {
                 if (clsType.IsAssignableFrom(pair.Value.GetType()))
                     return (T) pair.Value;

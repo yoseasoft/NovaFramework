@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -40,14 +40,14 @@ namespace GameEngine
         /// <summary>
         /// 角色访问统计信息容器列表
         /// </summary>
-        private IList<ActorStatInfo> m_actorStatInfos = null;
+        private IList<ActorStatInfo> _actorStatInfos = null;
 
         /// <summary>
         /// 初始化统计模块实例的回调接口
         /// </summary>
         protected override void OnInitialize()
         {
-            m_actorStatInfos = new List<ActorStatInfo>();
+            _actorStatInfos = new List<ActorStatInfo>();
         }
 
         /// <summary>
@@ -55,8 +55,8 @@ namespace GameEngine
         /// </summary>
         protected override void OnCleanup()
         {
-            m_actorStatInfos.Clear();
-            m_actorStatInfos = null;
+            _actorStatInfos.Clear();
+            _actorStatInfos = null;
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace GameEngine
         /// </summary>
         public void Dump()
         {
-            m_actorStatInfos.Clear();
+            _actorStatInfos.Clear();
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace GameEngine
         public IList<IStatInfo> GetAllStatInfos()
         {
             List<IStatInfo> results = new List<IStatInfo>();
-            results.AddRange(m_actorStatInfos);
+            results.AddRange(_actorStatInfos);
 
             return results;
         }
@@ -84,11 +84,11 @@ namespace GameEngine
         {
             ActorStatInfo info = null;
 
-            int uid = m_actorStatInfos.Count + 1;
+            int uid = _actorStatInfos.Count + 1;
 
             info = new ActorStatInfo(uid, obj.Name, obj.GetHashCode());
             info.CreateTime = SystemDateTime.UtcNow;
-            m_actorStatInfos.Add(info);
+            _actorStatInfos.Add(info);
         }
 
         [IStatModule.OnStatModuleRegisterCallback(ON_ACTOR_RELEASE_CALL)]
@@ -106,9 +106,9 @@ namespace GameEngine
 
         private bool TryGetActorStatInfoByHashCode(int hashCode, out ActorStatInfo info)
         {
-            for (int n = m_actorStatInfos.Count - 1; n >= 0; --n)
+            for (int n = _actorStatInfos.Count - 1; n >= 0; --n)
             {
-                ActorStatInfo found = m_actorStatInfos[n];
+                ActorStatInfo found = _actorStatInfos[n];
                 if (found.HashCode == hashCode)
                 {
                     info = found;

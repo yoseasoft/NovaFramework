@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -65,93 +65,93 @@ namespace GameEngine
         /// <summary>
         /// 句柄对象的类型标识
         /// </summary>
-        private int m_handlerType = 0;
+        private int _handlerType = 0;
 
         /// <summary>
         /// 句柄对象当前是否处于刷新逻辑的状态标识
         /// </summary>
-        private bool m_isOnUpdatingStatus = false;
+        private bool _isOnUpdatingStatus = false;
 
         /// <summary>
         /// 定时器模块的实例引用
         /// </summary>
-        private NovaEngine.TimerModule m_timerModule = null;
+        private NovaEngine.TimerModule _timerModule = null;
         /// <summary>
         /// 线程模块的实例引用
         /// </summary>
-        private NovaEngine.ThreadModule m_threadModule = null;
+        private NovaEngine.ThreadModule _threadModule = null;
         /// <summary>
         /// 任务模块的实例引用
         /// </summary>
-        private NovaEngine.TaskModule m_taskModule = null;
+        private NovaEngine.TaskModule _taskModule = null;
         /// <summary>
         /// 网络模块的实例引用
         /// </summary>
-        private NovaEngine.NetworkModule m_networkModule = null;
+        private NovaEngine.NetworkModule _networkModule = null;
         /// <summary>
         /// 资源模块的实例引用
         /// </summary>
-        private NovaEngine.ResourceModule m_resourceModule;
+        private NovaEngine.ResourceModule _resourceModule;
         /// <summary>
         /// 文件模块的实例引用
         /// </summary>
-        private NovaEngine.FileModule m_fileModule = null;
+        private NovaEngine.FileModule _fileModule = null;
         /// <summary>
         /// 输入模块的实例引用
         /// </summary>
-        private NovaEngine.InputModule m_inputModule = null;
+        private NovaEngine.InputModule _inputModule = null;
         /// <summary>
         /// 场景模块的实例引用
         /// </summary>
-        private NovaEngine.SceneModule m_sceneModule = null;
+        private NovaEngine.SceneModule _sceneModule = null;
 
         /// <summary>
         /// 句柄子模块行为流程回调的缓存队列
         /// </summary>
-        private IDictionary<SystemType, SystemDelegate> m_cachedSubmoduleBehaviourCallbacks = null;
+        private IDictionary<SystemType, SystemDelegate> _cachedSubmoduleBehaviourCallbacks = null;
 
         /// <summary>
         /// 设置句柄的类型标识
         /// </summary>
-        public int HandlerType { get { return m_handlerType; } internal set { m_handlerType = value; } }
+        public int HandlerType { get { return _handlerType; } internal set { _handlerType = value; } }
 
         /// <summary>
         /// 获取句柄对象当前的刷新状态标识
         /// </summary>
-        protected internal bool IsOnUpdatingStatus => m_isOnUpdatingStatus;
+        protected internal bool IsOnUpdatingStatus => _isOnUpdatingStatus;
 
         /// <summary>
         /// 获取定时器模块的对象实例
         /// </summary>
-        public NovaEngine.TimerModule TimerModule => m_timerModule;
+        public NovaEngine.TimerModule TimerModule => _timerModule;
         /// <summary>
         /// 获取线程模块的对象实例
         /// </summary>
-        public NovaEngine.ThreadModule ThreadModule => m_threadModule;
+        public NovaEngine.ThreadModule ThreadModule => _threadModule;
         /// <summary>
         /// 获取任务模块的对象实例
         /// </summary>
-        public NovaEngine.TaskModule TaskModule => m_taskModule;
+        public NovaEngine.TaskModule TaskModule => _taskModule;
         /// <summary>
         /// 获取网络模块的对象实例
         /// </summary>
-        public NovaEngine.NetworkModule NetworkModule => m_networkModule;
+        public NovaEngine.NetworkModule NetworkModule => _networkModule;
         /// <summary>
         /// 获取输入模块的对象实例
         /// </summary>
-        public NovaEngine.InputModule InputModule => m_inputModule;
+        public NovaEngine.InputModule InputModule => _inputModule;
         /// <summary>
         /// 获取资源模块的对象实例
         /// </summary>
-        public NovaEngine.ResourceModule ResourceModule => m_resourceModule;
+        public NovaEngine.ResourceModule ResourceModule => _resourceModule;
         /// <summary>
         /// 获取文件模块的对象实例
         /// </summary>
-        public NovaEngine.FileModule FileModule => m_fileModule;
+        public NovaEngine.FileModule FileModule => _fileModule;
         /// <summary>
         /// 获取场景模块的对象实例
         /// </summary>
-        public NovaEngine.SceneModule SceneModule => m_sceneModule;
+        public NovaEngine.SceneModule SceneModule => _sceneModule;
 
         /// <summary>
         /// 句柄对象初始化接口函数
@@ -160,17 +160,17 @@ namespace GameEngine
         public bool Initialize()
         {
             // 初始化模块实例
-            m_timerModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.TimerModule>();
-            m_threadModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.ThreadModule>();
-            m_taskModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.TaskModule>();
-            m_networkModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.NetworkModule>();
-            m_inputModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.InputModule>();
-            m_resourceModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.ResourceModule>();
-            m_fileModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.FileModule>();
-            m_sceneModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.SceneModule>();
+            _timerModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.TimerModule>();
+            _threadModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.ThreadModule>();
+            _taskModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.TaskModule>();
+            _networkModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.NetworkModule>();
+            _inputModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.InputModule>();
+            _resourceModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.ResourceModule>();
+            _fileModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.FileModule>();
+            _sceneModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.SceneModule>();
 
             // 初始化子模块行为流程缓存队列
-            m_cachedSubmoduleBehaviourCallbacks = new Dictionary<SystemType, SystemDelegate>();
+            _cachedSubmoduleBehaviourCallbacks = new Dictionary<SystemType, SystemDelegate>();
 
             if (false == OnInitialize()) { return false; }
 
@@ -191,18 +191,18 @@ namespace GameEngine
             OnCleanup();
 
             // 清理子模块行为流程缓存队列
-            m_cachedSubmoduleBehaviourCallbacks.Clear();
-            m_cachedSubmoduleBehaviourCallbacks = null;
+            _cachedSubmoduleBehaviourCallbacks.Clear();
+            _cachedSubmoduleBehaviourCallbacks = null;
 
             // 清理模块实例
-            m_timerModule = null;
-            m_threadModule = null;
-            m_taskModule = null;
-            m_networkModule = null;
-            m_inputModule = null;
-            m_resourceModule = null;
-            m_fileModule = null;
-            m_sceneModule = null;
+            _timerModule = null;
+            _threadModule = null;
+            _taskModule = null;
+            _networkModule = null;
+            _inputModule = null;
+            _resourceModule = null;
+            _fileModule = null;
+            _sceneModule = null;
         }
 
         /// <summary>
@@ -210,11 +210,11 @@ namespace GameEngine
         /// </summary>
         public void Update()
         {
-            m_isOnUpdatingStatus = true;
+            _isOnUpdatingStatus = true;
 
             OnUpdate();
 
-            m_isOnUpdatingStatus = false;
+            _isOnUpdatingStatus = false;
         }
 
         /// <summary>
@@ -222,11 +222,11 @@ namespace GameEngine
         /// </summary>
         public void LateUpdate()
         {
-            m_isOnUpdatingStatus = true;
+            _isOnUpdatingStatus = true;
 
             OnLateUpdate();
 
-            m_isOnUpdatingStatus = false;
+            _isOnUpdatingStatus = false;
         }
 
         /// <summary>
@@ -290,7 +290,7 @@ namespace GameEngine
         private bool TryGetSubmoduleBehaviourCallback(SystemType targetType, out SystemDelegate callback)
         {
             SystemDelegate handler;
-            if (m_cachedSubmoduleBehaviourCallbacks.TryGetValue(targetType, out handler))
+            if (_cachedSubmoduleBehaviourCallbacks.TryGetValue(targetType, out handler))
             {
                 callback = handler;
                 return null == callback ? false : true;
@@ -328,11 +328,11 @@ namespace GameEngine
                     }
                 }
 
-                m_cachedSubmoduleBehaviourCallbacks.Add(targetType, callback);
+                _cachedSubmoduleBehaviourCallbacks.Add(targetType, callback);
                 return true;
             }
 
-            m_cachedSubmoduleBehaviourCallbacks.Add(targetType, callback);
+            _cachedSubmoduleBehaviourCallbacks.Add(targetType, callback);
             return false;
         }
 

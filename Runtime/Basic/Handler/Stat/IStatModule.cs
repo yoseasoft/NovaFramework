@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -48,13 +48,13 @@ namespace GameEngine
             /// <summary>
             /// 统计模块的功能标识
             /// </summary>
-            private readonly int m_funcType;
+            private readonly int _funcType;
 
-            public int FuncType => m_funcType;
+            public int FuncType => _funcType;
 
             public OnStatModuleRegisterCallbackAttribute(int funcType) : base()
             {
-                m_funcType = funcType;
+                _funcType = funcType;
             }
         }
 

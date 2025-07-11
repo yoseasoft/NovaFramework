@@ -33,47 +33,47 @@ namespace GameEngine
         /// <summary>
         /// 定时器管理句柄对象实例
         /// </summary>
-        private static TimerHandler m_timerHandler = null;
+        private static TimerHandler _timerHandler = null;
         /// <summary>
         /// 线程管理句柄对象实例
         /// </summary>
-        private static ThreadHandler m_threadHandler = null;
+        private static ThreadHandler _threadHandler = null;
         /// <summary>
         /// 任务管理句柄对象实例
         /// </summary>
-        private static TaskHandler m_taskHandler = null;
+        private static TaskHandler _taskHandler = null;
         /// <summary>
         /// 网络管理句柄对象实例
         /// </summary>
-        private static NetworkHandler m_networkHandler = null;
+        private static NetworkHandler _networkHandler = null;
         /// <summary>
         /// 输入管理句柄对象实例
         /// </summary>
-        private static InputHandler m_inputHandler = null;
+        private static InputHandler _inputHandler = null;
         /// <summary>
         /// 资源管理句柄对象实例
         /// </summary>
-        private static ResourceHandler m_resourceHandler = null;
+        private static ResourceHandler _resourceHandler = null;
         /// <summary>
         /// 文件管理句柄对象实例
         /// </summary>
-        private static FileHandler m_fileHandler = null;
+        private static FileHandler _fileHandler = null;
         /// <summary>
         /// 场景管理句柄对象实例
         /// </summary>
-        private static SceneHandler m_sceneHandler = null;
+        private static SceneHandler _sceneHandler = null;
         /// <summary>
         /// 角色管理句柄对象实例
         /// </summary>
-        private static ActorHandler m_actorHandler = null;
+        private static ActorHandler _actorHandler = null;
         /// <summary>
         /// 用户界面管理句柄对象实例
         /// </summary>
-        private static GuiHandler m_guiHandler = null;
+        private static GuiHandler _guiHandler = null;
         /// <summary>
         /// 音频管理句柄对象实例
         /// </summary>
-        private static SoundHandler m_soundHandler = null;
+        private static SoundHandler _soundHandler = null;
 
         /// <summary>
         /// 定时器管理句柄对象实例的获取函数
@@ -83,11 +83,11 @@ namespace GameEngine
         {
             get
             {
-                if (null == m_timerHandler)
+                if (null == _timerHandler)
                 {
-                    m_timerHandler = GetHandler<TimerHandler>();
+                    _timerHandler = GetHandler<TimerHandler>();
                 }
-                return m_timerHandler;
+                return _timerHandler;
             }
         }
 
@@ -99,11 +99,11 @@ namespace GameEngine
         {
             get
             {
-                if (null == m_threadHandler)
+                if (null == _threadHandler)
                 {
-                    m_threadHandler = GetHandler<ThreadHandler>();
+                    _threadHandler = GetHandler<ThreadHandler>();
                 }
-                return m_threadHandler;
+                return _threadHandler;
             }
         }
 
@@ -115,11 +115,11 @@ namespace GameEngine
         {
             get
             {
-                if (null == m_taskHandler)
+                if (null == _taskHandler)
                 {
-                    m_taskHandler = GetHandler<TaskHandler>();
+                    _taskHandler = GetHandler<TaskHandler>();
                 }
-                return m_taskHandler;
+                return _taskHandler;
             }
         }
 
@@ -131,11 +131,11 @@ namespace GameEngine
         {
             get
             {
-                if (null == m_networkHandler)
+                if (null == _networkHandler)
                 {
-                    m_networkHandler = GetHandler<NetworkHandler>();
+                    _networkHandler = GetHandler<NetworkHandler>();
                 }
-                return m_networkHandler;
+                return _networkHandler;
             }
         }
 
@@ -147,11 +147,11 @@ namespace GameEngine
         {
             get
             {
-                if (null == m_inputHandler)
+                if (null == _inputHandler)
                 {
-                    m_inputHandler = GetHandler<InputHandler>();
+                    _inputHandler = GetHandler<InputHandler>();
                 }
-                return m_inputHandler;
+                return _inputHandler;
             }
         }
 
@@ -163,11 +163,11 @@ namespace GameEngine
         {
             get
             {
-                if (null == m_resourceHandler)
+                if (null == _resourceHandler)
                 {
-                    m_resourceHandler = GetHandler<ResourceHandler>();
+                    _resourceHandler = GetHandler<ResourceHandler>();
                 }
-                return m_resourceHandler;
+                return _resourceHandler;
             }
         }
 
@@ -179,11 +179,11 @@ namespace GameEngine
         {
             get
             {
-                if (null == m_fileHandler)
+                if (null == _fileHandler)
                 {
-                    m_fileHandler = GetHandler<FileHandler>();
+                    _fileHandler = GetHandler<FileHandler>();
                 }
-                return m_fileHandler;
+                return _fileHandler;
             }
         }
 
@@ -195,11 +195,11 @@ namespace GameEngine
         {
             get
             {
-                if (null == m_sceneHandler)
+                if (null == _sceneHandler)
                 {
-                    m_sceneHandler = GetHandler<SceneHandler>();
+                    _sceneHandler = GetHandler<SceneHandler>();
                 }
-                return m_sceneHandler;
+                return _sceneHandler;
             }
         }
 
@@ -211,11 +211,11 @@ namespace GameEngine
         {
             get
             {
-                if (null == m_actorHandler)
+                if (null == _actorHandler)
                 {
-                    m_actorHandler = GetHandler<ActorHandler>();
+                    _actorHandler = GetHandler<ActorHandler>();
                 }
-                return m_actorHandler;
+                return _actorHandler;
             }
         }
 
@@ -227,11 +227,11 @@ namespace GameEngine
         {
             get
             {
-                if (null == m_guiHandler)
+                if (null == _guiHandler)
                 {
-                    m_guiHandler = GetHandler<GuiHandler>();
+                    _guiHandler = GetHandler<GuiHandler>();
                 }
-                return m_guiHandler;
+                return _guiHandler;
             }
         }
 
@@ -243,11 +243,11 @@ namespace GameEngine
         {
             get
             {
-                if (null == m_soundHandler)
+                if (null == _soundHandler)
                 {
-                    m_soundHandler = GetHandler<SoundHandler>();
+                    _soundHandler = GetHandler<SoundHandler>();
                 }
-                return m_soundHandler;
+                return _soundHandler;
             }
         }
 
@@ -256,17 +256,17 @@ namespace GameEngine
         /// </summary>
         private static void CleanupAllHandlerCaches()
         {
-            m_timerHandler = null;
-            m_threadHandler = null;
-            m_taskHandler = null;
-            m_networkHandler = null;
-            m_inputHandler = null;
-            m_resourceHandler = null;
-            m_fileHandler = null;
-            m_sceneHandler = null;
-            m_actorHandler = null;
-            m_guiHandler = null;
-            m_soundHandler = null;
+            _timerHandler = null;
+            _threadHandler = null;
+            _taskHandler = null;
+            _networkHandler = null;
+            _inputHandler = null;
+            _resourceHandler = null;
+            _fileHandler = null;
+            _sceneHandler = null;
+            _actorHandler = null;
+            _guiHandler = null;
+            _soundHandler = null;
         }
     }
 }

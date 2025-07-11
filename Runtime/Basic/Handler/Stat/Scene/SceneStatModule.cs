@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -40,14 +40,14 @@ namespace GameEngine
         /// <summary>
         /// 场景访问统计信息容器列表
         /// </summary>
-        private IList<SceneStatInfo> m_sceneStatInfos = null;
+        private IList<SceneStatInfo> _sceneStatInfos = null;
 
         /// <summary>
         /// 初始化统计模块实例的回调接口
         /// </summary>
         protected override void OnInitialize()
         {
-            m_sceneStatInfos = new List<SceneStatInfo>();
+            _sceneStatInfos = new List<SceneStatInfo>();
         }
 
         /// <summary>
@@ -55,8 +55,8 @@ namespace GameEngine
         /// </summary>
         protected override void OnCleanup()
         {
-            m_sceneStatInfos.Clear();
-            m_sceneStatInfos = null;
+            _sceneStatInfos.Clear();
+            _sceneStatInfos = null;
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace GameEngine
         /// </summary>
         public void Dump()
         {
-            m_sceneStatInfos.Clear();
+            _sceneStatInfos.Clear();
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace GameEngine
         public IList<IStatInfo> GetAllStatInfos()
         {
             List<IStatInfo> results = new List<IStatInfo>();
-            results.AddRange(m_sceneStatInfos);
+            results.AddRange(_sceneStatInfos);
 
             return results;
         }
@@ -84,11 +84,11 @@ namespace GameEngine
         {
             SceneStatInfo info = null;
 
-            int uid = m_sceneStatInfos.Count + 1;
+            int uid = _sceneStatInfos.Count + 1;
 
             info = new SceneStatInfo(uid, scene.Name, scene.GetHashCode());
             info.EnterTime = SystemDateTime.UtcNow;
-            m_sceneStatInfos.Add(info);
+            _sceneStatInfos.Add(info);
         }
 
         [IStatModule.OnStatModuleRegisterCallback(ON_SCENE_EXIT_CALL)]
@@ -106,9 +106,9 @@ namespace GameEngine
 
         private bool TryGetSceneStatInfoByHashCode(int hashCode, out SceneStatInfo info)
         {
-            for (int n = m_sceneStatInfos.Count - 1; n >= 0; --n)
+            for (int n = _sceneStatInfos.Count - 1; n >= 0; --n)
             {
-                SceneStatInfo found = m_sceneStatInfos[n];
+                SceneStatInfo found = _sceneStatInfos[n];
                 if (found.HashCode == hashCode)
                 {
                     info = found;

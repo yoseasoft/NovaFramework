@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -35,93 +35,93 @@ namespace GameEngine
         /// <summary>
         /// 通道的会话标识
         /// </summary>
-        private readonly int m_session;
+        private readonly int _session;
         /// <summary>
         /// 通道连接的地址
         /// </summary>
-        private string m_url;
+        private string _url;
         /// <summary>
         /// 通道连接的时间
         /// </summary>
-        private SystemDateTime m_connectTime;
+        private SystemDateTime _connectTime;
         /// <summary>
         /// 通道断开连接的时间
         /// </summary>
-        private SystemDateTime m_disconnectTime;
+        private SystemDateTime _disconnectTime;
         /// <summary>
         /// 通道发送数据的次数
         /// </summary>
-        private int m_sendCount;
+        private int _sendCount;
         /// <summary>
         /// 通道接收数据的次数
         /// </summary>
-        private int m_recvCount;
+        private int _recvCount;
         /// <summary>
         /// 通道发送数据的大小
         /// </summary>
-        private int m_sendSize;
+        private int _sendSize;
         /// <summary>
         /// 通道接收数据的大小
         /// </summary>
-        private int m_recvSize;
+        private int _recvSize;
 
         public NetworkStatInfo(int session)
         {
-            m_session = session;
-            m_url = string.Empty;
-            m_connectTime = SystemDateTime.MinValue;
-            m_disconnectTime = SystemDateTime.MinValue;
-            m_sendCount = 0;
-            m_recvCount = 0;
-            m_sendSize = 0;
-            m_recvSize = 0;
+            _session = session;
+            _url = string.Empty;
+            _connectTime = SystemDateTime.MinValue;
+            _disconnectTime = SystemDateTime.MinValue;
+            _sendCount = 0;
+            _recvCount = 0;
+            _sendSize = 0;
+            _recvSize = 0;
         }
 
         public int Session
         {
-            get { return m_session; }
+            get { return _session; }
         }
 
         public string Url
         {
-            get { return m_url; }
-            set { m_url = value; }
+            get { return _url; }
+            set { _url = value; }
         }
 
         public SystemDateTime ConnectTime
         {
-            get { return m_connectTime; }
-            set { m_connectTime = value; }
+            get { return _connectTime; }
+            set { _connectTime = value; }
         }
 
         public SystemDateTime DisconnectTime
         {
-            get { return m_disconnectTime; }
-            set { m_disconnectTime = value; }
+            get { return _disconnectTime; }
+            set { _disconnectTime = value; }
         }
 
         public int SendCount
         {
-            get { return m_sendCount; }
-            set { m_sendCount = value; }
+            get { return _sendCount; }
+            set { _sendCount = value; }
         }
 
         public int RecvCount
         {
-            get { return m_recvCount; }
-            set { m_recvCount = value; }
+            get { return _recvCount; }
+            set { _recvCount = value; }
         }
 
         public int SendSize
         {
-            get { return m_sendSize; }
-            set { m_sendSize = value; }
+            get { return _sendSize; }
+            set { _sendSize = value; }
         }
 
         public int RecvSize
         {
-            get { return m_recvSize; }
-            set { m_recvSize = value; }
+            get { return _recvSize; }
+            set { _recvSize = value; }
         }
     }
 }

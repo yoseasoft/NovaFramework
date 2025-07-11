@@ -49,41 +49,41 @@ namespace GameEngine
         /// <summary>
         /// 网络消息协议对象类映射字典
         /// </summary>
-        private IDictionary<int, SystemType> m_messageClassTypes;
+        private IDictionary<int, SystemType> _messageClassTypes;
 
         /// <summary>
         /// 网络消息通道对象管理容器
         /// </summary>
-        private IDictionary<int, SystemType> m_messageChannelTypes;
+        private IDictionary<int, SystemType> _messageChannelTypes;
         /// <summary>
         /// 网络消息解析服务对象管理容器
         /// </summary>
-        private IDictionary<int, IMessageTranslator> m_messageTranslators;
+        private IDictionary<int, IMessageTranslator> _messageTranslators;
 
         /// <summary>
         /// 通过协议编码分发调度接口的数据结构容器
         /// </summary>
-        private IDictionary<int, IList<MessageCallInfo>> m_messageDistributeCallInfos = null;
+        private IDictionary<int, IList<MessageCallInfo>> _messageDistributeCallInfos = null;
 
         /// <summary>
         /// 网络消息转发监听回调管理容器
         /// </summary>
-        private IDictionary<int, IList<IMessageDispatch>> m_messageDispatchListeners;
+        private IDictionary<int, IList<IMessageDispatch>> _messageDispatchListeners;
 
         /// <summary>
         /// 消息转发监听对象实例管理容器
         /// </summary>
-        private IList<INetworkDispatchListener> m_networkEventDispatchListeners;
+        private IList<INetworkDispatchListener> _networkEventDispatchListeners;
 
         /// <summary>
         /// 消息通道对象实例管理容器
         /// </summary>
-        private IDictionary<int, MessageChannel> m_messageChannels;
+        private IDictionary<int, MessageChannel> _messageChannels;
 
         /// <summary>
         /// 消息的调用队列
         /// </summary>
-        private Queue<SystemAction> m_messageInvokeQueue;
+        private Queue<SystemAction> _messageInvokeQueue;
 
         /// <summary>
         /// 句柄对象的单例访问获取接口
@@ -97,24 +97,24 @@ namespace GameEngine
         protected override bool OnInitialize()
         {
             // 初始化协议对象映射字典
-            m_messageClassTypes = new Dictionary<int, SystemType>();
+            _messageClassTypes = new Dictionary<int, SystemType>();
             // 初始化网络消息通道对象管理容器
-            m_messageChannelTypes = new Dictionary<int, SystemType>();
+            _messageChannelTypes = new Dictionary<int, SystemType>();
             // 初始化网络消息解析对象管理容器
-            m_messageTranslators = new Dictionary<int, IMessageTranslator>();
+            _messageTranslators = new Dictionary<int, IMessageTranslator>();
             // 初始化回调句柄映射字典
-            m_messageDistributeCallInfos = new Dictionary<int, IList<MessageCallInfo>>();
+            _messageDistributeCallInfos = new Dictionary<int, IList<MessageCallInfo>>();
             // 初始化消息转发监听回调映射字典
-            m_messageDispatchListeners = new Dictionary<int, IList<IMessageDispatch>>();
+            _messageDispatchListeners = new Dictionary<int, IList<IMessageDispatch>>();
 
             // 初始化消息转发监听对象管理容器
-            m_networkEventDispatchListeners = new List<INetworkDispatchListener>();
+            _networkEventDispatchListeners = new List<INetworkDispatchListener>();
 
             // 初始化消息通道对象管理容器
-            m_messageChannels = new Dictionary<int, MessageChannel>();
+            _messageChannels = new Dictionary<int, MessageChannel>();
 
             // 初始化消息调用队列
-            m_messageInvokeQueue = new Queue<SystemAction>();
+            _messageInvokeQueue = new Queue<SystemAction>();
 
             // 加载消息通道数据
             LoadAllMessageChannelTypes();
@@ -131,42 +131,42 @@ namespace GameEngine
             DisconnectAllChannels();
 
             // 清理消息调用队列
-            m_messageInvokeQueue.Clear();
-            m_messageInvokeQueue = null;
+            _messageInvokeQueue.Clear();
+            _messageInvokeQueue = null;
 
             // 清理消息通道对象管理容器
-            m_messageChannels.Clear();
-            m_messageChannels = null;
+            _messageChannels.Clear();
+            _messageChannels = null;
 
             // 移除所有消息事件转发监听实例
             RemoveAllNetworkEventDispatchListeners();
 
             // 清理消息转发监听对象管理容器
-            m_networkEventDispatchListeners = null;
+            _networkEventDispatchListeners = null;
 
             // 清理消息通知转发监听管理容器
-            m_messageDispatchListeners.Clear();
-            m_messageDispatchListeners = null;
+            _messageDispatchListeners.Clear();
+            _messageDispatchListeners = null;
 
             // 移除所有消息分发回调信息
             RemoveAllMessageDistributeCalls();
 
             // 销毁回调句柄映射字典
-            m_messageDistributeCallInfos.Clear();
-            m_messageDistributeCallInfos = null;
+            _messageDistributeCallInfos.Clear();
+            _messageDistributeCallInfos = null;
 
             // 移除消息通道数据
             RemoveAllMessageChannelTypes();
 
             // 清理网络消息解析对象管理容器
-            m_messageTranslators.Clear();
-            m_messageTranslators = null;
+            _messageTranslators.Clear();
+            _messageTranslators = null;
             // 清理网络消息通道对象管理容器
-            m_messageChannelTypes.Clear();
-            m_messageChannelTypes = null;
+            _messageChannelTypes.Clear();
+            _messageChannelTypes = null;
             // 销毁协议对象映射字典
-            m_messageClassTypes.Clear();
-            m_messageClassTypes = null;
+            _messageClassTypes.Clear();
+            _messageClassTypes = null;
         }
 
         /// <summary>
@@ -174,10 +174,10 @@ namespace GameEngine
         /// </summary>
         protected override void OnUpdate()
         {
-            if (m_messageInvokeQueue.Count > 0)
+            if (_messageInvokeQueue.Count > 0)
             {
-                Queue<SystemAction> queue = new Queue<SystemAction>(m_messageInvokeQueue);
-                m_messageInvokeQueue.Clear();
+                Queue<SystemAction> queue = new Queue<SystemAction>(_messageInvokeQueue);
+                _messageInvokeQueue.Clear();
 
                 while (queue.Count > 0)
                 {
@@ -248,7 +248,7 @@ namespace GameEngine
         /// <returns>若网络连接请求发送成功返回对应的通道实例，否则返回null</returns>
         public MessageChannel Connect(int protocol, string name, string url)
         {
-            IEnumerator<MessageChannel> channels = m_messageChannels.Values.GetEnumerator();
+            IEnumerator<MessageChannel> channels = _messageChannels.Values.GetEnumerator();
             while (channels.MoveNext())
             {
                 // 如果有重名的网络通道，则直接返回已有的实例
@@ -274,7 +274,7 @@ namespace GameEngine
             }
 
             Debugger.Info(LogGroupTag.Module, "The network connect new channel [ID = {0}, Type = {1}, Name = {2}] on target url '{3}'.", channelID, protocol, name, url);
-            m_messageChannels.Add(channelID, channel);
+            _messageChannels.Add(channelID, channel);
 
             return channel;
         }
@@ -286,9 +286,9 @@ namespace GameEngine
         /// <param name="channelID">网络通道标识</param>
         public void Disconnect(int channelID)
         {
-            if (m_messageChannels.ContainsKey(channelID))
+            if (_messageChannels.ContainsKey(channelID))
             {
-                MessageChannel channel = m_messageChannels[channelID];
+                MessageChannel channel = _messageChannels[channelID];
 
                 if (channel.IsConnected)
                 {
@@ -296,7 +296,7 @@ namespace GameEngine
                 }
 
                 Debugger.Info(LogGroupTag.Module, "The network disconnect target channel [ID = {0}, Type = {1}, Name = {2}] now.", channel.ChannelID, channel.ChannelType, channel.Name);
-                m_messageChannels.Remove(channelID);
+                _messageChannels.Remove(channelID);
 
                 // 销毁消息通道
                 channel.Destroy();
@@ -318,7 +318,7 @@ namespace GameEngine
         /// </summary>
         public void DisconnectAllChannels()
         {
-            IList<int> keys = NovaEngine.Utility.Collection.ToListForKeys<int, MessageChannel>(m_messageChannels);
+            IList<int> keys = NovaEngine.Utility.Collection.ToListForKeys<int, MessageChannel>(_messageChannels);
             for (int n = 0; null != keys && n < keys.Count; ++n)
             {
                 Disconnect(keys[n]);
@@ -332,9 +332,9 @@ namespace GameEngine
         /// <returns>返回给定标识对应的网络通道对象实例</returns>
         public MessageChannel GetChannel(int channelID)
         {
-            if (m_messageChannels.ContainsKey(channelID))
+            if (_messageChannels.ContainsKey(channelID))
             {
-                return m_messageChannels[channelID];
+                return _messageChannels[channelID];
             }
 
             return null;
@@ -379,7 +379,7 @@ namespace GameEngine
         /// <returns>返回消息类型对应的操作码，若类型非法则返回0</returns>
         public int GetOpcodeByMessageType(SystemType clsType)
         {
-            foreach (KeyValuePair<int, SystemType> pair in m_messageClassTypes)
+            foreach (KeyValuePair<int, SystemType> pair in _messageClassTypes)
             {
                 if (pair.Value == clsType)
                 {
@@ -398,7 +398,7 @@ namespace GameEngine
         /// <param name="channelID">通道标识</param>
         private void OnNetworkChannelConnection(int channelID)
         {
-            m_messageInvokeQueue.Enqueue(() =>
+            _messageInvokeQueue.Enqueue(() =>
             {
                 MessageChannel channel = GetChannel(channelID);
                 if (null == channel)
@@ -410,7 +410,7 @@ namespace GameEngine
 
                 channel.OnConnected();
 
-                IEnumerator<INetworkDispatchListener> e = m_networkEventDispatchListeners.GetEnumerator();
+                IEnumerator<INetworkDispatchListener> e = _networkEventDispatchListeners.GetEnumerator();
                 while (e.MoveNext())
                 {
                     e.Current.OnConnection(channel);
@@ -429,7 +429,7 @@ namespace GameEngine
             MessageChannel channel = GetChannel(channelID);
             if (null != channel)
             {
-                IEnumerator<INetworkDispatchListener> e = m_networkEventDispatchListeners.GetEnumerator();
+                IEnumerator<INetworkDispatchListener> e = _networkEventDispatchListeners.GetEnumerator();
                 while (e.MoveNext())
                 {
                     e.Current.OnDisconnection(channel);
@@ -451,7 +451,7 @@ namespace GameEngine
             MessageChannel channel = GetChannel(channelID);
             if (null != channel)
             {
-                IEnumerator<INetworkDispatchListener> e = m_networkEventDispatchListeners.GetEnumerator();
+                IEnumerator<INetworkDispatchListener> e = _networkEventDispatchListeners.GetEnumerator();
                 while (e.MoveNext())
                 {
                     e.Current.OnConnectError(channel);
@@ -469,7 +469,7 @@ namespace GameEngine
         /// <param name="buffer">消息数据流</param>
         private void OnNetworkChannelReceiveMessage(int channelID, byte[] buffer)
         {
-            m_messageInvokeQueue.Enqueue(() =>
+            _messageInvokeQueue.Enqueue(() =>
             {
                 MessageChannel channel = GetChannel(channelID);
                 if (null == channel)
@@ -532,7 +532,7 @@ namespace GameEngine
         {
             int opcode = GetOpcodeByMessageType(message.GetType());
 
-            bool v = m_messageDistributeCallInfos.ContainsKey(opcode);
+            bool v = _messageDistributeCallInfos.ContainsKey(opcode);
             if (v)
             {
                 // 消息分发调度
@@ -540,7 +540,7 @@ namespace GameEngine
             }
 
             IList<IMessageDispatch> listeners = null;
-            if (m_messageDispatchListeners.TryGetValue(opcode, out listeners))
+            if (_messageDispatchListeners.TryGetValue(opcode, out listeners))
             {
                 v = true;
 
@@ -646,8 +646,8 @@ namespace GameEngine
                 Debugger.Info(LogGroupTag.Module, "Register new message channel type '{0}' and translator class '{1}' to target service type '{2}'.",
                         channelClassName, translatorClassName, enumName);
 
-                m_messageChannelTypes.Add((int) enumValue, channelClassType);
-                m_messageTranslators.Add((int) enumValue, messageTranslator);
+                _messageChannelTypes.Add((int) enumValue, channelClassType);
+                _messageTranslators.Add((int) enumValue, messageTranslator);
             }
         }
 
@@ -658,12 +658,12 @@ namespace GameEngine
         /// <returns>返回对应类型的消息通道对象，若不存在对应类型的通道对象则返回null</returns>
         public SystemType GetMessageChannelTypeByServiceType(int serviceType)
         {
-            if (false == m_messageChannelTypes.ContainsKey(serviceType))
+            if (false == _messageChannelTypes.ContainsKey(serviceType))
             {
                 Debugger.Warn("Could not found any message channel class by service type '{0}', please checked it was loaded failed.", serviceType);
             }
 
-            return m_messageChannelTypes[serviceType];
+            return _messageChannelTypes[serviceType];
         }
 
         /// <summary>
@@ -673,12 +673,12 @@ namespace GameEngine
         /// <returns>返回对应类型的消息解析实例，若不存在对应类型的解析接口则返回null</returns>
         public IMessageTranslator GetMessageTranslatorByServiceType(int serviceType)
         {
-            if (false == m_messageTranslators.ContainsKey(serviceType))
+            if (false == _messageTranslators.ContainsKey(serviceType))
             {
                 Debugger.Warn("Could not found any message translator class by service type '{0}', please checked it was loaded failed.", serviceType);
             }
 
-            return m_messageTranslators[serviceType];
+            return _messageTranslators[serviceType];
         }
 
         /// <summary>
@@ -687,8 +687,8 @@ namespace GameEngine
         /// </summary>
         private void RemoveAllMessageChannelTypes()
         {
-            m_messageChannelTypes.Clear();
-            m_messageTranslators.Clear();
+            _messageChannelTypes.Clear();
+            _messageTranslators.Clear();
         }
 
         #endregion
@@ -702,14 +702,14 @@ namespace GameEngine
         /// <param name="classType">对象类</param>
         private void RegMessageClassTypes(int msgType, SystemType classType)
         {
-            if (m_messageClassTypes.ContainsKey(msgType))
+            if (_messageClassTypes.ContainsKey(msgType))
             {
                 Debugger.Warn("The message proto object code '{0}' was already exist, repeat add will be override old handler.", msgType);
-                m_messageClassTypes.Remove(msgType);
+                _messageClassTypes.Remove(msgType);
             }
 
             // Debugger.Info("Register new message class type '{0}' with target opcode '{1}'.", classType.FullName, msgType);
-            m_messageClassTypes.Add(msgType, classType);
+            _messageClassTypes.Add(msgType, classType);
         }
 
         /// <summary>
@@ -718,14 +718,14 @@ namespace GameEngine
         /// <param name="msgType">消息类型</param>
         private void UnregMessageClassTypes(int msgType)
         {
-            if (false == m_messageClassTypes.ContainsKey(msgType))
+            if (false == _messageClassTypes.ContainsKey(msgType))
             {
                 Debugger.Warn("Could not found any message class type with target opcode '{0}', unregisted it failed.", msgType);
                 return;
             }
 
             // Debugger.Info("Unregister message class type with target opcode '{0}'.", msgType);
-            m_messageClassTypes.Remove(msgType);
+            _messageClassTypes.Remove(msgType);
         }
 
         /// <summary>
@@ -733,7 +733,7 @@ namespace GameEngine
         /// </summary>
         private void UnregAllMessageClassTypes()
         {
-            m_messageClassTypes.Clear();
+            _messageClassTypes.Clear();
         }
 
         /// <summary>
@@ -743,9 +743,9 @@ namespace GameEngine
         /// <returns>返回给定类型对应的消息对象类，若不存在则返回null</returns>
         public SystemType GetMessageClassByType(int msgType)
         {
-            if (m_messageClassTypes.ContainsKey(msgType))
+            if (_messageClassTypes.ContainsKey(msgType))
             {
-                return m_messageClassTypes[msgType];
+                return _messageClassTypes[msgType];
             }
 
             Debugger.Info("Could not found any message class with target type '{0}'!", msgType);
@@ -760,7 +760,7 @@ namespace GameEngine
         private void OnMessageDistributeCallDispatched(int opcode, object message)
         {
             IList<MessageCallInfo> list = null;
-            if (m_messageDistributeCallInfos.TryGetValue(opcode, out list))
+            if (_messageDistributeCallInfos.TryGetValue(opcode, out list))
             {
                 IEnumerator<MessageCallInfo> e_info = list.GetEnumerator();
                 while (e_info.MoveNext())
@@ -800,16 +800,16 @@ namespace GameEngine
 
             Debugger.Info(LogGroupTag.Module, "Add new message distribute call '{0}' to target opcode '{1}' of the class type '{2}'.",
                     NovaEngine.Utility.Text.ToString(callback), opcode, NovaEngine.Utility.Text.ToString(targetType));
-            if (m_messageDistributeCallInfos.ContainsKey(opcode))
+            if (_messageDistributeCallInfos.ContainsKey(opcode))
             {
-                IList<MessageCallInfo> list = m_messageDistributeCallInfos[opcode];
+                IList<MessageCallInfo> list = _messageDistributeCallInfos[opcode];
                 list.Add(info);
             }
             else
             {
                 IList<MessageCallInfo> list = new List<MessageCallInfo>();
                 list.Add(info);
-                m_messageDistributeCallInfos.Add(opcode, list);
+                _messageDistributeCallInfos.Add(opcode, list);
             }
         }
 
@@ -837,13 +837,13 @@ namespace GameEngine
         {
             Debugger.Info(LogGroupTag.Module, "Remove message distribute call '{0}' with target opcode '{1}' and class type '{2}'.",
                     fullname, opcode, NovaEngine.Utility.Text.ToString(targetType));
-            if (false == m_messageDistributeCallInfos.ContainsKey(opcode))
+            if (false == _messageDistributeCallInfos.ContainsKey(opcode))
             {
                 Debugger.Warn("Could not found any message distribute call '{0}' with target opcode '{1}', removed it failed.", fullname, opcode);
                 return;
             }
 
-            IList<MessageCallInfo> list = m_messageDistributeCallInfos[opcode];
+            IList<MessageCallInfo> list = _messageDistributeCallInfos[opcode];
             for (int n = 0; n < list.Count; ++n)
             {
                 MessageCallInfo info = list[n];
@@ -854,7 +854,7 @@ namespace GameEngine
                     list.RemoveAt(n);
                     if (list.Count <= 0)
                     {
-                        m_messageDistributeCallInfos.Remove(opcode);
+                        _messageDistributeCallInfos.Remove(opcode);
                     }
 
                     return;
@@ -883,7 +883,7 @@ namespace GameEngine
         /// </summary>
         private void RemoveAllMessageDistributeCalls()
         {
-            m_messageDistributeCallInfos.Clear();
+            _messageDistributeCallInfos.Clear();
         }
 
         #endregion
@@ -980,12 +980,12 @@ namespace GameEngine
         public bool AddMessageDispatchListener(int opcode, IMessageDispatch listener)
         {
             IList<IMessageDispatch> list;
-            if (false == m_messageDispatchListeners.TryGetValue(opcode, out list))
+            if (false == _messageDispatchListeners.TryGetValue(opcode, out list))
             {
                 list = new List<IMessageDispatch>();
                 list.Add(listener);
 
-                m_messageDispatchListeners.Add(opcode, list);
+                _messageDispatchListeners.Add(opcode, list);
                 return true;
             }
 
@@ -1022,7 +1022,7 @@ namespace GameEngine
         public void RemoveMessageDispatchListener(int opcode, IMessageDispatch listener)
         {
             IList<IMessageDispatch> list;
-            if (false == m_messageDispatchListeners.TryGetValue(opcode, out list))
+            if (false == _messageDispatchListeners.TryGetValue(opcode, out list))
             {
                 Debugger.Warn("Could not found any listener for target message '{0}' in dispatch container, removed it failed.", opcode);
                 return;
@@ -1032,7 +1032,7 @@ namespace GameEngine
             // 列表为空则移除对应的消息监听列表实例
             if (list.Count == 0)
             {
-                m_messageDispatchListeners.Remove(opcode);
+                _messageDispatchListeners.Remove(opcode);
             }
         }
 
@@ -1053,7 +1053,7 @@ namespace GameEngine
         /// </summary>
         public void RemoveAllMessageDispatchListeners(IMessageDispatch listener)
         {
-            IList<int> ids = NovaEngine.Utility.Collection.ToListForKeys<int, IList<IMessageDispatch>>(m_messageDispatchListeners);
+            IList<int> ids = NovaEngine.Utility.Collection.ToListForKeys<int, IList<IMessageDispatch>>(_messageDispatchListeners);
             for (int n = 0; null != ids && n < ids.Count; ++n)
             {
                 RemoveMessageDispatchListener(ids[n], listener);
@@ -1071,13 +1071,13 @@ namespace GameEngine
         /// <returns>若给定的实例添加成功则返回true，否则返回false</returns>
         public bool AddNetworkEventDispatchListener(INetworkDispatchListener listener)
         {
-            if (m_networkEventDispatchListeners.Contains(listener))
+            if (_networkEventDispatchListeners.Contains(listener))
             {
                 Debugger.Warn("The target network event dispatch listener instance was already existed, added it failed.");
                 return false;
             }
 
-            m_networkEventDispatchListeners.Add(listener);
+            _networkEventDispatchListeners.Add(listener);
             return true;
         }
 
@@ -1087,13 +1087,13 @@ namespace GameEngine
         /// <param name="listener">事件转发监听对象实例</param>
         public void RemoveNetworkEventDispatchListener(INetworkDispatchListener listener)
         {
-            if (false == m_networkEventDispatchListeners.Contains(listener))
+            if (false == _networkEventDispatchListeners.Contains(listener))
             {
                 Debugger.Warn("Could not found any network event dispatch listener instance from current manage container, removed it failed.");
                 return;
             }
 
-            m_networkEventDispatchListeners.Remove(listener);
+            _networkEventDispatchListeners.Remove(listener);
         }
 
         /// <summary>
@@ -1101,7 +1101,7 @@ namespace GameEngine
         /// </summary>
         private void RemoveAllNetworkEventDispatchListeners()
         {
-            m_networkEventDispatchListeners.Clear();
+            _networkEventDispatchListeners.Clear();
         }
 
         #endregion

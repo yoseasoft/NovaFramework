@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -41,16 +41,16 @@ namespace GameEngine
         /// <summary>
         /// 角色对象类型映射注册管理容器
         /// </summary>
-        private readonly IDictionary<string, SystemType> m_actorClassTypes;
+        private readonly IDictionary<string, SystemType> _actorClassTypes;
         /// <summary>
         /// 角色功能类型映射注册管理容器
         /// </summary>
-        private readonly IDictionary<string, int> m_actorFunctionTypes;
+        private readonly IDictionary<string, int> _actorFunctionTypes;
 
         /// <summary>
         /// 通过当前模块实例化的对象实例管理容器
         /// </summary>
-        private readonly IList<CActor> m_actors;
+        private readonly IList<CActor> _actors;
 
         /// <summary>
         /// 句柄对象的单例访问获取接口
@@ -63,9 +63,9 @@ namespace GameEngine
         public ActorHandler()
         {
             // 初始化对象类注册容器
-            m_actorClassTypes = new Dictionary<string, SystemType>();
-            m_actorFunctionTypes = new Dictionary<string, int>();
-            m_actors = new List<CActor>();
+            _actorClassTypes = new Dictionary<string, SystemType>();
+            _actorFunctionTypes = new Dictionary<string, int>();
+            _actors = new List<CActor>();
         }
 
         /// <summary>
@@ -74,9 +74,9 @@ namespace GameEngine
         ~ActorHandler()
         {
             // 清理对象类注册容器
-            m_actorClassTypes.Clear();
-            m_actorFunctionTypes.Clear();
-            m_actors.Clear();
+            _actorClassTypes.Clear();
+            _actorFunctionTypes.Clear();
+            _actors.Clear();
         }
 
         /// <summary>
@@ -148,16 +148,16 @@ namespace GameEngine
                 return false;
             }
 
-            if (m_actorClassTypes.ContainsKey(actorName))
+            if (_actorClassTypes.ContainsKey(actorName))
             {
                 Debugger.Warn("The actor name {0} was already registed, repeat add will be override old name.", actorName);
-                m_actorClassTypes.Remove(actorName);
+                _actorClassTypes.Remove(actorName);
             }
 
-            m_actorClassTypes.Add(actorName, clsType);
+            _actorClassTypes.Add(actorName, clsType);
             if (funcType > 0)
             {
-                m_actorFunctionTypes.Add(actorName, funcType);
+                _actorFunctionTypes.Add(actorName, funcType);
             }
 
             return true;
@@ -168,8 +168,8 @@ namespace GameEngine
         /// </summary>
         private void UnregisterAllActorClasses()
         {
-            m_actorClassTypes.Clear();
-            m_actorFunctionTypes.Clear();
+            _actorClassTypes.Clear();
+            _actorFunctionTypes.Clear();
         }
 
         #endregion
@@ -184,7 +184,7 @@ namespace GameEngine
         public IList<CActor> GetActor(string actorName)
         {
             SystemType actorType = null;
-            if (m_actorClassTypes.TryGetValue(actorName, out actorType))
+            if (_actorClassTypes.TryGetValue(actorName, out actorType))
             {
                 return GetActor(actorType);
             }
@@ -212,9 +212,9 @@ namespace GameEngine
         public IList<CActor> GetActor(SystemType actorType)
         {
             List<CActor> actors = new List<CActor>();
-            for (int n = 0; n < m_actors.Count; ++n)
+            for (int n = 0; n < _actors.Count; ++n)
             {
-                CActor actor = m_actors[n];
+                CActor actor = _actors[n];
                 if (actor.GetType() == actorType)
                 {
                     actors.Add(actor);
@@ -235,7 +235,7 @@ namespace GameEngine
         /// <returns>返回已创建的全部角色对象实例</returns>
         public IList<CActor> GetAllActors()
         {
-            return m_actors;
+            return _actors;
         }
 
         /// <summary>
@@ -246,7 +246,7 @@ namespace GameEngine
         public CActor CreateActor(string actorName)
         {
             SystemType actorType = null;
-            if (false == m_actorClassTypes.TryGetValue(actorName, out actorType))
+            if (false == _actorClassTypes.TryGetValue(actorName, out actorType))
             {
                 Debugger.Warn("Could not found any correct actor class with target name '{0}', created actor failed.", actorName);
                 return null;
@@ -275,7 +275,7 @@ namespace GameEngine
         public CActor CreateActor(SystemType actorType)
         {
             Debugger.Assert(null != actorType, "Invalid arguments.");
-            if (false == m_actorClassTypes.Values.Contains(actorType))
+            if (false == _actorClassTypes.Values.Contains(actorType))
             {
                 Debugger.Error("Could not found any correct actor class with target type '{0}', created actor failed.", actorType.FullName);
                 return null;
@@ -290,7 +290,7 @@ namespace GameEngine
             }
 
             // 添加实例到管理容器中
-            m_actors.Add(obj);
+            _actors.Add(obj);
 
             // 启动对象实例
             Call(obj.Startup);
@@ -309,7 +309,7 @@ namespace GameEngine
         /// <param name="actor">对象实例</param>
         internal void RemoveActor(CActor actor)
         {
-            if (false == m_actors.Contains(actor))
+            if (false == _actors.Contains(actor))
             {
                 Debugger.Warn("Could not found target actor instance '{0}' from current container, removed it failed.", actor.GetType().FullName);
                 return;
@@ -324,7 +324,7 @@ namespace GameEngine
             Call(actor.Shutdown);
 
             // 从管理容器中移除实例
-            m_actors.Remove(actor);
+            _actors.Remove(actor);
 
             // 移除实例
             RemoveEntity(actor);
@@ -340,7 +340,7 @@ namespace GameEngine
         internal void RemoveActor(string actorName)
         {
             SystemType actorType = null;
-            if (m_actorClassTypes.TryGetValue(actorName, out actorType))
+            if (_actorClassTypes.TryGetValue(actorName, out actorType))
             {
                 RemoveActor(actorType);
             }
@@ -363,7 +363,7 @@ namespace GameEngine
         /// <param name="actorType">对象类型</param>
         internal void RemoveActor(SystemType actorType)
         {
-            IEnumerable<CActor> actors = NovaEngine.Utility.Collection.Reverse<CActor>(m_actors);
+            IEnumerable<CActor> actors = NovaEngine.Utility.Collection.Reverse<CActor>(_actors);
             foreach (CActor obj in actors)
             {
                 if (obj.GetType() == actorType)
@@ -378,9 +378,9 @@ namespace GameEngine
         /// </summary>
         internal void RemoveAllActors()
         {
-            while (m_actors.Count > 0)
+            while (_actors.Count > 0)
             {
-                RemoveActor(m_actors[m_actors.Count - 1]);
+                RemoveActor(_actors[_actors.Count - 1]);
             }
         }
 
@@ -390,7 +390,7 @@ namespace GameEngine
         /// <param name="actor">对象实例</param>
         public void DestroyActor(CActor actor)
         {
-            if (false == m_actors.Contains(actor))
+            if (false == _actors.Contains(actor))
             {
                 Debugger.Warn("Could not found target actor instance '{0}' from current container, removed it failed.", actor.GetType().FullName);
                 return;
@@ -415,7 +415,7 @@ namespace GameEngine
         public void DestroyActor(string actorName)
         {
             SystemType actorType = null;
-            if (m_actorClassTypes.TryGetValue(actorName, out actorType))
+            if (_actorClassTypes.TryGetValue(actorName, out actorType))
             {
                 DestroyActor(actorType);
             }
@@ -438,7 +438,7 @@ namespace GameEngine
         /// <param name="actorType">对象类型</param>
         public void DestroyActor(SystemType actorType)
         {
-            IEnumerable<CActor> actors = NovaEngine.Utility.Collection.Reverse<CActor>(m_actors);
+            IEnumerable<CActor> actors = NovaEngine.Utility.Collection.Reverse<CActor>(_actors);
             foreach (CActor obj in actors)
             {
                 if (obj.GetType() == actorType)
@@ -453,9 +453,9 @@ namespace GameEngine
         /// </summary>
         public void DestroyAllActors()
         {
-            while (m_actors.Count > 0)
+            while (_actors.Count > 0)
             {
-                DestroyActor(m_actors[m_actors.Count - 1]);
+                DestroyActor(_actors[_actors.Count - 1]);
             }
         }
 
@@ -491,7 +491,7 @@ namespace GameEngine
         /// <returns>返回对应角色的名称，若角色不存在则返回null</returns>
         internal string GetActorNameForType(SystemType actorType)
         {
-            foreach (KeyValuePair<string, SystemType> pair in m_actorClassTypes)
+            foreach (KeyValuePair<string, SystemType> pair in _actorClassTypes)
             {
                 if (pair.Value == actorType)
                 {
@@ -511,7 +511,7 @@ namespace GameEngine
         internal IList<CActor> FindAllActorsByType(SystemType actorType)
         {
             IList<CActor> result = new List<CActor>();
-            IEnumerator<CActor> e = m_actors.GetEnumerator();
+            IEnumerator<CActor> e = _actors.GetEnumerator();
             while (e.MoveNext())
             {
                 CActor obj = e.Current;

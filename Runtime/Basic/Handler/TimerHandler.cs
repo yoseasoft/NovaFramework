@@ -1,9 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyring (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -48,12 +48,12 @@ namespace GameEngine
         /// <summary>
         /// 定时器到时回调函数映射字典
         /// </summary>
-        private IDictionary<int, TimerReportingCallback> m_timerClockingCallbacks;
+        private IDictionary<int, TimerReportingCallback> _timerClockingCallbacks;
 
         /// <summary>
         /// 定时器结束回调函数映射字典
         /// </summary>
-        private IDictionary<int, TimerReportingCallback> m_timerFinishingCallbacks;
+        private IDictionary<int, TimerReportingCallback> _timerFinishingCallbacks;
 
         /// <summary>
         /// 句柄对象的单例访问获取接口
@@ -67,8 +67,8 @@ namespace GameEngine
         protected override bool OnInitialize()
         {
             // 初始化映射字典
-            m_timerClockingCallbacks = new Dictionary<int, TimerReportingCallback>();
-            m_timerFinishingCallbacks = new Dictionary<int, TimerReportingCallback>();
+            _timerClockingCallbacks = new Dictionary<int, TimerReportingCallback>();
+            _timerFinishingCallbacks = new Dictionary<int, TimerReportingCallback>();
 
             return true;
         }
@@ -82,10 +82,10 @@ namespace GameEngine
             UnscheduleAll();
 
             // 销毁映射字典实例
-            m_timerClockingCallbacks.Clear();
-            m_timerClockingCallbacks = null;
-            m_timerFinishingCallbacks.Clear();
-            m_timerFinishingCallbacks = null;
+            _timerClockingCallbacks.Clear();
+            _timerClockingCallbacks = null;
+            _timerFinishingCallbacks.Clear();
+            _timerFinishingCallbacks = null;
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace GameEngine
                     TimerStatModule.CallStatAction(TimerStatModule.ON_TIMER_DISPATCHED_CALL, tea.Session);
 
                     TimerReportingCallback handler;
-                    if (false == m_timerClockingCallbacks.TryGetValue(tea.Session, out handler))
+                    if (false == _timerClockingCallbacks.TryGetValue(tea.Session, out handler))
                     {
                         Debugger.Error("Could not found any valid timer clocking handler with session id {0}, dispatched event args failed..", tea.Session);
                     }
@@ -133,20 +133,20 @@ namespace GameEngine
 
                     // 先检查该会话是否需要进行结束回调通知
                     TimerReportingCallback handler;
-                    if (m_timerFinishingCallbacks.TryGetValue(tea.Session, out handler))
+                    if (_timerFinishingCallbacks.TryGetValue(tea.Session, out handler))
                     {
                         handler?.Invoke(tea.Session);
-                        m_timerFinishingCallbacks.Remove(tea.Session);
+                        _timerFinishingCallbacks.Remove(tea.Session);
                     }
 
                     // Debugger.Log("Remove timer clocking handler with session id {0}.", tea.Session);
 
                     // 会话合法性检查
-                    if (false == m_timerClockingCallbacks.ContainsKey(tea.Session))
+                    if (false == _timerClockingCallbacks.ContainsKey(tea.Session))
                     {
                         Debugger.Error("The timer clocked session id {0} was not found, remove it failed.", tea.Session);
                     }
-                    m_timerClockingCallbacks.Remove(tea.Session);
+                    _timerClockingCallbacks.Remove(tea.Session);
                 }
                 break;
             }
@@ -388,25 +388,25 @@ namespace GameEngine
                 return sessionID;
             }
 
-            if (m_timerClockingCallbacks.ContainsKey(sessionID))
+            if (_timerClockingCallbacks.ContainsKey(sessionID))
             {
                 Debugger.Error(false == newly, "The timer clocked session id {0} was already exist, repeat add will be override old handler.", sessionID);
-                m_timerClockingCallbacks.Remove(sessionID);
+                _timerClockingCallbacks.Remove(sessionID);
             }
 
             // Debugger.Log("Add timer clocking handler with session id {0}.", sessionID);
-            m_timerClockingCallbacks.Add(sessionID, clocking);
+            _timerClockingCallbacks.Add(sessionID, clocking);
 
-            if (m_timerFinishingCallbacks.ContainsKey(sessionID))
+            if (_timerFinishingCallbacks.ContainsKey(sessionID))
             {
                 Debugger.Error(false == newly, "The timer finished session id {0} was already exist, repeat add will be override old handler.", sessionID);
-                m_timerFinishingCallbacks.Remove(sessionID);
+                _timerFinishingCallbacks.Remove(sessionID);
             }
 
             if (finishing != null)
             {
                 // Debugger.Log("Add timer finishing handler with session id {0}.", sessionID);
-                m_timerFinishingCallbacks.Add(sessionID, finishing);
+                _timerFinishingCallbacks.Add(sessionID, finishing);
             }
 
             if (newly)
@@ -465,16 +465,16 @@ namespace GameEngine
             /// <summary>
             /// 定时任务管理句柄对象实例
             /// </summary>
-            private readonly TimerHandler m_handler;
+            private readonly TimerHandler _handler;
 
             /// <summary>
             /// 空参数的回调句柄
             /// </summary>
-            private readonly TimerReportingHandler m_emptyCallback;
+            private readonly TimerReportingHandler _emptyCallback;
             /// <summary>
             /// 会话参数的回调句柄
             /// </summary>
-            private readonly TimerReportingForSessionHandler m_sessionCallback;
+            private readonly TimerReportingForSessionHandler _sessionCallback;
 
             public TimerReportingCallback(TimerHandler handler, TimerReportingHandler callback) : this(handler, callback, null)
             { }
@@ -489,13 +489,13 @@ namespace GameEngine
                 Debugger.Assert(null != handler, "Invalid arguments");
                 Debugger.Assert(null != emptyCallback || null != sessionCallback, "Invalid arguments.");
 
-                m_handler = handler;
-                m_emptyCallback = emptyCallback;
-                m_sessionCallback = sessionCallback;
+                _handler = handler;
+                _emptyCallback = emptyCallback;
+                _sessionCallback = sessionCallback;
             }
 
-            public TimerReportingHandler EmptyCallback => m_emptyCallback;
-            public TimerReportingForSessionHandler SessionCallback => m_sessionCallback;
+            public TimerReportingHandler EmptyCallback => _emptyCallback;
+            public TimerReportingForSessionHandler SessionCallback => _sessionCallback;
 
             /// <summary>
             /// 定时任务回调句柄的调用执行函数
@@ -503,13 +503,13 @@ namespace GameEngine
             /// <param name="sessionID">会话标识</param>
             public void Invoke(int sessionID)
             {
-                if (null != m_emptyCallback)
+                if (null != _emptyCallback)
                 {
-                    m_emptyCallback();
+                    _emptyCallback();
                 }
-                else if (null != m_sessionCallback)
+                else if (null != _sessionCallback)
                 {
-                    m_sessionCallback(sessionID);
+                    _sessionCallback(sessionID);
                 }
                 else
                 {
