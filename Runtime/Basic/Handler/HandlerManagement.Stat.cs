@@ -95,7 +95,7 @@ namespace GameEngine
                 {
                     Debugger.Warn("Could not found any stat module class '{0}' from manager list, created it failed.", pair.Key);
 
-                    // s_statModuleObjects.Add(pair.Key, stat_module as IStatModule);
+                    // _statModuleObjects.Add(pair.Key, stat_module as IStatModule);
                 }
             }
         }

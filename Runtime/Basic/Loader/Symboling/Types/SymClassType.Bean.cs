@@ -593,18 +593,18 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// 依赖的Bean实例载体
         /// </summary>
-        private Bean m_beanObject;
+        private Bean _beanObject;
 
-        public Bean BeanObject => m_beanObject;
+        public Bean BeanObject => _beanObject;
 
         protected BeanMember(Bean beanObject)
         {
-            m_beanObject = beanObject;
+            _beanObject = beanObject;
         }
 
         ~BeanMember()
         {
-            m_beanObject = null;
+            _beanObject = null;
         }
     }
 }

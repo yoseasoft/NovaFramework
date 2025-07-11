@@ -167,7 +167,7 @@ namespace GameEngine
             CleanupAllStatModules();
 
             // 遍历执行清理函数
-            // foreach (KeyValuePair<int, IHandler> pair in s_handlerRegisterObjects.Reverse())
+            // foreach (KeyValuePair<int, IHandler> pair in _handlerRegisterObjects.Reverse())
             IEnumerable<IHandler> enumerable = NovaEngine.Utility.Collection.Reverse<IHandler>(_handlerSortingList);
             foreach (IHandler handler in enumerable)
             {

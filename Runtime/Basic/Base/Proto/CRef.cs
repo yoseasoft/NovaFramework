@@ -84,7 +84,7 @@ namespace GameEngine
         /// <summary>
         /// 对象内部定时任务的会话管理容器
         /// </summary>
-        private IList<int> m_schedules;
+        private IList<int> _schedules;
 
         /// <summary>
         /// 引用对象初始化通知接口函数
@@ -115,7 +115,7 @@ namespace GameEngine
             // _messageCallInfosForType = new Dictionary<int, IDictionary<string, MessageCallSyntaxInfo>>();
 
             // 任务会话容器初始化
-            m_schedules = new List<int>();
+            _schedules = new List<int>();
         }
 
         /// <summary>
@@ -125,8 +125,8 @@ namespace GameEngine
         {
             // 移除所有定时任务
             RemoveAllSchedules();
-            Debugger.Assert(m_schedules.Count == 0);
-            m_schedules = null;
+            Debugger.Assert(_schedules.Count == 0);
+            _schedules = null;
 
             base.Cleanup();
 
@@ -624,18 +624,18 @@ namespace GameEngine
         public int Schedule(int interval, int loop, TimerHandler.TimerReportingHandler handler)
         {
             int sessionID = TimerHandler.Instance.Schedule(interval, loop, handler, delegate (int v) {
-                if (false == m_schedules.Contains(v))
+                if (false == _schedules.Contains(v))
                 {
                     Debugger.Warn("Could not found target session {0} scheduled with this object.", v);
                     return;
                 }
-                m_schedules.Remove(v);
+                _schedules.Remove(v);
             });
 
             if (sessionID > 0)
             {
-                Debugger.Assert(false == m_schedules.Contains(sessionID), "Duplicate session ID.");
-                m_schedules.Add(sessionID);
+                Debugger.Assert(false == _schedules.Contains(sessionID), "Duplicate session ID.");
+                _schedules.Add(sessionID);
             }
 
             return sessionID;
@@ -652,20 +652,20 @@ namespace GameEngine
         public int Schedule(int interval, int loop, TimerHandler.TimerReportingForSessionHandler handler)
         {
             int sessionID = TimerHandler.Instance.Schedule(interval, loop, handler, delegate (int v) {
-                if (false == m_schedules.Contains(v))
+                if (false == _schedules.Contains(v))
                 {
                     Debugger.Warn("Could not found target session {0} scheduled with this object.", v);
                     return;
                 }
-                m_schedules.Remove(v);
+                _schedules.Remove(v);
             });
 
             if (sessionID > 0)
             {
-                // Debugger.Assert(false == m_schedules.Contains(sessionID), "Duplicate session ID.");
-                if (false == m_schedules.Contains(sessionID))
+                // Debugger.Assert(false == _schedules.Contains(sessionID), "Duplicate session ID.");
+                if (false == _schedules.Contains(sessionID))
                 {
-                    m_schedules.Add(sessionID);
+                    _schedules.Add(sessionID);
                 }
             }
 
@@ -684,20 +684,20 @@ namespace GameEngine
         public int Schedule(string name, int interval, int loop, TimerHandler.TimerReportingHandler handler)
         {
             int sessionID = TimerHandler.Instance.Schedule(name, interval, loop, handler, delegate (int v) {
-                if (false == m_schedules.Contains(v))
+                if (false == _schedules.Contains(v))
                 {
                     Debugger.Warn("Could not found target session {0} scheduled with this object.", v);
                     return;
                 }
-                m_schedules.Remove(v);
+                _schedules.Remove(v);
             });
 
             if (sessionID > 0)
             {
-                // Debugger.Assert(false == m_schedules.Contains(sessionID), "Duplicate session ID.");
-                if (false == m_schedules.Contains(sessionID))
+                // Debugger.Assert(false == _schedules.Contains(sessionID), "Duplicate session ID.");
+                if (false == _schedules.Contains(sessionID))
                 {
-                    m_schedules.Add(sessionID);
+                    _schedules.Add(sessionID);
                 }
             }
 
@@ -716,18 +716,18 @@ namespace GameEngine
         public int Schedule(string name, int interval, int loop, TimerHandler.TimerReportingForSessionHandler handler)
         {
             int sessionID = TimerHandler.Instance.Schedule(name, interval, loop, handler, delegate (int v) {
-                if (false == m_schedules.Contains(v))
+                if (false == _schedules.Contains(v))
                 {
                     Debugger.Warn("Could not found target session {0} scheduled with this object.", v);
                     return;
                 }
-                m_schedules.Remove(v);
+                _schedules.Remove(v);
             });
 
             if (sessionID > 0)
             {
-                Debugger.Assert(false == m_schedules.Contains(sessionID), "Duplicate session ID.");
-                m_schedules.Add(sessionID);
+                Debugger.Assert(false == _schedules.Contains(sessionID), "Duplicate session ID.");
+                _schedules.Add(sessionID);
             }
 
             return sessionID;
@@ -756,9 +756,9 @@ namespace GameEngine
         /// </summary>
         public void UnscheduleAll()
         {
-            for (int n = 0; n < m_schedules.Count; ++n)
+            for (int n = 0; n < _schedules.Count; ++n)
             {
-                Unschedule(m_schedules[n]);
+                Unschedule(_schedules[n]);
             }
         }
 
@@ -769,7 +769,7 @@ namespace GameEngine
         {
             // 拷贝一份会话列表
             List<int> list = new List<int>();
-            list.AddRange(m_schedules);
+            list.AddRange(_schedules);
 
             for (int n = 0; n < list.Count; ++n)
             {

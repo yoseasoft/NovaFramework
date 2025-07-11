@@ -59,7 +59,7 @@ namespace GameEngine
         /// <summary>
         /// 自定义安全区
         /// </summary>
-        static UnityRect s_customSafeArea;
+        static UnityRect _customSafeArea;
 
         public BaseWindow(WindowSettings settings)
         {
@@ -130,7 +130,7 @@ namespace GameEngine
         /// </summary>
         static void SetCustomSafeArea(UnityRect rect)
         {
-            s_customSafeArea = rect;
+            _customSafeArea = rect;
 
             for (int i = 0; i < FairyGRoot.inst.numChildren; i++)
             {
@@ -159,9 +159,9 @@ namespace GameEngine
             }
             else
             {
-                if (s_customSafeArea.x != 0 || s_customSafeArea.y != 0 || s_customSafeArea.width != 0 || s_customSafeArea.height != 0)
+                if (_customSafeArea.x != 0 || _customSafeArea.y != 0 || _customSafeArea.width != 0 || _customSafeArea.height != 0)
                 {
-                    safeArea = s_customSafeArea;
+                    safeArea = _customSafeArea;
                 }
                 else
                 {

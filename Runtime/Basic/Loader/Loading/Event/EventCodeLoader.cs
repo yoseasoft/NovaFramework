@@ -211,7 +211,7 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
                 SystemType attrType = attrTypes[n];
-                // if (TryGetEventClassCallbackForTargetContainer(attr.GetType(), out callback, s_eventClassLoadCallbacks))
+                // if (TryGetEventClassCallbackForTargetContainer(attr.GetType(), out callback, _eventClassLoadCallbacks))
                 if (TryGetEventClassCallbackForTargetContainer(attrType, out callback, _eventClassLoadCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
@@ -238,7 +238,7 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
                 SystemType attrType = attrTypes[n];
-                // if (TryGetEventClassCallbackForTargetContainer(attr.GetType(), out callback, s_eventCodeInfoLookupCallbacks))
+                // if (TryGetEventClassCallbackForTargetContainer(attr.GetType(), out callback, _eventCodeInfoLookupCallbacks))
                 if (TryGetEventClassCallbackForTargetContainer(attrType, out callback, _eventCodeInfoLookupCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;

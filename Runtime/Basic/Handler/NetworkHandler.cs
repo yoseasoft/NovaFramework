@@ -424,7 +424,7 @@ namespace GameEngine
         /// <param name="channelID">通道标识</param>
         private void OnNetworkChannelDisconnection(int channelID)
         {
-            // m_messageInvokeQueue?.Enqueue(() =>
+            // _messageInvokeQueue?.Enqueue(() =>
             // {
             MessageChannel channel = GetChannel(channelID);
             if (null != channel)
@@ -446,7 +446,7 @@ namespace GameEngine
         /// <param name="channelID">通道标识</param>
         private void OnNetworkChannelConnectError(int channelID)
         {
-            // m_messageInvokeQueue.Enqueue(() =>
+            // _messageInvokeQueue.Enqueue(() =>
             // {
             MessageChannel channel = GetChannel(channelID);
             if (null != channel)
@@ -898,39 +898,39 @@ namespace GameEngine
             /// <summary>
             /// 消息监听类的完整名称
             /// </summary>
-            private string m_fullname;
+            private string _fullname;
             /// <summary>
             /// 消息监听类的目标对象类型
             /// </summary>
-            private SystemType m_targetType;
+            private SystemType _targetType;
             /// <summary>
             /// 消息监听类的协议编码
             /// </summary>
-            protected int m_opcode;
+            protected int _opcode;
             /// <summary>
             /// 消息监听类的回调句柄
             /// </summary>
-            private SystemDelegate m_callback;
+            private SystemDelegate _callback;
             /// <summary>
             /// 消息监听回调函数的无参状态标识
             /// </summary>
-            private bool m_isNullParameterType;
+            private bool _isNullParameterType;
 
-            public string Fullname => m_fullname;
-            public SystemType TargetType => m_targetType;
-            public int Opcode => m_opcode;
-            public SystemDelegate Callback => m_callback;
-            public bool IsNullParameterType => m_isNullParameterType;
+            public string Fullname => _fullname;
+            public SystemType TargetType => _targetType;
+            public int Opcode => _opcode;
+            public SystemDelegate Callback => _callback;
+            public bool IsNullParameterType => _isNullParameterType;
 
             public MessageCallInfo(string fullname, SystemType targetType, int opcode, SystemDelegate callback)
             {
                 Debugger.Assert(null != callback, "Invalid arguments.");
 
-                m_fullname = fullname;
-                m_targetType = targetType;
-                m_opcode = opcode;
-                m_callback = callback;
-                m_isNullParameterType = Loader.Inspecting.CodeInspector.IsNullParameterTypeOfMessageCallFunction(callback.Method);
+                _fullname = fullname;
+                _targetType = targetType;
+                _opcode = opcode;
+                _callback = callback;
+                _isNullParameterType = Loader.Inspecting.CodeInspector.IsNullParameterTypeOfMessageCallFunction(callback.Method);
             }
 
             /// <summary>
@@ -939,13 +939,13 @@ namespace GameEngine
             /// <param name="message">消息内容</param>
             public void Invoke(object message)
             {
-                if (m_isNullParameterType)
+                if (_isNullParameterType)
                 {
-                    m_callback.DynamicInvoke();
+                    _callback.DynamicInvoke();
                 }
                 else
                 {
-                    m_callback.DynamicInvoke(message);
+                    _callback.DynamicInvoke(message);
                 }
             }
 
@@ -956,13 +956,13 @@ namespace GameEngine
             /// <param name="message">消息内容</param>
             public void Invoke(IProto proto, object message)
             {
-                if (m_isNullParameterType)
+                if (_isNullParameterType)
                 {
-                    m_callback.DynamicInvoke(proto);
+                    _callback.DynamicInvoke(proto);
                 }
                 else
                 {
-                    m_callback.DynamicInvoke(proto, message);
+                    _callback.DynamicInvoke(proto, message);
                 }
             }
         }

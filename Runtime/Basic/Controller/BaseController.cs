@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器子模块行为流程回调的缓存队列
         /// </summary>
-        private IDictionary<SystemType, SystemDelegate> m_cachedSubmoduleBehaviourCallbacks = null;
+        private IDictionary<SystemType, SystemDelegate> _cachedSubmoduleBehaviourCallbacks = null;
 
         /// <summary>
         /// 控制器对象初始化通知接口函数
@@ -49,7 +49,7 @@ namespace GameEngine
         protected override sealed void Initialize()
         {
             // 初始化子模块行为流程缓存队列
-            m_cachedSubmoduleBehaviourCallbacks = new Dictionary<SystemType, SystemDelegate>();
+            _cachedSubmoduleBehaviourCallbacks = new Dictionary<SystemType, SystemDelegate>();
 
             OnInitialize();
 
@@ -68,8 +68,8 @@ namespace GameEngine
             OnCleanup();
 
             // 清理子模块行为流程缓存队列
-            m_cachedSubmoduleBehaviourCallbacks.Clear();
-            m_cachedSubmoduleBehaviourCallbacks = null;
+            _cachedSubmoduleBehaviourCallbacks.Clear();
+            _cachedSubmoduleBehaviourCallbacks = null;
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace GameEngine
         private bool TryGetSubmoduleBehaviourCallback(SystemType targetType, out SystemDelegate callback)
         {
             SystemDelegate handler;
-            if (m_cachedSubmoduleBehaviourCallbacks.TryGetValue(targetType, out handler))
+            if (_cachedSubmoduleBehaviourCallbacks.TryGetValue(targetType, out handler))
             {
                 callback = handler;
                 return null == callback ? false : true;
@@ -223,11 +223,11 @@ namespace GameEngine
                     }
                 }
 
-                m_cachedSubmoduleBehaviourCallbacks.Add(targetType, callback);
+                _cachedSubmoduleBehaviourCallbacks.Add(targetType, callback);
                 return true;
             }
 
-            m_cachedSubmoduleBehaviourCallbacks.Add(targetType, callback);
+            _cachedSubmoduleBehaviourCallbacks.Add(targetType, callback);
             return false;
         }
     }

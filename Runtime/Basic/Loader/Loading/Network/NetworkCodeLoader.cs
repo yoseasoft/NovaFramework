@@ -211,7 +211,7 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
                 SystemType attrType = attrTypes[n];
-                // if (TryGetNetworkClassCallbackForTargetContainer(attr.GetType(), out callback, s_networkClassLoadCallbacks))
+                // if (TryGetNetworkClassCallbackForTargetContainer(attr.GetType(), out callback, _networkClassLoadCallbacks))
                 if (TryGetNetworkClassCallbackForTargetContainer(attrType, out callback, _networkClassLoadCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
@@ -238,7 +238,7 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
                 SystemType attrType = attrTypes[n];
-                // if (TryGetNetworkClassCallbackForTargetContainer(attr.GetType(), out callback, s_networkCodeInfoLookupCallbacks))
+                // if (TryGetNetworkClassCallbackForTargetContainer(attr.GetType(), out callback, _networkCodeInfoLookupCallbacks))
                 if (TryGetNetworkClassCallbackForTargetContainer(attrType, out callback, _networkCodeInfoLookupCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;

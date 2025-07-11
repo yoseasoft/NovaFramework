@@ -64,17 +64,17 @@ namespace GameEngine
         /// <summary>
         /// UI常驻包列表
         /// </summary>
-        static readonly List<string> s_commonPkgList = new();
+        static readonly List<string> _commonPkgList = new();
 
         /// <summary>
         /// UI包引用计数
         /// </summary>
-        static readonly Dictionary<string, int> s_pkgReferenceCount = new();
+        static readonly Dictionary<string, int> _pkgReferenceCount = new();
 
         /// <summary>
         /// UI资源地址对于的UI资源
         /// </summary>
-        static readonly Dictionary<string, UnityObject> s_addressToAsset = new();
+        static readonly Dictionary<string, UnityObject> _addressToAsset = new();
 
         /// <summary>
         /// 辅助对象启动接口函数
@@ -182,7 +182,7 @@ namespace GameEngine
         /// </summary>
         public static async UniTask AddCommonPackage(string pkgName)
         {
-            if (s_commonPkgList.Contains(pkgName))
+            if (_commonPkgList.Contains(pkgName))
             {
                 Debugger.Warn("请勿重复添加常驻包！！！" + pkgName);
                 return;
@@ -190,7 +190,7 @@ namespace GameEngine
 
             if (await AddPackage(pkgName))
             {
-                s_commonPkgList.Add(pkgName);
+                _commonPkgList.Add(pkgName);
             }
         }
 
@@ -199,13 +199,13 @@ namespace GameEngine
         /// </summary>
         public static void RemoveCommonPackage(string pkgName)
         {
-            if (!s_commonPkgList.Contains(pkgName))
+            if (!_commonPkgList.Contains(pkgName))
             {
                 return;
             }
 
             RemovePackage(pkgName);
-            s_commonPkgList.Remove(pkgName);
+            _commonPkgList.Remove(pkgName);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace GameEngine
         /// </summary>
         static bool IsCommonPackage(string pkgName)
         {
-            return s_commonPkgList.Contains(pkgName);
+            return _commonPkgList.Contains(pkgName);
         }
 
         /// <summary>
@@ -256,7 +256,7 @@ namespace GameEngine
             method = DestroyMethod.Custom;
 
             // 不使用FairyGUI的alpha分离,所以直接返回空
-            return name.EndsWith(AlphaTexEndName) ? null : s_addressToAsset.GetValueOrDefault($"{FguiPath}{name}{extension}");
+            return name.EndsWith(AlphaTexEndName) ? null : _addressToAsset.GetValueOrDefault($"{FguiPath}{name}{extension}");
         }
 
         /// <summary>
@@ -264,11 +264,11 @@ namespace GameEngine
         /// </summary>
         static void RemoveAssetRecord(UnityObject obj)
         {
-            foreach (var item in s_addressToAsset)
+            foreach (var item in _addressToAsset)
             {
                 if (item.Value == obj)
                 {
-                    s_addressToAsset.Remove(item.Key);
+                    _addressToAsset.Remove(item.Key);
                     break;
                 }
             }
@@ -327,7 +327,7 @@ namespace GameEngine
                 {
                     if (kv.Value.result)
                     {
-                        s_addressToAsset[kv.Key] = kv.Value.result;
+                        _addressToAsset[kv.Key] = kv.Value.result;
                     }
                 }
             }
@@ -349,9 +349,9 @@ namespace GameEngine
         /// </summary>
         static void RemovePackage(string pkgName)
         {
-            if (s_pkgReferenceCount.ContainsKey(pkgName))
+            if (_pkgReferenceCount.ContainsKey(pkgName))
             {
-                s_pkgReferenceCount.Remove(pkgName);
+                _pkgReferenceCount.Remove(pkgName);
             }
 
             UIPackage pkg = UIPackage.GetByName(pkgName);
@@ -376,7 +376,7 @@ namespace GameEngine
             // 部分资源都已提前加载但可能未被使用, 导致RemovePackage里面不会调用卸载, 故这里需要再次保证卸载
             foreach (string address in loadedAssetAddressList)
             {
-                if (s_addressToAsset.Remove(address, out UnityObject obj))
+                if (_addressToAsset.Remove(address, out UnityObject obj))
                 {
                     ResourceHandler.UnloadAsset(obj);
                 }
@@ -393,8 +393,8 @@ namespace GameEngine
                 return;
             }
 
-            s_pkgReferenceCount.TryAdd(pkgName, 0);
-            s_pkgReferenceCount[pkgName]++;
+            _pkgReferenceCount.TryAdd(pkgName, 0);
+            _pkgReferenceCount[pkgName]++;
         }
 
         /// <summary>
@@ -402,9 +402,9 @@ namespace GameEngine
         /// </summary>
         static void DecreasePackageReference(string pkgName)
         {
-            if (s_pkgReferenceCount.ContainsKey(pkgName) && s_pkgReferenceCount[pkgName] > 0)
+            if (_pkgReferenceCount.ContainsKey(pkgName) && _pkgReferenceCount[pkgName] > 0)
             {
-                s_pkgReferenceCount[pkgName]--;
+                _pkgReferenceCount[pkgName]--;
             }
         }
 
@@ -413,7 +413,7 @@ namespace GameEngine
         /// </summary>
         static bool IsPackageExist(string pkgName)
         {
-            return s_pkgReferenceCount.ContainsKey(pkgName);
+            return _pkgReferenceCount.ContainsKey(pkgName);
         }
 
         /// <summary>
@@ -421,7 +421,7 @@ namespace GameEngine
         /// </summary>
         static bool IsPackageReferenced(string pkgName)
         {
-            return s_pkgReferenceCount.ContainsKey(pkgName) && s_pkgReferenceCount[pkgName] > 0;
+            return _pkgReferenceCount.ContainsKey(pkgName) && _pkgReferenceCount[pkgName] > 0;
         }
 
         /// <summary>
@@ -429,7 +429,7 @@ namespace GameEngine
         /// </summary>
         static void UnloadAssetsWhenNoRef(string pkgName)
         {
-            if (s_pkgReferenceCount.ContainsKey(pkgName) && s_pkgReferenceCount[pkgName] == 0)
+            if (_pkgReferenceCount.ContainsKey(pkgName) && _pkgReferenceCount[pkgName] == 0)
             {
                 UnloadAssets(pkgName);
             }
@@ -440,7 +440,7 @@ namespace GameEngine
         /// </summary>
         static void RemovePackageWhenNoRef(string pkgName)
         {
-            if (s_pkgReferenceCount.ContainsKey(pkgName) && s_pkgReferenceCount[pkgName] == 0)
+            if (_pkgReferenceCount.ContainsKey(pkgName) && _pkgReferenceCount[pkgName] == 0)
             {
                 RemovePackage(pkgName);
             }

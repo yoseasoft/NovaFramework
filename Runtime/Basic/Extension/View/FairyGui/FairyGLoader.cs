@@ -41,7 +41,7 @@ namespace GameEngine
         /// <summary>
         /// 等待显示时加载的url
         /// </summary>
-        private string m_waitLoadUrl;
+        private string _waitLoadUrl;
 
         protected override void LoadExternal()
         {
@@ -50,7 +50,7 @@ namespace GameEngine
                 return;
 
             // 更换url时, 首先清空等待记录
-            m_waitLoadUrl = null;
+            _waitLoadUrl = null;
 
             // 每次设置url都重新添加监听, 以免放构造函数中途监听被清除掉(例如富文本图片回到池里面会清掉委托)
             onAddedToStage.Add(OnAddedToStage);
@@ -58,7 +58,7 @@ namespace GameEngine
 
             if (!onStage)
             {
-                m_waitLoadUrl = url;
+                _waitLoadUrl = url;
                 url = WaitLoadTag;
                 return;
             }
@@ -81,7 +81,7 @@ namespace GameEngine
 
             if (!onStage)
             {
-                m_waitLoadUrl = url;
+                _waitLoadUrl = url;
                 url = WaitLoadTag;
                 return;
             }
@@ -116,18 +116,18 @@ namespace GameEngine
         /// </summary>
         private void OnAddedToStage(FairyGUI.EventContext _)
         {
-            if (string.IsNullOrEmpty(m_waitLoadUrl))
+            if (string.IsNullOrEmpty(_waitLoadUrl))
                 return;
 
             // 重新回到舞台时, url已被逻辑代码清空
             if (string.IsNullOrEmpty(url))
             {
-                m_waitLoadUrl = null;
+                _waitLoadUrl = null;
                 return;
             }
 
-            url = m_waitLoadUrl;
-            m_waitLoadUrl = null;
+            url = _waitLoadUrl;
+            _waitLoadUrl = null;
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace GameEngine
             if (string.IsNullOrEmpty(url) || url.StartsWith(FairyGUI.UIPackage.URL_PREFIX))
                 return;
 
-            m_waitLoadUrl = url;
+            _waitLoadUrl = url;
             url = WaitLoadTag;
         }
     }

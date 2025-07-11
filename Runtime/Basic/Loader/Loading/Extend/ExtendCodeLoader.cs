@@ -217,7 +217,7 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
                 SystemType attrType = attrTypes[n];
-                // if (TryGetExtendClassCallbackForTargetContainer(attr.GetType(), out callback, s_extendClassLoadCallbacks))
+                // if (TryGetExtendClassCallbackForTargetContainer(attr.GetType(), out callback, _extendClassLoadCallbacks))
                 if (TryGetExtendClassCallbackForTargetContainer(attrType, out callback, _extendClassLoadCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
@@ -244,7 +244,7 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
                 SystemType attrType = attrTypes[n];
-                // if (TryGetExtendClassCallbackForTargetContainer(attr.GetType(), out callback, s_extendCodeInfoLookupCallbacks))
+                // if (TryGetExtendClassCallbackForTargetContainer(attr.GetType(), out callback, _extendCodeInfoLookupCallbacks))
                 if (TryGetExtendClassCallbackForTargetContainer(attrType, out callback, _extendCodeInfoLookupCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;

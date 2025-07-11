@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -47,20 +47,20 @@ namespace GameEngine
         /// <summary>
         /// 控制器对象类的类型映射管理容器
         /// </summary>
-        private static IDictionary<int, SystemType> s_controllerClassTypes;
+        private static IDictionary<int, SystemType> _controllerClassTypes;
         /// <summary>
         /// 控制器对象实例的映射管理容器
         /// </summary>
-        private static IDictionary<int, IController> s_controllerObjects;
+        private static IDictionary<int, IController> _controllerObjects;
 
         /// <summary>
         /// 控制器对象类的创建函数回调句柄管理容器
         /// </summary>
-        private static IDictionary<int, NovaEngine.ISingleton.SingletonCreateHandler> s_controllerCreateCallbacks;
+        private static IDictionary<int, NovaEngine.ISingleton.SingletonCreateHandler> _controllerCreateCallbacks;
         /// <summary>
         /// 控制器对象类的销毁函数回调句柄管理容器
         /// </summary>
-        private static IDictionary<int, NovaEngine.ISingleton.SingletonDestroyHandler> s_controllerDestroyCallbacks;
+        private static IDictionary<int, NovaEngine.ISingleton.SingletonDestroyHandler> _controllerDestroyCallbacks;
 
         /// <summary>
         /// 控制器管理类的启动函数
@@ -70,10 +70,10 @@ namespace GameEngine
             string namespaceTag = typeof(ControllerManagement).Namespace;
 
             // 管理容器初始化
-            s_controllerClassTypes = new Dictionary<int, SystemType>();
-            s_controllerObjects = new Dictionary<int, IController>();
-            s_controllerCreateCallbacks = new Dictionary<int, NovaEngine.ISingleton.SingletonCreateHandler>();
-            s_controllerDestroyCallbacks = new Dictionary<int, NovaEngine.ISingleton.SingletonDestroyHandler>();
+            _controllerClassTypes = new Dictionary<int, SystemType>();
+            _controllerObjects = new Dictionary<int, IController>();
+            _controllerCreateCallbacks = new Dictionary<int, NovaEngine.ISingleton.SingletonCreateHandler>();
+            _controllerDestroyCallbacks = new Dictionary<int, NovaEngine.ISingleton.SingletonDestroyHandler>();
 
             foreach (string enumName in SystemEnum.GetNames(typeof(ModuleType)))
             {
@@ -112,23 +112,23 @@ namespace GameEngine
 
                 Debugger.Log(LogGroupTag.Controller, "Load controller type '{%f}' succeed.", controllerType);
 
-                s_controllerClassTypes.Add(enumType, controllerType);
-                s_controllerCreateCallbacks.Add(enumType, controllerCreateCallback);
-                s_controllerDestroyCallbacks.Add(enumType, controllerDestroyCallback);
+                _controllerClassTypes.Add(enumType, controllerType);
+                _controllerCreateCallbacks.Add(enumType, controllerCreateCallback);
+                _controllerDestroyCallbacks.Add(enumType, controllerDestroyCallback);
             }
 
-            foreach (KeyValuePair<int, NovaEngine.ISingleton.SingletonCreateHandler> pair in s_controllerCreateCallbacks)
+            foreach (KeyValuePair<int, NovaEngine.ISingleton.SingletonCreateHandler> pair in _controllerCreateCallbacks)
             {
                 // 创建控制器实例
                 object controller = pair.Value();
-                if (s_controllerObjects.ContainsKey(pair.Key))
+                if (_controllerObjects.ContainsKey(pair.Key))
                 {
                     Debugger.Warn("The controller of type '{%d}' was already exist, repeat created it will be removed old type.", pair.Key);
 
-                    s_controllerObjects.Remove(pair.Key);
+                    _controllerObjects.Remove(pair.Key);
                 }
 
-                s_controllerObjects.Add(pair.Key, controller as IController);
+                _controllerObjects.Add(pair.Key, controller as IController);
             }
         }
 
@@ -137,22 +137,22 @@ namespace GameEngine
         /// </summary>
         public static void Shutdown()
         {
-            foreach (KeyValuePair<int, NovaEngine.ISingleton.SingletonDestroyHandler> pair in s_controllerDestroyCallbacks)
+            foreach (KeyValuePair<int, NovaEngine.ISingleton.SingletonDestroyHandler> pair in _controllerDestroyCallbacks)
             {
                 // 销毁控制器实例
                 pair.Value();
             }
 
             // 容器清理
-            s_controllerClassTypes.Clear();
-            s_controllerClassTypes = null;
-            s_controllerObjects.Clear();
-            s_controllerObjects = null;
+            _controllerClassTypes.Clear();
+            _controllerClassTypes = null;
+            _controllerObjects.Clear();
+            _controllerObjects = null;
 
-            s_controllerCreateCallbacks.Clear();
-            s_controllerCreateCallbacks = null;
-            s_controllerDestroyCallbacks.Clear();
-            s_controllerDestroyCallbacks = null;
+            _controllerCreateCallbacks.Clear();
+            _controllerCreateCallbacks = null;
+            _controllerDestroyCallbacks.Clear();
+            _controllerDestroyCallbacks = null;
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace GameEngine
         /// </summary>
         public static void Update()
         {
-            foreach (KeyValuePair<int, IController> pair in s_controllerObjects)
+            foreach (KeyValuePair<int, IController> pair in _controllerObjects)
             {
                 pair.Value.Update();
             }
@@ -171,7 +171,7 @@ namespace GameEngine
         /// </summary>
         public static void LateUpdate()
         {
-            foreach (KeyValuePair<int, IController> pair in s_controllerObjects)
+            foreach (KeyValuePair<int, IController> pair in _controllerObjects)
             {
                 pair.Value.LateUpdate();
             }
@@ -182,7 +182,7 @@ namespace GameEngine
         /// </summary>
         public static void Dump()
         {
-            foreach (KeyValuePair<int, IController> pair in s_controllerObjects)
+            foreach (KeyValuePair<int, IController> pair in _controllerObjects)
             {
                 pair.Value.Dump();
             }
