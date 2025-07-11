@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyring (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -59,19 +59,19 @@ namespace GameEngine
             /// <summary>
             /// 匹配切面服务的目标对象类型
             /// </summary>
-            private readonly SystemType m_classType;
+            private readonly SystemType _classType;
             /// <summary>
             /// 执行切面服务的函数名称
             /// </summary>
-            private readonly string m_methodName;
+            private readonly string _methodName;
 
-            public SystemType ClassType => m_classType;
-            public string MethodName => m_methodName;
+            public SystemType ClassType => _classType;
+            public string MethodName => _methodName;
 
             public OnServiceProcessRegisterOfTargetAttribute(SystemType classType, string methodName)
             {
-                m_classType = classType;
-                m_methodName = methodName;
+                _classType = classType;
+                _methodName = methodName;
             }
 
             public OnServiceProcessRegisterOfTargetAttribute(SystemType classType, AspectBehaviourType behaviourType)
@@ -82,20 +82,20 @@ namespace GameEngine
                     return;
                 }
 
-                m_classType = classType;
-                m_methodName = behaviourType.ToString();
+                _classType = classType;
+                _methodName = behaviourType.ToString();
             }
         }
 
         /// <summary>
         /// 切面服务处理回调的管理容器
         /// </summary>
-        // private static IDictionary<SystemType, IDictionary<string, OnAspectServiceProcessingCallHandler>> s_serviceProcessCallInfos = new Dictionary<SystemType, IDictionary<string, OnAspectServiceProcessingCallHandler>>();
-        private static IDictionary<SystemType, IDictionary<string, SystemAction_object_bool>> s_serviceProcessCallInfos = null;
+        // private static IDictionary<SystemType, IDictionary<string, OnAspectServiceProcessingCallHandler>> _serviceProcessCallInfos = new Dictionary<SystemType, IDictionary<string, OnAspectServiceProcessingCallHandler>>();
+        private static IDictionary<SystemType, IDictionary<string, SystemAction_object_bool>> _serviceProcessCallInfos = null;
         /// <summary>
         /// 切面服务处理的启用状态标识的管理容器
         /// </summary>
-        private static IDictionary<SystemType, IDictionary<string, bool>> s_serviceProcessCallStatus = null;
+        private static IDictionary<SystemType, IDictionary<string, bool>> _serviceProcessCallStatus = null;
 
         /// <summary>
         /// 初始化切面服务处理类声明的全部回调接口
@@ -103,8 +103,8 @@ namespace GameEngine
         internal static void InitAllServiceProcessingCallbacks()
         {
             // 切面服务管理容器初始化
-            s_serviceProcessCallInfos = new Dictionary<SystemType, IDictionary<string, SystemAction_object_bool>>();
-            s_serviceProcessCallStatus = new Dictionary<SystemType, IDictionary<string, bool>>();
+            _serviceProcessCallInfos = new Dictionary<SystemType, IDictionary<string, SystemAction_object_bool>>();
+            _serviceProcessCallStatus = new Dictionary<SystemType, IDictionary<string, bool>>();
 
             SystemType classType = typeof(AspectCallService);
             SystemMethodInfo[] methods = classType.GetMethods(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
@@ -138,11 +138,11 @@ namespace GameEngine
         internal static void CleanupAllServiceProcessingCallbacks()
         {
             // 切面服务管理容器清理
-            s_serviceProcessCallInfos.Clear();
-            s_serviceProcessCallStatus.Clear();
+            _serviceProcessCallInfos.Clear();
+            _serviceProcessCallStatus.Clear();
 
-            s_serviceProcessCallInfos = null;
-            s_serviceProcessCallStatus = null;
+            _serviceProcessCallInfos = null;
+            _serviceProcessCallStatus = null;
         }
 
         /// <summary>
@@ -204,11 +204,11 @@ namespace GameEngine
         private static void AddServiceProcessingCallHandler(SystemType targetType, string methodName, SystemAction_object_bool handler)
         {
             IDictionary<string, SystemAction_object_bool> targetServiceInfos = null;
-            if (false == s_serviceProcessCallInfos.TryGetValue(targetType, out targetServiceInfos))
+            if (false == _serviceProcessCallInfos.TryGetValue(targetType, out targetServiceInfos))
             {
                 targetServiceInfos = new Dictionary<string, SystemAction_object_bool>();
 
-                s_serviceProcessCallInfos.Add(targetType, targetServiceInfos);
+                _serviceProcessCallInfos.Add(targetType, targetServiceInfos);
             }
 
             if (targetServiceInfos.ContainsKey(methodName))
@@ -231,11 +231,11 @@ namespace GameEngine
         private static void AddServiceProcessingCallStatus(SystemType targetType, string methodName, bool status)
         {
             IDictionary<string, bool> targetServiceStatus = null;
-            if (false == s_serviceProcessCallStatus.TryGetValue(targetType, out targetServiceStatus))
+            if (false == _serviceProcessCallStatus.TryGetValue(targetType, out targetServiceStatus))
             {
                 targetServiceStatus = new Dictionary<string, bool>();
 
-                s_serviceProcessCallStatus.Add(targetType, targetServiceStatus);
+                _serviceProcessCallStatus.Add(targetType, targetServiceStatus);
             }
 
             if (targetServiceStatus.ContainsKey(methodName))
@@ -260,7 +260,7 @@ namespace GameEngine
             handlers = null;
 
             IList<IDictionary<string, SystemAction_object_bool>> list = null;
-            IEnumerator<KeyValuePair<SystemType, IDictionary<string, SystemAction_object_bool>>> e = s_serviceProcessCallInfos.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, IDictionary<string, SystemAction_object_bool>>> e = _serviceProcessCallInfos.GetEnumerator();
             while (e.MoveNext())
             {
                 if (e.Current.Key.IsSubclassOf(typeof(SystemAttribute)))
@@ -308,7 +308,7 @@ namespace GameEngine
         {
             status = false;
 
-            if (false == s_serviceProcessCallStatus.TryGetValue(targetType, out IDictionary<string, bool> targetServiceStatus))
+            if (false == _serviceProcessCallStatus.TryGetValue(targetType, out IDictionary<string, bool> targetServiceStatus))
             {
                 return false;
             }

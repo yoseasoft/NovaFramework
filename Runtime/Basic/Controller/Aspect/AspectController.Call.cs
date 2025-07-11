@@ -46,44 +46,44 @@ namespace GameEngine
             /// <summary>
             /// 切面调用类的完整名称
             /// </summary>
-            private string m_fullname;
+            private string _fullname;
             /// <summary>
             /// 切面调用类的目标对象类型
             /// </summary>
-            private SystemType m_targetType;
+            private SystemType _targetType;
             /// <summary>
             /// 切面调用类的目标函数名称
             /// </summary>
-            private string m_methodName;
+            private string _methodName;
             /// <summary>
             /// 切面调用类的接入访问方式
             /// </summary>
-            private AspectAccessType m_accessType;
+            private AspectAccessType _accessType;
             /// <summary>
             /// 切面调用类的回调函数句柄
             /// </summary>
-            private SystemAction_object m_callback;
+            private SystemAction_object _callback;
 
-            public string Fullname { get { return m_fullname; } internal set { m_fullname = value; } }
-            public SystemType TargetType { get { return m_targetType; } internal set { m_targetType = value; } }
-            public string MethodName { get { return m_methodName; } internal set { m_methodName = value; } }
-            public AspectAccessType AccessType { get { return m_accessType; } internal set { m_accessType = value; } }
-            public SystemAction_object Callback { get { return m_callback; } internal set { m_callback = value; } }
+            public string Fullname { get { return _fullname; } internal set { _fullname = value; } }
+            public SystemType TargetType { get { return _targetType; } internal set { _targetType = value; } }
+            public string MethodName { get { return _methodName; } internal set { _methodName = value; } }
+            public AspectAccessType AccessType { get { return _accessType; } internal set { _accessType = value; } }
+            public SystemAction_object Callback { get { return _callback; } internal set { _callback = value; } }
         }
 
         /// <summary>
         /// 通用类型切点回调的数据结构容器
         /// </summary>
-        private IDictionary<SystemType, IList<AspectCallInfo>> m_genericTypeCallInfos = null;
+        private IDictionary<SystemType, IList<AspectCallInfo>> _genericTypeCallInfos = null;
 
         /// <summary>
         /// 通用类型的回调句柄对应标识的映射容器
         /// </summary>
-        private IDictionary<SystemType, IDictionary<AspectAccessType, bool>> m_genericTypeCallStatus = null;
+        private IDictionary<SystemType, IDictionary<AspectAccessType, bool>> _genericTypeCallStatus = null;
         /// <summary>
         /// 通用类型的回调句柄管理容器
         /// </summary>
-        private IDictionary<SystemType, IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>>> m_genericTypeCachedCallbacks = null;
+        private IDictionary<SystemType, IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>>> _genericTypeCachedCallbacks = null;
 
         /// <summary>
         /// 切面回调相关内容的初始化回调函数
@@ -92,9 +92,9 @@ namespace GameEngine
         private void InitAspectCallInfos()
         {
             // 数据容器初始化
-            m_genericTypeCallInfos = new Dictionary<SystemType, IList<AspectCallInfo>>();
-            m_genericTypeCallStatus = new Dictionary<SystemType, IDictionary<AspectAccessType, bool>>();
-            m_genericTypeCachedCallbacks = new Dictionary<SystemType, IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>>>();
+            _genericTypeCallInfos = new Dictionary<SystemType, IList<AspectCallInfo>>();
+            _genericTypeCallStatus = new Dictionary<SystemType, IDictionary<AspectAccessType, bool>>();
+            _genericTypeCachedCallbacks = new Dictionary<SystemType, IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>>>();
         }
 
         /// <summary>
@@ -106,9 +106,9 @@ namespace GameEngine
             RemoveAllAspectCalls();
 
             // 移除数据容器
-            m_genericTypeCallInfos = null;
-            m_genericTypeCallStatus = null;
-            m_genericTypeCachedCallbacks = null;
+            _genericTypeCallInfos = null;
+            _genericTypeCallStatus = null;
+            _genericTypeCachedCallbacks = null;
         }
 
         /// <summary>
@@ -218,10 +218,10 @@ namespace GameEngine
             Debugger.Info(LogGroupTag.Controller, "Add new aspect call '{0}' to target method '{1}' of the class type '{2}'.",
                     fullname, methodName, NovaEngine.Utility.Text.ToString(targetType));
 
-            if (false == m_genericTypeCallInfos.TryGetValue(targetType, out IList<AspectCallInfo> callInfos))
+            if (false == _genericTypeCallInfos.TryGetValue(targetType, out IList<AspectCallInfo> callInfos))
             {
                 callInfos = new List<AspectCallInfo>();
-                m_genericTypeCallInfos.Add(targetType, callInfos);
+                _genericTypeCallInfos.Add(targetType, callInfos);
             }
 
             // 添加切面回调信息
@@ -238,13 +238,13 @@ namespace GameEngine
         private void RemoveAspectCallForGenericType(string fullname, SystemType targetType, string methodName, AspectAccessType accessType)
         {
             Debugger.Info(LogGroupTag.Controller, "Remove aspect call '{0}' with target method '{1}' and class type '{2}'.", fullname, methodName, NovaEngine.Utility.Text.ToString(targetType));
-            if (false == m_genericTypeCallInfos.ContainsKey(targetType))
+            if (false == _genericTypeCallInfos.ContainsKey(targetType))
             {
                 Debugger.Warn(LogGroupTag.Controller, "Could not found any apsect call '{0}' with target class type '{1}', removed it failed.", fullname, NovaEngine.Utility.Text.ToString(targetType));
                 return;
             }
 
-            IList<AspectCallInfo> list = m_genericTypeCallInfos[targetType];
+            IList<AspectCallInfo> list = _genericTypeCallInfos[targetType];
             for (int n = 0; n < list.Count; ++n)
             {
                 AspectCallInfo info = list[n];
@@ -255,7 +255,7 @@ namespace GameEngine
                     list.RemoveAt(n);
                     if (list.Count <= 0)
                     {
-                        m_genericTypeCallInfos.Remove(targetType);
+                        _genericTypeCallInfos.Remove(targetType);
                     }
 
                     // 当切面函数发生变化时，清除所有的函数缓存队列
@@ -275,8 +275,8 @@ namespace GameEngine
         private void RemoveAllAspectCallCaches()
         {
             // 移除缓存
-            m_genericTypeCallStatus.Clear();
-            m_genericTypeCachedCallbacks.Clear();
+            _genericTypeCallStatus.Clear();
+            _genericTypeCachedCallbacks.Clear();
         }
 
         /// <summary>
@@ -284,7 +284,7 @@ namespace GameEngine
         /// </summary>
         private void RemoveAllAspectCalls()
         {
-            m_genericTypeCallInfos.Clear();
+            _genericTypeCallInfos.Clear();
 
             // 移除缓存
             RemoveAllAspectCallCaches();
@@ -297,10 +297,10 @@ namespace GameEngine
         /// <returns>返回给定类型对应的缓存容器，若类型错误则返回null</returns>
         private IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>> GetGenericTypeCachedCallbackByType(SystemType targetType)
         {
-            if (false == m_genericTypeCachedCallbacks.TryGetValue(targetType, out IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>> container))
+            if (false == _genericTypeCachedCallbacks.TryGetValue(targetType, out IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>> container))
             {
                 container = new Dictionary<AspectAccessType, IDictionary<string, SystemAction_object>>();
-                m_genericTypeCachedCallbacks.Add(targetType, container);
+                _genericTypeCachedCallbacks.Add(targetType, container);
             }
 
             return container;
@@ -436,7 +436,7 @@ namespace GameEngine
         {
             status = false;
 
-            if (false == m_genericTypeCallStatus.TryGetValue(targetType, out IDictionary<AspectAccessType, bool> container))
+            if (false == _genericTypeCallStatus.TryGetValue(targetType, out IDictionary<AspectAccessType, bool> container))
             {
                 return false;
             }
@@ -463,7 +463,7 @@ namespace GameEngine
             SystemType currentClassType = targetType;
             while (null != currentClassType)
             {
-                if (m_genericTypeCallInfos.TryGetValue(currentClassType, out IList<AspectCallInfo> list))
+                if (_genericTypeCallInfos.TryGetValue(currentClassType, out IList<AspectCallInfo> list))
                 {
                     infos ??= new List<AspectCallInfo>();
                     // 此处不使用 AddRange，因为要把父类注册的接口放在子类之前调用
@@ -478,10 +478,10 @@ namespace GameEngine
                 // 存在切面委托服务回调
                 result = true;
 
-                if (false == m_genericTypeCallStatus.TryGetValue(targetType, out IDictionary<AspectAccessType, bool> status))
+                if (false == _genericTypeCallStatus.TryGetValue(targetType, out IDictionary<AspectAccessType, bool> status))
                 {
                     status = new Dictionary<AspectAccessType, bool>();
-                    m_genericTypeCallStatus.Add(targetType, status);
+                    _genericTypeCallStatus.Add(targetType, status);
                 }
 
                 // 重置状态标识
