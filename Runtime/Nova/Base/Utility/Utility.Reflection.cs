@@ -186,7 +186,7 @@ namespace NovaEngine
                 return sb.ToString();
             }
 
-            #region 类类型的属性检测函数接口
+            #region 对象类型的属性检测函数接口
 
             /// <summary>
             /// 检测目标类型是否是一个声明为结构体的类
@@ -284,6 +284,22 @@ namespace NovaEngine
 
                 if (typeof(System.Action<>) == targetType.GetGenericTypeDefinition())
                 { return true; }
+
+                return false;
+            }
+
+            /// <summary>
+            /// 检测目标对象类型是否是一个扩展类型回调函数
+            /// </summary>
+            /// <param name="targetType">对象类型</param>
+            /// <returns>若给定类型是一个扩展类型则返回true，否则返回false</returns>
+            public static bool IsTypeOfExtension(SystemType targetType)
+            {
+                // 扩展类首先必须得是静态类
+                if (IsTypeOfStaticClass(targetType))
+                {
+                    return targetType.IsDefined(typeof(System.Runtime.CompilerServices.ExtensionAttribute), inherit: false);
+                }
 
                 return false;
             }

@@ -109,18 +109,10 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若类对象存在给定属性则返回其实例，否则返回null</returns>
         public SystemAttribute GetAttribute(string attributeName)
         {
-            if (null == _attributes || string.IsNullOrEmpty(attributeName))
+            IList<SystemAttribute> attributes = GetAttributes(attributeName);
+            if (null != attributes && attributes.Count > 0)
             {
-                return null;
-            }
-
-            for (int n = 0; n < _attributes.Count; ++n)
-            {
-                SystemAttribute attribute = _attributes[n];
-                if (attributeName.Equals(attribute.GetType().Name))
-                {
-                    return attribute;
-                }
+                return attributes[0];
             }
 
             return null;
@@ -173,18 +165,10 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若类对象存在给定属性则返回其实例，否则返回null</returns>
         public SystemAttribute GetAttribute(SystemType attributeType)
         {
-            if (null == _attributes || null == attributeType)
+            IList<SystemAttribute> attributes = GetAttributes(attributeType);
+            if (null != attributes && attributes.Count > 0)
             {
-                return null;
-            }
-
-            for (int n = 0; n < _attributes.Count; ++n)
-            {
-                SystemAttribute attribute = _attributes[n];
-                if (attribute.GetType() == attributeType)
-                {
-                    return attribute;
-                }
+                return attributes[0];
             }
 
             return null;

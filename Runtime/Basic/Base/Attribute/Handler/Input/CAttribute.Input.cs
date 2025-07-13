@@ -31,7 +31,18 @@ using SystemAttributeTargets = System.AttributeTargets;
 namespace GameEngine
 {
     /// <summary>
-    /// 输入系统的属性类型定义
+    /// 输入系统基于对象分发的属性类型定义
+    /// </summary>
+    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    internal class InputActivationAttribute : SystemAttribute
+    {
+        public InputActivationAttribute()
+        {
+        }
+    }
+
+    /// <summary>
+    /// 输入系统基于全局分发的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class InputSystemAttribute : SystemAttribute

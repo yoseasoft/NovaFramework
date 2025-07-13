@@ -95,8 +95,7 @@ namespace GameEngine
                 return;
             }
 
-            obj.UnsubscribeAllAutomaticallyEvents();
-            obj.RemoveAllAutomaticallyMessageListeners();
+            obj.Reload();
 
             System.Array lifecycleTypes = System.Enum.GetValues(typeof(CBase.LifecycleKeypointType));
             for (int n = 0; n < lifecycleTypes.Length; ++n)

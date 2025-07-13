@@ -30,7 +30,18 @@ using SystemAttributeTargets = System.AttributeTargets;
 namespace GameEngine
 {
     /// <summary>
-    /// 消息系统的属性类型定义
+    /// 消息系统基于对象分发的属性类型定义
+    /// </summary>
+    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    internal class MessageActivationAttribute : SystemAttribute
+    {
+        public MessageActivationAttribute()
+        {
+        }
+    }
+
+    /// <summary>
+    /// 消息系统基于全局分发的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class MessageSystemAttribute : SystemAttribute

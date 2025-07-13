@@ -79,6 +79,15 @@ namespace GameEngine.Loader.Symboling
         /// 对象是否为可实例化的类型
         /// </summary>
         private bool _isInstantiate;
+        /// <summary>
+        /// 对象是否为扩展类型
+        /// </summary>
+        private bool _isExtension;
+
+        /// <summary>
+        /// 对象类的扩展目标类型
+        /// </summary>
+        private SystemType _extensionTargetType;
 
         /// <summary>
         /// 对象类包含的特性信息
@@ -125,6 +134,7 @@ namespace GameEngine.Loader.Symboling
                 _isAbstract = _classType.IsAbstract;
                 _isStatic = NovaEngine.Utility.Reflection.IsTypeOfStaticClass(_classType);
                 _isInstantiate = NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(_classType);
+                _isExtension = NovaEngine.Utility.Reflection.IsTypeOfExtension(_classType);
             }
         }
 
@@ -151,6 +161,9 @@ namespace GameEngine.Loader.Symboling
         public bool IsAbstract => _isAbstract;
         public bool IsStatic => _isStatic;
         public bool IsInstantiate => _isInstantiate;
+        public bool IsExtension => _isExtension;
+
+        public SystemType ExtensionTargetType => _extensionTargetType;
 
         public IList<SystemType> FeatureTypes => _featureTypes;
         public IList<SystemType> InterfaceTypes => _interfaceTypes;
@@ -172,6 +185,29 @@ namespace GameEngine.Loader.Symboling
 
             RemoveAllBeans();
         }
+
+        #region 类标记对象的扩展目标类型相关访问接口函数
+
+        /// <summary>
+        /// 标记对象的扩展目标类型<br/>
+        /// 每个标记对象有且仅有一个扩展目标类型，多次绑定只是进行目标类型是否相同的校验
+        /// </summary>
+        /// <param name="extensionTargetType">扩展目标类型</param>
+        internal void RebindingExtensionTargetType(SystemType extensionTargetType)
+        {
+            Debugger.Assert(_isExtension, "Invalid extension status.");
+
+            if (null == _extensionTargetType)
+            {
+                _extensionTargetType = extensionTargetType;
+            }
+            else
+            {
+                Debugger.Assert(_extensionTargetType == extensionTargetType, "The multiple definition extension type.");
+            }
+        }
+
+        #endregion
 
         #region 类标记对象的特性列表相关访问接口函数
 

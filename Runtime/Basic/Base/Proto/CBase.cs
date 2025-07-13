@@ -135,6 +135,19 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 对象重载函数接口
+        /// </summary>
+        internal override void Reload()
+        {
+            base.Reload();
+
+            // 卸载自动绑定的扩展通知接口
+            this.RemoveAllAutomaticallyInputResponses();
+            this.UnsubscribeAllAutomaticallyEvents();
+            this.RemoveAllAutomaticallyMessageListeners();
+        }
+
+        /// <summary>
         /// 对象启动通知函数接口
         /// </summary>
         public abstract void Startup();
