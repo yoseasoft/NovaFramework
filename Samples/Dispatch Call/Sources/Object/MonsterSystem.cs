@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace Game.Sample.DispatchCall
@@ -52,6 +54,26 @@ namespace Game.Sample.DispatchCall
         private static void OnEnemyDisplayInfo(this Monster self, int eventID, params object[] args)
         {
             Debugger.Info("怪物对象成功接收事件[{%d}]，信息输出：{%s}！", eventID, self.ToMonsterString());
+        }
+
+        [GameEngine.InputResponseBindingOfTarget((int) UnityEngine.KeyCode.T, GameEngine.InputOperationType.Released)]
+        private static void OnTalkInputObserve(this Monster self, int keycode, int operationType)
+        {
+            string[] infos = new string[5];
+            infos[0] = "被调戏";
+            infos[1] = "打球";
+            infos[2] = "玩游戏";
+            infos[3] = "徒步旅行";
+            infos[4] = "骑行";
+
+            int index = NovaEngine.Utility.Random.GetRandom(infos.Length);
+            GameEngine.NetworkHandler.Instance.OnSimulationReceiveMessageComposedOfProtoBuf(new ActorChatResp()
+            {
+                ChatList = new List<ChatInfo>()
+                {
+                    new ChatInfo() { Uid = self.GetComponent<IdentityComponent>().objectID, Text = $"我{self.GetComponent<IdentityComponent>().objectName}可喜欢{infos[index]}了" }
+                },
+            });
         }
 
         public static string ToMonsterString(this Monster self)

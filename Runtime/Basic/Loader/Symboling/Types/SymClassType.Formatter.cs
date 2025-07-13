@@ -57,6 +57,10 @@ namespace GameEngine.Loader.Symboling
             {
                 return $"[{index}]={NovaEngine.Utility.Text.GetFullName(v)}";
             }));
+            sb.AppendFormat("AspectBehaviourTypes={{{0}}},", NovaEngine.Formatter.ToString<AspectBehaviourType>(targetObject.AspectBehaviourTypes, (index, v) =>
+            {
+                return $"[{index}]={v.ToString()}";
+            }));
             sb.AppendFormat("Fields={{{0}}},", NovaEngine.Formatter.ToString<string, SymField>(targetObject.Fields, (k, v) =>
             {
                 return v.FieldName;

@@ -2,6 +2,8 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -860,20 +862,27 @@ namespace GameEngine
 
             _components.Add(componentName, component);
 
+            // 2025-07-13：
+            // 取消接口标识，转而使用特性标签来检测
+            // 这样可以通过符号类在解析过程中动态接入的方式简化标识定义的过程
+
             // 如果组件激活了输入分发接口，则添加到输入分发队列中
-            if (typeof(IInputActivation).IsAssignableFrom(component.GetType()))
+            // if (typeof(IInputActivation).IsAssignableFrom(component.GetType()))
+            if (component.HasFeatureType(typeof(InputActivationAttribute)))
             {
                 _componentInputDispatchList.Add(component);
             }
 
             // 如果组件激活了事件分发接口，则添加到事件分发队列中
-            if (typeof(IEventActivation).IsAssignableFrom(component.GetType()))
+            // if (typeof(IEventActivation).IsAssignableFrom(component.GetType()))
+            if (component.HasFeatureType(typeof(EventActivationAttribute)))
             {
                 _componentEventDispatchList.Add(component);
             }
 
             // 如果组件激活了消息分发接口，则添加到消息分发队列中
-            if (typeof(IMessageActivation).IsAssignableFrom(component.GetType()))
+            // if (typeof(IMessageActivation).IsAssignableFrom(component.GetType()))
+            if (component.HasFeatureType(typeof(MessageActivationAttribute)))
             {
                 _componentMessageDispatchList.Add(component);
             }
@@ -1117,7 +1126,12 @@ namespace GameEngine
             Call(component.Start, LifecycleKeypointType.Start);
 
             // 如果组件实现了刷新接口，则添加到刷新队列中
-            if (typeof(IUpdateActivation).IsAssignableFrom(component.GetType()))
+            // 2025-07-13：
+            // 取消接口标识，转而使用特性标签来检测
+            // 这样可以通过符号类在解析过程中动态接入的方式简化标识定义的过程
+            // if (typeof(IUpdateActivation).IsAssignableFrom(component.GetType()))
+            if (component.HasAspectBehaviourType(AspectBehaviourType.Update) ||
+                component.HasAspectBehaviourType(AspectBehaviourType.LateUpdate))
             {
                 _componentUpdateList.Add(component);
             }

@@ -122,6 +122,16 @@ namespace GameEngine
             return this.Symbol.HasFeatureType(featureType);
         }
 
+        /// <summary>
+        /// 检测当前对象实例是否具备指定的切面行为类型
+        /// </summary>
+        /// <param name="aspectBehaviourType">切面行为类型</param>
+        /// <returns>若当前对象实例具备给定切面行为类型则返回true，否则返回false</returns>
+        public bool HasAspectBehaviourType(AspectBehaviourType aspectBehaviourType)
+        {
+            return this.Symbol.HasAspectBehaviourType(aspectBehaviourType);
+        }
+
         #endregion
     }
 }

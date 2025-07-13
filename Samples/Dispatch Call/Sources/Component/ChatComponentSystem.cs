@@ -31,7 +31,6 @@ namespace Game.Sample.DispatchCall
     /// <summary>
     /// 聊天组件逻辑类
     /// </summary>
-    [GameEngine.Aspect]
     public static class ChatComponentSystem
     {
         [GameEngine.OnAspectAfterCallOfTarget(typeof(ChatComponent), GameEngine.AspectBehaviourType.Awake)]
@@ -50,6 +49,12 @@ namespace Game.Sample.DispatchCall
         {
             if (null != self.messages && self.messages.Count > 0)
             {
+                if (self.last_chat_time > NovaEngine.Timestamp.RealtimeSinceStartup)
+                {
+                    return;
+                }
+
+                self.last_chat_time = NovaEngine.Timestamp.RealtimeSinceStartup + 2.0f;
                 string text = self.messages[0];
                 self.messages.RemoveAt(0);
 
@@ -62,6 +67,16 @@ namespace Game.Sample.DispatchCall
         {
             self.messages.Clear();
             self.messages = null;
+        }
+
+        [GameEngine.MessageListenerBindingOfTarget(typeof(ActorChatResp))]
+        static void OnChatResp(this ChatComponent self, ActorChatResp message)
+        {
+            for (int n = 0; null != message.ChatList && n < message.ChatList.Count; ++n)
+            {
+                Debugger.Info("角色对象‘{%s}’收到聊天信息：{%s}", ((Soldier) self.Entity).GetComponent<IdentityComponent>().objectName, message.ChatList[n].Text);
+                self.AddChat(message.ChatList[n].Text);
+            }
         }
 
         public static void AddChat(this ChatComponent self, string text)

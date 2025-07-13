@@ -34,5 +34,7 @@ namespace Game.Sample.DispatchCall
     public class ChatComponent : GameEngine.CComponent
     {
         public IList<string> messages;
+
+        public float last_chat_time;
     }
 }

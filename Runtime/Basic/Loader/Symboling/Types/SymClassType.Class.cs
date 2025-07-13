@@ -25,10 +25,8 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Reflection;
 
 using SystemType = System.Type;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Symboling
 {
@@ -97,6 +95,10 @@ namespace GameEngine.Loader.Symboling
         /// 对象类包含的接口信息
         /// </summary>
         private IList<SystemType> _interfaceTypes;
+        /// <summary>
+        /// 对象类包含的切面行为类型信息
+        /// </summary>
+        private IList<AspectBehaviourType> _aspectBehaviourTypes;
 
         /// <summary>
         /// 对象类包含的字段信息
@@ -167,6 +169,7 @@ namespace GameEngine.Loader.Symboling
 
         public IList<SystemType> FeatureTypes => _featureTypes;
         public IList<SystemType> InterfaceTypes => _interfaceTypes;
+        public IList<AspectBehaviourType> AspectBehaviourTypes => _aspectBehaviourTypes;
 
         public IDictionary<string, SymField> Fields => _fields;
         public IDictionary<string, SymProperty> Properties => _properties;
@@ -178,6 +181,7 @@ namespace GameEngine.Loader.Symboling
         {
             RemoveAllFeatureTypes();
             RemoveAllInterfaceTypes();
+            RemoveAllAspectBehaviourTypes();
 
             RemoveAllFields();
             RemoveAllProperties();
@@ -341,6 +345,74 @@ namespace GameEngine.Loader.Symboling
         {
             _interfaceTypes?.Clear();
             _interfaceTypes = null;
+        }
+
+        #endregion
+
+        #region 类标记对象的切面行为列表相关访问接口函数
+
+        /// <summary>
+        /// 新增指定的切面行为类型到当前的类标记对象中
+        /// </summary>
+        /// <param name="aspectBehaviourType">切面行为类型</param>
+        public void AddAspectBehaviourType(AspectBehaviourType aspectBehaviourType)
+        {
+            if (null == _aspectBehaviourTypes)
+            {
+                _aspectBehaviourTypes = new List<AspectBehaviourType>();
+            }
+
+            if (_aspectBehaviourTypes.Contains(aspectBehaviourType))
+            {
+                Debugger.Warn("The symbol class '{%f}' aspect behaviour type '{%s}' was already exist, repeat added it failed.", _classType, aspectBehaviourType.ToString());
+                return;
+            }
+
+            _aspectBehaviourTypes.Add(aspectBehaviourType);
+        }
+
+        /// <summary>
+        /// 检测当前类标记中是否存在指定的切面行为类型
+        /// </summary>
+        /// <param name="aspectBehaviourType">切面行为类型</param>
+        /// <returns>若存在给定切面行为类型则返回true，否则返回false</returns>
+        public bool HasAspectBehaviourType(AspectBehaviourType aspectBehaviourType)
+        {
+            if (null == _aspectBehaviourTypes)
+            {
+                return false;
+            }
+
+            return _aspectBehaviourTypes.Contains(aspectBehaviourType);
+        }
+
+        /// <summary>
+        /// 从当前的类标记对象中移除指定的切面行为类型
+        /// </summary>
+        /// <param name="aspectBehaviourType">切面行为类型</param>
+        public void RemoveAspectBehaviourType(AspectBehaviourType aspectBehaviourType)
+        {
+            if (null == _aspectBehaviourTypes)
+            {
+                return;
+            }
+
+            if (false == _aspectBehaviourTypes.Contains(aspectBehaviourType))
+            {
+                Debugger.Warn("Could not found any aspect behaviour type '{%s}' from target symbol class '{%f}', removed it failed.", aspectBehaviourType.ToString(), _classType);
+                return;
+            }
+
+            _aspectBehaviourTypes.Remove(aspectBehaviourType);
+        }
+
+        /// <summary>
+        /// 从当前的类标记对象中移除所有切面行为类型
+        /// </summary>
+        private void RemoveAllAspectBehaviourTypes()
+        {
+            _aspectBehaviourTypes?.Clear();
+            _aspectBehaviourTypes = null;
         }
 
         #endregion

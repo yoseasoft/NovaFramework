@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -83,19 +84,33 @@ namespace GameEngine.Loader.Symboling
         /// 检测标记的属性列表中是否包含指定类型的属性实例
         /// </summary>
         /// <param name="attributeType">属性类型</param>
+        /// <param name="inherit">继承模式</param>
         /// <returns>若属性列表中存在给定类型的实例则返回true，否则返回false</returns>
-        public bool HasAttribute(SystemType attributeType)
+        public bool HasAttribute(SystemType attributeType, bool inherit = false)
         {
             if (null == _attributes)
             {
                 return false;
             }
 
-            for (int n = 0; n < _attributes.Count; ++n)
+            if (inherit)
             {
-                if (attributeType == _attributes[n].GetType())
+                for (int n = 0; n < _attributes.Count; ++n)
                 {
-                    return true;
+                    if (attributeType.IsAssignableFrom(_attributes[n].GetType()))
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                for (int n = 0; n < _attributes.Count; ++n)
+                {
+                    if (attributeType == _attributes[n].GetType())
+                    {
+                        return true;
+                    }
                 }
             }
 
@@ -152,20 +167,22 @@ namespace GameEngine.Loader.Symboling
         /// 通过指定的属性类型获取对应的属性对象实例
         /// </summary>
         /// <typeparam name="T">属性类型</typeparam>
+        /// <param name="inherit">继承模式</param>
         /// <returns>若类对象存在给定属性则返回其实例，否则返回null</returns>
-        public T GetAttribute<T>() where T : SystemAttribute
+        public T GetAttribute<T>(bool inherit = false) where T : SystemAttribute
         {
-            return GetAttribute(typeof(T)) as T;
+            return GetAttribute(typeof(T), inherit) as T;
         }
 
         /// <summary>
         /// 通过指定的属性类型获取对应的属性对象实例
         /// </summary>
         /// <param name="attributeType">属性类型</param>
+        /// <param name="inherit">继承模式</param>
         /// <returns>若类对象存在给定属性则返回其实例，否则返回null</returns>
-        public SystemAttribute GetAttribute(SystemType attributeType)
+        public SystemAttribute GetAttribute(SystemType attributeType, bool inherit = false)
         {
-            IList<SystemAttribute> attributes = GetAttributes(attributeType);
+            IList<SystemAttribute> attributes = GetAttributes(attributeType, inherit);
             if (null != attributes && attributes.Count > 0)
             {
                 return attributes[0];
@@ -178,18 +195,20 @@ namespace GameEngine.Loader.Symboling
         /// 通过指定的属性类型获取所有匹配该类型的属性对象实例
         /// </summary>
         /// <typeparam name="T">属性类型</typeparam>
+        /// <param name="inherit">继承模式</param>
         /// <returns>返回属性对象实例列表，若不存在则返回null</returns>
-        public IList<T> GetAttributes<T>() where T : SystemAttribute
+        public IList<T> GetAttributes<T>(bool inherit = false) where T : SystemAttribute
         {
-            return NovaEngine.Utility.Collection.CastAndToList<SystemAttribute, T>(GetAttributes(typeof(T)));
+            return NovaEngine.Utility.Collection.CastAndToList<SystemAttribute, T>(GetAttributes(typeof(T), inherit));
         }
 
         /// <summary>
         /// 通过指定的属性类型获取所有匹配该类型的属性对象实例
         /// </summary>
         /// <param name="attributeType">属性类型</param>
+        /// <param name="inherit">继承模式</param>
         /// <returns>返回属性对象实例列表，若不存在则返回null</returns>
-        public IList<SystemAttribute> GetAttributes(SystemType attributeType)
+        public IList<SystemAttribute> GetAttributes(SystemType attributeType, bool inherit = false)
         {
             if (null == _attributes || null == attributeType)
             {
@@ -197,17 +216,36 @@ namespace GameEngine.Loader.Symboling
             }
 
             IList<SystemAttribute> attributes = null;
-            for (int n = 0; n < _attributes.Count; ++n)
+            if (inherit)
             {
-                SystemAttribute attribute = _attributes[n];
-                if (attribute.GetType() == attributeType)
+                for (int n = 0; n < _attributes.Count; ++n)
                 {
-                    if (null == attributes)
+                    SystemAttribute attribute = _attributes[n];
+                    if (attributeType.IsAssignableFrom(attribute.GetType()))
                     {
-                        attributes = new List<SystemAttribute>();
-                    }
+                        if (null == attributes)
+                        {
+                            attributes = new List<SystemAttribute>();
+                        }
 
-                    attributes.Add(attribute);
+                        attributes.Add(attribute);
+                    }
+                }
+            }
+            else
+            {
+                for (int n = 0; n < _attributes.Count; ++n)
+                {
+                    SystemAttribute attribute = _attributes[n];
+                    if (attribute.GetType() == attributeType)
+                    {
+                        if (null == attributes)
+                        {
+                            attributes = new List<SystemAttribute>();
+                        }
+
+                        attributes.Add(attribute);
+                    }
                 }
             }
 
