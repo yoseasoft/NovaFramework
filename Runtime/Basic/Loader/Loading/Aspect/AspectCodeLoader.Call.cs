@@ -187,17 +187,24 @@ namespace GameEngine.Loader
             info.ClassType = symClass.ClassType;
 
             SystemType interruptedSource = null;
-            if (symClass.IsClass && false == symClass.IsAbstract)
+            if (symClass.IsClass)
             {
-                // 为对象类，且非抽象类或静态类
-                interruptedSource = symClass.ClassType;
+                if (symClass.IsStatic)
+                {
+                    interruptedSource = symClass.ExtensionTargetType;
+                }
+                else // 其实不太可能是实例类，因为切面服务都是在静态类中
+                {
+                    // 为对象类，且非抽象类或静态类
+                    interruptedSource = symClass.ClassType;
+                }
             }
 
-            AspectOfTargetAttribute aspectOfTargetAttr = symClass.GetAttribute<AspectOfTargetAttribute>(); ;
-            if (null != aspectOfTargetAttr)
-            {
-                interruptedSource = aspectOfTargetAttr.ClassType;
-            }
+            // 切面行为必有要有一个合法的目标对象，且该对象必须为IProto类型
+            Debugger.Assert(null != interruptedSource && typeof(IProto).IsAssignableFrom(interruptedSource), "Invalid aspect target instance.");
+
+            // AspectOfTargetAttribute aspectOfTargetAttr = symClass.GetAttribute<AspectOfTargetAttribute>(); ;
+            // if (null != aspectOfTargetAttr) { interruptedSource = aspectOfTargetAttr.ClassType; }
 
             IList<Symboling.SymMethod> symMethods = symClass.GetAllMethods();
             for (int n = 0; null != symMethods && n < symMethods.Count; ++n)
@@ -210,38 +217,19 @@ namespace GameEngine.Loader
                     continue;
                 }
 
-                AspectCallMethodTypeCodeInfo callMethodInfo = new AspectCallMethodTypeCodeInfo();
-
-                IList<SystemAttribute> attrs = symMethod.Attributes;
-                for (int m = 0; null != attrs && m < attrs.Count; ++m)
+                // 获取切面特性标签
+                OnAspectCallAttribute aspectCallAttribute = symMethod.GetAttribute<OnAspectCallAttribute>(true);
+                if (null == aspectCallAttribute)
                 {
-                    SystemAttribute attr = attrs[m];
-                    if (attr is OnAspectCallAttribute)
-                    {
-                        OnAspectCallAttribute _attr = (OnAspectCallAttribute) attr;
-
-                        callMethodInfo.TargetType = interruptedSource;
-                        callMethodInfo.MethodName = _attr.MethodName;
-                        callMethodInfo.AccessType = _attr.AccessType;
-                    }
-                    else if (attr is OnAspectCallOfTargetAttribute)
-                    {
-                        OnAspectCallOfTargetAttribute _attr = (OnAspectCallOfTargetAttribute) attr;
-
-                        callMethodInfo.TargetType = _attr.ClassType;
-                        callMethodInfo.MethodName = _attr.MethodName;
-                        callMethodInfo.AccessType = _attr.AccessType;
-                    }
-                }
-
-                // 当设置了全局的切面观察源后，函数不可再单独设置自己的观察目标
-                if (null != callMethodInfo.TargetType && null != interruptedSource && interruptedSource != callMethodInfo.TargetType)
-                {
-                    Debugger.Warn("The aspect call '{0}.{1}' interrupted source was setting repeatedly, added it failed.", symClass.FullName, symMethod.MethodName);
                     continue;
                 }
 
-                if (null == callMethodInfo.TargetType || string.IsNullOrEmpty(callMethodInfo.MethodName))
+                AspectCallMethodTypeCodeInfo callMethodInfo = new AspectCallMethodTypeCodeInfo();
+                callMethodInfo.TargetType = interruptedSource;
+                callMethodInfo.MethodName = aspectCallAttribute.MethodName;
+                callMethodInfo.AccessType = aspectCallAttribute.AccessType;
+
+                if (string.IsNullOrEmpty(callMethodInfo.MethodName))
                 {
                     // 未进行合法标识的函数忽略它
                     Debugger.Info(LogGroupTag.CodeLoader, "The aspect call '{0}.{1}' interrupted source and function names cannot be null, added it failed.",

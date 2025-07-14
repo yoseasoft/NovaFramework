@@ -28,7 +28,6 @@ namespace Game.Sample.ObjectLifecycle
     /// <summary>
     /// 主场景逻辑类
     /// </summary>
-    [GameEngine.AspectOfTarget(typeof(MainScene))]
     static class MainSceneSystem
     {
         [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Initialize)]

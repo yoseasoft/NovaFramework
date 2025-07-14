@@ -28,7 +28,6 @@ namespace Game.Sample.DispatchCall
     /// <summary>
     /// 攻击组件逻辑类
     /// </summary>
-    [GameEngine.AspectOfTarget(typeof(AttackComponent))]
     public static class AttackComponentSystem
     {
         [GameEngine.InputResponseBindingOfTarget((int) UnityEngine.KeyCode.K, GameEngine.InputOperationType.Released)]

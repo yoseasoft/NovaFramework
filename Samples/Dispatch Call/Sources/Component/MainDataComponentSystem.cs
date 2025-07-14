@@ -28,20 +28,19 @@ namespace Game.Sample.DispatchCall
     /// <summary>
     /// 主数据组件逻辑类
     /// </summary>
-    [GameEngine.Aspect]
     public static class MainDataComponentSystem
     {
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(MainDataComponent), GameEngine.AspectBehaviourType.Awake)]
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
         static void Awake(this MainDataComponent self)
         {
         }
 
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(MainDataComponent), GameEngine.AspectBehaviourType.Start)]
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
         static void Start(this MainDataComponent self)
         {
         }
 
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(MainDataComponent), GameEngine.AspectBehaviourType.Update)]
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Update)]
         static void Update(this MainDataComponent self)
         {
             for (int n = 0; null != self.monsters && n < self.monsters.Count; ++n)
@@ -58,7 +57,7 @@ namespace Game.Sample.DispatchCall
             }
         }
 
-        [GameEngine.OnAspectBeforeCallOfTarget(typeof(MainDataComponent), GameEngine.AspectBehaviourType.Destroy)]
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
         static void Destroy(this MainDataComponent self)
         {
         }

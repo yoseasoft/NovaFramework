@@ -28,7 +28,6 @@ namespace Game.Sample.DispatchCall
     /// <summary>
     /// 属性组件逻辑类
     /// </summary>
-    [GameEngine.AspectOfTarget(typeof(AttributeComponent))]
     public static class AttributeComponentSystem
     {
     }

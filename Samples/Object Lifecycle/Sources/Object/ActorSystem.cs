@@ -28,7 +28,6 @@ namespace Game.Sample.ObjectLifecycle
     /// <summary>
     /// 角色对象逻辑类
     /// </summary>
-    [GameEngine.AspectOfTarget(typeof(Actor))]
     public static class ActorSystem
     {
         [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Initialize)]

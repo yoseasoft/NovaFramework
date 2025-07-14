@@ -28,7 +28,6 @@ namespace Game.Sample.ObjectLifecycle
     /// <summary>
     /// 跳斩组件逻辑类
     /// </summary>
-    [GameEngine.AspectOfTarget(typeof(LeapAttackComponent))]
     public static class LeapAttackComponentSystem
     {
         [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Initialize)]

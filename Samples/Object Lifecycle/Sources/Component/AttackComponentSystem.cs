@@ -28,7 +28,6 @@ namespace Game.Sample.ObjectLifecycle
     /// <summary>
     /// 攻击组件逻辑类
     /// </summary>
-    [GameEngine.AspectOfTarget(typeof(AttackComponent))]
     public static class AttackComponentSystem
     {
         [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Initialize)]

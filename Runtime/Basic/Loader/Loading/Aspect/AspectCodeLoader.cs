@@ -179,11 +179,13 @@ namespace GameEngine.Loader
                 return IsAspectClassCallbackExist(filterType);
             }
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
-            for (int n = 0; null != attrs && n < attrs.Count; ++n)
+            // IList<SystemAttribute> attrs = symClass.Attributes;
+            IList<SystemType> attrTypes = symClass.FeatureTypes;
+            for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
-                if (IsAspectClassCallbackExist(attr.GetType()))
+                SystemType attrType = attrTypes[n];
+                // if (IsAspectClassCallbackExist(attr.GetType()))
+                if (IsAspectClassCallbackExist(attrType))
                 {
                     return true;
                 }
@@ -203,11 +205,13 @@ namespace GameEngine.Loader
         {
             SystemDelegate callback = null;
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
-            for (int n = 0; null != attrs && n < attrs.Count; ++n)
+            // IList<SystemAttribute> attrs = symClass.Attributes;
+            IList<SystemType> attrTypes = symClass.FeatureTypes;
+            for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
-                if (TryGetAspectClassCallbackForTargetContainer(attr.GetType(), out callback, _aspectClassLoadCallbacks))
+                SystemType attrType = attrTypes[n];
+                // if (TryGetAspectClassCallbackForTargetContainer(attr.GetType(), out callback, _aspectClassLoadCallbacks))
+                if (TryGetAspectClassCallbackForTargetContainer(attrType, out callback, _aspectClassLoadCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
                     Debugger.Assert(null != handler, "Invalid aspect class load handler.");
@@ -228,11 +232,13 @@ namespace GameEngine.Loader
         {
             SystemDelegate callback = null;
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
-            for (int n = 0; null != attrs && n < attrs.Count; ++n)
+            // IList<SystemAttribute> attrs = symClass.Attributes;
+            IList<SystemType> attrTypes = symClass.FeatureTypes;
+            for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
-                if (TryGetAspectClassCallbackForTargetContainer(attr.GetType(), out callback, _aspectCodeInfoLookupCallbacks))
+                SystemType attrType = attrTypes[n];
+                // if (TryGetAspectClassCallbackForTargetContainer(attr.GetType(), out callback, _aspectCodeInfoLookupCallbacks))
+                if (TryGetAspectClassCallbackForTargetContainer(attrType, out callback, _aspectCodeInfoLookupCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;
                     Debugger.Assert(null != handler, "Invalid aspect class lookup handler.");

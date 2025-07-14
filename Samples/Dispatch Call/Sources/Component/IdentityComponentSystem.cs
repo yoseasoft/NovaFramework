@@ -28,7 +28,6 @@ namespace Game.Sample.DispatchCall
     /// <summary>
     /// 身份组件逻辑类
     /// </summary>
-    [GameEngine.AspectOfTarget(typeof(IdentityComponent))]
     public static class IdentityComponentSystem
     {
     }

@@ -33,6 +33,6 @@ namespace Game.Sample
         /// <summary>
         /// 用于检测刷新接口中的日志输出的启用状态标识
         /// </summary>
-        public readonly static bool LoopOutputEnabled = false;
+        public readonly static bool LoopOutputEnabled = true;
     }
 }

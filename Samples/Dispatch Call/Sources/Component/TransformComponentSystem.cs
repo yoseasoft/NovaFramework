@@ -28,20 +28,19 @@ namespace Game.Sample.DispatchCall
     /// <summary>
     /// 变换组件逻辑类
     /// </summary>
-    [GameEngine.Aspect]
     public static class TransformComponentSystem
     {
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(TransformComponent), GameEngine.AspectBehaviourType.Awake)]
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
         static void Awake(this TransformComponent self)
         {
         }
 
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(TransformComponent), GameEngine.AspectBehaviourType.Start)]
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
         static void Start(this TransformComponent self)
         {
         }
 
-        [GameEngine.OnAspectBeforeCallOfTarget(typeof(TransformComponent), GameEngine.AspectBehaviourType.Destroy)]
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
         static void Destroy(this TransformComponent self)
         {
         }

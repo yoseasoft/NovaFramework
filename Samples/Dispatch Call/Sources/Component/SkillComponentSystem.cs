@@ -28,7 +28,6 @@ namespace Game.Sample.DispatchCall
     /// <summary>
     /// 技能组件逻辑类
     /// </summary>
-    [GameEngine.AspectOfTarget(typeof(SkillComponent))]
     public static class SkillComponentSystem
     {
         [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]

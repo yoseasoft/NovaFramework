@@ -28,7 +28,6 @@ namespace Game.Sample.DispatchCall
     /// <summary>
     /// 孵化组件逻辑类
     /// </summary>
-    [GameEngine.AspectOfTarget(typeof(SpawnComponent))]
     public static class SpawnComponentSystem
     {
     }
