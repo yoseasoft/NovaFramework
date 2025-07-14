@@ -28,20 +28,19 @@ namespace Game.Sample.SymbolParser
     /// <summary>
     /// 攻击组件逻辑类
     /// </summary>
-    [GameEngine.Aspect]
     public static class AttackComponentSystem
     {
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(AttackComponent), GameEngine.AspectBehaviourType.Awake)]
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
         static void Awake(this AttackComponent self)
         {
         }
 
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(AttackComponent), GameEngine.AspectBehaviourType.Start)]
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
         static void Start(this AttackComponent self)
         {
         }
 
-        [GameEngine.OnAspectBeforeCallOfTarget(typeof(AttackComponent), GameEngine.AspectBehaviourType.Destroy)]
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
         static void Destroy(this AttackComponent self)
         {
         }

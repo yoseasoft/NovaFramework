@@ -28,20 +28,19 @@ namespace Game.Sample.SymbolParser
     /// <summary>
     /// 战斗对象逻辑类
     /// </summary>
-    [GameEngine.Aspect]
     public static class SoldierSystem
     {
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(Soldier), GameEngine.AspectBehaviourType.Awake)]
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
         static void Awake(this Soldier self)
         {
         }
 
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(Soldier), GameEngine.AspectBehaviourType.Start)]
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
         static void Start(this Soldier self)
         {
         }
 
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(Soldier), GameEngine.AspectBehaviourType.Destroy)]
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
         static void Destroy(this Soldier self)
         {
         }

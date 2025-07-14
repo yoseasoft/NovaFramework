@@ -28,20 +28,19 @@ namespace Game.Sample.SymbolParser
     /// <summary>
     /// 玩家对象逻辑类
     /// </summary>
-    [GameEngine.Aspect]
     public static class PlayerSystem
     {
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(Player), GameEngine.AspectBehaviourType.Awake)]
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
         static void Awake(this Player self)
         {
         }
 
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(Player), GameEngine.AspectBehaviourType.Start)]
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
         static void Start(this Player self)
         {
         }
 
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(Player), GameEngine.AspectBehaviourType.Destroy)]
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
         static void Destroy(this Player self)
         {
         }

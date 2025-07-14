@@ -28,20 +28,19 @@ namespace Game.Sample.SymbolParser
     /// <summary>
     /// 移动组件逻辑类
     /// </summary>
-    [GameEngine.Aspect]
     public static class MoveComponentSystem
     {
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(MoveComponent), GameEngine.AspectBehaviourType.Awake)]
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
         static void Awake(this MoveComponent self)
         {
         }
 
-        [GameEngine.OnAspectAfterCallOfTarget(typeof(MoveComponent), GameEngine.AspectBehaviourType.Start)]
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
         static void Start(this MoveComponent self)
         {
         }
 
-        [GameEngine.OnAspectBeforeCallOfTarget(typeof(MoveComponent), GameEngine.AspectBehaviourType.Destroy)]
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
         static void Destroy(this MoveComponent self)
         {
         }
