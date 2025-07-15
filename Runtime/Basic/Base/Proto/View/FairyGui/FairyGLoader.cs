@@ -36,21 +36,21 @@ namespace GameEngine
         /// <summary>
         /// 等待显示的URL标识, 不能使用空字符串, 因为若代码真正赋空没办法知道, 但_waitLoadUrl还在, 就会误加载回去
         /// </summary>
-        private const string WaitLoadTag = "wait://";
+        private const string WaitingLoadTag = "wait://";
 
         /// <summary>
         /// 等待显示时加载的url
         /// </summary>
-        private string _waitLoadUrl;
+        private string _waitingLoadUrl;
 
         protected override void LoadExternal()
         {
             // 等待加载中, 不正式加载
-            if (url.Equals(WaitLoadTag))
+            if (url.Equals(WaitingLoadTag))
                 return;
 
             // 更换url时, 首先清空等待记录
-            _waitLoadUrl = null;
+            _waitingLoadUrl = null;
 
             // 每次设置url都重新添加监听, 以免放构造函数中途监听被清除掉(例如富文本图片回到池里面会清掉委托)
             onAddedToStage.Add(OnAddedToStage);
@@ -58,8 +58,8 @@ namespace GameEngine
 
             if (!onStage)
             {
-                _waitLoadUrl = url;
-                url = WaitLoadTag;
+                _waitingLoadUrl = url;
+                url = WaitingLoadTag;
                 return;
             }
 
@@ -67,12 +67,12 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 加载成功
+        /// 加载成功回调函数
         /// </summary>
         private void OnLoadSuccess(FairyGUI.NTexture nTexture, string textureUrl)
         {
             // 因为通常是异步的,所以加载完成后需要判断自身是否已销毁,url是否还相同
-            if (isDisposed || string.IsNullOrEmpty(url) || url.Equals(WaitLoadTag))
+            if (isDisposed || string.IsNullOrEmpty(url) || url.Equals(WaitingLoadTag))
                 return;
 
             string curUrl = url.Split(FairyGuiHelper.SplitSymbol)[0];
@@ -81,8 +81,8 @@ namespace GameEngine
 
             if (!onStage)
             {
-                _waitLoadUrl = url;
-                url = WaitLoadTag;
+                _waitingLoadUrl = url;
+                url = WaitingLoadTag;
                 return;
             }
 
@@ -90,12 +90,12 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 加载失败
+        /// 加载失败回调函数
         /// </summary>
         private void OnLoadFailed(string textureUrl)
         {
             // 因为通常是异步的,所以加载完成后需要判断自身是否已销毁,url是否还相同
-            if (isDisposed || string.IsNullOrEmpty(url) || url.Equals(WaitLoadTag))
+            if (isDisposed || string.IsNullOrEmpty(url) || url.Equals(WaitingLoadTag))
                 return;
 
             string curUrl = url.Split(FairyGuiHelper.SplitSymbol)[0];
@@ -116,18 +116,18 @@ namespace GameEngine
         /// </summary>
         private void OnAddedToStage(FairyGUI.EventContext _)
         {
-            if (string.IsNullOrEmpty(_waitLoadUrl))
+            if (string.IsNullOrEmpty(_waitingLoadUrl))
                 return;
 
             // 重新回到舞台时, url已被逻辑代码清空
             if (string.IsNullOrEmpty(url))
             {
-                _waitLoadUrl = null;
+                _waitingLoadUrl = null;
                 return;
             }
 
-            url = _waitLoadUrl;
-            _waitLoadUrl = null;
+            url = _waitingLoadUrl;
+            _waitingLoadUrl = null;
         }
 
         /// <summary>
@@ -139,8 +139,8 @@ namespace GameEngine
             if (string.IsNullOrEmpty(url) || url.StartsWith(FairyGUI.UIPackage.URL_PREFIX))
                 return;
 
-            _waitLoadUrl = url;
-            url = WaitLoadTag;
+            _waitingLoadUrl = url;
+            url = WaitingLoadTag;
         }
     }
 }

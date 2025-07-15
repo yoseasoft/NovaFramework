@@ -121,7 +121,7 @@ namespace GameEngine
         {
             if (_baseWindowLoaded != null)
             {
-                await _baseWindowLoaded.Task;
+                await _baseWindowLoaded.task;
             }
         }
 
@@ -147,8 +147,8 @@ namespace GameEngine
         public void RefreshWindowSize()
         {
             // 先还原默认设置
-            x = 0;
-            y = 0;
+            x = 0f;
+            y = 0f;
             MakeFullScreen();
 
             // 获取安全区参数, 若是编辑器下且有自定义安全区, 则使用自定义安全区
@@ -222,27 +222,27 @@ namespace GameEngine
     }
 
     /// <summary>
-    /// 窗口参数设置
+    /// 视图窗口设置参数的数据结构
     /// </summary>
     public struct WindowSettings
     {
         /// <summary>
-        /// 包名
+        /// 视图窗口的包名
         /// </summary>
         public string pkgName;
 
         /// <summary>
-        /// 组件名
+        /// 视图窗口的组件名
         /// </summary>
         public string comName;
 
         /// <summary>
-        /// 层级
+        /// 视图窗口的层级
         /// </summary>
         public int sortingOrder;
 
         /// <summary>
-        /// 是否全屏UI
+        /// 视图窗口的全屏状态标识
         /// </summary>
         public bool isFullScreen;
 
@@ -256,22 +256,22 @@ namespace GameEngine
     }
 
     /// <summary>
-    /// 窗口加载支持
+    /// 视图窗口加载操作管理对象类
     /// </summary>
     class BaseWindowLoaded : FairyIUISource
     {
         /// <summary>
-        /// 窗口
+        /// 视图窗口实例
         /// </summary>
         readonly BaseWindow _window;
 
         /// <summary>
-        /// 窗口参数设置
+        /// 视图窗口设置参数数据结构
         /// </summary>
         readonly WindowSettings _settings;
 
         /// <summary>
-        /// 加载回调
+        /// 视图窗口加载回调句柄
         /// </summary>
         FairyUILoadCallback _loadedCallback;
 
@@ -283,7 +283,15 @@ namespace GameEngine
         /// <summary>
         /// 异步任务(提供给await使用)
         /// </summary>
-        public UniTask Task => _taskCompletionSource.Task;
+        public UniTask task => _taskCompletionSource.Task;
+
+        public string fileName
+        {
+            get => _settings.pkgName;
+            set { }
+        }
+
+        public bool loaded { get; private set; }
 
         public BaseWindowLoaded(BaseWindow window, WindowSettings settings)
         {
@@ -307,7 +315,7 @@ namespace GameEngine
             }
             catch (System.Exception e)
             {
-                UnityEngine.Debug.LogError(e);
+                Debugger.Error(e);
                 if (_settings.isFullScreen)
                 {
                     FairyGRoot.inst.touchable = true;
@@ -315,8 +323,12 @@ namespace GameEngine
             }
         }
 
+        public void Cancel()
+        {
+        }
+
         /// <summary>
-        /// UI加载完成处理
+        /// UI加载完成处理回调函数
         /// </summary>
         void CreateObjectFinish(FairyGObject obj)
         {
@@ -342,18 +354,6 @@ namespace GameEngine
             _loadedCallback();
 
             _taskCompletionSource.TrySetResult();
-        }
-
-        public string fileName
-        {
-            get => _settings.pkgName;
-            set { }
-        }
-
-        public bool loaded { get; private set; }
-
-        public void Cancel()
-        {
         }
     }
 }

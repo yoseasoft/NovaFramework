@@ -90,8 +90,8 @@ namespace GameEngine
         {
             if (false == base.OnInitialize()) return false;
 
-            // 启动辅助工具类
-            FairyGuiHelper.Startup();
+            // 启动视图辅助工具类
+            GuiHelper.Startup();
 
             return true;
         }
@@ -107,8 +107,8 @@ namespace GameEngine
             // 清理视图类型注册列表
             UnregisterAllViewClasses();
 
-            // 关闭辅助工具类
-            FairyGuiHelper.Shutdown();
+            // 关闭视图辅助工具类
+            GuiHelper.Shutdown();
 
             base.OnCleanup();
         }
@@ -120,8 +120,8 @@ namespace GameEngine
         {
             base.OnUpdate();
 
-            // 刷新辅助工具类
-            FairyGuiHelper.Update();
+            // 刷新视图辅助工具类
+            GuiHelper.Update();
         }
 
         /// <summary>

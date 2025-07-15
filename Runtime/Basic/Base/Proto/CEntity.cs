@@ -820,9 +820,9 @@ namespace GameEngine
                 return null;
             }
 
-            if (IsOnUpdatingStatus())
+            if (IsOnWorkingStatus())
             {
-                Debugger.Error("The entity instance was updating now, cannot added any component at once.");
+                Debugger.Error("The entity instance was working now, cannot added any component at once.");
                 return null;
             }
 
@@ -1025,9 +1025,9 @@ namespace GameEngine
                 return;
             }
 
-            if (IsOnUpdatingStatus())
+            if (IsOnWorkingStatus())
             {
-                // Debugger.Warn("The entity instance was updating now, cannot removed any component at once.");
+                // Debugger.Warn("The entity instance was working now, cannot removed any component at once.");
                 ProtoController.Instance.RegProtoLifecycleNotification(AspectBehaviourType.Destroy, component);
                 return;
             }

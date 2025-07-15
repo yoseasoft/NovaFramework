@@ -273,7 +273,7 @@ namespace GameEngine
         /// 检测当前对象的生命周期是否处于刷新激活状态
         /// </summary>
         /// <returns>若对象处于给定生命周期状态则返回true，否则返回false</returns>
-        protected internal bool IsOnUpdatingStatus()
+        protected internal bool IsOnWorkingStatus()
         {
             return IsOnTargetLifecycle(LifecycleKeypointType.Work);
         }
