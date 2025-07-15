@@ -31,7 +31,7 @@ namespace GameEngine
     /// <summary>
     /// 对象池管理类，用于对场景上下文中使用的对象池提供通用的访问操作接口
     /// </summary>
-    public sealed partial class PoolController
+    internal sealed partial class PoolController
     {
         /// <summary>
         /// 托管对象处理回调管理模块的初始化函数

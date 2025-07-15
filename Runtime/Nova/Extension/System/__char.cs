@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
-/// GameEngine Framework
+/// NovaEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,50 +23,40 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
-using SystemType = System.Type;
-
-namespace GameEngine
+namespace NovaEngine
 {
     /// <summary>
-    /// 原型对象管理类，用于对场景上下文中的所有原型对象提供通用的访问操作接口
+    /// 为系统默认的字符数据类型提供扩展接口支持
     /// </summary>
-    internal sealed partial class ProtoController : BaseController<ProtoController>
+    public static class __char
     {
         /// <summary>
-        /// 原型管理对象初始化通知接口函数
+        /// 判断指定的字符是否为变量命名的有效字符<br/>
+        /// 变量命名的有效字符包括：英文字母，数字和下划线
         /// </summary>
-        protected override sealed void OnInitialize()
+        /// <param name="self">字符值</param>
+        /// <returns>若给定的字符值为变量命名的有效字符则返回true，否则返回false</returns>
+        public static bool IsValidCharForVariableNaming(this char self)
         {
-        }
+            // 数字字符
+            if (char.IsDigit(self))
+            {
+                return true;
+            }
 
-        /// <summary>
-        /// 原型管理对象清理通知接口函数
-        /// </summary>
-        protected override sealed void OnCleanup()
-        {
-        }
+            // 英文字符（包括大写和小写）
+            if (char.IsLetter(self))
+            {
+                return true;
+            }
 
-        /// <summary>
-        /// 原型管理对象刷新调度函数接口
-        /// </summary>
-        protected override sealed void OnUpdate()
-        {
-        }
+            // 下划线字符
+            if (Definition.CCharacter.Underline == self)
+            {
+                return true;
+            }
 
-        /// <summary>
-        /// 原型管理对象后置刷新调度函数接口
-        /// </summary>
-        protected override sealed void OnLateUpdate()
-        {
-        }
-
-        /// <summary>
-        /// 原型管理对象倾泻调度函数接口
-        /// </summary>
-        protected override void OnDump()
-        {
+            return false;
         }
     }
 }

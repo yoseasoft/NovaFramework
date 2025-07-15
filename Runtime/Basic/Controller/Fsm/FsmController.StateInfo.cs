@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@ namespace GameEngine
     /// <summary>
     /// 状态管理对象类，用于对场景上下文中的所有引用对象的状态进行集中管理及分发
     /// </summary>
-    public sealed partial class FsmController : BaseController<FsmController>
+    internal sealed partial class FsmController
     {
         /// <summary>
         /// 状态信息记录对象类，用于记录状态类的基础信息

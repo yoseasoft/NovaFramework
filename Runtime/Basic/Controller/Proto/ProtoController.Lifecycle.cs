@@ -38,7 +38,7 @@ namespace GameEngine
     /// <summary>
     /// 原型对象管理类，用于对场景上下文中的所有原型对象提供通用的访问操作接口
     /// </summary>
-    public sealed partial class ProtoController
+    internal sealed partial class ProtoController
     {
         /// <summary>
         /// 原型对象生命周期处理函数接口定义

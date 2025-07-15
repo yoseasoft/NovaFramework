@@ -37,7 +37,7 @@ namespace GameEngine
     /// <summary>
     /// 标准定义接口的控制器类，对整个程序所有标准定义函数进行统一的整合和管理
     /// </summary>
-    public sealed partial class ApiController : BaseController<ApiController>
+    internal sealed partial class ApiController : BaseController<ApiController>
     {
         /// <summary>
         /// 接口控制器对象初始化通知接口函数

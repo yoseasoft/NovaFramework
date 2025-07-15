@@ -31,7 +31,7 @@ namespace GameEngine
     /// <summary>
     /// 反射注入接口的控制器类，对整个程序所有反射注入函数进行统一的整合和管理
     /// </summary>
-    public sealed partial class InjectController : BaseController<InjectController>
+    internal sealed partial class InjectController : BaseController<InjectController>
     {
         /// <summary>
         /// 注入控制器对象初始化通知接口函数

@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -401,7 +402,7 @@ namespace GameEngine
 
         #endregion
 
-        #region 系统对象相关操作函数合集
+        #region 实体对象系统模块相关操作函数合集
 
         /// <summary>
         /// 添加指定的系统对象实例到当前句柄容器中
@@ -418,26 +419,28 @@ namespace GameEngine
 
             _systems.Add(system);
 
+            SystemType type = system.GetType();
+
             // 注册初始化回调接口
-            if (typeof(IInitializeSystem).IsAssignableFrom(system.GetType()))
+            if (typeof(IInitializeSystem).IsAssignableFrom(type))
             {
                 _initializeSystems.Add(system as IInitializeSystem);
             }
 
             // 注册清理回调接口
-            if (typeof(ICleanupSystem).IsAssignableFrom(system.GetType()))
+            if (typeof(ICleanupSystem).IsAssignableFrom(type))
             {
                 _cleanupSystems.Add(system as ICleanupSystem);
             }
 
             // 注册刷新回调接口
-            if (typeof(IUpdateSystem).IsAssignableFrom(system.GetType()))
+            if (typeof(IUpdateSystem).IsAssignableFrom(type))
             {
                 _updateSystems.Add(system as IUpdateSystem);
             }
 
             // 注册后置刷新回调接口
-            if (typeof(ILateUpdateSystem).IsAssignableFrom(system.GetType()))
+            if (typeof(ILateUpdateSystem).IsAssignableFrom(type))
             {
                 _lateUpdateSystems.Add(system as ILateUpdateSystem);
             }

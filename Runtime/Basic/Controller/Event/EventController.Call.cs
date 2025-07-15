@@ -37,7 +37,7 @@ namespace GameEngine
     /// <summary>
     /// 事件管理对象类，用于对场景上下文中的所有节点对象进行事件管理及分发
     /// </summary>
-    public partial class EventController
+    internal partial class EventController
     {
         /// <summary>
         /// 通过事件标识分发调度接口的数据结构容器

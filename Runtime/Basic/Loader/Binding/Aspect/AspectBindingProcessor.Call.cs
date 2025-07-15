@@ -33,7 +33,7 @@ namespace GameEngine
     /// <summary>
     /// 切面注入访问接口的控制器类，对整个程序所有切面访问函数进行统一的整合和管理
     /// </summary>
-    public partial class AspectController
+    internal partial class AspectController
     {
         /// <summary>
         /// 切面控制类型的代码注册回调函数

@@ -707,17 +707,17 @@ namespace GameEngine
         /// <summary>
         /// 检查缓存池计时器
         /// </summary>
-        static float s_checkPoolTimer;
+        static float _checkPoolTimer;
 
         /// <summary>
         /// NTexture小图片缓存池
         /// </summary>
-        static readonly Dictionary<string, NTexture> s_smallNTexturePool = new();
+        static readonly Dictionary<string, NTexture> _smallNTexturePool = new();
 
         /// <summary>
         /// NTexture大图片缓存池
         /// </summary>
-        static readonly Dictionary<string, NTexture> s_bigNTexturePool = new();
+        static readonly Dictionary<string, NTexture> _bigNTexturePool = new();
 
         /// <summary>
         /// 加载外部图片
@@ -729,11 +729,11 @@ namespace GameEngine
         {
             string[] args = param.Split(SplitSymbol);
             string url = args[0];
-            if (s_smallNTexturePool.TryGetValue(url, out NTexture smallTexture))
+            if (_smallNTexturePool.TryGetValue(url, out NTexture smallTexture))
             {
                 onSuccess?.Invoke(smallTexture, url);
             }
-            else if (s_bigNTexturePool.TryGetValue(url, out NTexture bigTexture))
+            else if (_bigNTexturePool.TryGetValue(url, out NTexture bigTexture))
             {
                 onSuccess?.Invoke(bigTexture, url);
             }
@@ -765,11 +765,11 @@ namespace GameEngine
                 NTexture texture;
                 if (UnityMathf.Max(texture2D.width, texture2D.height) <= ImgCriticalLength)
                 {
-                    s_smallNTexturePool.TryGetValue(url, out texture);
+                    _smallNTexturePool.TryGetValue(url, out texture);
                 }
                 else
                 {
-                    s_bigNTexturePool.TryGetValue(url, out texture);
+                    _bigNTexturePool.TryGetValue(url, out texture);
                 }
 
                 if (texture == null)
@@ -777,11 +777,11 @@ namespace GameEngine
                     texture = new NTexture(texture2D) { destroyMethod = DestroyMethod.Custom };
                     if (UnityMathf.Max(texture.width, texture.height) <= ImgCriticalLength)
                     {
-                        s_smallNTexturePool[url] = texture;
+                        _smallNTexturePool[url] = texture;
                     }
                     else
                     {
-                        s_bigNTexturePool[url] = texture;
+                        _bigNTexturePool[url] = texture;
                     }
                 }
                 else
@@ -802,20 +802,20 @@ namespace GameEngine
         /// </summary>
         static void CheckNTextureCache()
         {
-            s_checkPoolTimer += UnityTime.unscaledDeltaTime;
-            if (s_checkPoolTimer < CheckPoolTime)
+            _checkPoolTimer += UnityTime.unscaledDeltaTime;
+            if (_checkPoolTimer < CheckPoolTime)
             {
                 return;
             }
 
-            s_checkPoolTimer = 0;
+            _checkPoolTimer = 0;
 
             // 检查小图片缓存池
-            int poolCount = s_smallNTexturePool.Count;
+            int poolCount = _smallNTexturePool.Count;
             if (poolCount > MaxSmallPoolSize)
             {
                 List<string> removeList = null;
-                foreach (var item in s_smallNTexturePool)
+                foreach (var item in _smallNTexturePool)
                 {
                     if (item.Value.refCount > 0)
                     {
@@ -834,16 +834,16 @@ namespace GameEngine
 
                 for (int i = 0; i < (removeList?.Count ?? 0); i++)
                 {
-                    s_smallNTexturePool.Remove(removeList[i]);
+                    _smallNTexturePool.Remove(removeList[i]);
                 }
             }
 
             // 检查大图片缓存池
-            poolCount = s_bigNTexturePool.Count;
+            poolCount = _bigNTexturePool.Count;
             if (poolCount > MaxBigPoolSize)
             {
                 List<string> removeList = null;
-                foreach (var item in s_bigNTexturePool)
+                foreach (var item in _bigNTexturePool)
                 {
                     if (item.Value.refCount <= 0)
                     {
@@ -860,7 +860,7 @@ namespace GameEngine
 
                 for (int i = 0; i < (removeList?.Count ?? 0); i++)
                 {
-                    s_bigNTexturePool.Remove(removeList[i]);
+                    _bigNTexturePool.Remove(removeList[i]);
                 }
             }
         }
@@ -870,17 +870,17 @@ namespace GameEngine
         /// </summary>
         public static void ClearNTextureCachePool()
         {
-            foreach (var item in s_smallNTexturePool)
+            foreach (var item in _smallNTexturePool)
             {
                 item.Value.Dispose();
             }
-            s_smallNTexturePool.Clear();
+            _smallNTexturePool.Clear();
 
-            foreach (var item in s_bigNTexturePool)
+            foreach (var item in _bigNTexturePool)
             {
                 item.Value.Dispose();
             }
-            s_bigNTexturePool.Clear();
+            _bigNTexturePool.Clear();
         }
 
         #endregion

@@ -36,7 +36,7 @@ namespace GameEngine
     /// <summary>
     /// 切面访问接口的控制器类，对整个程序所有切面访问函数进行统一的整合和管理
     /// </summary>
-    public sealed partial class AspectController : BaseController<AspectController>
+    internal sealed partial class AspectController : BaseController<AspectController>
     {
         /// <summary>
         /// 切面标准调用函数的句柄定义

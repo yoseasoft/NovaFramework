@@ -29,7 +29,7 @@ namespace GameEngine
     /// <summary>
     /// 反射注入接口的控制器类，对整个程序所有反射注入函数进行统一的整合和管理
     /// </summary>
-    public partial class InjectController
+    internal partial class InjectController
     {
         /// <summary>
         /// 通过指定的类型获取Bean对象的实例<br/>

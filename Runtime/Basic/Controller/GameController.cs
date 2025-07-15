@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,52 +23,52 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
-using SystemType = System.Type;
-
 namespace GameEngine
 {
     /// <summary>
-    /// 状态管理对象类，用于对场景上下文中的所有引用对象的状态进行集中管理及分发
+    /// 游戏控制器对象类<br/>
+    /// 该类不负责任何实际业务的处理，仅是对所有实例化的控制器对外提供统一的访问接口<br/>
+    /// 由于控制器实例仅用于引擎内部管理使用，但某些情况下需提供部分接口供外部便捷使用<br/>
+    /// 基于这种情况，将所有需要给到外部访问的接口，由该对象类提供统一的转发调用
     /// </summary>
-    internal sealed partial class FsmController : BaseController<FsmController>
+    public static class GameController
     {
         /// <summary>
-        /// 状态管理初始化通知接口函数
+        /// 发送事件消息到事件管理器中等待派发
         /// </summary>
-        protected override void OnInitialize()
+        /// <param name="eventID">事件标识</param>
+        /// <param name="args">事件参数列表</param>
+        public static void Send(int eventID, params object[] args)
         {
-            // 初始化监听列表
+            EventController.Instance.Send(eventID, args);
         }
 
         /// <summary>
-        /// 状态管理清理通知接口函数
+        /// 发送事件消息到事件管理器中等待派发
         /// </summary>
-        protected override void OnCleanup()
+        /// <param name="arg">事件数据</param>
+        public static void Send<T>(T arg) where T : struct
         {
-            // 清理监听列表
+            EventController.Instance.Send<T>(arg);
         }
 
         /// <summary>
-        /// 状态管理刷新通知接口函数
+        /// 发送事件消息到事件管理器中并立即处理掉它
         /// </summary>
-        protected override sealed void OnUpdate()
+        /// <param name="eventID">事件标识</param>
+        /// <param name="args">事件参数列表</param>
+        public static void Fire(int eventID, params object[] args)
         {
+            EventController.Instance.Fire(eventID, args);
         }
 
         /// <summary>
-        /// 状态管理后置刷新通知接口函数
+        /// 发送事件消息到事件管理器中并立即处理掉它
         /// </summary>
-        protected override sealed void OnLateUpdate()
+        /// <param name="arg">事件数据</param>
+        public static void Fire<T>(T arg) where T : struct
         {
-        }
-
-        /// <summary>
-        /// 状态管理倾泻调度函数接口
-        /// </summary>
-        protected override void OnDump()
-        {
+            EventController.Instance.Fire<T>(arg);
         }
     }
 }
