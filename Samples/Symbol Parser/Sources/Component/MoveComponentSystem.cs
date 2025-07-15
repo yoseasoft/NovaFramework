@@ -30,17 +30,17 @@ namespace Game.Sample.SymbolParser
     /// </summary>
     public static class MoveComponentSystem
     {
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Awake)]
         static void Awake(this MoveComponent self)
         {
         }
 
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Start)]
         static void Start(this MoveComponent self)
         {
         }
 
-        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Destroy)]
         static void Destroy(this MoveComponent self)
         {
         }

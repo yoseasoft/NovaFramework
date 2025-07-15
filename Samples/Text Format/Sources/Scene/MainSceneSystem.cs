@@ -30,28 +30,28 @@ namespace Game.Sample.TextFormat
     /// </summary>
     static class MainSceneSystem
     {
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
-        static void AfterAwake(this MainScene self)
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Awake)]
+        static void Awake(this MainScene self)
         {
         }
 
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
-        static void AfterStart(this MainScene self)
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Start)]
+        static void Start(this MainScene self)
         {
         }
 
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Update)]
-        static void AfterUpdate(this MainScene self)
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Update)]
+        static void Update(this MainScene self)
         {
         }
 
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.LateUpdate)]
-        static void AfterLateUpdate(this MainScene self)
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.LateUpdate)]
+        static void LateUpdate(this MainScene self)
         {
         }
 
-        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
-        static void BeforeDestroy(this MainScene self)
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Destroy)]
+        static void Destroy(this MainScene self)
         {
         }
     }

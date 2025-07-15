@@ -33,18 +33,18 @@ namespace Game.Sample.DispatchCall
     /// </summary>
     public static class ChatComponentSystem
     {
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Awake)]
         static void Awake(this ChatComponent self)
         {
             self.messages = new List<string>();
         }
 
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Start)]
         static void Start(this ChatComponent self)
         {
         }
 
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Update)]
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Update)]
         static void Update(this ChatComponent self)
         {
             if (null != self.messages && self.messages.Count > 0)
@@ -62,7 +62,7 @@ namespace Game.Sample.DispatchCall
             }
         }
 
-        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Destroy)]
         static void Destroy(this ChatComponent self)
         {
             self.messages.Clear();

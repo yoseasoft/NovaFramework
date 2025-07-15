@@ -30,26 +30,26 @@ namespace Game.Sample.InversionOfControl
     /// </summary>
     static class MainSceneSystem
     {
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]
-        static void AfterAwake(this MainScene self)
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Awake)]
+        static void BeforeAwake(this MainScene self)
         {
             self.GetComponent<MainMapComponent>().player = GameEngine.ActorHandler.Instance.CreateActor<Player>();
 
-            GameEngine.Debugger.Info("目标场景实例{%t}后置唤醒完成！", self);
+            GameEngine.Debugger.Info("目标场景实例{%t}前置唤醒完成！", self);
         }
 
-        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Start)]
-        static void AfterStart(this MainScene self)
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Start)]
+        static void BeforeStart(this MainScene self)
         {
-            GameEngine.Debugger.Info("目标场景实例{%t}后置启动完成！", self);
+            GameEngine.Debugger.Info("目标场景实例{%t}前置启动完成！", self);
         }
 
-        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Destroy)]
-        static void BeforeDestroy(this MainScene self)
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Destroy)]
+        static void AfterDestroy(this MainScene self)
         {
             GameEngine.ActorHandler.Instance.DestroyActor(self.GetComponent<MainMapComponent>().player);
 
-            GameEngine.Debugger.Info("目标场景实例{%t}前置销毁完成！", self);
+            GameEngine.Debugger.Info("目标场景实例{%t}后置销毁完成！", self);
         }
     }
 }
