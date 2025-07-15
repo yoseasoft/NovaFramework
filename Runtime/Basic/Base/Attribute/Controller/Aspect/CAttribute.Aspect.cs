@@ -2,6 +2,8 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,25 +38,6 @@ namespace GameEngine
     public class AspectAttribute : SystemAttribute
     {
         public AspectAttribute() : base() { }
-    }
-
-    /// <summary>
-    /// 切面管理拦截的目标对象类的属性类型定义
-    /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public sealed class AspectOfTargetAttribute : AspectAttribute
-    {
-        /// <summary>
-        /// 匹配切点的目标对象类型
-        /// </summary>
-        private readonly SystemType _classType;
-
-        public SystemType ClassType => _classType;
-
-        public AspectOfTargetAttribute(SystemType classType) : base()
-        {
-            _classType = classType;
-        }
     }
 
     /// <summary>

@@ -2,6 +2,8 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -67,50 +69,6 @@ namespace GameEngine
     }
 
     /// <summary>
-    /// 针对特定类型的切面调用的属性类型定义
-    /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnAspectCallOfTargetAttribute : SystemAttribute
-    {
-        /// <summary>
-        /// 匹配切点的目标对象类型
-        /// </summary>
-        private readonly SystemType _classType;
-        /// <summary>
-        /// 定义切点的函数名称
-        /// </summary>
-        private readonly string _methodName;
-        /// <summary>
-        /// 定义切点的访问类型
-        /// </summary>
-        private readonly AspectAccessType _accessType;
-
-        public SystemType ClassType => _classType;
-        public string MethodName => _methodName;
-        public AspectAccessType AccessType => _accessType;
-
-        public OnAspectCallOfTargetAttribute(SystemType classType, string methodName, AspectAccessType accessType)
-        {
-            _classType = classType;
-            _methodName = methodName;
-            _accessType = accessType;
-        }
-
-        public OnAspectCallOfTargetAttribute(SystemType classType, AspectBehaviourType behaviourType, AspectAccessType accessType)
-        {
-            if (false == NovaEngine.Utility.Convertion.IsCorrectedEnumValue<AspectBehaviourType>((int) behaviourType))
-            {
-                Debugger.Error("Invalid aspect behaviour type ({0}).", behaviourType.ToString());
-                return;
-            }
-
-            _classType = classType;
-            _methodName = behaviourType.ToString();
-            _accessType = accessType;
-        }
-    }
-
-    /// <summary>
     /// 切面扩展调用的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
@@ -120,19 +78,6 @@ namespace GameEngine
         { }
 
         public OnAspectExtendCallAttribute(AspectBehaviourType behaviourType) : base(behaviourType, AspectAccessType.Extend)
-        { }
-    }
-
-    /// <summary>
-    /// 针对特定类型的切面扩展调用的属性类型定义
-    /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnAspectExtendCallOfTargetAttribute : OnAspectCallOfTargetAttribute
-    {
-        public OnAspectExtendCallOfTargetAttribute(SystemType classType, string methodName) : base(classType, methodName, AspectAccessType.Extend)
-        { }
-
-        public OnAspectExtendCallOfTargetAttribute(SystemType classType, AspectBehaviourType behaviourType) : base(classType, behaviourType, AspectAccessType.Extend)
         { }
     }
 
@@ -150,19 +95,6 @@ namespace GameEngine
     }
 
     /// <summary>
-    /// 针对特定类型的切面前置调用的属性类型定义
-    /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnAspectBeforeCallOfTargetAttribute : OnAspectCallOfTargetAttribute
-    {
-        public OnAspectBeforeCallOfTargetAttribute(SystemType classType, string methodName) : base(classType, methodName, AspectAccessType.Before)
-        { }
-
-        public OnAspectBeforeCallOfTargetAttribute(SystemType classType, AspectBehaviourType behaviourType) : base(classType, behaviourType, AspectAccessType.Before)
-        { }
-    }
-
-    /// <summary>
     /// 切面后置调用的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
@@ -172,19 +104,6 @@ namespace GameEngine
         { }
 
         public OnAspectAfterCallAttribute(AspectBehaviourType behaviourType) : base(behaviourType, AspectAccessType.After)
-        { }
-    }
-
-    /// <summary>
-    /// 针对特定类型的切面后置调用的属性类型定义
-    /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnAspectAfterCallOfTargetAttribute : OnAspectCallOfTargetAttribute
-    {
-        public OnAspectAfterCallOfTargetAttribute(SystemType classType, string methodName) : base(classType, methodName, AspectAccessType.After)
-        { }
-
-        public OnAspectAfterCallOfTargetAttribute(SystemType classType, AspectBehaviourType behaviourType) : base(classType, behaviourType, AspectAccessType.After)
         { }
     }
 
@@ -202,19 +121,6 @@ namespace GameEngine
     }
 
     /// <summary>
-    /// 针对特定类型的切面返回调用的属性类型定义
-    /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnAspectAfterReturningCallOfTargetAttribute : OnAspectCallOfTargetAttribute
-    {
-        public OnAspectAfterReturningCallOfTargetAttribute(SystemType classType, string methodName) : base(classType, methodName, AspectAccessType.AfterReturning)
-        { }
-
-        public OnAspectAfterReturningCallOfTargetAttribute(SystemType classType, AspectBehaviourType behaviourType) : base(classType, behaviourType, AspectAccessType.AfterReturning)
-        { }
-    }
-
-    /// <summary>
     /// 切面异常调用的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
@@ -228,19 +134,6 @@ namespace GameEngine
     }
 
     /// <summary>
-    /// 针对特定类型的切面异常调用的属性类型定义
-    /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnAspectAfterThrowingCallOfTargetAttribute : OnAspectCallOfTargetAttribute
-    {
-        public OnAspectAfterThrowingCallOfTargetAttribute(SystemType classType, string methodName) : base(classType, methodName, AspectAccessType.AfterThrowing)
-        { }
-
-        public OnAspectAfterThrowingCallOfTargetAttribute(SystemType classType, AspectBehaviourType behaviourType) : base(classType, behaviourType, AspectAccessType.AfterThrowing)
-        { }
-    }
-
-    /// <summary>
     /// 切面环绕调用的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
@@ -250,19 +143,6 @@ namespace GameEngine
         { }
 
         public OnAspectAroundCallAttribute(AspectBehaviourType behaviourType) : base(behaviourType, AspectAccessType.Around)
-        { }
-    }
-
-    /// <summary>
-    /// 针对特定类型的切面环绕调用的属性类型定义
-    /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnAspectAroundCallOfTargetAttribute : OnAspectCallOfTargetAttribute
-    {
-        public OnAspectAroundCallOfTargetAttribute(SystemType classType, string methodName) : base(classType, methodName, AspectAccessType.Around)
-        { }
-
-        public OnAspectAroundCallOfTargetAttribute(SystemType classType, AspectBehaviourType behaviourType) : base(classType, behaviourType, AspectAccessType.Around)
         { }
     }
 }

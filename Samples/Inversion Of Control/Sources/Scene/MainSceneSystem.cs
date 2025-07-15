@@ -28,7 +28,6 @@ namespace Game.Sample.InversionOfControl
     /// <summary>
     /// 主场景逻辑类
     /// </summary>
-    [GameEngine.AspectOfTarget(typeof(MainScene))]
     static class MainSceneSystem
     {
         [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Awake)]

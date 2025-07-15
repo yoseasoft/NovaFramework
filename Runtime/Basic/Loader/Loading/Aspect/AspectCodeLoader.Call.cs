@@ -186,26 +186,6 @@ namespace GameEngine.Loader
             AspectCallCodeInfo info = new AspectCallCodeInfo();
             info.ClassType = symClass.ClassType;
 
-            SystemType interruptedSource = null;
-            if (symClass.IsClass)
-            {
-                if (symClass.IsStatic)
-                {
-                    interruptedSource = symClass.ExtensionTargetType;
-                }
-                else // 其实不太可能是实例类，因为切面服务都是在静态类中
-                {
-                    // 为对象类，且非抽象类或静态类
-                    interruptedSource = symClass.ClassType;
-                }
-            }
-
-            // 切面行为必有要有一个合法的目标对象，且该对象必须为IProto类型
-            Debugger.Assert(null != interruptedSource && typeof(IProto).IsAssignableFrom(interruptedSource), "Invalid aspect target instance.");
-
-            // AspectOfTargetAttribute aspectOfTargetAttr = symClass.GetAttribute<AspectOfTargetAttribute>(); ;
-            // if (null != aspectOfTargetAttr) { interruptedSource = aspectOfTargetAttr.ClassType; }
-
             IList<Symboling.SymMethod> symMethods = symClass.GetAllMethods();
             for (int n = 0; null != symMethods && n < symMethods.Count; ++n)
             {
@@ -224,12 +204,22 @@ namespace GameEngine.Loader
                     continue;
                 }
 
+                SystemType interruptedSource = null;
+                if (symMethod.IsExtension)
+                {
+                    interruptedSource = symMethod.ExtensionParameterType;
+                }
+                else // 暂时考虑非扩展方法，但是第一个参数是服务对象类型的情况
+                {
+                    interruptedSource = symMethod.GetParameterType(0);
+                }
+
                 AspectCallMethodTypeCodeInfo callMethodInfo = new AspectCallMethodTypeCodeInfo();
                 callMethodInfo.TargetType = interruptedSource;
                 callMethodInfo.MethodName = aspectCallAttribute.MethodName;
                 callMethodInfo.AccessType = aspectCallAttribute.AccessType;
 
-                if (string.IsNullOrEmpty(callMethodInfo.MethodName))
+                if (null == callMethodInfo.TargetType || string.IsNullOrEmpty(callMethodInfo.MethodName))
                 {
                     // 未进行合法标识的函数忽略它
                     Debugger.Info(LogGroupTag.CodeLoader, "The aspect call '{0}.{1}' interrupted source and function names cannot be null, added it failed.",
