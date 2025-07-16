@@ -26,17 +26,64 @@
 namespace Game.Sample.PerformanceAnalysis
 {
     /// <summary>
-    /// 案例入口类
+    /// 通过系统原生object实现的属性组件类
     /// </summary>
-    public static class SampleGate
+    public class NativeAttributeComponent : object
     {
-        public static void Run()
+        public int level;
+
+        public static int attribute_lifecycle_count;
+
+        public void OnInitialize()
         {
-            GameEngine.SceneHandler.Instance.ReplaceScene<MainScene>();
+            attribute_lifecycle_count++;
         }
 
-        public static void Stop()
+        public void OnStartup()
         {
+            attribute_lifecycle_count++;
+        }
+
+        public void OnAwake()
+        {
+            attribute_lifecycle_count++;
+        }
+
+        public void OnStart()
+        {
+            attribute_lifecycle_count++;
+        }
+
+        public void OnDestroy()
+        {
+            attribute_lifecycle_count++;
+        }
+
+        public void OnShutdown()
+        {
+            attribute_lifecycle_count++;
+        }
+
+        public void OnCleanup()
+        {
+            attribute_lifecycle_count++;
+        }
+
+        public void OnUpdate()
+        {
+            level++;
+        }
+
+        public void OnLateUpdate()
+        {
+            level++;
+        }
+
+        public void Reset()
+        {
+            level = 0;
+
+            attribute_lifecycle_count = 0;
         }
     }
 }

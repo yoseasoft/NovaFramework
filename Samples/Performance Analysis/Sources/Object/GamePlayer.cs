@@ -26,17 +26,14 @@
 namespace Game.Sample.PerformanceAnalysis
 {
     /// <summary>
-    /// 案例入口类
+    /// 通过框架Proto实现的玩家对象类
     /// </summary>
-    public static class SampleGate
+    [GameEngine.DeclareActorClass("GamePlayer")]
+    [GameEngine.EntityActivationComponent(typeof(GameTransformComponent))]
+    public class GamePlayer : GameActor
     {
-        public static void Run()
-        {
-            GameEngine.SceneHandler.Instance.ReplaceScene<MainScene>();
-        }
+        public int player_count;
 
-        public static void Stop()
-        {
-        }
+        public static int player_lifecycle_count;
     }
 }

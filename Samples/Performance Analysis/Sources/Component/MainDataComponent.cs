@@ -23,20 +23,18 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Game.Sample.PerformanceAnalysis
 {
     /// <summary>
-    /// 案例入口类
+    /// 主场景数据组件类
     /// </summary>
-    public static class SampleGate
+    [GameEngine.DeclareComponentClass("MainDataComponent")]
+    public class MainDataComponent : GameEngine.CComponent
     {
-        public static void Run()
-        {
-            GameEngine.SceneHandler.Instance.ReplaceScene<MainScene>();
-        }
+        public IList<NativePlayer> native_players = null;
 
-        public static void Stop()
-        {
-        }
+        public IList<GamePlayer> game_players = null;
     }
 }

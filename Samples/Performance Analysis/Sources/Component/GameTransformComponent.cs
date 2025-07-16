@@ -26,17 +26,13 @@
 namespace Game.Sample.PerformanceAnalysis
 {
     /// <summary>
-    /// 案例入口类
+    /// 通过框架Proto实现的变换组件类
     /// </summary>
-    public static class SampleGate
+    [GameEngine.DeclareComponentClass("GameTransformComponent")]
+    public class GameTransformComponent : GameEngine.CComponent
     {
-        public static void Run()
-        {
-            GameEngine.SceneHandler.Instance.ReplaceScene<MainScene>();
-        }
+        public UnityEngine.Vector3 position;
 
-        public static void Stop()
-        {
-        }
+        public static int transform_lifecycle_count;
     }
 }

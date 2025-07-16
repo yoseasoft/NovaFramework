@@ -26,17 +26,13 @@
 namespace Game.Sample.PerformanceAnalysis
 {
     /// <summary>
-    /// 案例入口类
+    /// 通过框架Proto实现的属性组件类
     /// </summary>
-    public static class SampleGate
+    [GameEngine.DeclareComponentClass("GameAttributeComponent")]
+    public class GameAttributeComponent : GameEngine.CComponent
     {
-        public static void Run()
-        {
-            GameEngine.SceneHandler.Instance.ReplaceScene<MainScene>();
-        }
+        public int level;
 
-        public static void Stop()
-        {
-        }
+        public static int attribute_lifecycle_count;
     }
 }

@@ -26,17 +26,9 @@
 namespace Game.Sample.PerformanceAnalysis
 {
     /// <summary>
-    /// 案例入口类
+    /// 主场景数据组件逻辑类
     /// </summary>
-    public static class SampleGate
+    public static class MainDataComponentSystem
     {
-        public static void Run()
-        {
-            GameEngine.SceneHandler.Instance.ReplaceScene<MainScene>();
-        }
-
-        public static void Stop()
-        {
-        }
     }
 }

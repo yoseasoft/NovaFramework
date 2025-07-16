@@ -26,17 +26,11 @@
 namespace Game.Sample.PerformanceAnalysis
 {
     /// <summary>
-    /// 案例入口类
+    /// 主场景类
     /// </summary>
-    public static class SampleGate
+    [GameEngine.DeclareSceneClass("Main")]
+    [GameEngine.EntityActivationComponent(typeof(MainDataComponent))]
+    public class MainScene : GameEngine.CScene
     {
-        public static void Run()
-        {
-            GameEngine.SceneHandler.Instance.ReplaceScene<MainScene>();
-        }
-
-        public static void Stop()
-        {
-        }
     }
 }

@@ -26,17 +26,64 @@
 namespace Game.Sample.PerformanceAnalysis
 {
     /// <summary>
-    /// 案例入口类
+    /// 通过系统原生object实现的变换组件类
     /// </summary>
-    public static class SampleGate
+    public class NativeTransformComponent : object
     {
-        public static void Run()
+        public UnityEngine.Vector3 position;
+
+        public static int transform_lifecycle_count;
+
+        public void OnInitialize()
         {
-            GameEngine.SceneHandler.Instance.ReplaceScene<MainScene>();
+            transform_lifecycle_count++;
         }
 
-        public static void Stop()
+        public void OnStartup()
         {
+            transform_lifecycle_count++;
+        }
+
+        public void OnAwake()
+        {
+            transform_lifecycle_count++;
+        }
+
+        public void OnStart()
+        {
+            transform_lifecycle_count++;
+        }
+
+        public void OnDestroy()
+        {
+            transform_lifecycle_count++;
+        }
+
+        public void OnShutdown()
+        {
+            transform_lifecycle_count++;
+        }
+
+        public void OnCleanup()
+        {
+            transform_lifecycle_count++;
+        }
+
+        public void OnUpdate()
+        {
+            position = position + UnityEngine.Vector3.one;
+        }
+
+        public void OnLateUpdate()
+        {
+            position = position + UnityEngine.Vector3.one;
+        }
+
+        public void Reset()
+        {
+            position = UnityEngine.Vector3.zero;
+
+            transform_lifecycle_count = 0;
         }
     }
 }
