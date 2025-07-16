@@ -398,7 +398,7 @@ namespace GameEngine
 
             // 刷新状态时推到销毁队列中
             // if ( /* false == obj.IsOnSchedulingProcessForTargetLifecycle(CBase.LifecycleKeypointType.Start) || */ obj.IsOnUpdatingStatus())
-            if (actor.CurrentLifecycleScheduleRunning)
+            if (actor.CurrentLifecycleProcessRunning)
             {
                 actor.OnPrepareToDestroy();
                 return;

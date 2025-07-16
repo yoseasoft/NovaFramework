@@ -104,7 +104,7 @@ namespace GameEngine
         /// <summary>
         /// 对象当前生命周期的调度状态标识
         /// </summary>
-        private bool _currentLifecycleSchedulingStatus = false;
+        private bool _currentLifecycleProcessRunning = false;
 
         /// <summary>
         /// 获取对象当前生命周期的运行步骤
@@ -114,7 +114,7 @@ namespace GameEngine
         /// <summary>
         /// 获取对象当前生命周期的调度状态
         /// </summary>
-        public bool CurrentLifecycleScheduleRunning => _currentLifecycleSchedulingStatus;
+        public bool CurrentLifecycleProcessRunning => _currentLifecycleProcessRunning;
 
         /// <summary>
         /// 对象初始化函数接口
@@ -185,7 +185,7 @@ namespace GameEngine
         {
             Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleRunningStep, "Invalid current lifecycle value.");
 
-            if (_currentLifecycleRunningStep == lifecycleType && _currentLifecycleSchedulingStatus)
+            if (_currentLifecycleRunningStep == lifecycleType && _currentLifecycleProcessRunning)
             {
                 return true;
             }
@@ -202,7 +202,7 @@ namespace GameEngine
         {
             Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleRunningStep, "Invalid current lifecycle value.");
 
-            if (_currentLifecycleRunningStep == lifecycleType && false == _currentLifecycleSchedulingStatus)
+            if (_currentLifecycleRunningStep == lifecycleType && false == _currentLifecycleProcessRunning)
             {
                 return true;
             }
@@ -214,7 +214,7 @@ namespace GameEngine
                 {
                     return true;
                 }
-                else if (false == _currentLifecycleSchedulingStatus)
+                else if (false == _currentLifecycleProcessRunning)
                 {
                     return true;
                 }
@@ -473,7 +473,7 @@ namespace GameEngine
             // Debugger.Info("Changed object '{0}' lifecycle type from '{1}' to '{2}' with target method '{3}'.", obj.GetType().FullName, obj.m_currentLifecycleRunningStep, lifecycleType, methodName);
 
             obj._currentLifecycleRunningStep = lifecycleType;
-            obj._currentLifecycleSchedulingStatus = isBefore;
+            obj._currentLifecycleProcessRunning = isBefore;
         }
 
         /// <summary>
