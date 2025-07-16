@@ -33,13 +33,13 @@ namespace Game.Sample.DispatchCall
         [GameEngine.OnInputDispatchCall((int) UnityEngine.KeyCode.Alpha1, GameEngine.InputOperationType.Released)]
         static void OnPlayerDisplayInfoEventSend(int keycode, int operationType)
         {
-            GameEngine.GameController.Send(EventNotify.PlayerDisplayInfo, "疯狂星期四", 8080);
+            GameEngine.GameApi.Send(EventNotify.PlayerDisplayInfo, "疯狂星期四", 8080);
         }
 
         [GameEngine.OnInputDispatchCall((int) UnityEngine.KeyCode.Alpha2, GameEngine.InputOperationType.Released)]
         static void OnPlayerSearchAllEnemiesEventSend(int keycode, int operationType)
         {
-            GameEngine.GameController.Send(EventNotify.PlayerSearchAllEnemies);
+            GameEngine.GameApi.Send(EventNotify.PlayerSearchAllEnemies);
         }
 
         [GameEngine.OnInputDispatchCall((int) UnityEngine.KeyCode.Alpha3, GameEngine.InputOperationType.Released)]
@@ -55,7 +55,7 @@ namespace Game.Sample.DispatchCall
                     uid = monster.GetComponent<IdentityComponent>().objectID;
                 }
             }
-            GameEngine.GameController.Send(EventNotify.PlayerLockOneTarget, uid);
+            GameEngine.GameApi.Send(EventNotify.PlayerLockOneTarget, uid);
         }
 
         [GameEngine.OnInputDispatchCall((int) UnityEngine.KeyCode.Alpha4, GameEngine.InputOperationType.Released)]
@@ -63,13 +63,13 @@ namespace Game.Sample.DispatchCall
         {
             int exp = NovaEngine.Utility.Random.GetRandom(1000);
 
-            GameEngine.GameController.Send(EventNotify.PlayerUpgrade, exp);
+            GameEngine.GameApi.Send(EventNotify.PlayerUpgrade, exp);
         }
 
         [GameEngine.OnInputDispatchCall((int) UnityEngine.KeyCode.Alpha5, GameEngine.InputOperationType.Released)]
         static void OnPlayerChaseTargetEventSend(int keycode, int operationType)
         {
-            GameEngine.GameController.Send(EventNotify.PlayerChaseTarget);
+            GameEngine.GameApi.Send(EventNotify.PlayerChaseTarget);
         }
     }
 }

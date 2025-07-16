@@ -26,16 +26,27 @@
 namespace Game.Sample.DynamicInvokeGenerator
 {
     /// <summary>
-    /// 案例入口类
+    /// 主场景逻辑类
     /// </summary>
-    public static class SampleGate
+    static class MainSceneSystem
     {
-        public static void Run()
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Awake)]
+        static void OnAwake(this MainScene self)
         {
-            GameEngine.SceneHandler.Instance.ReplaceScene<MainScene>();
         }
 
-        public static void Stop()
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Start)]
+        static void OnStart(this MainScene self)
+        {
+        }
+
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Destroy)]
+        static void OnDestroy(this MainScene self)
+        {
+        }
+
+        [GameEngine.InputResponseBindingOfTarget((int) UnityEngine.KeyCode.A, GameEngine.InputOperationType.Released)]
+        static void OnSceneCaseRunningInputed(this MainScene self, int keycode, int operationType)
         {
         }
     }
