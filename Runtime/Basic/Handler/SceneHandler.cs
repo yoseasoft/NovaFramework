@@ -250,7 +250,7 @@ namespace GameEngine
         /// 将当前场景切换到指定名称的场景实例
         /// </summary>
         /// <param name="sceneName">场景名称</param>
-        /// <returns>返回改变的目标场景实例，否则切换场景失败返回null</returns>
+        /// <returns>返回改变的目标场景实例，若切换场景失败返回null</returns>
         public CScene ChangeScene(string sceneName)
         {
             SystemType sceneType;
@@ -266,7 +266,7 @@ namespace GameEngine
         /// 将当前场景切换到指定类型的场景实例
         /// </summary>
         /// <typeparam name="T">场景类型</typeparam>
-        /// <returns>返回改变的目标场景实例，否则切换场景失败返回null</returns>
+        /// <returns>返回改变的目标场景实例，若切换场景失败返回null</returns>
         public T ChangeScene<T>() where T : CScene
         {
             SystemType sceneType = typeof(T);
@@ -277,7 +277,7 @@ namespace GameEngine
         /// 将当前场景切换到指定类型的场景实例
         /// </summary>
         /// <param name="sceneType">场景类型</param>
-        /// <returns>返回改变的目标场景实例，否则切换场景失败返回null</returns>
+        /// <returns>返回改变的目标场景实例，若切换场景失败返回null</returns>
         public CScene ChangeScene(SystemType sceneType)
         {
             CScene scene = GetCurrentScene();

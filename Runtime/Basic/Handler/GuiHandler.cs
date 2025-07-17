@@ -27,8 +27,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Cysharp.Threading.Tasks;
-
 using SystemType = System.Type;
 
 namespace GameEngine
@@ -200,6 +198,7 @@ namespace GameEngine
                 return null;
             }
 
+            // 视图对象实例化
             return await OpenUI(viewType);
         }
 
@@ -276,7 +275,7 @@ namespace GameEngine
             // 唤醒视图对象
             CallEntityAwakeProcess(view);
 
-            await UniTask.WaitUntil(() => view.IsReady, cancellationToken : view.CancellationTokenSource.Token);
+            await Cysharp.Threading.Tasks.UniTask.WaitUntil(() => view.IsReady, cancellationToken : view.CancellationTokenSource.Token);
 
             view.ShowWindow();
 
@@ -286,15 +285,69 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 判断指定名称的视图是否处于打开状态
+        /// </summary>
+        /// <param name="viewName">视图名称</param>
+        /// <returns>若视图处于打开状态则返回true，否则返回false</returns>
+        public bool HasUI(string viewName)
+        {
+            SystemType viewType;
+            if (false == _viewClassTypes.TryGetValue(viewName, out viewType))
+            {
+                Debugger.Warn("Could not found any correct view class with target name '{0}', found view failed.", viewName);
+                return false;
+            }
+
+            return HasUI(viewType);
+        }
+
+        /// <summary>
         /// 判断指定类型的视图是否处于打开状态
         /// </summary>
+        /// <typeparam name="T">视图类型</typeparam>
+        /// <returns>若视图处于打开状态则返回true，否则返回false</returns>
         public bool HasUI<T>() where T : CView
         {
             return _views.OfType<T>().Any();
         }
 
         /// <summary>
-        /// 通过视图类型获取对应的视图对象实例
+        /// 判断指定类型的视图是否处于打开状态
+        /// </summary>
+        /// <param name="viewType">视图类型</param>
+        /// <returns>若视图处于打开状态则返回true，否则返回false</returns>
+        public bool HasUI(SystemType viewType)
+        {
+            foreach (CView view in _views)
+            {
+                if (view.GetType() == viewType)
+                {
+                    return view.IsReady;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 通过指定的视图名称获取对应的视图对象实例
+        /// </summary>
+        /// <param name="viewName">视图名称</param>
+        /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
+        public CView FindUI(string viewName)
+        {
+            SystemType viewType;
+            if (false == _viewClassTypes.TryGetValue(viewName, out viewType))
+            {
+                Debugger.Warn("Could not found any correct view class with target name '{0}', found view failed.", viewName);
+                return null;
+            }
+
+            return FindUI(viewType);
+        }
+
+        /// <summary>
+        /// 通过指定的视图类型获取对应的视图对象实例
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
@@ -307,7 +360,6 @@ namespace GameEngine
                 return null;
             }
 
-            // 视图对象实例化
             return FindUI(viewType) as T;
         }
 
@@ -336,11 +388,11 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 通过视图类型获取对应的视图对象实例
+        /// 通过指定的视图类型获取对应的视图对象实例
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
-        public async UniTask<T> FindUIAsync<T>() where T : CView
+        public async Cysharp.Threading.Tasks.UniTask<T> FindUIAsync<T>() where T : CView
         {
             SystemType viewType = typeof(T);
             if (false == _viewClassTypes.Values.Contains(viewType))
@@ -349,7 +401,6 @@ namespace GameEngine
                 return null;
             }
 
-            // 视图对象实例化
             return await FindUIAsync(viewType) as T;
         }
 
@@ -358,7 +409,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
-        public async UniTask<CView> FindUIAsync(SystemType viewType)
+        public async Cysharp.Threading.Tasks.UniTask<CView> FindUIAsync(SystemType viewType)
         {
             foreach (CView view in _views)
             {
@@ -369,7 +420,7 @@ namespace GameEngine
                         return view;
                     }
 
-                    await UniTask.WaitUntil(() => view.IsReady, cancellationToken: view.CancellationTokenSource.Token);
+                    await Cysharp.Threading.Tasks.UniTask.WaitUntil(() => view.IsReady, cancellationToken: view.CancellationTokenSource.Token);
                     return view;
                 }
             }
