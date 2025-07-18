@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Game.Sample.TextFormat
 {
     /// <summary>
@@ -33,10 +35,18 @@ namespace Game.Sample.TextFormat
         [GameEngine.OnInputDispatchCall(TaskCode_LogFormat, GameEngine.InputOperationType.Released)]
         static void TestLogFormat(int keycode, int operationType)
         {
-            int num = 10;
-            float num2 = 20f;
+            int num = 1976123159;
+            float num2 = 200101.5959337f;
             string str = "hello，中国";
-            Debugger.Log("测试整型值：{%d}，浮点数：{%d}，字符串：{%s}！", num, num2, str);
+            IDictionary<int, string> dict = new Dictionary<int, string>();
+            dict.Add(1, "good");
+            dict.Add(2, "pool");
+            dict.Add(3, "door");
+            dict.Add(4, "room");
+            dict.Add(5, "zoon");
+
+            string format = @"测试格式化参数，包括了整型{%d}，八进制{%o}，十六进制{%x}，浮点型{%f}，科学计数法{%e}，字符型{%c}，字符串型""{%s}""，指针型""{%p}""，对象类型{%t}，对象描述{{{%v}}}";
+            Debugger.Warn(NovaEngine.Formatter.TextFormatConvertionProcess(format, num, num, num, num2, num2, str, str, dict, dict, dict, num, num2, str, dict));
         }
     }
 }

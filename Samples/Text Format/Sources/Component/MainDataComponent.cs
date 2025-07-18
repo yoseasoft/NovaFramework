@@ -26,12 +26,11 @@
 namespace Game.Sample.TextFormat
 {
     /// <summary>
-    /// 操作任务接口类
+    /// 主场景数据组件类
     /// </summary>
-    static partial class OpsTask
+    [GameEngine.DeclareComponentClass("MainDataComponent")]
+    public class MainDataComponent : GameEngine.CComponent
     {
-        public const int TaskCode_LogFormat = (int) UnityEngine.KeyCode.Alpha1;
-        public const int TaskCode_DataCollection = (int) UnityEngine.KeyCode.Alpha2;
-        public const int TaskCode_ObjectInfo = (int) UnityEngine.KeyCode.Alpha3;
+        public Player player;
     }
 }

@@ -198,7 +198,7 @@ namespace GameEngine.Loader.Symboling
 
             if (_featureTypes.Contains(featureType))
             {
-                // Debugger.Warn("The symbol class '{%f}' feature type '{%f}' was already exist, repeat added it failed.", _classType, featureType);
+                // Debugger.Warn("The symbol class '{%t}' feature type '{%t}' was already exist, repeat added it failed.", _classType, featureType);
                 return;
             }
 
@@ -233,7 +233,7 @@ namespace GameEngine.Loader.Symboling
 
             if (false == _featureTypes.Contains(featureType))
             {
-                Debugger.Warn("Could not found any feature type '{%f}' from target symbol class '{%f}', removed it failed.", featureType, _classType);
+                Debugger.Warn("Could not found any feature type '{%t}' from target symbol class '{%t}', removed it failed.", featureType, _classType);
                 return;
             }
 
@@ -266,7 +266,7 @@ namespace GameEngine.Loader.Symboling
 
             if (_interfaceTypes.Contains(interfaceType))
             {
-                Debugger.Warn("The symbol class '{%f}' interface type '{%f}' was already exist, repeat added it failed.", _classType, interfaceType);
+                Debugger.Warn("The symbol class '{%t}' interface type '{%t}' was already exist, repeat added it failed.", _classType, interfaceType);
                 return;
             }
 
@@ -301,7 +301,7 @@ namespace GameEngine.Loader.Symboling
 
             if (false == _interfaceTypes.Contains(interfaceType))
             {
-                Debugger.Warn("Could not found any interface type '{%f}' from target symbol class '{%f}', removed it failed.", interfaceType, _classType);
+                Debugger.Warn("Could not found any interface type '{%t}' from target symbol class '{%t}', removed it failed.", interfaceType, _classType);
                 return;
             }
 
@@ -334,7 +334,7 @@ namespace GameEngine.Loader.Symboling
 
             if (_aspectBehaviourTypes.Contains(aspectBehaviourType))
             {
-                Debugger.Warn("The symbol class '{%f}' aspect behaviour type '{%s}' was already exist, repeat added it failed.", _classType, aspectBehaviourType.ToString());
+                Debugger.Warn("The symbol class '{%t}' aspect behaviour type '{%s}' was already exist, repeat added it failed.", _classType, aspectBehaviourType.ToString());
                 return;
             }
 
@@ -369,7 +369,7 @@ namespace GameEngine.Loader.Symboling
 
             if (false == _aspectBehaviourTypes.Contains(aspectBehaviourType))
             {
-                Debugger.Warn("Could not found any aspect behaviour type '{%s}' from target symbol class '{%f}', removed it failed.", aspectBehaviourType.ToString(), _classType);
+                Debugger.Warn("Could not found any aspect behaviour type '{%s}' from target symbol class '{%t}', removed it failed.", aspectBehaviourType.ToString(), _classType);
                 return;
             }
 

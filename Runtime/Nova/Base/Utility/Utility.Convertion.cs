@@ -194,7 +194,7 @@ namespace NovaEngine
                     return StringToDateTime(text);
                 }
 
-                Logger.Warn("Cannot convert string to target type '{%f}', getting value failed.", targetType);
+                Logger.Warn("Cannot convert string to target type '{%t}', getting value failed.", targetType);
                 return null;
             }
 

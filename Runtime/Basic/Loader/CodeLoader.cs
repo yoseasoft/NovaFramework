@@ -147,7 +147,7 @@ namespace GameEngine.Loader
                 // 过滤忽略加载的目标对象类型
                 if (false == IsLoadableClassType(type))
                 {
-                    // Debugger.Info(LogGroupTag.CodeLoader, "The class type '{%f}' was unloadable, ignore it with current loaded.", type);
+                    // Debugger.Info(LogGroupTag.CodeLoader, "The class type '{%t}' was unloadable, ignore it with current loaded.", type);
                     continue;
                 }
 
@@ -155,7 +155,7 @@ namespace GameEngine.Loader
                 // 先进行基础类型检测，过滤掉加载器本身就不支持的类
                 if (false == CallAssemblyLoadFiltingProcessor(assemblyName, type))
                 {
-                    // Debugger.Info(LogGroupTag.CodeLoader, "The class type '{%f}' was filtered out, ignore it with current loaded.", type);
+                    // Debugger.Info(LogGroupTag.CodeLoader, "The class type '{%t}' was filtered out, ignore it with current loaded.", type);
                     continue;
                 }
 
@@ -163,7 +163,7 @@ namespace GameEngine.Loader
                 // 加载对象类型的标记信息
                 if (null == symClass)
                 {
-                    Debugger.Warn("Load class symbole from target type '{%f}' failed.", type);
+                    Debugger.Warn("Load class symbole from target type '{%t}' failed.", type);
                     continue;
                 }
 

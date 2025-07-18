@@ -45,36 +45,36 @@ namespace GameEngine.Loader.Symboling
             sb.AppendFormat("ClassType={0},", NovaEngine.Utility.Text.ToString(targetObject.ClassType));
             sb.AppendFormat("BaseType={0},", NovaEngine.Utility.Text.ToString(targetObject.BaseType));
 
-            sb.AppendFormat("Attributes={{{0}}},", NovaEngine.Formatter.ToString<SystemAttribute>(targetObject.Attributes, (index, v) =>
+            sb.AppendFormat("Attributes={{{0}}},", NovaEngine.Utility.Text.ToString<SystemAttribute>(targetObject.Attributes, (index, v) =>
             {
                 return $"[{index}]={NovaEngine.Utility.Text.GetFullName(v)}";
             }));
-            sb.AppendFormat("FeatureTypes={{{0}}},", NovaEngine.Formatter.ToString<SystemType>(targetObject.FeatureTypes, (index, v) =>
+            sb.AppendFormat("FeatureTypes={{{0}}},", NovaEngine.Utility.Text.ToString<SystemType>(targetObject.FeatureTypes, (index, v) =>
             {
                 return $"[{index}]={NovaEngine.Utility.Text.GetFullName(v)}";
             }));
-            sb.AppendFormat("InterfaceTypes={{{0}}},", NovaEngine.Formatter.ToString<SystemType>(targetObject.InterfaceTypes, (index, v) =>
+            sb.AppendFormat("InterfaceTypes={{{0}}},", NovaEngine.Utility.Text.ToString<SystemType>(targetObject.InterfaceTypes, (index, v) =>
             {
                 return $"[{index}]={NovaEngine.Utility.Text.GetFullName(v)}";
             }));
-            sb.AppendFormat("AspectBehaviourTypes={{{0}}},", NovaEngine.Formatter.ToString<AspectBehaviourType>(targetObject.AspectBehaviourTypes, (index, v) =>
+            sb.AppendFormat("AspectBehaviourTypes={{{0}}},", NovaEngine.Utility.Text.ToString<AspectBehaviourType>(targetObject.AspectBehaviourTypes, (index, v) =>
             {
                 return $"[{index}]={v.ToString()}";
             }));
-            sb.AppendFormat("Fields={{{0}}},", NovaEngine.Formatter.ToString<string, SymField>(targetObject.Fields, (k, v) =>
+            sb.AppendFormat("Fields={{{0}}},", NovaEngine.Utility.Text.ToString<string, SymField>(targetObject.Fields, (k, v) =>
             {
                 return v.FieldName;
             }));
-            sb.AppendFormat("Properties={{{0}}},", NovaEngine.Formatter.ToString<string, SymProperty>(targetObject.Properties, (k, v) =>
+            sb.AppendFormat("Properties={{{0}}},", NovaEngine.Utility.Text.ToString<string, SymProperty>(targetObject.Properties, (k, v) =>
             {
                 return v.PropertyName;
             }));
-            sb.AppendFormat("Methods={{{0}}},", NovaEngine.Formatter.ToString<string, SymMethod>(targetObject.Methods, (k, v) =>
+            sb.AppendFormat("Methods={{{0}}},", NovaEngine.Utility.Text.ToString<string, SymMethod>(targetObject.Methods, (k, v) =>
             {
                 return v.MethodName;
             }));
 
-            sb.AppendFormat("Beans={{{0}}},", NovaEngine.Formatter.ToString<Bean>(targetObject.GetAllBeans(), (index, v) =>
+            sb.AppendFormat("Beans={{{0}}},", NovaEngine.Utility.Text.ToString<Bean>(targetObject.GetAllBeans(), (index, v) =>
             {
                 return ToString(v);
             }));
@@ -93,7 +93,7 @@ namespace GameEngine.Loader.Symboling
             //sb.AppendFormat("FieldType={0},", NovaEngine.Utility.Text.ToString(targetObject.FieldType));
             sb.AppendFormat("FieldInfo={0},", NovaEngine.Utility.Text.ToString(targetObject.FieldInfo));
 
-            sb.AppendFormat("Attributes={{{0}}},", NovaEngine.Formatter.ToString<SystemAttribute>(targetObject.Attributes, (index, v) =>
+            sb.AppendFormat("Attributes={{{0}}},", NovaEngine.Utility.Text.ToString<SystemAttribute>(targetObject.Attributes, (index, v) =>
             {
                 return $"[{index}]={NovaEngine.Utility.Text.GetFullName(v)}";
             }));
@@ -112,7 +112,7 @@ namespace GameEngine.Loader.Symboling
             //sb.AppendFormat("PropertyType={0},", NovaEngine.Utility.Text.ToString(targetObject.PropertyType));
             sb.AppendFormat("PropertyInfo={0},", NovaEngine.Utility.Text.ToString(targetObject.PropertyInfo));
 
-            sb.AppendFormat("Attributes={{{0}}},", NovaEngine.Formatter.ToString<SystemAttribute>(targetObject.Attributes, (index, v) =>
+            sb.AppendFormat("Attributes={{{0}}},", NovaEngine.Utility.Text.ToString<SystemAttribute>(targetObject.Attributes, (index, v) =>
             {
                 return $"[{index}]={NovaEngine.Utility.Text.GetFullName(v)}";
             }));
@@ -132,7 +132,7 @@ namespace GameEngine.Loader.Symboling
             //sb.AppendFormat("ReturnType={0},", NovaEngine.Utility.Text.ToString(targetObject.ReturnType));
             sb.AppendFormat("MethodInfo={0},", NovaEngine.Utility.Text.ToString(targetObject.MethodInfo));
 
-            sb.AppendFormat("Attributes={{{0}}},", NovaEngine.Formatter.ToString<SystemAttribute>(targetObject.Attributes, (index, v) =>
+            sb.AppendFormat("Attributes={{{0}}},", NovaEngine.Utility.Text.ToString<SystemAttribute>(targetObject.Attributes, (index, v) =>
             {
                 return $"[{index}]={NovaEngine.Utility.Text.GetFullName(v)}";
             }));
@@ -152,15 +152,15 @@ namespace GameEngine.Loader.Symboling
             sb.AppendFormat("Inherited={0},", targetObject.Inherited);
             sb.AppendFormat("FromConfigure={0},", targetObject.FromConfigure);
 
-            sb.AppendFormat("Fields={{{0}}},", NovaEngine.Formatter.ToString<string, BeanField>(targetObject.Fields, (k, v) =>
+            sb.AppendFormat("Fields={{{0}}},", NovaEngine.Utility.Text.ToString<string, BeanField>(targetObject.Fields, (k, v) =>
             {
                 return v.FieldName;
             }));
-            sb.AppendFormat("Properties={{{0}}},", NovaEngine.Formatter.ToString<string, BeanProperty>(targetObject.Properties, (k, v) =>
+            sb.AppendFormat("Properties={{{0}}},", NovaEngine.Utility.Text.ToString<string, BeanProperty>(targetObject.Properties, (k, v) =>
             {
                 return v.PropertyName;
             }));
-            sb.AppendFormat("Components={{{0}}},", NovaEngine.Formatter.ToString<BeanComponent>(targetObject.Components, (index, v) =>
+            sb.AppendFormat("Components={{{0}}},", NovaEngine.Utility.Text.ToString<BeanComponent>(targetObject.Components, (index, v) =>
             {
                 if (null != v.ReferenceClassType) return $"ClassType={NovaEngine.Utility.Text.GetFullName(v.ReferenceClassType)}";
                 else if (null != v.ReferenceBeanName) return $"BeanName={v.ReferenceBeanName}";

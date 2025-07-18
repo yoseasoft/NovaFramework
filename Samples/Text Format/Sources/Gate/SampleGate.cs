@@ -32,6 +32,7 @@ namespace Game.Sample.TextFormat
     {
         public static void Run()
         {
+            GameEngine.GameApi.ReplaceScene<MainScene>();
         }
 
         public static void Stop()

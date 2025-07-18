@@ -26,17 +26,30 @@
 namespace Game.Sample.TextFormat
 {
     /// <summary>
-    /// 操作任务接口类
+    /// 主场景数据组件逻辑类
     /// </summary>
-    static partial class OpsTask
+    static class MainDataComponentSystem
     {
-        [GameEngine.OnInputDispatchCall(TaskCode_ObjectInfo, GameEngine.InputOperationType.Released)]
-        static void TestObjectInfo(int keycode, int operationType)
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Awake)]
+        static void Awake(this MainDataComponent self)
         {
-            MainDataComponent mainDataComponent = GameEngine.GameApi.GetCurrentScene().GetComponent<MainDataComponent>();
-            Player player = mainDataComponent.player;
+            self.player = DataBuilder.CreatePlayer();
 
-            Debugger.Warn(NovaEngine.Formatter.TextFormatConvertionProcess("{%v}", player));
+            Debugger.Info("成功创建玩家对象实例！");
+        }
+
+        [GameEngine.OnAspectBeforeCall(GameEngine.AspectBehaviourType.Start)]
+        static void Start(this MainDataComponent self)
+        {
+        }
+
+        [GameEngine.OnAspectAfterCall(GameEngine.AspectBehaviourType.Destroy)]
+        static void Destroy(this MainDataComponent self)
+        {
+            GameEngine.GameApi.DestroyActor(self.player);
+            self.player = null;
+
+            Debugger.Info("成功销毁玩家对象实例！");
         }
     }
 }

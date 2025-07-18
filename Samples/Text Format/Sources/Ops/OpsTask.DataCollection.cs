@@ -52,8 +52,9 @@ namespace Game.Sample.TextFormat
             queue_int.Enqueue(2);
 
             IDictionary<System.Type, PlayerCardInfo> dict_pci = new Dictionary<System.Type, PlayerCardInfo>();
-            dict_pci.Add(typeof(System.NotImplementedException), new PlayerCardInfo() { card_id = 1, card_type = 12, card_name = "yuh" });
-            dict_pci.Add(typeof(GameEngine.CScene), new PlayerCardInfo() { card_id = 2, card_type = 25, card_name = "goo" });
+            dict_pci.Add(typeof(GameEngine.CScene), new PlayerCardInfo() { card_id = 1, card_type = 15, card_name = "yuh" });
+            dict_pci.Add(typeof(GameEngine.CActor), new PlayerCardInfo() { card_id = 2, card_type = 25, card_name = "goo" });
+            dict_pci.Add(typeof(GameEngine.CView), new PlayerCardInfo() { card_id = 3, card_type = 35, card_name = "bee" });
 
             Debugger.Warn(arr_int.GetType().FullName);
             Debugger.Warn(arr_sbi.GetType().FullName);
@@ -61,12 +62,11 @@ namespace Game.Sample.TextFormat
             Debugger.Warn(queue_int.GetType().FullName);
             Debugger.Warn(dict_pci.GetType().FullName);
 
-            Debugger.Warn("int[] data = {%s}", NovaEngine.Formatter.ToString(arr_int, (index, v) => { return v.ToString(); }));
-            Debugger.Warn("SoldierBlockInfo[] data = {%s}", NovaEngine.Formatter.ToString<SoldierBlockInfo>(arr_sbi, (index, v) => { return v.block_name; }));
-            Debugger.Warn("IList<int> data = {%s}", NovaEngine.Formatter.ToString(list_int, (index, v) => { return v.ToString(); }));
-            Debugger.Warn("Queue<int> data = {%s}", NovaEngine.Formatter.ToString(queue_int, (index, v) => { return v.ToString(); }));
-            Debugger.Warn("Dictionary<System.Type, PlayerCardInfo> data = {%s}", NovaEngine.Formatter.ToString(dict_pci, (k, v) => { return v.card_name; }));
-
+            Debugger.Warn("int[] data = {%s}", NovaEngine.Utility.Text.ToString(arr_int, (index, v) => { return v.ToString(); }));
+            Debugger.Warn("SoldierBlockInfo[] data = {%s}", NovaEngine.Utility.Text.ToString<SoldierBlockInfo>(arr_sbi, (index, v) => { return v.block_name; }));
+            Debugger.Warn("IList<int> data = {%s}", NovaEngine.Utility.Text.ToString(list_int, (index, v) => { return v.ToString(); }));
+            Debugger.Warn("Queue<int> data = {%s}", NovaEngine.Utility.Text.ToString(queue_int, (index, v) => { return v.ToString(); }));
+            Debugger.Warn("Dictionary<System.Type, PlayerCardInfo> data = {%s}", NovaEngine.Utility.Text.ToString(dict_pci, (k, v) => { return v.card_name; }));
         }
     }
 }

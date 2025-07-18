@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using SystemType = System.Type;
+
 namespace NovaEngine
 {
     /// <summary>
@@ -31,22 +33,40 @@ namespace NovaEngine
     public static partial class Formatter
     {
         /// <summary>
-        /// 格式化信息的绑定类型定义
+        /// 摘要模式的对象字符串信息输出接口函数
         /// </summary>
-        [System.Flags]
-        public enum BindingFlags
+        /// <param name="obj">对象实例</param>
+        /// <returns>返回对象实例的摘要字符串信息</returns>
+        private static string ToSummaryInfo(object obj)
         {
-            Default = 0,
-            AttributeInfo = 0x01,
-            InterfaceInfo = 0x02,
-            FieldInfo = 0x10,
-            PropertyInfo = 0x20,
-            MethodInfo = 0x40,
+            if (null == obj)
+            {
+                return Definition.CString.Null;
+            }
 
-            /// <summary>
-            /// 包含全部标识
-            /// </summary>
-            All = 0xffff,
+            SystemType classType = obj.GetType();
+
+            if (IsBasicDataType(classType))
+            {
+                return obj.ToString();
+            }
+
+            // 容器检测之所以要放在系统类检测的前面，就是因为容器也属于系统类中的一种
+            // 但也有部分自定义容器类，不属于系统类，所以没法放在系统类中统一进行检测
+            if (IsContainerObjectType(classType))
+            {
+                return GetContainerObjectInfo(obj, ToSummaryInfo);
+            }
+
+            if (IsCoreSystemObjectType(classType))
+            {
+                return GetCoreSystemObjectInfo(obj);
+            }
+
+            return GetCustomObjectInfo(obj, (element) =>
+            {
+                return element?.ToString();
+            });
         }
     }
 }

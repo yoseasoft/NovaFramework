@@ -143,7 +143,7 @@ namespace NovaEngine
         {
             if (false == typeof(NetworkService).IsAssignableFrom(serviceType))
             {
-                Debugger.Warn("The service type {%f} must be inherited from 'NetworkService' type.", serviceType);
+                Debugger.Warn("The service type '{%t}' must be inherited from 'NetworkService' type.", serviceType);
                 return;
             }
 

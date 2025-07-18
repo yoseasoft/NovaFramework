@@ -29,6 +29,7 @@ namespace Game.Sample.TextFormat
     /// 主场景类
     /// </summary>
     [GameEngine.DeclareSceneClass("Main")]
+    [GameEngine.EntityActivationComponent(typeof(MainDataComponent))]
     public class MainScene : GameEngine.CScene
     {
     }

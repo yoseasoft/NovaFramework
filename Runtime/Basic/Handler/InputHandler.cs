@@ -529,7 +529,7 @@ namespace GameEngine
         {
             InputCallInfo info = new InputCallInfo(fullname, targetType, inputCode, operationType, callback);
 
-            Debugger.Info(LogGroupTag.Module, "新增指定的按键编码‘{%d}’及操作类型‘{%d}’对应的输入响应监听事件，其响应接口函数来自于目标类型‘{%f}’的‘{%s}’函数。",
+            Debugger.Info(LogGroupTag.Module, "新增指定的按键编码‘{%d}’及操作类型‘{%d}’对应的输入响应监听事件，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     inputCode, operationType, targetType, fullname);
             if (_inputCodeDistributeCallInfos.ContainsKey(inputCode))
             {
@@ -555,7 +555,7 @@ namespace GameEngine
         {
             InputCallInfo info = new InputCallInfo(fullname, targetType, inputDataType, callback);
 
-            Debugger.Info(LogGroupTag.Module, "新增指定的按键编码的数据类型‘{%f}’对应的输入响应监听事件，其响应接口函数来自于目标类型‘{%f}’的‘{%s}’函数。",
+            Debugger.Info(LogGroupTag.Module, "新增指定的按键编码的数据类型‘{%t}’对应的输入响应监听事件，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     inputDataType, targetType, fullname);
             if (_inputDataDistributeCallInfos.ContainsKey(inputDataType))
             {
@@ -578,7 +578,7 @@ namespace GameEngine
         /// <param name="inputCode">按键编码</param>
         private void RemoveInputDistributeCallInfo(string fullname, SystemType targetType, int inputCode, int operationType)
         {
-            Debugger.Info(LogGroupTag.Module, "移除指定的按键编码‘{%d}’及操作类型‘{%d}’对应的全部输入响应监听事件，其响应接口函数来自于目标类型‘{%f}’的‘{%s}’函数。",
+            Debugger.Info(LogGroupTag.Module, "移除指定的按键编码‘{%d}’及操作类型‘{%d}’对应的全部输入响应监听事件，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     inputCode, operationType, targetType, fullname);
             if (false == _inputCodeDistributeCallInfos.ContainsKey(inputCode))
             {
@@ -607,7 +607,7 @@ namespace GameEngine
 
             if (!succ)
             {
-                Debugger.Warn(LogGroupTag.Module, "从目标对象类型‘{%f}’的‘{%s}’函数中无法检索到任何与指定的按键编码‘{%d}’匹配的输入响应分发接口，对给定编码的移除操作执行失败！",
+                Debugger.Warn(LogGroupTag.Module, "从目标对象类型‘{%t}’的‘{%s}’函数中无法检索到任何与指定的按键编码‘{%d}’匹配的输入响应分发接口，对给定编码的移除操作执行失败！",
                     targetType, fullname, inputCode);
             }
         }
@@ -620,11 +620,11 @@ namespace GameEngine
         /// <param name="inputDataType">输入数据类型</param>
         private void RemoveInputDistributeCallInfo(string fullname, SystemType targetType, SystemType inputDataType)
         {
-            Debugger.Info(LogGroupTag.Module, "移除指定的按键编码的数据类型‘{%f}’对应的全部输入响应监听事件，其响应接口函数来自于目标类型‘{%f}’的‘{%s}’函数。",
+            Debugger.Info(LogGroupTag.Module, "移除指定的按键编码的数据类型‘{%t}’对应的全部输入响应监听事件，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     inputDataType, targetType, fullname);
             if (false == _inputDataDistributeCallInfos.ContainsKey(inputDataType))
             {
-                Debugger.Warn(LogGroupTag.Module, "从当前的输入响应管理容器中无法找到任何与目标数据类型‘{%f}’匹配的响应登记信息，移除输入响应分发信息失败！", inputDataType);
+                Debugger.Warn(LogGroupTag.Module, "从当前的输入响应管理容器中无法找到任何与目标数据类型‘{%t}’匹配的响应登记信息，移除输入响应分发信息失败！", inputDataType);
                 return;
             }
 
@@ -649,7 +649,7 @@ namespace GameEngine
 
             if (!succ)
             {
-                Debugger.Warn(LogGroupTag.Module, "从目标对象类型‘{%f}’的‘{%s}’函数中无法检索到任何与指定的输入数据类型‘{%f}’匹配的输入响应分发接口，对给定类型的移除操作执行失败！",
+                Debugger.Warn(LogGroupTag.Module, "从目标对象类型‘{%t}’的‘{%s}’函数中无法检索到任何与指定的输入数据类型‘{%t}’匹配的输入响应分发接口，对给定类型的移除操作执行失败！",
                     targetType, fullname, inputDataType);
             }
         }

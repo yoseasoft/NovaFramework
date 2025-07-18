@@ -39,7 +39,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="obj">对象实例</param>
         /// <returns>返回格式化字符串信息</returns>
-        public delegate string FormatToStringCallback(object obj);
+        private delegate string FormatToStringCallback(object obj);
 
         /// <summary>
         /// 对象实例格式化字符串信息获取函数
@@ -77,12 +77,12 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 检测目标对象类型是否为核心系统库类型<br/>
-        /// 核心系统库包括基础的DotNet库及Unity系统库
+        /// 检测目标对象类型是否为系统库定义的对象类型<br/>
+        /// 系统库包括基础的DotNet库及Unity引擎库
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
-        /// <returns>若目标对象类型为核心系统库类型则返回true，否则返回false</returns>
-        private static bool IsCoreSystemLibraryType(SystemType targetType)
+        /// <returns>若目标对象类型为系统库定义对象类型则返回true，否则返回false</returns>
+        private static bool IsCoreSystemObjectType(SystemType targetType)
         {
             string ns = targetType.Namespace;
 
@@ -100,7 +100,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
         /// <returns>若目标对象类型为容器类型则返回true，否则返回false</returns>
-        private static bool IsContainerType(SystemType targetType)
+        private static bool IsContainerObjectType(SystemType targetType)
         {
             // 数组类型
             if (targetType.IsArray)
@@ -119,6 +119,13 @@ namespace NovaEngine
                 {
                     return true;
                 }
+            }
+
+            if (typeof(System.Collections.ICollection).IsAssignableFrom(targetType) ||
+                typeof(System.Collections.IList).IsAssignableFrom(targetType) ||
+                typeof(System.Collections.IDictionary).IsAssignableFrom(targetType))
+            {
+                return true;
             }
 
             return false;

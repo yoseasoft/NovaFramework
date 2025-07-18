@@ -295,7 +295,7 @@ namespace NovaEngine
                     // 非预定义属性类型，暂时放在全局环境中备用
                     if (null == value)
                     {
-                        Logger.Warn("The Environment property '{%s}' field type '{%f}' parse failed.", field.Name, field.FieldType);
+                        Logger.Warn("The Environment property '{%s}' field type '{%t}' parse failed.", field.Name, field.FieldType);
                         SetVariable(pair.Key, pair.Value);
                     }
                     else

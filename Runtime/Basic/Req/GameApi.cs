@@ -79,6 +79,15 @@ namespace GameEngine
         #region 场景业务相关的服务接口函数
 
         /// <summary>
+        /// 获取当前运行的场景实例
+        /// </summary>
+        /// <returns>返回当前运行的场景实例，若没有则返回null</returns>
+        public static CScene GetCurrentScene()
+        {
+            return SceneHandler.Instance.GetCurrentScene();
+        }
+
+        /// <summary>
         /// 根据指定的场景名称替换当前的场景实例
         /// </summary>
         /// <param name="sceneName">场景名称</param>
@@ -154,7 +163,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">角色类型</typeparam>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public static CActor CreateActor<T>() where T : CActor
+        public static T CreateActor<T>() where T : CActor
         {
             return ActorHandler.Instance.CreateActor<T>();
         }

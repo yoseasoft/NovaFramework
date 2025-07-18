@@ -265,7 +265,7 @@ namespace GameEngine
                 // 回收视图实例
                 ReleaseInstance(view);
 
-                Debugger.Throw("Open target ui {%f} failed", viewType);
+                Debugger.Throw("Open target ui {%t} failed", viewType);
                 return null;
             }
 

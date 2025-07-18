@@ -110,7 +110,7 @@ namespace GameEngine
                 NovaEngine.ISingleton.SingletonDestroyHandler controllerDestroyCallback = controllerDestroyMethod.CreateDelegate(typeof(NovaEngine.ISingleton.SingletonDestroyHandler)) as NovaEngine.ISingleton.SingletonDestroyHandler;
                 Debugger.Assert(null != controllerCreateCallback && null != controllerDestroyCallback, "Invalid method type.");
 
-                Debugger.Log(LogGroupTag.Controller, "Load controller type '{%f}' succeed.", controllerType);
+                Debugger.Log(LogGroupTag.Controller, "Load controller type '{%t}' succeed.", controllerType);
 
                 _controllerClassTypes.Add(enumType, controllerType);
                 _controllerCreateCallbacks.Add(enumType, controllerCreateCallback);
