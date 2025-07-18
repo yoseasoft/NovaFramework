@@ -29,18 +29,12 @@ using System.Collections.Generic;
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
 using SystemDelegate = System.Delegate;
-using SystemIntPtr = System.IntPtr;
 using SystemStringBuilder = System.Text.StringBuilder;
-using SystemRegex = System.Text.RegularExpressions.Regex;
-using SystemMatch = System.Text.RegularExpressions.Match;
-using SystemMatchCollection = System.Text.RegularExpressions.MatchCollection;
 using SystemFieldInfo = System.Reflection.FieldInfo;
 using SystemPropertyInfo = System.Reflection.PropertyInfo;
 using SystemMethodBase = System.Reflection.MethodBase;
 using SystemMethodInfo = System.Reflection.MethodInfo;
 using SystemParameterInfo = System.Reflection.ParameterInfo;
-using SystemGCHandle = System.Runtime.InteropServices.GCHandle;
-using SystemGCHandleType = System.Runtime.InteropServices.GCHandleType;
 
 namespace NovaEngine
 {
@@ -54,9 +48,6 @@ namespace NovaEngine
         /// </summary>
         public static class Text
         {
-            [System.ThreadStatic]
-            private static SystemStringBuilder _cachedStringBuilder = new SystemStringBuilder(4096);
-
             /// <summary>
             /// 使用指定的格式及参数获取对应的格式化字符串
             /// </summary>
@@ -65,7 +56,7 @@ namespace NovaEngine
             /// <returns>返回格式化后的字符串</returns>
             public static string Format(string format, params object[] args)
             {
-                return TextFormatConvertionProcess(format, args);
+                return Formatter.TextFormatConvertionProcess(format, args);
             }
 
             /// <summary>
@@ -82,360 +73,8 @@ namespace NovaEngine
                 }
 
                 buff.Length = 0;
-                buff.Append(TextFormatConvertionProcess(format, args));
+                buff.Append(Formatter.TextFormatConvertionProcess(format, args));
             }
-
-            #region 自定义格式化解析逻辑封装接口函数
-
-            /// <summary>
-            /// 文本格式的参数类型转换回调函数声明
-            /// </summary>
-            /// <param name="obj">目标参数</param>
-            /// <returns>返回转换后的参数对象实例</returns>
-            private delegate object TextFormatParameterConvertionCallback(object obj);
-
-            /// <summary>
-            /// 文本格式的参数类型分类的枚举定义
-            /// </summary>
-            private enum TextFormatParameterType
-            {
-                Unknown,
-                Digit,
-                String,
-                Object,
-                ObjectPtr,
-                ObjectType,
-                ObjectInfo,
-                ClassType,
-                Verbose,
-                Max,
-            }
-
-            /// <summary>
-            /// 文本格式转换的处理信息数据结构定义<br/>
-            /// 用于记录参数类型所对应的解析标识符和处理回调函数
-            /// </summary>
-            private struct TextFormatConvertionInfo
-            {
-                public TextFormatParameterType parameterType;
-                public string formatSymbol;
-                public TextFormatParameterConvertionCallback convertionCallback;
-            }
-
-            /// <summary>
-            /// 文本格式转换的参数默认分隔符
-            /// </summary>
-            private const string TEXT_FORMAT_CONVERTION_ARGUMENTS_SEPARATOR = "    ";
-
-            /// <summary>
-            /// 文本格式转换的处理信息对象集合
-            /// </summary>
-            private static TextFormatConvertionInfo[] _textFormatConvertionInfos = new TextFormatConvertionInfo[(int) TextFormatParameterType.Max]
-            {
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.Unknown,
-                                            formatSymbol = string.Empty,
-                                            convertionCallback = null,
-                                        },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.Digit,
-                                            formatSymbol = "d",
-                                            convertionCallback = _TextFormatConvertionCallback_BasicType,
-                                        },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.String,
-                                            formatSymbol = "s",
-                                            convertionCallback = _TextFormatConvertionCallback_BasicType,
-                                        },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.Object,
-                                            formatSymbol = "o",
-                                            convertionCallback = _TextFormatConvertionCallback_Object,
-                                        },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.ObjectPtr,
-                                            formatSymbol = "p",
-                                            convertionCallback = _TextFormatConvertionCallback_ObjectPtr,
-                                        },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.ObjectType,
-                                            formatSymbol = "t",
-                                            convertionCallback = _TextFormatConvertionCallback_ObjectType,
-                                        },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.ObjectInfo,
-                                            formatSymbol = "i",
-                                            convertionCallback = _TextFormatConvertionCallback_ObjectInfo,
-                                        },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.ClassType,
-                                            formatSymbol = "f",
-                                            convertionCallback = _TextFormatConvertionCallback_ClassType,
-                                        },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.Verbose,
-                                            formatSymbol = "v",
-                                            convertionCallback = _TextFormatConvertionCallback_Verbose,
-                                        },
-            };
-
-            /// <summary>
-            /// 通过指定的解析标识符，查找对应的格式转换参数类型
-            /// </summary>
-            /// <param name="symbolName">解析标识符</param>
-            /// <returns>返回格式转换的参数类型，若解析标识符非法，则返回Unknown类型</returns>
-            private static TextFormatParameterType GetTextFormatParameterTypeBySymbolName(string symbolName)
-            {
-                if (string.IsNullOrEmpty(symbolName))
-                {
-                    return TextFormatParameterType.Unknown;
-                }
-
-                // 转换为小写字符
-                symbolName = symbolName.ToLower();
-
-                for (int n = 0; n < _textFormatConvertionInfos.Length; ++n)
-                {
-                    if (symbolName.Equals(_textFormatConvertionInfos[n].formatSymbol))
-                    {
-                        return _textFormatConvertionInfos[n].parameterType;
-                    }
-                }
-
-                return TextFormatParameterType.Unknown;
-            }
-
-            /// <summary>
-            /// 对指定的格式文本及参数列表进行格式化处理的接口函数
-            /// </summary>
-            /// <param name="text">格式文本</param>
-            /// <param name="args">参数列表</param>
-            /// <returns>返回格式化处理后的文本字符串</returns>
-            /// <exception cref="CFrameworkException">格式文件解析异常</exception>
-            private static string TextFormatConvertionProcess(string text, params object[] args)
-            {
-                // 格式内容不能为空
-                if (string.IsNullOrEmpty(text))
-                {
-                    return string.Empty;
-                }
-
-                const string format_pattern = @"\{([^\{\}]+)\}";
-                // const string digit_pattern = @"(\d+)";
-
-                SystemMatchCollection matches = SystemRegex.Matches(text, format_pattern);
-
-                // 若没有需要转换的格式化参数，则直接返回文本内容
-                if (matches.Count <= 0)
-                {
-                    return text;
-                }
-
-                // 需要格式化的参数和实际传入的参数不一致
-                if (null == args || matches.Count > args.Length)
-                {
-                    throw new CFrameworkException("The arguments length '{0}' must be great than format parameter match count '{1}'.", args?.Length, matches?.Count);
-                }
-
-                object[] parameters = new object[args.Length];
-
-                SystemStringBuilder sb = new SystemStringBuilder();
-                int pos = 0;
-                int index = 0;
-                for (index = 0; index < matches.Count; ++index)
-                {
-                    SystemMatch match = matches[index];
-
-                    sb.Append(text.Substring(pos, match.Index - pos));
-                    pos = match.Index + match.Value.Length;
-
-                    // 大括号内为空
-                    if (match.Value.Length <= 2)
-                    {
-                        throw new CFrameworkException("Invalid format parameter type '{0}' within text context '{1}'.", match.Value, text);
-                    }
-
-                    string substr = match.Value.Substring(1, match.Value.Length - 2);
-                    // bool is_digit = SystemRegex.IsMatch(substr, digit_pattern);
-                    // 数字类型
-                    if (int.TryParse(substr, out int num_value))
-                    {
-                        if (num_value != index)
-                        {
-                            throw new CFrameworkException("The convertion index '{0}' doesnot match format location '{1}' within text context '{2}'.", num_value, index, text);
-                        }
-
-                        parameters[index] = args[index];
-
-                        sb.Append(match.Value);
-                        continue;
-                    }
-
-                    string symbol_name = null;
-                    if (substr.Length > 1 && Definition.CCharacter.Percent == substr[0])
-                    {
-                        symbol_name = substr.Substring(1);
-                    }
-
-                    TextFormatParameterType parameterType = GetTextFormatParameterTypeBySymbolName(symbol_name);
-                    if (TextFormatParameterType.Unknown == parameterType)
-                    {
-                        throw new CFrameworkException("Invalid format parameter type '{0}' within text \"{1}\" position '{2}'.", substr, text, match.Index);
-                    }
-
-                    TextFormatConvertionInfo convertionInfo = _textFormatConvertionInfos[(int) parameterType];
-                    parameters[index] = convertionInfo.convertionCallback(args[index]);
-
-                    sb.Append($"{{{index}}}");
-                }
-
-                // 将最后一个格式化参数之后的文本内容添加到队列中
-                if (text.Length > pos)
-                {
-                    sb.Append(text.Substring(pos));
-                }
-
-                // 传入的实际参数个数超过格式化匹配的参数个数，
-                // 则将多余参数以字符串形式追加至末尾输出
-                while (index < args.Length)
-                {
-                    sb.Append($"{TEXT_FORMAT_CONVERTION_ARGUMENTS_SEPARATOR}{{{index}}}");
-                    parameters[index] = args[index].ToString();
-                    index++;
-                }
-
-                // UnityEngine.Debug.LogWarning($"the convertion text content = \"{sb.ToString()}\" and arguments length = \"{parameters.Length}\".");
-
-                _cachedStringBuilder.Length = 0;
-                _cachedStringBuilder.AppendFormat(sb.ToString(), parameters);
-                return _cachedStringBuilder.ToString();
-            }
-
-            private static object _TextFormatConvertionCallback_BasicType(object obj)
-            {
-                // SystemType targetType = obj?.GetType();
-                // 基础类型仅包含数值类型
-                // if (null != targetType && targetType.IsPrimitive && targetType != typeof(bool) && targetType != typeof(char))
-
-                // 包含所有基础类型
-                // if (null == targetType || false == targetType.IsPrimitive) { return Definition.CString.Null; }
-
-                return obj;
-            }
-
-            private static object _TextFormatConvertionCallback_Object(object obj)
-            {
-                if (null == obj)
-                {
-                    return Definition.CString.Null;
-                }
-
-                return obj.ToString();
-            }
-
-            private static object _TextFormatConvertionCallback_ObjectPtr(object obj)
-            {
-                if (null == obj)
-                {
-                    return 0L;
-                }
-
-                // unsafe { fixed (object *p = &obj) { Console.WriteLine((long) p); } } // 输出对象的内存地址指针值
-
-                SystemGCHandle handle = SystemGCHandle.Alloc(obj, SystemGCHandleType.Pinned);
-                SystemIntPtr address = SystemGCHandle.ToIntPtr(handle);
-                handle.Free();
-
-                return address.ToInt64();
-            }
-
-            private static object _TextFormatConvertionCallback_ObjectType(object obj)
-            {
-                if (null == obj)
-                {
-                    return Definition.CString.Null;
-                }
-
-                // 处理类型对象的情况
-                if (obj is SystemType)
-                {
-                    return GetFullName(obj as SystemType);
-                }
-
-                // 处理普通对象的情况
-                return GetFullName(obj.GetType());
-            }
-
-            private static object _TextFormatConvertionCallback_ObjectInfo(object obj)
-            {
-                if (null == obj)
-                {
-                    return Definition.CString.Null;
-                }
-
-                return obj.ToString();
-            }
-
-            private static object _TextFormatConvertionCallback_ClassType(object obj)
-            {
-                if (null == obj)
-                {
-                    return Definition.CString.Null;
-                }
-
-                if (obj is SystemType targetType)
-                {
-                    return GetFullName(targetType);
-                }
-                else if (obj is SystemAttribute attribute)
-                {
-                    return GetFullName(attribute);
-                }
-                else if (obj is SystemFieldInfo fieldInfo)
-                {
-                    return GetFullName(fieldInfo);
-                }
-                else if (obj is SystemPropertyInfo propertyInfo)
-                {
-                    return GetFullName(propertyInfo);
-                }
-                else if (obj is SystemDelegate callback)
-                {
-                    return GetFullName(callback);
-                }
-                else if (obj is SystemMethodInfo methodInfo)
-                {
-                    return GetFullName(methodInfo);
-                }
-                else if (obj is SystemParameterInfo parameterInfo)
-                {
-                    return GetFullName(parameterInfo);
-                }
-
-                throw new CFrameworkException("Invalid format convertion class type '{%s}'.", GetFullName(obj.GetType()));
-            }
-
-            private static object _TextFormatConvertionCallback_Verbose(object obj)
-            {
-                if (null == obj)
-                {
-                    return Definition.CString.Null;
-                }
-
-                SystemType targetType = obj.GetType();
-                if (typeof(System.Collections.IList).IsAssignableFrom(targetType))
-                {
-                    return ToString(obj as System.Collections.IList);
-                }
-                else if (typeof(System.Collections.IDictionary).IsAssignableFrom(targetType))
-                {
-                    return ToString(obj as System.Collections.IDictionary);
-                }
-
-                throw new CFrameworkException("Invalid format convertion enumerable type '{%s}'.", GetFullName(obj.GetType()));
-            }
-
-            #endregion
 
             #region 对象的字符串输出封装接口函数
 
@@ -734,26 +373,183 @@ namespace NovaEngine
             /// <summary>
             /// 数组容器的字符串描述输出函数
             /// </summary>
+            /// <param name="array">数组容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回数组容器对应的字符串输出结果</returns>
+            public static string ToString(System.Array array, System.Func<int, object, string> callback = null)
+            {
+                if (null == array)
+                {
+                    return Definition.CString.Null;
+                }
+
+                SystemStringBuilder sb = new SystemStringBuilder();
+
+                int n = 0;
+                foreach (object item in array)
+                {
+                    if (n > 0) sb.Append(Definition.CCharacter.Comma);
+
+                    if (null == callback)
+                    {
+                        sb.AppendFormat("[{0}]={1}", n, item.ToString());
+                    }
+                    else
+                    {
+                        sb.Append(callback(n, item));
+                    }
+                    n++;
+                }
+
+                return sb.ToString();
+            }
+
+            /// <summary>
+            /// 数组容器的字符串描述输出函数
+            /// </summary>
             /// <typeparam name="T">容器内的元素类型</typeparam>
             /// <param name="array">数组容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
             /// <returns>返回数组容器对应的字符串输出结果</returns>
-            public static string ToString<T>(T[] array)
+            public static string ToString<T>(T[] array, System.Func<int, T, string> callback = null)
             {
+                if (null == array)
+                {
+                    return Definition.CString.Null;
+                }
+
                 // return "[" + string.Join(',', array) + "]";
                 SystemStringBuilder sb = new SystemStringBuilder();
 
-                if (null == array)
+                for (int n = 0; n < array.Length; ++n)
                 {
-                    sb.Append(Definition.CString.Null);
-                }
-                else
-                {
-                    for (int n = 0; n < array.Length; ++n)
-                    {
-                        if (n > 0) sb.Append(Definition.CCharacter.Comma);
+                    if (n > 0) sb.Append(Definition.CCharacter.Comma);
 
+                    if (null == callback)
+                    {
                         sb.AppendFormat("[{0}]={1}", n, array[n].ToString());
                     }
+                    else
+                    {
+                        sb.Append(callback(n, array[n]));
+                    }
+                }
+
+                return sb.ToString();
+            }
+
+            /// <summary>
+            /// 集合容器的字符串描述输出函数
+            /// </summary>
+            /// <param name="collection">集合容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回集合容器对应的字符串输出结果</returns>
+            public static string ToString(System.Collections.ICollection collection, System.Func<int, object, string> callback = null)
+            {
+                if (null == collection)
+                {
+                    return Definition.CString.Null;
+                }
+
+                SystemStringBuilder sb = new SystemStringBuilder();
+
+                int n = 0;
+                System.Collections.IEnumerator e = collection.GetEnumerator();
+                while (e.MoveNext())
+                {
+                    if (n > 0) sb.Append(Definition.CCharacter.Comma);
+
+                    if (null == callback)
+                    {
+                        if (e.Current is System.Collections.DictionaryEntry entry)
+                        {
+                            sb.AppendFormat("[{0}]={1}", entry.Key.ToString(), entry.Value.ToString());
+                        }
+                        else
+                        {
+                            sb.AppendFormat("[{0}]={1}", n, e.Current.ToString());
+                        }
+                    }
+                    else
+                    {
+                        sb.Append(callback(n, e.Current));
+                    }
+                    n++;
+                }
+
+                return sb.ToString();
+            }
+
+            /// <summary>
+            /// 集合容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">数据值类型</typeparam>
+            /// <param name="collection">集合容器对象实例</param>
+            /// <param name="callback">回调句柄</param>
+            /// <returns>返回集合容器对应的字符串输出结果</returns>
+            public static string ToString<T>(ICollection<T> collection, System.Func<int, T, string> callback)
+            {
+                if (null == collection)
+                {
+                    return Definition.CString.Null;
+                }
+
+                SystemStringBuilder sb = new SystemStringBuilder();
+
+                int n = 0;
+                IEnumerator<T> e = collection.GetEnumerator();
+                while (e.MoveNext())
+                {
+                    if (n > 0) sb.Append(Definition.CCharacter.Comma);
+
+                    if (null == callback)
+                    {
+                        sb.AppendFormat("[{0}]={1}", n, e.Current.ToString());
+                    }
+                    else
+                    {
+                        sb.Append(callback(n, e.Current));
+
+                    }
+                    n++;
+                }
+
+                return sb.ToString();
+            }
+
+            /// <summary>
+            /// 集合容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="K">数据键类型</typeparam>
+            /// <typeparam name="V">数据值类型</typeparam>
+            /// <param name="collection">集合容器对象实例</param>
+            /// <param name="callback">回调句柄</param>
+            /// <returns>返回集合容器对应的字符串输出结果</returns>
+            public static string ToString<K, V>(ICollection<KeyValuePair<K, V>> collection, System.Func<K, V, string> callback)
+            {
+                if (null == collection)
+                {
+                    return Definition.CString.Null;
+                }
+
+                SystemStringBuilder sb = new SystemStringBuilder();
+
+                int n = 0;
+                IEnumerator<KeyValuePair<K, V>> e = collection.GetEnumerator();
+                while (e.MoveNext())
+                {
+                    if (n > 0) sb.Append(Definition.CCharacter.Comma);
+
+                    if (null == callback)
+                    {
+                        sb.AppendFormat("[{0}]={1}", e.Current.Key.ToString(), e.Current.Value.ToString());
+                    }
+                    else
+                    {
+                        sb.Append(callback(e.Current.Key, e.Current.Value));
+
+                    }
+                    n++;
                 }
 
                 return sb.ToString();
@@ -763,27 +559,11 @@ namespace NovaEngine
             /// 列表容器的字符串描述输出函数
             /// </summary>
             /// <param name="list">列表容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
             /// <returns>返回列表容器对应的字符串输出结果</returns>
-            private static string ToString(System.Collections.IList list)
+            public static string ToString(System.Collections.IList list, System.Func<int, object, string> callback = null)
             {
-                // return "[" + string.Join(',', list) + "]";
-                SystemStringBuilder sb = new SystemStringBuilder();
-
-                if (null == list)
-                {
-                    sb.Append(Definition.CString.Null);
-                }
-                else
-                {
-                    for (int n = 0; n < list.Count; ++n)
-                    {
-                        if (n > 0) sb.Append(Definition.CCharacter.Comma);
-
-                        sb.AppendFormat("[{0}]={1}", n, list[n].ToString());
-                    }
-                }
-
-                return sb.ToString();
+                return ToString(list as System.Collections.ICollection, callback);
             }
 
             /// <summary>
@@ -791,59 +571,69 @@ namespace NovaEngine
             /// </summary>
             /// <typeparam name="T">容器内的元素类型</typeparam>
             /// <param name="list">列表容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
             /// <returns>返回列表容器对应的字符串输出结果</returns>
-            public static string ToString<T>(IList<T> list)
+            public static string ToString<T>(IList<T> list, System.Func<int, T, string> callback = null)
             {
-                return ToString(list as System.Collections.IList);
+                return ToString(list as ICollection<T>, callback);
             }
 
             /// <summary>
             /// 列表容器的字符串描述输出函数
             /// </summary>
             /// <param name="list">列表容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
             /// <returns>返回列表容器对应的字符串输出结果</returns>
-            public static string ToString(IList<int> list)
+            public static string ToString(IList<int> list, System.Func<int, int, string> callback = null)
             {
-                return ToString<int>(list);
+                return ToString<int>(list, callback);
             }
 
             /// <summary>
             /// 列表容器的字符串描述输出函数
             /// </summary>
             /// <param name="list">列表容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
             /// <returns>返回列表容器对应的字符串输出结果</returns>
-            public static string ToString(IList<string> list)
+            public static string ToString(IList<string> list, System.Func<int, string, string> callback = null)
             {
-                return ToString<string>(list);
+                return ToString<string>(list, callback);
             }
 
             /// <summary>
             /// 字典容器的字符串描述输出函数
             /// </summary>
             /// <param name="dictionary">字典容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
             /// <returns>返回字典容器对应的字符串输出结果</returns>
-            private static string ToString(System.Collections.IDictionary dictionary)
+            public static string ToString(System.Collections.IDictionary dictionary, System.Func<object, object, string> callback = null)
             {
-                SystemStringBuilder sb = new SystemStringBuilder();
-                if (null == dictionary || dictionary.Count <= 0)
+                if (null == callback)
                 {
-                    sb.Append(Definition.CString.Null);
+                    return ToString(dictionary as System.Collections.ICollection);
                 }
-                else
+
+                return ToString(dictionary as System.Collections.ICollection, (n, obj) =>
                 {
-                    System.Collections.IDictionaryEnumerator e = dictionary.GetEnumerator();
-                    int c = 0;
-                    while (e.MoveNext())
+                    if (obj is System.Collections.DictionaryEntry entry)
                     {
-                        if (c > 0) sb.Append(Definition.CCharacter.Comma);
-
-                        sb.AppendFormat("[{0}]={1}", e.Key.ToString(), e.Value.ToString());
-
-                        ++c;
+                        return callback(entry.Key, entry.Value);
                     }
-                }
 
-                return sb.ToString();
+                    SystemType targetType = obj.GetType();
+
+                    if (targetType.IsGenericType && typeof(KeyValuePair<,>) == targetType.GetGenericTypeDefinition())
+                    {
+                        SystemPropertyInfo getKeyPropertyInfo = targetType.GetProperty("Key");
+                        SystemPropertyInfo getValuePropertyInfo = targetType.GetProperty("Value");
+
+                        Logger.Assert(null != getKeyPropertyInfo && null != getValuePropertyInfo, "Invalid arguments.");
+                        return callback(getKeyPropertyInfo.GetValue(obj), getValuePropertyInfo.GetValue(obj));
+                    }
+
+                    Debugger.Warn("Resolve dictionary value type '{%s}' failed.", GetFullName(targetType));
+                    return callback(obj, obj);
+                });
             }
 
             /// <summary>
@@ -852,10 +642,11 @@ namespace NovaEngine
             /// <typeparam name="K">字典映射的键类型</typeparam>
             /// <typeparam name="V">字典映射的值类型</typeparam>
             /// <param name="dictionary">字典容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
             /// <returns>返回字典容器对应的字符串输出结果</returns>
-            public static string ToString<K, V>(IDictionary<K, V> dictionary)
+            public static string ToString<K, V>(IDictionary<K, V> dictionary, System.Func<K, V, string> callback = null)
             {
-                return ToString(dictionary as System.Collections.IDictionary);
+                return ToString(dictionary as ICollection<KeyValuePair<K, V>>, callback);
             }
 
             #endregion

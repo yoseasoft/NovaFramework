@@ -179,20 +179,27 @@ namespace NovaEngine
                     continue;
                 }
 
-                string symbol_name = null;
-                if (substr.Length > 1 && Definition.CCharacter.Percent == substr[0])
+                if (null == args[index])
                 {
-                    symbol_name = substr.Substring(1);
+                    parameters[index] = Definition.CString.Null;
                 }
-
-                TextFormatParameterType parameterType = GetTextFormatParameterTypeBySymbolName(symbol_name);
-                if (TextFormatParameterType.Unknown == parameterType)
+                else
                 {
-                    throw new CFrameworkException("Invalid format parameter type '{0}' within text \"{1}\" position '{2}'.", substr, text, match.Index);
-                }
+                    string symbol_name = null;
+                    if (substr.Length > 1 && Definition.CCharacter.Percent == substr[0])
+                    {
+                        symbol_name = substr.Substring(1);
+                    }
 
-                TextFormatConvertionInfo convertionInfo = _textFormatConvertionInfos[(int) parameterType];
-                parameters[index] = convertionInfo.convertionCallback(args[index]);
+                    TextFormatParameterType parameterType = GetTextFormatParameterTypeBySymbolName(symbol_name);
+                    if (TextFormatParameterType.Unknown == parameterType)
+                    {
+                        throw new CFrameworkException("Invalid format parameter type '{0}' within text \"{1}\" position '{2}'.", substr, text, match.Index);
+                    }
+
+                    TextFormatConvertionInfo convertionInfo = _textFormatConvertionInfos[(int) parameterType];
+                    parameters[index] = convertionInfo.convertionCallback(args[index]);
+                }
 
                 sb.Append($"{{{index}}}");
             }
