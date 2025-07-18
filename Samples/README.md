@@ -10,7 +10,7 @@
 - [Text Format](Text%20Format/README.md)
 - Symbol Parser
 - Inversion Of Control
-- Object Lifecycle
+- [Object Lifecycle](Object%20Lifecycle/README.md)
 - [Dispatch Call](Dispatch%20Call/README.md)
 - Dependency Inject
 - [Performance Analysis](Performance%20Analysis/README.md)
