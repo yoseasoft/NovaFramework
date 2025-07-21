@@ -1,21 +1,19 @@
 {
-    "name": "Game.Sample",
+    "name": "Nova.Import",
     "rootNamespace": "",
     "references": [
-        "Clib",
-        "Nova",
-        "Basic",
-        "Gimp",
-        "Protobuf",
-        "ProtoBuf.Extension"
+        "Nova.Engine",
+        "Nova.Basic"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": false,
-    "defineConstraints": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "GAME_COMPILE || UNITY_EDITOR"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }

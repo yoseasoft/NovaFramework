@@ -1,9 +1,14 @@
 {
-    "name": "Nova",
+    "name": "Nova.Basic",
     "rootNamespace": "",
     "references": [
         "AssetModule",
-        "UniTask"
+        "FairyGUI",
+        "Protobuf",
+        "ProtoBuf.Extension",
+        "UniTask",
+        "Nova.Library",
+        "Nova.Engine"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

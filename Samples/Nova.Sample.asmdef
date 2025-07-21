@@ -1,19 +1,21 @@
 {
-    "name": "Gimp",
+    "name": "Nova.Sample",
     "rootNamespace": "",
     "references": [
-        "Nova",
-        "Basic"
+        "Nova.Library",
+        "Nova.Engine",
+        "Nova.Basic",
+        "Nova.Import",
+        "Protobuf",
+        "ProtoBuf.Extension"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [
-        "GAME_COMPILE || UNITY_EDITOR"
-    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false
 }

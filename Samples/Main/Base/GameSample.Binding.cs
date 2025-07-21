@@ -34,7 +34,8 @@ namespace Game.Sample
         {
             SampleFiltingProcessor.AddSampleFilter(GameSampleRunningType);
 
-            RegAssemblyNames(typeof(GameSample).Namespace);
+            // RegAssemblyNames(typeof(GameSample).Namespace);
+            RegAssemblyNames("Nova.Sample");
 
             LoadAllAssemblies();
 

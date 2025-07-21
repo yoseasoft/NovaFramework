@@ -1,8 +1,3 @@
-
-using log4net.Core;
-using WebSocketSharp;
-
-
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework Samples
 ///
