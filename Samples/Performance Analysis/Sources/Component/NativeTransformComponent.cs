@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample.PerformanceAnalysis
+namespace GameEngine.Sample.PerformanceAnalysis
 {
     /// <summary>
     /// 通过系统原生object实现的变换组件类

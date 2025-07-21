@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample
+namespace GameEngine.Sample
 {
     /// <summary>
     /// 演示案例总控
@@ -35,7 +35,7 @@ namespace Game.Sample
             SampleFiltingProcessor.AddSampleFilter(GameSampleRunningType);
 
             // RegAssemblyNames(typeof(GameSample).Namespace);
-            RegAssemblyNames("Nova.Sample");
+            RegAssemblyNames(GameSampleMacros.AssemblyName);
 
             LoadAllAssemblies();
 

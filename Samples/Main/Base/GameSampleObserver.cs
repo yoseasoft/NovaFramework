@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample
+namespace GameEngine.Sample
 {
     /// <summary>
     /// 演示案例全局观察器类

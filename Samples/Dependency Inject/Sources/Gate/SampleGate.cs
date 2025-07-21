@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample.DependencyInject
+namespace GameEngine.Sample.DependencyInject
 {
     /// <summary>
     /// 案例入口类

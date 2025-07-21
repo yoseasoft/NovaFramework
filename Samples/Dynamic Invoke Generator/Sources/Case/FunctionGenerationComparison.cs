@@ -27,7 +27,7 @@ using System;
 using System.Reflection;
 using System.Linq.Expressions;
 
-namespace Game.Sample.DynamicInvokeGenerator
+namespace GameEngine.Sample.DynamicInvokeGenerator
 {
     /// <summary>
     /// 函数生成方式对比测试案例

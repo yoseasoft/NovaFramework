@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample.TextFormat
+namespace GameEngine.Sample.TextFormat
 {
     /// <summary>
     /// 属性组件类

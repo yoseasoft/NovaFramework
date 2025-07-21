@@ -26,7 +26,7 @@
 using System.Collections.Generic;
 using static Game.Sample.DispatchCall.SkillComponent;
 
-namespace Game.Sample.DispatchCall
+namespace GameEngine.Sample.DispatchCall
 {
     /// <summary>
     /// 聊天组件逻辑类

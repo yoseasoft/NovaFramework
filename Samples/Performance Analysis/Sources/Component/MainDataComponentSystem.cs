@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample.PerformanceAnalysis
+namespace GameEngine.Sample.PerformanceAnalysis
 {
     /// <summary>
     /// 主场景数据组件逻辑类
