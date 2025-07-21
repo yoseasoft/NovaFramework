@@ -24,7 +24,6 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using static Game.Sample.DispatchCall.SkillComponent;
 
 namespace GameEngine.Sample.DispatchCall
 {

@@ -68,20 +68,20 @@ namespace GameEngine
         /// <summary>
         /// 测试案例模块的对外关口名称
         /// </summary>
-        public const string GAME_SAMPLE_MODULE_EXTERNAL_GATEWAY_NAME = @"Game.Sample.GameSample";
+        public const string GAME_SAMPLE_MODULE_EXTERNAL_GATEWAY_NAME = @"GameEngine.Sample.GameSample";
 
         /// <summary>
         /// 业务远程服务调用的运行服务接口名称
         /// </summary>
-        public const string GAME_REMOTE_PROCESS_CALL_RUN_SERVICE_NAME = "Run";
+        public const string GAME_REMOTE_PROCESS_CALL_RUN_SERVICE_NAME = @"Run";
         /// <summary>
         /// 业务远程服务调用的停止服务接口名称
         /// </summary>
-        public const string GAME_REMOTE_PROCESS_CALL_STOP_SERVICE_NAME = "Stop";
+        public const string GAME_REMOTE_PROCESS_CALL_STOP_SERVICE_NAME = @"Stop";
         /// <summary>
         /// 业务远程服务调用的重载服务接口名称
         /// </summary>
-        public const string GAME_REMOTE_PROCESS_CALL_RELOAD_SERVICE_NAME = "Reload";
+        public const string GAME_REMOTE_PROCESS_CALL_RELOAD_SERVICE_NAME = @"Reload";
 
         #endregion
     }
