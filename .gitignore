@@ -5,6 +5,7 @@
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
+/[Bb]in/
 /[Bb]uild/
 /[Bb]uilds/
 /[Ll]ogs/
@@ -16,6 +17,8 @@
 
 # Visual Studio cache directory
 .vs/
+.idea/
+.vscode/
 
 # Gradle cache directory
 .gradle/
@@ -46,6 +49,14 @@ ExportedObj/
 
 # Unity3D generated file on crash reports
 sysinfo.txt
+
+# Excel temporary files
+~$*.xlsx
+~$*.xlsx.meta
+
+# OS files
+.DS_Store
+Thumbs.db
 
 # Builds
 *.apk
