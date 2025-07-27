@@ -8,6 +8,19 @@
     "keywords": ["NovaEngine", "Game"],
     "author": {
         "name": "hurley",
-        "email": "yoseasoft@163.com"
-    }
+        "email": "yoseasoft@163.com",
+        "url": "https://github.com/yoseasoft/NovaFramework"
+    },
+    "samples": [
+        {
+            "displayName": "Text Format",
+            "description": "Formatter utility sample, Include logger format, file encrypt, datastream convert.",
+            "path": "Samples/Text Format"
+        },
+        {
+            "displayName": "Symbol Parser",
+            "description": "Class resolving sample, Include entity and system class.",
+            "path": "Samples/Symbol Parser"
+        }
+    ]
 }
