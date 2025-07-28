@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Sample.SymbolParser
+namespace Game.Sample.SymbolParser
 {
     /// <summary>
     /// 玩家对象基类

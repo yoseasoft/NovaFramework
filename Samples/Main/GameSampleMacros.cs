@@ -23,18 +23,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Sample
+namespace Game.Sample
 {
     /// <summary>
     /// 演示案例全局宏定义
     /// </summary>
     internal static class GameSampleMacros
     {
-        /// <summary>
-        /// 示例程序集名称
-        /// </summary>
-        internal const string AssemblyName = "Nova.Sample";
-
         /// <summary>
         /// 用于检测刷新接口中的日志输出的启用状态标识
         /// </summary>

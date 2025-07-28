@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Sample.DispatchCall
+namespace Game.Sample.DispatchCall
 {
     /// <summary>
     /// 身份组件类

@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Sample
+namespace Game.Sample
 {
     /// <summary>
     /// 演示案例总控
@@ -34,8 +34,7 @@ namespace GameEngine.Sample
         {
             SampleFiltingProcessor.AddSampleFilter(GameSampleRunningType);
 
-            // RegAssemblyNames(typeof(GameSample).Namespace);
-            RegAssemblyNames(GameSampleMacros.AssemblyName);
+            RegAssemblyNames(typeof(GameSample).Namespace);
 
             LoadAllAssemblies();
 

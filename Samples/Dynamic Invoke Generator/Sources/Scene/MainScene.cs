@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Sample.DynamicInvokeGenerator
+namespace Game.Sample.DynamicInvokeGenerator
 {
     /// <summary>
     /// 主场景类

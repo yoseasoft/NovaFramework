@@ -25,7 +25,7 @@
 
 using System.Collections.Generic;
 
-namespace GameEngine.Sample.PerformanceAnalysis
+namespace Game.Sample.PerformanceAnalysis
 {
     /// <summary>
     /// 主场景数据组件类

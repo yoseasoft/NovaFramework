@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Sample.TextFormat
+namespace Game.Sample.TextFormat
 {
     /// <summary>
     /// 操作任务接口类

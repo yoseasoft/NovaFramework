@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Sample
+namespace Game.Sample
 {
     /// <summary>
     /// 演示案例类型定义

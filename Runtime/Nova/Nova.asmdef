@@ -1,9 +1,9 @@
 {
-    "name": "Nova.Import",
+    "name": "Nova",
     "rootNamespace": "",
     "references": [
-        "Nova.Engine",
-        "Nova.Basic"
+        "AssetModule",
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

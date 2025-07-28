@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Sample
+namespace Game.Sample
 {
     /// <summary>
     /// 演示案例总控
@@ -34,6 +34,6 @@ namespace GameEngine.Sample
         /// 当前游戏案例运行的具体案例类型<br/>
         /// 用户通过修改该类型，来演示不同的案例
         /// </summary>
-        public readonly static GameSampleType GameSampleRunningType = GameSampleType.TextFormat;
+        public readonly static GameSampleType GameSampleRunningType = GameSampleType.DispatchCall;
     }
 }

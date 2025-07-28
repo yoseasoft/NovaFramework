@@ -5,7 +5,11 @@
     "unity": "2018.3",
     "unityRelease": "0f1",
     "description": "NovaEngine Framework Package",
+<<<<<<< HEAD
     "keywords": ["Unity", "GameEngine", "Framework"],
+=======
+    "keywords": ["NovaEngine", "Game"],
+>>>>>>> 45ad16c43a380bff1dc5d99f846e4eec8dccc10f
     "author": {
         "name": "hurley",
         "email": "yoseasoft@163.com",

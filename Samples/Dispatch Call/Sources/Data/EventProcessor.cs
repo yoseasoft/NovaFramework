@@ -1,3 +1,8 @@
+
+using log4net.Core;
+using WebSocketSharp;
+
+
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework Samples
 ///
@@ -23,7 +28,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Sample.DispatchCall
+namespace Game.Sample.DispatchCall
 {
     /// <summary>
     /// 事件处理类

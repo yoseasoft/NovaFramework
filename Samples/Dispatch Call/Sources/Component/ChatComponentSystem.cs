@@ -24,8 +24,9 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using static Game.Sample.DispatchCall.SkillComponent;
 
-namespace GameEngine.Sample.DispatchCall
+namespace Game.Sample.DispatchCall
 {
     /// <summary>
     /// 聊天组件逻辑类

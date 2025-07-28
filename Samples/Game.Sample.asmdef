@@ -1,14 +1,15 @@
 {
-    "name": "Nova.Editor",
+    "name": "Game.Sample",
     "rootNamespace": "",
     "references": [
-        "Nova.Library",
-        "Nova.Engine",
-        "Nova.Basic"
+        "Clib",
+        "Nova",
+        "Basic",
+        "Gimp",
+        "Protobuf",
+        "ProtoBuf.Extension"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

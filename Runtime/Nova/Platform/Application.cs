@@ -25,6 +25,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using static NovaEngine.Platform;
 using UnityApplication = UnityEngine.Application;
 
 namespace NovaEngine
