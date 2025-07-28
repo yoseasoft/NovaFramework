@@ -22,33 +22,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine
-{
-    /// <summary>
-    /// 游戏层接口调用封装类，用于对远程游戏业务提供的函数访问接口进行方法封装
-    /// </summary>
-    internal static partial class GameCall
-    {
-        /// <summary>
-        /// 运行游戏前的准备工作处理函数
-        /// </summary>
-        private static void BeforeRunGame()
-        {
-            if (GameMacros.DEBUGGING_PROFILER_WINDOW_AUTO_MOUNTED)
-            {
-                NovaEngine.AppEntry.RegisterComponent<Debug.DebuggerComponent>(Debug.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
-            }
-        }
+using System.Runtime.CompilerServices;
 
-        /// <summary>
-        /// 停止游戏后的准备工作处理函数
-        /// </summary>
-        private static void AfterStopGame()
-        {
-            if (GameMacros.DEBUGGING_PROFILER_WINDOW_AUTO_MOUNTED)
-            {
-                NovaEngine.AppEntry.UnregisterComponent(Debug.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
-            }
-        }
-    }
-}
+// 外部友元
+// [assembly: InternalsVisibleTo("Assembly-CSharp")]
+// [assembly: InternalsVisibleTo("Assembly-CSharp-Editor")]
+[assembly: InternalsVisibleTo("Nova.Import")]

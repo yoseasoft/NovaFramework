@@ -2,6 +2,7 @@
     "name": "Nova.Import",
     "rootNamespace": "",
     "references": [
+        "UniTask",
         "Nova.Engine",
         "Nova.Basic"
     ],
