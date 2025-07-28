@@ -25,7 +25,7 @@
 
 using System.Collections.Generic;
 
-namespace Game.Sample.TextFormat
+namespace GameEngine.Sample.TextFormat
 {
     /// <summary>
     /// 玩家信息

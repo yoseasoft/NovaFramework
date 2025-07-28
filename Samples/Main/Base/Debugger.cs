@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample
+namespace GameEngine.Sample
 {
     /// <summary>
     /// 游戏层提供的调试对象类，它是基于对<see cref="GameEngine.Debugger"/>的便捷性接口封装

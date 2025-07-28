@@ -1,5 +1,5 @@
 {
-    "name": "Basic",
+    "name": "Nova.Basic",
     "rootNamespace": "",
     "references": [
         "AssetModule",
@@ -7,8 +7,8 @@
         "Protobuf",
         "ProtoBuf.Extension",
         "UniTask",
-        "Clib",
-        "Nova"
+        "Nova.Library",
+        "Nova.Engine"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

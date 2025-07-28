@@ -43,6 +43,11 @@ namespace NovaEngine
         public const int SCHEDULE_REPEAT_FOREVER = -1;
 
         /// <summary>
+        /// 计划任务调度失败返回的会话标识
+        /// </summary>
+        public const int SCHEDULE_CALL_FAILED = 0;
+
+        /// <summary>
         /// 当前活动任务实例的管理容器
         /// </summary>
         private IList<TimerInfo> _activeTaskQueue = null;
@@ -195,7 +200,7 @@ namespace NovaEngine
                 if (false == info.Expired)
                 {
                     Logger.Warn("The target timer was running with same name '{0}', repeat scheduled it failed.", name);
-                    return (0, false);
+                    return (SCHEDULE_CALL_FAILED, false);
                 }
 
                 info.Interval = interval;

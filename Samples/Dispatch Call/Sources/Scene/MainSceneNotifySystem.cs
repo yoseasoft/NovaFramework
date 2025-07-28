@@ -25,7 +25,7 @@
 
 using System.Collections.Generic;
 
-namespace Game.Sample.DispatchCall
+namespace GameEngine.Sample.DispatchCall
 {
     /// <summary>
     /// 主场景通知逻辑类

@@ -2,6 +2,8 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -103,7 +105,152 @@ namespace GameEngine
         public void Destroy()
         { }
 
-        #region 组件快捷访问操作接口函数
+        #region 当前组件所属实体对象的事件快捷访问操作接口函数
+
+        /// <summary>
+        /// 发送事件消息到自身所属的实体对象中进行派发
+        /// </summary>
+        /// <param name="eventID">事件标识</param>
+        /// <param name="args">事件参数列表</param>
+        public void SendToSelf(int eventID, params object[] args)
+        {
+            this.Entity?.SendToSelf(eventID, args);
+        }
+
+        /// <summary>
+        /// 发送事件消息到自身所属的实体对象中进行派发
+        /// </summary>
+        /// <param name="eventData">事件数据</param>
+        public void SendToSelf<T>(T eventData) where T : struct
+        {
+            this.Entity?.SendToSelf<T>(eventData);
+        }
+
+        #endregion
+
+        #region 当前组件所属实体对象的定时器快捷访问操作接口函数
+
+        /// <summary>
+        /// 定时任务调度启动接口，设置启动一个新的无限循环模式的任务定时器
+        /// </summary>
+        /// <param name="interval">任务延时间隔，以毫秒为单位</param>
+        /// <param name="handler">回调句柄</param>
+        /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        public int Schedule(int interval, TimerHandler.TimerReportingHandler handler)
+        {
+            return Schedule(interval, NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
+        }
+
+        /// <summary>
+        /// 定时任务调度启动接口，设置启动一个新的无限循环模式的任务定时器
+        /// </summary>
+        /// <param name="interval">任务延时间隔，以毫秒为单位</param>
+        /// <param name="handler">回调句柄</param>
+        /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        public int Schedule(int interval, TimerHandler.TimerReportingForSessionHandler handler)
+        {
+            return Schedule(interval, NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
+        }
+
+        /// <summary>
+        /// 定时任务调度启动接口，设置启动一个新的无限循环模式的任务定时器
+        /// </summary>
+        /// <param name="name">任务名称</param>
+        /// <param name="interval">任务延时间隔，以毫秒为单位</param>
+        /// <param name="handler">回调句柄</param>
+        /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        public int Schedule(string name, int interval, TimerHandler.TimerReportingHandler handler)
+        {
+            return Schedule(interval, NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
+        }
+
+        /// <summary>
+        /// 定时任务调度启动接口，设置启动一个新的无限循环模式的任务定时器
+        /// </summary>
+        /// <param name="name">任务名称</param>
+        /// <param name="interval">任务延时间隔，以毫秒为单位</param>
+        /// <param name="handler">回调句柄</param>
+        /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        public int Schedule(string name, int interval, TimerHandler.TimerReportingForSessionHandler handler)
+        {
+            return Schedule(interval, NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
+        }
+
+        /// <summary>
+        /// 引用对象的定时任务调度启动接口，设置启动一个属于该对象的任务定时器<br/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// </summary>
+        /// <param name="interval">任务延时间隔，以毫秒为单位</param>
+        /// <param name="loop">任务循环次数</param>
+        /// <param name="handler">回调句柄</param>
+        /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        public int Schedule(int interval, int loop, TimerHandler.TimerReportingHandler handler)
+        {
+            return this.Entity?.Schedule(interval, loop, handler) ?? NovaEngine.TimerModule.SCHEDULE_CALL_FAILED;
+        }
+
+        /// <summary>
+        /// 引用对象的定时任务调度启动接口，设置启动一个属于该对象的任务定时器<br/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// </summary>
+        /// <param name="interval">任务延时间隔，以毫秒为单位</param>
+        /// <param name="loop">任务循环次数</param>
+        /// <param name="handler">回调句柄</param>
+        /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        public int Schedule(int interval, int loop, TimerHandler.TimerReportingForSessionHandler handler)
+        {
+            return this.Entity?.Schedule(interval, loop, handler) ?? NovaEngine.TimerModule.SCHEDULE_CALL_FAILED;
+        }
+
+        /// <summary>
+        /// 引用对象的定时任务调度启动接口，设置启动一个属于该对象的任务定时器<br/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// </summary>
+        /// <param name="name">任务名称</param>
+        /// <param name="interval">任务延时间隔，以毫秒为单位</param>
+        /// <param name="loop">任务循环次数</param>
+        /// <param name="handler">回调句柄</param>
+        /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        public int Schedule(string name, int interval, int loop, TimerHandler.TimerReportingHandler handler)
+        {
+            return this.Entity?.Schedule(name, interval, loop, handler) ?? NovaEngine.TimerModule.SCHEDULE_CALL_FAILED;
+        }
+
+        /// <summary>
+        /// 引用对象的定时任务调度启动接口，设置启动一个属于该对象的任务定时器<br/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// </summary>
+        /// <param name="name">任务名称</param>
+        /// <param name="interval">任务延时间隔，以毫秒为单位</param>
+        /// <param name="loop">任务循环次数</param>
+        /// <param name="handler">回调句柄</param>
+        /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        public int Schedule(string name, int interval, int loop, TimerHandler.TimerReportingForSessionHandler handler)
+        {
+            return this.Entity?.Schedule(name, interval, loop, handler) ?? NovaEngine.TimerModule.SCHEDULE_CALL_FAILED;
+        }
+
+        /// <summary>
+        /// 停止当前引用对象指定标识对应的定时任务
+        /// </summary>
+        /// <param name="sessionID">会话标识</param>
+        public void Unschedule(int sessionID)
+        {
+            this.Entity?.Unschedule(sessionID);
+        }
+
+        /// <summary>
+        /// 停止当前引用对象指定名称对应的定时任务
+        /// </summary>
+        /// <param name="name">任务名称</param>
+        public void Unschedule(string name)
+        {
+            this.Entity?.Unschedule(name);
+        }
+
+        #endregion
+
+        #region 当前组件所属实体对象的组件快捷访问操作接口函数
 
         /// <summary>
         /// 通过指定的组件类型，动态创建一个新的组件实例，并添加到当前组件所挂载的实体对象

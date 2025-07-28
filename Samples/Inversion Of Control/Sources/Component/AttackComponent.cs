@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace Game.Sample.InversionOfControl
+namespace GameEngine.Sample.InversionOfControl
 {
     /// <summary>
     /// 攻击组件类
