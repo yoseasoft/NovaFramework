@@ -22,17 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+// 全局头文件导入
 //global using global::System;
+//global using global::System.Text;
 //global using global::System.Collections.Generic;
-
-namespace NovaEngine
-{
-    /// <summary>
-    /// 引擎框架的全局引入管理文件，对引擎内部通用的系统库及第三方库进行统一引入管理
-    /// 
-    /// 请谨慎添加全局引入库，尽量在自己的逻辑代码的进行引入管理
-    /// </summary>
-    public static class GlobalUsings
-    {
-    }
-}
+//global using global::System.Reflection;

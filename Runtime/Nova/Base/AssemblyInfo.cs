@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,26 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
-{
-    /// <summary>
-    /// 软件版本管理工具类，对外提供版号及版本比对等相关接口
-    /// </summary>
-    public static partial class Version
-    {
-        /// <summary>
-        /// 版本对象发布类型枚举定义
-        /// </summary>
-        public enum PublishType : byte
-        {
-            Unknown = 0,
-            Base,
-            Alpha,
-            Beta,
-            RC,
-            Release,
-            Mini,
-            Max,
-        }
-    }
-}
+using System.Runtime.CompilerServices;
+
+// 外部友元
+// [assembly: InternalsVisibleTo("Assembly-CSharp")]
+// [assembly: InternalsVisibleTo("Assembly-CSharp-Editor")]
+[assembly: InternalsVisibleTo("Nova.Basic")]

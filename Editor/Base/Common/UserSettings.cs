@@ -1,5 +1,5 @@
 /// -------------------------------------------------------------------------------
-/// NovaEngine.Editor Framework
+/// NovaEngine Editor Framework
 ///
 /// Copyright (C) 2025, Hurley, Independent Studio.
 ///

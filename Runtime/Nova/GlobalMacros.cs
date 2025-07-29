@@ -5,6 +5,7 @@
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -58,16 +59,16 @@ namespace NovaEngine
         /// <summary>
         /// 修订版本号，功能扩充或BUG修复时更改该值
         /// </summary>
-        public const int VERSION_FRAMEWORK_REVISION = 1;
+        public const int VERSION_FRAMEWORK_REVISION = 2;
 
         /// <summary>
         /// 编译版本号，每次重新编译版本时更改该值
         /// </summary>
-        public const int VERSION_FRAMEWORK_BUILD = 202501040;
+        public const int VERSION_FRAMEWORK_BUILD = 202507290;
 
         /// <summary>
         /// 字母版本号，用于标识当前软件所属的开发阶段
         /// </summary>
-        public const Version.EPublishType VERSION_FRAMEWORK_LETTER = Version.EPublishType.Alpha;
+        public const Version.PublishType VERSION_FRAMEWORK_LETTER = Version.PublishType.Alpha;
     }
 }

@@ -34,7 +34,7 @@ namespace GameEngine.Pool
         /// 释放当前的特例对象
         /// </summary>
         /// <param name="shutdown">是否是关闭对象池时触发的状态标识</param>
-        protected override sealed void Release(bool shutdown)
+        protected internal override sealed void Release(bool shutdown)
         {
         }
     }

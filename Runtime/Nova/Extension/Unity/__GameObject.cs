@@ -54,13 +54,7 @@ namespace NovaEngine
         /// <returns>返回对应类型的组件对象实例</returns>
         public static T AddUniqueComponent<T>(this UnityGameObject self) where T : UnityComponent
         {
-            T component = self.GetComponent<T>();
-            if (null == component)
-            {
-                component = self.AddComponent<T>();
-            }
-
-            return component;
+            return self.AddUniqueComponent(typeof(T)) as T;
         }
 
         /// <summary>
@@ -285,7 +279,7 @@ namespace NovaEngine
                 sb.Append(list[n]);
                 if (n > 0)
                 {
-                    sb.Append('/');
+                    sb.Append(Definition.CCharacter.Slash);
                 }
             }
 

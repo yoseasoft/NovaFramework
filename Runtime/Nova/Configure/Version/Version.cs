@@ -24,12 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
 using SystemBindingFlags = System.Reflection.BindingFlags;
 using SystemFieldInfo = System.Reflection.FieldInfo;
-using SystemException = System.Exception;
 
 namespace NovaEngine
 {
@@ -77,7 +74,7 @@ namespace NovaEngine
         /// RC：该版本已经相当成熟了，基本上不存在导致错误的Bug，与即将发行的正式版本相差无几。
         /// Release：该版本意味“最终版本”，在前面版本的一系列测试版之后，终归会有一个正式的版本，是最终交付用户使用的一个版本。该版本有时也称标准版。
         /// </summary>
-        public const EPublishType FRAMEWORK_LETTER = GlobalMacros.VERSION_FRAMEWORK_LETTER;
+        public const PublishType FRAMEWORK_LETTER = GlobalMacros.VERSION_FRAMEWORK_LETTER;
 
         /// <summary>
         /// 获取当前框架版本的格式化串信息
@@ -97,27 +94,27 @@ namespace NovaEngine
         /// <summary>
         /// 主版本号，重大变动时更改该值
         /// </summary>
-        public static int APPLICATION_MAJOR = 1;
+        public static readonly int APPLICATION_MAJOR = 1;
 
         /// <summary>
         /// 次版本号，功能升级或局部变动时更改该值
         /// </summary>
-        public static int APPLICATION_MINOR = 0;
+        public static readonly int APPLICATION_MINOR = 0;
 
         /// <summary>
         /// 修订版本号，功能扩充或BUG修复时更改该值
         /// </summary>
-        public static int APPLICATION_REVISION = 0;
+        public static readonly int APPLICATION_REVISION = 0;
 
         /// <summary>
         /// 打包版本号，在程序进行打包分割时更改该值
         /// </summary>
-        public static int APPLICATION_PACK = 0;
+        public static readonly int APPLICATION_PACK = 0;
 
         /// <summary>
         /// 编译版本号，每次重新编译版本时更改该值
         /// </summary>
-        public static int APPLICATION_BUILD = 200101010;
+        public static readonly int APPLICATION_BUILD = 197001010;
 
         /// <summary>
         /// 字母版本号，用于标识当前软件所属的开发阶段
@@ -128,7 +125,7 @@ namespace NovaEngine
         /// Release：该版本意味“最终版本”，在前面版本的一系列测试版之后，终归会有一个正式的版本，是最终交付用户使用的一个版本。该版本有时也称标准版。
         /// Mini：该版本意味“精简版本”，基于最终交付用户使用的标准版的基础上，裁剪掉部分当前阶段暂时不会使用的资源后的一个精简版本，该版本需要通过更新方式补充成完整的标准版。
         /// </summary>
-        public static EPublishType APPLICATION_LETTER = EPublishType.Alpha;
+        public static readonly PublishType APPLICATION_LETTER = PublishType.Alpha;
 
         /// <summary>
         /// 获取当前框架版本的格式化串信息
