@@ -1,26 +1,44 @@
 {
-    "name": "com.yoseasoft.novaframework",
-    "displayName": "NovaFramework",
-    "version": "1.0.0-prerelease",
-    "unity": "2018.3",
-    "unityRelease": "0f1",
-    "description": "NovaEngine Framework Package",
-    "keywords": ["Unity", "GameEngine", "Framework"],
-    "author": {
-        "name": "hurley",
-        "email": "yoseasoft@163.com",
-        "url": "https://github.com/yoseasoft/NovaFramework"
+  "name": "com.yoseasoft.novaframework",
+  "displayName": "NovaFramework",
+  "version": "1.0.0-prerelease",
+  "unity": "2018.3",
+  "unityRelease": "0f1",
+  "description": "NovaEngine Framework Package",
+  "keywords": [ "Unity", "GameEngine", "Framework" ],
+  "author": {
+    "name": "hurley",
+    "email": "yoseasoft@163.com",
+    "url": "https://github.com/yoseasoft/NovaFramework"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yoseasoft/NovaFramework.git"
+  },
+  "dependencies": {
+    "com.unity.modules.unitywebrequest": "1.0.0",
+    "com.unity.modules.unitywebrequestwww": "1.0.0"
+  },
+  "samples": [
+    {
+      "displayName": "Text Format",
+      "description": "Formatter utility sample, Include logger format, file encrypt, datastream convert.",
+      "path": "Samples/Text Format"
     },
-    "samples": [
-        {
-            "displayName": "Text Format",
-            "description": "Formatter utility sample, Include logger format, file encrypt, datastream convert.",
-            "path": "Samples/Text Format"
-        },
-        {
-            "displayName": "Symbol Parser",
-            "description": "Class resolving sample, Include entity and system class.",
-            "path": "Samples/Symbol Parser"
-        }
-    ]
+    {
+      "displayName": "Symbol Parser",
+      "description": "Class symbol resolving sample, Include all object classes with loaded assemblies.",
+      "path": "Samples/Symbol Parser"
+    },
+    {
+      "displayName": "Object Lifecycle",
+      "description": "Proto class lifecycle sample, Include scene, actor, view, and component types.",
+      "path": "Samples/Object Lifecycle"
+    },
+    {
+      "displayName": "Dispatch Call",
+      "description": "Notify dispatching sample, Include input, event, and message types.",
+      "path": "Samples/Dispatch Call"
+    }
+  ]
 }
