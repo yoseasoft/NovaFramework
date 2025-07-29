@@ -49,7 +49,7 @@ namespace NovaEngine
             }
 
             string[] items = text.Split('.');
-            if (items.Length != (int) Version.EFieldType.Max)
+            if (items.Length != (int) Version.FieldType.Max)
             {
                 Logger.Error("Invalid arguments: {0}", text);
                 items = null;
@@ -83,12 +83,12 @@ namespace NovaEngine
                 return false;
             }
 
-            Version.SetProperty(Version.EFieldType.Major, Utility.Convertion.StringToInt(items[(int) Version.EFieldType.Major]));
-            Version.SetProperty(Version.EFieldType.Minor, Utility.Convertion.StringToInt(items[(int) Version.EFieldType.Minor]));
-            Version.SetProperty(Version.EFieldType.Revision, Utility.Convertion.StringToInt(items[(int) Version.EFieldType.Revision]));
-            Version.SetProperty(Version.EFieldType.Pack, Utility.Convertion.StringToInt(items[(int) Version.EFieldType.Pack]));
-            Version.SetProperty(Version.EFieldType.Build, Utility.Convertion.StringToLong(items[(int) Version.EFieldType.Build]));
-            Version.SetProperty(Version.EFieldType.Letter, Utility.Convertion.StringToInt(items[(int) Version.EFieldType.Letter]));
+            Version.SetProperty(Version.FieldType.Major, Utility.Convertion.StringToInt(items[(int) Version.FieldType.Major]));
+            Version.SetProperty(Version.FieldType.Minor, Utility.Convertion.StringToInt(items[(int) Version.FieldType.Minor]));
+            Version.SetProperty(Version.FieldType.Revision, Utility.Convertion.StringToInt(items[(int) Version.FieldType.Revision]));
+            Version.SetProperty(Version.FieldType.Pack, Utility.Convertion.StringToInt(items[(int) Version.FieldType.Pack]));
+            Version.SetProperty(Version.FieldType.Build, Utility.Convertion.StringToLong(items[(int) Version.FieldType.Build]));
+            Version.SetProperty(Version.FieldType.Letter, Utility.Convertion.StringToInt(items[(int) Version.FieldType.Letter]));
 
             return true;
         }

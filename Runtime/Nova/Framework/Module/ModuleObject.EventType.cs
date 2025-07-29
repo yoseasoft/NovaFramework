@@ -38,7 +38,7 @@ namespace NovaEngine
         /// 模块对象事件类型定义
         /// 也可用此参数来对模块对象进行优先级定义，因为该类型在定义时已进行权重排序
         /// </summary>
-        public enum EEventType : byte
+        public enum ModuleEventType : byte
         {
             /// <summary>
             /// 默认定义
@@ -106,7 +106,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="type">模块事件类型</param>
         /// <returns>返回事件类型对应模块的优先级</returns>
-        public static int GetModulePriorityWithEventType(EEventType type)
+        public static int GetModulePriorityWithEventType(ModuleEventType type)
         {
             return (int) type;
         }

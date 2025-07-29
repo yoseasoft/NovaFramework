@@ -33,7 +33,7 @@ namespace NovaEngine
         /// <summary>
         /// 场景数据状态类型枚举定义
         /// </summary>
-        public enum EStateType : byte
+        public enum SceneStateType : byte
         {
             /// <summary>
             /// 默认状态标识

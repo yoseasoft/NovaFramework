@@ -155,7 +155,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="fieldType">属性名称</param>
         /// <param name="fieldValue">属性值</param>
-        internal static void SetProperty(EFieldType fieldType, object fieldValue)
+        internal static void SetProperty(FieldType fieldType, object fieldValue)
         {
             SetProperty(fieldType.ToString(), fieldValue);
         }

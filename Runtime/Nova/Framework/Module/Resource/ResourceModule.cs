@@ -43,7 +43,7 @@ namespace NovaEngine
         /// <summary>
         /// 资源模块事件类型
         /// </summary>
-        public override int EventType => (int) EEventType.Resource;
+        public override int EventType => (int) ModuleEventType.Resource;
 
         /// <summary>
         /// 管理器对象初始化接口函数

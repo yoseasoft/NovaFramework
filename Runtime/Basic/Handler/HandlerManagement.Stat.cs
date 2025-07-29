@@ -131,9 +131,9 @@ namespace GameEngine
         {
             string namespaceTag = typeof(HandlerManagement).Namespace;
 
-            foreach (string enumName in SystemEnum.GetNames(typeof(NovaEngine.ModuleObject.EEventType)))
+            foreach (string enumName in SystemEnum.GetNames(typeof(NovaEngine.ModuleObject.ModuleEventType)))
             {
-                if (enumName.Equals(NovaEngine.ModuleObject.EEventType.Default.ToString()) || enumName.Equals(NovaEngine.ModuleObject.EEventType.User.ToString()))
+                if (enumName.Equals(NovaEngine.ModuleObject.ModuleEventType.Default.ToString()) || enumName.Equals(NovaEngine.ModuleObject.ModuleEventType.User.ToString()))
                 {
                     continue;
                 }
@@ -154,7 +154,7 @@ namespace GameEngine
                     continue;
                 }
 
-                int enumType = (int) NovaEngine.Utility.Convertion.GetEnumFromString<NovaEngine.ModuleObject.EEventType>(enumName);
+                int enumType = (int) NovaEngine.Utility.Convertion.GetEnumFromString<NovaEngine.ModuleObject.ModuleEventType>(enumName);
                 if (null == GetHandler(enumType))
                 {
                     Debugger.Warn("Could not found any handler class with target type '{0}', created stat module failed.", enumName);

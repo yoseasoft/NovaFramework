@@ -54,7 +54,7 @@ namespace NovaEngine
         /// <summary>
         /// 输入模块事件类型
         /// </summary>
-        public override int EventType => (int) EEventType.Input;
+        public override int EventType => (int) ModuleEventType.Input;
 
         /// <summary>
         /// 管理器对象初始化接口函数

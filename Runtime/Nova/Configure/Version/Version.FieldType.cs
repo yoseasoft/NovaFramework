@@ -33,7 +33,7 @@ namespace NovaEngine
         /// <summary>
         /// 应用版本号属性字段对应的枚举类型
         /// </summary>
-        internal enum EFieldType : byte
+        internal enum FieldType : byte
         {
             Major = 0,
             Minor,

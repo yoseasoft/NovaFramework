@@ -34,7 +34,7 @@ namespace NovaEngine
         /// <summary>
         /// 事件参数类型标识
         /// </summary>
-        public override int ID => (int) ModuleObject.EEventType.Network;
+        public override int ID => (int) ModuleObject.ModuleEventType.Network;
 
         /// <summary>
         /// 网络基础指令协议类型

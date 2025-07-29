@@ -49,7 +49,7 @@ namespace GameEngine.Debug
                 if (null != stat)
                 {
                     moduleType = stat.ModuleType;
-                    moduleName = System.Enum.GetName(typeof(NovaEngine.ModuleObject.EEventType), moduleType);
+                    moduleName = System.Enum.GetName(typeof(NovaEngine.ModuleObject.ModuleEventType), moduleType);
 
                     infos = stat.GetAllStatInfos();
                 }

@@ -34,7 +34,7 @@ namespace NovaEngine
         /// <summary>
         /// 事件参数类型标识
         /// </summary>
-        public override int ID => (int) ModuleObject.EEventType.Timer;
+        public override int ID => (int) ModuleObject.ModuleEventType.Timer;
 
         private int _type;
 

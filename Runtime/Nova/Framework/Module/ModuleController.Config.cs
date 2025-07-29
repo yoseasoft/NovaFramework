@@ -98,9 +98,9 @@ namespace NovaEngine
                 // 获取当前命名空间
                 string namespace_tag = typeof(ModuleController).Namespace;
 
-                foreach (ModuleObject.EEventType enumValue in System.Enum.GetValues(typeof(ModuleObject.EEventType)))
+                foreach (ModuleObject.ModuleEventType enumValue in System.Enum.GetValues(typeof(ModuleObject.ModuleEventType)))
                 {
-                    if (ModuleObject.EEventType.Default == enumValue || ModuleObject.EEventType.User == enumValue)
+                    if (ModuleObject.ModuleEventType.Default == enumValue || ModuleObject.ModuleEventType.User == enumValue)
                     {
                         // 忽略默认值和用户自定义值
                         continue;
@@ -152,7 +152,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="moduleType">模块对象类型</param>
             /// <param name="clsType">模块映射类型</param>
-            private static void RegModuleConfigureInfo(ModuleObject.EEventType moduleType, SystemType clsType)
+            private static void RegModuleConfigureInfo(ModuleObject.ModuleEventType moduleType, SystemType clsType)
             {
                 // 若打开启用标识，则必须提供映射类型参数
                 Logger.Assert(null != clsType, "Invalid arguments.");
@@ -177,7 +177,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="moduleType">模块对象类型</param>
             /// <returns>返回指定类型的模块配置信息，若查找失败返回null</returns>
-            private static ModuleConfigureInfo GetModuleConfigureInfoByType(ModuleObject.EEventType moduleType)
+            private static ModuleConfigureInfo GetModuleConfigureInfoByType(ModuleObject.ModuleEventType moduleType)
             {
                 return GetModuleConfigureInfoByType((int) moduleType);
             }

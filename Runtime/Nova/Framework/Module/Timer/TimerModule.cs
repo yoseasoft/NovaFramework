@@ -55,7 +55,7 @@ namespace NovaEngine
         /// <summary>
         /// 定时器模块事件类型
         /// </summary>
-        public override int EventType => (int) EEventType.Timer;
+        public override int EventType => (int) ModuleEventType.Timer;
 
         /// <summary>
         /// 管理器对象初始化接口函数
@@ -210,7 +210,7 @@ namespace NovaEngine
                 return (info.Session, false);
             }
 
-            int session = Session.NextSessionID((int) EEventType.Timer);
+            int session = Session.NextSessionID((int) ModuleEventType.Timer);
 
             info = new TimerInfo(this);
             info.Session = session;

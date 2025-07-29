@@ -122,7 +122,7 @@ namespace NovaEngine
         public UnityGameObject CreateGameObject(string objectName, string sceneName)
         {
             SceneRecordInfo scene_info = GetModule<SceneModule>().GetSceneRecordInfo(sceneName);
-            if (null == scene_info || SceneRecordInfo.EStateType.Complete != scene_info.StateType)
+            if (null == scene_info || SceneRecordInfo.SceneStateType.Complete != scene_info.StateType)
             {
                 Logger.Warn("目标场景对象实例‘{0}’尚未准备完成，在此场景上添加节点对象失败！", sceneName);
                 return null;

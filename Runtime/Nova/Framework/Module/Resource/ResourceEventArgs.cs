@@ -34,7 +34,7 @@ namespace NovaEngine
         /// <summary>
         /// 事件参数类型标识
         /// </summary>
-        public override int ID => (int) ModuleObject.EEventType.Resource;
+        public override int ID => (int) ModuleObject.ModuleEventType.Resource;
 
         /// <summary>
         /// 资源会话标识

@@ -55,7 +55,7 @@ namespace NovaEngine
         /// <summary>
         /// 任务模块事件类型
         /// </summary>
-        public override int EventType => (int) EEventType.Task;
+        public override int EventType => (int) ModuleEventType.Task;
 
         /// <summary>
         /// 管理器对象初始化接口函数

@@ -54,7 +54,7 @@ namespace NovaEngine
         /// <summary>
         /// 场景数据状态类型，用于标识场景数据当前状态是否可用
         /// </summary>
-        private EStateType _stateType = EStateType.None;
+        private SceneStateType _stateType = SceneStateType.None;
 
         /// <summary>
         /// 场景元素对象实例
@@ -160,7 +160,7 @@ namespace NovaEngine
         /// <summary>
         /// 场景资源加载状态标识属性访问Getter/Setter接口
         /// </summary>
-        public EStateType StateType
+        public SceneStateType StateType
         {
             set { _stateType = value; }
             get { return _stateType; }

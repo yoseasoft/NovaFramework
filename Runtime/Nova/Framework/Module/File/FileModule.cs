@@ -37,7 +37,7 @@ namespace NovaEngine
         /// <summary>
         /// 文件模块事件类型
         /// </summary>
-        public override int EventType => (int) EEventType.File;
+        public override int EventType => (int) ModuleEventType.File;
 
         /// <summary>
         /// 管理器对象初始化接口函数

@@ -210,7 +210,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="moduleType">模块对象类型</param>
         /// <returns>返回类型获取对应的对象实例</returns>
-        public static ModuleObject GetModule(ModuleObject.EEventType moduleType)
+        public static ModuleObject GetModule(ModuleObject.ModuleEventType moduleType)
         {
             return GetModule((int) moduleType);
         }
@@ -235,7 +235,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="moduleType">模块对象类型</param>
         /// <returns>返回当前创建的模块新实例</returns>
-        private static ModuleObject CreateModuleObject(ModuleObject.EEventType moduleType)
+        private static ModuleObject CreateModuleObject(ModuleObject.ModuleEventType moduleType)
         {
             return CreateModuleObject((int) moduleType);
         }
@@ -276,7 +276,7 @@ namespace NovaEngine
         /// 移除指定类型的模块实例
         /// </summary>
         /// <param name="moduleType">模块对象类型</param>
-        private static void ReleaseModuleObject(ModuleObject.EEventType moduleType)
+        private static void ReleaseModuleObject(ModuleObject.ModuleEventType moduleType)
         {
             ReleaseModuleObject((int) moduleType);
         }

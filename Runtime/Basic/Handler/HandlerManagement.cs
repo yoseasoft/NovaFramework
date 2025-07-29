@@ -81,8 +81,8 @@ namespace GameEngine
 
                 string enumName = enumValue.ToString();
                 // 检查句柄类型定义和模块的事件类型定义，在重名的情况下，是否值一致
-                NovaEngine.ModuleObject.EEventType eventType = NovaEngine.Utility.Convertion.GetEnumFromString<NovaEngine.ModuleObject.EEventType>(enumName);
-                if (NovaEngine.ModuleObject.EEventType.Default != eventType)
+                NovaEngine.ModuleObject.ModuleEventType eventType = NovaEngine.Utility.Convertion.GetEnumFromString<NovaEngine.ModuleObject.ModuleEventType>(enumName);
+                if (NovaEngine.ModuleObject.ModuleEventType.Default != eventType)
                 {
                     if (System.Convert.ToInt32(enumValue) != System.Convert.ToInt32(eventType))
                     {

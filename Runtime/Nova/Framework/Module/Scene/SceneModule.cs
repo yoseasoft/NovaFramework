@@ -51,7 +51,7 @@ namespace NovaEngine
         /// <summary>
         /// 场景模块事件类型
         /// </summary>
-        public override int EventType => (int) EEventType.Scene;
+        public override int EventType => (int) ModuleEventType.Scene;
 
         /// <summary>
         /// 管理器对象初始化接口函数
@@ -77,7 +77,7 @@ namespace NovaEngine
             SceneRecordInfo info = SceneRecordInfo.Create(_mainSceneName);
             info.Enabled = true;
             info.Unmovabled = true;
-            info.StateType = SceneRecordInfo.EStateType.Complete;
+            info.StateType = SceneRecordInfo.SceneStateType.Complete;
             info.Scene = scene;
             _sceneRecordInfos.Add(_mainSceneName, info);
 
@@ -130,7 +130,7 @@ namespace NovaEngine
             foreach (KeyValuePair<string, SceneRecordInfo> pair in _sceneRecordInfos)
             {
                 SceneRecordInfo info = pair.Value;
-                if (SceneRecordInfo.EStateType.Loading == info.StateType)
+                if (SceneRecordInfo.SceneStateType.Loading == info.StateType)
                 {
                     AssetModule.Scene assetScene = info.AssetScene;
                     this.SendEvent((int) ProtocolType.Progressed, "{\"sceneName\":\"" + pair.Key + "\",\"progress\":" + assetScene.Progress + "}");
@@ -154,7 +154,7 @@ namespace NovaEngine
             {
                 info = _sceneRecordInfos[sceneName];
                 // 加载中或加载完成两种情况下均直接返回当前资源数据对象
-                if (SceneRecordInfo.EStateType.Loading == info.StateType || SceneRecordInfo.EStateType.Complete == info.StateType)
+                if (SceneRecordInfo.SceneStateType.Loading == info.StateType || SceneRecordInfo.SceneStateType.Complete == info.StateType)
                 {
                     return info.AssetScene;
                 }
@@ -170,7 +170,7 @@ namespace NovaEngine
 
             AssetModule.Scene assetScene = ResourceModule.LoadSceneAsync(sceneAddress, true, completed);
             info = SceneRecordInfo.Create(sceneName);
-            info.StateType = SceneRecordInfo.EStateType.Loading;
+            info.StateType = SceneRecordInfo.SceneStateType.Loading;
             info.AssetScene = assetScene;
             _sceneRecordInfos.Add(sceneName, info);
 
@@ -187,7 +187,7 @@ namespace NovaEngine
                 //}
 
                 info.Enabled = true;
-                info.StateType = SceneRecordInfo.EStateType.Complete;
+                info.StateType = SceneRecordInfo.SceneStateType.Complete;
                 info.Scene = unityScene;
 
                 // 重置激活场景
@@ -218,7 +218,7 @@ namespace NovaEngine
                 return;
             }
 
-            if (SceneRecordInfo.EStateType.Complete == info.StateType)
+            if (SceneRecordInfo.SceneStateType.Complete == info.StateType)
             {
                 // 2025-06-20:
                 // 为什么新的资源库此处不能使用该代码，是因为在资源管理的场景操作句柄中重复使用了该代码
@@ -316,7 +316,7 @@ namespace NovaEngine
             foreach (KeyValuePair<string, SceneRecordInfo> pair in _sceneRecordInfos)
             {
                 SceneRecordInfo info = pair.Value;
-                if (info.Enabled && false == info.Unmovabled && SceneRecordInfo.EStateType.Complete == info.StateType)
+                if (info.Enabled && false == info.Unmovabled && SceneRecordInfo.SceneStateType.Complete == info.StateType)
                 {
                     SetActiveScene(info.Name);
                     return;
