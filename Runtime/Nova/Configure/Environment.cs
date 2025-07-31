@@ -5,6 +5,8 @@
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -75,11 +77,11 @@ namespace NovaEngine
         public static readonly bool cryptMode = false;
 
         /// <summary>
-        /// 更新模式，项目发布阶段打开该选项，以便后期的更新维护，若本地代码开启了链接模式，则将同步更新代码<br/>
-        /// 在更新模式下，对本地资源进行版本检测及更新<br/>
-        /// 在非更新模式下，则直接装载本地资源，跳过更新检测环节<br/>
+        /// 离线模式，项目发布阶段默认关闭该选项，以便启用在线更新流程，若本地代码开启了链接模式，则将同步更新代码<br/>
+        /// 在离线模式下，直接装载本地资源，跳过更新检测环节<br/>
+        /// 在非离线模式下，将对本地资源进行版本检测及更新<br/>
         /// </summary>
-        public static readonly bool updateMode = false;
+        public static readonly bool offlineMode = false;
 
         /// <summary>
         /// 动态链接模式，项目发布阶段打开该选项，代码将以DLL形式进行打包，需要注意的是，更新模式下必须开启该模式<br/>
@@ -97,6 +99,12 @@ namespace NovaEngine
         /// 程序编码，对应程序名称在应用平台上的唯一标识
         /// </summary>
         public static readonly int applicationCode = 0;
+
+        /// <summary>
+        /// 教程模式，打开该选项后，将跳转至框架示例环境，执行教程代码<br/>
+        /// 在正式版本中，该标识将默认关闭，仅在开发环境中有效
+        /// </summary>
+        public static readonly bool tutorialMode = false;
 
         /// <summary>
         /// 全局环境参数映射表
@@ -317,10 +325,12 @@ namespace NovaEngine
             SetProperty(nameof(debugMode), false);
             SetProperty(nameof(debugLevel), 0);
             SetProperty(nameof(cryptMode), false);
-            SetProperty(nameof(updateMode), false);
+            SetProperty(nameof(offlineMode), false);
             SetProperty(nameof(dylinkMode), false);
             SetProperty(nameof(applicationName), "unknown");
             SetProperty(nameof(applicationCode), 0);
+
+            SetProperty(nameof(tutorialMode), false);
 
             CleanupAllVariables();
         }
