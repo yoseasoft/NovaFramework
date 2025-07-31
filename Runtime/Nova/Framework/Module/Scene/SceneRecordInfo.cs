@@ -64,7 +64,7 @@ namespace NovaEngine
         /// <summary>
         /// 场景资源信息对象实例
         /// </summary>
-        private AssetModule.Scene _assetScene = null;
+        private GooAsset.Scene _assetScene = null;
 
         /// <summary>
         /// 场景信息对象构造函数
@@ -178,7 +178,7 @@ namespace NovaEngine
         /// <summary>
         /// 场景资源信息对象属性访问Getter/Setter接口
         /// </summary>
-        public AssetModule.Scene AssetScene
+        public GooAsset.Scene AssetScene
         {
             set { _assetScene = value; }
             get { return _assetScene; }

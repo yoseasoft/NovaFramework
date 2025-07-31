@@ -29,9 +29,9 @@ using SystemType = System.Type;
 
 using UnityObject = UnityEngine.Object;
 
-using Asset = AssetModule.Asset;
-using AssetManagement = AssetModule.AssetManagement;
-using ObjectAssetMapping = System.Collections.Generic.Dictionary<UnityEngine.Object, AssetModule.Asset>;
+using Asset = GooAsset.Asset;
+using AssetManagement = GooAsset.AssetManagement;
+using ObjectAssetMapping = System.Collections.Generic.Dictionary<UnityEngine.Object, GooAsset.Asset>;
 
 namespace NovaEngine
 {
@@ -182,7 +182,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="isAdditive">是否使用叠加方式加载</param>
-        public static AssetModule.Scene LoadScene(string url, bool isAdditive = false)
+        public static GooAsset.Scene LoadScene(string url, bool isAdditive = false)
         {
             return AssetManagement.LoadScene(url, isAdditive);
         }
@@ -193,7 +193,7 @@ namespace NovaEngine
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="isAdditive">是否使用叠加方式加载</param>
         /// <param name="completed">加载完成回调</param>
-        public static AssetModule.Scene LoadSceneAsync(string url, bool isAdditive = false, System.Action<AssetModule.Scene> completed = null)
+        public static GooAsset.Scene LoadSceneAsync(string url, bool isAdditive = false, System.Action<GooAsset.Scene> completed = null)
         {
             return AssetManagement.LoadSceneAsync(url, isAdditive, completed);
         }
@@ -202,7 +202,7 @@ namespace NovaEngine
         /// 卸载场景
         /// </summary>
         /// <param name="scene">场景对象</param>
-        public static void UnloadScene(AssetModule.Scene scene)
+        public static void UnloadScene(GooAsset.Scene scene)
         {
             scene?.Release();
         }
@@ -215,7 +215,7 @@ namespace NovaEngine
         /// 同步加载原文件(直接读取persistentDataPath中的文件, 然后可根据文件保存路径(RawFile.savePath)读取文件, 使用同步加载前需已保证文件更新)
         /// <param name="url">文件原打包路径('Assets/_Resources/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
         /// </summary>
-        public static AssetModule.RawFile LoadRawFile(string url)
+        public static GooAsset.RawFile LoadRawFile(string url)
         {
             return AssetManagement.LoadRawFile(url);
         }
@@ -224,7 +224,7 @@ namespace NovaEngine
         /// 异步加载原文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
         /// /// <param name="url">文件原打包路径('Assets/_Resources/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
         /// </summary>
-        public static AssetModule.RawFile LoadRawFileAsync(string url, System.Action<AssetModule.RawFile> completed = null)
+        public static GooAsset.RawFile LoadRawFileAsync(string url, System.Action<GooAsset.RawFile> completed = null)
         {
             return AssetManagement.LoadRawFileAsync(url, completed);
         }

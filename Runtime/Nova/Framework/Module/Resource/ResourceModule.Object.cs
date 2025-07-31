@@ -43,7 +43,7 @@ namespace NovaEngine
         /// <summary>
         /// UnityGameObject和实例化对象的对照表
         /// </summary>
-        private IDictionary<UnityEngine.GameObject, AssetModule.InstantiateObject> _gameObjectInstantiateMapping = new Dictionary<UnityEngine.GameObject, AssetModule.InstantiateObject>();
+        private IDictionary<UnityEngine.GameObject, GooAsset.InstantiateObject> _gameObjectInstantiateMapping = new Dictionary<UnityEngine.GameObject, GooAsset.InstantiateObject>();
 
         /// <summary>
         /// 同步实例化对象
@@ -51,7 +51,7 @@ namespace NovaEngine
         /// <param name="url">资源地址(名字或路径)</param>
         public UnityGameObject InstantiateObject(string url)
         {
-            var instantiateObject = AssetModule.AssetManagement.InstantiateObject(url);
+            var instantiateObject = GooAsset.AssetManagement.InstantiateObject(url);
             UnityGameObject gameObject = instantiateObject.gameObject;
             if (null != gameObject)
             {
@@ -65,9 +65,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="completed">实例化完成回调</param>
-        public AssetModule.InstantiateObject InstantiateObjectAsync(string url, System.Action<UnityGameObject> completed = null)
+        public GooAsset.InstantiateObject InstantiateObjectAsync(string url, System.Action<UnityGameObject> completed = null)
         {
-            var instantiateObject = AssetModule.AssetManagement.InstantiateObjectAsync(url);
+            var instantiateObject = GooAsset.AssetManagement.InstantiateObjectAsync(url);
             instantiateObject.completed += insObject =>
             {
                 UnityGameObject gameObject = insObject.gameObject;
@@ -83,7 +83,7 @@ namespace NovaEngine
         /// <summary>
         /// 卸载基础对象模型组件(加载完成或加载中都可以使用此接口销毁对象)
         /// </summary>
-        public void DestroyObject(AssetModule.InstantiateObject instantiateObject)
+        public void DestroyObject(GooAsset.InstantiateObject instantiateObject)
         {
             UnityGameObject gameObject = instantiateObject.gameObject;
             if (null != gameObject)

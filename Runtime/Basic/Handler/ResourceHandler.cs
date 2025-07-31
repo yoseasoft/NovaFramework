@@ -28,9 +28,9 @@ using SystemType = System.Type;
 
 using UnityObject = UnityEngine.Object;
 
-using Asset = AssetModule.Asset;
-using Scene = AssetModule.Scene;
-using RawFile = AssetModule.RawFile;
+using Asset = GooAsset.Asset;
+using Scene = GooAsset.Scene;
+using RawFile = GooAsset.RawFile;
 
 namespace GameEngine
 {

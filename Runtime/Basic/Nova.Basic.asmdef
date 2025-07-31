@@ -2,11 +2,11 @@
     "name": "Nova.Basic",
     "rootNamespace": "",
     "references": [
-        "AssetModule",
         "FairyGUI",
         "Protobuf",
         "ProtoBuf.Extension",
         "UniTask",
+        "GooAsset",
         "Nova.Library",
         "Nova.Engine"
     ],

@@ -11,6 +11,10 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 
+# Resource packaging directory
+/[Aa]sset[Bb]undles/
+/[Bb]undles/
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emory[Cc]aptures/
@@ -41,6 +45,9 @@ ExportedObj/
 *.opendb
 *.VC.db
 
+# Unity3D package manager file
+# /Packages/packages-lock.json
+
 # Unity3D generated meta files
 *.meta
 *.pidb.meta
@@ -50,9 +57,15 @@ ExportedObj/
 # Unity3D generated file on crash reports
 sysinfo.txt
 
-# Excel temporary files
+# Word, Excel and PowerPoint temporary files
+~$*.docx
+~$*.dotx
 ~$*.xlsx
+~$*.pptx
+~$*.docx.meta
+~$*.dotx.meta
 ~$*.xlsx.meta
+~$*.pptx.meta
 
 # OS files
 .DS_Store
@@ -62,4 +75,3 @@ Thumbs.db
 *.apk
 *.aab
 *.unitypackage
-# /Packages/packages-lock.json

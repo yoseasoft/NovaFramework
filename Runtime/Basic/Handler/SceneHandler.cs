@@ -328,7 +328,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="assetName">场景资源名称</param>
         /// <param name="assetUrl">场景资源路径</param>
-        public AssetModule.Scene LoadSceneAsset(string assetName, string assetUrl, System.Action<AssetModule.Scene> completed = null)
+        public GooAsset.Scene LoadSceneAsset(string assetName, string assetUrl, System.Action<GooAsset.Scene> completed = null)
         {
             return SceneModule.LoadScene(assetName, assetUrl, completed);
         }
@@ -336,7 +336,7 @@ namespace GameEngine
         /// <summary>
         /// 异步加载场景资源
         /// </summary>
-        public async UniTask<AssetModule.Scene> LoadSceneAsync(string assetUrl)
+        public async UniTask<GooAsset.Scene> LoadSceneAsync(string assetUrl)
         {
             string sceneName = SystemPath.GetFileNameWithoutExtension(assetUrl);
             return await SceneModule.LoadScene(sceneName, assetUrl).Task;

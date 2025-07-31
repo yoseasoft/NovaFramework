@@ -2,8 +2,8 @@
     "name": "Nova.Engine",
     "rootNamespace": "",
     "references": [
-        "AssetModule",
         "UniTask",
+        "GooAsset",
         "Nova.Library"
     ],
     "includePlatforms": [],

@@ -132,7 +132,7 @@ namespace NovaEngine
                 SceneRecordInfo info = pair.Value;
                 if (SceneRecordInfo.SceneStateType.Loading == info.StateType)
                 {
-                    AssetModule.Scene assetScene = info.AssetScene;
+                    GooAsset.Scene assetScene = info.AssetScene;
                     this.SendEvent((int) ProtocolType.Progressed, "{\"sceneName\":\"" + pair.Key + "\",\"progress\":" + assetScene.Progress + "}");
                 }
             }
@@ -147,7 +147,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="sceneName">场景名称</param>
         /// <param name="sceneAddress">资源地址</param>
-        public AssetModule.Scene LoadScene(string sceneName, string sceneAddress, System.Action<AssetModule.Scene> completed = null)
+        public GooAsset.Scene LoadScene(string sceneName, string sceneAddress, System.Action<GooAsset.Scene> completed = null)
         {
             SceneRecordInfo info = null;
             if (_sceneRecordInfos.ContainsKey(sceneName))
@@ -168,7 +168,7 @@ namespace NovaEngine
                 info = null;
             }
 
-            AssetModule.Scene assetScene = ResourceModule.LoadSceneAsync(sceneAddress, true, completed);
+            GooAsset.Scene assetScene = ResourceModule.LoadSceneAsync(sceneAddress, true, completed);
             info = SceneRecordInfo.Create(sceneName);
             info.StateType = SceneRecordInfo.SceneStateType.Loading;
             info.AssetScene = assetScene;

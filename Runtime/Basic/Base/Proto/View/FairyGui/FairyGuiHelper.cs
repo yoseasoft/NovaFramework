@@ -299,7 +299,7 @@ namespace GameEngine
                 return false;
             }
 
-            Dictionary<string, AssetModule.Asset> address2Asset = null;
+            Dictionary<string, GooAsset.Asset> address2Asset = null;
 
             foreach (PackageItem pkgItem in pkg.GetItems())
             {
@@ -309,8 +309,8 @@ namespace GameEngine
                 }
 
                 string address = $"{FguiPath}{pkgItem.file}";
-                address2Asset ??= new Dictionary<string, AssetModule.Asset>();
-                AssetModule.Asset asset = ResourceHandler.LoadAssetAsync<UnityObject>(address, null);
+                address2Asset ??= new Dictionary<string, GooAsset.Asset>();
+                GooAsset.Asset asset = ResourceHandler.LoadAssetAsync<UnityObject>(address, null);
                 if (asset is null)
                 {
                     return false;
@@ -321,7 +321,7 @@ namespace GameEngine
 
             if (address2Asset != null)
             {
-                AssetModule.Asset[] assets = address2Asset.Values.ToArray();
+                GooAsset.Asset[] assets = address2Asset.Values.ToArray();
                 await UniTask.WaitUntil(() => { return assets.All(asset => asset.IsDone); });
                 foreach (var kv in address2Asset)
                 {
