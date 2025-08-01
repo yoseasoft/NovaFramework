@@ -4,7 +4,7 @@
     "references": [
         "GooAsset",
         "Nova.Library",
-        "Nova-Pkg.UniTask"
+        "Nova.UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

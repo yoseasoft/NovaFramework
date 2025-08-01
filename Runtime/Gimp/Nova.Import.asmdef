@@ -4,7 +4,7 @@
     "references": [
         "Nova.Engine",
         "Nova.Basic",
-        "Nova-Pkg.UniTask"
+        "Nova.UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

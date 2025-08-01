@@ -5,10 +5,10 @@
         "GooAsset",
         "Nova.Library",
         "Nova.Engine",
-        "Nova-Pkg.UniTask",
-        "Nova-Pkg.Protobuf",
-        "Nova-Pkg.Protobuf.Extension",
-        "Nova-Pkg.FairyGUI"
+        "Nova.UniTask",
+        "Nova.Protobuf",
+        "Nova.Protobuf.Extension",
+        "Nova.FairyGUI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
