@@ -2,13 +2,13 @@
     "name": "Nova.Basic",
     "rootNamespace": "",
     "references": [
-        "FairyGUI",
-        "Protobuf",
-        "ProtoBuf.Extension",
-        "UniTask",
         "GooAsset",
         "Nova.Library",
-        "Nova.Engine"
+        "Nova.Engine",
+        "Nova-Pkg.UniTask",
+        "Nova-Pkg.Protobuf",
+        "Nova-Pkg.Protobuf.Extension",
+        "Nova-Pkg.FairyGUI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

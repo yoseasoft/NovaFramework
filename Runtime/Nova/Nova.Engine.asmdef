@@ -2,9 +2,9 @@
     "name": "Nova.Engine",
     "rootNamespace": "",
     "references": [
-        "UniTask",
         "GooAsset",
-        "Nova.Library"
+        "Nova.Library",
+        "Nova-Pkg.UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

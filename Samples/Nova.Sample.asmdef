@@ -6,8 +6,9 @@
         "Nova.Engine",
         "Nova.Basic",
         "Nova.Import",
-        "Protobuf",
-        "ProtoBuf.Extension"
+        "Nova.Pkg.UniTask",
+        "Nova-Pkg.Protobuf",
+        "Nova-Pkg.Protobuf.Extension"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
