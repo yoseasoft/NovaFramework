@@ -56,9 +56,9 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 重启业务层模块
+        /// 重载业务层模块
         /// </summary>
-        public static void Restart()
+        public static void Reload()
         {
             if (false == GameMacros.EDITOR_COMPILING_CODE_HOTFIX_RELOAD_SUPPORTED)
             {
@@ -75,6 +75,16 @@ namespace GameEngine
 
             // 业务重载完成后，对其上下文进行刷新操作
             GameLibrary.ReloadContext();
+        }
+
+        /// <summary>
+        /// 重新导入业务层模块
+        /// </summary>
+        /// <param name="type">导入类型</param>
+        public static void Reimport(int type)
+        {
+            // 业务重新导入
+            ReimportGame(type);
         }
 
         /// <summary>
@@ -110,10 +120,21 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 重新导入资源
+        /// </summary>
+        /// <param name="type">导入类型</param>
+        private static void ReimportGame(int type)
+        {
+            // 通知中间层模块重新导入业务
+            CallRemoteService(GameMacros.GAME_REMOTE_PROCESS_CALL_REIMPORT_SERVICE_NAME, type);
+        }
+
+        /// <summary>
         /// 调用远程服务的指定函数
         /// </summary>
         /// <param name="methodName">函数名称</param>
-        private static void CallRemoteService(string methodName)
+        /// <param name="args">函数参数列表</param>
+        private static void CallRemoteService(string methodName, params object[] args)
         {
             string targetName = GameMacros.GAME_WORLD_MODULE_EXTERNAL_GATEWAY_NAME;
             if (GameMacros.GAME_IMPORT_DISPATCHING_FORWARD_ENABLED)
@@ -130,7 +151,7 @@ namespace GameEngine
 
             Debugger.Info(LogGroupTag.Basic, "Call remote service {%s} with target function name {%s}.", targetName, methodName);
 
-            NovaEngine.Utility.Reflection.CallMethod(type, methodName);
+            NovaEngine.Utility.Reflection.CallMethod(type, methodName, args);
         }
     }
 }

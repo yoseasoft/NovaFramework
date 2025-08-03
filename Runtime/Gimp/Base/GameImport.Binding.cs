@@ -51,14 +51,24 @@ namespace GameEngine
         /// </summary>
         public static void Reload()
         {
-            Restart();
+            OnReload();
+        }
+
+        /// <summary>
+        /// 世界加载器的重新导入函数
+        /// </summary>
+        /// <param name="type">导入类型</param>
+        public static void Reimport(int type)
+        {
+            OnReimport(type);
         }
 
         /// <summary>
         /// 调用游戏业务层的指定函数
         /// </summary>
         /// <param name="methodName">函数名称</param>
-        private static void CallGameFunc(string methodName)
+        /// <param name="args">函数参数列表</param>
+        private static void CallGameFunc(string methodName, params object[] args)
         {
             string targetName = GameMacros.GAME_WORLD_MODULE_EXTERNAL_GATEWAY_NAME;
             if (GameConfig.GAME_SAMPLE_DISPATCHING_FORWARD_ENABLED)
@@ -75,7 +85,7 @@ namespace GameEngine
 
             // Debugger.Info("Call remote service {%s} with target function name {%s}.", targetName, methodName);
 
-            NovaEngine.Utility.Reflection.CallMethod(type, methodName);
+            NovaEngine.Utility.Reflection.CallMethod(type, methodName, args);
         }
     }
 }

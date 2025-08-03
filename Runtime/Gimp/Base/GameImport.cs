@@ -55,7 +55,23 @@ namespace GameEngine
         /// </summary>
         public static void Restart()
         {
+        }
+
+        /// <summary>
+        /// 世界加载器的重载函数
+        /// </summary>
+        public static void OnReload()
+        {
             CallGameFunc(GameMacros.GAME_REMOTE_PROCESS_CALL_RELOAD_SERVICE_NAME);
+        }
+
+        /// <summary>
+        /// 世界加载器的重新导入函数
+        /// </summary>
+        /// <param name="type">导入类型</param>
+        public static void OnReimport(int type)
+        {
+            CallGameFunc(GameMacros.GAME_REMOTE_PROCESS_CALL_REIMPORT_SERVICE_NAME, type);
         }
 
         internal static void CheckVersion()
