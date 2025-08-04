@@ -17,13 +17,14 @@
     "url": "https://github.com/yoseasoft/NovaFramework.git"
   },
   "dependencies": {
+    "com.unity.modules.assetbundle": "1.0.0",
     "com.unity.modules.unitywebrequest": "1.0.0",
     "com.unity.modules.unitywebrequestwww": "1.0.0",
-    "com.novaframework.unity.unitask": "https://github.com/yoseasoft/com.novaframework.unity.unitask.git",
-    "com.novaframework.unity.litjson": "https://github.com/yoseasoft/com.novaframework.unity.litjson.git",
-    "com.novaframework.unity.luban": "https://github.com/yoseasoft/com.novaframework.unity.luban.git",
-    "com.novaframework.unity.protobuf": "https://github.com/yoseasoft/com.novaframework.unity.protobuf.git",
-    "com.novaframework.unity.fairygui": "https://github.com/yoseasoft/com.novaframework.unity.fairygui.git"
+    "com.novaframework.unity.unitask": "1.0.0",
+    "com.novaframework.unity.litjson": "1.0.0",
+    "com.novaframework.unity.luban": "1.0.0",
+    "com.novaframework.unity.protobuf": "1.0.0",
+    "com.novaframework.unity.fairygui": "1.0.0"
   },
   "samples": [
     {
