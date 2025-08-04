@@ -2,7 +2,8 @@
     "name": "Nova.Editor",
     "rootNamespace": "",
     "references": [
-        "Nova.Library",
+        "Nova.Configure",
+        "Nova.Configure.Editor",
         "Nova.Engine",
         "Nova.Basic"
     ],

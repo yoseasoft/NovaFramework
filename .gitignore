@@ -49,7 +49,7 @@ ExportedObj/
 # /Packages/packages-lock.json
 
 # Unity3D generated meta files
-*.meta
+# *.meta
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
