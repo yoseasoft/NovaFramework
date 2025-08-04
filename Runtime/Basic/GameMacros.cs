@@ -53,7 +53,7 @@ namespace GameEngine
         /// 业务导入流程的调度转发功能启动的状态标识<br/>
         /// 注意这个标识需手动设置，确定当前项目是否需要接入业务导入流程，从而决定是否需要开启该表示
         /// </summary>
-        public static readonly bool GAME_IMPORT_DISPATCHING_FORWARD_ENABLED = true;
+        // public static readonly bool GAME_IMPORT_DISPATCHING_FORWARD_ENABLED = true;
 
         #region 引擎内部使用的全局常量定义
 
@@ -64,11 +64,11 @@ namespace GameEngine
         /// <summary>
         /// 业务管理模块的对外关口名称
         /// </summary>
-        public const string GAME_WORLD_MODULE_EXTERNAL_GATEWAY_NAME = @"Game.GameWorld";
+        // public const string GAME_WORLD_MODULE_EXTERNAL_GATEWAY_NAME = @"Game.GameWorld";
         /// <summary>
         /// 测试案例模块的对外关口名称
         /// </summary>
-        public const string GAME_SAMPLE_MODULE_EXTERNAL_GATEWAY_NAME = @"GameEngine.Sample.GameSample";
+        // public const string GAME_SAMPLE_MODULE_EXTERNAL_GATEWAY_NAME = @"GameEngine.Sample.GameSample";
 
         /// <summary>
         /// 业务远程服务调用的运行服务接口名称

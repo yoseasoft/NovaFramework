@@ -136,11 +136,10 @@ namespace GameEngine
         /// <param name="args">函数参数列表</param>
         private static void CallRemoteService(string methodName, params object[] args)
         {
-            string targetName = GameMacros.GAME_WORLD_MODULE_EXTERNAL_GATEWAY_NAME;
-            if (GameMacros.GAME_IMPORT_DISPATCHING_FORWARD_ENABLED)
-            {
-                targetName = GameMacros.GAME_IMPORT_MODULE_EXTERNAL_GATEWAY_NAME;
-            }
+            // string targetName = GameMacros.GAME_WORLD_MODULE_EXTERNAL_GATEWAY_NAME;
+            // if (GameMacros.GAME_IMPORT_DISPATCHING_FORWARD_ENABLED)
+            // { targetName = GameMacros.GAME_IMPORT_MODULE_EXTERNAL_GATEWAY_NAME; }
+            string targetName = GameMacros.GAME_IMPORT_MODULE_EXTERNAL_GATEWAY_NAME;
 
             System.Type type = NovaEngine.Utility.Assembly.GetType(targetName);
             if (type == null)

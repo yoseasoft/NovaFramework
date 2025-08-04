@@ -99,8 +99,8 @@ namespace GameEngine
             // 加载环境参数
             NovaEngine.Environment.Load(variables);
 
-            Debugger.Info(NovaEngine.Environment.PrintString());
-            Debugger.Info(NovaEngine.Configuration.PrintString());
+            Debugger.Info(NovaEngine.Environment.ToCString());
+            Debugger.Info(NovaEngine.Configuration.ToCString());
         }
 
         #endregion

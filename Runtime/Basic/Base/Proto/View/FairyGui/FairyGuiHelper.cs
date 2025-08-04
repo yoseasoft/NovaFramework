@@ -54,12 +54,12 @@ namespace GameEngine
         /// <summary>
         /// FairyGUI布局文件后缀
         /// </summary>
-        const string FguiExtension = "_fui.bytes";
+        const string FairyGuiBinaryFileExtensionName = "_fui.bytes";
 
         /// <summary>
         /// UI资源目录
         /// </summary>
-        const string FguiPath = "Assets/_Resources/Gui/";
+        static string _fairyGuiResourcePath = null;
 
         /// <summary>
         /// UI常驻包列表
@@ -75,6 +75,20 @@ namespace GameEngine
         /// UI资源地址对于的UI资源
         /// </summary>
         static readonly Dictionary<string, UnityObject> _addressToAsset = new();
+
+        static string FairyGuiResourcePath
+        {
+            get
+            {
+                if (null == _fairyGuiResourcePath)
+                {
+                    _fairyGuiResourcePath = NovaEngine.Environment.GetSystemPath("FAIRYGUI_PATH");
+                    Debugger.Assert(false == string.IsNullOrEmpty(_fairyGuiResourcePath), "Invalid FairyGui resource path.");
+                }
+
+                return _fairyGuiResourcePath;
+            }
+        }
 
         /// <summary>
         /// 辅助对象启动接口函数
@@ -256,7 +270,7 @@ namespace GameEngine
             method = DestroyMethod.Custom;
 
             // 不使用FairyGUI的alpha分离,所以直接返回空
-            return name.EndsWith(AlphaTexEndName) ? null : _addressToAsset.GetValueOrDefault($"{FguiPath}{name}{extension}");
+            return name.EndsWith(AlphaTexEndName) ? null : _addressToAsset.GetValueOrDefault($"{FairyGuiResourcePath}{name}{extension}");
         }
 
         /// <summary>
@@ -280,7 +294,7 @@ namespace GameEngine
         static async UniTask<bool> AddPackage(string pkgName)
         {
             UIPackage pkg;
-            UnityTextAsset pkgTextAsset = await ResourceHandler.LoadAssetAsync<UnityTextAsset>($"{FguiPath}{pkgName}{FguiExtension}");
+            UnityTextAsset pkgTextAsset = await ResourceHandler.LoadAssetAsync<UnityTextAsset>($"{FairyGuiResourcePath}{pkgName}{FairyGuiBinaryFileExtensionName}");
             if (pkgTextAsset != null)
             {
                 UIPackage.AddPackage(pkgTextAsset.bytes, pkgName, CustomLoadFairyGUIAsset);
@@ -308,7 +322,7 @@ namespace GameEngine
                     continue;
                 }
 
-                string address = $"{FguiPath}{pkgItem.file}";
+                string address = $"{FairyGuiResourcePath}{pkgItem.file}";
                 address2Asset ??= new Dictionary<string, GooAsset.Asset>();
                 GooAsset.Asset asset = ResourceHandler.LoadAssetAsync<UnityObject>(address, null);
                 if (asset is null)
@@ -368,7 +382,7 @@ namespace GameEngine
                     continue;
                 }
 
-                loadedAssetAddressList.Add($"{FguiPath}{pkgItem.file}");
+                loadedAssetAddressList.Add($"{FairyGuiResourcePath}{pkgItem.file}");
             }
 
             UIPackage.RemovePackage(pkgName);
@@ -722,7 +736,7 @@ namespace GameEngine
         /// <summary>
         /// 加载外部图片
         /// </summary>
-        /// <param name="param">图片参数(格式:资源路径@是否同步加载(可选参数,不填默认false),例子:Asset/_Resources/effect/example.prefab@false)</param>
+        /// <param name="param">图片参数(格式:资源路径@是否同步加载(可选参数,不填默认false),例子:%ORIGINAL_RESOURCE_PATH%/resdir/example.prefab@false)</param>
         /// <param name="onSuccess">加载成功回调</param>
         /// <param name="onFail">加载失败回调</param>
         internal static void LoadExternalIcon(string param, LoadCompleteCallback onSuccess, LoadErrorCallback onFail)

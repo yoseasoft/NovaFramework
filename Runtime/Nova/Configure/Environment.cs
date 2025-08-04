@@ -335,7 +335,11 @@ namespace NovaEngine
             CleanupAllVariables();
         }
 
-        public static string PrintString()
+        /// <summary>
+        /// 静态类的<see cref="object.ToString"/>函数
+        /// </summary>
+        /// <returns>返回字符串信息</returns>
+        public static string ToCString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("Environment = { PROPERTIES = { ");

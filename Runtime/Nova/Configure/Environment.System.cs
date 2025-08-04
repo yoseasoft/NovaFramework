@@ -1,7 +1,6 @@
 /// -------------------------------------------------------------------------------
-/// GameEngine Framework
+/// NovaEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,27 +22,41 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine
+namespace NovaEngine
 {
     /// <summary>
-    /// 程序的配置管理器封装对象类，提供业务层对配置数据的读写访问接口
+    /// 基础环境属性定义类，对当前引擎运行所需的环境成员属性进行设置及管理
     /// </summary>
-    public static class GameConfig
+    public static partial class Environment
     {
         /// <summary>
-        /// 测试案例演示流程的调度转发功能启动的状态标识<br/>
-        /// 该模块只能从导入模块中进入，不可从引擎层直接进入<br/>
-        /// 注意这个标识需手动设置，确定当前项目是否需要接入测试案例演示流程，从而决定是否需要开启该表示
+        /// 设置系统变量
         /// </summary>
-        // public static readonly bool GAME_SAMPLE_DISPATCHING_FORWARD_ENABLED = false;
+        /// <param name="name">参数键</param>
+        /// <param name="value">参数值</param>
+        public static void SetSystemVariable(string name, string value)
+        {
+            System.Environment.SetEnvironmentVariable(name, value);
+        }
 
         /// <summary>
-        /// 业务管理模块的对外关口名称
+        /// 获取系统变量
         /// </summary>
-        public const string GAME_WORLD_MODULE_EXTERNAL_GATEWAY_NAME = @"Game.GameWorld";
+        /// <param name="name">参数键</param>
+        /// <returns>返回给定键对应的环境参数值</returns>
+        public static string GetSystemVariable(string name)
+        {
+            return System.Environment.GetEnvironmentVariable(name);
+        }
+
         /// <summary>
-        /// 测试案例模块的对外关口名称
+        /// 获取系统路径配置
         /// </summary>
-        public const string GAME_SAMPLE_MODULE_EXTERNAL_GATEWAY_NAME = @"GameEngine.Sample.GameSample";
+        /// <param name="name">参数键</param>
+        /// <returns>返回给定键对应的路径配置</returns>
+        public static string GetSystemPath(string name)
+        {
+            return CoreEngine.SystemPath.GetPath(name);
+        }
     }
 }

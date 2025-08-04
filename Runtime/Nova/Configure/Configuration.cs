@@ -77,27 +77,13 @@ namespace NovaEngine
         /// </summary>
         public readonly static int LogChannel = 0;
 
-        /// <summary>
-        /// 设置系统环境参数
-        /// </summary>
-        /// <param name="name">参数键</param>
-        /// <param name="value">参数值</param>
-        public static void SetSystemEnvironment(string name, string value)
-        {
-            System.Environment.SetEnvironmentVariable(name, value);
-        }
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
-        /// 获取系统环境参数
+        /// 静态类的<see cref="object.ToString"/>函数
         /// </summary>
-        /// <param name="name">参数键</param>
-        /// <returns>返回给定键对应的环境参数值</returns>
-        public static string GetSystemEnvironment(string name)
-        {
-            return System.Environment.GetEnvironmentVariable(name);
-        }
-
-        public static string PrintString()
+        /// <returns>返回字符串信息</returns>
+        public static string ToCString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("Configuration = { PROPERTIES = { ");

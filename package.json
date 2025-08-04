@@ -19,7 +19,7 @@
   "dependencies": {
     "com.unity.modules.unitywebrequest": "1.0.0",
     "com.unity.modules.unitywebrequestwww": "1.0.0",
-    "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
+    "com.novaframework.unity.unitask": "https://github.com/yoseasoft/com.novaframework.unity.unitask.git",
     "com.novaframework.unity.litjson": "https://github.com/yoseasoft/com.novaframework.unity.litjson.git",
     "com.novaframework.unity.luban": "https://github.com/yoseasoft/com.novaframework.unity.luban.git",
     "com.novaframework.unity.protobuf": "https://github.com/yoseasoft/com.novaframework.unity.protobuf.git",
