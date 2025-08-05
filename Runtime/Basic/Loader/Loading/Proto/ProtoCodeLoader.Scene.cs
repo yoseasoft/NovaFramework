@@ -150,7 +150,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static IDictionary<string, SceneCodeInfo> _sceneCodeInfos = new Dictionary<string, SceneCodeInfo>();
 
-        [OnProtoClassLoadOfTarget(typeof(CScene))]
+        [OnCodeLoaderClassLoadOfTarget(typeof(CScene))]
         private static bool LoadSceneClass(Symboling.SymClass symClass, bool reload)
         {
             if (false == typeof(CScene).IsAssignableFrom(symClass.ClassType))
@@ -253,13 +253,13 @@ namespace GameEngine.Loader
             }
         }
 
-        [OnProtoClassCleanupOfTarget(typeof(CScene))]
+        [OnCodeLoaderClassCleanupOfTarget(typeof(CScene))]
         private static void CleanupAllSceneClasses()
         {
             _sceneCodeInfos.Clear();
         }
 
-        [OnProtoCodeInfoLookupOfTarget(typeof(CScene))]
+        [OnCodeLoaderClassLookupOfTarget(typeof(CScene))]
         private static SceneCodeInfo LookupSceneCodeInfo(Symboling.SymClass symClass)
         {
             foreach (KeyValuePair<string, SceneCodeInfo> pair in _sceneCodeInfos)

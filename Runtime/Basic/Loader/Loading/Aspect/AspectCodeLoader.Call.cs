@@ -180,7 +180,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static IDictionary<SystemType, AspectCallCodeInfo> _aspectCallCodeInfos = new Dictionary<SystemType, AspectCallCodeInfo>();
 
-        [OnAspectClassLoadOfTarget(typeof(AspectAttribute))]
+        [OnCodeLoaderClassLoadOfTarget(typeof(AspectAttribute))]
         private static bool LoadAspectCallClass(Symboling.SymClass symClass, bool reload)
         {
             AspectCallCodeInfo info = new AspectCallCodeInfo();
@@ -281,13 +281,13 @@ namespace GameEngine.Loader
             return true;
         }
 
-        [OnAspectClassCleanupOfTarget(typeof(AspectAttribute))]
+        [OnCodeLoaderClassCleanupOfTarget(typeof(AspectAttribute))]
         private static void CleanupAllAspectCallClasses()
         {
             _aspectCallCodeInfos.Clear();
         }
 
-        [OnAspectCodeInfoLookupOfTarget(typeof(AspectAttribute))]
+        [OnCodeLoaderClassLookupOfTarget(typeof(AspectAttribute))]
         private static AspectCallCodeInfo LookupAspectCallCodeInfo(Symboling.SymClass symCLass)
         {
             foreach (KeyValuePair<SystemType, AspectCallCodeInfo> pair in _aspectCallCodeInfos)

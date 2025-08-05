@@ -63,7 +63,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static IDictionary<SystemType, InjectCallCodeInfo> _injectCallCodeInfos = new Dictionary<SystemType, InjectCallCodeInfo>();
 
-        [OnInjectClassLoadOfTarget(typeof(InjectAttribute))]
+        [OnCodeLoaderClassLoadOfTarget(typeof(InjectAttribute))]
         private static bool LoadInjectCallClass(Symboling.SymClass symClass, bool reload)
         {
             if (false == symClass.IsInstantiate)
@@ -95,13 +95,13 @@ namespace GameEngine.Loader
             return true;
         }
 
-        [OnInjectClassCleanupOfTarget(typeof(InjectAttribute))]
+        [OnCodeLoaderClassCleanupOfTarget(typeof(InjectAttribute))]
         private static void CleanupAllInjectCallClasses()
         {
             _injectCallCodeInfos.Clear();
         }
 
-        [OnInjectCodeInfoLookupOfTarget(typeof(InjectAttribute))]
+        [OnCodeLoaderClassLookupOfTarget(typeof(InjectAttribute))]
         private static InjectCallCodeInfo LookupInjectCallCodeInfo(Symboling.SymClass symClass)
         {
             foreach (KeyValuePair<SystemType, InjectCallCodeInfo> pair in _injectCallCodeInfos)

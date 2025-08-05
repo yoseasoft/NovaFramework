@@ -169,7 +169,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static IDictionary<SystemType, MessageCallCodeInfo> _messageCallCodeInfos = new Dictionary<SystemType, MessageCallCodeInfo>();
 
-        [OnNetworkClassLoadOfTarget(typeof(MessageSystemAttribute))]
+        [OnCodeLoaderClassLoadOfTarget(typeof(MessageSystemAttribute))]
         private static bool LoadMessageCallClass(Symboling.SymClass symClass, bool reload)
         {
             MessageCallCodeInfo info = new MessageCallCodeInfo();
@@ -292,13 +292,13 @@ namespace GameEngine.Loader
             return true;
         }
 
-        [OnNetworkClassCleanupOfTarget(typeof(MessageSystemAttribute))]
+        [OnCodeLoaderClassCleanupOfTarget(typeof(MessageSystemAttribute))]
         private static void CleanupAllMessageCallClasses()
         {
             _messageCallCodeInfos.Clear();
         }
 
-        [OnNetworkCodeInfoLookupOfTarget(typeof(MessageSystemAttribute))]
+        [OnCodeLoaderClassLookupOfTarget(typeof(MessageSystemAttribute))]
         private static MessageCallCodeInfo LookupMessageCallCodeInfo(Symboling.SymClass symClass)
         {
             foreach (KeyValuePair<SystemType, MessageCallCodeInfo> pair in _messageCallCodeInfos)

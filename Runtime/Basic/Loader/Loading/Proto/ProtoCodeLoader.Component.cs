@@ -63,7 +63,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static IDictionary<string, ComponentCodeInfo> _componentCodeInfos = new Dictionary<string, ComponentCodeInfo>();
 
-        [OnProtoClassLoadOfTarget(typeof(CComponent))]
+        [OnCodeLoaderClassLoadOfTarget(typeof(CComponent))]
         private static bool LoadComponentClass(Symboling.SymClass symClass, bool reload)
         {
             if (false == typeof(CComponent).IsAssignableFrom(symClass.ClassType))
@@ -156,13 +156,13 @@ namespace GameEngine.Loader
             }
         }
 
-        [OnProtoClassCleanupOfTarget(typeof(CComponent))]
+        [OnCodeLoaderClassCleanupOfTarget(typeof(CComponent))]
         private static void CleanupAllComponentClasses()
         {
             _componentCodeInfos.Clear();
         }
 
-        [OnProtoCodeInfoLookupOfTarget(typeof(CComponent))]
+        [OnCodeLoaderClassLookupOfTarget(typeof(CComponent))]
         private static ComponentCodeInfo LookupComponentCodeInfo(Symboling.SymClass symClass)
         {
             foreach (KeyValuePair<string, ComponentCodeInfo> pair in _componentCodeInfos)

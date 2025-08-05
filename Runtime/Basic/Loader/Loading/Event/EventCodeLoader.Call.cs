@@ -169,7 +169,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static IDictionary<SystemType, EventCallCodeInfo> _eventCallCodeInfos = new Dictionary<SystemType, EventCallCodeInfo>();
 
-        [OnEventClassLoadOfTarget(typeof(EventSystemAttribute))]
+        [OnCodeLoaderClassLoadOfTarget(typeof(EventSystemAttribute))]
         private static bool LoadEventCallClass(Symboling.SymClass symClass, bool reload)
         {
             EventCallCodeInfo info = new EventCallCodeInfo();
@@ -294,13 +294,13 @@ namespace GameEngine.Loader
             return true;
         }
 
-        [OnEventClassCleanupOfTarget(typeof(EventSystemAttribute))]
+        [OnCodeLoaderClassCleanupOfTarget(typeof(EventSystemAttribute))]
         private static void CleanupAllEventCallClasses()
         {
             _eventCallCodeInfos.Clear();
         }
 
-        [OnEventCodeInfoLookupOfTarget(typeof(EventSystemAttribute))]
+        [OnCodeLoaderClassLookupOfTarget(typeof(EventSystemAttribute))]
         private static EventCallCodeInfo LookupEventCallCodeInfo(Symboling.SymClass symClass)
         {
             foreach (KeyValuePair<SystemType, EventCallCodeInfo> pair in _eventCallCodeInfos)

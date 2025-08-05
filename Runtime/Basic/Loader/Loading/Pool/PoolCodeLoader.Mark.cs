@@ -62,7 +62,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static IDictionary<SystemType, PoolMarkCodeInfo> _poolMarkCodeInfos = new Dictionary<SystemType, PoolMarkCodeInfo>();
 
-        [OnPoolClassLoadOfTarget(typeof(PoolSupportedAttribute))]
+        [OnCodeLoaderClassLoadOfTarget(typeof(PoolSupportedAttribute))]
         private static bool LoadPoolMarkClass(Symboling.SymClass symClass, bool reload)
         {
             PoolMarkCodeInfo info = new PoolMarkCodeInfo();
@@ -94,13 +94,13 @@ namespace GameEngine.Loader
             return true;
         }
 
-        [OnPoolClassCleanupOfTarget(typeof(PoolSupportedAttribute))]
+        [OnCodeLoaderClassCleanupOfTarget(typeof(PoolSupportedAttribute))]
         private static void CleanupAllPoolMarkClasses()
         {
             _poolMarkCodeInfos.Clear();
         }
 
-        [OnPoolCodeInfoLookupOfTarget(typeof(PoolSupportedAttribute))]
+        [OnCodeLoaderClassLookupOfTarget(typeof(PoolSupportedAttribute))]
         private static PoolMarkCodeInfo LookupPoolMarkCodeInfo(Symboling.SymClass symClass)
         {
             foreach (KeyValuePair<SystemType, PoolMarkCodeInfo> pair in _poolMarkCodeInfos)

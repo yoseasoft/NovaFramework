@@ -66,43 +66,15 @@ namespace GameEngine.Loader
         /// <summary>
         /// 加载切面控制类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> _aspectClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _classLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 清理切面控制类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> _aspectClassCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _classCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 查找切面控制类结构信息相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> _aspectCodeInfoLookupCallbacks = new Dictionary<SystemType, SystemDelegate>();
-
-        /// <summary>
-        /// 加载切面控制类相关函数的属性定义
-        /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        private class OnAspectClassLoadOfTargetAttribute : OnCodeLoaderClassLoadOfTargetAttribute
-        {
-            public OnAspectClassLoadOfTargetAttribute(SystemType classType) : base(classType) { }
-        }
-
-        /// <summary>
-        /// 清理切面控制类相关函数的属性定义
-        /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        private class OnAspectClassCleanupOfTargetAttribute : OnCodeLoaderClassCleanupOfTargetAttribute
-        {
-
-            public OnAspectClassCleanupOfTargetAttribute(SystemType classType) : base(classType) { }
-        }
-
-        /// <summary>
-        /// 查找切面控制类对应结构信息相关函数的属性定义
-        /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        private class OnAspectCodeInfoLookupOfTargetAttribute : OnCodeLoaderClassLookupOfTargetAttribute
-        {
-            public OnAspectCodeInfoLookupOfTargetAttribute(SystemType classType) : base(classType) { }
-        }
+        private static IDictionary<SystemType, SystemDelegate> _codeInfoLookupCallbacks = new Dictionary<SystemType, SystemDelegate>();
 
         /// <summary>
         /// 初始化针对所有切面控制类声明的全部绑定回调接口
@@ -119,26 +91,26 @@ namespace GameEngine.Loader
                 foreach (SystemAttribute attr in e)
                 {
                     SystemType attrType = attr.GetType();
-                    if (typeof(OnAspectClassLoadOfTargetAttribute) == attrType)
+                    if (typeof(OnCodeLoaderClassLoadOfTargetAttribute) == attrType)
                     {
-                        OnAspectClassLoadOfTargetAttribute _attr = (OnAspectClassLoadOfTargetAttribute) attr;
+                        OnCodeLoaderClassLoadOfTargetAttribute _attr = (OnCodeLoaderClassLoadOfTargetAttribute) attr;
 
-                        Debugger.Assert(!_aspectClassLoadCallbacks.ContainsKey(_attr.ClassType), "Invalid aspect class load type");
-                        _aspectClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLoadHandler)));
+                        Debugger.Assert(!_classLoadCallbacks.ContainsKey(_attr.ClassType), "Invalid aspect class load type");
+                        _classLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLoadHandler)));
                     }
-                    else if (typeof(OnAspectClassCleanupOfTargetAttribute) == attrType)
+                    else if (typeof(OnCodeLoaderClassCleanupOfTargetAttribute) == attrType)
                     {
-                        OnAspectClassCleanupOfTargetAttribute _attr = (OnAspectClassCleanupOfTargetAttribute) attr;
+                        OnCodeLoaderClassCleanupOfTargetAttribute _attr = (OnCodeLoaderClassCleanupOfTargetAttribute) attr;
 
-                        Debugger.Assert(!_aspectClassCleanupCallbacks.ContainsKey(_attr.ClassType), "Invalid aspect class cleanup type");
-                        _aspectClassCleanupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllGeneralCodeLoaderHandler)));
+                        Debugger.Assert(!_classCleanupCallbacks.ContainsKey(_attr.ClassType), "Invalid aspect class cleanup type");
+                        _classCleanupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllGeneralCodeLoaderHandler)));
                     }
-                    else if (typeof(OnAspectCodeInfoLookupOfTargetAttribute) == attrType)
+                    else if (typeof(OnCodeLoaderClassLookupOfTargetAttribute) == attrType)
                     {
-                        OnAspectCodeInfoLookupOfTargetAttribute _attr = (OnAspectCodeInfoLookupOfTargetAttribute) attr;
+                        OnCodeLoaderClassLookupOfTargetAttribute _attr = (OnCodeLoaderClassLookupOfTargetAttribute) attr;
 
-                        Debugger.Assert(!_aspectCodeInfoLookupCallbacks.ContainsKey(_attr.ClassType), "Invalid aspect class lookup type");
-                        _aspectCodeInfoLookupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLookupHandler)));
+                        Debugger.Assert(!_codeInfoLookupCallbacks.ContainsKey(_attr.ClassType), "Invalid aspect class lookup type");
+                        _codeInfoLookupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLookupHandler)));
                     }
                 }
             }
@@ -150,7 +122,7 @@ namespace GameEngine.Loader
         [CodeLoader.OnGeneralCodeLoaderCleanup]
         private static void CleanupAllAspectClassLoadingCallbacks()
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _aspectClassCleanupCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _classCleanupCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = e.Current.Value as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
@@ -159,9 +131,9 @@ namespace GameEngine.Loader
                 handler.Invoke();
             }
 
-            _aspectClassLoadCallbacks.Clear();
-            _aspectClassCleanupCallbacks.Clear();
-            _aspectCodeInfoLookupCallbacks.Clear();
+            _classLoadCallbacks.Clear();
+            _classCleanupCallbacks.Clear();
+            _codeInfoLookupCallbacks.Clear();
         }
 
         /// <summary>
@@ -211,7 +183,7 @@ namespace GameEngine.Loader
             {
                 SystemType attrType = attrTypes[n];
                 // if (TryGetAspectClassCallbackForTargetContainer(attr.GetType(), out callback, _aspectClassLoadCallbacks))
-                if (TryGetAspectClassCallbackForTargetContainer(attrType, out callback, _aspectClassLoadCallbacks))
+                if (TryGetAspectClassCallbackForTargetContainer(attrType, out callback, _classLoadCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
                     Debugger.Assert(null != handler, "Invalid aspect class load handler.");
@@ -238,7 +210,7 @@ namespace GameEngine.Loader
             {
                 SystemType attrType = attrTypes[n];
                 // if (TryGetAspectClassCallbackForTargetContainer(attr.GetType(), out callback, _aspectCodeInfoLookupCallbacks))
-                if (TryGetAspectClassCallbackForTargetContainer(attrType, out callback, _aspectCodeInfoLookupCallbacks))
+                if (TryGetAspectClassCallbackForTargetContainer(attrType, out callback, _codeInfoLookupCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;
                     Debugger.Assert(null != handler, "Invalid aspect class lookup handler.");
@@ -256,7 +228,7 @@ namespace GameEngine.Loader
         /// <returns>若存在给定类型对应的回调句柄则返回true，否则返回false</returns>
         private static bool IsAspectClassCallbackExist(SystemType targetType)
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _aspectClassLoadCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _classLoadCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 // 这里的属性类型允许继承，因此不能直接作相等比较

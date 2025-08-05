@@ -165,7 +165,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static IDictionary<string, ViewCodeInfo> _viewCodeInfos = new Dictionary<string, ViewCodeInfo>();
 
-        [OnProtoClassLoadOfTarget(typeof(CView))]
+        [OnCodeLoaderClassLoadOfTarget(typeof(CView))]
         private static bool LoadViewClass(Symboling.SymClass symClass, bool reload)
         {
             if (false == typeof(CView).IsAssignableFrom(symClass.ClassType))
@@ -276,13 +276,13 @@ namespace GameEngine.Loader
             }
         }
 
-        [OnProtoClassCleanupOfTarget(typeof(CView))]
+        [OnCodeLoaderClassCleanupOfTarget(typeof(CView))]
         private static void CleanupAllViewClasses()
         {
             _viewCodeInfos.Clear();
         }
 
-        [OnProtoCodeInfoLookupOfTarget(typeof(CView))]
+        [OnCodeLoaderClassLookupOfTarget(typeof(CView))]
         private static ViewCodeInfo LookupViewCodeInfo(Symboling.SymClass symClass)
         {
             foreach (KeyValuePair<string, ViewCodeInfo> pair in _viewCodeInfos)

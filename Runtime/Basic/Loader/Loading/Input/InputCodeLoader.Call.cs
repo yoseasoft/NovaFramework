@@ -176,7 +176,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static IDictionary<SystemType, InputCallCodeInfo> _inputCallCodeInfos = new Dictionary<SystemType, InputCallCodeInfo>();
 
-        [OnInputClassLoadOfTarget(typeof(InputSystemAttribute))]
+        [OnCodeLoaderClassLoadOfTarget(typeof(InputSystemAttribute))]
         private static bool LoadInputCallClass(Symboling.SymClass symClass, bool reload)
         {
             InputCallCodeInfo info = new InputCallCodeInfo();
@@ -302,13 +302,13 @@ namespace GameEngine.Loader
             return true;
         }
 
-        [OnInputClassCleanupOfTarget(typeof(InputSystemAttribute))]
+        [OnCodeLoaderClassCleanupOfTarget(typeof(InputSystemAttribute))]
         private static void CleanupAllInputCallClasses()
         {
             _inputCallCodeInfos.Clear();
         }
 
-        [OnInputCodeInfoLookupOfTarget(typeof(InputSystemAttribute))]
+        [OnCodeLoaderClassLookupOfTarget(typeof(InputSystemAttribute))]
         private static InputCallCodeInfo LookupInputCallCodeInfo(Symboling.SymClass symClass)
         {
             foreach (KeyValuePair<SystemType, InputCallCodeInfo> pair in _inputCallCodeInfos)

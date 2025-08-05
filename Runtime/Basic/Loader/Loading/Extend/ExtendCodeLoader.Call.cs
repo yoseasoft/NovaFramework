@@ -266,7 +266,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static IDictionary<SystemType, ExtendCallCodeInfo> _extendCallCodeInfos = new Dictionary<SystemType, ExtendCallCodeInfo>();
 
-        [OnExtendClassLoadOfTarget(typeof(ExtendSupportedAttribute))]
+        [OnCodeLoaderClassLoadOfTarget(typeof(ExtendSupportedAttribute))]
         private static bool LoadExtendCallClass(Symboling.SymClass symClass, bool reload)
         {
             ExtendCallCodeInfo info = new ExtendCallCodeInfo();
@@ -497,13 +497,13 @@ namespace GameEngine.Loader
             return true;
         }
 
-        [OnExtendClassCleanupOfTarget(typeof(ExtendSupportedAttribute))]
+        [OnCodeLoaderClassCleanupOfTarget(typeof(ExtendSupportedAttribute))]
         private static void CleanupAllExtendCallClasses()
         {
             _extendCallCodeInfos.Clear();
         }
 
-        [OnExtendCodeInfoLookupOfTarget(typeof(ExtendSupportedAttribute))]
+        [OnCodeLoaderClassLookupOfTarget(typeof(ExtendSupportedAttribute))]
         private static ExtendCallCodeInfo LookupExtendCallCodeInfo(Symboling.SymClass symClass)
         {
             foreach (KeyValuePair<SystemType, ExtendCallCodeInfo> pair in _extendCallCodeInfos)

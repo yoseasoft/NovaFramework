@@ -69,7 +69,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static IDictionary<string, ActorCodeInfo> _actorCodeInfos = new Dictionary<string, ActorCodeInfo>();
 
-        [OnProtoClassLoadOfTarget(typeof(CActor))]
+        [OnCodeLoaderClassLoadOfTarget(typeof(CActor))]
         private static bool LoadActorClass(Symboling.SymClass symClass, bool reload)
         {
             if (false == typeof(CActor).IsAssignableFrom(symClass.ClassType))
@@ -167,13 +167,13 @@ namespace GameEngine.Loader
             }
         }
 
-        [OnProtoClassCleanupOfTarget(typeof(CActor))]
+        [OnCodeLoaderClassCleanupOfTarget(typeof(CActor))]
         private static void CleanupAllActorClasses()
         {
             _actorCodeInfos.Clear();
         }
 
-        [OnProtoCodeInfoLookupOfTarget(typeof(CActor))]
+        [OnCodeLoaderClassLookupOfTarget(typeof(CActor))]
         private static ActorCodeInfo LookupActorCodeInfo(Symboling.SymClass symClass)
         {
             foreach (KeyValuePair<string, ActorCodeInfo> pair in _actorCodeInfos)

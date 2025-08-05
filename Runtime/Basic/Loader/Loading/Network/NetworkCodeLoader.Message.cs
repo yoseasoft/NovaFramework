@@ -69,7 +69,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static IDictionary<int, NetworkMessageCodeInfo> _networkMessageCodeInfos = new Dictionary<int, NetworkMessageCodeInfo>();
 
-        [OnNetworkClassLoadOfTarget(typeof(ProtoBuf.Extension.MessageAttribute))]
+        [OnCodeLoaderClassLoadOfTarget(typeof(ProtoBuf.Extension.MessageAttribute))]
         private static bool LoadNetworkMessageClass(Symboling.SymClass symClass, bool reload)
         {
             if (false == typeof(ProtoBuf.Extension.IMessage).IsAssignableFrom(symClass.ClassType))
@@ -123,13 +123,13 @@ namespace GameEngine.Loader
             return true;
         }
 
-        [OnNetworkClassCleanupOfTarget(typeof(ProtoBuf.Extension.MessageAttribute))]
+        [OnCodeLoaderClassCleanupOfTarget(typeof(ProtoBuf.Extension.MessageAttribute))]
         private static void CleanupAllNetworkMessageClasses()
         {
             _networkMessageCodeInfos.Clear();
         }
 
-        [OnNetworkCodeInfoLookupOfTarget(typeof(ProtoBuf.Extension.MessageAttribute))]
+        [OnCodeLoaderClassLookupOfTarget(typeof(ProtoBuf.Extension.MessageAttribute))]
         private static NetworkMessageCodeInfo LookupNetworkMessageCodeInfo(Symboling.SymClass symClass)
         {
             foreach (KeyValuePair<int, NetworkMessageCodeInfo> pair in _networkMessageCodeInfos)
