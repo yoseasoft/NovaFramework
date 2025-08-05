@@ -26,7 +26,6 @@
 
 using UniTask = Cysharp.Threading.Tasks.UniTask;
 
-using FairyGObject = FairyGUI.GObject;
 using FairyGComponent = FairyGUI.GComponent;
 
 namespace GameEngine
