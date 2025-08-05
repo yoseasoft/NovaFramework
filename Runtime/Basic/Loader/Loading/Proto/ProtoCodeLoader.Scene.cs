@@ -194,26 +194,7 @@ namespace GameEngine.Loader
 
             if (string.IsNullOrEmpty(info.SceneName))
             {
-                const string SCENE_TAG = CScene.CLASS_SUFFIX_TAG;
-                string sceneName = symClass.ClassName;
-                if (sceneName.Length > SCENE_TAG.Length)
-                {
-                    // 判断是否有后缀标签
-                    if (sceneName.Substring(sceneName.Length - SCENE_TAG.Length).Equals(SCENE_TAG))
-                    {
-                        // 裁剪掉后缀标签
-                        string prefixName = sceneName.Substring(0, sceneName.Length - SCENE_TAG.Length);
-                        if (prefixName.Length > 0)
-                        {
-                            info.SceneName = prefixName;
-                        }
-                    }
-                }
-            }
-
-            if (string.IsNullOrEmpty(info.SceneName))
-            {
-                Debugger.Warn(LogGroupTag.CodeLoader, "The scene '{0}' name must be non-null or empty space.", symClass.FullName);
+                // Debugger.Warn(LogGroupTag.CodeLoader, "The scene '{%s}' name must be non-null or empty space.", symClass.FullName);
                 info.SceneName = symClass.ClassName;
             }
 

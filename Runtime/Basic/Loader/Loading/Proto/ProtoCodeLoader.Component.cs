@@ -97,26 +97,7 @@ namespace GameEngine.Loader
 
             if (string.IsNullOrEmpty(info.ComponentName))
             {
-                const string COMPONENT_TAG = "Component";
-                string componentName = symClass.ClassName;
-                if (componentName.Length > COMPONENT_TAG.Length)
-                {
-                    // 判断是否为“Component”后缀
-                    if (componentName.Substring(componentName.Length - COMPONENT_TAG.Length).Equals(COMPONENT_TAG))
-                    {
-                        // 裁剪掉“Component”后缀
-                        string prefixName = componentName.Substring(0, componentName.Length - COMPONENT_TAG.Length);
-                        if (prefixName.Length > 0)
-                        {
-                            info.ComponentName = prefixName;
-                        }
-                    }
-                }
-            }
-
-            if (string.IsNullOrEmpty(info.ComponentName))
-            {
-                Debugger.Warn(LogGroupTag.CodeLoader, "The component '{0}' name must be non-null or empty space.", symClass.FullName);
+                // Debugger.Warn(LogGroupTag.CodeLoader, "The component '{%s}' name must be non-null or empty space.", symClass.FullName);
                 info.ComponentName = symClass.ClassName;
             }
 

@@ -28,8 +28,6 @@ using System.Reflection;
 using SystemType = System.Type;
 using SystemDelegate = System.Delegate;
 using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
 using SystemMethodInfo = System.Reflection.MethodInfo;
 using SystemBindingFlags = System.Reflection.BindingFlags;
 using SystemStringBuilder = System.Text.StringBuilder;

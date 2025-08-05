@@ -108,26 +108,7 @@ namespace GameEngine.Loader
 
             if (string.IsNullOrEmpty(info.ActorName))
             {
-                const string ACTOR_TAG = CActor.CLASS_SUFFIX_TAG;
-                string actorName = symClass.ClassName;
-                if (actorName.Length > ACTOR_TAG.Length)
-                {
-                    // 判断是否有后缀标签
-                    if (actorName.Substring(actorName.Length - ACTOR_TAG.Length).Equals(ACTOR_TAG))
-                    {
-                        // 裁剪掉后缀标签
-                        string prefixName = actorName.Substring(0, actorName.Length - ACTOR_TAG.Length);
-                        if (prefixName.Length > 0)
-                        {
-                            info.ActorName = prefixName;
-                        }
-                    }
-                }
-            }
-
-            if (string.IsNullOrEmpty(info.ActorName))
-            {
-                Debugger.Warn(LogGroupTag.CodeLoader, "The actor '{0}' name must be non-null or empty space.", symClass.FullName);
+                // Debugger.Warn(LogGroupTag.CodeLoader, "The actor '{%s}' name must be non-null or empty space.", symClass.FullName);
                 info.ActorName = symClass.ClassName;
             }
 

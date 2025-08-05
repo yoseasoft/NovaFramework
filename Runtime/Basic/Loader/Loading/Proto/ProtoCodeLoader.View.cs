@@ -217,26 +217,7 @@ namespace GameEngine.Loader
 
             if (string.IsNullOrEmpty(info.ViewName))
             {
-                const string VIEW_TAG = CView.CLASS_SUFFIX_TAG;
-                string viewName = symClass.ClassName;
-                if (viewName.Length > VIEW_TAG.Length)
-                {
-                    // 判断是否有后缀标签
-                    if (viewName.Substring(viewName.Length - VIEW_TAG.Length).Equals(VIEW_TAG))
-                    {
-                        // 裁剪掉后缀标签
-                        string prefixName = viewName.Substring(0, viewName.Length - VIEW_TAG.Length);
-                        if (prefixName.Length > 0)
-                        {
-                            info.ViewName = prefixName;
-                        }
-                    }
-                }
-            }
-
-            if (string.IsNullOrEmpty(info.ViewName))
-            {
-                Debugger.Warn(LogGroupTag.CodeLoader, "The view '{0}' name must be non-null or empty space.", symClass.FullName);
+                // Debugger.Warn(LogGroupTag.CodeLoader, "The view '{%s}' name must be non-null or empty space.", symClass.FullName);
                 info.ViewName = symClass.ClassName;
             }
 

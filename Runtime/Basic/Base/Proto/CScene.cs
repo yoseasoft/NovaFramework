@@ -32,11 +32,6 @@ namespace GameEngine
     public abstract class CScene : CEntity, IUpdateActivation
     {
         /// <summary>
-        /// 场景对象的类后缀标签
-        /// </summary>
-        public const string CLASS_SUFFIX_TAG = "Scene";
-
-        /// <summary>
         /// 获取场景句柄对象
         /// </summary>
         public static SceneHandler SceneHandler => SceneHandler.Instance;

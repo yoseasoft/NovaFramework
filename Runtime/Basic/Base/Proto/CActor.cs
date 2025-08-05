@@ -37,11 +37,6 @@ namespace GameEngine
     public abstract class CActor : CEntity
     {
         /// <summary>
-        /// 角色对象的类后缀标签
-        /// </summary>
-        public const string CLASS_SUFFIX_TAG = "Actor";
-
-        /// <summary>
         /// 获取对象句柄对象
         /// </summary>
         public static ActorHandler ActorHandler => ActorHandler.Instance;

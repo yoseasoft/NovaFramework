@@ -41,11 +41,6 @@ namespace GameEngine
     public abstract class CView : CEntity, IUpdateActivation
     {
         /// <summary>
-        /// 视图对象的类后缀标签
-        /// </summary>
-        public const string CLASS_SUFFIX_TAG = "View";
-
-        /// <summary>
         /// 获取视图句柄对象
         /// </summary>
         public static GuiHandler GuiHandler => GuiHandler.Instance;
