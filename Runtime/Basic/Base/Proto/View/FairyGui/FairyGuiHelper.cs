@@ -141,8 +141,8 @@ namespace GameEngine
         /// </summary>
         static void SetContentScaleFactor()
         {
-            GRoot.inst.SetContentScaleFactor(NovaEngine.Configuration.DesignResolutionWidth,
-                                             NovaEngine.Configuration.DesignResolutionHeight);
+            GRoot.inst.SetContentScaleFactor(NovaEngine.Environment.designResolutionWidth,
+                                             NovaEngine.Environment.designResolutionHeight);
         }
 
         /// <summary>

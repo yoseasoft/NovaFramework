@@ -32,7 +32,7 @@ namespace GameEngine.Sample
     {
         public static void Run()
         {
-            SampleFiltingProcessor.AddSampleFilter(GameSampleRunningType);
+            SampleFiltingProcessor.AddSampleFilter(NovaEngine.Configuration.tutorialSampleType);
 
             // RegAssemblyNames(typeof(GameSample).Namespace);
             RegAssemblyNames(GameSampleMacros.AssemblyName);

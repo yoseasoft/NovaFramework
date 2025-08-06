@@ -40,42 +40,34 @@ namespace NovaEngine
         /// <summary>
         /// 屏幕禁止休眠模式启用开关
         /// </summary>
-        public readonly static bool OnScreenNeverSleep = false;
-
-        /// <summary>
-        /// 鼠标输入模式启用开关
-        /// </summary>
-        public readonly static bool OnMouseInput = true;
-
-        /// <summary>
-        /// 键盘输入模式启用开关
-        /// </summary>
-        public readonly static bool OnKeyboardInput = true;
-
-        /// <summary>
-        /// 程序预设的动画帧速率
-        /// </summary>
-        public readonly static int AnimationFrameRate = 0;
-
-        /// <summary>
-        /// 程序预设的逻辑帧速率
-        /// </summary>
-        public readonly static int LogicFrameRate = 0;
-
-        /// <summary>
-        /// 程序初始设计的分辨率宽度
-        /// </summary>
-        public readonly static int DesignResolutionWidth = 0;
-
-        /// <summary>
-        /// 程序初始设计的分辨率高度
-        /// </summary>
-        public readonly static int DesignResolutionHeight = 0;
+        public readonly static bool screenNeverSleep = false;
 
         /// <summary>
         /// 自动开启的日志通道类型标识
         /// </summary>
-        public readonly static int LogChannel = 0;
+        public readonly static int logChannel = 0;
+
+        /// <summary>
+        /// 日志文本在编辑模式下使用自定义颜色的开启状态标识
+        /// </summary>
+        public readonly static bool logUsingCustomColor = false;
+
+        /// <summary>
+        /// 日志文本在编辑模式下使用系统颜色的开启状态标识
+        /// </summary>
+        public readonly static bool logUsingSystemColor = false;
+
+        /// <summary>
+        /// 教程模式，打开该选项后，将跳转至框架示例环境，执行教程代码<br/>
+        /// 在正式版本中，该标识将默认关闭，仅在开发环境中有效
+        /// </summary>
+        public static readonly bool tutorialMode = false;
+
+        /// <summary>
+        /// 教程案例类型，通过该类型引导跳转到具体的示例代码环境<br/>
+        /// 在正式版本中，该类型将默认置空，仅在开发环境中有效
+        /// </summary>
+        public static readonly string tutorialSampleType = null;
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
 

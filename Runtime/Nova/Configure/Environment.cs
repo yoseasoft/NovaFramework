@@ -101,10 +101,24 @@ namespace NovaEngine
         public static readonly int applicationCode = 0;
 
         /// <summary>
-        /// 教程模式，打开该选项后，将跳转至框架示例环境，执行教程代码<br/>
-        /// 在正式版本中，该标识将默认关闭，仅在开发环境中有效
+        /// 程序预设的逻辑帧速率
         /// </summary>
-        public static readonly bool tutorialMode = false;
+        public readonly static int frameRate = 0;
+
+        /// <summary>
+        /// 程序预设的动画帧速率
+        /// </summary>
+        public readonly static int animationRate = 0;
+
+        /// <summary>
+        /// 程序初始设计的分辨率宽度
+        /// </summary>
+        public readonly static int designResolutionWidth = 0;
+
+        /// <summary>
+        /// 程序初始设计的分辨率高度
+        /// </summary>
+        public readonly static int designResolutionHeight = 0;
 
         /// <summary>
         /// 全局环境参数映射表
@@ -329,8 +343,10 @@ namespace NovaEngine
             SetProperty(nameof(dylinkMode), false);
             SetProperty(nameof(applicationName), "unknown");
             SetProperty(nameof(applicationCode), 0);
-
-            SetProperty(nameof(tutorialMode), false);
+            SetProperty(nameof(frameRate), 0);
+            SetProperty(nameof(animationRate), 0);
+            SetProperty(nameof(designResolutionWidth), 0);
+            SetProperty(nameof(designResolutionHeight), 0);
 
             CleanupAllVariables();
         }

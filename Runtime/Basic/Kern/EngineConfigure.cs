@@ -48,7 +48,7 @@ namespace GameEngine
         private static void InitPlatform()
         {
             // 引擎帧率设置
-            UnityEngine.Application.targetFrameRate = NovaEngine.Configuration.AnimationFrameRate;
+            UnityEngine.Application.targetFrameRate = NovaEngine.Environment.animationRate;
 
             NovaEngine.Application.Instance.AddProtocolTransformationHandler(EngineDispatcher.OnApplicationResponseCallback);
 

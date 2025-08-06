@@ -39,11 +39,11 @@ namespace GameEngine.Sample
         private readonly static string SampleModuleName = typeof(SampleFiltingProcessor).Namespace;
         private static string FilterModuleName = null;
 
-        internal static void AddSampleFilter(GameSampleType type)
+        internal static void AddSampleFilter(string type)
         {
             Debugger.Assert(string.IsNullOrEmpty(FilterModuleName));
 
-            FilterModuleName = SampleModuleName + "." + type.ToString();
+            FilterModuleName = $"{SampleModuleName}.{type}";
 
             GameEngine.Loader.CodeLoader.AddAssemblyLoadFiltingProcessorCallback(AssemblyLoadFiltingProcessor);
         }

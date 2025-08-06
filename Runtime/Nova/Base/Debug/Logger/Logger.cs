@@ -47,7 +47,7 @@ namespace NovaEngine
         /// </summary>
         public static void Startup()
         {
-            int channels = Configuration.LogChannel;
+            int channels = Configuration.logChannel;
 
             //#if !UNITY_EDITOR
             //// 如果处于非编辑器环境，需要禁用掉编辑器相关通道类型

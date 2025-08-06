@@ -80,7 +80,7 @@ namespace NovaEngine
             }
 
             // 屏幕休眠设置
-            UnityScreen.sleepTimeout = Configuration.OnScreenNeverSleep ? UnitySleepTimeout.NeverSleep : UnitySleepTimeout.SystemSetting;
+            UnityScreen.sleepTimeout = Configuration.screenNeverSleep ? UnitySleepTimeout.NeverSleep : UnitySleepTimeout.SystemSetting;
 
             return true;
         }

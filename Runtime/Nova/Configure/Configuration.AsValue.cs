@@ -31,48 +31,118 @@ namespace NovaEngine
     public static partial class Configuration
     {
         /// <summary>
-        /// 检测当前容器中是否存在指定键对应的属性值
+        /// 设置布尔类型的配置变量
         /// </summary>
-        /// <param name="key">属性键</param>
-        /// <returns>若存在对应属性值则返回true，否则返回false</returns>
-        public static bool HasProperty(string key)
+        /// <param name="key">配置键</param>
+        /// <param name="value">变量值</param>
+        public static void SetBool(string key, bool value)
         {
-            if (_variables.ContainsKey(key))
-            {
-                return true;
-            }
-
-            return false;
+            SetValue(key, System.Convert.ToString(value));
         }
 
         /// <summary>
-        /// 通过指定键获取布尔类型的属性值
+        /// 获取布尔类型的配置变量
         /// </summary>
-        /// <param name="key">属性键</param>
-        /// <returns>返回给定键对应的布尔值，若不存在则返回false</returns>
-        public static bool GetPropertyAsBool(string key)
+        /// <param name="key">配置键</param>
+        /// <returns>返回变量值</returns>
+        public static bool GetBool(string key)
         {
-            if (false == _variables.TryGetValue(key, out string value))
-            {
-                return false;
-            }
+            string value = GetValue(key);
 
+            if (null == value) return false;
             return Utility.Convertion.StringToBool(value);
         }
 
         /// <summary>
-        /// 通过指定键获取整数类型的属性值
+        /// 设置整数类型的配置变量
         /// </summary>
-        /// <param name="key">属性键</param>
-        /// <returns>返回给定键对应的整数值，若不存在则返回0</returns>
-        public static int GetPropertyAsInt(string key)
+        /// <param name="key">配置键</param>
+        /// <param name="value">变量值</param>
+        public static void SetInt(string key, int value)
         {
-            if (false == _variables.TryGetValue(key, out string value))
-            {
-                return 0;
-            }
+            SetValue(key, System.Convert.ToString(value));
+        }
 
+        /// <summary>
+        /// 获取整数类型的配置变量
+        /// </summary>
+        /// <param name="key">配置键</param>
+        /// <returns>返回变量值</returns>
+        public static int GetInt(string key)
+        {
+            string value = GetValue(key);
+
+            if (null == value) return 0;
             return Utility.Convertion.StringToInt(value);
+        }
+
+        /// <summary>
+        /// 设置长整数类型的配置变量
+        /// </summary>
+        /// <param name="key">配置键</param>
+        /// <param name="value">变量值</param>
+        public static void SetLong(string key, long value)
+        {
+            SetValue(key, System.Convert.ToString(value));
+        }
+
+        /// <summary>
+        /// 获取长整数类型的配置变量
+        /// </summary>
+        /// <param name="key">配置键</param>
+        /// <returns>返回变量值</returns>
+        public static long GetLong(string key)
+        {
+            string value = GetValue(key);
+
+            if (null == value) return 0L;
+            return Utility.Convertion.StringToLong(value);
+        }
+
+        /// <summary>
+        /// 设置浮点数类型的配置变量
+        /// </summary>
+        /// <param name="key">配置键</param>
+        /// <param name="value">变量值</param>
+        public static void SetFloat(string key, float value)
+        {
+            SetValue(key, System.Convert.ToString(value));
+        }
+
+        /// <summary>
+        /// 获取浮点数类型的配置变量
+        /// </summary>
+        /// <param name="key">配置键</param>
+        /// <returns>返回变量值</returns>
+        public static float GetFloat(string key)
+        {
+            string value = GetValue(key);
+
+            if (null == value) return 0f;
+            return Utility.Convertion.StringToFloat(value);
+        }
+
+        /// <summary>
+        /// 设置日期类型的配置变量
+        /// </summary>
+        /// <param name="key">配置键</param>
+        /// <param name="value">变量值</param>
+        public static void SetDateTime(string key, System.DateTime dateTime)
+        {
+            SetValue(key, System.Convert.ToString(dateTime));
+        }
+
+        /// <summary>
+        /// 获取日期类型的配置变量
+        /// </summary>
+        /// <param name="key">配置键</param>
+        /// <returns>返回变量值</returns>
+        public static System.DateTime GetDateTime(string key)
+        {
+            string value = GetValue(key);
+
+            if (null == value) return System.DateTime.MinValue;
+            return Utility.Convertion.StringToDateTime(value, System.DateTime.MinValue);
         }
     }
 }

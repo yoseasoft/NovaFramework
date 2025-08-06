@@ -2,6 +2,7 @@
 /// NovaEngine Framework
 ///
 /// Copyright (C) 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -80,14 +81,54 @@ namespace NovaEngine
                 return;
             }
 
+            // SetValue(key, value);
+        }
+
+        /// <summary>
+        /// 检测当前容器中是否存在指定键对应的属性值
+        /// </summary>
+        /// <param name="key">属性键</param>
+        /// <returns>若存在对应属性值则返回true，否则返回false</returns>
+        public static bool HasValue(string key)
+        {
             if (_variables.ContainsKey(key))
             {
-                Logger.Warn("The key '{%s}' was already exist in properties, repeat added it will be override old value.", key);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 设置配置变量对应的键值对
+        /// </summary>
+        /// <param name="key">配置键</param>
+        /// <param name="value">变量值</param>
+        public static void SetValue(string key, string value)
+        {
+            if (_variables.ContainsKey(key))
+            {
+                // Logger.Warn("The key '{%s}' was already exist in variables, repeat added it will be override old value.", key);
 
                 _variables.Remove(key);
             }
 
             _variables.Add(key, value);
+        }
+
+        /// <summary>
+        /// 获取指定键对应的配置变量值
+        /// </summary>
+        /// <param name="key">配置键</param>
+        /// <returns>返回变量值</returns>
+        public static string GetValue(string key)
+        {
+            if (_variables.TryGetValue(key, out string value))
+            {
+                return value;
+            }
+
+            return null;
         }
 
         /// <summary>
