@@ -31,7 +31,7 @@ namespace GameEngine
     /// <summary>
     /// Bean对象抽象类，对需要进行Bean对象定义的场景提供一个通用的基类
     /// </summary>
-    public abstract partial class CBean : IProto, NovaEngine.IInitializable
+    public abstract partial class CBean : IProto, IBean, NovaEngine.IInitializable
     {
         /// <summary>
         /// 实体对象的标识
@@ -120,6 +120,16 @@ namespace GameEngine
         public bool HasFeatureType(SystemType featureType)
         {
             return this.Symbol.HasFeatureType(featureType);
+        }
+
+        /// <summary>
+        /// 检测当前对象实例是否具备指定的接口类型
+        /// </summary>
+        /// <param name="interfaceType">接口类型</param>
+        /// <returns>若当前对象实例具备给定的接口类型则返回true，否则返回false</returns>
+        public bool HasInterfaceType(SystemType interfaceType)
+        {
+            return this.Symbol.HasInterfaceType(interfaceType);
         }
 
         /// <summary>

@@ -150,7 +150,6 @@ namespace GameEngine.Loader.Symboling
             sb.AppendFormat("BeanName={0},", targetObject.BeanName);
             sb.AppendFormat("Singleton={0},", targetObject.Singleton);
             sb.AppendFormat("Inherited={0},", targetObject.Inherited);
-            sb.AppendFormat("FromConfigure={0},", targetObject.FromConfigure);
 
             sb.AppendFormat("Fields={{{0}}},", NovaEngine.Utility.Text.ToString<string, BeanField>(targetObject.Fields, (k, v) =>
             {

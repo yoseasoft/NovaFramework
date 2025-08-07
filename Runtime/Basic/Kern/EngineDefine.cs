@@ -1,7 +1,6 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,49 +22,59 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
 
 namespace GameEngine
 {
     /// <summary>
-    /// 对象注入管理的对象链接标记的属性类型定义
+    /// 引擎通用参数定义类
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Field | SystemAttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class OnBeanAutowiredAttribute : SystemAttribute
+    internal static class EngineDefine
     {
         /// <summary>
-        /// 对象实例的引用类型
+        /// 核心作用域的命名空间列表
         /// </summary>
-        private readonly SystemType _referenceType;
-        /// <summary>
-        /// 对象实例的引用名称
-        /// </summary>
-        private readonly string _referenceName;
+        static IList<string> _coreScopeNamespaces = null;
 
         /// <summary>
-        /// 对象引用类型获取函数
+        /// 获取核心作用域的命名空间列表
         /// </summary>
-        public SystemType ReferenceType => _referenceType;
-        /// <summary>
-        /// 对象引用名称获取函数
-        /// </summary>
-        public string ReferenceName => _referenceName;
-
-        public OnBeanAutowiredAttribute(SystemType referenceType) : this(referenceType, null)
+        static IList<string> CoreScopeNamespaces
         {
+            get
+            {
+                if (null == _coreScopeNamespaces)
+                {
+                    _coreScopeNamespaces = new List<string>();
+
+                    // _coreScopeNamespaces.Add("System");
+                    // _coreScopeNamespaces.Add("UnityEngine");
+                    _coreScopeNamespaces.Add(typeof(NovaEngine.Application).Namespace);
+                    _coreScopeNamespaces.Add(typeof(EngineDefine).Namespace);
+                }
+
+                return _coreScopeNamespaces;
+            }
         }
 
-        public OnBeanAutowiredAttribute(string referenceName) : this(null, referenceName)
+        /// <summary>
+        /// 检测目标类型是否处于核心作用域的命名空间中
+        /// </summary>
+        /// <param name="classType">对象类型</param>
+        /// <returns>若对象类型在核心作用域的命名空间中则返回true，否则返回false</returns>
+        public static bool IsCoreScopeClassType(SystemType classType)
         {
-        }
+            string ns = classType.Namespace;
+            for (int n = 0; n < CoreScopeNamespaces.Count; ++n)
+            {
+                string cs = CoreScopeNamespaces[n];
+                if (cs.Equals(ns))
+                    return true;
+            }
 
-        public OnBeanAutowiredAttribute(SystemType referenceType, string referenceName) : base()
-        {
-            _referenceType= referenceType;
-            _referenceName = referenceName;
+            return false;
         }
     }
 }

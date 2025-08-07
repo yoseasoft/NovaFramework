@@ -86,6 +86,13 @@ namespace GameEngine.Loader.Symboling
             {
                 SystemFieldInfo field = fields[n];
 
+                if (false == CodeLoader.SymbolResolvingFullStatus)
+                {
+                    // 仅保留业务部分的字段类型
+                    if (EngineDefine.IsCoreScopeClassType(field.DeclaringType))
+                        continue;
+                }
+
                 if (false == TryGetSymField(field, out SymField symField))
                 {
                     Debugger.Warn("Cannot resolve field '{0}' from target class type '{1}', added it failed.", field.Name, symbol.FullName);
@@ -100,6 +107,13 @@ namespace GameEngine.Loader.Symboling
             {
                 SystemPropertyInfo property = properties[n];
 
+                if (false == CodeLoader.SymbolResolvingFullStatus)
+                {
+                    // 仅保留业务部分的属性类型
+                    if (EngineDefine.IsCoreScopeClassType(property.DeclaringType))
+                        continue;
+                }
+
                 if (false == TryGetSymProperty(property, out SymProperty symProperty))
                 {
                     Debugger.Warn("Cannot resolve property '{0}' from target class type '{1}', added it failed.", property.Name, symbol.FullName);
@@ -113,6 +127,13 @@ namespace GameEngine.Loader.Symboling
             for (int n = 0; null != methods && n < methods.Length; ++n)
             {
                 SystemMethodInfo method = methods[n];
+
+                if (false == CodeLoader.SymbolResolvingFullStatus)
+                {
+                    // 仅保留业务部分的函数类型
+                    if (EngineDefine.IsCoreScopeClassType(method.DeclaringType))
+                        continue;
+                }
 
                 // 忽略掉从“object”继承下来的方法
                 // 暂时先这样处理，因为目前暂未发现有任何情况下需要通过反射或特性等原因来驱动“object”中定义的接口
@@ -130,16 +151,24 @@ namespace GameEngine.Loader.Symboling
                 symbol.AddMethod(symMethod);
             }
 
+            // 个性化定制
+            DoPersonalizedCustomizationOfClass(symbol);
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////
+            // 符号类解析完成，接下来进行Bean的解析和装配
+            ///////////////////////////////////////////////////////////////////////////////////////////////////
+
             // 2024-08-05:
             // 标记对象不设置默认实体对象，仅在解析标记成功后才配置默认实体
             // 2024-08-21:
             // 在解析对象类时，直接将所有定义的实体Bean解析并注册
             // 因为在后面原型对象绑定时，需要对其内部数据进行采集
-            IList<Bean> beans = CreateBeanObjectsFromSymClass(symbol);
-            for (int n = 0; null != beans && n < beans.Count; ++n)
+            // 2025-08-07：
+            // 在代码中仅支持定义默认Bean实例，自定义Bean组合均在配置文件中定义
+            Bean defaultBeanInstance = CreateDefaultBeanObjectFromSymClass(symbol);
+            if (null != defaultBeanInstance)
             {
-                Bean classBean = beans[n];
-                symbol.AddBean(classBean);
+                symbol.AddBean(defaultBeanInstance);
             }
 
             // 读取配置数据
@@ -158,9 +187,6 @@ namespace GameEngine.Loader.Symboling
                     return null;
                 }
             }
-
-            // 个性化定制
-            DoPersonalizedCustomizationOfClass(symbol);
 
             return symbol;
         }

@@ -60,9 +60,6 @@ namespace GameEngine.Loader.Symboling
             bean.Singleton = beanConfigureInfo.Singleton;
             bean.Inherited = beanConfigureInfo.Inherited;
 
-            // 标识该Bean实例是通过配置文件加载的
-            bean.FromConfigure = true;
-
             // 递归所有的父类，把具备继承标识的配置都加载进来
             SystemType parentType = symClass.ClassType;
             Configuring.BeanConfigureInfo parentBeanInfo = beanConfigureInfo;

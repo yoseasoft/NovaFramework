@@ -26,9 +26,6 @@ using System.Collections.Generic;
 
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
-using SystemFieldInfo = System.Reflection.FieldInfo;
-using SystemPropertyInfo = System.Reflection.PropertyInfo;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine.Loader.Symboling
 {
@@ -38,11 +35,11 @@ namespace GameEngine.Loader.Symboling
     internal static partial class SymClassResolver
     {
         /// <summary>
-        /// 从指定的类标记创建类对象的Bean实例列表
+        /// 从指定的类标记创建类对象的默认Bean对象实例
         /// </summary>
         /// <param name="symClass">类标记对象</param>
-        /// <returns>若创建Bean对象成功则返回对应实例列表，否则返回null</returns>
-        private static IList<Bean> CreateBeanObjectsFromSymClass(SymClass symClass)
+        /// <returns>若创建Bean对象成功则返回对应实例，否则返回null</returns>
+        private static Bean CreateDefaultBeanObjectFromSymClass(SymClass symClass)
         {
             // 不可实例化的类类型，无需进行Bean实体的构建
             if (false == symClass.IsInstantiate)
@@ -51,67 +48,12 @@ namespace GameEngine.Loader.Symboling
             }
 
             string defaultBeanName = symClass.DefaultBeanName;
-            IDictionary<string, Bean> beanMaps = new Dictionary<string, Bean>();
 
-            IList<OnBeanConfiguredAttribute> configureAttrs = symClass.GetAttributes<OnBeanConfiguredAttribute>();
-            for (int n = 0; null != configureAttrs && n < configureAttrs.Count; ++n)
-            {
-                OnBeanConfiguredAttribute attr = configureAttrs[n];
+            // 默认配置的Bean信息
+            Bean defaultBeanInstance = new Bean(symClass);
 
-                string beanName = null;
-                if (string.IsNullOrEmpty(attr.BeanName))
-                {
-                    beanName = defaultBeanName;
-                }
-                else
-                {
-                    beanName = attr.BeanName;
-                }
-
-                if (beanMaps.ContainsKey(beanName))
-                {
-                    Debugger.Warn("The target bean name '{0}' was already exist with symbol class '{1}', repeat registed it failed.", beanName, symClass.FullName);
-                    continue;
-                }
-
-                Bean bean = new Bean(symClass);
-
-                bean.BeanName = beanName;
-                bean.Singleton = attr.Singleton;
-
-                // 标记该Bean实例是通过类信息加载的
-                bean.FromConfigure = false;
-
-                beanMaps.Add(beanName, bean);
-            }
-
-            // 没有默认配置的Bean信息，则自行添加一个默认实例
-            if (beanMaps.Count <= 0)
-            {
-                Bean bean = new Bean(symClass);
-
-                bean.BeanName = defaultBeanName;
-                bean.Singleton = false;
-
-                // 标记该Bean实例是通过类信息加载的
-                bean.FromConfigure = false;
-
-                beanMaps.Add(bean.BeanName, bean);
-            }
-
-            // 如果没有对实体进行配置，则添加一个默认的实例
-            if (false == beanMaps.ContainsKey(defaultBeanName))
-            {
-                Bean bean = new Bean(symClass);
-
-                bean.BeanName = defaultBeanName;
-                bean.Singleton = false;
-
-                // 标记该Bean实例是通过类信息加载的
-                bean.FromConfigure = false;
-
-                beanMaps.Add(defaultBeanName, bean);
-            }
+            defaultBeanInstance.BeanName = defaultBeanName;
+            defaultBeanInstance.Singleton = false;
 
             IList<SystemAttribute> classTypeAttrs = symClass.Attributes;
             for (int n = 0; null != classTypeAttrs && n < classTypeAttrs.Count; ++n)
@@ -124,37 +66,12 @@ namespace GameEngine.Loader.Symboling
 
                     EntityActivationComponentAttribute _attr = (EntityActivationComponentAttribute) attr;
 
-                    if (false == beanMaps.TryGetValue(defaultBeanName, out Bean bean))
-                    {
-                        Debugger.Warn("Could not found any bean instance with default name '{0}', resolved attribute configure failed.", defaultBeanName);
-                        continue;
-                    }
-
-                    BeanComponent component = new BeanComponent(bean);
+                    BeanComponent component = new BeanComponent(defaultBeanInstance);
                     component.ReferenceClassType = _attr.ReferenceType;
                     component.ReferenceBeanName = _attr.ReferenceName;
                     component.Priority = _attr.Priority;
                     component.ActivationBehaviourType = _attr.ActivationBehaviourType;
-                    bean.AddComponent(component);
-                }
-                else if (typeof(EntityActivationComponentOfTargetAttribute) == attrType)
-                {
-                    Debugger.Assert(typeof(CEntity).IsAssignableFrom(symClass.ClassType), "Invalid symbol class type '{0}'.", symClass.FullName);
-
-                    EntityActivationComponentOfTargetAttribute _attr = (EntityActivationComponentOfTargetAttribute) attr;
-
-                    if (false == beanMaps.TryGetValue(_attr.TargetBeanName, out Bean bean))
-                    {
-                        Debugger.Warn("Could not found any bean instance with default name '{0}', resolved attribute configure failed.", _attr.TargetBeanName);
-                        continue;
-                    }
-
-                    BeanComponent component = new BeanComponent(bean);
-                    component.ReferenceClassType = _attr.ReferenceType;
-                    component.ReferenceBeanName = _attr.ReferenceName;
-                    component.Priority = _attr.Priority;
-                    component.ActivationBehaviourType = _attr.ActivationBehaviourType;
-                    bean.AddComponent(component);
+                    defaultBeanInstance.AddComponent(component);
                 }
             }
 
@@ -176,51 +93,23 @@ namespace GameEngine.Loader.Symboling
                         {
                             OnBeanAutowiredAttribute _attr = (OnBeanAutowiredAttribute) attr;
 
-                            if (false == beanMaps.TryGetValue(defaultBeanName, out Bean bean))
-                            {
-                                Debugger.Warn("Could not found any bean instance with default name '{0}', resolved field configure failed.", defaultBeanName);
-                                continue;
-                            }
-
-                            if (/*string.IsNullOrEmpty(_attr.ReferenceName) || */null == _attr.ReferenceType)
+                            if (null == _attr.ReferenceType && string.IsNullOrEmpty(_attr.ReferenceName))
                             {
                                 Debugger.Warn("Could not found any reference type or value with target bean field '{0}', resolved field configure failed.", symField.FieldName);
                                 continue;
                             }
 
-                            BeanField beanField = new BeanField(bean);
+                            BeanField beanField = new BeanField(defaultBeanInstance);
                             beanField.FieldName = symField.FieldName;
                             beanField.ReferenceClassType = _attr.ReferenceType;
                             beanField.ReferenceBeanName = _attr.ReferenceName;
-                            bean.AddField(beanField);
-                        }
-                        else if (typeof(OnBeanAutowiredOfTargetAttribute) == attrType)
-                        {
-                            OnBeanAutowiredOfTargetAttribute _attr = (OnBeanAutowiredOfTargetAttribute) attr;
-
-                            if (false == beanMaps.TryGetValue(_attr.BeanName, out Bean bean))
-                            {
-                                Debugger.Warn("Could not found any bean instance with default name '{0}', resolved field configure failed.", _attr.BeanName);
-                                continue;
-                            }
-
-                            if (/*string.IsNullOrEmpty(_attr.ReferenceName) || */null == _attr.ReferenceType)
-                            {
-                                Debugger.Warn("Could not found any reference type or value with target bean field '{0}', resolved field configure failed.", symField.FieldName);
-                                continue;
-                            }
-
-                            BeanField beanField = new BeanField(bean);
-                            beanField.FieldName = symField.FieldName;
-                            beanField.ReferenceClassType = _attr.ReferenceType;
-                            beanField.ReferenceBeanName = _attr.ReferenceName;
-                            bean.AddField(beanField);
+                            defaultBeanInstance.AddField(beanField);
                         }
                     }
                 }
             }
 
-            return NovaEngine.Utility.Collection.ToListForValues<string, Bean>(beanMaps);
+            return defaultBeanInstance;
         }
     }
 }

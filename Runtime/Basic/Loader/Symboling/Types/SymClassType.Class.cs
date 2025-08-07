@@ -183,6 +183,21 @@ namespace GameEngine.Loader.Symboling
             RemoveAllBeans();
         }
 
+        /// <summary>
+        /// 判断该符号类型是否继承自指定的目标对象类型
+        /// </summary>
+        /// <param name="parentType">父类型</param>
+        /// <returns>若继承自给定类型则返回true，否则返回false</returns>
+        public bool IsInheritedFrom(SystemType parentType)
+        {
+            if (null != parentType && parentType.IsAssignableFrom(_classType))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         #region 类标记对象的特性列表相关访问接口函数
 
         /// <summary>
@@ -334,7 +349,7 @@ namespace GameEngine.Loader.Symboling
 
             if (_aspectBehaviourTypes.Contains(aspectBehaviourType))
             {
-                Debugger.Warn("The symbol class '{%t}' aspect behaviour type '{%s}' was already exist, repeat added it failed.", _classType, aspectBehaviourType.ToString());
+                // Debugger.Warn("The symbol class '{%t}' aspect behaviour type '{%s}' was already exist, repeat added it failed.", _classType, aspectBehaviourType.ToString());
                 return;
             }
 

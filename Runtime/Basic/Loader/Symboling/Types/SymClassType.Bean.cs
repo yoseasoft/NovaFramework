@@ -54,11 +54,6 @@ namespace GameEngine.Loader.Symboling
         private bool _inherited;
 
         /// <summary>
-        /// 对象的数据来自于配置文件的状态标识
-        /// </summary>
-        private bool _fromConfigure;
-
-        /// <summary>
         /// Bean对象包含的字段信息
         /// </summary>
         private IDictionary<string, BeanField> _fields;
@@ -76,7 +71,6 @@ namespace GameEngine.Loader.Symboling
         public string BeanName { get { return _beanName; } internal set { _beanName = value; } }
         public bool Singleton { get { return _singleton; } internal set { _singleton = value; } }
         public bool Inherited { get { return _inherited; } internal set { _inherited = value; } }
-        public bool FromConfigure { get { return _fromConfigure; } internal set { _fromConfigure = value; } }
 
         public IDictionary<string, BeanField> Fields => _fields;
         public IDictionary<string, BeanProperty> Properties => _properties;

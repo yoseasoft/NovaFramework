@@ -24,6 +24,9 @@
 
 namespace GameEngine
 {
+    /// <summary>
+    /// 引擎转发调度管理器类
+    /// </summary>
     public static class EngineDispatcher
     {
         /// <summary>
