@@ -40,10 +40,6 @@ namespace GameEngine
         /// </summary>
         private readonly SystemType _referenceType;
         /// <summary>
-        /// 组件引用实体名称
-        /// </summary>
-        private readonly string _referenceName;
-        /// <summary>
         /// 组件优先级
         /// </summary>
         private readonly int _priority;
@@ -57,10 +53,6 @@ namespace GameEngine
         /// </summary>
         public SystemType ReferenceType => _referenceType;
         /// <summary>
-        /// 组件引用名称获取函数
-        /// </summary>
-        public string ReferenceName => _referenceName;
-        /// <summary>
         /// 组件优先级获取函数
         /// </summary>
         public int Priority => _priority;
@@ -69,34 +61,17 @@ namespace GameEngine
         /// </summary>
         public AspectBehaviourType ActivationBehaviourType => _activationBehaviourType;
 
-        public EntityActivationComponentAttribute(SystemType referenceType) : this(referenceType, null, 0, AspectBehaviourType.Initialize)
+        public EntityActivationComponentAttribute(SystemType referenceType) : this(referenceType, 0, AspectBehaviourType.Initialize)
         {
         }
 
-        public EntityActivationComponentAttribute(SystemType referenceType, int priority) : this(referenceType, null, priority, AspectBehaviourType.Initialize)
+        public EntityActivationComponentAttribute(SystemType referenceType, int priority) : this(referenceType, priority, AspectBehaviourType.Initialize)
         {
         }
 
-        public EntityActivationComponentAttribute(SystemType referenceType, int priority, AspectBehaviourType activationBehaviourType) : this(referenceType, null, priority, activationBehaviourType)
-        {
-        }
-
-        public EntityActivationComponentAttribute(string referenceName) : this(null, referenceName, 0, AspectBehaviourType.Initialize)
-        {
-        }
-
-        public EntityActivationComponentAttribute(string referenceName, int priority) : this(null, referenceName, priority, AspectBehaviourType.Initialize)
-        {
-        }
-
-        public EntityActivationComponentAttribute(string referenceName, int priority, AspectBehaviourType activationBehaviourType) : this(null, referenceName, priority, activationBehaviourType)
-        {
-        }
-
-        protected EntityActivationComponentAttribute(SystemType referenceType, string referenceName, int priority, AspectBehaviourType activationBehaviourType) : base()
+        public EntityActivationComponentAttribute(SystemType referenceType, int priority, AspectBehaviourType activationBehaviourType) : base()
         {
             _referenceType = referenceType;
-            _referenceName = referenceName;
             _priority = priority;
             _activationBehaviourType = activationBehaviourType;
         }

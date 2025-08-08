@@ -66,9 +66,15 @@ namespace GameEngine.Loader.Symboling
 
                     EntityActivationComponentAttribute _attr = (EntityActivationComponentAttribute) attr;
 
+                    if (null == _attr.ReferenceType)
+                    {
+                        Debugger.Warn("Could not found any bean component reference type with target symbol class '{%s}', resolved activation component failed.", symClass.FullName);
+                        continue;
+                    }
+
                     BeanComponent component = new BeanComponent(defaultBeanInstance);
                     component.ReferenceClassType = _attr.ReferenceType;
-                    component.ReferenceBeanName = _attr.ReferenceName;
+                    component.ReferenceBeanName = null;
                     component.Priority = _attr.Priority;
                     component.ActivationBehaviourType = _attr.ActivationBehaviourType;
                     defaultBeanInstance.AddComponent(component);
@@ -93,7 +99,8 @@ namespace GameEngine.Loader.Symboling
                         {
                             OnBeanAutowiredAttribute _attr = (OnBeanAutowiredAttribute) attr;
 
-                            if (null == _attr.ReferenceType && string.IsNullOrEmpty(_attr.ReferenceName))
+                            // 如果没有填写引用类型，那么该字段的类型必须是可以实例化的类型
+                            if (null == _attr.ReferenceType && NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(symField.FieldType))
                             {
                                 Debugger.Warn("Could not found any reference type or value with target bean field '{0}', resolved field configure failed.", symField.FieldName);
                                 continue;
@@ -101,8 +108,8 @@ namespace GameEngine.Loader.Symboling
 
                             BeanField beanField = new BeanField(defaultBeanInstance);
                             beanField.FieldName = symField.FieldName;
-                            beanField.ReferenceClassType = _attr.ReferenceType;
-                            beanField.ReferenceBeanName = _attr.ReferenceName;
+                            beanField.ReferenceClassType = _attr.ReferenceType ?? symField.FieldType;
+                            beanField.ReferenceBeanName = null;
                             defaultBeanInstance.AddField(beanField);
                         }
                     }

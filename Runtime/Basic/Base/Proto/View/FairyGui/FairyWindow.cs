@@ -193,10 +193,10 @@ namespace GameEngine
                     return;
                 }
 
-                const float normalRate = 1080f / 1920;
+                float normalRate = (float) NovaEngine.Environment.designResolutionHeight / (float) NovaEngine.Environment.designResolutionWidth;
                 if (FairyGRoot.inst.width / FairyGRoot.inst.height > normalRate)
                 {
-                    width = 1080f;
+                    width = NovaEngine.Environment.designResolutionHeight;
                     Center();
                 }
             }

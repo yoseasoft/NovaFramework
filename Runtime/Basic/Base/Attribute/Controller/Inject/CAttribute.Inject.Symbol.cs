@@ -40,32 +40,19 @@ namespace GameEngine
         /// 对象实例的引用类型
         /// </summary>
         private readonly SystemType _referenceType;
-        /// <summary>
-        /// 对象实例的引用名称
-        /// </summary>
-        private readonly string _referenceName;
 
         /// <summary>
         /// 对象引用类型获取函数
         /// </summary>
         public SystemType ReferenceType => _referenceType;
-        /// <summary>
-        /// 对象引用名称获取函数
-        /// </summary>
-        public string ReferenceName => _referenceName;
 
-        public OnBeanAutowiredAttribute(SystemType referenceType) : this(referenceType, null)
+        public OnBeanAutowiredAttribute() : this(null)
         {
         }
 
-        public OnBeanAutowiredAttribute(string referenceName) : this(null, referenceName)
+        public OnBeanAutowiredAttribute(SystemType referenceType) : base()
         {
-        }
-
-        public OnBeanAutowiredAttribute(SystemType referenceType, string referenceName) : base()
-        {
-            _referenceType= referenceType;
-            _referenceName = referenceName;
+            _referenceType = referenceType;
         }
     }
 }
