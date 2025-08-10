@@ -413,6 +413,8 @@ namespace GameEngine
                 _sceneFunctionTypes.Add(sceneName, funcType);
             }
 
+            // Debugger.Info("Register new scene class type '{0}' with target name '{1}'.", clsType.FullName, sceneName);
+
             return true;
         }
 

@@ -245,7 +245,8 @@ namespace NovaEngine
                 if (targetType.IsClass &&
                     false == targetType.IsAbstract &&
                     // false == targetType.IsInterface && // 因为已经检查了是否为类类型，所以不用再次检查是否为接口类型
-                    targetType.IsPublic
+                    // targetType.IsPublic && // 允许实体对象被定义成保护类型
+                    null != targetType.GetConstructor(SystemType.EmptyTypes) // 要求必须有一个空参构造函数
                    )
                 {
                     return true;
