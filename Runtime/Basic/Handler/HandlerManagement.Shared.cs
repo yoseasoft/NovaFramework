@@ -59,6 +59,10 @@ namespace GameEngine
         /// </summary>
         private static FileHandler _fileHandler = null;
         /// <summary>
+        /// 对象管理句柄对象实例
+        /// </summary>
+        private static ObjectHandler _objectHandler = null;
+        /// <summary>
         /// 场景管理句柄对象实例
         /// </summary>
         private static SceneHandler _sceneHandler = null;
@@ -188,6 +192,22 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 对象管理句柄对象实例的获取函数
+        /// 该函数具备对象实例的缓存功能，当实例对象发生变更时，需要进行清理缓存的操作
+        /// </summary>
+        public static ObjectHandler ObjectHandler
+        {
+            get
+            {
+                if (null == _objectHandler)
+                {
+                    _objectHandler = GetHandler<ObjectHandler>();
+                }
+                return _objectHandler;
+            }
+        }
+
+        /// <summary>
         /// 场景管理句柄对象实例的获取函数
         /// 该函数具备对象实例的缓存功能，当实例对象发生变更时，需要进行清理缓存的操作
         /// </summary>
@@ -263,6 +283,7 @@ namespace GameEngine
             _inputHandler = null;
             _resourceHandler = null;
             _fileHandler = null;
+            _objectHandler = null;
             _sceneHandler = null;
             _actorHandler = null;
             _guiHandler = null;

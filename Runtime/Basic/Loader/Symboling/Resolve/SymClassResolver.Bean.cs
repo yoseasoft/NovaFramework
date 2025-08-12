@@ -39,7 +39,7 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         /// <param name="symClass">类标记对象</param>
         /// <returns>若创建Bean对象成功则返回对应实例，否则返回null</returns>
-        private static Bean CreateDefaultBeanObjectFromSymClass(SymClass symClass)
+        private static Bean CreateDefaultBeanObjectWithSymClass(SymClass symClass)
         {
             // 不可实例化的类类型，无需进行Bean实体的构建
             if (false == symClass.IsInstantiate)

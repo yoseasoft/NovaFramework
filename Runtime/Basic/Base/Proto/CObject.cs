@@ -33,6 +33,11 @@ namespace GameEngine
     public abstract class CObject : CRef
     {
         /// <summary>
+        /// 基础对象等待销毁状态标识
+        /// </summary>
+        private bool _isOnWaitingDestroy = false;
+
+        /// <summary>
         /// 节点初始化通知接口函数
         /// </summary>
         public override sealed void Initialize()
@@ -91,5 +96,81 @@ namespace GameEngine
         /// 基础对象内部关闭通知接口函数
         /// </summary>
         protected virtual void OnShutdown() { }
+
+        /// <summary>
+        /// 基础对象刷新通知接口函数
+        /// </summary>
+        public void Update()
+        {
+            OnUpdate();
+        }
+
+        /// <summary>
+        /// 基础对象内部刷新通知接口函数
+        /// </summary>
+        protected virtual void OnUpdate() { }
+
+        /// <summary>
+        /// 基础对象后置刷新通知接口函数
+        /// </summary>
+        public void LateUpdate()
+        {
+            OnLateUpdate();
+        }
+
+        /// <summary>
+        /// 基础对象内部后置刷新通知接口函数
+        /// </summary>
+        protected virtual void OnLateUpdate() { }
+
+        /// <summary>
+        /// 基础对象唤醒通知函数接口
+        /// </summary>
+        public void Awake()
+        {
+            OnAwake();
+        }
+
+        /// <summary>
+        /// 基础对象内部唤醒通知接口函数
+        /// </summary>
+        protected virtual void OnAwake() { }
+
+        /// <summary>
+        /// 基础对象开始通知函数接口
+        /// </summary>
+        public void Start()
+        {
+        }
+
+        /// <summary>
+        /// 基础对象内部开始通知接口函数
+        /// </summary>
+        protected virtual void OnStart() { }
+
+        /// <summary>
+        /// 基础对象销毁通知函数接口
+        /// </summary>
+        public void Destroy()
+        {
+            _isOnWaitingDestroy = false;
+
+            OnDestroy();
+        }
+
+        /// <summary>
+        /// 基础对象内部销毁通知接口函数
+        /// </summary>
+        protected virtual void OnDestroy() { }
+
+        /// <summary>
+        /// 标记当前基础对象此刻为待销毁状态<br/>
+        /// 待销毁状态一旦设定便不可更改，只能等待系统删除回收此基础对象实例
+        /// </summary>
+        public void OnPrepareToDestroy()
+        {
+            _isOnWaitingDestroy = true;
+            ProtoController.Instance.RegProtoLifecycleNotification(AspectBehaviourType.Destroy, this);
+        }
     }
 }

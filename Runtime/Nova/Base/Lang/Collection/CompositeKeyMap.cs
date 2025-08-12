@@ -2,6 +2,7 @@
 /// NovaEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -30,13 +31,13 @@ namespace NovaEngine
     /// <summary>
     /// 复合键映射的字典数据结构对象类
     /// </summary>
-    /// <typeparam name="TClassKey">对象键类型</typeparam>
+    /// <typeparam name="TTypeKey">对象键类型</typeparam>
     /// <typeparam name="TNameKey">名称键类型</typeparam>
     /// <typeparam name="TValue">字典的值类型</typeparam>
-    public class CompositeKeyMap<TClassKey, TNameKey, TValue> : IEnumerable<TValue>, IEnumerable
+    public class CompositeKeyMap<TTypeKey, TNameKey, TValue> : IEnumerable<TValue>, IEnumerable
     {
-        private readonly DoubleMap<TClassKey, TNameKey> _keyMap;
-        private readonly Dictionary<TClassKey, TValue>  _classValueMap;
+        private readonly DoubleMap<TTypeKey, TNameKey> _keyMap;
+        private readonly Dictionary<TTypeKey, TValue>  _typeValueMap;
         private readonly Dictionary<TNameKey, TValue>   _nameValueMap;
 
         /// <summary>
@@ -44,8 +45,8 @@ namespace NovaEngine
         /// </summary>
         public CompositeKeyMap()
         {
-            _keyMap = new DoubleMap<TClassKey, TNameKey>();
-            _classValueMap = new Dictionary<TClassKey, TValue>();
+            _keyMap = new DoubleMap<TTypeKey, TNameKey>();
+            _typeValueMap = new Dictionary<TTypeKey, TValue>();
             _nameValueMap = new Dictionary<TNameKey, TValue>();
         }
 
@@ -68,17 +69,25 @@ namespace NovaEngine
         /// <summary>
         /// 获取复合字典中所有的类型键
         /// </summary>
-        public Dictionary<TClassKey, TValue>.KeyCollection AllClassKeys
+        public Dictionary<TTypeKey, TValue>.KeyCollection TypeKeys
         {
-            get { return _classValueMap.Keys; }
+            get { return _typeValueMap.Keys; }
         }
 
         /// <summary>
         /// 获取复合字典中所有的名称键
         /// </summary>
-        public Dictionary<TNameKey, TValue>.KeyCollection AllNameKeys
+        public Dictionary<TNameKey, TValue>.KeyCollection NameKeys
         {
             get { return _nameValueMap.Keys; }
+        }
+
+        /// <summary>
+        /// 获取所有的对象值
+        /// </summary>
+        public IList<TValue> Values
+        {
+            get { return Utility.Collection.ToList<TValue>(_nameValueMap.Values); }
         }
 
         /// <summary>
@@ -86,7 +95,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="key">要检查的主键</param>
         /// <returns>若复合字典中包含指定主键则返回true，否则返回false</returns>
-        public bool ContainsKey(TClassKey key)
+        public bool ContainsKey(TTypeKey key)
         {
             return _keyMap.ContainsKey(key);
         }
@@ -107,9 +116,9 @@ namespace NovaEngine
         /// <param name="key">要检查的主键</param>
         /// <param name="value">值对象实例</param>
         /// <returns>若获取成功返回true，否则返回false</returns>
-        public bool TryGetValue(TClassKey key, out TValue value)
+        public bool TryGetValue(TTypeKey key, out TValue value)
         {
-            return _classValueMap.TryGetValue(key, out value);
+            return _typeValueMap.TryGetValue(key, out value);
         }
 
         /// <summary>
@@ -126,20 +135,20 @@ namespace NovaEngine
         /// <summary>
         /// 向指定的主键增加指定的值
         /// </summary>
-        /// <param name="ckey">指定的主键</param>
+        /// <param name="tkey">指定的主键</param>
         /// <param name="nkey">指定的主键</param>
         /// <param name="value">指定的值</param>
         /// <returns>若数据值添加成功返回true，否则返回false</returns>
-        public bool Add(TClassKey ckey, TNameKey nkey, TValue value)
+        public bool Add(TTypeKey tkey, TNameKey nkey, TValue value)
         {
-            if (ContainsKey(ckey) || ContainsKey(nkey))
+            if (ContainsKey(tkey) || ContainsKey(nkey))
             {
-                Logger.Warn("The composite map key '{%o}, {%o}' was already exist, repeat added it failed.", ckey, nkey);
+                Logger.Warn("The composite map key '{%o}, {%o}' was already exist, repeat added it failed.", tkey, nkey);
                 return false;
             }
 
-            _keyMap.Add(ckey, nkey);
-            _classValueMap.Add(ckey, value);
+            _keyMap.Add(tkey, nkey);
+            _typeValueMap.Add(tkey, value);
             _nameValueMap.Add(nkey, value);
             return true;
         }
@@ -148,7 +157,7 @@ namespace NovaEngine
         /// 通过指定的主键中移除对应的值
         /// </summary>
         /// <param name="key">指定的主键</param>
-        public void Remove(TClassKey key)
+        public void Remove(TTypeKey key)
         {
             if (false == _keyMap.TryGetValueByKey(key, out TNameKey nameKey))
             {
@@ -157,7 +166,7 @@ namespace NovaEngine
             }
 
             _keyMap.RemoveByKey(key);
-            _classValueMap.Remove(key);
+            _typeValueMap.Remove(key);
             _nameValueMap.Remove(nameKey);
         }
 
@@ -167,14 +176,14 @@ namespace NovaEngine
         /// <param name="key">指定的主键</param>
         public void Remove(TNameKey key)
         {
-            if (false == _keyMap.TryGetKeyByValue(key, out TClassKey classKey))
+            if (false == _keyMap.TryGetKeyByValue(key, out TTypeKey classKey))
             {
                 Logger.Warn("Could not found any value with name key '{%o}', removed it failed.", key);
                 return;
             }
 
             _keyMap.RemoveByValue(key);
-            _classValueMap.Remove(classKey);
+            _typeValueMap.Remove(classKey);
             _nameValueMap.Remove(key);
         }
 
@@ -184,7 +193,7 @@ namespace NovaEngine
         public void Clear()
         {
             _keyMap.Clear();
-            _classValueMap.Clear();
+            _typeValueMap.Clear();
             _nameValueMap.Clear();
         }
 
@@ -193,7 +202,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="key">指定的主键</param>
         /// <returns>返回指定主键的数据值</returns>
-        public TValue this[TClassKey key]
+        public TValue this[TTypeKey key]
         {
             get
             {
@@ -230,7 +239,7 @@ namespace NovaEngine
         /// <returns>循环访问集合的枚举数</returns>
         public Enumerator GetEnumerator()
         {
-            return new Enumerator(_classValueMap.Values);
+            return new Enumerator(_typeValueMap.Values);
         }
 
         /// <summary>
@@ -256,9 +265,9 @@ namespace NovaEngine
         /// </summary>
         public struct Enumerator : IEnumerator<TValue>, IEnumerator
         {
-            private Dictionary<TClassKey, TValue>.ValueCollection.Enumerator _enumerator;
+            private Dictionary<TTypeKey, TValue>.ValueCollection.Enumerator _enumerator;
 
-            internal Enumerator(Dictionary<TClassKey, TValue>.ValueCollection collection)
+            internal Enumerator(Dictionary<TTypeKey, TValue>.ValueCollection collection)
             {
                 if (null == collection)
                 {

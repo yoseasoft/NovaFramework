@@ -81,6 +81,9 @@ namespace GameEngine
 
                 string enumName = enumValue.ToString();
                 // 检查句柄类型定义和模块的事件类型定义，在重名的情况下，是否值一致
+                // 2025-08-12：
+                // 此处是否有必要检查该值的一致性，理论上同名即可
+                // 值相同的意义在哪里？转发事件的来源模块检测需要？
                 NovaEngine.ModuleObject.ModuleEventType eventType = NovaEngine.Utility.Convertion.GetEnumFromString<NovaEngine.ModuleObject.ModuleEventType>(enumName);
                 if (NovaEngine.ModuleObject.ModuleEventType.Default != eventType)
                 {

@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -29,19 +30,18 @@ using SystemType = System.Type;
 namespace GameEngine
 {
     /// <summary>
-    /// 基于ECS模式定义的句柄对象类，针对实体类型访问操作的接口进行封装
-    /// 该句柄对象提供实体相关的操作访问接口
+    /// 对象模块封装的句柄对象类
     /// </summary>
-    public abstract partial class EntityHandler
+    public sealed partial class ObjectHandler
     {
         /// <summary>
-        /// 组件类型的代码注册回调函数
+        /// 对象类型的代码注册回调函数
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
-        [OnProtoRegisterClassOfTarget(typeof(CComponent))]
-        private static void LoadComponentCodeType(SystemType targetType, Loader.GeneralCodeInfo codeInfo, bool reload)
+        [OnProtoRegisterClassOfTarget(typeof(CObject))]
+        private static void LoadCodeType(SystemType targetType, Loader.GeneralCodeInfo codeInfo, bool reload)
         {
             if (targetType.IsInterface || targetType.IsAbstract)
             {
@@ -55,26 +55,25 @@ namespace GameEngine
                 return;
             }
 
-            Loader.ComponentCodeInfo componentCodeInfo = codeInfo as Loader.ComponentCodeInfo;
-            Debugger.Assert(null != componentCodeInfo, "Invalid component code info.");
+            Loader.ObjectCodeInfo objectCodeInfo = codeInfo as Loader.ObjectCodeInfo;
+            Debugger.Assert(null != objectCodeInfo, "Invalid object code info.");
 
             if (reload)
             {
-                // ProtoController.Instance.UnregisterComponentClass(componentCodeInfo.ComponentName);
-                // 重载模式下，无需重复注册视图信息
+                // 重载模式下，无需重复注册对象信息
                 return;
             }
 
-            ProtoController.Instance.RegisterComponentClass(componentCodeInfo.ComponentName, componentCodeInfo.ClassType);
+            Instance.RegisterObjectClass(objectCodeInfo.ObjectName, objectCodeInfo.ClassType, objectCodeInfo.Priority);
         }
 
         /// <summary>
-        /// 组件类型的全部代码的注销回调函数
+        /// 对象类型的全部代码的注销回调函数
         /// </summary>
-        [OnProtoUnregisterClassOfTarget(typeof(CComponent))]
-        private static void UnloadAllComponentCodeTypes()
+        [OnProtoUnregisterClassOfTarget(typeof(CObject))]
+        private static void UnloadAllCodeTypes()
         {
-            ProtoController.Instance.UnregisterAllComponentClasses();
+            Instance.UnregisterAllObjectClasses();
         }
     }
 }

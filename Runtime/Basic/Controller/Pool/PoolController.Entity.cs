@@ -50,9 +50,9 @@ namespace GameEngine
         [OnControllerSubmoduleCleanupCallback]
         private void CleanupForEntityProcess()
         {
-            RemovePoolObjectProcessInfo<IProto>();
+            RemovePoolObjectProcessInfo<CEntity>();
 
-            NovaEngine.ReferencePool.RemoveReferencePostProcess(typeof(IProto));
+            NovaEngine.ReferencePool.RemoveReferencePostProcess(typeof(CEntity));
         }
 
         #region 实体对象的创建/释放接口函数

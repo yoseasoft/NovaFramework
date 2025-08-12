@@ -266,6 +266,10 @@ namespace GameEngine
                 {
                     obj = ActorHandler.Instance.CreateActor(_classType);
                 }
+                else if (typeof(CObject).IsAssignableFrom(_classType))
+                {
+                    obj = ObjectHandler.Instance.CreateObject(_classType);
+                }
                 else
                 {
                     obj = System.Activator.CreateInstance(_classType) as CBean;
@@ -296,9 +300,17 @@ namespace GameEngine
                 // 移除对象实例的映射名称
                 obj.BeanName = null;
 
-                if (typeof(CActor).IsAssignableFrom(_classType))
+                if (typeof(CScene).IsAssignableFrom(_classType))
+                {
+                    throw new System.ArgumentException();
+                }
+                else if (typeof(CActor).IsAssignableFrom(_classType))
                 {
                     ActorHandler.Instance.DestroyActor(obj as CActor);
+                }
+                else if (typeof(CObject).IsAssignableFrom(_classType))
+                {
+                    ObjectHandler.Instance.DestroyObject(obj as CObject);
                 }
                 else
                 {

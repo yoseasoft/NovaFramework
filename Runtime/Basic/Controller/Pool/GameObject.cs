@@ -28,7 +28,7 @@ namespace GameEngine.Pool
     /// <summary>
     /// 托管对象抽象类，用于定义可进行对象池管理的对象类型
     /// </summary>
-    public abstract class GObject : NovaEngine.ObjectPool.ObjectBase
+    public abstract class GameObject : NovaEngine.ObjectPool.ObjectBase
     {
         /// <summary>
         /// 释放当前的特例对象

@@ -137,6 +137,15 @@ namespace GameEngine
             }
         }
 
+        [OnProtoLifecycleProcessRegisterOfTarget(typeof(CObject), AspectBehaviourType.Start)]
+        private void OnObjectStartProcess(IProto proto)
+        {
+            CObject obj = proto as CObject;
+            Debugger.Assert(null != obj, "Invalid arguments.");
+
+            ObjectHandler.Instance.OnObjectStartProcessing(obj);
+        }
+
         [OnProtoLifecycleProcessRegisterOfTarget(typeof(CScene), AspectBehaviourType.Start)]
         private void OnSceneStartProcess(IProto proto)
         {

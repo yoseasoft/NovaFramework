@@ -70,12 +70,12 @@ namespace GameEngine.Loader.Symboling
                 parentType = parentType.BaseType;
                 if (null != parentBeanInfo && false == string.IsNullOrEmpty(parentBeanInfo.ParentName))
                 {
-                    parentBeanInfo = CodeLoader.GetConfigureBeanByName(parentBeanInfo.ParentName);
+                    parentBeanInfo = CodeLoader.GetBeanConfigureByName(parentBeanInfo.ParentName);
                 }
                 else
                 {
                     parentBeanInfo = null; // 重置
-                    IList<Configuring.BeanConfigureInfo> list = CodeLoader.GetConfigureBeanByType(parentType);
+                    IList<Configuring.BeanConfigureInfo> list = CodeLoader.GetBeanConfigureByType(parentType);
                     if (null != list && list.Count > 0)
                     {
                         if (list.Count > 1)
@@ -135,7 +135,7 @@ namespace GameEngine.Loader.Symboling
 
                     if (false == string.IsNullOrEmpty(configureBeanFieldInfo.ReferenceName))
                     {
-                        Configuring.BeanConfigureInfo referenceConfigureBeanInfo = CodeLoader.GetConfigureBeanByName(configureBeanFieldInfo.ReferenceName);
+                        Configuring.BeanConfigureInfo referenceConfigureBeanInfo = CodeLoader.GetBeanConfigureByName(configureBeanFieldInfo.ReferenceName);
                         Debugger.Assert(null != referenceConfigureBeanInfo, "Invalid configure reference name '{0}'.", configureBeanFieldInfo.ReferenceName);
 
                         beanField.ReferenceBeanName = configureBeanFieldInfo.ReferenceName;
@@ -162,7 +162,7 @@ namespace GameEngine.Loader.Symboling
 
                 if (false == string.IsNullOrEmpty(configureBeanComponentInfo.ReferenceName))
                 {
-                    Configuring.BeanConfigureInfo referenceConfigureBeanInfo = CodeLoader.GetConfigureBeanByName(configureBeanComponentInfo.ReferenceName);
+                    Configuring.BeanConfigureInfo referenceConfigureBeanInfo = CodeLoader.GetBeanConfigureByName(configureBeanComponentInfo.ReferenceName);
                     Debugger.Assert(null != referenceConfigureBeanInfo, "Invalid configure reference name '{0}'.", configureBeanComponentInfo.ReferenceName);
 
                     beanComponent.ReferenceBeanName = configureBeanComponentInfo.ReferenceName;

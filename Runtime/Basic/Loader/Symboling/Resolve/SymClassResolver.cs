@@ -165,14 +165,28 @@ namespace GameEngine.Loader.Symboling
             // 因为在后面原型对象绑定时，需要对其内部数据进行采集
             // 2025-08-07：
             // 在代码中仅支持定义默认Bean实例，自定义Bean组合均在配置文件中定义
-            Bean defaultBeanInstance = CreateDefaultBeanObjectFromSymClass(symbol);
+            Bean defaultBeanInstance = CreateDefaultBeanObjectWithSymClass(symbol);
             if (null != defaultBeanInstance)
             {
                 symbol.AddBean(defaultBeanInstance);
             }
 
+            // 从配置文件创建实体对象
+            CreateBeanObjectsWithConfigureFile(symbol);
+
+            return symbol;
+        }
+
+        /// <summary>
+        /// 从配置文件数据创建Bean对象实例
+        /// </summary>
+        /// <param name="symbol">类型标记结构</param>
+        private static void CreateBeanObjectsWithConfigureFile(SymClass symbol)
+        {
+            SystemType targetType = symbol.ClassType;
+
             // 读取配置数据
-            IList< Configuring.BeanConfigureInfo> beanConfigureInfos = CodeLoader.GetConfigureBeanByType(targetType);
+            IList< Configuring.BeanConfigureInfo> beanConfigureInfos = CodeLoader.GetBeanConfigureByType(targetType);
             for (int n = 0; null != beanConfigureInfos && n < beanConfigureInfos.Count; ++n)
             {
                 Configuring.BeanConfigureInfo beanConfigureInfo = beanConfigureInfos[n];
@@ -183,12 +197,23 @@ namespace GameEngine.Loader.Symboling
                 }
                 else
                 {
-                    Debugger.Warn("Cannot resolve bean object with target configure info '{0}', loaded it failed.", beanConfigureInfo.Name);
-                    return null;
+                    Debugger.Error("创建Bean对象实例异常：不能正确解析名字为‘{%s}’的Bean文件配置项！", beanConfigureInfo.Name);
+                    return;
                 }
             }
+        }
 
-            return symbol;
+        /// <summary>
+        /// 重载符号类的Bean相关配置内容
+        /// </summary>
+        /// <param name="symbol">类型标记结构</param>
+        public static void RebuildBeanObjectsWithConfigureFile(SymClass symbol)
+        {
+            // 移除旧的配置Bean实例
+            symbol.RemoveAllConfigureBeans();
+
+            // 重新加载新的配置数据
+            CreateBeanObjectsWithConfigureFile(symbol);
         }
 
         /// <summary>

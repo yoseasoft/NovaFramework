@@ -1,8 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -23,49 +22,56 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System.Collections.Generic;
+
+using SystemType = System.Type;
 
 namespace GameEngine
 {
     /// <summary>
-    /// 对象实现类声明属性类型定义
+    /// 对象池管理类，用于对场景上下文中使用的对象池提供通用的访问操作接口
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class DeclareObjectClassAttribute : SystemAttribute
+    internal sealed partial class PoolController
     {
         /// <summary>
-        /// 对象名称
+        /// 托管对象处理回调管理模块的初始化函数
         /// </summary>
-        private readonly string _objectName;
-        /// <summary>
-        /// 对象优先级
-        /// </summary>
-        private readonly int _priority;
-
-        /// <summary>
-        /// 对象名称获取函数
-        /// </summary>
-        public string ObjectName => _objectName;
-
-        /// <summary>
-        /// 对象优先级获取函数
-        /// </summary>
-        public int Priority => _priority;
-
-        public DeclareObjectClassAttribute(string objectName) : this(objectName, 0)
+        [OnControllerSubmoduleInitCallback]
+        private void InitializeForGameObjectProcess()
         {
+            AddPoolObjectProcessInfo<Pool.GameObject>(CreateGameObjectInstance, ReleaseGameObjectInstance);
         }
 
-        public DeclareObjectClassAttribute(int priority) : this(string.Empty, priority)
+        /// <summary>
+        /// 托管对象处理回调管理模块的清理函数
+        /// </summary>
+        [OnControllerSubmoduleCleanupCallback]
+        private void CleanupForGameObjectProcess()
         {
+            RemovePoolObjectProcessInfo<Pool.GameObject>();
         }
 
-        public DeclareObjectClassAttribute(string objectName, int priority) : base()
+        #region 托管对象的创建/释放接口函数
+
+        /// <summary>
+        /// 通过指定的对象类型创建一个实例
+        /// </summary>
+        /// <param name="classType">对象类型</param>
+        /// <returns>返回对象实例，若创建失败则返回null</returns>
+        public Pool.GameObject CreateGameObjectInstance(SystemType classType)
         {
-            _objectName = objectName ?? string.Empty;
-            _priority = priority;
+            throw new System.NotImplementedException();
         }
+
+        /// <summary>
+        /// 释放指定的对象实例
+        /// </summary>
+        /// <param name="obj">对象实例</param>
+        public void ReleaseGameObjectInstance(Pool.GameObject obj)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion
     }
 }

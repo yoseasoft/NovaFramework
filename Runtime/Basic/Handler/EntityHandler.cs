@@ -33,16 +33,12 @@ namespace GameEngine
     /// 基于ECS模式定义的句柄对象类，针对实体类型访问操作的接口进行封装
     /// 该句柄对象提供实体相关的操作访问接口
     /// </summary>
-    public abstract partial class EcsmHandler : BaseHandler
+    public abstract partial class EntityHandler : BaseHandler
     {
         /// <summary>
         /// 实体对象映射管理容器
         /// </summary>
         private IList<CEntity> _entities = null;
-        /// <summary>
-        /// 实体对象唤醒列表容器
-        /// </summary>
-        private IList<CEntity> _awakeEntitiesList = null;
         /// <summary>
         /// 实体对象刷新列表容器
         /// </summary>
@@ -77,14 +73,14 @@ namespace GameEngine
         /// <summary>
         /// 句柄对象默认构造函数
         /// </summary>
-        public EcsmHandler()
+        public EntityHandler()
         {
         }
 
         /// <summary>
         /// 句柄对象析构函数
         /// </summary>
-        ~EcsmHandler()
+        ~EntityHandler()
         {
         }
 
@@ -96,8 +92,6 @@ namespace GameEngine
         {
             // 实体映射容器初始化
             _entities = new List<CEntity>();
-            // 实体唤醒列表初始化
-            _awakeEntitiesList = new List<CEntity>();
             // 实体刷新列表初始化
             _updateEntitiesList = new List<CEntity>();
 
@@ -124,7 +118,6 @@ namespace GameEngine
             RemoveAllEntities();
 
             _entities = null;
-            _awakeEntitiesList = null;
             _updateEntitiesList = null;
 
             // 移除所有系统对象实例
@@ -250,7 +243,6 @@ namespace GameEngine
             }
 
             // 以防万一，先删为敬
-            _awakeEntitiesList.Remove(entity);
             _updateEntitiesList.Remove(entity);
             _entities.Remove(entity);
 

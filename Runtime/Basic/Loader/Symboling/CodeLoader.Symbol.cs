@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -87,6 +88,9 @@ namespace GameEngine.Loader
             {
                 if (_symClassMaps.ContainsKey(symbol.ClassName))
                 {
+                    // 先注销Bean信息
+                    RemoveBeanObjectsOfTargetSymClassFromCache(symbol);
+                    // 再移除标记对象
                     _symClassMaps.Remove(symbol.ClassName);
                 }
                 else
@@ -104,17 +108,8 @@ namespace GameEngine.Loader
             // 添加标记信息
             _symClassMaps.Add(symbol);
 
-            // 添加Bean信息
-            IEnumerator<KeyValuePair<string, Symboling.Bean>> beans = symbol.GetBeanEnumerator();
-            if (null != beans)
-            {
-                while (beans.MoveNext())
-                {
-                    Symboling.Bean bean = beans.Current.Value;
-
-                    RegisterBeanObjectOfSymClass(bean);
-                }
-            }
+            // 添加Bean信息到缓存中
+            AddBeanObjectFromSymClassToCache(symbol);
 
             return symbol;
         }
@@ -129,10 +124,49 @@ namespace GameEngine.Loader
         }
 
         /// <summary>
-        /// 注册标记类对应的实体对象配置信息
+        /// 重新绑定当前全部标记信息的Bean实例
+        /// </summary>
+        private static void RebindingBeanObjectsOfAllSymClasses()
+        {
+            // 先清理掉Bean对象的缓存
+            _beanClassMaps.Clear();
+
+            IList<Symboling.SymClass> symbols = _symClassMaps.Values;
+            for (int n = 0; null != symbols && n < symbols.Count; ++n)
+            {
+                Symboling.SymClass symbol = symbols[n];
+
+                Symboling.SymClassResolver.RebuildBeanObjectsWithConfigureFile(symbol);
+
+                // 将新的Bean对象添加到缓存中
+                AddBeanObjectFromSymClassToCache(symbol);
+            }
+        }
+
+        /// <summary>
+        /// 将符号对象中所有的Bean实例添加到缓存中
+        /// </summary>
+        /// <param name="symbol">符号对象实例</param>
+        private static void AddBeanObjectFromSymClassToCache(Symboling.SymClass symbol)
+        {
+            // 添加Bean信息
+            IEnumerator<KeyValuePair<string, Symboling.Bean>> beans = symbol.GetBeanEnumerator();
+            if (null != beans)
+            {
+                while (beans.MoveNext())
+                {
+                    Symboling.Bean bean = beans.Current.Value;
+
+                    AddBeanObjectToCache(bean);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 将标记类对应的实体对象配置信息添加到缓存中
         /// </summary>
         /// <param name="bean">实体实例</param>
-        private static void RegisterBeanObjectOfSymClass(Symboling.Bean bean)
+        private static void AddBeanObjectToCache(Symboling.Bean bean)
         {
             string beanName = bean.BeanName;
             if (_beanClassMaps.ContainsKey(beanName))
@@ -147,12 +181,40 @@ namespace GameEngine.Loader
         }
 
         /// <summary>
+        /// 从缓存中移除与指定标识信息关联的所有Bean对象实例
+        /// </summary>
+        /// <param name="symbol">符号对象实例</param>
+        private static void RemoveBeanObjectsOfTargetSymClassFromCache(Symboling.SymClass symbol)
+        {
+            ICollection<string> keys = _beanClassMaps.Keys;
+            foreach (string k in keys)
+            {
+                if (false == _beanClassMaps.TryGetValue(k, out Symboling.Bean bean))
+                {
+                    Debugger.Warn("注销Bean实例异常：无法查找到与指定名字‘{%s}’对应的Bean对象实例！", k);
+                    continue;
+                }
+
+                if (bean.TargetClass == symbol)
+                {
+                    // 移除指定标记对应的所有Bean实例
+                    _beanClassMaps.Remove(k);
+                }
+            }
+        }
+
+        /// <summary>
         /// 通过指定名称获取对象类的标记数据
         /// </summary>
         /// <param name="className">对象名称</param>
         /// <returns>返回对应的标记数据实例，若查找失败返回null</returns>
         public static Symboling.SymClass GetSymClassByName(string className)
         {
+            if (null == _symClassMaps)
+            {
+                return null;
+            }
+
             if (_symClassMaps.TryGetValue(className, out Symboling.SymClass symbol))
             {
                 return symbol;
@@ -168,6 +230,11 @@ namespace GameEngine.Loader
         /// <returns>返回对应的标记数据实例，若查找失败返回null</returns>
         public static Symboling.SymClass GetSymClassByType(SystemType targetType)
         {
+            if (null == _symClassMaps)
+            {
+                return null;
+            }
+
             if (_symClassMaps.TryGetValue(targetType, out Symboling.SymClass symbol))
             {
                 return symbol;

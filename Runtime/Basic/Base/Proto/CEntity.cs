@@ -800,7 +800,7 @@ namespace GameEngine
         /// <returns>返回新添加的组件实例，失败则返回null</returns>
         public CComponent AddComponent(SystemType componentType)
         {
-            CComponent component = EcsmHandler.CreateInstance(componentType) as CComponent;
+            CComponent component = EntityHandler.CreateInstance(componentType) as CComponent;
             return AddComponent(component);
         }
 
@@ -1055,7 +1055,7 @@ namespace GameEngine
             Call(component.Cleanup, LifecycleKeypointType.Cleanup);
 
             // 回收组件实例
-            EcsmHandler.ReleaseInstance(component);
+            EntityHandler.ReleaseInstance(component);
         }
 
         /// <summary>

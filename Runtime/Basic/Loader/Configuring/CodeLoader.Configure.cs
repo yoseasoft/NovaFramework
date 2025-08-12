@@ -2,6 +2,8 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -48,6 +50,21 @@ namespace GameEngine.Loader
     public static partial class CodeLoader
     {
         /// <summary>
+        /// 配置文件数据加载的函数句柄定义
+        /// </summary>
+        /// <param name="path">文件路径</param>
+        /// <param name="ms">数据流</param>
+        /// <returns>加载成功返回true，若加载失败返回false</returns>
+        public delegate bool OnConfigureFileStreamLoadHandler(string path, SystemMemoryStream ms);
+
+        /// <summary>
+        /// 配置文件数据加载的函数句柄定义
+        /// </summary>
+        /// <param name="path">文件路径</param>
+        /// <returns>返回加载成功的配置数据内容，若加载失败返回null</returns>
+        public delegate string OnConfigureFileTextLoadHandler(string path);
+
+        /// <summary>
         /// 配置数据对象加载的函数句柄定义
         /// </summary>
         /// <param name="node">目标对象类型</param>
@@ -92,6 +109,11 @@ namespace GameEngine.Loader
         private static IDictionary<string, Configuring.BaseConfigureInfo> _nodeConfigureInfos = null;
 
         /// <summary>
+        /// 配置文件清单管理容器
+        /// </summary>
+        private static IList<ConfigureFileInfo> _nodeConfigureFilePaths = null;
+
+        /// <summary>
         /// 初始化针对所有配置解析类声明的全部绑定回调接口
         /// </summary>
         [OnCodeLoaderSubmoduleInitCallback]
@@ -115,7 +137,7 @@ namespace GameEngine.Loader
                     OnConfigureObjectLoadhHandler callback = method.CreateDelegate(typeof(OnConfigureObjectLoadhHandler)) as OnConfigureObjectLoadhHandler;
                     Debugger.Assert(null != callback, "Invalid configure resolve callback.");
 
-                    AddCodeConfigureResolveCallback(_attr.NodeType, _attr.NodeName, callback);
+                    AddConfigureResolveCallback(_attr.NodeType, _attr.NodeName, callback);
                 }
             }
         }
@@ -129,8 +151,9 @@ namespace GameEngine.Loader
             // 清理实例容器
             UnloadAllConfigureContents();
             _nodeConfigureInfos = null;
+            _nodeConfigureFilePaths = null;
             // 清理解析容器
-            RemoveAllCodeConfigureResolveCallbacks();
+            RemoveAllConfigureResolveCallbacks();
             _codeConfigureResolveCallbacks = null;
         }
 
@@ -168,6 +191,73 @@ namespace GameEngine.Loader
 
                 LoadConfigureContent(node);
             }
+        }
+
+        /// <summary>
+        /// 重载通用类库的配置数据
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        private static void ReloadGeneralConfigure(OnConfigureFileStreamLoadHandler callback)
+        {
+            // 卸载旧的配置数据
+            UnloadAllConfigureContents();
+
+            string path = null;
+            if (null == callback)
+            {
+                Debugger.Error(LogGroupTag.CodeLoader, "The configure file load handler must be non-null, reload general configure failed!");
+                return;
+            }
+
+            do
+            {
+                SystemMemoryStream ms = new SystemMemoryStream();
+                if (false == callback(path, ms))
+                {
+                    Debugger.Error(LogGroupTag.CodeLoader, "重载Bean配置数据失败：指定路径‘{%s}’下的配置文件加载回调接口执行异常！", path);
+                    return;
+                }
+
+                // 加载配置
+                LoadGeneralConfigure(ms);
+
+                ms.Dispose();
+
+                // 获取下一个文件路径
+                path = GetNextUnprocessedConfigureFileLoadPath();
+            } while (null != path);
+        }
+
+        /// <summary>
+        /// 重载通用类库的配置数据
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        private static void ReloadGeneralConfigure(OnConfigureFileTextLoadHandler callback)
+        {
+            string path = null;
+            if (null == callback)
+            {
+                Debugger.Error(LogGroupTag.CodeLoader, "The configure file load handler must be non-null, reload general configure failed!");
+                return;
+            }
+
+            do
+            {
+                string text = callback(path);
+
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(text);
+                SystemMemoryStream memoryStream = new SystemMemoryStream();
+                memoryStream.Write(buffer, 0, buffer.Length);
+                memoryStream.Seek(0, SystemSeekOrigin.Begin);
+
+                // 加载配置
+                LoadGeneralConfigure(memoryStream);
+
+                memoryStream.Dispose();
+
+                // 获取下一个文件路径
+                path = GetNextUnprocessedConfigureFileLoadPath();
+            } while (null != path);
         }
 
         /// <summary>
@@ -216,7 +306,8 @@ namespace GameEngine.Loader
         /// </summary>
         private static void UnloadAllConfigureContents()
         {
-            _nodeConfigureInfos.Clear();
+            _nodeConfigureInfos?.Clear();
+            _nodeConfigureFilePaths?.Clear();
         }
 
         /// <summary>
@@ -242,7 +333,7 @@ namespace GameEngine.Loader
         /// <param name="nodeType">节点类型</param>
         /// <param name="nodeName">节点名称</param>
         /// <param name="callback">解析回调句柄</param>
-        private static void AddCodeConfigureResolveCallback(SystemXmlNodeType nodeType, string nodeName, OnConfigureObjectLoadhHandler callback)
+        private static void AddConfigureResolveCallback(SystemXmlNodeType nodeType, string nodeName, OnConfigureObjectLoadhHandler callback)
         {
             IDictionary<string, OnConfigureObjectLoadhHandler> callbacks;
             if (false == _codeConfigureResolveCallbacks.TryGetValue(nodeType, out callbacks))
@@ -263,9 +354,95 @@ namespace GameEngine.Loader
         /// <summary>
         /// 移除所有注册的配置解析回调句柄
         /// </summary>
-        private static void RemoveAllCodeConfigureResolveCallbacks()
+        private static void RemoveAllConfigureResolveCallbacks()
         {
             _codeConfigureResolveCallbacks.Clear();
+        }
+
+        #endregion
+
+        #region 内联配置文件的访问记录登记/管理接口函数
+
+        /// <summary>
+        /// 配置文件信息管理对象类
+        /// </summary>
+        private class ConfigureFileInfo
+        {
+            /// <summary>
+            /// 文件路径
+            /// </summary>
+            public string path;
+            /// <summary>
+            /// 文件解析完成状态标识
+            /// </summary>
+            public bool loaded;
+        }
+
+        /// <summary>
+        /// 添加新的配置文件路径到当前的加载上下文中
+        /// </summary>
+        /// <param name="path">文件路径</param>
+        private static void AddConfigureFilePath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return;
+
+            if (null == _nodeConfigureFilePaths)
+                _nodeConfigureFilePaths = new List<ConfigureFileInfo>();
+
+            ConfigureFileInfo info = null;
+            for (int n = 0; n < _nodeConfigureFilePaths.Count; ++n)
+            {
+                info = _nodeConfigureFilePaths[n];
+                if (info.path.Equals(path))
+                {
+                    Debugger.Warn("The configure file path '{%s}' was already exists, repeat added it will be overried old value.");
+                    return;
+                }
+            }
+
+            info = new ConfigureFileInfo() { path = path, loaded = false };
+            _nodeConfigureFilePaths.Add(info);
+        }
+
+        /// <summary>
+        /// 指定文件路径下的配置文件加载完成回调通知接口函数
+        /// </summary>
+        /// <param name="path">文件路径</param>
+        private static void OnConfigureFileLoadingCompleted(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return;
+
+            for (int n = 0; null != _nodeConfigureFilePaths && n < _nodeConfigureFilePaths.Count; ++n)
+            {
+                ConfigureFileInfo info = _nodeConfigureFilePaths[n];
+                if (info.path.Equals(path))
+                {
+                    info.loaded = true;
+                    return;
+                }
+            }
+
+            Debugger.Warn("Could not found any valid configure info matched target path '{%s}', notify loading message failed.", path);
+        }
+
+        /// <summary>
+        /// 获取下一个未处理的配置文件加载路径
+        /// </summary>
+        /// <returns>返回文件路径地址</returns>
+        private static string GetNextUnprocessedConfigureFileLoadPath()
+        {
+            for (int n = 0; null != _nodeConfigureFilePaths && n <_nodeConfigureFilePaths.Count; ++n)
+            {
+                ConfigureFileInfo info = _nodeConfigureFilePaths[n];
+                if (false == info.loaded)
+                {
+                    return info.path;
+                }
+            }
+
+            return null;
         }
 
         #endregion

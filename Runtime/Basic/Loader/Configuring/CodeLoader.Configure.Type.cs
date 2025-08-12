@@ -38,7 +38,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="beanName">实体名称</param>
         /// <returns>返回配置数据实例，若查找失败返回null</returns>
-        internal static Configuring.BeanConfigureInfo GetConfigureBeanByName(string beanName)
+        internal static Configuring.BeanConfigureInfo GetBeanConfigureByName(string beanName)
         {
             if (string.IsNullOrEmpty(beanName))
             {
@@ -58,7 +58,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
         /// <returns>返回配置数据实例集合，若查找失败返回null</returns>
-        internal static IList<Configuring.BeanConfigureInfo> GetConfigureBeanByType(SystemType targetType)
+        internal static IList<Configuring.BeanConfigureInfo> GetBeanConfigureByType(SystemType targetType)
         {
             if (null == targetType)
             {

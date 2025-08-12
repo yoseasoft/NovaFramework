@@ -109,7 +109,7 @@ namespace GameEngine.Loader.Configuring
                 }
             }
 
-            Debugger.Log(beanInfo);
+            Debugger.Info(LogGroupTag.CodeLoader, "Load bean configure '{0}' succeed.", beanInfo);
             return beanInfo;
         }
 

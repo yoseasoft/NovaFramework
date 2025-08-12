@@ -35,7 +35,7 @@ namespace GameEngine
     /// 用户界面模块封装的句柄对象类
     /// 模块具体功能接口请参考<see cref="NovaEngine.GuiModule"/>类
     /// </summary>
-    public sealed partial class GuiHandler : EcsmHandler
+    public sealed partial class GuiHandler : EntityHandler
     {
         /// <summary>
         /// 视图对象类型映射注册管理容器

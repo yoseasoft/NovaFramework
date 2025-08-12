@@ -76,19 +76,24 @@ namespace GameEngine
             File = 32,
 
             /// <summary>
+            /// 对象模块
+            /// </summary>
+            Object = 41,
+
+            /// <summary>
             /// 场景模块
             /// </summary>
-            Scene = 41,
+            Scene = 42,
 
             /// <summary>
             /// 角色模块
             /// </summary>
-            Actor = 42,
+            Actor = 43,
 
             /// <summary>
             /// UI模块
             /// </summary>
-            Gui = 43,
+            Gui = 44,
 
             /// <summary>
             /// 音频模块

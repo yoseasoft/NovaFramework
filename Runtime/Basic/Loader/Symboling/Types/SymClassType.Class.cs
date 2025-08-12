@@ -888,6 +888,22 @@ namespace GameEngine.Loader.Symboling
         }
 
         /// <summary>
+        /// 从当前的类标记对象中移除所有通过配置注册的Bean实例
+        /// </summary>
+        public void RemoveAllConfigureBeans()
+        {
+            IList<string> keys = NovaEngine.Utility.Collection.ToList<string>(_beans?.Keys);
+            for (int n = 0; null != keys && n < keys.Count; ++n)
+            {
+                string k = keys[n];
+                if (DefaultBeanName.Equals(k))
+                    continue;
+
+                _beans.Remove(k);
+            }
+        }
+
+        /// <summary>
         /// 从当前的类标记对象中移除所有Bean实例
         /// </summary>
         private void RemoveAllBeans()

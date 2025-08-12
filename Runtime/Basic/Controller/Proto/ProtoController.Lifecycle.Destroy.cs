@@ -155,6 +155,15 @@ namespace GameEngine
             }
         }
 
+        [OnProtoLifecycleProcessRegisterOfTarget(typeof(CObject), AspectBehaviourType.Destroy)]
+        private void OnObjectDestroyProcess(IProto proto)
+        {
+            CObject obj = proto as CObject;
+            Debugger.Assert(null != obj, "Invalid arguments.");
+
+            ObjectHandler.Instance.RemoveObject(obj);
+        }
+
         [OnProtoLifecycleProcessRegisterOfTarget(typeof(CScene), AspectBehaviourType.Destroy)]
         private void OnSceneDestroyProcess(IProto proto)
         {

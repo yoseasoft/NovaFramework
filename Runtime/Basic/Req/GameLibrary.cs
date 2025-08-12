@@ -73,7 +73,7 @@ namespace GameEngine
         /// 游戏运行库加载指定的实体配置
         /// </summary>
         /// <param name="path">文件路径</param>
-        public static void LoadFromConfigure(string path)
+        public static void LoadBeanConfigure(string path)
         {
             using (SystemFileStream fs = new SystemFileStream(path, SystemFileMode.Open, SystemFileAccess.Read))
             {
@@ -81,7 +81,7 @@ namespace GameEngine
                 fs.Read(bytes, 0, bytes.Length);
                 fs.Close();
 
-                Loader.CodeLoader.LoadFromConfigure(bytes, 0, bytes.Length);
+                Loader.CodeLoader.LoadConfigureFile(bytes, 0, bytes.Length);
 
                 bytes = null;
             }
@@ -91,9 +91,27 @@ namespace GameEngine
         /// 游戏运行库加载指定的实体配置
         /// </summary>
         /// <param name="mstream">数据流</param>
-        public static void LoadFromConfigure(SystemMemoryStream mstream)
+        public static void LoadBeanConfigure(SystemMemoryStream mstream)
         {
-            Loader.CodeLoader.LoadFromConfigure(mstream);
+            Loader.CodeLoader.LoadConfigureFile(mstream);
+        }
+
+        /// <summary>
+        /// 游戏运行库通过指定的处理回调重载实体配置
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        public static void ReloadBeanConfigure(Loader.CodeLoader.OnConfigureFileTextLoadHandler callback)
+        {
+            Loader.CodeLoader.ReloadConfigureFile(callback);
+        }
+
+        /// <summary>
+        /// 游戏运行库通过指定的处理回调重载实体配置
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        public static void ReloadBeanConfigure(Loader.CodeLoader.OnConfigureFileStreamLoadHandler callback)
+        {
+            Loader.CodeLoader.ReloadConfigureFile(callback);
         }
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace GameEngine
     /// 角色模块封装的句柄对象类
     /// 模块具体功能接口请参考<see cref="NovaEngine.ActorModule"/>类
     /// </summary>
-    public sealed partial class ActorHandler : EcsmHandler
+    public sealed partial class ActorHandler : EntityHandler
     {
         /// <summary>
         /// 角色对象类型映射注册管理容器
