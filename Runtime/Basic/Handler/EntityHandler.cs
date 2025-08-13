@@ -342,9 +342,33 @@ namespace GameEngine
             Call(entity.Start);
 
             // 激活刷新接口的对象实例，放入到刷新队列中
-            if (typeof(IUpdateActivation).IsAssignableFrom(entity.GetType()))
+            // if (typeof(IUpdateActivation).IsAssignableFrom(entity.GetType()))
+            if (entity.IsUpdateActivation())
             {
                 _updateEntitiesList.Add(entity);
+            }
+        }
+
+        /// <summary>
+        /// 指定实体对象实例的组件列表发生变更时触发的回调通知接口函数
+        /// </summary>
+        /// <param name="entity">实体对象实例</param>
+        protected internal void OnEntityComponentsChanged(CEntity entity)
+        {
+            if (false == entity.IsOnStartingStatus() || entity.IsOnDestroyingStatus())
+            {
+                return;
+            }
+
+            if (entity.IsUpdateActivation())
+            {
+                if (false == _updateEntitiesList.Contains(entity))
+                    _updateEntitiesList.Add(entity);
+            }
+            else
+            {
+                if (_updateEntitiesList.Contains(entity))
+                    _updateEntitiesList.Remove(entity);
             }
         }
 

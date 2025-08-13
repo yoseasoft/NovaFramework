@@ -264,6 +264,33 @@ namespace GameEngine
             ProtoController.Instance.RegProtoLifecycleNotification(AspectBehaviourType.Destroy, this);
         }
 
+        #region 实体对象功能检测相关接口函数合集
+
+        /// <summary>
+        /// 检测当前实体对象是否激活刷新行为<br/>
+        /// 检测的激活条件包括实体自身和其内部的组件实例
+        /// </summary>
+        /// <returns>若实体对象激活刷新行为则返回true，否则返回false</returns>
+        protected internal virtual bool IsUpdateActivation()
+        {
+            // 实体对象自身需要刷新
+            if (HasAspectBehaviourType(AspectBehaviourType.Update) ||
+                HasAspectBehaviourType(AspectBehaviourType.LateUpdate))
+            {
+                return true;
+            }
+
+            // 实体对象内部组件需要刷新
+            if (HasMoreUpdateComponents())
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion
+
         #region 实体对象输入响应相关操作函数合集
 
         /// <summary>
@@ -764,6 +791,25 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 当前实体对象内部的组件列表发生改变时的回调通知
+        /// </summary>
+        protected abstract void OnComponentsChanged();
+
+        /// <summary>
+        /// 检测当前实体对象是否存在待更新的组件实例
+        /// </summary>
+        /// <returns>若实体对象存在更新组件则返回true，否则返回false</returns>
+        private bool HasMoreUpdateComponents()
+        {
+            if (null != _componentUpdateList && _componentUpdateList.Count > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// 通过指定的组件名称，动态创建一个新的组件实例，并添加到当前实体对象中<br/>
         /// 添加的组件名称具备唯一性，不能对相同名称的组件进行多次重复添加操作
         /// </summary>
@@ -903,6 +949,9 @@ namespace GameEngine
                 // 添加的唤醒通知队列
                 ProtoController.Instance.RegProtoLifecycleNotification(AspectBehaviourType.Start, component);
             }
+
+            // 通知组件被改变
+            OnComponentsChanged();
 
             return component;
         }
@@ -1056,6 +1105,9 @@ namespace GameEngine
 
             // 回收组件实例
             EntityHandler.ReleaseInstance(component);
+
+            // 通知组件被改变
+            OnComponentsChanged();
         }
 
         /// <summary>

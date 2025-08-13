@@ -29,7 +29,7 @@ namespace GameEngine
     /// <summary>
     /// 场景对象抽象类，对场景上下文进行封装及调度管理
     /// </summary>
-    public abstract class CScene : CEntity, IUpdateActivation
+    public abstract class CScene : CEntity
     {
         /// <summary>
         /// 获取场景句柄对象
@@ -195,5 +195,35 @@ namespace GameEngine
         public void UnloadAsset(string assetName)
         {
         }
+
+        #region 场景对象功能检测相关接口函数合集
+
+        /// <summary>
+        /// 检测当前实体对象是否激活刷新行为<br/>
+        /// 检测的激活条件包括实体自身和其内部的组件实例
+        /// </summary>
+        /// <returns>若实体对象激活刷新行为则返回true，否则返回false</returns>
+        protected internal override bool IsUpdateActivation()
+        {
+            return true;
+        }
+
+        #endregion
+
+        #region 场景对象内部组件相关的接口实现函数
+
+        /// <summary>
+        /// 当前场景对象内部的组件列表发生改变时的回调通知
+        /// </summary>
+        protected override sealed void OnComponentsChanged()
+        {
+            // 2025-08-13：
+            // 目前通知组件变更主要用于更新刷新列表
+            // 但场景对象是默认处于刷新激活状态，无需更新
+            // 所以此处暂时屏蔽该调用，若该通知有其它意义后可重新打开此通知
+            // SceneHandler.OnEntityComponentsChanged(this);
+        }
+
+        #endregion
     }
 }

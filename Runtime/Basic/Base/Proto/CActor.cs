@@ -192,5 +192,17 @@ namespace GameEngine
         {
             return ActorHandler.Instantiate(url);
         }
+
+        #region 角色对象内部组件相关的接口实现函数
+
+        /// <summary>
+        /// 当前角色对象内部的组件列表发生改变时的回调通知
+        /// </summary>
+        protected override sealed void OnComponentsChanged()
+        {
+            ActorHandler.OnEntityComponentsChanged(this);
+        }
+
+        #endregion
     }
 }

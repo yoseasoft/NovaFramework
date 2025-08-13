@@ -30,7 +30,7 @@ namespace GameEngine
     /// <summary>
     /// 基础对象抽象类，对场景中的基础对象上下文进行封装及调度管理
     /// </summary>
-    public abstract class CObject : CRef
+    public abstract class CObject : CRef, NovaEngine.IUpdatable, IProtoLifecycle
     {
         /// <summary>
         /// 基础对象等待销毁状态标识

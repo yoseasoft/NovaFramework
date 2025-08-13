@@ -51,7 +51,7 @@ namespace GameEngine
         /// <summary>
         /// 基础对象刷新列表容器
         /// </summary>
-        private IList<CObject> _updateObjectsList = null;
+        private IList<CObject> _objectUpdateList = null;
 
         /// <summary>
         /// 句柄对象的单例访问获取接口
@@ -68,7 +68,7 @@ namespace GameEngine
             _objectPriorities = new Dictionary<string, int>();
             _objects = new List<CObject>();
             // 对象刷新列表初始化
-            _updateObjectsList = new List<CObject>();
+            _objectUpdateList = new List<CObject>();
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace GameEngine
             _objectClassTypes.Clear();
             _objectPriorities.Clear();
             _objects.Clear();
-            _updateObjectsList.Clear();
+            _objectUpdateList.Clear();
         }
 
         /// <summary>
@@ -320,7 +320,7 @@ namespace GameEngine
             Call(obj.Shutdown);
 
             // 从管理容器中移除实例
-            _updateObjectsList.Remove(obj);
+            _objectUpdateList.Remove(obj);
             _objects.Remove(obj);
 
             // 移除实例
@@ -476,7 +476,7 @@ namespace GameEngine
             if (obj.HasAspectBehaviourType(AspectBehaviourType.Update) ||
                 obj.HasAspectBehaviourType(AspectBehaviourType.LateUpdate))
             {
-                _updateObjectsList.Add(obj);
+                _objectUpdateList.Add(obj);
             }
         }
 

@@ -33,11 +33,14 @@ namespace GameEngine
     /// <summary>
     /// 视图对象抽象类，对用户界面对象上下文进行封装及调度管理
     /// 
-    /// 2024-06-22:
+    /// 2024-06-22：
     /// 直接在视图基类添加刷新激活标识，因为项目中同时存在的视图总数不多，至多不超过5个
     /// 若项目中同时存在大量视图的情况，需要禁掉该标识，在具体实现类中视情况手动添加该标识
+    /// 
+    /// 2025-08-13：
+    /// 将刷新激活流程统一作动态检测处理，避免无效的刷新调度消耗性能
     /// </summary>
-    public abstract class CView : CEntity, IUpdateActivation
+    public abstract class CView : CEntity
     {
         /// <summary>
         /// 获取视图句柄对象
@@ -328,6 +331,18 @@ namespace GameEngine
             }
 
             return ContentPane.GetChildByPath(path);
+        }
+
+        #endregion
+
+        #region 视图对象内部组件相关的接口实现函数
+
+        /// <summary>
+        /// 当前视图对象内部的组件列表发生改变时的回调通知
+        /// </summary>
+        protected override sealed void OnComponentsChanged()
+        {
+            GuiHandler.OnEntityComponentsChanged(this);
         }
 
         #endregion
