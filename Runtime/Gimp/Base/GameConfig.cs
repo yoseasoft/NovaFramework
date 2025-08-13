@@ -35,15 +35,15 @@ namespace GameEngine
         /// 该模块只能从导入模块中进入，不可从引擎层直接进入<br/>
         /// 注意这个标识需手动设置，确定当前项目是否需要接入测试案例演示流程，从而决定是否需要开启该表示
         /// </summary>
-        // public static readonly bool GAME_SAMPLE_DISPATCHING_FORWARD_ENABLED = false;
+        // public static readonly bool TUTORIAL_MODULE_DISPATCHING_FORWARD_ENABLED = false;
 
         /// <summary>
         /// 业务管理模块的对外关口名称
         /// </summary>
-        public const string GAME_WORLD_MODULE_EXTERNAL_GATEWAY_NAME = @"Game.GameWorld";
+        public const string GAME_MODULE_EXTERNAL_GATEWAY_NAME = @"Game.GameWorld";
         /// <summary>
         /// 测试案例模块的对外关口名称
         /// </summary>
-        public const string GAME_SAMPLE_MODULE_EXTERNAL_GATEWAY_NAME = @"GameEngine.Sample.GameSample";
+        public const string TUTORIAL_MODULE_EXTERNAL_GATEWAY_NAME = @"GameEngine.Sample.GameWorld";
     }
 }

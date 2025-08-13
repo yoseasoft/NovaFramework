@@ -38,6 +38,31 @@ namespace GameEngine
     /// </summary>
     public static partial class GameApi
     {
+        #region 输入响应相关的服务接口函数
+
+        /// <summary>
+        /// 通过模拟输入操作的方式发送自定义按键编码的接口函数
+        /// </summary>
+        /// <param name="inputCode">按键编码</param>
+        /// <param name="operationType">按键操作类型</param>
+        public static void OnSimulationInputOperation(int inputCode, int operationType)
+        {
+            InputHandler.Instance.OnSimulationInputOperation(inputCode, operationType);
+        }
+
+        /// <summary>
+        /// 通过模拟输入操作的方式发送自定义数据的接口函数
+        /// </summary>
+        /// <param name="inputData">输入数据</param>
+        public static void OnSimulationInputOperation(object inputData)
+        {
+            InputHandler.Instance.OnSimulationInputOperation(inputData);
+        }
+
+        #endregion
+
+        #region 事件转发相关的服务接口函数
+
         /// <summary>
         /// 发送事件消息到事件管理器中等待派发
         /// </summary>
@@ -75,6 +100,21 @@ namespace GameEngine
         {
             EventController.Instance.Fire<T>(arg);
         }
+
+        #endregion
+
+        #region 网络通知相关的服务接口函数
+
+        /// <summary>
+        /// 通过模拟的方式接收基于ProtoBuf协议构建的网络消息的接口函数
+        /// </summary>
+        /// <param name="message">消息对象实例</param>
+        public static void OnSimulationReceiveMessageOfProtoBuf(ProtoBuf.Extension.IMessage message)
+        {
+            NetworkHandler.Instance.OnSimulationReceiveMessageOfProtoBuf(message);
+        }
+
+        #endregion
 
         #region 场景业务相关的服务接口函数
 

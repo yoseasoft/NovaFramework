@@ -70,12 +70,12 @@ namespace GameEngine
         /// <param name="args">函数参数列表</param>
         private static void CallGameFunc(string methodName, params object[] args)
         {
-            string targetName = GameConfig.GAME_WORLD_MODULE_EXTERNAL_GATEWAY_NAME;
+            string targetName = GameConfig.GAME_MODULE_EXTERNAL_GATEWAY_NAME;
             // 可能存在开启了教程模式，但是忘记配置具体案例类型的情况
             if (NovaEngine.Configuration.tutorialMode && null != NovaEngine.Configuration.tutorialSampleType)
             {
                 // 教程开启
-                targetName = GameConfig.GAME_SAMPLE_MODULE_EXTERNAL_GATEWAY_NAME;
+                targetName = GameConfig.TUTORIAL_MODULE_EXTERNAL_GATEWAY_NAME;
             }
 
             System.Type type = NovaEngine.Utility.Assembly.GetType(targetName);

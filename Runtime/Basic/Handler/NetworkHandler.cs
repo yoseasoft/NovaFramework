@@ -496,7 +496,7 @@ namespace GameEngine
 
                     Debugger.Assert(typeof(SocketMessageChannel).IsAssignableFrom(channel.GetType()), "无效的网络通道类型：{%t}", channel);
 
-                    OnReceiveMessageComposedOfProtoBuf(channel as SocketMessageChannel, message as ProtoBuf.Extension.IMessage);
+                    OnReceiveMessageOfProtoBuf(channel as SocketMessageChannel, message as ProtoBuf.Extension.IMessage);
                 }
                 else
                 {
@@ -512,7 +512,7 @@ namespace GameEngine
         /// 因此，我们建议外部业务代码仅在测试情况下使用该接口，且完成测试后尽快移除相关逻辑
         /// </summary>
         /// <param name="message">消息对象实例</param>
-        public void OnSimulationReceiveMessageComposedOfProtoBuf(ProtoBuf.Extension.IMessage message)
+        public void OnSimulationReceiveMessageOfProtoBuf(ProtoBuf.Extension.IMessage message)
         {
             if (false == NovaEngine.Environment.IsDevelopmentState())
             {
@@ -520,7 +520,7 @@ namespace GameEngine
                 return;
             }
 
-            OnReceiveMessageComposedOfProtoBuf(null, message);
+            OnReceiveMessageOfProtoBuf(null, message);
         }
 
         /// <summary>
@@ -528,7 +528,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="channel">通道对象实例</param>
         /// <param name="message">消息对象实例</param>
-        private void OnReceiveMessageComposedOfProtoBuf(SocketMessageChannel channel, ProtoBuf.Extension.IMessage message)
+        private void OnReceiveMessageOfProtoBuf(SocketMessageChannel channel, ProtoBuf.Extension.IMessage message)
         {
             int opcode = GetOpcodeByMessageType(message.GetType());
 

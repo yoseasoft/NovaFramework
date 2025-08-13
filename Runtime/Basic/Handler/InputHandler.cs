@@ -238,6 +238,25 @@ namespace GameEngine
         #region 输入响应的编码数据分发调度管理接口函数
 
         /// <summary>
+        /// 通过模拟输入操作的方式发送自定义按键编码的接口函数
+        /// </summary>
+        /// <param name="inputCode">按键编码</param>
+        /// <param name="operationType">按键操作类型</param>
+        public void OnSimulationInputOperation(int inputCode, int operationType)
+        {
+            OnInputDispatched(inputCode, operationType);
+        }
+
+        /// <summary>
+        /// 通过模拟输入操作的方式发送自定义数据的接口函数
+        /// </summary>
+        /// <param name="inputData">输入数据</param>
+        public void OnSimulationInputOperation(object inputData)
+        {
+            OnInputDispatched(inputData);
+        }
+
+        /// <summary>
         /// 针对按键编码进行响应分发的调度入口函数
         /// </summary>
         /// <param name="inputCode">按键编码</param>

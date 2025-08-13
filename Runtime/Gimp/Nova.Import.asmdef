@@ -4,7 +4,9 @@
     "references": [
         "Nova.Engine",
         "Nova.Basic",
-        "Nova.UniTask"
+        "Nova.UniTask",
+        "Nova.Protobuf",
+        "Nova.Protobuf.Extension"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
