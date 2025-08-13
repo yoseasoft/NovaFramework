@@ -44,6 +44,6 @@ namespace GameEngine
         /// <summary>
         /// 测试案例模块的对外关口名称
         /// </summary>
-        public const string TUTORIAL_MODULE_EXTERNAL_GATEWAY_NAME = @"GameEngine.Sample.GameWorld";
+        public const string TUTORIAL_MODULE_EXTERNAL_GATEWAY_NAME = @"GameSample.GameWorld";
     }
 }
