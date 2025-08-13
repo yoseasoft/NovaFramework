@@ -58,7 +58,7 @@ namespace GameEngine.Loader
             /// <summary>
             /// 实体类型
             /// </summary>
-            Proto = 11,
+            Bean = 11,
 
             /// <summary>
             /// 扩展类型

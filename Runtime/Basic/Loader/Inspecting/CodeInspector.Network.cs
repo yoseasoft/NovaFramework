@@ -60,17 +60,17 @@ namespace GameEngine.Loader.Inspecting
 
             // 消息监听函数有两种格式:
             // 1. [static] void OnMessage(ProtoBuf.Extension.IMessage message);
-            // 2. static void OnMessage(IProto obj, ProtoBuf.Extension.IMessage message);
+            // 2. static void OnMessage(IBean obj, ProtoBuf.Extension.IMessage message);
             //
             // 2024-04-23:
             // 新增无参类型的事件绑定函数接口，因此事件新增以下格式:
             // 1. [static] void OnMessage();
-            // 2. static void OnMessage(IProto obj);
+            // 2. static void OnMessage(IBean obj);
 
             // 目前接收的目标对象均为消息对象类型
             if (paramInfos.Length == 1)
             {
-                if (typeof(IProto).IsAssignableFrom(paramInfos[0].ParameterType))
+                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType))
                 {
                     return true;
                 }
@@ -81,7 +81,7 @@ namespace GameEngine.Loader.Inspecting
             }
             else if (paramInfos.Length == 2)
             {
-                if (typeof(IProto).IsAssignableFrom(paramInfos[0].ParameterType) && // 第一个参数为Proto对象
+                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) && // 第一个参数为Bean对象
                     typeof(ProtoBuf.Extension.IMessage).IsAssignableFrom(paramInfos[1].ParameterType)) // 第二个参数为消息类型
                 {
                     return true;
@@ -100,7 +100,7 @@ namespace GameEngine.Loader.Inspecting
         {
             // 无参类型的消息侦听函数有两种格式:
             // 1. [static] void OnMessage();
-            // 2. static void OnMessage(IProto obj);
+            // 2. static void OnMessage(IBean obj);
             SystemParameterInfo[] paramInfos = methodInfo.GetParameters();
             if (null == paramInfos || paramInfos.Length <= 0)
             {
@@ -109,7 +109,7 @@ namespace GameEngine.Loader.Inspecting
 
             if (paramInfos.Length == 1 && methodInfo.IsStatic) // 无参类型消息如果存在一个参数，那必然是静态函数
             {
-                if (typeof(IProto).IsAssignableFrom(paramInfos[0].ParameterType))
+                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType))
                 {
                     return true;
                 }
@@ -123,7 +123,7 @@ namespace GameEngine.Loader.Inspecting
         /// </summary>
         /// <param name="methodInfo">函数类型</param>
         /// <returns>若格式正确则返回true，否则返回false</returns>
-        public static bool IsValidFormatOfProtoExtendMessageCallFunction(SystemMethodInfo methodInfo)
+        public static bool IsValidFormatOfBeanExtendMessageCallFunction(SystemMethodInfo methodInfo)
         {
             // 函数返回值必须为“void”
             if (typeof(void) != methodInfo.ReturnType)
@@ -145,11 +145,11 @@ namespace GameEngine.Loader.Inspecting
             }
 
             // 消息接收函数有两种格式:
-            // 1. static void OnMessage(this IProto self, ProtoBuf.Extension.IMessage message);
-            // 2. static void OnMessage(this IProto self);
+            // 1. static void OnMessage(this IBean self, ProtoBuf.Extension.IMessage message);
+            // 2. static void OnMessage(this IBean self);
 
             // 第一个参数必须为原型类的子类，且必须是可实例化的类
-            if (false == typeof(IProto).IsAssignableFrom(paramInfos[0].ParameterType) ||
+            if (false == typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) ||
                 false == NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(paramInfos[0].ParameterType))
             {
                 return false;

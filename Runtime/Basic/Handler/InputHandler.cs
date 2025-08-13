@@ -466,14 +466,14 @@ namespace GameEngine
                     }
                     else
                     {
-                        IList<IProto> protos = ProtoController.Instance.FindAllProtos(info.TargetType);
-                        if (null != protos)
+                        IList<IBean> beans = BeanController.Instance.FindAllBeans(info.TargetType);
+                        if (null != beans)
                         {
-                            IEnumerator<IProto> e_proto = protos.GetEnumerator();
-                            while (e_proto.MoveNext())
+                            IEnumerator<IBean> e_bean = beans.GetEnumerator();
+                            while (e_bean.MoveNext())
                             {
-                                IProto proto = e_proto.Current;
-                                info.Invoke(proto, inputCode, operationType);
+                                IBean bean = e_bean.Current;
+                                info.Invoke(bean, inputCode, operationType);
                             }
                         }
                     }
@@ -502,14 +502,14 @@ namespace GameEngine
                     }
                     else
                     {
-                        IList<IProto> protos = ProtoController.Instance.FindAllProtos(info.TargetType);
-                        if (null != protos)
+                        IList<IBean> beans = BeanController.Instance.FindAllBeans(info.TargetType);
+                        if (null != beans)
                         {
-                            IEnumerator<IProto> e_proto = protos.GetEnumerator();
-                            while (e_proto.MoveNext())
+                            IEnumerator<IBean> e_bean = beans.GetEnumerator();
+                            while (e_bean.MoveNext())
                             {
-                                IProto proto = e_proto.Current;
-                                info.Invoke(proto, inputData);
+                                IBean bean = e_bean.Current;
+                                info.Invoke(bean, inputData);
                             }
                         }
                     }
@@ -758,10 +758,10 @@ namespace GameEngine
             /// <summary>
             /// 基于按键编码的输入回调转发函数
             /// </summary>
-            /// <param name="proto">目标原型对象</param>
+            /// <param name="bean">目标原型对象</param>
             /// <param name="inputCode">按键编码</param>
             /// <param name="operationType">按键操作类型</param>
-            public void Invoke(IProto proto, int inputCode, int operationType)
+            public void Invoke(IBean bean, int inputCode, int operationType)
             {
                 if (_operationType == 0 || (_operationType & operationType) == 0)
                 {
@@ -771,11 +771,11 @@ namespace GameEngine
 
                 if (_isNullParameterType)
                 {
-                    _callback.DynamicInvoke(proto);
+                    _callback.DynamicInvoke(bean);
                 }
                 else
                 {
-                    _callback.DynamicInvoke(proto, inputCode, operationType);
+                    _callback.DynamicInvoke(bean, inputCode, operationType);
                 }
             }
 
@@ -798,17 +798,17 @@ namespace GameEngine
             /// <summary>
             /// 基于数据集合类型的输入回调转发函数
             /// </summary>
-            /// <param name="proto">目标原型对象</param>
+            /// <param name="bean">目标原型对象</param>
             /// <param name="inputData">输入数据</param>
-            public void Invoke(IProto proto, object inputData)
+            public void Invoke(IBean bean, object inputData)
             {
                 if (_isNullParameterType)
                 {
-                    _callback.DynamicInvoke(proto);
+                    _callback.DynamicInvoke(bean);
                 }
                 else
                 {
-                    _callback.DynamicInvoke(proto, inputData);
+                    _callback.DynamicInvoke(bean, inputData);
                 }
             }
         }

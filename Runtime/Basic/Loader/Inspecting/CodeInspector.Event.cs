@@ -59,21 +59,21 @@ namespace GameEngine.Loader.Inspecting
 
             // 事件侦听函数有两种格式:
             // 1. [static] void OnEvent(int eventID, params object[] args);
-            // 2. static void OnEvent(IProto obj, int eventID, params object[] args);
+            // 2. static void OnEvent(IBean obj, int eventID, params object[] args);
             //
             // 2024-03-31:
             // 新增结构体的事件数据发送类型相关函数接口，因此事件新增以下格式:
             // 1. [static] void OnEvent(object eventData);
-            // 2. static void OnEvent(IProto obj, object eventData);
+            // 2. static void OnEvent(IBean obj, object eventData);
             // 以上的“eventData”数据类型必须为结构体类型
             //
             // 2024-04-13:
             // 新增无参类型的事件绑定函数接口，因此事件新增以下格式:
             // 1. [static] void OnEvent();
-            // 2. static void OnEvent(IProto obj);
+            // 2. static void OnEvent(IBean obj);
             if (paramInfos.Length == 1)
             {
-                if (typeof(IProto).IsAssignableFrom(paramInfos[0].ParameterType))
+                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType))
                 {
                     return true;
                 }
@@ -89,7 +89,7 @@ namespace GameEngine.Loader.Inspecting
                 {
                     return true;
                 }
-                else if (typeof(IProto).IsAssignableFrom(paramInfos[0].ParameterType) && // 第一个参数为Proto对象
+                else if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) && // 第一个参数为Bean对象
                         NovaEngine.Utility.Reflection.IsTypeOfStruct(paramInfos[1].ParameterType)) // 第二个参数为事件类型
                 {
                     return true;
@@ -97,7 +97,7 @@ namespace GameEngine.Loader.Inspecting
             }
             else if (paramInfos.Length == 3)
             {
-                if (typeof(IProto).IsAssignableFrom(paramInfos[0].ParameterType) && // 第一个参数为Proto对象
+                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) && // 第一个参数为Bean对象
                     typeof(int) == paramInfos[1].ParameterType && // 第二个参数为事件标识
                     typeof(object[]) == paramInfos[2].ParameterType) // 第三个参数为事件参数列表
                 {
@@ -117,7 +117,7 @@ namespace GameEngine.Loader.Inspecting
         {
             // 无参类型的事件侦听函数有两种格式:
             // 1. [static] void OnEvent();
-            // 2. static void OnEvent(IProto obj);
+            // 2. static void OnEvent(IBean obj);
             SystemParameterInfo[] paramInfos = methodInfo.GetParameters();
             if (null == paramInfos || paramInfos.Length <= 0)
             {
@@ -126,7 +126,7 @@ namespace GameEngine.Loader.Inspecting
 
             if (paramInfos.Length == 1 && methodInfo.IsStatic) // 无参类型事件如果存在一个参数，那必然是静态函数
             {
-                if (typeof(IProto).IsAssignableFrom(paramInfos[0].ParameterType))
+                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType))
                 {
                     return true;
                 }
@@ -140,7 +140,7 @@ namespace GameEngine.Loader.Inspecting
         /// </summary>
         /// <param name="methodInfo">函数类型</param>
         /// <returns>若格式正确则返回true，否则返回false</returns>
-        public static bool IsValidFormatOfProtoExtendEventCallFunction(SystemMethodInfo methodInfo)
+        public static bool IsValidFormatOfBeanExtendEventCallFunction(SystemMethodInfo methodInfo)
         {
             // 函数返回值必须为“void”
             if (typeof(void) != methodInfo.ReturnType)
@@ -161,15 +161,15 @@ namespace GameEngine.Loader.Inspecting
             }
 
             // 事件侦听函数有两种格式
-            // 1. static void OnEvent(this IProto self, int eventID, params object[] args);
-            // 2. static void OnEvent(this IProto self, object eventData);
+            // 1. static void OnEvent(this IBean self, int eventID, params object[] args);
+            // 2. static void OnEvent(this IBean self, object eventData);
             //
             // 2024-04-13:
             // 新增无参类型的事件绑定函数接口，因此事件新增以下格式:
-            // 1. static void OnEvent(this IProto self);
+            // 1. static void OnEvent(this IBean self);
 
             // 第一个参数必须为原型类的子类，且必须是可实例化的类
-            if (false == typeof(IProto).IsAssignableFrom(paramInfos[0].ParameterType) ||
+            if (false == typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) ||
                 false == NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(paramInfos[0].ParameterType))
             {
                 return false;

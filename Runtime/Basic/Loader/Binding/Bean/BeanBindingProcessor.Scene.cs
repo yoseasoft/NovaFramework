@@ -23,48 +23,56 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Reflection;
 
 using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemParameterInfo = System.Reflection.ParameterInfo;
 
-namespace GameEngine.Loader.Inspecting
+namespace GameEngine
 {
     /// <summary>
-    /// 程序集的安全检查类，对业务层载入的所有对象类进行安全检查的分析处理，确保代码的正确运行
+    /// 场景模块封装的句柄对象类
     /// </summary>
-    public static partial class CodeInspector
+    public sealed partial class SceneHandler
     {
         /// <summary>
-        /// 检查切面回调函数的格式是否正确
+        /// 场景类型的代码注册回调函数
         /// </summary>
-        /// <param name="methodInfo">函数类型</param>
-        /// <returns>若格式正确则返回true，否则返回false</returns>
-        public static bool IsValidFormatOfAspectFunction(SystemMethodInfo methodInfo)
+        /// <param name="targetType">对象类型</param>
+        /// <param name="codeInfo">对象结构信息数据</param>
+        /// <param name="reload">重载标识</param>
+        [OnBeanRegisterClassOfTarget(typeof(CScene))]
+        private static void LoadCodeType(SystemType targetType, Loader.GeneralCodeInfo codeInfo, bool reload)
         {
-            // 函数返回值必须为“void”
-            if (typeof(void) != methodInfo.ReturnType)
+            if (targetType.IsInterface || targetType.IsAbstract)
             {
-                return false;
+                Debugger.Log("The load code type '{0}' cannot be interface or abstract class, recv arguments invalid.", targetType.FullName);
+                return;
             }
 
-            SystemParameterInfo[] paramInfos = methodInfo.GetParameters();
-            // 切面函数只能有一个参数
-            if (null == paramInfos || paramInfos.Length != 1)
+            if (null == codeInfo)
             {
-                return false;
+                Debugger.Warn("The load code info '{0}' must be non-null, recv arguments invalid.", targetType.FullName);
+                return;
             }
 
-            // 目前切面的目标对象均为原型对象类型
-            SystemType paramType = paramInfos[0].ParameterType;
-            if (typeof(IBean).IsAssignableFrom(paramType))
+            Loader.SceneCodeInfo sceneCodeInfo = codeInfo as Loader.SceneCodeInfo;
+            Debugger.Assert(null != sceneCodeInfo, "Invalid scene code info.");
+
+            if (reload)
             {
-                return true;
+                // 重载模式下，无需重复注册场景信息
+                return;
             }
 
-            return false;
+            Instance.RegisterSceneClass(sceneCodeInfo.SceneName, sceneCodeInfo.ClassType, sceneCodeInfo.FuncType);
+        }
+
+        /// <summary>
+        /// 场景类型的全部代码的注销回调函数
+        /// </summary>
+        [OnBeanUnregisterClassOfTarget(typeof(CScene))]
+        private static void UnloadAllCodeTypes()
+        {
+            Instance.UnregisterAllSceneClasses();
         }
     }
 }

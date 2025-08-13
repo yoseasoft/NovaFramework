@@ -43,7 +43,7 @@ namespace GameEngine
         public const int Profiler = 2;
 
         [Debugger.LogOutputGroup]
-        public const int Proto = 11;
+        public const int Bean = 11;
 
         [Debugger.LogOutputGroup]
         public const int Module = 12;

@@ -772,14 +772,14 @@ namespace GameEngine
                     }
                     else
                     {
-                        IList<IProto> protos = ProtoController.Instance.FindAllProtos(info.TargetType);
-                        if (null != protos)
+                        IList<IBean> beans = BeanController.Instance.FindAllBeans(info.TargetType);
+                        if (null != beans)
                         {
-                            IEnumerator<IProto> e_proto = protos.GetEnumerator();
-                            while (e_proto.MoveNext())
+                            IEnumerator<IBean> e_bean = beans.GetEnumerator();
+                            while (e_bean.MoveNext())
                             {
-                                IProto proto = e_proto.Current;
-                                info.Invoke(proto, message);
+                                IBean bean = e_bean.Current;
+                                info.Invoke(bean, message);
                             }
                         }
                     }
@@ -952,17 +952,17 @@ namespace GameEngine
             /// <summary>
             /// 基于网络数据类型的消息回调转发函数
             /// </summary>
-            /// <param name="proto">目标原型对象</param>
+            /// <param name="bean">目标原型对象</param>
             /// <param name="message">消息内容</param>
-            public void Invoke(IProto proto, object message)
+            public void Invoke(IBean bean, object message)
             {
                 if (_isNullParameterType)
                 {
-                    _callback.DynamicInvoke(proto);
+                    _callback.DynamicInvoke(bean);
                 }
                 else
                 {
-                    _callback.DynamicInvoke(proto, message);
+                    _callback.DynamicInvoke(bean, message);
                 }
             }
         }

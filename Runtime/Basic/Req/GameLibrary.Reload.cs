@@ -71,14 +71,14 @@ namespace GameEngine
                 return;
             }
 
-            ReloadAspectServiceOfTargetBaseProto(entity);
+            ReloadAspectServiceOfTargetBaseBean(entity);
 
             // 重载组件实例
             IList<CComponent> components = entity.GetAllComponents();
             for (int n = 0; null != components && n < components.Count; ++n)
             {
                 CComponent component = components[n];
-                ReloadAspectServiceOfTargetBaseProto(component);
+                ReloadAspectServiceOfTargetBaseBean(component);
             }
         }
 
@@ -86,7 +86,7 @@ namespace GameEngine
         /// 针对指定的原型对象进行切面服务的重载处理
         /// </summary>
         /// <param name="obj">原型对象实例</param>
-        private static void ReloadAspectServiceOfTargetBaseProto(CBase obj)
+        private static void ReloadAspectServiceOfTargetBaseBean(CBase obj)
         {
             // 检查原型对象是否被销毁
             if (obj.IsOnDestroyingStatus())

@@ -304,7 +304,7 @@ namespace GameEngine
             // 唤醒实例
             Call(entity.Awake);
 
-            ProtoController.Instance.RegProtoLifecycleNotification(AspectBehaviourType.Start, entity);
+            BeanController.Instance.RegBeanLifecycleNotification(AspectBehaviourType.Start, entity);
         }
 
         /// <summary>
@@ -320,7 +320,7 @@ namespace GameEngine
                 return;
             }
 
-            ProtoController.Instance.UnregProtoLifecycleNotification(entity);
+            BeanController.Instance.UnregBeanLifecycleNotification(entity);
 
             // 销毁实例
             Call(entity.Destroy);

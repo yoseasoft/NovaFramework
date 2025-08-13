@@ -61,15 +61,15 @@ namespace GameEngine.Loader.Inspecting
             // 输入响应函数有两种格式:
             // 1. [static] void OnInput(int inputCode, int operationType);
             // 2. [static] void OnInput(object inputData);
-            // 3. static void OnInput(IProto obj, int inputCode, int operationType);
-            // 4. static void OnInput(IProto obj, object inputData);
+            // 3. static void OnInput(IBean obj, int inputCode, int operationType);
+            // 4. static void OnInput(IBean obj, object inputData);
             //
             // 无参类型的输入响应函数接口格式:
             // 1. [static] void OnInput();
-            // 2. static void OnInput(IProto obj);
+            // 2. static void OnInput(IBean obj);
             if (paramInfos.Length == 1)
             {
-                if (typeof(IProto).IsAssignableFrom(paramInfos[0].ParameterType))
+                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType))
                 {
                     return true;
                 }
@@ -80,7 +80,7 @@ namespace GameEngine.Loader.Inspecting
             }
             else if (paramInfos.Length == 2)
             {
-                if (typeof(IProto).IsAssignableFrom(paramInfos[0].ParameterType) && // 第一个参数为Proto对象
+                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) && // 第一个参数为Bean对象
                     NovaEngine.Utility.Reflection.IsTypeOfStruct(paramInfos[1].ParameterType)) // 第二个参数为操作数据
                 {
                     return true;
@@ -93,7 +93,7 @@ namespace GameEngine.Loader.Inspecting
             }
             else if (paramInfos.Length == 3)
             {
-                if (typeof(IProto).IsAssignableFrom(paramInfos[0].ParameterType) && // 第一个参数为Proto对象
+                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) && // 第一个参数为Bean对象
                     typeof(int) == paramInfos[1].ParameterType && // 第二个参数为键码标识
                     typeof(int) == paramInfos[2].ParameterType) // 第三个参数为输入操作类型
                 {
@@ -113,7 +113,7 @@ namespace GameEngine.Loader.Inspecting
         {
             // 无参类型的输入响应函数有两种格式:
             // 1. [static] void OnInput();
-            // 2. static void OnInput(IProto obj);
+            // 2. static void OnInput(IBean obj);
             SystemParameterInfo[] paramInfos = methodInfo.GetParameters();
             if (null == paramInfos || paramInfos.Length <= 0)
             {
@@ -122,7 +122,7 @@ namespace GameEngine.Loader.Inspecting
 
             if (paramInfos.Length == 1 && methodInfo.IsStatic) // 无参类型事件如果存在一个参数，那必然是静态函数
             {
-                if (typeof(IProto).IsAssignableFrom(paramInfos[0].ParameterType))
+                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType))
                 {
                     return true;
                 }
@@ -136,7 +136,7 @@ namespace GameEngine.Loader.Inspecting
         /// </summary>
         /// <param name="methodInfo">函数类型</param>
         /// <returns>若格式正确则返回true，否则返回false</returns>
-        public static bool IsValidFormatOfProtoExtendInputCallFunction(SystemMethodInfo methodInfo)
+        public static bool IsValidFormatOfBeanExtendInputCallFunction(SystemMethodInfo methodInfo)
         {
             // 函数返回值必须为“void”
             if (typeof(void) != methodInfo.ReturnType)
@@ -157,14 +157,14 @@ namespace GameEngine.Loader.Inspecting
             }
 
             // 输入响应函数的格式:
-            // 1. static void OnInput(this IProto self, int inputCode, int operationType);
-            // 2. static void OnInput(this IProto self, object inputData);
+            // 1. static void OnInput(this IBean self, int inputCode, int operationType);
+            // 2. static void OnInput(this IBean self, object inputData);
             //
             // 无参类型的输入响应函数接口格式:
-            // 1. static void OnInput(this IProto self);
+            // 1. static void OnInput(this IBean self);
 
             // 第一个参数必须为原型类的子类，且必须是可实例化的类
-            if (false == typeof(IProto).IsAssignableFrom(paramInfos[0].ParameterType) ||
+            if (false == typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) ||
                 false == NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(paramInfos[0].ParameterType))
             {
                 return false;

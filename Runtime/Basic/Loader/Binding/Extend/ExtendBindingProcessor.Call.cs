@@ -65,8 +65,8 @@ namespace GameEngine.Loader
 
                 Debugger.Info(LogGroupTag.CodeLoader, "Load extend input call {0} with target class type {1}.", callMethodInfo.Method.Name, callMethodInfo.TargetType.FullName);
 
-                GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IProto));
-                if (_lookupCodeInfo is ProtoBaseCodeInfo baseCodeInfo)
+                GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
+                if (_lookupCodeInfo is BaseBeanCodeInfo baseCodeInfo)
                 {
                     baseCodeInfo.AddInputResponsingMethodType(callMethodInfo);
                 }
@@ -82,8 +82,8 @@ namespace GameEngine.Loader
 
                 Debugger.Info(LogGroupTag.CodeLoader, "Load extend event call {0} with target class type {1}.", callMethodInfo.Method.Name, callMethodInfo.TargetType.FullName);
 
-                GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IProto));
-                if (_lookupCodeInfo is ProtoBaseCodeInfo baseCodeInfo)
+                GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
+                if (_lookupCodeInfo is BaseBeanCodeInfo baseCodeInfo)
                 {
                     baseCodeInfo.AddEventSubscribingMethodType(callMethodInfo);
                 }
@@ -99,8 +99,8 @@ namespace GameEngine.Loader
 
                 Debugger.Info(LogGroupTag.CodeLoader, "Load extend message call {0} with target class type {1}.", callMethodInfo.Method.Name, callMethodInfo.TargetType.FullName);
 
-                GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IProto));
-                if (_lookupCodeInfo is ProtoBaseCodeInfo baseCodeInfo)
+                GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
+                if (_lookupCodeInfo is BaseBeanCodeInfo baseCodeInfo)
                 {
                     baseCodeInfo.AddMessageBindingMethodType(callMethodInfo);
                 }

@@ -97,14 +97,14 @@ namespace GameEngine
                     }
                     else
                     {
-                        IList<IProto> protos = ProtoController.Instance.FindAllProtos(info.TargetType);
-                        if (null != protos)
+                        IList<IBean> beans = BeanController.Instance.FindAllBeans(info.TargetType);
+                        if (null != beans)
                         {
-                            IEnumerator<IProto> e_proto = protos.GetEnumerator();
-                            while (e_proto.MoveNext())
+                            IEnumerator<IBean> e_bean = beans.GetEnumerator();
+                            while (e_bean.MoveNext())
                             {
-                                IProto proto = e_proto.Current;
-                                info.Invoke(proto, eventID, args);
+                                IBean bean = e_bean.Current;
+                                info.Invoke(bean, eventID, args);
                             }
                         }
                     }
@@ -133,14 +133,14 @@ namespace GameEngine
                     }
                     else
                     {
-                        IList<IProto> protos = ProtoController.Instance.FindAllProtos(info.TargetType);
-                        if (null != protos)
+                        IList<IBean> beans = BeanController.Instance.FindAllBeans(info.TargetType);
+                        if (null != beans)
                         {
-                            IEnumerator<IProto> e_proto = protos.GetEnumerator();
-                            while (e_proto.MoveNext())
+                            IEnumerator<IBean> e_bean = beans.GetEnumerator();
+                            while (e_bean.MoveNext())
                             {
-                                IProto proto = e_proto.Current;
-                                info.Invoke(proto, eventData);
+                                IBean bean = e_bean.Current;
+                                info.Invoke(bean, eventData);
                             }
                         }
                     }
@@ -367,18 +367,18 @@ namespace GameEngine
             /// <summary>
             /// 基于事件标识的事件回调转发函数
             /// </summary>
-            /// <param name="proto">目标原型对象</param>
+            /// <param name="bean">目标原型对象</param>
             /// <param name="eventID">事件标识</param>
             /// <param name="args">事件参数列表</param>
-            public void Invoke(IProto proto, int eventID, params object[] args)
+            public void Invoke(IBean bean, int eventID, params object[] args)
             {
                 if (_isNullParameterType)
                 {
-                    _callback.DynamicInvoke(proto);
+                    _callback.DynamicInvoke(bean);
                 }
                 else
                 {
-                    _callback.DynamicInvoke(proto, eventID, args);
+                    _callback.DynamicInvoke(bean, eventID, args);
                 }
             }
 
@@ -401,17 +401,17 @@ namespace GameEngine
             /// <summary>
             /// 基于事件数据类型的事件回调转发函数
             /// </summary>
-            /// <param name="proto">目标原型对象</param>
+            /// <param name="bean">目标原型对象</param>
             /// <param name="eventData">事件数据</param>
-            public void Invoke(IProto proto, object eventData)
+            public void Invoke(IBean bean, object eventData)
             {
                 if (_isNullParameterType)
                 {
-                    _callback.DynamicInvoke(proto);
+                    _callback.DynamicInvoke(bean);
                 }
                 else
                 {
-                    _callback.DynamicInvoke(proto, eventData);
+                    _callback.DynamicInvoke(bean, eventData);
                 }
             }
         }

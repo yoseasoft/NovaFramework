@@ -290,7 +290,7 @@ namespace GameEngine
             // 唤醒实例
             Call(obj.Awake);
 
-            ProtoController.Instance.RegProtoLifecycleNotification(AspectBehaviourType.Start, obj);
+            BeanController.Instance.RegBeanLifecycleNotification(AspectBehaviourType.Start, obj);
 
             ActorStatModule.CallStatAction(ActorStatModule.ON_ACTOR_CREATE_CALL, obj);
 
@@ -311,7 +311,7 @@ namespace GameEngine
 
             ActorStatModule.CallStatAction(ActorStatModule.ON_ACTOR_RELEASE_CALL, obj);
 
-            ProtoController.Instance.UnregProtoLifecycleNotification(obj);
+            BeanController.Instance.UnregBeanLifecycleNotification(obj);
 
             // 销毁实例
             Call(obj.Destroy);

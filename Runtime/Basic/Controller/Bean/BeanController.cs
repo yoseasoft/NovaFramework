@@ -23,48 +23,49 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Reflection;
 
 using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemParameterInfo = System.Reflection.ParameterInfo;
 
-namespace GameEngine.Loader.Inspecting
+namespace GameEngine
 {
     /// <summary>
-    /// 程序集的安全检查类，对业务层载入的所有对象类进行安全检查的分析处理，确保代码的正确运行
+    /// 原型对象管理类，用于对场景上下文中的所有原型对象提供通用的访问操作接口
     /// </summary>
-    public static partial class CodeInspector
+    internal sealed partial class BeanController : BaseController<BeanController>
     {
         /// <summary>
-        /// 检查切面回调函数的格式是否正确
+        /// 原型管理对象初始化通知接口函数
         /// </summary>
-        /// <param name="methodInfo">函数类型</param>
-        /// <returns>若格式正确则返回true，否则返回false</returns>
-        public static bool IsValidFormatOfAspectFunction(SystemMethodInfo methodInfo)
+        protected override sealed void OnInitialize()
         {
-            // 函数返回值必须为“void”
-            if (typeof(void) != methodInfo.ReturnType)
-            {
-                return false;
-            }
+        }
 
-            SystemParameterInfo[] paramInfos = methodInfo.GetParameters();
-            // 切面函数只能有一个参数
-            if (null == paramInfos || paramInfos.Length != 1)
-            {
-                return false;
-            }
+        /// <summary>
+        /// 原型管理对象清理通知接口函数
+        /// </summary>
+        protected override sealed void OnCleanup()
+        {
+        }
 
-            // 目前切面的目标对象均为原型对象类型
-            SystemType paramType = paramInfos[0].ParameterType;
-            if (typeof(IBean).IsAssignableFrom(paramType))
-            {
-                return true;
-            }
+        /// <summary>
+        /// 原型管理对象刷新调度函数接口
+        /// </summary>
+        protected override sealed void OnUpdate()
+        {
+        }
 
-            return false;
+        /// <summary>
+        /// 原型管理对象后置刷新调度函数接口
+        /// </summary>
+        protected override sealed void OnLateUpdate()
+        {
+        }
+
+        /// <summary>
+        /// 原型管理对象倾泻调度函数接口
+        /// </summary>
+        protected override void OnDump()
+        {
         }
     }
 }

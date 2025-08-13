@@ -299,7 +299,7 @@ namespace GameEngine.Loader
                             continue;
                         }
 
-                        if (false == Inspecting.CodeInspector.IsValidFormatOfProtoExtendInputCallFunction(symMethod.MethodInfo))
+                        if (false == Inspecting.CodeInspector.IsValidFormatOfBeanExtendInputCallFunction(symMethod.MethodInfo))
                         {
                             Debugger.Warn("The extend input response method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
@@ -359,7 +359,7 @@ namespace GameEngine.Loader
                             continue;
                         }
 
-                        if (false == Inspecting.CodeInspector.IsValidFormatOfProtoExtendEventCallFunction(symMethod.MethodInfo))
+                        if (false == Inspecting.CodeInspector.IsValidFormatOfBeanExtendEventCallFunction(symMethod.MethodInfo))
                         {
                             Debugger.Warn("The extend event subscribe method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
@@ -418,7 +418,7 @@ namespace GameEngine.Loader
                             continue;
                         }
 
-                        if (false == Inspecting.CodeInspector.IsValidFormatOfProtoExtendMessageCallFunction(symMethod.MethodInfo))
+                        if (false == Inspecting.CodeInspector.IsValidFormatOfBeanExtendMessageCallFunction(symMethod.MethodInfo))
                         {
                             Debugger.Warn("The extend message recv method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
