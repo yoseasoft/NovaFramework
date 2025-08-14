@@ -33,7 +33,7 @@ namespace GameEngine
     /// 控制器类的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class ControllerAttribute : SystemAttribute
+    internal class ControllerAttribute : SystemAttribute
     {
         public ControllerAttribute() { }
     }

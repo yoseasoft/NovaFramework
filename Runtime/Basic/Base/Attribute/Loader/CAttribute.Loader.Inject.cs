@@ -33,7 +33,7 @@ namespace GameEngine
     /// 注入控制类型注册函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnInjectOfControlRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
+    internal class OnInjectOfControlRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
     {
         public OnInjectOfControlRegisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
     }
@@ -42,7 +42,7 @@ namespace GameEngine
     /// 注入控制类型注销函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnInjectOfControlUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
+    internal class OnInjectOfControlUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
     {
         public OnInjectOfControlUnregisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
     }

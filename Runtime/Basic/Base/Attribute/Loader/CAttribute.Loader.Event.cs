@@ -33,7 +33,7 @@ namespace GameEngine
     /// 事件分发类型注册函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnEventCallRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
+    internal class OnEventCallRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
     {
         public OnEventCallRegisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
     }
@@ -42,7 +42,7 @@ namespace GameEngine
     /// 事件分发类型注销函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnEventCallUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
+    internal class OnEventCallUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
     {
         public OnEventCallUnregisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
     }

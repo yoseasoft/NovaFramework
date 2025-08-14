@@ -34,7 +34,7 @@ namespace GameEngine
     /// 输入响应类型注册函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnInputCallRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
+    internal class OnInputCallRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
     {
         public OnInputCallRegisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
     }
@@ -43,7 +43,7 @@ namespace GameEngine
     /// 输入响应类型注销函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnInputCallUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
+    internal class OnInputCallUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
     {
         public OnInputCallUnregisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
     }

@@ -33,7 +33,7 @@ namespace GameEngine
     /// 代码加载类的加载函数的属性定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnCodeLoaderClassLoadOfTargetAttribute : SystemAttribute
+    internal class OnCodeLoaderClassLoadOfTargetAttribute : SystemAttribute
     {
         private readonly SystemType _classType;
 
@@ -49,7 +49,7 @@ namespace GameEngine
     /// 代码加载类的清理函数的属性定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnCodeLoaderClassCleanupOfTargetAttribute : SystemAttribute
+    internal class OnCodeLoaderClassCleanupOfTargetAttribute : SystemAttribute
     {
         private readonly SystemType _classType;
 
@@ -65,7 +65,7 @@ namespace GameEngine
     /// 代码加载类的结构信息查找函数的属性定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnCodeLoaderClassLookupOfTargetAttribute : SystemAttribute
+    internal class OnCodeLoaderClassLookupOfTargetAttribute : SystemAttribute
     {
         private readonly SystemType _classType;
 
@@ -83,7 +83,7 @@ namespace GameEngine
     /// 绑定处理接口注册函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnProcessRegisterClassOfTargetAttribute : SystemAttribute
+    internal class OnProcessRegisterClassOfTargetAttribute : SystemAttribute
     {
         private readonly SystemType _classType;
 
@@ -96,7 +96,7 @@ namespace GameEngine
     /// 绑定处理接口注销函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnProcessUnregisterClassOfTargetAttribute : SystemAttribute
+    internal class OnProcessUnregisterClassOfTargetAttribute : SystemAttribute
     {
         private readonly SystemType _classType;
 

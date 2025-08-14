@@ -32,7 +32,7 @@ namespace GameEngine
     /// 控制器类的子模块初始化回调句柄的声明属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnControllerSubmoduleInitCallbackAttribute : SystemAttribute
+    internal class OnControllerSubmoduleInitCallbackAttribute : SystemAttribute
     {
         public OnControllerSubmoduleInitCallbackAttribute() : base() { }
     }
@@ -41,7 +41,7 @@ namespace GameEngine
     /// 控制器类的子模块清理回调句柄的声明属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnControllerSubmoduleCleanupCallbackAttribute : SystemAttribute
+    internal class OnControllerSubmoduleCleanupCallbackAttribute : SystemAttribute
     {
         public OnControllerSubmoduleCleanupCallbackAttribute() : base() { }
     }
@@ -50,7 +50,7 @@ namespace GameEngine
     /// 控制器类的子模块刷新回调句柄的声明属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnControllerSubmoduleUpdateCallbackAttribute : SystemAttribute
+    internal class OnControllerSubmoduleUpdateCallbackAttribute : SystemAttribute
     {
         public OnControllerSubmoduleUpdateCallbackAttribute() : base() { }
     }
@@ -59,7 +59,7 @@ namespace GameEngine
     /// 控制器类的子模块后置刷新回调句柄的声明属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnControllerSubmoduleLateUpdateCallbackAttribute : SystemAttribute
+    internal class OnControllerSubmoduleLateUpdateCallbackAttribute : SystemAttribute
     {
         public OnControllerSubmoduleLateUpdateCallbackAttribute() : base() { }
     }
@@ -68,7 +68,7 @@ namespace GameEngine
     /// 控制器类的子模块倾泻回调句柄的声明属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnControllerSubmoduleDumpCallbackAttribute : SystemAttribute
+    internal class OnControllerSubmoduleDumpCallbackAttribute : SystemAttribute
     {
         public OnControllerSubmoduleDumpCallbackAttribute() : base() { }
     }

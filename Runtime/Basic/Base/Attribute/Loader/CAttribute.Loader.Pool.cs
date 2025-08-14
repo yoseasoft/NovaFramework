@@ -33,7 +33,7 @@ namespace GameEngine
     /// 对象池管理类型注册函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnPoolMarkRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
+    internal class OnPoolMarkRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
     {
         public OnPoolMarkRegisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
     }
@@ -42,7 +42,7 @@ namespace GameEngine
     /// 对象池管理类型注销函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnPoolMarkUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
+    internal class OnPoolMarkUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
     {
         public OnPoolMarkUnregisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
     }

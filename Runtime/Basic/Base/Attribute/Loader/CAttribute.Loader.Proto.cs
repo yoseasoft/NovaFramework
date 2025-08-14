@@ -33,7 +33,7 @@ namespace GameEngine
     /// 实体类型注册函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnBeanRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
+    internal class OnBeanRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
     {
         public OnBeanRegisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
     }
@@ -42,7 +42,7 @@ namespace GameEngine
     /// 实体类型注销函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnBeanUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
+    internal class OnBeanUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
     {
         public OnBeanUnregisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
     }
