@@ -39,9 +39,9 @@ namespace GameEngine
         /// </summary>
         private readonly string _sceneName;
         /// <summary>
-        /// 场景功能类型标识
+        /// 场景优先级
         /// </summary>
-        private readonly int _funcType;
+        private readonly int _priority;
 
         /// <summary>
         /// 场景名称获取函数
@@ -49,22 +49,22 @@ namespace GameEngine
         public string SceneName => _sceneName;
 
         /// <summary>
-        /// 场景功能类型获取函数
+        /// 场景优先级获取函数
         /// </summary>
-        public int FuncType => _funcType;
+        public int Priority => _priority;
 
         public DeclareSceneClassAttribute(string sceneName) : this(sceneName, 0)
         {
         }
 
-        public DeclareSceneClassAttribute(int funcType) : this(string.Empty, funcType)
+        public DeclareSceneClassAttribute(int priority) : this(string.Empty, priority)
         {
         }
 
-        public DeclareSceneClassAttribute(string sceneName, int funcType) : base()
+        public DeclareSceneClassAttribute(string sceneName, int priority) : base()
         {
             _sceneName = sceneName ?? string.Empty;
-            _funcType = funcType;
+            _priority = priority;
         }
     }
 

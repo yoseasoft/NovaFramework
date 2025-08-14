@@ -39,9 +39,9 @@ namespace GameEngine
         /// </summary>
         private readonly string _viewName;
         /// <summary>
-        /// 视图功能类型标识
+        /// 视图优先级
         /// </summary>
-        private readonly int _funcType;
+        private readonly int _priority;
 
         /// <summary>
         /// 视图名称获取函数
@@ -49,22 +49,22 @@ namespace GameEngine
         public string ViewName => _viewName;
 
         /// <summary>
-        /// 视图功能类型获取函数
+        /// 视图优先级获取函数
         /// </summary>
-        public int FuncType => _funcType;
+        public int Priority => _priority;
 
         public DeclareViewClassAttribute(string viewName) : this(viewName, 0)
         {
         }
 
-        public DeclareViewClassAttribute(int funcType) : this(string.Empty, funcType)
+        public DeclareViewClassAttribute(int priority) : this(string.Empty, priority)
         {
         }
 
-        public DeclareViewClassAttribute(string viewName, int funcType) : base()
+        public DeclareViewClassAttribute(string viewName, int priority) : base()
         {
             _viewName = viewName ?? string.Empty;
-            _funcType = funcType;
+            _priority = priority;
         }
     }
 
@@ -88,21 +88,5 @@ namespace GameEngine
         {
             _viewName = viewName;
         }
-    }
-
-    /// <summary>
-    /// 视图缓存状态启动的属性类型定义
-    /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class ViewCachedStatusEnabledAttribute : SystemAttribute
-    {
-    }
-
-    /// <summary>
-    /// 视图蒙板状态启动的属性类型定义
-    /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class ViewMaskedStatusEnabledAttribute : SystemAttribute
-    {
     }
 }

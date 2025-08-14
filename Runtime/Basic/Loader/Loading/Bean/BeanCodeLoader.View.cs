@@ -40,29 +40,17 @@ namespace GameEngine.Loader
         /// </summary>
         private string _viewName;
         /// <summary>
-        /// 视图功能类型
+        /// 视图优先级
         /// </summary>
-        private int _funcType;
+        private int _priority;
 
         /// <summary>
         /// 共生关系的视图名称列表
         /// </summary>
         private IList<string> _groupOfSymbioticViewNames;
 
-        /// <summary>
-        /// 视图缓存状态标识
-        /// </summary>
-        private bool _cachedStatus = false;
-        /// <summary>
-        /// 视图蒙版状态标识
-        /// </summary>
-        private bool _maskedStatus = false;
-
         public string ViewName { get { return _viewName; } internal set { _viewName = value; } }
-        public int FuncType { get { return _funcType; } internal set { _funcType = value; } }
-
-        public bool CachedStatus { get { return _cachedStatus; } internal set { _cachedStatus = value; } }
-        public bool MaskedStatus { get { return _maskedStatus; } internal set { _cachedStatus = value; } }
+        public int Priority { get { return _priority; } internal set { _priority = value; } }
 
         /// <summary>
         /// 新增与当前视图具备共生关系的目标视图名称
@@ -144,9 +132,7 @@ namespace GameEngine.Loader
             sb.Append("View = { ");
             sb.AppendFormat("Parent = {0}, ", base.ToString());
             sb.AppendFormat("Name = {0}, ", _viewName ?? NovaEngine.Definition.CString.Unknown);
-            sb.AppendFormat("FuncType = {0}, ", _funcType);
-            sb.AppendFormat("CachedStatus = {0}, ", _cachedStatus);
-            sb.AppendFormat("MaskedStatus = {0}, ", _maskedStatus);
+            sb.AppendFormat("Priority = {0}, ", _priority);
 
             sb.AppendFormat("GroupViews = {{{0}}}, ", NovaEngine.Utility.Text.ToString(_groupOfSymbioticViewNames));
 
@@ -186,20 +172,12 @@ namespace GameEngine.Loader
                 {
                     DeclareViewClassAttribute _attr = (DeclareViewClassAttribute) attr;
                     info.ViewName = _attr.ViewName;
-                    info.FuncType = _attr.FuncType;
+                    info.Priority = _attr.Priority;
                 }
                 else if (typeof(ViewGroupOfSymbioticRelationshipsAttribute) == attrType)
                 {
                     ViewGroupOfSymbioticRelationshipsAttribute _attr = (ViewGroupOfSymbioticRelationshipsAttribute) attr;
                     info.AddGroupOfSymbioticViewName(_attr.ViewName);
-                }
-                else if (typeof(ViewCachedStatusEnabledAttribute) == attrType)
-                {
-                    info.CachedStatus = true;
-                }
-                else if (typeof(ViewMaskedStatusEnabledAttribute) == attrType)
-                {
-                    info.MaskedStatus = true;
                 }
                 else
                 {

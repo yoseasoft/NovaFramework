@@ -39,9 +39,9 @@ namespace GameEngine
         /// </summary>
         private readonly string _actorName;
         /// <summary>
-        /// 角色功能类型标识
+        /// 角色优先级
         /// </summary>
-        private readonly int _funcType;
+        private readonly int _priority;
 
         /// <summary>
         /// 角色名称获取函数
@@ -49,22 +49,22 @@ namespace GameEngine
         public string ActorName => _actorName;
 
         /// <summary>
-        /// 角色功能类型获取函数
+        /// 角色优先级获取函数
         /// </summary>
-        public int FuncType => _funcType;
+        public int Priority => _priority;
 
         public DeclareActorClassAttribute(string actorName) : this(actorName, 0)
         {
         }
 
-        public DeclareActorClassAttribute(int funcType) : this(string.Empty, funcType)
+        public DeclareActorClassAttribute(int priority) : this(string.Empty, priority)
         {
         }
 
-        public DeclareActorClassAttribute(string actorName, int funcType) : base()
+        public DeclareActorClassAttribute(string actorName, int priority) : base()
         {
             _actorName = actorName ?? string.Empty;
-            _funcType = funcType;
+            _priority = priority;
         }
     }
 }

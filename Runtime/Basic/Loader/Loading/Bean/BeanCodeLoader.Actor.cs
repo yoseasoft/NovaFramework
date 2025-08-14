@@ -40,12 +40,12 @@ namespace GameEngine.Loader
         /// </summary>
         private string _actorName;
         /// <summary>
-        /// 角色功能类型
+        /// 角色优先级
         /// </summary>
-        private int _funcType;
+        private int _priority;
 
         public string ActorName { get { return _actorName; } internal set { _actorName = value; } }
-        public int FuncType { get { return _funcType; } internal set { _funcType = value; } }
+        public int Priority { get { return _priority; } internal set { _priority = value; } }
 
         public override string ToString()
         {
@@ -53,7 +53,7 @@ namespace GameEngine.Loader
             sb.Append("Actor = { ");
             sb.AppendFormat("Parent = {0}, ", base.ToString());
             sb.AppendFormat("Name = {0}, ", _actorName ?? NovaEngine.Definition.CString.Unknown);
-            sb.AppendFormat("FuncType = {0}, ", _funcType);
+            sb.AppendFormat("Priority = {0}, ", _priority);
             sb.Append("}");
             return sb.ToString();
         }
@@ -90,7 +90,7 @@ namespace GameEngine.Loader
                 {
                     DeclareActorClassAttribute _attr = (DeclareActorClassAttribute) attr;
                     info.ActorName = _attr.ActorName;
-                    info.FuncType = _attr.FuncType;
+                    info.Priority = _attr.Priority;
                 }
                 else
                 {

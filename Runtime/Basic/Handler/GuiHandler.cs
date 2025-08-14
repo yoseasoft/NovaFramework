@@ -43,9 +43,9 @@ namespace GameEngine
         private readonly IDictionary<string, SystemType> _viewClassTypes;
 
         /// <summary>
-        /// 视图功能类型映射注册管理容器
+        /// 视图优先级映射注册管理容器
         /// </summary>
-        private readonly IDictionary<string, int> _viewFunctionTypes;
+        private readonly IDictionary<string, int> _viewPriorities;
 
         /// <summary>
         /// 当前环境下所有实例化的视图对象
@@ -64,7 +64,7 @@ namespace GameEngine
         {
             // 初始化视图类注册容器
             _viewClassTypes = new Dictionary<string, SystemType>();
-            _viewFunctionTypes = new Dictionary<string, int>();
+            _viewPriorities = new Dictionary<string, int>();
 
             // 初始化视图实例容器
             _views = new List<CView>();
@@ -77,7 +77,7 @@ namespace GameEngine
         {
             // 清理视图类注册容器
             _viewClassTypes.Clear();
-            _viewFunctionTypes.Clear();
+            _viewPriorities.Clear();
         }
 
         /// <summary>
@@ -146,9 +146,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewName">视图名称</param>
         /// <param name="clsType">视图类型</param>
-        /// <param name="funcType">功能类型</param>
+        /// <param name="priority">视图优先级</param>
         /// <returns>若视图类型注册成功则返回true，否则返回false</returns>
-        private bool RegisterViewClass(string viewName, SystemType clsType, int funcType)
+        private bool RegisterViewClass(string viewName, SystemType clsType, int priority)
         {
             Debugger.Assert(false == string.IsNullOrEmpty(viewName) && null != clsType, "Invalid arguments");
 
@@ -165,9 +165,9 @@ namespace GameEngine
             }
 
             _viewClassTypes.Add(viewName, clsType);
-            if (funcType > 0)
+            if (priority > 0)
             {
-                _viewFunctionTypes.Add(viewName, funcType);
+                _viewPriorities.Add(viewName, priority);
             }
 
             return true;
@@ -179,7 +179,7 @@ namespace GameEngine
         private void UnregisterAllViewClasses()
         {
             _viewClassTypes.Clear();
-            _viewFunctionTypes.Clear();
+            _viewPriorities.Clear();
         }
 
         #endregion

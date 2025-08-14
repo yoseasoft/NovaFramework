@@ -40,16 +40,16 @@ namespace GameEngine.Loader
         /// </summary>
         private string _sceneName;
         /// <summary>
-        /// 场景功能类型
+        /// 场景优先级
         /// </summary>
-        private int _funcType;
+        private int _priority;
         /// <summary>
         /// 自动展示的场景名称列表
         /// </summary>
         private IList<string> _autoDisplayViewNames;
 
         public string SceneName { get { return _sceneName; } internal set { _sceneName = value; } }
-        public int FuncType { get { return _funcType; } internal set { _funcType = value; } }
+        public int Priority { get { return _priority; } internal set { _priority = value; } }
 
         /// <summary>
         /// 新增需要自动展示在当前场景的目标视图名称
@@ -131,7 +131,7 @@ namespace GameEngine.Loader
             sb.Append("Scene = { ");
             sb.AppendFormat("Parent = {0}, ", base.ToString());
             sb.AppendFormat("Name = {0}, ", _sceneName ?? NovaEngine.Definition.CString.Unknown);
-            sb.AppendFormat("FuncType = {0}, ", _funcType);
+            sb.AppendFormat("Priority = {0}, ", _priority);
 
             sb.AppendFormat("AutoDisplayViews = {{{0}}}, ", NovaEngine.Utility.Text.ToString(_autoDisplayViewNames));
 
@@ -171,7 +171,7 @@ namespace GameEngine.Loader
                 {
                     DeclareSceneClassAttribute _attr = (DeclareSceneClassAttribute) attr;
                     info.SceneName = _attr.SceneName;
-                    info.FuncType = _attr.FuncType;
+                    info.Priority = _attr.Priority;
                 }
                 else if (typeof(SceneAutoDisplayOnTargetViewAttribute) == attrType)
                 {

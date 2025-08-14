@@ -43,9 +43,9 @@ namespace GameEngine
         /// </summary>
         private readonly IDictionary<string, SystemType> _actorClassTypes;
         /// <summary>
-        /// 角色功能类型映射注册管理容器
+        /// 角色优先级映射注册管理容器
         /// </summary>
-        private readonly IDictionary<string, int> _actorFunctionTypes;
+        private readonly IDictionary<string, int> _actorPriorities;
 
         /// <summary>
         /// 通过当前模块实例化的对象实例管理容器
@@ -64,7 +64,7 @@ namespace GameEngine
         {
             // 初始化对象类注册容器
             _actorClassTypes = new Dictionary<string, SystemType>();
-            _actorFunctionTypes = new Dictionary<string, int>();
+            _actorPriorities = new Dictionary<string, int>();
             _actors = new List<CActor>();
         }
 
@@ -75,7 +75,7 @@ namespace GameEngine
         {
             // 清理对象类注册容器
             _actorClassTypes.Clear();
-            _actorFunctionTypes.Clear();
+            _actorPriorities.Clear();
             _actors.Clear();
         }
 
@@ -136,9 +136,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="actorName">对象名称</param>
         /// <param name="clsType">对象类型</param>
-        /// <param name="funcType">功能类型</param>
+        /// <param name="priority">对象优先级</param>
         /// <returns>若对象类型注册成功则返回true，否则返回false</returns>
-        private bool RegisterActorClass(string actorName, SystemType clsType, int funcType)
+        private bool RegisterActorClass(string actorName, SystemType clsType, int priority)
         {
             Debugger.Assert(false == string.IsNullOrEmpty(actorName) && null != clsType, "Invalid arguments");
 
@@ -155,9 +155,9 @@ namespace GameEngine
             }
 
             _actorClassTypes.Add(actorName, clsType);
-            if (funcType > 0)
+            if (priority > 0)
             {
-                _actorFunctionTypes.Add(actorName, funcType);
+                _actorPriorities.Add(actorName, priority);
             }
 
             return true;
@@ -169,7 +169,7 @@ namespace GameEngine
         private void UnregisterAllActorClasses()
         {
             _actorClassTypes.Clear();
-            _actorFunctionTypes.Clear();
+            _actorPriorities.Clear();
         }
 
         #endregion

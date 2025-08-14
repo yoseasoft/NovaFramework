@@ -49,9 +49,9 @@ namespace GameEngine
         /// </summary>
         private readonly IDictionary<string, SystemType> _sceneClassTypes;
         /// <summary>
-        /// 场景功能类型映射注册管理容器
+        /// 场景优先级映射注册管理容器
         /// </summary>
-        private readonly IDictionary<string, int> _sceneFunctionTypes;
+        private readonly IDictionary<string, int> _scenePriorities;
 
         /// <summary>
         /// 当前运行的场景对象类型
@@ -74,7 +74,7 @@ namespace GameEngine
         {
             // 初始化场景类注册容器
             _sceneClassTypes = new Dictionary<string, SystemType>();
-            _sceneFunctionTypes = new Dictionary<string, int>();
+            _scenePriorities = new Dictionary<string, int>();
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace GameEngine
         {
             // 清理场景类注册容器
             _sceneClassTypes.Clear();
-            _sceneFunctionTypes.Clear();
+            _scenePriorities.Clear();
         }
 
         /// <summary>
@@ -389,9 +389,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="sceneName">场景名称</param>
         /// <param name="clsType">场景类型</param>
-        /// <param name="funcType">功能类型</param>
+        /// <param name="priority">场景优先级</param>
         /// <returns>若场景类型注册成功则返回true，否则返回false</returns>
-        private bool RegisterSceneClass(string sceneName, SystemType clsType, int funcType)
+        private bool RegisterSceneClass(string sceneName, SystemType clsType, int priority)
         {
             Debugger.Assert(false == string.IsNullOrEmpty(sceneName) && null != clsType, "Invalid arguments");
 
@@ -408,9 +408,9 @@ namespace GameEngine
             }
 
             _sceneClassTypes.Add(sceneName, clsType);
-            if (funcType > 0)
+            if (priority > 0)
             {
-                _sceneFunctionTypes.Add(sceneName, funcType);
+                _scenePriorities.Add(sceneName, priority);
             }
 
             // Debugger.Info("Register new scene class type '{0}' with target name '{1}'.", clsType.FullName, sceneName);
@@ -424,7 +424,7 @@ namespace GameEngine
         private void UnregisterAllSceneClasses()
         {
             _sceneClassTypes.Clear();
-            _sceneFunctionTypes.Clear();
+            _scenePriorities.Clear();
         }
 
         #endregion

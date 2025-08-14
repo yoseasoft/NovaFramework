@@ -63,7 +63,7 @@ namespace GameEngine
                 return;
             }
 
-            Instance.RegisterSceneClass(sceneCodeInfo.SceneName, sceneCodeInfo.ClassType, sceneCodeInfo.FuncType);
+            Instance.RegisterSceneClass(sceneCodeInfo.SceneName, sceneCodeInfo.ClassType, sceneCodeInfo.Priority);
         }
 
         /// <summary>

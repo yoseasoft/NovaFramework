@@ -63,7 +63,7 @@ namespace GameEngine
                 return;
             }
 
-            Instance.RegisterViewClass(viewCodeInfo.ViewName, viewCodeInfo.ClassType, viewCodeInfo.FuncType);
+            Instance.RegisterViewClass(viewCodeInfo.ViewName, viewCodeInfo.ClassType, viewCodeInfo.Priority);
         }
 
         /// <summary>
