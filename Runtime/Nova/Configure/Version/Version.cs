@@ -49,22 +49,22 @@ namespace NovaEngine
         /// <summary>
         /// 主版本号，重大变动时更改该值
         /// </summary>
-        public const int FRAMEWORK_MAJOR = GlobalMacros.VERSION_FRAMEWORK_MAJOR;
+        public const int FRAMEWORK_MAJOR = VersionInfo.Major;
 
         /// <summary>
         /// 次版本号，功能升级或局部变动时更改该值
         /// </summary>
-        public const int FRAMEWORK_MINOR = GlobalMacros.VERSION_FRAMEWORK_MINOR;
+        public const int FRAMEWORK_MINOR = VersionInfo.Minor;
 
         /// <summary>
         /// 修订版本号，功能扩充或BUG修复时更改该值
         /// </summary>
-        public const int FRAMEWORK_REVISION = GlobalMacros.VERSION_FRAMEWORK_REVISION;
+        public const int FRAMEWORK_REVISION = VersionInfo.Revision;
 
         /// <summary>
         /// 编译版本号，每次重新编译版本时更改该值
         /// </summary>
-        public const int FRAMEWORK_BUILD = GlobalMacros.VERSION_FRAMEWORK_BUILD;
+        public const int FRAMEWORK_BUILD = VersionInfo.Build;
 
         /// <summary>
         /// 字母版本号，用于标识当前软件所属的开发阶段
@@ -74,7 +74,7 @@ namespace NovaEngine
         /// RC：该版本已经相当成熟了，基本上不存在导致错误的Bug，与即将发行的正式版本相差无几。
         /// Release：该版本意味“最终版本”，在前面版本的一系列测试版之后，终归会有一个正式的版本，是最终交付用户使用的一个版本。该版本有时也称标准版。
         /// </summary>
-        public const PublishType FRAMEWORK_LETTER = GlobalMacros.VERSION_FRAMEWORK_LETTER;
+        public const PublishType FRAMEWORK_LETTER = VersionInfo.Letter;
 
         /// <summary>
         /// 获取当前框架版本的格式化串信息
@@ -82,7 +82,7 @@ namespace NovaEngine
         /// <returns>返回当前框架版本信息</returns>
         public static string FrameworkVersionName()
         {
-            string v = string.Format("{0}.{1}.{2}.{3}_{4}", FRAMEWORK_MAJOR, FRAMEWORK_MINOR, FRAMEWORK_REVISION, FRAMEWORK_BUILD, FRAMEWORK_LETTER.ToString());
+            string v = string.Format("{0}.{1}.{2}.{3}-{4}", FRAMEWORK_MAJOR, FRAMEWORK_MINOR, FRAMEWORK_REVISION, FRAMEWORK_BUILD, FRAMEWORK_LETTER.ToString());
 
             return v;
         }

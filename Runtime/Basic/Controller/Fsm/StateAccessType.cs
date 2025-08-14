@@ -1,10 +1,7 @@
 /// -------------------------------------------------------------------------------
-/// NovaEngine Framework
+/// GameEngine Framework
 ///
-/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
-/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,49 +23,36 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace GameEngine
 {
     /// <summary>
-    /// 引擎框架的配置参数定义文件，包括环境参数，版本参数等内容
-    /// 
-    /// 版本参数在每次引擎升级维护时，需同步修改相应的版本号
-    /// 具体字段含义请参考<see cref="NovaEngine.Version"/>类的成员定义
+    /// 状态调度访问类型的枚举定义
     /// </summary>
-    public static class GlobalMacros
+    public enum StateAccessType : byte
     {
         /// <summary>
-        /// 编译配置选项，调试模式
+        /// 未知
         /// </summary>
-        public const string BUILD_CONFIGURATION_DEBUG = "DEBUG";
+        Unknown = 0,
 
         /// <summary>
-        /// 编译配置选项，发布模式
+        /// 进入
         /// </summary>
-        public const string BUILD_CONFIGURATION_RELEASE = "RELEASE";
+        Enter,
 
         /// <summary>
-        /// 主版本号，重大变动时更改该值
+        /// 继续
         /// </summary>
-        public const int VERSION_FRAMEWORK_MAJOR = 2;
+        // Stay,
 
         /// <summary>
-        /// 次版本号，功能升级或局部变动时更改该值
+        /// 刷新
         /// </summary>
-        public const int VERSION_FRAMEWORK_MINOR = 1;
+        Update,
 
         /// <summary>
-        /// 修订版本号，功能扩充或BUG修复时更改该值
+        /// 退出
         /// </summary>
-        public const int VERSION_FRAMEWORK_REVISION = 2;
-
-        /// <summary>
-        /// 编译版本号，每次重新编译版本时更改该值
-        /// </summary>
-        public const int VERSION_FRAMEWORK_BUILD = 202507290;
-
-        /// <summary>
-        /// 字母版本号，用于标识当前软件所属的开发阶段
-        /// </summary>
-        public const Version.PublishType VERSION_FRAMEWORK_LETTER = Version.PublishType.Alpha;
+        Exit,
     }
 }

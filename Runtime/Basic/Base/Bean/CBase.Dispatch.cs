@@ -61,9 +61,9 @@ namespace GameEngine
         private IDictionary<int, IDictionary<string, MessageCallSyntaxInfo>> _messageCallInfosForType;
 
         /// <summary>
-        /// 基础对象的通信模块包初始化函数接口
+        /// 基础对象的转发回调初始化函数接口
         /// </summary>
-        private void OnCommuPackageInitialize()
+        private void OnDispatchCallInitialize()
         {
             // 输入监听回调映射容器初始化
             _inputCallInfosForCode = new Dictionary<int, IDictionary<string, InputCallSyntaxInfo>>();
@@ -78,9 +78,9 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基础对象的通信模块包清理函数接口
+        /// 基础对象的转发回调清理函数接口
         /// </summary>
-        private void OnCommuPackageCleanup()
+        private void OnDispatchCallCleanup()
         {
             // 移除所有输入响应
             RemoveAllInputResponses();

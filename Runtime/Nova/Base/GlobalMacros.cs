@@ -1,7 +1,11 @@
 /// -------------------------------------------------------------------------------
-/// GameEngine Framework
+/// NovaEngine Framework
 ///
-/// Copyright (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
+/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,31 +26,24 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine
+namespace NovaEngine
 {
     /// <summary>
-    /// 状态对象接口类，内部定义了一个标准状态对象所需的接口函数<br/>
-    /// 您可以通过继承该接口类，来实现一个状态对象实例，并通过状态管理器进行调度控制<br/>
+    /// 引擎框架的配置参数定义文件，包括环境参数，版本参数等内容
+    /// 
+    /// 版本参数在每次引擎升级维护时，需同步修改相应的版本号
+    /// 具体字段含义请参考<see cref="NovaEngine.Version"/>类的成员定义
     /// </summary>
-    public interface IState
+    public static class GlobalMacros
     {
         /// <summary>
-        /// 状态对象进入操作调度函数
+        /// 编译配置选项，调试模式
         /// </summary>
-        /// <param name="target">目标引用对象实例</param>
-        /// <returns>若状态进入成功则返回true，否则返回false</returns>
-        bool Enter(CRef target);
+        public const string COMPILER_CONFIGURATION_FOR_DEBUG = "DEBUG";
 
         /// <summary>
-        /// 状态对象执行操作调度函数
+        /// 编译配置选项，发布模式
         /// </summary>
-        /// <param name="target">目标引用对象实例</param>
-        void Execute(CRef target);
-
-        /// <summary>
-        /// 状态对象退出操作调度函数
-        /// </summary>
-        /// <param name="target">目标引用对象实例</param>
-        void Exit(CRef target);
+        public const string COMPILER_CONFIGURATION_FOR_RELEASE = "RELEASE";
     }
 }

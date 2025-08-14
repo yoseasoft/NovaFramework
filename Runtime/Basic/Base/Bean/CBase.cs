@@ -121,8 +121,11 @@ namespace GameEngine
         /// </summary>
         public override void Initialize()
         {
-            // 初始化通信工具包
-            OnCommuPackageInitialize();
+            // 初始化转发回调
+            OnDispatchCallInitialize();
+
+            // 初始化状态轮询
+            OnStatePollInitialize();
         }
 
         /// <summary>
@@ -130,8 +133,11 @@ namespace GameEngine
         /// </summary>
         public override void Cleanup()
         {
-            // 清理通信工具包
-            OnCommuPackageCleanup();
+            // 清理转发回调
+            OnDispatchCallCleanup();
+
+            // 清理状态轮询
+            OnStatePollCleanup();
         }
 
         /// <summary>
