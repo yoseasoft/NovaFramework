@@ -421,7 +421,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         public void RemoveInputResponse(int inputCode, int operationType, SystemMethodInfo methodInfo)
         {
-            string funcName = InputCallSyntaxInfo.GenCallName(methodInfo);
+            string funcName = GenTools.GenUniqueName(methodInfo);
 
             RemoveInputResponse(inputCode, operationType, funcName);
         }
@@ -501,7 +501,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         public void RemoveInputResponse(SystemType inputType, SystemMethodInfo methodInfo)
         {
-            string funcName = InputCallSyntaxInfo.GenCallName(methodInfo);
+            string funcName = GenTools.GenUniqueName(methodInfo);
 
             RemoveInputResponse(inputType, funcName);
         }
@@ -871,7 +871,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         public void Unsubscribe(int eventID, SystemMethodInfo methodInfo)
         {
-            string funcName = EventCallSyntaxInfo.GenCallName(methodInfo);
+            string funcName = GenTools.GenUniqueName(methodInfo);
 
             Unsubscribe(eventID, funcName);
         }
@@ -940,7 +940,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         public void Unsubscribe(SystemType eventType, SystemMethodInfo methodInfo)
         {
-            string funcName = EventCallSyntaxInfo.GenCallName(methodInfo);
+            string funcName = GenTools.GenUniqueName(methodInfo);
 
             Unsubscribe(eventType, funcName);
         }
@@ -1220,7 +1220,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         public void RemoveMessageListener(int opcode, SystemMethodInfo methodInfo)
         {
-            string funcName = MessageCallSyntaxInfo.GenCallName(methodInfo);
+            string funcName = GenTools.GenUniqueName(methodInfo);
 
             RemoveMessageListener(opcode, funcName);
         }
@@ -1387,23 +1387,13 @@ namespace GameEngine
                     obj = null;
                 }
 
-                string fullname = GenCallName(methodInfo);
+                string fullname = GenTools.GenUniqueName(methodInfo);
 
                 SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(obj, methodInfo);
                 Debugger.Assert(null != callback, "Invalid method type.");
 
                 _fullname = fullname;
                 _callback = callback;
-            }
-
-            /// <summary>
-            /// 根据函数信息生成事件回调的名字标签
-            /// </summary>
-            /// <param name="methodInfo">函数对象信息</param>
-            /// <returns>返回通过函数信息生成的名字标签</returns>
-            protected internal static string GenCallName(SystemMethodInfo methodInfo)
-            {
-                return NovaEngine.Utility.Text.GetFullName(methodInfo);
             }
         }
 

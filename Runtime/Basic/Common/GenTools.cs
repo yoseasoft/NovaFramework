@@ -23,31 +23,47 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
 using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
     /// <summary>
-    /// 基础对象抽象类，对需要进行对象定义的场景提供一个通用的基类
+    /// 用于框架内部的生成工具，集中管理对象内部唯一键生成所需的接口函数<br/>
+    /// <br/>
+    /// 注意：这里所谓的唯一键并非全局唯一，而是依托于一个目标元素，在不同元素类型的情况下唯一<br/>
+    /// 一般使用目标元素类型即可达到目的，这里统一转成字符串考虑到后期通过配置控制的情况
     /// </summary>
-    public abstract partial class CBase
+    internal static class GenTools
     {
         /// <summary>
-        /// 基础对象的状态轮询初始化函数接口
+        /// 根据对象类型信息生成唯一的数字序列
         /// </summary>
-        private void OnStatePollInitialize()
+        /// <param name="typeInfo">对象类型信息</param>
+        /// <returns>返回通过对象类型信息生成的数字序列</returns>
+        public static long GenUniqueId(SystemType typeInfo)
         {
+            return NovaEngine.Utility.Convertion.GuidToLong(typeInfo.GUID);
         }
 
         /// <summary>
-        /// 基础对象的状态轮询清理函数接口
+        /// 根据对象类型信息生成唯一的名字标签
         /// </summary>
-        private void OnStatePollCleanup()
+        /// <param name="typeInfo">对象类型信息</param>
+        /// <returns>返回通过对象类型信息生成的名字标签</returns>
+        public static string GenUniqueName(SystemType typeInfo)
         {
+            return NovaEngine.Utility.Text.GetFullName(typeInfo);
+        }
+
+        /// <summary>
+        /// 根据函数信息生成唯一的名字标签
+        /// </summary>
+        /// <param name="methodInfo">函数对象信息</param>
+        /// <returns>返回通过函数信息生成的名字标签</returns>
+        public static string GenUniqueName(SystemMethodInfo methodInfo)
+        {
+            return NovaEngine.Utility.Text.GetFullName(methodInfo);
         }
     }
 }

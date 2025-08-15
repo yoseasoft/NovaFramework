@@ -3,6 +3,7 @@
 ///
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +24,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using SystemGuid = System.Guid;
 using SystemType = System.Type;
 using SystemArray = System.Array;
 using SystemEnum = System.Enum;
@@ -41,7 +43,7 @@ namespace NovaEngine
         /// </summary>
         public static class Convertion
         {
-            #region 字符串转换为基础类型相关函数
+            #region 字符串转换为基础类型相关接口函数
 
             /// <summary>
             /// 字符串类型转换为布尔类型
@@ -200,7 +202,22 @@ namespace NovaEngine
 
             #endregion
 
-            #region 枚举类型转换相关函数
+            #region GUID类型转换相关接口函数
+
+            /// <summary>
+            /// GUID类型转换为长整数类型
+            /// </summary>
+            /// <param name="guid">GUID数据</param>
+            /// <returns>返回转换结果，若转换失败则返回默认值</returns>
+            public static long GuidToLong(SystemGuid guid)
+            {
+                byte[] buffer = guid.ToByteArray();
+                return System.BitConverter.ToInt64(buffer, 0);
+            }
+
+            #endregion
+
+            #region 枚举类型转换相关接口函数
 
             /// <summary>
             /// 检测指定类型枚举值是否为一个合法值
@@ -279,7 +296,7 @@ namespace NovaEngine
 
             #endregion
 
-            #region 数据编码转换相关函数
+            #region 数据编码转换相关接口函数
 
             /// <summary>
             /// 以字节数组的形式获取‘UTF-8’编码的字符串
@@ -438,7 +455,7 @@ namespace NovaEngine
 
             #endregion
 
-            #region 屏幕像素转换相关函数
+            #region 屏幕像素转换相关接口函数
 
             /// <summary>
             /// 英寸到厘米的转换单位
@@ -515,7 +532,7 @@ namespace NovaEngine
 
             #endregion
 
-            #region 数据MD5编码相关函数
+            #region 数据MD5编码相关接口函数
 
             /// <summary>
             /// 获取指定字符串内容所计算的MD5哈希值的字符串格式数据
