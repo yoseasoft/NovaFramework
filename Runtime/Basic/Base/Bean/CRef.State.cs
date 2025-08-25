@@ -391,6 +391,10 @@ namespace GameEngine
             /// 回调函数的扩展定义状态标识
             /// </summary>
             protected readonly bool _isExtensionType;
+            /// <summary>
+            /// 回调函数的无参状态标识
+            /// </summary>
+            protected readonly bool _isNullParameterType;
 
             public string Fullname => _fullname;
             public string StateName => _stateName;
@@ -406,6 +410,7 @@ namespace GameEngine
                 _accessType = accessType;
                 _methodInfo = methodInfo;
                 _isExtensionType = NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo);
+                _isNullParameterType = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfStateCallWithNullParameterType(methodInfo);
 
                 object obj = targetObject;
                 if (_isExtensionType)
@@ -430,11 +435,25 @@ namespace GameEngine
             {
                 if (_isExtensionType)
                 {
-                    _callback.DynamicInvoke(_targetObject);
+                    if (_isNullParameterType)
+                    {
+                        _callback.DynamicInvoke(_targetObject);
+                    }
+                    else
+                    {
+                        _callback.DynamicInvoke(_targetObject, _targetObject._stateGraph);
+                    }
                 }
                 else
                 {
-                    _callback.DynamicInvoke();
+                    if (_isNullParameterType)
+                    {
+                        _callback.DynamicInvoke();
+                    }
+                    else
+                    {
+                        _callback.DynamicInvoke(_targetObject._stateGraph);
+                    }
                 }
             }
         }

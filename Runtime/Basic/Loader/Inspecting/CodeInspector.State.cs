@@ -38,7 +38,7 @@ namespace GameEngine.Loader.Inspecting
     internal static partial class CodeInspector
     {
         /// <summary>
-        /// 检查状态监控函数的格式是否正确
+        /// 检查状态转换函数的格式是否正确
         /// </summary>
         /// <param name="methodInfo">函数类型</param>
         /// <returns>若格式正确则返回true，否则返回false</returns>
@@ -57,12 +57,30 @@ namespace GameEngine.Loader.Inspecting
                 return true;
             }
 
-            // 状态监控函数的两种无参函数格式:
+            // 状态转换函数的两种无参函数格式:
             // 1. [static] void OnState();
             // 2. static void OnState(IBean obj);
-            if (paramInfos.Length == 1 && methodInfo.IsStatic) // 状态如果存在一个参数，那必然是静态函数
+            //
+            // 2025-08-25:
+            // 新增带状态图参数类型相关函数接口，因此转换新增以下格式:
+            // 1. [static] void OnState(StateGraph stateGraph);
+            // 2. static void OnState(IBean obj, StateGraph stateGraph);
+            // 以上的“stateGraph”参数为实体对象自身的状态图实例
+            if (paramInfos.Length == 1)
             {
                 if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType))
+                {
+                    return true;
+                }
+                else if (typeof(StateGraph).IsAssignableFrom(paramInfos[0].ParameterType))
+                {
+                    return true;
+                }
+            }
+            else if (paramInfos.Length == 2)
+            {
+                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) && // 第一个参数为Bean对象
+                        typeof(StateGraph).IsAssignableFrom(paramInfos[1].ParameterType)) // 第二个参数为事件类型
                 {
                     return true;
                 }
@@ -72,13 +90,30 @@ namespace GameEngine.Loader.Inspecting
         }
 
         /// <summary>
-        /// 检测目标函数是否为无参的状态监控函数类型
+        /// 检测目标函数是否为无参的状态转换函数类型
         /// </summary>
         /// <param name="methodInfo">函数类型</param>
         /// <returns>若为无参格式则返回true，否则返回false</returns>
         public static bool CheckFunctionFormatOfStateCallWithNullParameterType(SystemMethodInfo methodInfo)
         {
-            return CheckFunctionFormatOfStateCall(methodInfo);
+            // 无参类型的状态转换函数有两种格式:
+            // 1. [static] void OnState();
+            // 2. static void OnState(IBean obj);
+            SystemParameterInfo[] paramInfos = methodInfo.GetParameters();
+            if (null == paramInfos || paramInfos.Length <= 0)
+            {
+                return true;
+            }
+
+            if (paramInfos.Length == 1 && methodInfo.IsStatic) // 无参类型事件如果存在一个参数，那必然是静态函数
+            {
+                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -106,14 +141,27 @@ namespace GameEngine.Loader.Inspecting
                 return false;
             }
 
-            // 状态监控函数只有一种格式
+            // 状态转换函数有两种格式
             // 1. static void OnState(this IBean self);
+            // 2. static void OnState(this IBean self, StateGraph stateGraph);
 
             // 第一个参数必须为原型类的子类，且必须是可实例化的类
             if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) &&
                 NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(paramInfos[0].ParameterType))
             {
                 return true;
+            }
+
+            if (paramInfos.Length == 1)
+            {
+                return true;
+            }
+            else if (paramInfos.Length == 2)
+            {
+                if (typeof(StateGraph).IsAssignableFrom(paramInfos[1].ParameterType)) // 第二个参数为状态图类型
+                {
+                    return true;
+                }
             }
 
             return false;

@@ -564,13 +564,17 @@ namespace GameEngine.Loader
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                         if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                         {
-                            bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    Inspecting.CodeInspector.CheckFunctionFormatOfStateCallWithNullParameterType(symMethod.MethodInfo),
-                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
+                            bool verificated = false;
 
-                            if (Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo))
+                            if (Inspecting.CodeInspector.CheckFunctionFormatOfStateCallWithNullParameterType(symMethod.MethodInfo))
                             {
-                                // null parameter type, skip other check process
+                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
+                            }
+                            else
+                            {
+                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                        symMethod.MethodInfo, methodTypeCodeInfo.TargetType, typeof(StateGraph));
                             }
 
                             // 校验失败

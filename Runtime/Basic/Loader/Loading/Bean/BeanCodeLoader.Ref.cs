@@ -216,10 +216,16 @@ namespace GameEngine.Loader
                     bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
                                             Inspecting.CodeInspector.CheckFunctionFormatOfStateCallWithNullParameterType(symMethod.MethodInfo), symMethod.MethodInfo);
 
-                    //if (Inspecting.CodeInspector.CheckFunctionFormatOfStateCallWithNullParameterType(symMethod.MethodInfo))
-                    //{
-                    //    // null parameter type, skip other check process
-                    //}
+                    if (Inspecting.CodeInspector.CheckFunctionFormatOfStateCallWithNullParameterType(symMethod.MethodInfo))
+                    {
+                        // null parameter type, skip other check process
+                    }
+                    else
+                    {
+                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                            false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo),
+                                            symMethod.MethodInfo, typeof(StateGraph));
+                    }
 
                     // 校验失败
                     if (false == verificated)
