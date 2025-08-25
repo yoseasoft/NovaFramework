@@ -248,11 +248,11 @@ namespace GameEngine
                 bool verificated = false;
                 if (NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
                 {
-                    verificated = Loader.Inspecting.CodeInspector.IsValidFormatOfBeanExtendInputCallFunction(methodInfo);
+                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithBeanExtensionType(methodInfo);
                 }
                 else
                 {
-                    verificated = Loader.Inspecting.CodeInspector.IsValidFormatOfInputCallFunction(methodInfo);
+                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfInputCall(methodInfo);
                 }
 
                 // 校验失败
@@ -346,11 +346,11 @@ namespace GameEngine
                 bool verificated = false;
                 if (NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
                 {
-                    verificated = Loader.Inspecting.CodeInspector.IsValidFormatOfBeanExtendInputCallFunction(methodInfo);
+                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithBeanExtensionType(methodInfo);
                 }
                 else
                 {
-                    verificated = Loader.Inspecting.CodeInspector.IsValidFormatOfInputCallFunction(methodInfo);
+                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfInputCall(methodInfo);
                 }
 
                 // 校验失败
@@ -709,11 +709,11 @@ namespace GameEngine
                 bool verificated = false;
                 if (NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
                 {
-                    verificated = Loader.Inspecting.CodeInspector.IsValidFormatOfBeanExtendEventCallFunction(methodInfo);
+                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithBeanExtensionType(methodInfo);
                 }
                 else
                 {
-                    verificated = Loader.Inspecting.CodeInspector.IsValidFormatOfEventCallFunction(methodInfo);
+                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfEventCall(methodInfo);
                 }
 
                 // 校验失败
@@ -807,11 +807,11 @@ namespace GameEngine
                 bool verificated = false;
                 if (NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
                 {
-                    verificated = Loader.Inspecting.CodeInspector.IsValidFormatOfBeanExtendEventCallFunction(methodInfo);
+                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithBeanExtensionType(methodInfo);
                 }
                 else
                 {
-                    verificated = Loader.Inspecting.CodeInspector.IsValidFormatOfEventCallFunction(methodInfo);
+                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfEventCall(methodInfo);
                 }
 
                 // 校验失败
@@ -1096,11 +1096,11 @@ namespace GameEngine
                 bool verificated = false;
                 if (NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
                 {
-                    verificated = Loader.Inspecting.CodeInspector.IsValidFormatOfBeanExtendMessageCallFunction(methodInfo);
+                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithBeanExtensionType(methodInfo);
                 }
                 else
                 {
-                    verificated = Loader.Inspecting.CodeInspector.IsValidFormatOfMessageCallFunction(methodInfo);
+                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfMessageCall(methodInfo);
                 }
 
                 // 校验失败
@@ -1378,7 +1378,7 @@ namespace GameEngine
                 _methodInfo = methodInfo;
                 _automatically = automatically;
                 _isExtensionType = NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo);
-                _isNullParameterType = Loader.Inspecting.CodeInspector.IsNullParameterTypeOfMessageCallFunction(methodInfo);
+                _isNullParameterType = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(methodInfo);
 
                 object obj = targetObject;
                 if (_isExtensionType)

@@ -34,7 +34,7 @@ namespace GameEngine
     /// 外部可以通过统一使用该类提供的API进行逻辑处理，避免内部复杂的层次结构导致其它开发人员上手门槛过高<br/>
     /// 同时因为API封装类的存在，内部的具体实现类也可以更好的进行访问权限的控制管理<br/>
     /// 
-    /// 该类基本涵盖了所有Handler及Controller提供的服务接口，若有缺失可联系开发人员进行补充
+    /// 该类几乎涵盖了Handler和Controller内部提供的所有服务接口，若有缺失可联系开发人员进行补充
     /// </summary>
     public static partial class GameApi
     {
@@ -116,7 +116,11 @@ namespace GameEngine
 
         #endregion
 
-        #region 场景业务相关的服务接口函数
+        #region 针对“CObject”对象类型业务相关的服务接口函数
+
+        #endregion
+
+        #region 针对“CScene”场景类型业务相关的服务接口函数
 
         /// <summary>
         /// 获取当前运行的场景实例
@@ -186,7 +190,7 @@ namespace GameEngine
 
         #endregion
 
-        #region 角色业务相关的服务接口函数
+        #region 针对“CActor”角色类型业务相关的服务接口函数
 
         /// <summary>
         /// 根据指定的角色名称动态创建一个对应的角色对象实例
@@ -256,7 +260,7 @@ namespace GameEngine
 
         #endregion
 
-        #region 视图业务相关的服务接口函数
+        #region 针对“CView”视图类型业务相关的服务接口函数
 
         /// <summary>
         /// 根据指定的视图名称动态创建一个对应的视图对象实例

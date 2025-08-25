@@ -228,7 +228,7 @@ namespace GameEngine.Loader
                 }
 
                 // 检查函数格式是否合法
-                if (false == Inspecting.CodeInspector.IsValidFormatOfAspectFunction(symMethod.MethodInfo))
+                if (false == Inspecting.CodeInspector.CheckFunctionFormatOfAspect(symMethod.MethodInfo))
                 {
                     Debugger.Warn("The aspect call method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.FullName);
                     continue;

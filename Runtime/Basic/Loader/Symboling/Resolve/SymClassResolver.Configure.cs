@@ -50,7 +50,7 @@ namespace GameEngine.Loader.Symboling
             // 不可实例化的类类型，不能进行Bean实体的构建
             if (false == symClass.IsInstantiate)
             {
-                Debugger.Warn("The target symbol class '{0}' was not instantiable type, created bean object failed.", symClass.FullName);
+                Debugger.Warn("创建原型对象配置实例失败：因为发起的目标符号类型‘{%t}’不是一个可实例化的类型，不满足挂载原型对象配置的条件！", symClass.ClassType);
                 return null;
             }
 

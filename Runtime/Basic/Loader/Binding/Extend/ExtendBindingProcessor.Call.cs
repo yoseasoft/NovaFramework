@@ -52,7 +52,7 @@ namespace GameEngine.Loader
         {
             if (null == codeInfo)
             {
-                Debugger.Warn("The load code info '{0}' must be non-null, recv arguments invalid.", targetType.FullName);
+                Debugger.Warn("The load code info '{%t}' must be non-null, recv arguments invalid.", targetType);
                 return;
             }
 
@@ -63,7 +63,7 @@ namespace GameEngine.Loader
             {
                 InputResponsingMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetInputCallMethodType(n);
 
-                Debugger.Info(LogGroupTag.CodeLoader, "Load extend input call {0} with target class type {1}.", callMethodInfo.Method.Name, callMethodInfo.TargetType.FullName);
+                Debugger.Info(LogGroupTag.CodeLoader, "Load extend input call {%t} with target class type {%t}.", callMethodInfo.Method, callMethodInfo.TargetType);
 
                 GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
                 if (_lookupCodeInfo is BaseBeanCodeInfo baseCodeInfo)
@@ -72,7 +72,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("Could not found any general code info with target type '{0}', binded input call failed.", callMethodInfo.TargetType.FullName);
+                    Debugger.Warn("Could not found any general code info with target type '{%t}', binded input call failed.", callMethodInfo.TargetType);
                 }
             }
 
@@ -80,7 +80,7 @@ namespace GameEngine.Loader
             {
                 EventSubscribingMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetEventCallMethodType(n);
 
-                Debugger.Info(LogGroupTag.CodeLoader, "Load extend event call {0} with target class type {1}.", callMethodInfo.Method.Name, callMethodInfo.TargetType.FullName);
+                Debugger.Info(LogGroupTag.CodeLoader, "Load extend event call {%t} with target class type {%t}.", callMethodInfo.Method, callMethodInfo.TargetType);
 
                 GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
                 if (_lookupCodeInfo is BaseBeanCodeInfo baseCodeInfo)
@@ -89,7 +89,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("Could not found any general code info with target type '{0}', binded event call failed.", callMethodInfo.TargetType.FullName);
+                    Debugger.Warn("Could not found any general code info with target type '{%t}', binded event call failed.", callMethodInfo.TargetType);
                 }
             }
 
@@ -97,7 +97,7 @@ namespace GameEngine.Loader
             {
                 MessageBindingMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetMessageCallMethodType(n);
 
-                Debugger.Info(LogGroupTag.CodeLoader, "Load extend message call {0} with target class type {1}.", callMethodInfo.Method.Name, callMethodInfo.TargetType.FullName);
+                Debugger.Info(LogGroupTag.CodeLoader, "Load extend message call {%t} with target class type {%t}.", callMethodInfo.Method, callMethodInfo.TargetType);
 
                 GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
                 if (_lookupCodeInfo is BaseBeanCodeInfo baseCodeInfo)
@@ -106,7 +106,24 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("Could not found any general code info with target type '{0}', binded message call failed.", callMethodInfo.TargetType.FullName);
+                    Debugger.Warn("Could not found any general code info with target type '{%t}', binded message call failed.", callMethodInfo.TargetType);
+                }
+            }
+
+            for (int n = 0; n < extendCodeInfo.GetStateCallMethodTypeCount(); ++n)
+            {
+                StateTransitioningMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetStateCallMethodType(n);
+
+                Debugger.Info(LogGroupTag.CodeLoader, "Load extend state call {%t} with target class type {%t}.", callMethodInfo.Method, callMethodInfo.TargetType);
+
+                GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
+                if (_lookupCodeInfo is RefCodeInfo refCodeInfo)
+                {
+                    refCodeInfo.AddStateTransitioningMethodType(callMethodInfo);
+                }
+                else
+                {
+                    Debugger.Warn("Could not found any general code info with target type '{%t}', binded state call failed.", callMethodInfo.TargetType);
                 }
             }
         }

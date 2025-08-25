@@ -748,7 +748,7 @@ namespace GameEngine
                 _operationType = operationType;
                 _inputDataType = inputDataType;
                 _callback = callback;
-                _isNullParameterType = Loader.Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(callback.Method);
+                _isNullParameterType = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(callback.Method);
             }
 
             /// <summary>

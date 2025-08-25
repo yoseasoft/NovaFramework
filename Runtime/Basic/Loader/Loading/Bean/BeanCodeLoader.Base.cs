@@ -359,7 +359,7 @@ namespace GameEngine.Loader
             {
                 InputResponseBindingOfTargetAttribute _attr = (InputResponseBindingOfTargetAttribute) attribute;
 
-                if (symMethod.IsStatic || false == Inspecting.CodeInspector.IsValidFormatOfInputCallFunction(symMethod.MethodInfo))
+                if (symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCall(symMethod.MethodInfo))
                 {
                     Debugger.Warn("The input responsing method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     return;
@@ -376,22 +376,22 @@ namespace GameEngine.Loader
                 if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                 {
                     bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo), symMethod.MethodInfo);
+                                            Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo), symMethod.MethodInfo);
 
-                    if (Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo))
+                    if (Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo))
                     {
                         // null parameter type, skip other check process
                     }
                     else if (methodTypeCodeInfo.InputCode > 0)
                     {
                         verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            false == Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo),
+                                            false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo),
                                             symMethod.MethodInfo, typeof(int), typeof(int));
                     }
                     else
                     {
                         verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            false == Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo),
+                                            false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo),
                                             symMethod.MethodInfo, methodTypeCodeInfo.InputDataType);
                     }
 
@@ -409,7 +409,7 @@ namespace GameEngine.Loader
             {
                 EventSubscribeBindingOfTargetAttribute _attr = (EventSubscribeBindingOfTargetAttribute) attribute;
 
-                if (symMethod.IsStatic || false == Inspecting.CodeInspector.IsValidFormatOfEventCallFunction(symMethod.MethodInfo))
+                if (symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCall(symMethod.MethodInfo))
                 {
                     Debugger.Warn("The event subscribing method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     return;
@@ -425,22 +425,22 @@ namespace GameEngine.Loader
                 if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                 {
                     bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            Inspecting.CodeInspector.IsNullParameterTypeOfEventCallFunction(symMethod.MethodInfo), symMethod.MethodInfo);
+                                            Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo), symMethod.MethodInfo);
 
-                    if (Inspecting.CodeInspector.IsNullParameterTypeOfEventCallFunction(symMethod.MethodInfo))
+                    if (Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo))
                     {
                         // null parameter type, skip other check process
                     }
                     else if (methodTypeCodeInfo.EventID > 0)
                     {
                         verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            false == Inspecting.CodeInspector.IsNullParameterTypeOfEventCallFunction(symMethod.MethodInfo),
+                                            false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo),
                                             symMethod.MethodInfo, typeof(int), typeof(object[]));
                     }
                     else
                     {
                         verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            false == Inspecting.CodeInspector.IsNullParameterTypeOfEventCallFunction(symMethod.MethodInfo),
+                                            false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo),
                                             symMethod.MethodInfo, methodTypeCodeInfo.EventDataType);
                     }
 
@@ -458,7 +458,7 @@ namespace GameEngine.Loader
             {
                 MessageListenerBindingOfTargetAttribute _attr = (MessageListenerBindingOfTargetAttribute) attribute;
 
-                if (symMethod.IsStatic || false == Inspecting.CodeInspector.IsValidFormatOfMessageCallFunction(symMethod.MethodInfo))
+                if (symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCall(symMethod.MethodInfo))
                 {
                     Debugger.Warn("The message binding method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     return;
@@ -474,22 +474,22 @@ namespace GameEngine.Loader
                 if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                 {
                     bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            Inspecting.CodeInspector.IsNullParameterTypeOfMessageCallFunction(symMethod.MethodInfo), symMethod.MethodInfo);
+                                            Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo), symMethod.MethodInfo);
 
-                    if (Inspecting.CodeInspector.IsNullParameterTypeOfMessageCallFunction(symMethod.MethodInfo))
+                    if (Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo))
                     {
                         // null parameter type, skip other check process
                     }
                     else if (methodTypeCodeInfo.Opcode > 0)
                     {
                         verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            false == Inspecting.CodeInspector.IsNullParameterTypeOfMessageCallFunction(symMethod.MethodInfo),
+                                            false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo),
                                             symMethod.MethodInfo, typeof(ProtoBuf.Extension.IMessage));
                     }
                     else
                     {
                         verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            false == Inspecting.CodeInspector.IsNullParameterTypeOfMessageCallFunction(symMethod.MethodInfo),
+                                            false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo),
                                             symMethod.MethodInfo, methodTypeCodeInfo.MessageType);
                     }
 

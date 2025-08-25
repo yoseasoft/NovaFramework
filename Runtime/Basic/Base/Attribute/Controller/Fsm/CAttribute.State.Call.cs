@@ -31,15 +31,36 @@ using SystemAttributeTargets = System.AttributeTargets;
 namespace GameEngine
 {
     /// <summary>
-    /// 状态系统基于全局分发的属性类型定义
-    /// 大概率是不会用到的，因为状态调度模块目前主要考虑给引用对象内部使用
-    /// 后期可能会考虑在<see cref="CComponent"/>对象类型上进行支持
-    /// 但基本不会考虑在全局范围下使用，如果业务真的有这类需求，请自行管理
-    /// 
-    /// 目前不考虑<see cref="CComponent"/>的原因主要是因为其与<see cref="CEntity"/>存在一对多的关联关系
-    /// 当<see cref="CEntity"/>发生状态改变时，其内部的所有<see cref="CComponent"/>的状态如何变化
-    /// 这个问题目前没有考虑出一个清晰的规则，所以就暂时先只考虑实体对象自身支持状态改变
+    /// 状态转换绑定函数的属性类型定义
     /// </summary>
-    // [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    // public class StateSystemAttribute : SystemAttribute { public StateSystemAttribute() { } }
+    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    public class StateTransitionBindingOfTargetAttribute : SystemAttribute
+    {
+        /// <summary>
+        /// 状态名称
+        /// </summary>
+        private readonly string _stateName;
+        /// <summary>
+        /// 状态访问类型
+        /// </summary>
+        private readonly StateAccessType _accessType;
+
+        /// <summary>
+        /// 状态名称获取函数
+        /// </summary>
+        public string StateName => _stateName;
+        /// <summary>
+        /// 状态访问类型获取函数
+        /// </summary>
+        public StateAccessType AccessType => _accessType;
+
+        public StateTransitionBindingOfTargetAttribute(string stateName) : this(stateName, StateAccessType.Update)
+        { }
+
+        public StateTransitionBindingOfTargetAttribute(string stateName, StateAccessType accessType)
+        {
+            _stateName = stateName;
+            _accessType = accessType;
+        }
+    }
 }

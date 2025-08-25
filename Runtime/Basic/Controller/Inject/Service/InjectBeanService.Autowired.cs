@@ -49,7 +49,7 @@ namespace GameEngine
             }
 
             Loader.Symboling.Bean bean = symClass.GetBean(obj.BeanName);
-            Debugger.Info("find bean name '{0}' and field count '{1}' with target object '{2}' !!!", obj.BeanName, bean.GetFieldCount(), NovaEngine.Utility.Text.ToString(obj.GetType()));
+            // Debugger.Info("find bean name '{0}' and field count '{1}' with target object '{2}' !!!", obj.BeanName, bean.GetFieldCount(), NovaEngine.Utility.Text.ToString(obj.GetType()));
 
             IEnumerator<KeyValuePair<string, Loader.Symboling.BeanField>> e_beanField = bean.GetFieldEnumerator();
             if (null != e_beanField)
@@ -59,7 +59,7 @@ namespace GameEngine
                     Loader.Symboling.BeanField beanField = e_beanField.Current.Value;
                     Loader.Symboling.SymField symField = beanField.SymField;
 
-                    Debugger.Warn("create field '{0}' with target object '{1}' !!!", beanField.FieldName, obj.GetType().FullName);
+                    // Debugger.Warn("create field '{0}' with target object '{1}' !!!", beanField.FieldName, obj.GetType().FullName);
 
                     if (null == symField)
                     {

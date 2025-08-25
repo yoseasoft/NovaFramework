@@ -23,31 +23,19 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
+using SystemAttribute = System.Attribute;
+using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
+using SystemAttributeTargets = System.AttributeTargets;
 
 namespace GameEngine
 {
     /// <summary>
-    /// 基础对象抽象类，对需要进行对象定义的场景提供一个通用的基类
+    /// API系统基于全局分发的属性类型定义
     /// </summary>
-    public abstract partial class CBase
+    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class ApiSystemAttribute : SystemAttribute
     {
-        /// <summary>
-        /// 基础对象的状态轮询初始化函数接口
-        /// </summary>
-        private void OnStatePollInitialize()
-        {
-        }
-
-        /// <summary>
-        /// 基础对象的状态轮询清理函数接口
-        /// </summary>
-        private void OnStatePollCleanup()
-        {
-        }
+        public ApiSystemAttribute() { }
     }
 }

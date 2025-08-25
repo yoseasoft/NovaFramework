@@ -344,7 +344,7 @@ namespace GameEngine
                 _eventID = eventID;
                 _eventDataType = eventDataType;
                 _callback = callback;
-                _isNullParameterType = Loader.Inspecting.CodeInspector.IsNullParameterTypeOfEventCallFunction(callback.Method);
+                _isNullParameterType = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(callback.Method);
             }
 
             /// <summary>

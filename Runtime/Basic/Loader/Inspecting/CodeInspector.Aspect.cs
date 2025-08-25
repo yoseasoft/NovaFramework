@@ -35,14 +35,14 @@ namespace GameEngine.Loader.Inspecting
     /// <summary>
     /// 程序集的安全检查类，对业务层载入的所有对象类进行安全检查的分析处理，确保代码的正确运行
     /// </summary>
-    public static partial class CodeInspector
+    internal static partial class CodeInspector
     {
         /// <summary>
         /// 检查切面回调函数的格式是否正确
         /// </summary>
         /// <param name="methodInfo">函数类型</param>
         /// <returns>若格式正确则返回true，否则返回false</returns>
-        public static bool IsValidFormatOfAspectFunction(SystemMethodInfo methodInfo)
+        public static bool CheckFunctionFormatOfAspect(SystemMethodInfo methodInfo)
         {
             // 函数返回值必须为“void”
             if (typeof(void) != methodInfo.ReturnType)

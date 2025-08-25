@@ -116,6 +116,9 @@ namespace GameEngine
 
             // 任务会话容器初始化
             _schedules = new List<int>();
+
+            // 初始化状态轮询
+            OnStatePollInitialize();
         }
 
         /// <summary>
@@ -127,6 +130,9 @@ namespace GameEngine
             RemoveAllSchedules();
             Debugger.Assert(_schedules.Count == 0);
             _schedules = null;
+
+            // 清理状态轮询
+            OnStatePollCleanup();
 
             base.Cleanup();
 
@@ -144,6 +150,52 @@ namespace GameEngine
             Debugger.Assert(_messageTypes.Count == 0);
             _messageTypes = null;
         }
+
+        /// <summary>
+        /// 引用对象刷新通知接口函数
+        /// </summary>
+        public virtual void Update()
+        {
+            OnStateDispatch();
+        }
+
+        /// <summary>
+        /// 引用对象后置刷新通知接口函数
+        /// </summary>
+        public virtual void LateUpdate()
+        {
+        }
+
+        #region 引用对象行为检测封装接口函数（包括对象接口，特性等标签）
+
+        /// <summary>
+        /// 检测当前引用对象是否激活刷新行为
+        /// </summary>
+        /// <returns>若引用对象激活刷新行为则返回true，否则返回false</returns>
+        protected internal virtual bool IsUpdateActivation()
+        {
+            if (typeof(IUpdateActivation).IsAssignableFrom(GetType()))
+            {
+                return true;
+            }
+
+            // 引用对象自身需要刷新
+            if (HasAspectBehaviourType(AspectBehaviourType.Update) ||
+                HasAspectBehaviourType(AspectBehaviourType.LateUpdate))
+            {
+                return true;
+            }
+
+            // 引用对象因为注册了状态转换需要刷新
+            if (IsOnDispatchingOfStateGraph())
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion
 
         #region 引用对象输入响应相关操作函数合集
 

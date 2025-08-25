@@ -473,8 +473,7 @@ namespace GameEngine
 
             // 激活刷新接口的对象实例，放入到刷新队列中
             //if (typeof(IUpdateActivation).IsAssignableFrom(obj.GetType()))
-            if (obj.HasAspectBehaviourType(AspectBehaviourType.Update) ||
-                obj.HasAspectBehaviourType(AspectBehaviourType.LateUpdate))
+            if (obj.IsUpdateActivation())
             {
                 _objectUpdateList.Add(obj);
             }

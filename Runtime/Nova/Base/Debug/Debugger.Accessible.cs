@@ -33,35 +33,35 @@ namespace NovaEngine
         /// <summary>
         /// 日志输出规范定义代理句柄接口
         /// </summary>
-        public delegate void OutputHandler_object(object message);
-        public delegate void OutputHandler_string(string message);
-        public delegate void OutputHandler_cond_string(bool cond, string message);
-        public delegate void OutputHandler_format_args(string format, params object[] args);
-        public delegate void OutputHandler_cond_format_args(bool cond, string format, params object[] args);
+        protected internal delegate void OutputHandler_object(object message);
+        protected internal delegate void OutputHandler_string(string message);
+        protected internal delegate void OutputHandler_cond_string(bool cond, string message);
+        protected internal delegate void OutputHandler_format_args(string format, params object[] args);
+        protected internal delegate void OutputHandler_cond_format_args(bool cond, string format, params object[] args);
 
-        public delegate void OutputHandler_level_object(LogOutputLevelType level, object message);
-        public delegate void OutputHandler_level_string(LogOutputLevelType level, string message);
-        public delegate void OutputHandler_level_format_args(LogOutputLevelType level, string format, params object[] args);
+        protected internal delegate void OutputHandler_level_object(LogOutputLevelType level, object message);
+        protected internal delegate void OutputHandler_level_string(LogOutputLevelType level, string message);
+        protected internal delegate void OutputHandler_level_format_args(LogOutputLevelType level, string format, params object[] args);
 
         /// <summary>
         /// 断言处理规范定义代理句柄接口
         /// </summary>
-        public delegate void AssertHandler_empty(bool condition);
-        public delegate void AssertHandler_object(bool condition, object message);
-        public delegate void AssertHandler_string(bool condition, string message);
-        public delegate void AssertHandler_format_args(bool condition, string format, params object[] args);
+        protected internal delegate void AssertHandler_empty(bool condition);
+        protected internal delegate void AssertHandler_object(bool condition, object message);
+        protected internal delegate void AssertHandler_string(bool condition, string message);
+        protected internal delegate void AssertHandler_format_args(bool condition, string format, params object[] args);
 
         /// <summary>
         /// 异常处理规范定义代理句柄接口
         /// </summary>
-        public delegate void ThrowHandler_empty();
-        public delegate void ThrowHandler_code(int errorCode);
-        public delegate void ThrowHandler_string(string message);
-        public delegate void ThrowHandler_format_args(string format, params object[] args);
-        public delegate void ThrowHandler_exception(System.Exception exception);
-        public delegate void ThrowHandler_type(System.Type type);
-        public delegate void ThrowHandler_type_string(System.Type type, string message);
-        public delegate void ThrowHandler_type_format_args(System.Type type, string format, params object[] args);
+        protected internal delegate void ThrowHandler_empty();
+        protected internal delegate void ThrowHandler_code(int errorCode);
+        protected internal delegate void ThrowHandler_string(string message);
+        protected internal delegate void ThrowHandler_format_args(string format, params object[] args);
+        protected internal delegate void ThrowHandler_exception(System.Exception exception);
+        protected internal delegate void ThrowHandler_type(System.Type type);
+        protected internal delegate void ThrowHandler_type_string(System.Type type, string message);
+        protected internal delegate void ThrowHandler_type_format_args(System.Type type, string format, params object[] args);
 
         /// <summary>
         /// 调试模式下的输出回调接口

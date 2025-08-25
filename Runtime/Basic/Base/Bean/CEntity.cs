@@ -149,8 +149,10 @@ namespace GameEngine
         /// <summary>
         /// 实体对象刷新通知接口函数
         /// </summary>
-        public virtual void Update()
+        public override void Update()
         {
+            base.Update();
+
             // 组件实例刷新
             UpdateAllComponents();
         }
@@ -158,8 +160,10 @@ namespace GameEngine
         /// <summary>
         /// 实体对象后置刷新通知接口函数
         /// </summary>
-        public virtual void LateUpdate()
+        public override void LateUpdate()
         {
+            base.LateUpdate();
+
             // 组件实例后置刷新
             LateUpdateAllComponents();
         }
@@ -271,11 +275,9 @@ namespace GameEngine
         /// 检测的激活条件包括实体自身和其内部的组件实例
         /// </summary>
         /// <returns>若实体对象激活刷新行为则返回true，否则返回false</returns>
-        protected internal virtual bool IsUpdateActivation()
+        protected internal override bool IsUpdateActivation()
         {
-            // 实体对象自身需要刷新
-            if (HasAspectBehaviourType(AspectBehaviourType.Update) ||
-                HasAspectBehaviourType(AspectBehaviourType.LateUpdate))
+            if (base.IsUpdateActivation())
             {
                 return true;
             }

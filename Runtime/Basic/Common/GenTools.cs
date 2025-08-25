@@ -24,7 +24,9 @@
 /// -------------------------------------------------------------------------------
 
 using SystemType = System.Type;
+using SystemEncoding = System.Text.Encoding;
 using SystemMethodInfo = System.Reflection.MethodInfo;
+using SystemSHA256 = System.Security.Cryptography.SHA256;
 
 namespace GameEngine
 {
@@ -64,6 +66,21 @@ namespace GameEngine
         public static string GenUniqueName(SystemMethodInfo methodInfo)
         {
             return NovaEngine.Utility.Text.GetFullName(methodInfo);
+        }
+
+        /// <summary>
+        /// 通过生成一个基于字符串的哈希值，获取该字符串唯一的数字序列
+        /// </summary>
+        /// <param name="text">字符串值</param>
+        /// <returns>返回通过字符串信息生成的数字序列</returns>
+        private static long StringToUniqueLong(string text)
+        {
+            SystemSHA256 hash = SystemSHA256.Create();
+            byte[] buffer = hash.ComputeHash(SystemEncoding.UTF8.GetBytes(text));
+            long v = System.BitConverter.ToInt64(buffer, 0);
+            hash.Dispose();
+
+            return v;
         }
     }
 }

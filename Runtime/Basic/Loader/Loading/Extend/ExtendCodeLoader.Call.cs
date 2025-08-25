@@ -35,7 +35,7 @@ namespace GameEngine.Loader
     /// <summary>
     /// 扩展定义调用类的结构信息
     /// </summary>
-    public class ExtendCallCodeInfo : ExtendCodeInfo
+    internal class ExtendCallCodeInfo : ExtendCodeInfo
     {
         /// <summary>
         /// 原型对象输入响应的扩展定义调用类的数据管理容器
@@ -51,6 +51,11 @@ namespace GameEngine.Loader
         /// 原型对象消息处理的扩展定义调用类的数据管理容器
         /// </summary>
         private IList<MessageBindingMethodTypeCodeInfo> _messageCallMethodTypes;
+
+        /// <summary>
+        /// 原型对象状态监控的扩展定义调用类的数据管理容器
+        /// </summary>
+        private IList<StateTransitioningMethodTypeCodeInfo> _stateCallMethodTypes;
 
         #region 扩展输入调用类结构信息操作函数
 
@@ -241,6 +246,69 @@ namespace GameEngine.Loader
 
         #endregion
 
+        #region 扩展状态调用类结构信息操作函数
+
+        /// <summary>
+        /// 新增指定函数的回调句柄相关的结构信息
+        /// </summary>
+        /// <param name="invoke">函数的结构信息</param>
+        public void AddStateCallMethodType(StateTransitioningMethodTypeCodeInfo invoke)
+        {
+            if (null == _stateCallMethodTypes)
+            {
+                _stateCallMethodTypes = new List<StateTransitioningMethodTypeCodeInfo>();
+            }
+
+            if (_stateCallMethodTypes.Contains(invoke))
+            {
+                Debugger.Warn("The extend state call class type '{0}' was already registed target state '{1}', repeat added it failed.", _classType.FullName, invoke.StateName);
+                return;
+            }
+
+            _stateCallMethodTypes.Add(invoke);
+        }
+
+        /// <summary>
+        /// 移除所有函数的回调句柄相关的结构信息
+        /// </summary>
+        public void RemoveAllStateCallMethodTypes()
+        {
+            _stateCallMethodTypes?.Clear();
+            _stateCallMethodTypes = null;
+        }
+
+        /// <summary>
+        /// 获取当前函数回调句柄的结构信息数量
+        /// </summary>
+        /// <returns>返回函数回调句柄的结构信息数量</returns>
+        public int GetStateCallMethodTypeCount()
+        {
+            if (null != _stateCallMethodTypes)
+            {
+                return _stateCallMethodTypes.Count;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// 获取当前函数回调句柄的结构信息容器中指索引对应的实例
+        /// </summary>
+        /// <param name="index">索引值</param>
+        /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
+        public StateTransitioningMethodTypeCodeInfo GetStateCallMethodType(int index)
+        {
+            if (null == _stateCallMethodTypes || index < 0 || index >= _stateCallMethodTypes.Count)
+            {
+                Debugger.Warn("Invalid index ({0}) for extend state call method type code info list.", index);
+                return null;
+            }
+
+            return _stateCallMethodTypes[index];
+        }
+
+        #endregion
+
         public override string ToString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
@@ -250,6 +318,7 @@ namespace GameEngine.Loader
             sb.AppendFormat("InputCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<InputResponsingMethodTypeCodeInfo>(_inputCallMethodTypes));
             sb.AppendFormat("EventCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<EventSubscribingMethodTypeCodeInfo>(_eventCallMethodTypes));
             sb.AppendFormat("MessageCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<MessageBindingMethodTypeCodeInfo>(_messageCallMethodTypes));
+            sb.AppendFormat("StateCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<StateTransitioningMethodTypeCodeInfo>(_stateCallMethodTypes));
 
             sb.Append("}");
             return sb.ToString();
@@ -280,7 +349,7 @@ namespace GameEngine.Loader
                 // 检查函数格式是否合法，扩展类型的函数必须为静态类型
                 if (false == symMethod.IsStatic || false == symMethod.IsExtension)
                 {
-                    Debugger.Info(LogGroupTag.CodeLoader, "The extend call method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    Debugger.Info(LogGroupTag.CodeLoader, "符号类‘{%t}’的目标函数‘{%t}’不满足‘ExtendSupport’扩展回调函数格式类型的定义规则，不能进行正确的函数加载解析！", symClass.ClassType, symMethod.MethodInfo);
                     continue;
                 }
 
@@ -299,7 +368,7 @@ namespace GameEngine.Loader
                             continue;
                         }
 
-                        if (false == Inspecting.CodeInspector.IsValidFormatOfBeanExtendInputCallFunction(symMethod.MethodInfo))
+                        if (false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithBeanExtensionType(symMethod.MethodInfo))
                         {
                             Debugger.Warn("The extend input response method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
@@ -319,23 +388,23 @@ namespace GameEngine.Loader
                         if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                         {
                             bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo),
+                                                    Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo),
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
 
-                            if (Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo))
+                            if (Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo))
                             {
                                 // null parameter type, skip other check process
                             }
                             else if (methodTypeCodeInfo.InputCode > 0)
                             {
                                 verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    false == Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo),
+                                                    false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo),
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, typeof(int), typeof(int));
                             }
                             else
                             {
                                 verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    false == Inspecting.CodeInspector.IsNullParameterTypeOfInputCallFunction(symMethod.MethodInfo),
+                                                    false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo),
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, methodTypeCodeInfo.InputDataType);
                             }
 
@@ -359,7 +428,7 @@ namespace GameEngine.Loader
                             continue;
                         }
 
-                        if (false == Inspecting.CodeInspector.IsValidFormatOfBeanExtendEventCallFunction(symMethod.MethodInfo))
+                        if (false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithBeanExtensionType(symMethod.MethodInfo))
                         {
                             Debugger.Warn("The extend event subscribe method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
@@ -378,23 +447,23 @@ namespace GameEngine.Loader
                         if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                         {
                             bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    Inspecting.CodeInspector.IsNullParameterTypeOfEventCallFunction(symMethod.MethodInfo),
+                                                    Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo),
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
 
-                            if (Inspecting.CodeInspector.IsNullParameterTypeOfEventCallFunction(symMethod.MethodInfo))
+                            if (Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo))
                             {
                                 // null parameter type, skip other check process
                             }
                             else if (methodTypeCodeInfo.EventID > 0)
                             {
                                 verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    false == Inspecting.CodeInspector.IsNullParameterTypeOfEventCallFunction(symMethod.MethodInfo),
+                                                    false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo),
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, typeof(int), typeof(object[]));
                             }
                             else
                             {
                                 verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    false == Inspecting.CodeInspector.IsNullParameterTypeOfEventCallFunction(symMethod.MethodInfo),
+                                                    false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo),
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, methodTypeCodeInfo.EventDataType);
                             }
 
@@ -418,7 +487,7 @@ namespace GameEngine.Loader
                             continue;
                         }
 
-                        if (false == Inspecting.CodeInspector.IsValidFormatOfBeanExtendMessageCallFunction(symMethod.MethodInfo))
+                        if (false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithBeanExtensionType(symMethod.MethodInfo))
                         {
                             Debugger.Warn("The extend message recv method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
@@ -437,23 +506,23 @@ namespace GameEngine.Loader
                         if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                         {
                             bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    Inspecting.CodeInspector.IsNullParameterTypeOfMessageCallFunction(symMethod.MethodInfo),
+                                                    Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo),
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
 
-                            if (Inspecting.CodeInspector.IsNullParameterTypeOfMessageCallFunction(symMethod.MethodInfo))
+                            if (Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo))
                             {
                                 // null parameter type, skip other check process
                             }
                             else if (methodTypeCodeInfo.Opcode > 0)
                             {
                                 verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    false == Inspecting.CodeInspector.IsNullParameterTypeOfMessageCallFunction(symMethod.MethodInfo),
+                                                    false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo),
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, typeof(ProtoBuf.Extension.IMessage));
                             }
                             else
                             {
                                 verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    false == Inspecting.CodeInspector.IsNullParameterTypeOfMessageCallFunction(symMethod.MethodInfo),
+                                                    false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo),
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, methodTypeCodeInfo.MessageType);
                             }
 
@@ -467,12 +536,60 @@ namespace GameEngine.Loader
 
                         info.AddMessageCallMethodType(methodTypeCodeInfo);
                     }
+                    else if (attr is StateTransitionBindingOfTargetAttribute)
+                    {
+                        StateTransitionBindingOfTargetAttribute _attr = (StateTransitionBindingOfTargetAttribute) attr;
+
+                        if (string.IsNullOrEmpty(_attr.StateName))
+                        {
+                            Debugger.Warn("The extend state transition method '{0}.{1}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
+                            continue;
+                        }
+
+                        if (false == Inspecting.CodeInspector.CheckFunctionFormatOfStateCallWithBeanExtensionType(symMethod.MethodInfo))
+                        {
+                            Debugger.Warn("The extend state transition method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                            continue;
+                        }
+
+                        SystemType extendClassType = symMethod.GetParameter(0).ParameterType;
+
+                        StateTransitioningMethodTypeCodeInfo methodTypeCodeInfo = new StateTransitioningMethodTypeCodeInfo();
+                        methodTypeCodeInfo.TargetType = extendClassType;
+                        methodTypeCodeInfo.StateName = _attr.StateName;
+                        methodTypeCodeInfo.AccessType = _attr.AccessType;
+                        methodTypeCodeInfo.BehaviourType = AspectBehaviourType.Initialize;
+                        methodTypeCodeInfo.Method = symMethod.MethodInfo;
+
+                        // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
+                        if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+                        {
+                            bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                                    Inspecting.CodeInspector.CheckFunctionFormatOfStateCallWithNullParameterType(symMethod.MethodInfo),
+                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
+
+                            if (Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo))
+                            {
+                                // null parameter type, skip other check process
+                            }
+
+                            // 校验失败
+                            if (false == verificated)
+                            {
+                                Debugger.Error("Cannot verificated from method info '{0}' to extend state transitioning call, loaded this method failed.", symMethod.MethodName);
+                                continue;
+                            }
+                        }
+
+                        info.AddStateCallMethodType(methodTypeCodeInfo);
+                    }
                 }
             }
 
             if (info.GetInputCallMethodTypeCount() <= 0 &&
                 info.GetEventCallMethodTypeCount() <= 0 &&
-                info.GetMessageCallMethodTypeCount() <= 0)
+                info.GetMessageCallMethodTypeCount() <= 0 &&
+                info.GetStateCallMethodTypeCount() <= 0)
             {
                 Debugger.Warn("The extend call method types count must be great than zero, newly added class '{0}' failed.", info.ClassType.FullName);
                 return false;

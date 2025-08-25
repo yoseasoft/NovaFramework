@@ -930,7 +930,7 @@ namespace GameEngine
                 _targetType = targetType;
                 _opcode = opcode;
                 _callback = callback;
-                _isNullParameterType = Loader.Inspecting.CodeInspector.IsNullParameterTypeOfMessageCallFunction(callback.Method);
+                _isNullParameterType = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(callback.Method);
             }
 
             /// <summary>

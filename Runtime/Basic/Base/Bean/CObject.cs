@@ -100,8 +100,10 @@ namespace GameEngine
         /// <summary>
         /// 基础对象刷新通知接口函数
         /// </summary>
-        public void Update()
+        public override sealed void Update()
         {
+            base.Update();
+
             OnUpdate();
         }
 
@@ -113,8 +115,10 @@ namespace GameEngine
         /// <summary>
         /// 基础对象后置刷新通知接口函数
         /// </summary>
-        public void LateUpdate()
+        public override sealed void LateUpdate()
         {
+            base.LateUpdate();
+
             OnLateUpdate();
         }
 

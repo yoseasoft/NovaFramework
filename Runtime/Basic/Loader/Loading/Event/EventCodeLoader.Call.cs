@@ -181,7 +181,7 @@ namespace GameEngine.Loader
                 Symboling.SymMethod symMethod = symMethods[n];
 
                 // 检查函数格式是否合法
-                if (false == symMethod.IsStatic || false == Inspecting.CodeInspector.IsValidFormatOfEventCallFunction(symMethod.MethodInfo))
+                if (false == symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCall(symMethod.MethodInfo))
                 {
                     Debugger.Info(LogGroupTag.CodeLoader, "The event call method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     continue;
@@ -218,7 +218,7 @@ namespace GameEngine.Loader
                             bool verificated = false;
                             if (null == callMethodInfo.TargetType)
                             {
-                                if (Inspecting.CodeInspector.IsNullParameterTypeOfEventCallFunction(symMethod.MethodInfo))
+                                if (Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo))
                                 {
                                     // 无参类型的事件函数
                                     verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
@@ -236,7 +236,7 @@ namespace GameEngine.Loader
                             }
                             else
                             {
-                                if (Inspecting.CodeInspector.IsNullParameterTypeOfEventCallFunction(symMethod.MethodInfo))
+                                if (Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo))
                                 {
                                     // 无参类型的事件函数
                                     verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType);
