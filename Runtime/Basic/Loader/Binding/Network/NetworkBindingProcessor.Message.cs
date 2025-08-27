@@ -22,8 +22,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
 using SystemDelegate = System.Delegate;
@@ -42,7 +40,7 @@ namespace GameEngine
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
         [OnNetworkMessageRegisterClassOfTarget(typeof(ProtoBuf.Extension.MessageAttribute))]
-        private static void LoadMessageBindCodeType(SystemType targetType, Loader.GeneralCodeInfo codeInfo, bool reload)
+        private static void LoadMessageBindCodeType(SystemType targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
             if (targetType.IsInterface || targetType.IsAbstract)
             {
@@ -56,7 +54,7 @@ namespace GameEngine
                 return;
             }
 
-            Loader.NetworkMessageCodeInfo networkCodeInfo = codeInfo as Loader.NetworkMessageCodeInfo;
+            Loader.Structuring.NetworkMessageCodeInfo networkCodeInfo = codeInfo as Loader.Structuring.NetworkMessageCodeInfo;
             Debugger.Assert(null != networkCodeInfo, "Invalid network message code info.");
 
             if (reload)
@@ -83,7 +81,7 @@ namespace GameEngine
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
         [OnNetworkMessageRegisterClassOfTarget(typeof(MessageSystemAttribute))]
-        private static void LoadMessageCallbackBindCodeType(SystemType targetType, Loader.GeneralCodeInfo codeInfo, bool reload)
+        private static void LoadMessageCallbackBindCodeType(SystemType targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
             if (null == codeInfo)
             {
@@ -91,12 +89,12 @@ namespace GameEngine
                 return;
             }
 
-            Loader.MessageCallCodeInfo messageCodeInfo = codeInfo as Loader.MessageCallCodeInfo;
+            Loader.Structuring.MessageCallCodeInfo messageCodeInfo = codeInfo as Loader.Structuring.MessageCallCodeInfo;
             Debugger.Assert(null != messageCodeInfo, "Invalid message call code info.");
 
             for (int n = 0; n < messageCodeInfo.GetMethodTypeCount(); ++n)
             {
-                Loader.MessageCallMethodTypeCodeInfo callMethodInfo = messageCodeInfo.GetMethodType(n);
+                Loader.Structuring.MessageCallMethodTypeCodeInfo callMethodInfo = messageCodeInfo.GetMethodType(n);
 
                 SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(callMethodInfo.Method);
                 if (null == callback)

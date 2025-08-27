@@ -30,7 +30,7 @@ using SystemStringBuilder = System.Text.StringBuilder;
 namespace GameEngine.Loader.Symboling
 {
     /// <summary>
-    /// 针对标记类型对象的格式化辅助工具类，通过该类定义一些用于标记对象的格式化接口函数
+    /// 针对标记符号类型对象的格式化辅助工具类，通过该类定义一些用于标记符号对象的格式化接口函数
     /// </summary>
     internal static class Formatter
     {

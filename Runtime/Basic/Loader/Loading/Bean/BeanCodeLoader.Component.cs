@@ -26,33 +26,9 @@ using System.Collections.Generic;
 
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 组件类的结构信息
-    /// </summary>
-    public class ComponentCodeInfo : BaseBeanCodeInfo
-    {
-        /// <summary>
-        /// 组件名称
-        /// </summary>
-        private string _componentName;
-
-        public string ComponentName { get { return _componentName; } internal set { _componentName = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("Component = { ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("Name = {0}, ", _componentName ?? NovaEngine.Definition.CString.Unknown);
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
-
     /// <summary>
     /// 程序集中原型对象的分析处理类，对业务层载入的所有原型对象类进行统一加载及分析处理
     /// </summary>
@@ -61,7 +37,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 组件类的结构信息管理容器
         /// </summary>
-        private static IDictionary<string, ComponentCodeInfo> _componentCodeInfos = new Dictionary<string, ComponentCodeInfo>();
+        private static IDictionary<string, Structuring.ComponentCodeInfo> _componentCodeInfos = new Dictionary<string, Structuring.ComponentCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(CComponent))]
         private static bool LoadComponentClass(Symboling.SymClass symClass, bool reload)
@@ -72,7 +48,7 @@ namespace GameEngine.Loader
                 return false;
             }
 
-            ComponentCodeInfo info = new ComponentCodeInfo();
+            Structuring.ComponentCodeInfo info = new Structuring.ComponentCodeInfo();
             info.ClassType = symClass.ClassType;
 
             IList<SystemAttribute> attrs = symClass.Attributes;
@@ -120,7 +96,7 @@ namespace GameEngine.Loader
             return true;
         }
 
-        private static void LoadComponentMethod(Symboling.SymClass symClass, ComponentCodeInfo codeInfo, Symboling.SymMethod symMethod)
+        private static void LoadComponentMethod(Symboling.SymClass symClass, Structuring.ComponentCodeInfo codeInfo, Symboling.SymMethod symMethod)
         {
             // 静态函数直接忽略
             if (symMethod.IsStatic)
@@ -144,9 +120,9 @@ namespace GameEngine.Loader
         }
 
         [OnCodeLoaderClassLookupOfTarget(typeof(CComponent))]
-        private static ComponentCodeInfo LookupComponentCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.ComponentCodeInfo LookupComponentCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<string, ComponentCodeInfo> pair in _componentCodeInfos)
+            foreach (KeyValuePair<string, Structuring.ComponentCodeInfo> pair in _componentCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

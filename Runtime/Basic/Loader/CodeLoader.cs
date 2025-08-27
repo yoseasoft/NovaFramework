@@ -47,7 +47,7 @@ namespace GameEngine.Loader
         /// <param name="targetType">对象类型</param>
         /// <param name="codeInfo">类的结构信息</param>
         /// <param name="reload">重载状态标识</param>
-        public delegate void OnCodeTypeLoadedHandler(SystemType targetType, GeneralCodeInfo codeInfo, bool reload);
+        public delegate void OnCodeTypeLoadedHandler(SystemType targetType, Structuring.GeneralCodeInfo codeInfo, bool reload);
 
         /// <summary>
         /// 编码类型清除操作的回调句柄
@@ -188,7 +188,7 @@ namespace GameEngine.Loader
                 // 新版本支持同一个对象类进行多次不同类型的解析处理
                 if (TryGetAllMathcedCodeTypeLoadedHandlerWithTargetClassType(type, out handlers))
                 {
-                    GeneralCodeInfo info = null;
+                    Structuring.GeneralCodeInfo info = null;
                     foreach (KeyValuePair<SystemType, IList<OnCodeTypeLoadedHandler>> pair in handlers)
                     {
                         IEnumerator<OnCodeTypeLoadedHandler> e = pair.Value.GetEnumerator();

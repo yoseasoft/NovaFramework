@@ -22,8 +22,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
 
 namespace GameEngine
@@ -40,7 +38,7 @@ namespace GameEngine
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
         [OnInjectOfControlRegisterClassOfTarget(typeof(InjectAttribute))]
-        private static void LoadCallBindCodeType(SystemType targetType, Loader.GeneralCodeInfo codeInfo, bool reload)
+        private static void LoadCallBindCodeType(SystemType targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
             if (null == codeInfo)
             {
@@ -48,7 +46,7 @@ namespace GameEngine
                 return;
             }
 
-            Loader.InjectCallCodeInfo injectCodeInfo = codeInfo as Loader.InjectCallCodeInfo;
+            Loader.Structuring.InjectCallCodeInfo injectCodeInfo = codeInfo as Loader.Structuring.InjectCallCodeInfo;
             Debugger.Assert(null != injectCodeInfo, "Invalid inject call code info.");
 
             /**

@@ -31,32 +31,9 @@ using SystemDelegate = System.Delegate;
 using SystemAttribute = System.Attribute;
 using SystemMethodInfo = System.Reflection.MethodInfo;
 using SystemBindingFlags = System.Reflection.BindingFlags;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 输入信息类的结构信息
-    /// </summary>
-    public class InputCodeInfo : GeneralCodeInfo
-    {
-        /// <summary>
-        /// 输入信息类的类型标识
-        /// </summary>
-        protected SystemType _classType;
-
-        public SystemType ClassType { get { return _classType; } internal set { _classType = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("Class = {0}, ", _classType.FullName);
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
-
     /// <summary>
     /// 输入信息分发响应对象的分析处理类，对业务层载入的所有输入信息响应类进行统一加载及分析处理
     /// </summary>
@@ -199,7 +176,7 @@ namespace GameEngine.Loader
         /// <param name="symClass">对象标记类型</param>
         /// <returns>返回类型对应的结构信息</returns>
         [CodeLoader.OnGeneralCodeLoaderLookup]
-        private static GeneralCodeInfo LookupInputCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.GeneralCodeInfo LookupInputCodeInfo(Symboling.SymClass symClass)
         {
             SystemDelegate callback = null;
 

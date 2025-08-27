@@ -134,7 +134,7 @@ namespace GameEngine
         /// <returns>返回异步任务对象实例</returns>
         private async UniTaskForMessage SendAwaitProcess(int opcode)
         {
-            Loader.NetworkMessageCodeInfo codeInfo = GetMessageCodeInfoByType(opcode);
+            Loader.Structuring.NetworkMessageCodeInfo codeInfo = GetMessageCodeInfoByType(opcode);
             int responseCode = 0;
 
             if (null != codeInfo)
@@ -187,7 +187,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="opcode">消息操作码</param>
         /// <returns>返回给定类型对应的消息编码结构信息，若不存在则返回null</returns>
-        private Loader.NetworkMessageCodeInfo GetMessageCodeInfoByType(int opcode)
+        private Loader.Structuring.NetworkMessageCodeInfo GetMessageCodeInfoByType(int opcode)
         {
             SystemType messageType = NetworkHandler.Instance.GetMessageClassByType(opcode);
             if (null == messageType)
@@ -196,14 +196,14 @@ namespace GameEngine
                 return null;
             }
 
-            Loader.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(messageType, typeof(ProtoBuf.Extension.MessageAttribute));
+            Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(messageType, typeof(ProtoBuf.Extension.MessageAttribute));
             if (null == codeInfo)
             {
                 Debugger.Warn("Could not found any message code info with target class '{0}', please check the message loader process at first.", messageType.FullName);
                 return null;
             }
 
-            return codeInfo as Loader.NetworkMessageCodeInfo;
+            return codeInfo as Loader.Structuring.NetworkMessageCodeInfo;
         }
     }
 }

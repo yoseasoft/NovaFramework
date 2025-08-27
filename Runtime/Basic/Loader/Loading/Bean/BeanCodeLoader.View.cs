@@ -26,121 +26,9 @@ using System.Collections.Generic;
 
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 视图类的结构信息
-    /// </summary>
-    public class ViewCodeInfo : EntityCodeInfo
-    {
-        /// <summary>
-        /// 视图名称
-        /// </summary>
-        private string _viewName;
-        /// <summary>
-        /// 视图优先级
-        /// </summary>
-        private int _priority;
-
-        /// <summary>
-        /// 共生关系的视图名称列表
-        /// </summary>
-        private IList<string> _groupOfSymbioticViewNames;
-
-        public string ViewName { get { return _viewName; } internal set { _viewName = value; } }
-        public int Priority { get { return _priority; } internal set { _priority = value; } }
-
-        /// <summary>
-        /// 新增与当前视图具备共生关系的目标视图名称
-        /// </summary>
-        /// <param name="viewName">视图名称</param>
-        internal void AddGroupOfSymbioticViewName(string viewName)
-        {
-            if (null == _groupOfSymbioticViewNames)
-            {
-                _groupOfSymbioticViewNames = new List<string>();
-            }
-
-            if (_groupOfSymbioticViewNames.Contains(viewName))
-            {
-                Debugger.Warn("The group of symbiotic view name '{0}' was already existed, repeat added it failed.", viewName);
-                return;
-            }
-
-            _groupOfSymbioticViewNames.Add(viewName);
-        }
-
-        /// <summary>
-        /// 移除所有具备共生关系的视图名称记录
-        /// </summary>
-        internal void RemoveAllGroupOfSymbioticViewNames()
-        {
-            _groupOfSymbioticViewNames?.Clear();
-            _groupOfSymbioticViewNames = null;
-        }
-
-        /// <summary>
-        /// 检测目标视图名称是否与当前视图具备共生关系
-        /// </summary>
-        /// <param name="viewName">视图名称</param>
-        /// <returns>若具备共生关系则返回true，否则返回false</returns>
-        public bool IsGroupOfSymbioticForTargetView(string viewName)
-        {
-            if (null == _groupOfSymbioticViewNames || false == _groupOfSymbioticViewNames.Contains(viewName))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// 获取当前具备共生关系的视图名称数量
-        /// </summary>
-        /// <returns>返回具备共生关系的视图名称数量</returns>
-        internal int GetGroupOfSymbioticViewNamesCount()
-        {
-            if (null != _groupOfSymbioticViewNames)
-            {
-                return _groupOfSymbioticViewNames.Count;
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        /// 获取当前具备共生关系的视图名称容器中指索引对应的值
-        /// </summary>
-        /// <param name="index">索引值</param>
-        /// <returns>返回给定索引值对应的名称，若不存在对应值则返回null</returns>
-        internal string GetGroupOfSymbioticViewName(int index)
-        {
-            if (null == _groupOfSymbioticViewNames || index < 0 || index >= _groupOfSymbioticViewNames.Count)
-            {
-                Debugger.Warn("Invalid index ({0}) for group of symbiotic view name list.", index);
-                return null;
-            }
-
-            return _groupOfSymbioticViewNames[index];
-        }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("View = { ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("Name = {0}, ", _viewName ?? NovaEngine.Definition.CString.Unknown);
-            sb.AppendFormat("Priority = {0}, ", _priority);
-
-            sb.AppendFormat("GroupViews = {{{0}}}, ", NovaEngine.Utility.Text.ToString(_groupOfSymbioticViewNames));
-
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
-
     /// <summary>
     /// 程序集中原型对象的分析处理类，对业务层载入的所有原型对象类进行统一加载及分析处理
     /// </summary>
@@ -149,7 +37,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 视图类的结构信息管理容器
         /// </summary>
-        private static IDictionary<string, ViewCodeInfo> _viewCodeInfos = new Dictionary<string, ViewCodeInfo>();
+        private static IDictionary<string, Structuring.ViewCodeInfo> _viewCodeInfos = new Dictionary<string, Structuring.ViewCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(CView))]
         private static bool LoadViewClass(Symboling.SymClass symClass, bool reload)
@@ -160,7 +48,7 @@ namespace GameEngine.Loader
                 return false;
             }
 
-            ViewCodeInfo info = new ViewCodeInfo();
+            Structuring.ViewCodeInfo info = new Structuring.ViewCodeInfo();
             info.ClassType = symClass.ClassType;
 
             IList<SystemAttribute> attrs = symClass.Attributes;
@@ -218,7 +106,7 @@ namespace GameEngine.Loader
             return true;
         }
 
-        private static void LoadViewMethod(Symboling.SymClass symClass, ViewCodeInfo codeInfo, Symboling.SymMethod symMethod)
+        private static void LoadViewMethod(Symboling.SymClass symClass, Structuring.ViewCodeInfo codeInfo, Symboling.SymMethod symMethod)
         {
             // 静态函数直接忽略
             if (symMethod.IsStatic)
@@ -242,9 +130,9 @@ namespace GameEngine.Loader
         }
 
         [OnCodeLoaderClassLookupOfTarget(typeof(CView))]
-        private static ViewCodeInfo LookupViewCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.ViewCodeInfo LookupViewCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<string, ViewCodeInfo> pair in _viewCodeInfos)
+            foreach (KeyValuePair<string, Structuring.ViewCodeInfo> pair in _viewCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

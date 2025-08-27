@@ -25,33 +25,9 @@
 using System.Collections.Generic;
 
 using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 对象池类的结构信息
-    /// </summary>
-    public class PoolMarkCodeInfo : GeneralCodeInfo
-    {
-        /// <summary>
-        /// 对象池类的类型标识
-        /// </summary>
-        protected SystemType _classType;
-
-        public SystemType ClassType { get { return _classType; } internal set { _classType = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("PoolMark = { ");
-            sb.AppendFormat("Class = {0}, ", _classType.FullName);
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
-
     /// <summary>
     /// 对象池容器管理对象的分析处理类，对业务层载入的所有对象池支持类进行统一加载及分析处理
     /// </summary>
@@ -60,12 +36,12 @@ namespace GameEngine.Loader
         /// <summary>
         /// 对象池管理类的结构信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, PoolMarkCodeInfo> _poolMarkCodeInfos = new Dictionary<SystemType, PoolMarkCodeInfo>();
+        private static IDictionary<SystemType, Structuring.PoolCallCodeInfo> _poolCallCodeInfos = new Dictionary<SystemType, Structuring.PoolCallCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(PoolSupportedAttribute))]
-        private static bool LoadPoolMarkClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadPoolCallClass(Symboling.SymClass symClass, bool reload)
         {
-            PoolMarkCodeInfo info = new PoolMarkCodeInfo();
+            Structuring.PoolCallCodeInfo info = new Structuring.PoolCallCodeInfo();
             info.ClassType = symClass.ClassType;
 
             if (false == symClass.IsInstantiate)
@@ -74,36 +50,36 @@ namespace GameEngine.Loader
                 return false;
             }
 
-            if (_poolMarkCodeInfos.ContainsKey(symClass.ClassType))
+            if (_poolCallCodeInfos.ContainsKey(symClass.ClassType))
             {
                 if (reload)
                 {
                     // 重载模式下，先移除旧的记录
-                    _poolMarkCodeInfos.Remove(symClass.ClassType);
+                    _poolCallCodeInfos.Remove(symClass.ClassType);
                 }
                 else
                 {
-                    Debugger.Warn("The pool mark type '{0}' was already existed, repeat added it failed.", symClass.FullName);
+                    Debugger.Warn("The pool call type '{0}' was already existed, repeat added it failed.", symClass.FullName);
                     return false;
                 }
             }
 
-            _poolMarkCodeInfos.Add(symClass.ClassType, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load pool mark code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
+            _poolCallCodeInfos.Add(symClass.ClassType, info);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load pool call code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
 
             return true;
         }
 
         [OnCodeLoaderClassCleanupOfTarget(typeof(PoolSupportedAttribute))]
-        private static void CleanupAllPoolMarkClasses()
+        private static void CleanupAllPoolCallClasses()
         {
-            _poolMarkCodeInfos.Clear();
+            _poolCallCodeInfos.Clear();
         }
 
         [OnCodeLoaderClassLookupOfTarget(typeof(PoolSupportedAttribute))]
-        private static PoolMarkCodeInfo LookupPoolMarkCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.PoolCallCodeInfo LookupPoolCallCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<SystemType, PoolMarkCodeInfo> pair in _poolMarkCodeInfos)
+            foreach (KeyValuePair<SystemType, Structuring.PoolCallCodeInfo> pair in _poolCallCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

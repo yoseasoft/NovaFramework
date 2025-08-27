@@ -26,39 +26,9 @@ using System.Collections.Generic;
 
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 角色类的结构信息
-    /// </summary>
-    public class ActorCodeInfo : EntityCodeInfo
-    {
-        /// <summary>
-        /// 角色名称
-        /// </summary>
-        private string _actorName;
-        /// <summary>
-        /// 角色优先级
-        /// </summary>
-        private int _priority;
-
-        public string ActorName { get { return _actorName; } internal set { _actorName = value; } }
-        public int Priority { get { return _priority; } internal set { _priority = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("Actor = { ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("Name = {0}, ", _actorName ?? NovaEngine.Definition.CString.Unknown);
-            sb.AppendFormat("Priority = {0}, ", _priority);
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
-
     /// <summary>
     /// 程序集中原型对象的分析处理类，对业务层载入的所有原型对象类进行统一加载及分析处理
     /// </summary>
@@ -67,7 +37,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 对象类的结构信息管理容器
         /// </summary>
-        private static IDictionary<string, ActorCodeInfo> _actorCodeInfos = new Dictionary<string, ActorCodeInfo>();
+        private static IDictionary<string, Structuring.ActorCodeInfo> _actorCodeInfos = new Dictionary<string, Structuring.ActorCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(CActor))]
         private static bool LoadActorClass(Symboling.SymClass symClass, bool reload)
@@ -78,7 +48,7 @@ namespace GameEngine.Loader
                 return false;
             }
 
-            ActorCodeInfo info = new ActorCodeInfo();
+            Structuring.ActorCodeInfo info = new Structuring.ActorCodeInfo();
             info.ClassType = symClass.ClassType;
 
             IList<SystemAttribute> attrs = symClass.Attributes;
@@ -131,7 +101,7 @@ namespace GameEngine.Loader
             return true;
         }
 
-        private static void LoadActorMethod(Symboling.SymClass symClass, ActorCodeInfo codeInfo, Symboling.SymMethod symMethod)
+        private static void LoadActorMethod(Symboling.SymClass symClass, Structuring.ActorCodeInfo codeInfo, Symboling.SymMethod symMethod)
         {
             // 静态函数直接忽略
             if (symMethod.IsStatic)
@@ -155,9 +125,9 @@ namespace GameEngine.Loader
         }
 
         [OnCodeLoaderClassLookupOfTarget(typeof(CActor))]
-        private static ActorCodeInfo LookupActorCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.ActorCodeInfo LookupActorCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<string, ActorCodeInfo> pair in _actorCodeInfos)
+            foreach (KeyValuePair<string, Structuring.ActorCodeInfo> pair in _actorCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

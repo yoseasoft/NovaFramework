@@ -75,14 +75,14 @@ namespace GameEngine
         private static void RegRefEventAndMessageListenerByTargetType(CRef obj, AspectBehaviourType behaviourType, bool reload)
         {
             SystemType targetType = obj.GetType();
-            Loader.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CRef));
+            Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CRef));
             if (null == codeInfo)
             {
                 Debugger.Warn("Could not found any aspect call ref service process with target type '{0}', called it failed.", targetType.FullName);
                 return;
             }
 
-            Loader.RefCodeInfo refCodeInfo = codeInfo as Loader.RefCodeInfo;
+            Loader.Structuring.RefCodeInfo refCodeInfo = codeInfo as Loader.Structuring.RefCodeInfo;
             if (null == refCodeInfo)
             {
                 Debugger.Warn("The aspect call ref service process getting error code info '{0}' with target type '{1}', called it failed.", codeInfo.GetType().FullName, targetType.FullName);
@@ -92,7 +92,7 @@ namespace GameEngine
             // 输入响应信息
             for (int n = 0; n < refCodeInfo.GetInputResponsingMethodTypeCount(); ++n)
             {
-                Loader.InputResponsingMethodTypeCodeInfo methodTypeCodeInfo = refCodeInfo.GetInputResponsingMethodType(n);
+                Loader.Structuring.InputResponsingMethodTypeCodeInfo methodTypeCodeInfo = refCodeInfo.GetInputResponsingMethodType(n);
                 if (methodTypeCodeInfo.BehaviourType != behaviourType) continue;
 
                 if (false == NovaEngine.Utility.Reflection.IsTypeOfExtension(methodTypeCodeInfo.Method) && reload)
@@ -123,7 +123,7 @@ namespace GameEngine
             // 事件订阅信息
             for (int n = 0; n < refCodeInfo.GetEventSubscribingMethodTypeCount(); ++n)
             {
-                Loader.EventSubscribingMethodTypeCodeInfo methodTypeCodeInfo = refCodeInfo.GetEventSubscribingMethodType(n);
+                Loader.Structuring.EventSubscribingMethodTypeCodeInfo methodTypeCodeInfo = refCodeInfo.GetEventSubscribingMethodType(n);
                 if (methodTypeCodeInfo.BehaviourType != behaviourType) continue;
 
                 if (false == NovaEngine.Utility.Reflection.IsTypeOfExtension(methodTypeCodeInfo.Method) && reload)
@@ -154,7 +154,7 @@ namespace GameEngine
             // 消息派发信息
             for (int n = 0; n < refCodeInfo.GetMessageBindingMethodTypeCount(); ++n)
             {
-                Loader.MessageBindingMethodTypeCodeInfo methodTypeCodeInfo = refCodeInfo.GetMessageBindingMethodType(n);
+                Loader.Structuring.MessageBindingMethodTypeCodeInfo methodTypeCodeInfo = refCodeInfo.GetMessageBindingMethodType(n);
                 if (methodTypeCodeInfo.BehaviourType != behaviourType) continue;
 
                 if (false == NovaEngine.Utility.Reflection.IsTypeOfExtension(methodTypeCodeInfo.Method) && reload)
@@ -185,7 +185,7 @@ namespace GameEngine
             // 状态监控信息
             for (int n = 0; n < refCodeInfo.GetStateTransitioningMethodTypeCount(); ++n)
             {
-                Loader.StateTransitioningMethodTypeCodeInfo methodTypeCodeInfo = refCodeInfo.GetStateTransitioningMethodType(n);
+                Loader.Structuring.StateTransitioningMethodTypeCodeInfo methodTypeCodeInfo = refCodeInfo.GetStateTransitioningMethodType(n);
                 if (methodTypeCodeInfo.BehaviourType != behaviourType) continue;
 
                 if (false == NovaEngine.Utility.Reflection.IsTypeOfExtension(methodTypeCodeInfo.Method) && reload)

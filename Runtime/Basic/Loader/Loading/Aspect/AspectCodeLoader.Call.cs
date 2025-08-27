@@ -26,150 +26,9 @@
 using System.Collections.Generic;
 
 using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemStringBuilder = System.Text.StringBuilder;
-
-using SystemAction_object = System.Action<object>;
-using SystemExpression_Action_object = System.Linq.Expressions.Expression<System.Action<object>>;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 切面调用类的结构信息
-    /// </summary>
-    public class AspectCallCodeInfo : AspectCodeInfo
-    {
-        /// <summary>
-        /// 切面调用类的函数结构信息管理容器
-        /// </summary>
-        private IList<AspectCallMethodTypeCodeInfo> _methodTypes;
-
-        /// <summary>
-        /// 新增指定函数的回调句柄相关的结构信息
-        /// </summary>
-        /// <param name="codeInfo">函数的结构信息</param>
-        internal void AddMethodType(AspectCallMethodTypeCodeInfo codeInfo)
-        {
-            if (null == _methodTypes)
-            {
-                _methodTypes = new List<AspectCallMethodTypeCodeInfo>();
-            }
-
-            if (_methodTypes.Contains(codeInfo))
-            {
-                Debugger.Warn("The aspect call class type '{0}' was already registed target method '{1}', repeat added it failed.",
-                        NovaEngine.Utility.Text.ToString(_classType), codeInfo.MethodName);
-                return;
-            }
-
-            _methodTypes.Add(codeInfo);
-        }
-
-        /// <summary>
-        /// 移除所有函数的回调句柄相关的结构信息
-        /// </summary>
-        internal void RemoveAllMethodTypes()
-        {
-            _methodTypes?.Clear();
-            _methodTypes = null;
-        }
-
-        /// <summary>
-        /// 获取当前函数回调句柄的结构信息数量
-        /// </summary>
-        /// <returns>返回函数回调句柄的结构信息数量</returns>
-        internal int GetMethodTypeCount()
-        {
-            if (null != _methodTypes)
-            {
-                return _methodTypes.Count;
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        /// 获取当前函数回调句柄的结构信息容器中指索引对应的实例
-        /// </summary>
-        /// <param name="index">索引值</param>
-        /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
-        internal AspectCallMethodTypeCodeInfo GetMethodType(int index)
-        {
-            if (null == _methodTypes || index < 0 || index >= _methodTypes.Count)
-            {
-                Debugger.Warn("Invalid index ({0}) for aspect call method type code info list.", index);
-                return null;
-            }
-
-            return _methodTypes[index];
-        }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("AspectCall = { ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-
-            sb.AppendFormat("MethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<AspectCallMethodTypeCodeInfo>(_methodTypes));
-
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
-
-    /// <summary>
-    /// 切面调用类的函数结构信息
-    /// </summary>
-    public class AspectCallMethodTypeCodeInfo
-    {
-        /// <summary>
-        /// 切面调用类的完整名称
-        /// </summary>
-        private string _fullname;
-        /// <summary>
-        /// 切面调用类的目标对象类型
-        /// </summary>
-        private SystemType _targetType;
-        /// <summary>
-        /// 切面调用类的目标函数名称
-        /// </summary>
-        private string _methodName;
-        /// <summary>
-        /// 切面调用类的接入访问方式
-        /// </summary>
-        private AspectAccessType _accessType;
-        /// <summary>
-        /// 切面调用类的回调函数信息
-        /// </summary>
-        private SystemMethodInfo _methodInfo;
-        /// <summary>
-        /// 切面调用类的回调句柄实例
-        /// </summary>
-        private SystemAction_object _callback;
-
-        public string Fullname { get { return _fullname; } internal set { _fullname = value; } }
-        public SystemType TargetType { get { return _targetType; } internal set { _targetType = value; } }
-        public string MethodName { get { return _methodName; } internal set { _methodName = value; } }
-        public AspectAccessType AccessType { get { return _accessType; } internal set { _accessType = value; } }
-        public SystemMethodInfo MethodInfo { get { return _methodInfo; } internal set { _methodInfo = value; } }
-        public SystemAction_object Callback { get { return _callback; } internal set { _callback = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("Fullname = {0}, ", _fullname);
-            sb.AppendFormat("TargetType = {0}, ", NovaEngine.Utility.Text.ToString(_targetType));
-            sb.AppendFormat("MethodName = {0}, ", _methodName ?? NovaEngine.Definition.CString.Unknown);
-            sb.AppendFormat("AccessType = {0}, ", _accessType.ToString());
-            sb.AppendFormat("MethodInfo = {0}, ", NovaEngine.Utility.Text.ToString(_methodInfo));
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
-
     /// <summary>
     /// 程序集中切面控制对象的分析处理类，对业务层载入的所有切面控制类进行统一加载及分析处理
     /// </summary>
@@ -178,12 +37,12 @@ namespace GameEngine.Loader
         /// <summary>
         /// 切面调用类的结构信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, AspectCallCodeInfo> _aspectCallCodeInfos = new Dictionary<SystemType, AspectCallCodeInfo>();
+        private static IDictionary<SystemType, Structuring.AspectCallCodeInfo> _aspectCallCodeInfos = new Dictionary<SystemType, Structuring.AspectCallCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(AspectAttribute))]
         private static bool LoadAspectCallClass(Symboling.SymClass symClass, bool reload)
         {
-            AspectCallCodeInfo info = new AspectCallCodeInfo();
+            Structuring.AspectCallCodeInfo info = new Structuring.AspectCallCodeInfo();
             info.ClassType = symClass.ClassType;
 
             IList<Symboling.SymMethod> symMethods = symClass.GetAllMethods();
@@ -214,7 +73,7 @@ namespace GameEngine.Loader
                     interruptedSource = symMethod.GetParameterType(0);
                 }
 
-                AspectCallMethodTypeCodeInfo callMethodInfo = new AspectCallMethodTypeCodeInfo();
+                Structuring.AspectCallMethodTypeCodeInfo callMethodInfo = new Structuring.AspectCallMethodTypeCodeInfo();
                 callMethodInfo.TargetType = interruptedSource;
                 callMethodInfo.MethodName = aspectCallAttribute.MethodName;
                 callMethodInfo.AccessType = aspectCallAttribute.AccessType;
@@ -288,9 +147,9 @@ namespace GameEngine.Loader
         }
 
         [OnCodeLoaderClassLookupOfTarget(typeof(AspectAttribute))]
-        private static AspectCallCodeInfo LookupAspectCallCodeInfo(Symboling.SymClass symCLass)
+        private static Structuring.AspectCallCodeInfo LookupAspectCallCodeInfo(Symboling.SymClass symCLass)
         {
-            foreach (KeyValuePair<SystemType, AspectCallCodeInfo> pair in _aspectCallCodeInfos)
+            foreach (KeyValuePair<SystemType, Structuring.AspectCallCodeInfo> pair in _aspectCallCodeInfos)
             {
                 if (pair.Value.ClassType == symCLass.ClassType)
                 {

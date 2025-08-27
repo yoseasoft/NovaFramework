@@ -22,8 +22,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
 
 namespace GameEngine
@@ -40,7 +38,7 @@ namespace GameEngine
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
         [OnBeanRegisterClassOfTarget(typeof(CScene))]
-        private static void LoadCodeType(SystemType targetType, Loader.GeneralCodeInfo codeInfo, bool reload)
+        private static void LoadCodeType(SystemType targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
             if (targetType.IsInterface || targetType.IsAbstract)
             {
@@ -54,7 +52,7 @@ namespace GameEngine
                 return;
             }
 
-            Loader.SceneCodeInfo sceneCodeInfo = codeInfo as Loader.SceneCodeInfo;
+            Loader.Structuring.SceneCodeInfo sceneCodeInfo = codeInfo as Loader.Structuring.SceneCodeInfo;
             Debugger.Assert(null != sceneCodeInfo, "Invalid scene code info.");
 
             if (reload)

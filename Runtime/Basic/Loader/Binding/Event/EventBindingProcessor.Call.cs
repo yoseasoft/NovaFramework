@@ -22,8 +22,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
 using SystemDelegate = System.Delegate;
@@ -42,7 +40,7 @@ namespace GameEngine
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
         [OnEventCallRegisterClassOfTarget(typeof(EventSystemAttribute))]
-        private static void LoadCallBindCodeType(SystemType targetType, Loader.GeneralCodeInfo codeInfo, bool reload)
+        private static void LoadCallBindCodeType(SystemType targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
             if (null == codeInfo)
             {
@@ -50,12 +48,12 @@ namespace GameEngine
                 return;
             }
 
-            Loader.EventCallCodeInfo eventCodeInfo = codeInfo as Loader.EventCallCodeInfo;
+            Loader.Structuring.EventCallCodeInfo eventCodeInfo = codeInfo as Loader.Structuring.EventCallCodeInfo;
             Debugger.Assert(null != eventCodeInfo, "Invalid event call code info.");
 
             for (int n = 0; n < eventCodeInfo.GetMethodTypeCount(); ++n)
             {
-                Loader.EventCallMethodTypeCodeInfo callMethodInfo = eventCodeInfo.GetMethodType(n);
+                Loader.Structuring.EventCallMethodTypeCodeInfo callMethodInfo = eventCodeInfo.GetMethodType(n);
 
                 SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(callMethodInfo.Method);
                 if (null == callback)

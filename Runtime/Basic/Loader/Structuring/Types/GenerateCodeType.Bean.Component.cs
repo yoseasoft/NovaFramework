@@ -25,49 +25,32 @@
 using System.Collections.Generic;
 
 using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
 using SystemDelegate = System.Delegate;
+using SystemMethodInfo = System.Reflection.MethodInfo;
+using SystemStringBuilder = System.Text.StringBuilder;
 
-namespace GameEngine
+namespace GameEngine.Loader.Structuring
 {
     /// <summary>
-    /// 对象池管理类，用于对场景上下文中使用的对象池提供通用的访问操作接口
+    /// 组件对象模块的结构信息
     /// </summary>
-    internal partial class PoolController
+    internal sealed class ComponentCodeInfo : BaseBeanCodeInfo
     {
         /// <summary>
-        /// 对象池管理类型的代码注册回调函数
+        /// 组件名称
         /// </summary>
-        /// <param name="targetType">对象类型</param>
-        /// <param name="codeInfo">对象结构信息数据</param>
-        /// <param name="reload">重载标识</param>
-        [OnPoolMarkRegisterClassOfTarget(typeof(PoolSupportedAttribute))]
-        private static void LoadMarkBindCodeType(SystemType targetType, Loader.GeneralCodeInfo codeInfo, bool reload)
+        private string _componentName;
+
+        public string ComponentName { get { return _componentName; } internal set { _componentName = value; } }
+
+        public override string ToString()
         {
-            if (null == codeInfo)
-            {
-                Debugger.Warn("The load code info '{0}' must be non-null, recv arguments invalid.", targetType.FullName);
-                return;
-            }
-
-            Loader.PoolMarkCodeInfo poolCodeInfo = codeInfo as Loader.PoolMarkCodeInfo;
-            Debugger.Assert(null != poolCodeInfo, "Invalid pool mark code info.");
-
-            if (reload)
-            {
-                Instance.RemovePoolObjectType(poolCodeInfo.ClassType);
-            }
-
-            Instance.AddPoolObjectType(poolCodeInfo.ClassType);
-        }
-
-        /// <summary>
-        /// 对象池管理类型的全部代码的注销回调函数
-        /// </summary>
-        [OnPoolMarkUnregisterClassOfTarget(typeof(PoolSupportedAttribute))]
-        private static void UnloadAllMarkBindCodeTypes()
-        {
-            Instance.RemoveAllPoolObjectTypes();
+            SystemStringBuilder sb = new SystemStringBuilder();
+            sb.Append("Component = { ");
+            sb.AppendFormat("Parent = {0}, ", base.ToString());
+            sb.AppendFormat("Name = {0}, ", _componentName ?? NovaEngine.Definition.CString.Unknown);
+            sb.Append("}");
+            return sb.ToString();
         }
     }
 }

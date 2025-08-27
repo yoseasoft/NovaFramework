@@ -22,8 +22,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
 
 namespace GameEngine
@@ -40,7 +38,7 @@ namespace GameEngine
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
         [OnBeanRegisterClassOfTarget(typeof(CView))]
-        private static void LoadCodeType(SystemType targetType, Loader.GeneralCodeInfo codeInfo, bool reload)
+        private static void LoadCodeType(SystemType targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
             if (targetType.IsInterface || targetType.IsAbstract)
             {
@@ -54,7 +52,7 @@ namespace GameEngine
                 return;
             }
 
-            Loader.ViewCodeInfo viewCodeInfo = codeInfo as Loader.ViewCodeInfo;
+            Loader.Structuring.ViewCodeInfo viewCodeInfo = codeInfo as Loader.Structuring.ViewCodeInfo;
             Debugger.Assert(null != viewCodeInfo, "Invalid view code info.");
 
             if (reload)

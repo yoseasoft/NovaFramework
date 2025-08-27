@@ -24,15 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Reflection;
-
 using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
 using SystemAttribute = System.Attribute;
-using SystemAttributeTargets = System.AttributeTargets;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace GameEngine.Loader
 {
@@ -48,7 +41,7 @@ namespace GameEngine.Loader
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
         [OnExtendDefinitionRegisterClassOfTarget(typeof(ExtendSupportedAttribute))]
-        private static void LoadCallBindCodeType(SystemType targetType, GeneralCodeInfo codeInfo, bool reload)
+        private static void LoadCallBindCodeType(SystemType targetType, Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
             if (null == codeInfo)
             {
@@ -56,17 +49,17 @@ namespace GameEngine.Loader
                 return;
             }
 
-            ExtendCallCodeInfo extendCodeInfo = codeInfo as ExtendCallCodeInfo;
+            Structuring.ExtendCallCodeInfo extendCodeInfo = codeInfo as Structuring.ExtendCallCodeInfo;
             Debugger.Assert(null != extendCodeInfo, "Invalid extend call code info.");
 
             for (int n = 0; n < extendCodeInfo.GetInputCallMethodTypeCount(); ++n)
             {
-                InputResponsingMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetInputCallMethodType(n);
+                Structuring.InputResponsingMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetInputCallMethodType(n);
 
                 Debugger.Info(LogGroupTag.CodeLoader, "Load extend input call {%t} with target class type {%t}.", callMethodInfo.Method, callMethodInfo.TargetType);
 
-                GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
-                if (_lookupCodeInfo is BaseBeanCodeInfo baseCodeInfo)
+                Structuring.GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
+                if (_lookupCodeInfo is Structuring.BaseBeanCodeInfo baseCodeInfo)
                 {
                     baseCodeInfo.AddInputResponsingMethodType(callMethodInfo);
                 }
@@ -78,12 +71,12 @@ namespace GameEngine.Loader
 
             for (int n = 0; n < extendCodeInfo.GetEventCallMethodTypeCount(); ++n)
             {
-                EventSubscribingMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetEventCallMethodType(n);
+                Structuring.EventSubscribingMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetEventCallMethodType(n);
 
                 Debugger.Info(LogGroupTag.CodeLoader, "Load extend event call {%t} with target class type {%t}.", callMethodInfo.Method, callMethodInfo.TargetType);
 
-                GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
-                if (_lookupCodeInfo is BaseBeanCodeInfo baseCodeInfo)
+                Structuring.GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
+                if (_lookupCodeInfo is Structuring.BaseBeanCodeInfo baseCodeInfo)
                 {
                     baseCodeInfo.AddEventSubscribingMethodType(callMethodInfo);
                 }
@@ -95,12 +88,12 @@ namespace GameEngine.Loader
 
             for (int n = 0; n < extendCodeInfo.GetMessageCallMethodTypeCount(); ++n)
             {
-                MessageBindingMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetMessageCallMethodType(n);
+                Structuring.MessageBindingMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetMessageCallMethodType(n);
 
                 Debugger.Info(LogGroupTag.CodeLoader, "Load extend message call {%t} with target class type {%t}.", callMethodInfo.Method, callMethodInfo.TargetType);
 
-                GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
-                if (_lookupCodeInfo is BaseBeanCodeInfo baseCodeInfo)
+                Structuring.GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
+                if (_lookupCodeInfo is Structuring.BaseBeanCodeInfo baseCodeInfo)
                 {
                     baseCodeInfo.AddMessageBindingMethodType(callMethodInfo);
                 }
@@ -112,12 +105,12 @@ namespace GameEngine.Loader
 
             for (int n = 0; n < extendCodeInfo.GetStateCallMethodTypeCount(); ++n)
             {
-                StateTransitioningMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetStateCallMethodType(n);
+                Structuring.StateTransitioningMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetStateCallMethodType(n);
 
                 Debugger.Info(LogGroupTag.CodeLoader, "Load extend state call {%t} with target class type {%t}.", callMethodInfo.Method, callMethodInfo.TargetType);
 
-                GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
-                if (_lookupCodeInfo is RefCodeInfo refCodeInfo)
+                Structuring.GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
+                if (_lookupCodeInfo is Structuring.RefCodeInfo refCodeInfo)
                 {
                     refCodeInfo.AddStateTransitioningMethodType(callMethodInfo);
                 }

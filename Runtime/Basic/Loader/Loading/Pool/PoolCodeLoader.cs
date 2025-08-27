@@ -171,7 +171,7 @@ namespace GameEngine.Loader
         /// <param name="symClass">对象标记类型</param>
         /// <returns>返回类型对应的结构信息</returns>
         [CodeLoader.OnGeneralCodeLoaderLookup]
-        private static GeneralCodeInfo LookupPoolCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.GeneralCodeInfo LookupPoolCodeInfo(Symboling.SymClass symClass)
         {
             SystemDelegate callback = null;
 

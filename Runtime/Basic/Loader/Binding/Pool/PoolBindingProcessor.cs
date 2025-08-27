@@ -63,20 +63,20 @@ namespace GameEngine.Loader
                 foreach (SystemAttribute attr in e)
                 {
                     SystemType attrType = attr.GetType();
-                    if (typeof(OnPoolMarkRegisterClassOfTargetAttribute) == attrType)
+                    if (typeof(OnPoolCallRegisterClassOfTargetAttribute) == attrType)
                     {
                         Debugger.Assert(method.IsStatic);
 
-                        OnPoolMarkRegisterClassOfTargetAttribute _attr = (OnPoolMarkRegisterClassOfTargetAttribute) attr;
+                        OnPoolCallRegisterClassOfTargetAttribute _attr = (OnPoolCallRegisterClassOfTargetAttribute) attr;
                         _poolRegisterClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCodeTypeLoadedHandler)));
 
                         CodeLoader.AddCodeTypeLoadedCallback(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCodeTypeLoadedHandler)) as CodeLoader.OnCodeTypeLoadedHandler);
                     }
-                    else if (typeof(OnPoolMarkUnregisterClassOfTargetAttribute) == attrType)
+                    else if (typeof(OnPoolCallUnregisterClassOfTargetAttribute) == attrType)
                     {
                         Debugger.Assert(method.IsStatic);
 
-                        OnPoolMarkUnregisterClassOfTargetAttribute _attr = (OnPoolMarkUnregisterClassOfTargetAttribute) attr;
+                        OnPoolCallUnregisterClassOfTargetAttribute _attr = (OnPoolCallUnregisterClassOfTargetAttribute) attr;
                         _poolRegisterClassUnloadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllCodeTypesHandler)));
                     }
                 }

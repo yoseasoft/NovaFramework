@@ -22,9 +22,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Reflection;
-
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
 
@@ -42,7 +39,7 @@ namespace GameEngine
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
         [OnAspectCallRegisterClassOfTarget(typeof(AspectAttribute))]
-        private static void LoadCallBindCodeType(SystemType targetType, Loader.GeneralCodeInfo codeInfo, bool reload)
+        private static void LoadCallBindCodeType(SystemType targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
             if (null == codeInfo)
             {
@@ -50,12 +47,12 @@ namespace GameEngine
                 return;
             }
 
-            Loader.AspectCallCodeInfo aspectCodeInfo = codeInfo as Loader.AspectCallCodeInfo;
+            Loader.Structuring.AspectCallCodeInfo aspectCodeInfo = codeInfo as Loader.Structuring.AspectCallCodeInfo;
             Debugger.Assert(null != aspectCodeInfo, "Invalid aspect call code info.");
 
             for (int n = 0; n < aspectCodeInfo.GetMethodTypeCount(); ++n)
             {
-                Loader.AspectCallMethodTypeCodeInfo callMethodInfo = aspectCodeInfo.GetMethodType(n);
+                Loader.Structuring.AspectCallMethodTypeCodeInfo callMethodInfo = aspectCodeInfo.GetMethodType(n);
 
                 if (reload)
                 {

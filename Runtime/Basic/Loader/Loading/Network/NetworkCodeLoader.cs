@@ -32,32 +32,9 @@ using SystemDelegate = System.Delegate;
 using SystemAttribute = System.Attribute;
 using SystemMethodInfo = System.Reflection.MethodInfo;
 using SystemBindingFlags = System.Reflection.BindingFlags;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 网络消息类的结构信息
-    /// </summary>
-    public class NetworkCodeInfo : GeneralCodeInfo
-    {
-        /// <summary>
-        /// 网络消息类的类型标识
-        /// </summary>
-        protected SystemType _classType;
-
-        public SystemType ClassType { get { return _classType; } internal set { _classType = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("Class = {0}, ", _classType.FullName);
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
-
     /// <summary>
     /// 程序集中网络消息对象的分析处理类，对业务层载入的所有网络消息类进行统一加载及分析处理
     /// </summary>
@@ -200,7 +177,7 @@ namespace GameEngine.Loader
         /// <param name="symClass">对象标记类型</param>
         /// <returns>返回类型对应的结构信息</returns>
         [CodeLoader.OnGeneralCodeLoaderLookup]
-        private static GeneralCodeInfo LookupNetworkCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.GeneralCodeInfo LookupNetworkCodeInfo(Symboling.SymClass symClass)
         {
             SystemDelegate callback = null;
 

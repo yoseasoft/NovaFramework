@@ -42,14 +42,14 @@ namespace GameEngine
         private static void CallServiceProcessOfSceneStartup(CScene scene, bool reload)
         {
             SystemType targetType = scene.GetType();
-            Loader.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CScene));
+            Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CScene));
             if (null == codeInfo)
             {
                 Debugger.Warn("Could not found any aspect call scene service process with target type '{0}', called it failed.", targetType.FullName);
                 return;
             }
 
-            Loader.SceneCodeInfo sceneCodeInfo = codeInfo as Loader.SceneCodeInfo;
+            Loader.Structuring.SceneCodeInfo sceneCodeInfo = codeInfo as Loader.Structuring.SceneCodeInfo;
             if (null == sceneCodeInfo)
             {
                 Debugger.Warn("The aspect call scene service process getting error code info '{0}' with target type '{1}', called it failed.", codeInfo.GetType().FullName, targetType.FullName);

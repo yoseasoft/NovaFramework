@@ -42,14 +42,14 @@ namespace GameEngine
         private static void CallServiceProcessOfEntityInitialize(CEntity entity, bool reload)
         {
             SystemType targetType = entity.GetType();
-            Loader.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CEntity));
+            Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CEntity));
             if (null == codeInfo)
             {
                 Debugger.Warn("Could not found any aspect call entity service process with target type '{0}', called it failed.", targetType.FullName);
                 return;
             }
 
-            Loader.EntityCodeInfo entityCodeInfo = codeInfo as Loader.EntityCodeInfo;
+            Loader.Structuring.EntityCodeInfo entityCodeInfo = codeInfo as Loader.Structuring.EntityCodeInfo;
             if (null == entityCodeInfo)
             {
                 Debugger.Warn("The aspect call entity service process getting error code info '{0}' with target type '{1}', called it failed.", codeInfo.GetType().FullName, targetType.FullName);

@@ -25,34 +25,9 @@
 using System.Collections.Generic;
 
 using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 注入调用类的结构信息
-    /// </summary>
-    public class InjectCallCodeInfo : InjectCodeInfo
-    {
-        /// <summary>
-        /// 调用对象的行为类型
-        /// </summary>
-        private AspectBehaviourType _behaviourType;
-
-        public AspectBehaviourType BehaviourType { get { return _behaviourType; } internal set { _behaviourType = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("InjectCall = { ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("BehaviourType = {0}, ", _behaviourType);
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
-
     /// <summary>
     /// 程序集中注入控制对象的分析处理类，对业务层载入的所有注入控制类进行统一加载及分析处理
     /// </summary>
@@ -61,7 +36,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 注入实体类的结构信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, InjectCallCodeInfo> _injectCallCodeInfos = new Dictionary<SystemType, InjectCallCodeInfo>();
+        private static IDictionary<SystemType, Structuring.InjectCallCodeInfo> _injectCallCodeInfos = new Dictionary<SystemType, Structuring.InjectCallCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(InjectAttribute))]
         private static bool LoadInjectCallClass(Symboling.SymClass symClass, bool reload)
@@ -72,7 +47,7 @@ namespace GameEngine.Loader
                 return false;
             }
 
-            InjectCallCodeInfo info = new InjectCallCodeInfo();
+            Structuring.InjectCallCodeInfo info = new Structuring.InjectCallCodeInfo();
             info.ClassType = symClass.ClassType;
             info.BehaviourType = AspectBehaviourType.Initialize;
 
@@ -102,9 +77,9 @@ namespace GameEngine.Loader
         }
 
         [OnCodeLoaderClassLookupOfTarget(typeof(InjectAttribute))]
-        private static InjectCallCodeInfo LookupInjectCallCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.InjectCallCodeInfo LookupInjectCallCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<SystemType, InjectCallCodeInfo> pair in _injectCallCodeInfos)
+            foreach (KeyValuePair<SystemType, Structuring.InjectCallCodeInfo> pair in _injectCallCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

@@ -26,24 +26,16 @@ using System.Collections.Generic;
 using System.Reflection;
 
 using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
 using SystemAttribute = System.Attribute;
 using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
 using SystemAttributeTargets = System.AttributeTargets;
 using SystemEnum = System.Enum;
+using SystemDelegate = System.Delegate;
 using SystemMethodInfo = System.Reflection.MethodInfo;
 using SystemBindingFlags = System.Reflection.BindingFlags;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 通用模板类型的结构信息
-    /// </summary>
-    public class GeneralCodeInfo
-    {
-    }
-
     /// <summary>
     /// 程序集的分析处理类，对业务层载入的所有对象类进行统一加载及分析处理
     /// </summary>
@@ -76,7 +68,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="symClass">对象标记类型</param>
         /// <returns>返回给定类型对应的结构信息，若查找失败则返回null</returns>
-        public delegate GeneralCodeInfo OnGeneralCodeLoaderLookupHandler(Symboling.SymClass symClass);
+        public delegate Structuring.GeneralCodeInfo OnGeneralCodeLoaderLookupHandler(Symboling.SymClass symClass);
 
         /// <summary>
         /// 通用类初始化函数的属性定义
@@ -279,7 +271,7 @@ namespace GameEngine.Loader
         /// <param name="targetType">目标对象类型</param>
         /// <param name="filterType">过滤对象类型</param>
         /// <returns>返回类型对应的结构信息</returns>
-        public static GeneralCodeInfo LookupGeneralCodeInfo(SystemType targetType, SystemType filterType = null)
+        public static Structuring.GeneralCodeInfo LookupGeneralCodeInfo(SystemType targetType, SystemType filterType = null)
         {
             Symboling.SymClass symClass = GetSymClassByType(targetType);
 
@@ -292,7 +284,7 @@ namespace GameEngine.Loader
         /// <param name="symClass">对象标记类型</param>
         /// <param name="filterType">过滤对象类型</param>
         /// <returns>返回类型对应的结构信息</returns>
-        public static GeneralCodeInfo LookupGeneralCodeInfo(Symboling.SymClass symClass, SystemType filterType = null)
+        public static Structuring.GeneralCodeInfo LookupGeneralCodeInfo(Symboling.SymClass symClass, SystemType filterType = null)
         {
             for (int n = 0; n < _generalLoaderList.Count; ++n)
             {

@@ -26,39 +26,9 @@ using System.Collections.Generic;
 
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 网络消息对象类的结构信息
-    /// </summary>
-    public class NetworkMessageCodeInfo : NetworkCodeInfo
-    {
-        /// <summary>
-        /// 网络消息对象类的协议编码
-        /// </summary>
-        private int _opcode;
-        /// <summary>
-        /// 网络消息对象类的响应编码
-        /// </summary>
-        private int _responseCode;
-
-        public int Opcode { get { return _opcode; } internal set { _opcode = value; } }
-        public int ResponseCode { get { return _responseCode; } internal set { _responseCode = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("NetworkMessage = { ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("Opcode = {0}, ", _opcode);
-            sb.AppendFormat("ResponseCode = {0}, ", _responseCode);
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
-
     /// <summary>
     /// 程序集中网络消息对象的分析处理类，对业务层载入的所有网络消息类进行统一加载及分析处理
     /// </summary>
@@ -67,7 +37,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 网络消息对象类的结构信息管理容器
         /// </summary>
-        private static IDictionary<int, NetworkMessageCodeInfo> _networkMessageCodeInfos = new Dictionary<int, NetworkMessageCodeInfo>();
+        private static IDictionary<int, Structuring.NetworkMessageCodeInfo> _networkMessageCodeInfos = new Dictionary<int, Structuring.NetworkMessageCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(ProtoBuf.Extension.MessageAttribute))]
         private static bool LoadNetworkMessageClass(Symboling.SymClass symClass, bool reload)
@@ -78,7 +48,7 @@ namespace GameEngine.Loader
                 return false;
             }
 
-            NetworkMessageCodeInfo info = new NetworkMessageCodeInfo();
+            Structuring.NetworkMessageCodeInfo info = new Structuring.NetworkMessageCodeInfo();
             info.ClassType = symClass.ClassType;
 
             IList<SystemAttribute> attrs = symClass.Attributes;
@@ -130,9 +100,9 @@ namespace GameEngine.Loader
         }
 
         [OnCodeLoaderClassLookupOfTarget(typeof(ProtoBuf.Extension.MessageAttribute))]
-        private static NetworkMessageCodeInfo LookupNetworkMessageCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.NetworkMessageCodeInfo LookupNetworkMessageCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<int, NetworkMessageCodeInfo> pair in _networkMessageCodeInfos)
+            foreach (KeyValuePair<int, Structuring.NetworkMessageCodeInfo> pair in _networkMessageCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

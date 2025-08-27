@@ -1,0 +1,63 @@
+/// -------------------------------------------------------------------------------
+/// GameEngine Framework
+///
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to deal
+/// in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in
+/// all copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+/// THE SOFTWARE.
+/// -------------------------------------------------------------------------------
+
+using System.Collections.Generic;
+
+using SystemType = System.Type;
+using SystemDelegate = System.Delegate;
+using SystemMethodInfo = System.Reflection.MethodInfo;
+using SystemStringBuilder = System.Text.StringBuilder;
+
+namespace GameEngine.Loader.Structuring
+{
+    /// <summary>
+    /// 实例对象模块的结构信息
+    /// </summary>
+    internal sealed class ObjectCodeInfo : RefCodeInfo
+    {
+        /// <summary>
+        /// 对象名称
+        /// </summary>
+        private string _objectName;
+        /// <summary>
+        /// 对象优先级
+        /// </summary>
+        private int _priority;
+
+        public string ObjectName { get { return _objectName; } internal set { _objectName = value; } }
+        public int Priority { get { return _priority; } internal set { _priority = value; } }
+
+        public override string ToString()
+        {
+            SystemStringBuilder sb = new SystemStringBuilder();
+            sb.Append("Object = { ");
+            sb.AppendFormat("Parent = {0}, ", base.ToString());
+            sb.AppendFormat("Name = {0}, ", _objectName ?? NovaEngine.Definition.CString.Unknown);
+            sb.AppendFormat("Priority = {0}, ", _priority);
+            sb.Append("}");
+            return sb.ToString();
+        }
+    }
+}

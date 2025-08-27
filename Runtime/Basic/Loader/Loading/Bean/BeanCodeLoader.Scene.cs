@@ -26,120 +26,9 @@ using System.Collections.Generic;
 
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 场景类的结构信息
-    /// </summary>
-    public class SceneCodeInfo : EntityCodeInfo
-    {
-        /// <summary>
-        /// 场景名称
-        /// </summary>
-        private string _sceneName;
-        /// <summary>
-        /// 场景优先级
-        /// </summary>
-        private int _priority;
-        /// <summary>
-        /// 自动展示的场景名称列表
-        /// </summary>
-        private IList<string> _autoDisplayViewNames;
-
-        public string SceneName { get { return _sceneName; } internal set { _sceneName = value; } }
-        public int Priority { get { return _priority; } internal set { _priority = value; } }
-
-        /// <summary>
-        /// 新增需要自动展示在当前场景的目标视图名称
-        /// </summary>
-        /// <param name="viewName">视图名称</param>
-        internal void AddAutoDisplayViewName(string viewName)
-        {
-            if (null == _autoDisplayViewNames)
-            {
-                _autoDisplayViewNames = new List<string>();
-            }
-
-            if (_autoDisplayViewNames.Contains(viewName))
-            {
-                Debugger.Warn("The auto display view name '{0}' was already existed, repeat added it failed.", viewName);
-                return;
-            }
-
-            _autoDisplayViewNames.Add(viewName);
-        }
-
-        /// <summary>
-        /// 移除所有自动展示在当前场景的目标视图名称记录
-        /// </summary>
-        internal void RemoveAllAutoDisplayViewNames()
-        {
-            _autoDisplayViewNames?.Clear();
-            _autoDisplayViewNames = null;
-        }
-
-        /// <summary>
-        /// 检测目标视图名称是否需要自动展示在当前场景
-        /// </summary>
-        /// <param name="viewName">视图名称</param>
-        /// <returns>若需要自动展示则返回true，否则返回false</returns>
-        public bool IsAutoDisplayForTargetView(string viewName)
-        {
-            if (null == _autoDisplayViewNames || false == _autoDisplayViewNames.Contains(viewName))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// 获取当前需要自动展示在当前场景的视图名称数量
-        /// </summary>
-        /// <returns>返回需要自动展示在当前场景的视图名称数量</returns>
-        internal int GetAutoDisplayViewNamesCount()
-        {
-            if (null != _autoDisplayViewNames)
-            {
-                return _autoDisplayViewNames.Count;
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        /// 获取当前需要自动展示在当前场景的视图名称容器中指索引对应的值
-        /// </summary>
-        /// <param name="index">索引值</param>
-        /// <returns>返回给定索引值对应的名称，若不存在对应值则返回null</returns>
-        internal string GetAutoDisplayViewName(int index)
-        {
-            if (null == _autoDisplayViewNames || index < 0 || index >= _autoDisplayViewNames.Count)
-            {
-                Debugger.Warn("Invalid index ({0}) for auto display view name list.", index);
-                return null;
-            }
-
-            return _autoDisplayViewNames[index];
-        }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("Scene = { ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("Name = {0}, ", _sceneName ?? NovaEngine.Definition.CString.Unknown);
-            sb.AppendFormat("Priority = {0}, ", _priority);
-
-            sb.AppendFormat("AutoDisplayViews = {{{0}}}, ", NovaEngine.Utility.Text.ToString(_autoDisplayViewNames));
-
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
-
     /// <summary>
     /// 程序集中原型对象的分析处理类，对业务层载入的所有原型对象类进行统一加载及分析处理
     /// </summary>
@@ -148,7 +37,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 场景类的结构信息管理容器
         /// </summary>
-        private static IDictionary<string, SceneCodeInfo> _sceneCodeInfos = new Dictionary<string, SceneCodeInfo>();
+        private static IDictionary<string, Structuring.SceneCodeInfo> _sceneCodeInfos = new Dictionary<string, Structuring.SceneCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(CScene))]
         private static bool LoadSceneClass(Symboling.SymClass symClass, bool reload)
@@ -159,7 +48,7 @@ namespace GameEngine.Loader
                 return false;
             }
 
-            SceneCodeInfo info = new SceneCodeInfo();
+            Structuring.SceneCodeInfo info = new Structuring.SceneCodeInfo();
             info.ClassType = symClass.ClassType;
 
             IList<SystemAttribute> attrs = symClass.Attributes;
@@ -217,7 +106,7 @@ namespace GameEngine.Loader
             return true;
         }
 
-        private static void LoadSceneMethod(Symboling.SymClass symClass, SceneCodeInfo codeInfo, Symboling.SymMethod symMethod)
+        private static void LoadSceneMethod(Symboling.SymClass symClass, Structuring.SceneCodeInfo codeInfo, Symboling.SymMethod symMethod)
         {
             // 静态函数直接忽略
             if (symMethod.IsStatic)
@@ -241,9 +130,9 @@ namespace GameEngine.Loader
         }
 
         [OnCodeLoaderClassLookupOfTarget(typeof(CScene))]
-        private static SceneCodeInfo LookupSceneCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.SceneCodeInfo LookupSceneCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<string, SceneCodeInfo> pair in _sceneCodeInfos)
+            foreach (KeyValuePair<string, Structuring.SceneCodeInfo> pair in _sceneCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {
