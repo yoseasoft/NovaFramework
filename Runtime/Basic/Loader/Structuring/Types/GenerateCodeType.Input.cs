@@ -23,54 +23,37 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Structuring
 {
     /// <summary>
-    /// 输入响应模块的编码结构信息对象类
+    /// 输入模块的编码结构信息对象类
     /// </summary>
     internal abstract class InputCodeInfo : GeneralCodeInfo
-    {
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("Class = {0}, ", _classType.FullName);
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
+    { }
 
     /// <summary>
-    /// 输入响应类的结构信息
+    /// 输入调用模块的结构信息
     /// </summary>
     internal class InputCallCodeInfo : InputCodeInfo
     {
         /// <summary>
-        /// 事件调用类的数据引用对象
+        /// 输入调用模块的函数类型集合
         /// </summary>
-        private IList<InputCallMethodTypeCodeInfo> _methodTypes;
+        private MethodTypeList<InputCallMethodTypeCodeInfo> _methodTypes;
+
+        internal MethodTypeList<InputCallMethodTypeCodeInfo> MethodTypes => _methodTypes;
 
         /// <summary>
         /// 新增指定函数的回调句柄相关的结构信息
         /// </summary>
         /// <param name="invoke">函数的结构信息</param>
-        internal void AddMethodType(InputCallMethodTypeCodeInfo invoke)
+        public void AddMethodType(InputCallMethodTypeCodeInfo invoke)
         {
             if (null == _methodTypes)
             {
-                _methodTypes = new List<InputCallMethodTypeCodeInfo>();
-            }
-
-            if (_methodTypes.Contains(invoke))
-            {
-                Debugger.Warn("The input call class type '{0}' was already registed target keycode '{1}', repeat added it failed.", _classType.FullName, invoke.InputCode);
-                return;
+                _methodTypes = new MethodTypeList<InputCallMethodTypeCodeInfo>();
             }
 
             _methodTypes.Add(invoke);
@@ -79,7 +62,7 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 移除所有函数的回调句柄相关的结构信息
         /// </summary>
-        internal void RemoveAllMethodTypes()
+        public void RemoveAllMethodTypes()
         {
             _methodTypes?.Clear();
             _methodTypes = null;
@@ -89,14 +72,9 @@ namespace GameEngine.Loader.Structuring
         /// 获取当前函数回调句柄的结构信息数量
         /// </summary>
         /// <returns>返回函数回调句柄的结构信息数量</returns>
-        internal int GetMethodTypeCount()
+        public int GetMethodTypeCount()
         {
-            if (null != _methodTypes)
-            {
-                return _methodTypes.Count;
-            }
-
-            return 0;
+            return _methodTypes?.Count() ?? 0;
         }
 
         /// <summary>
@@ -104,79 +82,39 @@ namespace GameEngine.Loader.Structuring
         /// </summary>
         /// <param name="index">索引值</param>
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
-        internal InputCallMethodTypeCodeInfo GetMethodType(int index)
+        public InputCallMethodTypeCodeInfo GetMethodType(int index)
         {
-            if (null == _methodTypes || index < 0 || index >= _methodTypes.Count)
-            {
-                Debugger.Warn("Invalid index ({0}) for input call method type code info list.", index);
-                return null;
-            }
-
-            return _methodTypes[index];
-        }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("InputCall = { ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-
-            sb.AppendFormat("MethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<InputCallMethodTypeCodeInfo>(_methodTypes));
-
-            sb.Append("}");
-            return sb.ToString();
+            return _methodTypes?.Get(index);
         }
     }
 
     /// <summary>
-    /// 输入响应类的函数结构信息
+    /// 输入调用模块的函数结构信息
     /// </summary>
-    internal class InputCallMethodTypeCodeInfo
+    internal class InputCallMethodTypeCodeInfo : MethodTypeCodeInfo
     {
         /// <summary>
-        /// 输入响应类的完整名称
+        /// 输入调用模块的监听键码标识
         /// </summary>
-        private string _fullname;
+        public int InputCode { get; internal set; }
         /// <summary>
-        /// 输入响应类的目标对象类型
+        /// 输入调用模块的监听操作数据类型
         /// </summary>
-        private SystemType _targetType;
+        public InputOperationType OperationType { get; internal set; }
         /// <summary>
-        /// 输入响应类的监听键码标识
+        /// 输入调用模块的监听键码集合数据类型
         /// </summary>
-        private int _inputCode;
-        /// <summary>
-        /// 输入响应类的监听操作数据类型
-        /// </summary>
-        private InputOperationType _operationType;
-        /// <summary>
-        /// 输入响应类的监听键码集合数据类型
-        /// </summary>
-        private SystemType _inputDataType;
-        /// <summary>
-        /// 输入响应类的回调函数
-        /// </summary>
-        private SystemMethodInfo _method;
+        public SystemType InputDataType { get; internal set; }
+    }
 
-        public string Fullname { get { return _fullname; } internal set { _fullname = value; } }
-        public SystemType TargetType { get { return _targetType; } internal set { _targetType = value; } }
-        public int InputCode { get { return _inputCode; } internal set { _inputCode = value; } }
-        public InputOperationType OperationType { get { return _operationType; } internal set { _operationType = value; } }
-        public SystemType InputDataType { get { return _inputDataType; } internal set { _inputDataType = value; } }
-        public SystemMethodInfo Method { get { return _method; } internal set { _method = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("Fullname = {0}, ", _fullname);
-            sb.AppendFormat("TargetType = {0}, ", NovaEngine.Utility.Text.ToString(_targetType));
-            sb.AppendFormat("InputCode = {0}, ", _inputCode);
-            sb.AppendFormat("OperationType = {0}, ", _operationType);
-            sb.AppendFormat("InputDataType = {0}, ", NovaEngine.Utility.Text.ToString(_inputDataType));
-            sb.AppendFormat("Method = {0}, ", NovaEngine.Utility.Text.ToString(_method));
-            sb.Append("}");
-            return sb.ToString();
-        }
+    /// <summary>
+    /// 切面管理的输入响应函数结构信息
+    /// </summary>
+    internal sealed class InputResponsingMethodTypeCodeInfo : InputCallMethodTypeCodeInfo
+    {
+        /// <summary>
+        /// 响应绑定的观察行为类型
+        /// </summary>
+        public AspectBehaviourType BehaviourType { get; internal set; }
     }
 }

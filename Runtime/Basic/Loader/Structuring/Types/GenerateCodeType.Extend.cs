@@ -22,10 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Structuring
 {
@@ -33,41 +30,40 @@ namespace GameEngine.Loader.Structuring
     /// 扩展定义模块的编码结构信息对象类
     /// </summary>
     internal abstract class ExtendCodeInfo : GeneralCodeInfo
-    {
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("Class = {0}, ", _classType.FullName);
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
+    { }
 
     /// <summary>
     /// 扩展定义调用模块的结构信息
     /// </summary>
-    internal class ExtendCallCodeInfo : ExtendCodeInfo
+    internal sealed class ExtendCallCodeInfo : ExtendCodeInfo
     {
         /// <summary>
         /// 原型对象输入响应的扩展定义调用模块的数据管理容器
         /// </summary>
-        private IList<InputResponsingMethodTypeCodeInfo> _inputCallMethodTypes;
+        private MethodTypeList<InputResponsingMethodTypeCodeInfo> _inputCallMethodTypes;
 
         /// <summary>
         /// 原型对象事件订阅的扩展定义调用模块的数据管理容器
         /// </summary>
-        private IList<EventSubscribingMethodTypeCodeInfo> _eventCallMethodTypes;
+        private MethodTypeList<EventSubscribingMethodTypeCodeInfo> _eventCallMethodTypes;
 
         /// <summary>
         /// 原型对象消息处理的扩展定义调用模块的数据管理容器
         /// </summary>
-        private IList<MessageBindingMethodTypeCodeInfo> _messageCallMethodTypes;
+        private MethodTypeList<MessageBindingMethodTypeCodeInfo> _messageCallMethodTypes;
 
         /// <summary>
         /// 原型对象状态监控的扩展定义调用模块的数据管理容器
         /// </summary>
-        private IList<StateTransitioningMethodTypeCodeInfo> _stateCallMethodTypes;
+        private MethodTypeList<StateTransitioningMethodTypeCodeInfo> _stateCallMethodTypes;
+
+        internal MethodTypeList<InputResponsingMethodTypeCodeInfo> InputCallMethodTypes => _inputCallMethodTypes;
+
+        internal MethodTypeList<EventSubscribingMethodTypeCodeInfo> EventCallMethodTypes => _eventCallMethodTypes;
+
+        internal MethodTypeList<MessageBindingMethodTypeCodeInfo> MessageCallMethodTypes => _messageCallMethodTypes;
+
+        internal MethodTypeList<StateTransitioningMethodTypeCodeInfo> StateCallMethodTypes => _stateCallMethodTypes;
 
         #region 扩展输入调用模块结构信息操作函数
 
@@ -79,13 +75,7 @@ namespace GameEngine.Loader.Structuring
         {
             if (null == _inputCallMethodTypes)
             {
-                _inputCallMethodTypes = new List<InputResponsingMethodTypeCodeInfo>();
-            }
-
-            if (_inputCallMethodTypes.Contains(invoke))
-            {
-                Debugger.Warn("The extend input call class type '{0}' was already registed target input '{1}', repeat added it failed.", _classType.FullName, invoke.InputCode);
-                return;
+                _inputCallMethodTypes = new MethodTypeList<InputResponsingMethodTypeCodeInfo>();
             }
 
             _inputCallMethodTypes.Add(invoke);
@@ -106,12 +96,7 @@ namespace GameEngine.Loader.Structuring
         /// <returns>返回函数回调句柄的结构信息数量</returns>
         public int GetInputCallMethodTypeCount()
         {
-            if (null != _inputCallMethodTypes)
-            {
-                return _inputCallMethodTypes.Count;
-            }
-
-            return 0;
+            return _inputCallMethodTypes?.Count() ?? 0;
         }
 
         /// <summary>
@@ -121,13 +106,7 @@ namespace GameEngine.Loader.Structuring
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
         public InputResponsingMethodTypeCodeInfo GetInputCallMethodType(int index)
         {
-            if (null == _inputCallMethodTypes || index < 0 || index >= _inputCallMethodTypes.Count)
-            {
-                Debugger.Warn("Invalid index ({0}) for extend input call method type code info list.", index);
-                return null;
-            }
-
-            return _inputCallMethodTypes[index];
+            return _inputCallMethodTypes?.Get(index);
         }
 
         #endregion
@@ -142,13 +121,7 @@ namespace GameEngine.Loader.Structuring
         {
             if (null == _eventCallMethodTypes)
             {
-                _eventCallMethodTypes = new List<EventSubscribingMethodTypeCodeInfo>();
-            }
-
-            if (_eventCallMethodTypes.Contains(invoke))
-            {
-                Debugger.Warn("The extend event call class type '{0}' was already registed target event '{1}', repeat added it failed.", _classType.FullName, invoke.EventID);
-                return;
+                _eventCallMethodTypes = new MethodTypeList<EventSubscribingMethodTypeCodeInfo>();
             }
 
             _eventCallMethodTypes.Add(invoke);
@@ -169,12 +142,7 @@ namespace GameEngine.Loader.Structuring
         /// <returns>返回函数回调句柄的结构信息数量</returns>
         public int GetEventCallMethodTypeCount()
         {
-            if (null != _eventCallMethodTypes)
-            {
-                return _eventCallMethodTypes.Count;
-            }
-
-            return 0;
+            return _eventCallMethodTypes?.Count() ?? 0;
         }
 
         /// <summary>
@@ -184,13 +152,7 @@ namespace GameEngine.Loader.Structuring
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
         public EventSubscribingMethodTypeCodeInfo GetEventCallMethodType(int index)
         {
-            if (null == _eventCallMethodTypes || index < 0 || index >= _eventCallMethodTypes.Count)
-            {
-                Debugger.Warn("Invalid index ({0}) for extend event call method type code info list.", index);
-                return null;
-            }
-
-            return _eventCallMethodTypes[index];
+            return _eventCallMethodTypes?.Get(index);
         }
 
         #endregion
@@ -205,13 +167,7 @@ namespace GameEngine.Loader.Structuring
         {
             if (null == _messageCallMethodTypes)
             {
-                _messageCallMethodTypes = new List<MessageBindingMethodTypeCodeInfo>();
-            }
-
-            if (_messageCallMethodTypes.Contains(invoke))
-            {
-                Debugger.Warn("The extend message call class type '{0}' was already registed target event '{1}', repeat added it failed.", _classType.FullName, invoke.Opcode);
-                return;
+                _messageCallMethodTypes = new MethodTypeList<MessageBindingMethodTypeCodeInfo>();
             }
 
             _messageCallMethodTypes.Add(invoke);
@@ -232,12 +188,7 @@ namespace GameEngine.Loader.Structuring
         /// <returns>返回函数回调句柄的结构信息数量</returns>
         public int GetMessageCallMethodTypeCount()
         {
-            if (null != _messageCallMethodTypes)
-            {
-                return _messageCallMethodTypes.Count;
-            }
-
-            return 0;
+            return _messageCallMethodTypes?.Count() ?? 0;
         }
 
         /// <summary>
@@ -247,13 +198,7 @@ namespace GameEngine.Loader.Structuring
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
         public MessageBindingMethodTypeCodeInfo GetMessageCallMethodType(int index)
         {
-            if (null == _messageCallMethodTypes || index < 0 || index >= _messageCallMethodTypes.Count)
-            {
-                Debugger.Warn("Invalid index ({0}) for extend message call method type code info list.", index);
-                return null;
-            }
-
-            return _messageCallMethodTypes[index];
+            return _messageCallMethodTypes?.Get(index);
         }
 
         #endregion
@@ -268,13 +213,7 @@ namespace GameEngine.Loader.Structuring
         {
             if (null == _stateCallMethodTypes)
             {
-                _stateCallMethodTypes = new List<StateTransitioningMethodTypeCodeInfo>();
-            }
-
-            if (_stateCallMethodTypes.Contains(invoke))
-            {
-                Debugger.Warn("The extend state call class type '{0}' was already registed target state '{1}', repeat added it failed.", _classType.FullName, invoke.StateName);
-                return;
+                _stateCallMethodTypes = new MethodTypeList<StateTransitioningMethodTypeCodeInfo>();
             }
 
             _stateCallMethodTypes.Add(invoke);
@@ -295,12 +234,7 @@ namespace GameEngine.Loader.Structuring
         /// <returns>返回函数回调句柄的结构信息数量</returns>
         public int GetStateCallMethodTypeCount()
         {
-            if (null != _stateCallMethodTypes)
-            {
-                return _stateCallMethodTypes.Count;
-            }
-
-            return 0;
+            return _stateCallMethodTypes?.Count() ?? 0;
         }
 
         /// <summary>
@@ -310,30 +244,10 @@ namespace GameEngine.Loader.Structuring
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
         public StateTransitioningMethodTypeCodeInfo GetStateCallMethodType(int index)
         {
-            if (null == _stateCallMethodTypes || index < 0 || index >= _stateCallMethodTypes.Count)
-            {
-                Debugger.Warn("Invalid index ({0}) for extend state call method type code info list.", index);
-                return null;
-            }
-
-            return _stateCallMethodTypes[index];
+            return _stateCallMethodTypes?.Get(index);
         }
 
         #endregion
 
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("ExtendCall = { ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-
-            sb.AppendFormat("InputCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<InputResponsingMethodTypeCodeInfo>(_inputCallMethodTypes));
-            sb.AppendFormat("EventCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<EventSubscribingMethodTypeCodeInfo>(_eventCallMethodTypes));
-            sb.AppendFormat("MessageCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<MessageBindingMethodTypeCodeInfo>(_messageCallMethodTypes));
-            sb.AppendFormat("StateCallMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<StateTransitioningMethodTypeCodeInfo>(_stateCallMethodTypes));
-
-            sb.Append("}");
-            return sb.ToString();
-        }
     }
 }

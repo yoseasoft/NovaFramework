@@ -101,7 +101,7 @@ namespace GameEngine.Loader
             }
 
             _viewCodeInfos.Add(info.ViewName, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CView' code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CView' code info '{0}' succeed from target class type '{1}'.", Structuring.Formatter.ToString(info), symClass.FullName);
 
             return true;
         }

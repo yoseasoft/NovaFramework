@@ -22,12 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Structuring
 {
@@ -39,18 +34,6 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 组件名称
         /// </summary>
-        private string _componentName;
-
-        public string ComponentName { get { return _componentName; } internal set { _componentName = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("Component = { ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("Name = {0}, ", _componentName ?? NovaEngine.Definition.CString.Unknown);
-            sb.Append("}");
-            return sb.ToString();
-        }
+        public string ComponentName { get; internal set; }
     }
 }

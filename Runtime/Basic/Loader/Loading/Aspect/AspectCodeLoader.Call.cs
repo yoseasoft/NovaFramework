@@ -96,7 +96,7 @@ namespace GameEngine.Loader
                 // 排除掉对象默认自带的其它函数，这里不进行参数检查，直接通过转换是否成功来进行判断
                 callMethodInfo.Fullname = symMethod.FullName;
                 // callMethodInfo.Callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(symMethod.MethodInfo);
-                callMethodInfo.MethodInfo = symMethod.MethodInfo;
+                callMethodInfo.Method = symMethod.MethodInfo;
 
                 callMethodInfo.Callback = NovaEngine.Utility.Reflection.CreateGenericAction<object>(symMethod.MethodInfo, callMethodInfo.TargetType);
                 if (null == callMethodInfo.Callback)
@@ -135,7 +135,7 @@ namespace GameEngine.Loader
             }
 
             _aspectCallCodeInfos.Add(symClass.ClassType, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load aspect call code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load aspect call code info '{%s}' succeed from target class type '{%s}'.", Structuring.Formatter.ToString(info), symClass.FullName);
 
             return true;
         }

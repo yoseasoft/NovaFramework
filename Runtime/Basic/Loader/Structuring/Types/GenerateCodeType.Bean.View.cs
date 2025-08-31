@@ -25,9 +25,6 @@
 using System.Collections.Generic;
 
 using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Structuring
 {
@@ -39,19 +36,18 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 视图名称
         /// </summary>
-        private string _viewName;
+        public string ViewName { get; internal set; }
         /// <summary>
         /// 视图优先级
         /// </summary>
-        private int _priority;
+        public int Priority { get; internal set; }
 
         /// <summary>
         /// 共生关系的视图名称列表
         /// </summary>
         private IList<string> _groupOfSymbioticViewNames;
 
-        public string ViewName { get { return _viewName; } internal set { _viewName = value; } }
-        public int Priority { get { return _priority; } internal set { _priority = value; } }
+        internal IList<string> GroupOfSymbioticViewNames => _groupOfSymbioticViewNames;
 
         /// <summary>
         /// 新增与当前视图具备共生关系的目标视图名称
@@ -125,20 +121,6 @@ namespace GameEngine.Loader.Structuring
             }
 
             return _groupOfSymbioticViewNames[index];
-        }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("View = { ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("Name = {0}, ", _viewName ?? NovaEngine.Definition.CString.Unknown);
-            sb.AppendFormat("Priority = {0}, ", _priority);
-
-            sb.AppendFormat("GroupViews = {{{0}}}, ", NovaEngine.Utility.Text.ToString(_groupOfSymbioticViewNames));
-
-            sb.Append("}");
-            return sb.ToString();
         }
     }
 }

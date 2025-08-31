@@ -23,7 +23,6 @@
 /// -------------------------------------------------------------------------------
 
 using SystemType = System.Type;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Structuring
 {
@@ -31,37 +30,16 @@ namespace GameEngine.Loader.Structuring
     /// 注入控制模块的编码结构信息对象类
     /// </summary>
     internal abstract class InjectCodeInfo : GeneralCodeInfo
-    {
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("Class = {0}, ", _classType.FullName);
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
+    { }
 
     /// <summary>
     /// 注入调用模块的结构信息
     /// </summary>
-    internal class InjectCallCodeInfo : InjectCodeInfo
+    internal sealed class InjectCallCodeInfo : InjectCodeInfo
     {
         /// <summary>
         /// 调用对象的行为类型
         /// </summary>
-        private AspectBehaviourType _behaviourType;
-
-        public AspectBehaviourType BehaviourType { get { return _behaviourType; } internal set { _behaviourType = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("InjectCall = { ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("BehaviourType = {0}, ", _behaviourType);
-            sb.Append("}");
-            return sb.ToString();
-        }
+        public AspectBehaviourType BehaviourType { get; internal set; }
     }
 }

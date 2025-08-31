@@ -22,28 +22,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Structuring
 {
     /// <summary>
-    /// 事件订阅模块的编码结构信息对象类
+    /// 事件模块的编码结构信息对象类
     /// </summary>
     internal abstract class EventCodeInfo : GeneralCodeInfo
-    {
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("Class = {0}, ", _classType.FullName);
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
+    { }
 
     /// <summary>
     /// 事件调用模块的编码结构信息对象类
@@ -53,23 +40,19 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 事件调用模块的数据引用对象
         /// </summary>
-        private IList<EventCallMethodTypeCodeInfo> _methodTypes;
+        private MethodTypeList<EventCallMethodTypeCodeInfo> _methodTypes;
+
+        internal MethodTypeList<EventCallMethodTypeCodeInfo> MethodTypes => _methodTypes;
 
         /// <summary>
         /// 新增指定函数的回调句柄相关的结构信息
         /// </summary>
         /// <param name="invoke">函数的结构信息</param>
-        internal void AddMethodType(EventCallMethodTypeCodeInfo invoke)
+        public void AddMethodType(EventCallMethodTypeCodeInfo invoke)
         {
             if (null == _methodTypes)
             {
-                _methodTypes = new List<EventCallMethodTypeCodeInfo>();
-            }
-
-            if (_methodTypes.Contains(invoke))
-            {
-                Debugger.Warn("The event call class type '{0}' was already registed target event '{1}', repeat added it failed.", _classType.FullName, invoke.EventID);
-                return;
+                _methodTypes = new MethodTypeList<EventCallMethodTypeCodeInfo>();
             }
 
             _methodTypes.Add(invoke);
@@ -78,7 +61,7 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 移除所有函数的回调句柄相关的结构信息
         /// </summary>
-        internal void RemoveAllMethodTypes()
+        public void RemoveAllMethodTypes()
         {
             _methodTypes?.Clear();
             _methodTypes = null;
@@ -88,14 +71,9 @@ namespace GameEngine.Loader.Structuring
         /// 获取当前函数回调句柄的结构信息数量
         /// </summary>
         /// <returns>返回函数回调句柄的结构信息数量</returns>
-        internal int GetMethodTypeCount()
+        public int GetMethodTypeCount()
         {
-            if (null != _methodTypes)
-            {
-                return _methodTypes.Count;
-            }
-
-            return 0;
+            return _methodTypes?.Count() ?? 0;
         }
 
         /// <summary>
@@ -103,73 +81,35 @@ namespace GameEngine.Loader.Structuring
         /// </summary>
         /// <param name="index">索引值</param>
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
-        internal EventCallMethodTypeCodeInfo GetMethodType(int index)
+        public EventCallMethodTypeCodeInfo GetMethodType(int index)
         {
-            if (null == _methodTypes || index < 0 || index >= _methodTypes.Count)
-            {
-                Debugger.Warn("Invalid index ({0}) for event call method type code info list.", index);
-                return null;
-            }
-
-            return _methodTypes[index];
-        }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("EventCall = { ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-
-            sb.AppendFormat("MethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<EventCallMethodTypeCodeInfo>(_methodTypes));
-
-            sb.Append("}");
-            return sb.ToString();
+            return _methodTypes?.Get(index);
         }
     }
 
     /// <summary>
     /// 事件调用模块的函数结构信息
     /// </summary>
-    internal class EventCallMethodTypeCodeInfo
+    internal class EventCallMethodTypeCodeInfo : MethodTypeCodeInfo
     {
-        /// <summary>
-        /// 事件调用模块的完整名称
-        /// </summary>
-        private string _fullname;
-        /// <summary>
-        /// 事件调用模块的目标对象类型
-        /// </summary>
-        private SystemType _targetType;
         /// <summary>
         /// 事件调用模块的监听事件标识
         /// </summary>
-        private int _eventID;
+        public int EventID { get; internal set; }
         /// <summary>
         /// 事件调用模块的监听事件数据类型
         /// </summary>
-        private SystemType _eventDataType;
+        public SystemType EventDataType { get; internal set; }
+    }
+
+    /// <summary>
+    /// 切面管理的订阅事件函数结构信息
+    /// </summary>
+    internal sealed class EventSubscribingMethodTypeCodeInfo : EventCallMethodTypeCodeInfo
+    {
         /// <summary>
-        /// 事件调用模块的回调函数
+        /// 订阅绑定的观察行为类型
         /// </summary>
-        private SystemMethodInfo _method;
-
-        public string Fullname { get { return _fullname; } internal set { _fullname = value; } }
-        public SystemType TargetType { get { return _targetType; } internal set { _targetType = value; } }
-        public int EventID { get { return _eventID; } internal set { _eventID = value; } }
-        public SystemType EventDataType { get { return _eventDataType; } internal set { _eventDataType = value; } }
-        public SystemMethodInfo Method { get { return _method; } internal set { _method = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("Fullname = {0}, ", _fullname);
-            sb.AppendFormat("TargetType = {0}, ", NovaEngine.Utility.Text.ToString(_targetType));
-            sb.AppendFormat("EventID = {0}, ", _eventID);
-            sb.AppendFormat("EventDataType = {0}, ", NovaEngine.Utility.Text.ToString(_eventDataType));
-            sb.AppendFormat("Method = {0}, ", NovaEngine.Utility.Text.ToString(_method));
-            sb.Append("}");
-            return sb.ToString();
-        }
+        public AspectBehaviourType BehaviourType { get; internal set; }
     }
 }

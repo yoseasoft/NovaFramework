@@ -25,9 +25,6 @@
 using System.Collections.Generic;
 
 using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Structuring
 {
@@ -39,24 +36,23 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 场景名称
         /// </summary>
-        private string _sceneName;
+        public string SceneName { get; internal set; }
         /// <summary>
         /// 场景优先级
         /// </summary>
-        private int _priority;
+        public int Priority { get; internal set; }
         /// <summary>
         /// 自动展示的场景名称列表
         /// </summary>
         private IList<string> _autoDisplayViewNames;
 
-        public string SceneName { get { return _sceneName; } internal set { _sceneName = value; } }
-        public int Priority { get { return _priority; } internal set { _priority = value; } }
+        internal IList<string> AutoDisplayViewNames => _autoDisplayViewNames;
 
         /// <summary>
         /// 新增需要自动展示在当前场景的目标视图名称
         /// </summary>
         /// <param name="viewName">视图名称</param>
-        internal void AddAutoDisplayViewName(string viewName)
+        public void AddAutoDisplayViewName(string viewName)
         {
             if (null == _autoDisplayViewNames)
             {
@@ -75,7 +71,7 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 移除所有自动展示在当前场景的目标视图名称记录
         /// </summary>
-        internal void RemoveAllAutoDisplayViewNames()
+        public void RemoveAllAutoDisplayViewNames()
         {
             _autoDisplayViewNames?.Clear();
             _autoDisplayViewNames = null;
@@ -100,7 +96,7 @@ namespace GameEngine.Loader.Structuring
         /// 获取当前需要自动展示在当前场景的视图名称数量
         /// </summary>
         /// <returns>返回需要自动展示在当前场景的视图名称数量</returns>
-        internal int GetAutoDisplayViewNamesCount()
+        public int GetAutoDisplayViewNamesCount()
         {
             if (null != _autoDisplayViewNames)
             {
@@ -115,7 +111,7 @@ namespace GameEngine.Loader.Structuring
         /// </summary>
         /// <param name="index">索引值</param>
         /// <returns>返回给定索引值对应的名称，若不存在对应值则返回null</returns>
-        internal string GetAutoDisplayViewName(int index)
+        public string GetAutoDisplayViewName(int index)
         {
             if (null == _autoDisplayViewNames || index < 0 || index >= _autoDisplayViewNames.Count)
             {
@@ -124,20 +120,6 @@ namespace GameEngine.Loader.Structuring
             }
 
             return _autoDisplayViewNames[index];
-        }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("Scene = { ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("Name = {0}, ", _sceneName ?? NovaEngine.Definition.CString.Unknown);
-            sb.AppendFormat("Priority = {0}, ", _priority);
-
-            sb.AppendFormat("AutoDisplayViews = {{{0}}}, ", NovaEngine.Utility.Text.ToString(_autoDisplayViewNames));
-
-            sb.Append("}");
-            return sb.ToString();
         }
     }
 }

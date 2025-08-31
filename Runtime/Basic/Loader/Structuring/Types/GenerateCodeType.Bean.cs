@@ -22,27 +22,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemStringBuilder = System.Text.StringBuilder;
-
 namespace GameEngine.Loader.Structuring
 {
     /// <summary>
     /// 对象原型模块的编码结构信息对象类
     /// </summary>
     internal abstract class BeanCodeInfo : GeneralCodeInfo
-    {
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("Class = {0}, ", _classType.FullName);
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
+    { }
 }

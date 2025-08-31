@@ -96,7 +96,7 @@ namespace GameEngine.Loader
             }
 
             _actorCodeInfos.Add(info.ActorName, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CActor' code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CActor' code info '{0}' succeed from target class type '{1}'.", Structuring.Formatter.ToString(info), symClass.FullName);
 
             return true;
         }

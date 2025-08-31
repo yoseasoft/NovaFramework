@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +28,28 @@ using SystemType = System.Type;
 namespace GameEngine.Loader.Structuring
 {
     /// <summary>
-    /// 对象缓存模块的编码结构信息对象类
+    /// 状态调用模块的函数结构信息
     /// </summary>
-    internal abstract class PoolCodeInfo : GeneralCodeInfo
-    { }
+    internal class StateCallMethodTypeCodeInfo : MethodTypeCodeInfo
+    {
+        /// <summary>
+        /// 状态调用模块的状态名称
+        /// </summary>
+        public string StateName { get; internal set; }
+        /// <summary>
+        /// 状态调用模块的访问类型
+        /// </summary>
+        public StateAccessType AccessType { get; internal set; }
+    }
 
     /// <summary>
-    /// 对象缓存回调模块的结构信息
+    /// 切面管理的状态转换函数结构信息
     /// </summary>
-    internal sealed class PoolCallCodeInfo : PoolCodeInfo
+    internal sealed class StateTransitioningMethodTypeCodeInfo : StateCallMethodTypeCodeInfo
     {
+        /// <summary>
+        /// 状态转换的观察行为类型
+        /// </summary>
+        public AspectBehaviourType BehaviourType { get; internal set; }
     }
 }

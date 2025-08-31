@@ -159,7 +159,7 @@ namespace GameEngine.Loader
             }
 
             _eventCallCodeInfos.Add(symClass.ClassType, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load event call code info '{0}' succeed from target class type '{1}'.", info.ToString(), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load event call code info '{0}' succeed from target class type '{1}'.", Structuring.Formatter.ToString(info), symClass.FullName);
 
             return true;
         }

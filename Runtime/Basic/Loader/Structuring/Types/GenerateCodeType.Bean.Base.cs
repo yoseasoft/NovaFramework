@@ -23,12 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Structuring
 {
@@ -40,17 +35,23 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 输入响应类的函数结构信息管理容器
         /// </summary>
-        private IList<InputResponsingMethodTypeCodeInfo> _inputResponsingMethodTypes;
+        private MethodTypeList<InputResponsingMethodTypeCodeInfo> _inputResponsingMethodTypes;
 
         /// <summary>
         /// 事件订阅类的函数结构信息管理容器
         /// </summary>
-        private IList<EventSubscribingMethodTypeCodeInfo> _eventSubscribingMethodTypes;
+        private MethodTypeList<EventSubscribingMethodTypeCodeInfo> _eventSubscribingMethodTypes;
 
         /// <summary>
         /// 消息绑定类的函数结构信息管理容器
         /// </summary>
-        private IList<MessageBindingMethodTypeCodeInfo> _messageBindingMethodTypes;
+        private MethodTypeList<MessageBindingMethodTypeCodeInfo> _messageBindingMethodTypes;
+
+        internal MethodTypeList<InputResponsingMethodTypeCodeInfo> InputResponsingMethodTypes => _inputResponsingMethodTypes;
+
+        internal MethodTypeList<EventSubscribingMethodTypeCodeInfo> EventSubscribingMethodTypes => _eventSubscribingMethodTypes;
+
+        internal MethodTypeList<MessageBindingMethodTypeCodeInfo> MessageBindingMethodTypes => _messageBindingMethodTypes;
 
         #region 输入响应类结构信息操作函数
 
@@ -58,18 +59,11 @@ namespace GameEngine.Loader.Structuring
         /// 新增指定响应输入函数的回调句柄相关的结构信息
         /// </summary>
         /// <param name="codeInfo">函数的结构信息</param>
-        internal void AddInputResponsingMethodType(InputResponsingMethodTypeCodeInfo codeInfo)
+        public void AddInputResponsingMethodType(InputResponsingMethodTypeCodeInfo codeInfo)
         {
             if (null == _inputResponsingMethodTypes)
             {
-                _inputResponsingMethodTypes = new List<InputResponsingMethodTypeCodeInfo>();
-            }
-
-            if (_inputResponsingMethodTypes.Contains(codeInfo))
-            {
-                Debugger.Warn("The input responsing class type '{0}' was already registed target method '{1}', repeat added it failed.",
-                        _classType.FullName, NovaEngine.Utility.Text.ToString(codeInfo.Method));
-                return;
+                _inputResponsingMethodTypes = new MethodTypeList<InputResponsingMethodTypeCodeInfo>();
             }
 
             _inputResponsingMethodTypes.Add(codeInfo);
@@ -78,7 +72,7 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 移除所有响应输入函数的回调句柄相关的结构信息
         /// </summary>
-        internal void RemoveAllInputResponsingMethodTypes()
+        public void RemoveAllInputResponsingMethodTypes()
         {
             _inputResponsingMethodTypes?.Clear();
             _inputResponsingMethodTypes = null;
@@ -88,14 +82,9 @@ namespace GameEngine.Loader.Structuring
         /// 获取当前响应输入函数回调句柄的结构信息数量
         /// </summary>
         /// <returns>返回函数回调句柄的结构信息数量</returns>
-        internal int GetInputResponsingMethodTypeCount()
+        public int GetInputResponsingMethodTypeCount()
         {
-            if (null != _inputResponsingMethodTypes)
-            {
-                return _inputResponsingMethodTypes.Count;
-            }
-
-            return 0;
+            return _inputResponsingMethodTypes?.Count() ?? 0;
         }
 
         /// <summary>
@@ -103,15 +92,9 @@ namespace GameEngine.Loader.Structuring
         /// </summary>
         /// <param name="index">索引值</param>
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
-        internal InputResponsingMethodTypeCodeInfo GetInputResponsingMethodType(int index)
+        public InputResponsingMethodTypeCodeInfo GetInputResponsingMethodType(int index)
         {
-            if (null == _inputResponsingMethodTypes || index < 0 || index >= _inputResponsingMethodTypes.Count)
-            {
-                Debugger.Warn("Invalid index ({0}) for input responsing method type code info list.", index);
-                return null;
-            }
-
-            return _inputResponsingMethodTypes[index];
+            return _inputResponsingMethodTypes?.Get(index);
         }
 
         #endregion
@@ -122,18 +105,11 @@ namespace GameEngine.Loader.Structuring
         /// 新增指定订阅事件函数的回调句柄相关的结构信息
         /// </summary>
         /// <param name="codeInfo">函数的结构信息</param>
-        internal void AddEventSubscribingMethodType(EventSubscribingMethodTypeCodeInfo codeInfo)
+        public void AddEventSubscribingMethodType(EventSubscribingMethodTypeCodeInfo codeInfo)
         {
             if (null == _eventSubscribingMethodTypes)
             {
-                _eventSubscribingMethodTypes = new List<EventSubscribingMethodTypeCodeInfo>();
-            }
-
-            if (_eventSubscribingMethodTypes.Contains(codeInfo))
-            {
-                Debugger.Warn("The event subscribing class type '{0}' was already registed target method '{1}', repeat added it failed.",
-                        _classType.FullName, NovaEngine.Utility.Text.ToString(codeInfo.Method));
-                return;
+                _eventSubscribingMethodTypes = new MethodTypeList<EventSubscribingMethodTypeCodeInfo>();
             }
 
             _eventSubscribingMethodTypes.Add(codeInfo);
@@ -142,7 +118,7 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 移除所有订阅事件函数的回调句柄相关的结构信息
         /// </summary>
-        internal void RemoveAllEventSubscribingMethodTypes()
+        public void RemoveAllEventSubscribingMethodTypes()
         {
             _eventSubscribingMethodTypes?.Clear();
             _eventSubscribingMethodTypes = null;
@@ -152,14 +128,9 @@ namespace GameEngine.Loader.Structuring
         /// 获取当前订阅事件函数回调句柄的结构信息数量
         /// </summary>
         /// <returns>返回函数回调句柄的结构信息数量</returns>
-        internal int GetEventSubscribingMethodTypeCount()
+        public int GetEventSubscribingMethodTypeCount()
         {
-            if (null != _eventSubscribingMethodTypes)
-            {
-                return _eventSubscribingMethodTypes.Count;
-            }
-
-            return 0;
+            return _eventSubscribingMethodTypes?.Count() ?? 0;
         }
 
         /// <summary>
@@ -167,15 +138,9 @@ namespace GameEngine.Loader.Structuring
         /// </summary>
         /// <param name="index">索引值</param>
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
-        internal EventSubscribingMethodTypeCodeInfo GetEventSubscribingMethodType(int index)
+        public EventSubscribingMethodTypeCodeInfo GetEventSubscribingMethodType(int index)
         {
-            if (null == _eventSubscribingMethodTypes || index < 0 || index >= _eventSubscribingMethodTypes.Count)
-            {
-                Debugger.Warn("Invalid index ({0}) for event subscribing method type code info list.", index);
-                return null;
-            }
-
-            return _eventSubscribingMethodTypes[index];
+            return _eventSubscribingMethodTypes?.Get(index);
         }
 
         #endregion
@@ -186,18 +151,11 @@ namespace GameEngine.Loader.Structuring
         /// 新增指定消息绑定函数的回调句柄相关的结构信息
         /// </summary>
         /// <param name="codeInfo">函数的结构信息</param>
-        internal void AddMessageBindingMethodType(MessageBindingMethodTypeCodeInfo codeInfo)
+        public void AddMessageBindingMethodType(MessageBindingMethodTypeCodeInfo codeInfo)
         {
             if (null == _messageBindingMethodTypes)
             {
-                _messageBindingMethodTypes = new List<MessageBindingMethodTypeCodeInfo>();
-            }
-
-            if (_messageBindingMethodTypes.Contains(codeInfo))
-            {
-                Debugger.Warn("The event subscribing class type '{0}' was already registed target method '{1}', repeat added it failed.",
-                        _classType.FullName, NovaEngine.Utility.Text.ToString(codeInfo.Method));
-                return;
+                _messageBindingMethodTypes = new MethodTypeList<MessageBindingMethodTypeCodeInfo>();
             }
 
             _messageBindingMethodTypes.Add(codeInfo);
@@ -206,7 +164,7 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 移除所有消息绑定函数的回调句柄相关的结构信息
         /// </summary>
-        internal void RemoveAllMessageBindingMethodTypes()
+        public void RemoveAllMessageBindingMethodTypes()
         {
             _messageBindingMethodTypes?.Clear();
             _messageBindingMethodTypes = null;
@@ -216,14 +174,9 @@ namespace GameEngine.Loader.Structuring
         /// 获取当前消息绑定函数回调句柄的结构信息数量
         /// </summary>
         /// <returns>返回函数回调句柄的结构信息数量</returns>
-        internal int GetMessageBindingMethodTypeCount()
+        public int GetMessageBindingMethodTypeCount()
         {
-            if (null != _messageBindingMethodTypes)
-            {
-                return _messageBindingMethodTypes.Count;
-            }
-
-            return 0;
+            return _messageBindingMethodTypes?.Count() ?? 0;
         }
 
         /// <summary>
@@ -231,100 +184,12 @@ namespace GameEngine.Loader.Structuring
         /// </summary>
         /// <param name="index">索引值</param>
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
-        internal MessageBindingMethodTypeCodeInfo GetMessageBindingMethodType(int index)
+        public MessageBindingMethodTypeCodeInfo GetMessageBindingMethodType(int index)
         {
-            if (null == _messageBindingMethodTypes || index < 0 || index >= _messageBindingMethodTypes.Count)
-            {
-                Debugger.Warn("Invalid index ({0}) for event subscribing method type code info list.", index);
-                return null;
-            }
-
-            return _messageBindingMethodTypes[index];
+            return _messageBindingMethodTypes?.Get(index);
         }
 
         #endregion
 
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-
-            sb.AppendFormat("InputResponsingMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<InputResponsingMethodTypeCodeInfo>(_inputResponsingMethodTypes));
-            sb.AppendFormat("EventSubscribingMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<EventSubscribingMethodTypeCodeInfo>(_eventSubscribingMethodTypes));
-            sb.AppendFormat("MessageBindingMethodTypes = {{{0}}}, ", NovaEngine.Utility.Text.ToString<MessageBindingMethodTypeCodeInfo>(_messageBindingMethodTypes));
-
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
-
-    /// <summary>
-    /// 标准输入响应函数结构信息
-    /// </summary>
-    internal sealed class InputResponsingMethodTypeCodeInfo : InputCallMethodTypeCodeInfo
-    {
-        /// <summary>
-        /// 响应绑定的观察行为类型
-        /// </summary>
-        private AspectBehaviourType _behaviourType;
-
-        public AspectBehaviourType BehaviourType { get { return _behaviourType; } internal set { _behaviourType = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("BehaviourType = {0}, ", _behaviourType.ToString());
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
-
-    /// <summary>
-    /// 标准订阅事件函数结构信息
-    /// </summary>
-    internal sealed class EventSubscribingMethodTypeCodeInfo : EventCallMethodTypeCodeInfo
-    {
-        /// <summary>
-        /// 订阅绑定的观察行为类型
-        /// </summary>
-        private AspectBehaviourType _behaviourType;
-
-        public AspectBehaviourType BehaviourType { get { return _behaviourType; } internal set { _behaviourType = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("BehaviourType = {0}, ", _behaviourType.ToString());
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
-
-    /// <summary>
-    /// 标准消息绑定函数结构信息
-    /// </summary>
-    internal sealed class MessageBindingMethodTypeCodeInfo : MessageCallMethodTypeCodeInfo
-    {
-        /// <summary>
-        /// 消息绑定的观察行为类型
-        /// </summary>
-        private AspectBehaviourType _behaviourType;
-
-        public AspectBehaviourType BehaviourType { get { return _behaviourType; } internal set { _behaviourType = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("BehaviourType = {0}, ", _behaviourType.ToString());
-            sb.Append("}");
-            return sb.ToString();
-        }
     }
 }

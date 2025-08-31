@@ -23,12 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Structuring
 {
@@ -40,24 +35,10 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 对象名称
         /// </summary>
-        private string _objectName;
+        public string ObjectName { get; internal set; }
         /// <summary>
         /// 对象优先级
         /// </summary>
-        private int _priority;
-
-        public string ObjectName { get { return _objectName; } internal set { _objectName = value; } }
-        public int Priority { get { return _priority; } internal set { _priority = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("Object = { ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.AppendFormat("Name = {0}, ", _objectName ?? NovaEngine.Definition.CString.Unknown);
-            sb.AppendFormat("Priority = {0}, ", _priority);
-            sb.Append("}");
-            return sb.ToString();
-        }
+        public int Priority { get; internal set; }
     }
 }

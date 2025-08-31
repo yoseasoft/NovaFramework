@@ -22,12 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Structuring
 {
@@ -35,14 +30,5 @@ namespace GameEngine.Loader.Structuring
     /// 实体对象模块的结构信息
     /// </summary>
     internal abstract class EntityCodeInfo : RefCodeInfo
-    {
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("Parent = {0}, ", base.ToString());
-            sb.Append("}");
-            return sb.ToString();
-        }
-    }
+    { }
 }
