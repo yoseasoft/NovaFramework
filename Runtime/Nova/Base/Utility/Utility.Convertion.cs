@@ -26,6 +26,7 @@
 
 using SystemGuid = System.Guid;
 using SystemType = System.Type;
+using SystemObject = System.Object;
 using SystemArray = System.Array;
 using SystemEnum = System.Enum;
 using SystemEncoding = System.Text.Encoding;
@@ -43,6 +44,87 @@ namespace NovaEngine
         /// </summary>
         public static class Convertion
         {
+            #region 通用转换接口函数
+
+            /// <summary>
+            /// 万能的基础数据类型转换接口函数
+            /// 
+            /// 示例：
+            /// <code>
+            /// 将 null 转换为目标类型，默认为该类型的默认值
+            /// var result = ConvertTo<T>(null);
+            /// 
+            /// 从字典中获取一个值并转换
+            /// var result = ConvertTo<T>(valueDict[key]);
+            /// 
+            /// 将字符串 "True" 转换为布尔类型
+            /// var result = ConvertTo<bool>("True");
+            /// 
+            /// 将字符串 "123" 转换为整型
+            /// var result = ConvertTo<int>("123");
+            /// 
+            /// 尝试将无效字符串 "test" 转换为整型，捕获异常
+            /// var result = ConvertTo<int>("test");
+            /// 
+            /// 将整型 123 转换为字符串
+            /// var result = ConvertTo<string>(123);
+            /// 
+            /// 将 null 转换为字符串，返回空字符串
+            /// var result = ConvertTo<string>(null);
+            /// </code>
+            /// 
+            /// </summary>
+            /// <typeparam name="T">目标基础数据类型</typeparam>
+            /// <param name="obj">待转换数据</param>
+            /// <returns>转换后的数据，类型为T</returns>
+            public static T ConvertTo<T>(SystemObject obj)
+            {
+                try
+                {
+                    // 如果传入对象是null或DBNull，并且目标类型是string，返回空字符串
+                    if ((null == obj || System.DBNull.Value == obj) && (typeof(string) == typeof(T)))
+                    {
+                        return (T) System.Convert.ChangeType("", typeof(T));
+                    }
+
+                    // 如果传入对象已经是目标类型，直接返回
+                    if (obj is T)
+                    {
+                        return (T) obj;
+                    }
+
+                    SystemType targetType = typeof(T);
+
+                    // 处理Nullable<T>类型
+                    if (targetType.IsGenericType)
+                    {
+                        SystemType genericTypeDefinition = targetType.GetGenericTypeDefinition();
+                        if (typeof(System.Nullable<>) == genericTypeDefinition)
+                        {
+                            return (T) System.Convert.ChangeType(obj, System.Nullable.GetUnderlyingType(targetType));
+                        }
+                    }
+
+                    // 进行类型转换
+                    return (T) System.Convert.ChangeType(obj, typeof(T));
+                }
+                catch (System.InvalidCastException e)
+                {
+                    // 如果发生转换异常，尝试返回原对象的强制转换
+                    return (T) obj;
+                }
+                catch (System.Exception e)
+                {
+                    // 其它异常直接抛出
+                    throw;
+                }
+
+                // 返回目标类型的默认值
+                return default(T);
+            }
+
+            #endregion
+
             #region 字符串转换为基础类型相关接口函数
 
             /// <summary>

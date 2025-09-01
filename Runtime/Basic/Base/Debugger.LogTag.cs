@@ -66,15 +66,6 @@ namespace GameEngine
     public static partial class Debugger
     {
         /// <summary>
-        /// 调试日志分组输出通道的默认开启状态
-        /// </summary>
-        private static bool DefaultLogOutputGroupEnabled = true;
-        /// <summary>
-        /// 调试日志分组输出通道的默认日志输出级别
-        /// </summary>
-        private static int DefaultLogOutputGroupLevel = 5;
-
-        /// <summary>
         /// 日志输出通道分组的属性类型定义
         /// </summary>
         internal class LogOutputGroupAttribute : SystemAttribute
@@ -91,11 +82,11 @@ namespace GameEngine
             public bool Enabled => _enabled;
             public int LogLevel => _logLevel;
 
-            public LogOutputGroupAttribute() : this(DefaultLogOutputGroupEnabled) { }
+            public LogOutputGroupAttribute() : this(GameMacros.DEBUGGING_OUTPUT_GROUP_POLICY_ENABLED) { }
 
-            public LogOutputGroupAttribute(bool enabled) : this(enabled, DefaultLogOutputGroupLevel) { }
+            public LogOutputGroupAttribute(bool enabled) : this(enabled, GameMacros.DEBUGGING_OUTPUT_GROUP_APPROVE_LEVEL) { }
 
-            public LogOutputGroupAttribute(int level) : this(DefaultLogOutputGroupEnabled, level) { }
+            public LogOutputGroupAttribute(int level) : this(GameMacros.DEBUGGING_OUTPUT_GROUP_POLICY_ENABLED, level) { }
 
             private LogOutputGroupAttribute(bool enabled, int level) : base()
             {

@@ -349,7 +349,7 @@ namespace GameEngine
             {
                 _groupID = groupID;
                 _groupName = groupName;
-                _enabled = enabled && GameMacros.DEBUGGING_OUTPUT_GROUP_POLICY_ENABLED;
+                _enabled = enabled;
                 _logLevel = logLevel;
             }
 
@@ -406,7 +406,7 @@ namespace GameEngine
             /// <returns>若启用给定级别的调试输出返回true，否则返回false</returns>
             private bool IsOutputEnabled(NovaEngine.LogOutputLevelType level)
             {
-                if (_enabled && _logLevel >= (int) level)
+                if (_enabled && (int) level >= _logLevel)
                 {
                     return true;
                 }
