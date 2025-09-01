@@ -36,7 +36,7 @@ namespace GameEngine
     /// 取消控制器直接继承<see cref="UnityEngine.MonoBehaviour"/>的方式，改为使用回调接口绑定的方式处理Unity脚本的生命周期相关接口
     /// 因此无需再声明 [UnityEngine.DisallowMultipleComponent] 标签
     /// </summary>
-    public static class EngineController
+    internal static class EngineController
     {
         /// <summary>
         /// 启动引擎的外部调用接口函数

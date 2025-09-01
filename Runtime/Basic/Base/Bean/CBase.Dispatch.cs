@@ -553,10 +553,18 @@ namespace GameEngine
         public virtual void RemoveAllInputResponses()
         {
             IList<int> id_keys = NovaEngine.Utility.Collection.ToListForKeys<int, IDictionary<string, InputCallSyntaxInfo>>(_inputCallInfosForCode);
-            for (int n = 0; null != id_keys && n < id_keys.Count; ++n) { RemoveInputResponse(id_keys[n]); }
+            if (null != id_keys)
+            {
+                int c = id_keys.Count;
+                for (int n = 0; n < c; ++n) { RemoveInputResponse(id_keys[n]); }
+            }
 
             IList<SystemType> type_keys = NovaEngine.Utility.Collection.ToListForKeys<SystemType, IDictionary<string, InputCallSyntaxInfo>>(_inputCallInfosForType);
-            for (int n = 0; null != type_keys && n < type_keys.Count; ++n) { RemoveInputResponse(type_keys[n]); }
+            if (null != type_keys)
+            {
+                int c = type_keys.Count;
+                for (int n = 0; n < c; ++n) { RemoveInputResponse(type_keys[n]); }
+            }
 
             _inputCallInfosForCode.Clear();
             _inputCallInfosForType.Clear();
@@ -992,10 +1000,18 @@ namespace GameEngine
         public virtual void UnsubscribeAllEvents()
         {
             IList<int> id_keys = NovaEngine.Utility.Collection.ToListForKeys<int, IDictionary<string, EventCallSyntaxInfo>>(_eventCallInfosForId);
-            for (int n = 0; null != id_keys && n < id_keys.Count; ++n) { Unsubscribe(id_keys[n]); }
+            if (null != id_keys)
+            {
+                int c = id_keys.Count;
+                for (int n = 0; n < c; ++n) { Unsubscribe(id_keys[n]); }
+            }
 
             IList<SystemType> type_keys = NovaEngine.Utility.Collection.ToListForKeys<SystemType, IDictionary<string, EventCallSyntaxInfo>>(_eventCallInfosForType);
-            for (int n = 0; null != type_keys && n < type_keys.Count; ++n) { Unsubscribe(type_keys[n]); }
+            if (null != type_keys)
+            {
+                int c = type_keys.Count;
+                for (int n = 0; n < c; ++n) { Unsubscribe(type_keys[n]); }
+            }
 
             _eventCallInfosForId.Clear();
             _eventCallInfosForType.Clear();
@@ -1325,7 +1341,11 @@ namespace GameEngine
         public virtual void RemoveAllMessageListeners()
         {
             IList<int> id_keys = NovaEngine.Utility.Collection.ToListForKeys<int, IDictionary<string, MessageCallSyntaxInfo>>(_messageCallInfosForType);
-            for (int n = 0; null != id_keys && n < id_keys.Count; ++n) { RemoveMessageListener(id_keys[n]); }
+            if (null != id_keys)
+            {
+                int c = id_keys.Count;
+                for (int n = 0; n < c; ++n) { RemoveMessageListener(id_keys[n]); }
+            }
 
             _messageCallInfosForType.Clear();
         }

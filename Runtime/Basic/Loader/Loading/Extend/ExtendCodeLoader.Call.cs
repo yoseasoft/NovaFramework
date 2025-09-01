@@ -264,7 +264,7 @@ namespace GameEngine.Loader
                         methodTypeCodeInfo.TargetType = extendClassType;
                         methodTypeCodeInfo.StateName = _attr.StateName;
                         methodTypeCodeInfo.AccessType = _attr.AccessType;
-                        methodTypeCodeInfo.BehaviourType = AspectBehaviourType.Initialize;
+                        methodTypeCodeInfo.BehaviourType = AspectBehaviourConfig.DefaultAutobindBehaviourTypeOfBeanExtensionMethod;
                         methodTypeCodeInfo.Method = symMethod.MethodInfo;
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理

@@ -29,7 +29,7 @@ namespace GameEngine
     /// <summary>
     /// 游戏世界总控管理器对象类
     /// </summary>
-    public static class EngineLauncher
+    internal static class EngineLauncher
     {
         /// <summary>
         /// 世界对象构建函数

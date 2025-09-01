@@ -33,14 +33,12 @@ using SystemAttribute = System.Attribute;
 using SystemBindingFlags = System.Reflection.BindingFlags;
 using SystemFieldInfo = System.Reflection.FieldInfo;
 
-using Cysharp.Threading.Tasks;
-
 namespace GameEngine
 {
     /// <summary>
     /// 游戏层配置封装管理类
     /// </summary>
-    public static class EngineConfigure
+    internal static class EngineConfigure
     {
         /// <summary>
         /// 初始化平台环境及相关接口

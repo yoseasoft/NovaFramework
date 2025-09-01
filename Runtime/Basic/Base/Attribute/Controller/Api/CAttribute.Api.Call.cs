@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -30,39 +31,24 @@ using SystemAttributeTargets = System.AttributeTargets;
 namespace GameEngine
 {
     /// <summary>
-    /// 在发布模式下启用的状态标识的属性类型定义
+    /// API功能绑定的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class | SystemAttributeTargets.Field | SystemAttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    internal class EnableOnReleaseModeAttribute : SystemAttribute
-    {
-        public EnableOnReleaseModeAttribute() : base() { }
-    }
-
-    /// <summary>
-    /// 在发布模式下禁用的状态标识的属性类型定义
-    /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class | SystemAttributeTargets.Field | SystemAttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    internal class DisableOnReleaseModeAttribute : SystemAttribute
-    {
-        public DisableOnReleaseModeAttribute() : base() { }
-    }
-
-    /// <summary>
-    /// 在发布模式下进行指定参数设置的属性类型定义
-    /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class | SystemAttributeTargets.Field | SystemAttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    internal class AssignableOnReleaseModeAttribute : SystemAttribute
+    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    public class ApiFunctionAttribute : SystemAttribute
     {
         /// <summary>
-        /// 参数值
+        /// 功能名称
         /// </summary>
-        private object _value;
+        private readonly string _functionName;
 
-        public object Value => _value;
+        /// <summary>
+        /// 功能名称获取函数
+        /// </summary>
+        public string FunctionName => _functionName;
 
-        public AssignableOnReleaseModeAttribute(object value) : base()
+        public ApiFunctionAttribute(string functionName)
         {
-            _value = value;
+            _functionName = functionName;
         }
     }
 }
