@@ -28,7 +28,6 @@ using System.Reflection;
 
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Symboling
 {
@@ -48,6 +47,11 @@ namespace GameEngine.Loader.Symboling
         private IList<SystemAttribute> _attributes;
 
         /// <summary>
+        /// 标记包含的属性信息数量
+        /// </summary>
+        private int _attributeCount;
+
+        /// <summary>
         /// 唯一声明ID获取函数
         /// </summary>
         public int Uid => _uid;
@@ -56,6 +60,10 @@ namespace GameEngine.Loader.Symboling
         /// 属性信息获取函数
         /// </summary>
         public IList<SystemAttribute> Attributes => _attributes;
+        /// <summary>
+        /// 属性信息数量获取函数
+        /// </summary>
+        public int AttributeCount => _attributeCount;
 
         protected SymBase() { }
 
@@ -65,20 +73,6 @@ namespace GameEngine.Loader.Symboling
         }
 
         #region 标记对象的属性列表相关访问接口函数
-
-        /// <summary>
-        /// 获取标记中属性实例的数量
-        /// </summary>
-        /// <returns>返回标记中属性实例的数量</returns>
-        public int GetAttributeCount()
-        {
-            if (null == _attributes)
-            {
-                return 0;
-            }
-
-            return _attributes.Count;
-        }
 
         /// <summary>
         /// 检测标记的属性列表中是否包含指定类型的属性实例
@@ -95,7 +89,7 @@ namespace GameEngine.Loader.Symboling
 
             if (inherit)
             {
-                for (int n = 0; n < _attributes.Count; ++n)
+                for (int n = 0; n < _attributeCount; ++n)
                 {
                     if (attributeType.IsAssignableFrom(_attributes[n].GetType()))
                     {
@@ -105,7 +99,7 @@ namespace GameEngine.Loader.Symboling
             }
             else
             {
-                for (int n = 0; n < _attributes.Count; ++n)
+                for (int n = 0; n < _attributeCount; ++n)
                 {
                     if (attributeType == _attributes[n].GetType())
                     {
@@ -146,7 +140,7 @@ namespace GameEngine.Loader.Symboling
             }
 
             IList<SystemAttribute> attributes = null;
-            for (int n = 0; n < _attributes.Count; ++n)
+            for (int n = 0; n < _attributeCount; ++n)
             {
                 SystemAttribute attribute = _attributes[n];
                 if (attributeName.Equals(attribute.GetType().Name))
@@ -218,7 +212,7 @@ namespace GameEngine.Loader.Symboling
             IList<SystemAttribute> attributes = null;
             if (inherit)
             {
-                for (int n = 0; n < _attributes.Count; ++n)
+                for (int n = 0; n < _attributeCount; ++n)
                 {
                     SystemAttribute attribute = _attributes[n];
                     if (attributeType.IsAssignableFrom(attribute.GetType()))
@@ -234,7 +228,7 @@ namespace GameEngine.Loader.Symboling
             }
             else
             {
-                for (int n = 0; n < _attributes.Count; ++n)
+                for (int n = 0; n < _attributeCount; ++n)
                 {
                     SystemAttribute attribute = _attributes[n];
                     if (attribute.GetType() == attributeType)
@@ -321,6 +315,7 @@ namespace GameEngine.Loader.Symboling
             }
 
             _attributes.Add(attribute);
+            _attributeCount = _attributes.Count;
         }
 
         /// <summary>
@@ -341,6 +336,7 @@ namespace GameEngine.Loader.Symboling
             }
 
             _attributes.Remove(attribute);
+            _attributeCount = _attributes.Count;
         }
 
         /// <summary>
@@ -350,6 +346,8 @@ namespace GameEngine.Loader.Symboling
         {
             _attributes?.Clear();
             _attributes = null;
+
+            _attributeCount = 0;
         }
 
         #endregion

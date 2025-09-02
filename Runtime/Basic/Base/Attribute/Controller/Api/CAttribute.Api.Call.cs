@@ -31,22 +31,53 @@ using SystemAttributeTargets = System.AttributeTargets;
 namespace GameEngine
 {
     /// <summary>
-    /// API功能绑定的属性类型定义
+    /// 编程接口分发类型注册函数的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class ApiFunctionAttribute : SystemAttribute
+    public class OnApiDispatchCallAttribute : SystemAttribute
     {
         /// <summary>
-        /// 功能名称
+        /// 编程接口通知的目标对象类型
+        /// </summary>
+        private readonly SystemType _classType;
+        /// <summary>
+        /// 编程接口通知的功能名称
         /// </summary>
         private readonly string _functionName;
 
+        /// <summary>
+        /// 目标对象类型获取函数
+        /// </summary>
+        public SystemType ClassType => _classType;
         /// <summary>
         /// 功能名称获取函数
         /// </summary>
         public string FunctionName => _functionName;
 
-        public ApiFunctionAttribute(string functionName)
+        public OnApiDispatchCallAttribute(string functionName) : this(null, functionName)
+        { }
+
+        public OnApiDispatchCallAttribute(SystemType classType, string functionName)
+        {
+            _classType = classType;
+            _functionName = functionName;
+        }
+    }
+
+    /// <summary>
+    /// 编程接口功能绑定函数的属性类型定义
+    /// </summary>
+    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    public class ApiFunctionBindingOfTargetAttribute : SystemAttribute
+    {
+        /// <summary>
+        /// 编程接口通知的功能名称
+        /// </summary>
+        private readonly string _functionName;
+
+        public string FunctionName => _functionName;
+
+        public ApiFunctionBindingOfTargetAttribute(string functionName)
         {
             _functionName = functionName;
         }

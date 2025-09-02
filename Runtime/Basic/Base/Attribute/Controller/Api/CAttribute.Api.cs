@@ -31,7 +31,7 @@ using SystemAttributeTargets = System.AttributeTargets;
 namespace GameEngine
 {
     /// <summary>
-    /// API系统基于全局分发的属性类型定义
+    /// 编程接口系统基于全局分发的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class ApiSystemAttribute : SystemAttribute

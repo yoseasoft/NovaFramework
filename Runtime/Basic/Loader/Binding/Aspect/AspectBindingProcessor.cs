@@ -42,11 +42,11 @@ namespace GameEngine.Loader
         /// <summary>
         /// 加载切面控制类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> _aspectRegisterClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _registerClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
         /// <summary>
         /// 清理切面控制类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> _aspectRegisterClassUnloadCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<SystemType, SystemDelegate> _registerClassUnloadCallbacks = new Dictionary<SystemType, SystemDelegate>();
 
         /// <summary>
         /// 初始化针对绑定类声明的全部回调接口
@@ -68,16 +68,20 @@ namespace GameEngine.Loader
                         Debugger.Assert(method.IsStatic);
 
                         OnAspectCallRegisterClassOfTargetAttribute _attr = (OnAspectCallRegisterClassOfTargetAttribute) attr;
-                        _aspectRegisterClassLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCodeTypeLoadedHandler)));
 
-                        CodeLoader.AddCodeTypeLoadedCallback(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCodeTypeLoadedHandler)) as CodeLoader.OnCodeTypeLoadedHandler);
+                        SystemDelegate callback = method.CreateDelegate(typeof(CodeLoader.OnCodeTypeLoadedHandler));
+                        _registerClassLoadCallbacks.Add(_attr.ClassType, callback);
+
+                        CodeLoader.AddCodeTypeLoadedCallback(_attr.ClassType, callback as CodeLoader.OnCodeTypeLoadedHandler);
                     }
                     else if (typeof(OnAspectCallUnregisterClassOfTargetAttribute) == attrType)
                     {
                         Debugger.Assert(method.IsStatic);
 
                         OnAspectCallUnregisterClassOfTargetAttribute _attr = (OnAspectCallUnregisterClassOfTargetAttribute) attr;
-                        _aspectRegisterClassUnloadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllCodeTypesHandler)));
+
+                        SystemDelegate callback = method.CreateDelegate(typeof(CodeLoader.OnCleanupAllCodeTypesHandler));
+                        _registerClassUnloadCallbacks.Add(_attr.ClassType, callback);
                     }
                 }
             }
@@ -89,7 +93,7 @@ namespace GameEngine.Loader
         [CodeLoader.OnBindingProcessorCleanup]
         private static void CleanupAllCodeBindingCallbacks()
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _aspectRegisterClassUnloadCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _registerClassUnloadCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 CodeLoader.OnCleanupAllCodeTypesHandler handler = e.Current.Value as CodeLoader.OnCleanupAllCodeTypesHandler;
@@ -98,8 +102,8 @@ namespace GameEngine.Loader
                 handler.Invoke();
             }
 
-            _aspectRegisterClassLoadCallbacks.Clear();
-            _aspectRegisterClassUnloadCallbacks.Clear();
+            _registerClassLoadCallbacks.Clear();
+            _registerClassUnloadCallbacks.Clear();
         }
     }
 }

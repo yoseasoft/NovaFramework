@@ -118,6 +118,119 @@ namespace GameEngine
 
         #region 针对“CObject”对象类型业务相关的服务接口函数
 
+        /// <summary>
+        /// 通过指定的对象名称从实例容器中获取对应的基础对象实例列表
+        /// </summary>
+        /// <param name="objectName">对象名称</param>
+        /// <returns>返回基础对象实例列表，若检索失败则返回null</returns>
+        public static IList<CObject> GetObject(string objectName)
+        {
+            return ObjectHandler.Instance.GetObject(objectName);
+        }
+
+        /// <summary>
+        /// 通过指定的对象类型从实例容器中获取对应的基础对象实例列表
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <returns>返回基础对象实例列表，若检索失败则返回null</returns>
+        public static IList<T> GetObject<T>() where T : CObject
+        {
+            return ObjectHandler.Instance.GetObject<T>();
+        }
+
+        /// <summary>
+        /// 通过指定的对象类型从实例容器中获取对应的基础对象实例列表
+        /// </summary>
+        /// <param name="objectType">对象类型</param>
+        /// <returns>返回基础对象实例列表，若检索失败则返回null</returns>
+        public static IList<CObject> GetObject(SystemType objectType)
+        {
+            return ObjectHandler.Instance.GetObject(objectType);
+        }
+
+        /// <summary>
+        /// 获取当前已创建的全部基础对象实例
+        /// </summary>
+        /// <returns>返回已创建的全部基础对象实例</returns>
+        public static IList<CObject> GetAllObjects()
+        {
+            return ObjectHandler.Instance.GetAllObjects();
+        }
+
+        /// <summary>
+        /// 通过指定的对象名称动态创建一个对应的基础对象实例
+        /// </summary>
+        /// <param name="objectName">对象名称</param>
+        /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        public static CObject CreateObject(string objectName)
+        {
+            return ObjectHandler.Instance.CreateObject(objectName);
+        }
+
+        /// <summary>
+        /// 通过指定的对象类型动态创建一个对应的基础对象实例
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        public static T CreateObject<T>() where T : CObject
+        {
+            return ObjectHandler.Instance.CreateObject<T>();
+        }
+
+        /// <summary>
+        /// 通过指定的对象类型动态创建一个对应的基础对象实例
+        /// </summary>
+        /// <param name="objectType">对象类型</param>
+        /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        public static CObject CreateObject(SystemType objectType)
+        {
+            return ObjectHandler.Instance.CreateObject(objectType);
+        }
+
+        /// <summary>
+        /// 从当前对象管理容器中销毁指定的基础对象实例
+        /// </summary>
+        /// <param name="obj">对象实例</param>
+        public static void DestroyObject(CObject obj)
+        {
+            ObjectHandler.Instance.DestroyObject(obj);
+        }
+
+        /// <summary>
+        /// 从当前对象管理容器中销毁指定名称对应的所有基础对象实例
+        /// </summary>
+        /// <param name="objectName">对象名称</param>
+        public static void DestroyObject(string objectName)
+        {
+            ObjectHandler.Instance.DestroyObject(objectName);
+        }
+
+        /// <summary>
+        /// 从当前对象管理容器中销毁指定类型对应的所有基础对象实例
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        public static void DestroyObject<T>() where T : CObject
+        {
+            ObjectHandler.Instance.DestroyObject<T>();
+        }
+
+        /// <summary>
+        /// 从当前对象管理容器中销毁指定类型对应的所有基础对象实例
+        /// </summary>
+        /// <param name="objectType">对象类型</param>
+        public static void DestroyObject(SystemType objectType)
+        {
+            ObjectHandler.Instance.DestroyObject(objectType);
+        }
+
+        /// <summary>
+        /// 从当前对象管理容器中销毁所有注册的基础对象实例
+        /// </summary>
+        public static void DestroyAllObjects()
+        {
+            ObjectHandler.Instance.DestroyAllObjects();
+        }
+
         #endregion
 
         #region 针对“CScene”场景类型业务相关的服务接口函数
@@ -191,6 +304,45 @@ namespace GameEngine
         #endregion
 
         #region 针对“CActor”角色类型业务相关的服务接口函数
+
+        /// <summary>
+        /// 通过指定的角色名称从实例容器中获取对应的角色对象实例列表
+        /// </summary>
+        /// <param name="actorName">对象名称</param>
+        /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
+        public static IList<CActor> GetActor(string actorName)
+        {
+            return ActorHandler.Instance.GetActor(actorName);
+        }
+
+        /// <summary>
+        /// 通过指定的角色类型从实例容器中获取对应的角色对象实例列表
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
+        public static IList<T> GetActor<T>() where T : CActor
+        {
+            return ActorHandler.Instance.GetActor<T>();
+        }
+
+        /// <summary>
+        /// 通过指定的角色类型从实例容器中获取对应的角色对象实例列表
+        /// </summary>
+        /// <param name="actorType">对象类型</param>
+        /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
+        public static IList<CActor> GetActor(SystemType actorType)
+        {
+            return ActorHandler.Instance.GetActor(actorType);
+        }
+
+        /// <summary>
+        /// 获取当前已创建的全部角色对象实例
+        /// </summary>
+        /// <returns>返回已创建的全部角色对象实例</returns>
+        public static IList<CActor> GetAllActors()
+        {
+            return ActorHandler.Instance.GetAllActors();
+        }
 
         /// <summary>
         /// 根据指定的角色名称动态创建一个对应的角色对象实例

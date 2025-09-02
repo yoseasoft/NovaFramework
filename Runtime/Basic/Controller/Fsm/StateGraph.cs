@@ -68,7 +68,13 @@ namespace GameEngine
         /// </summary>
         private string _pushState;
 
+        /// <summary>
+        /// 状态图的用户数据
+        /// </summary>
+        private object _userData;
+
         public string DefaultOperatingStateName => _defaultOperatingStateName;
+        public object UserData => _userData;
 
         public string CurrentState { get { return _currentState; } internal set { _currentState = value; } }
         public string NextState { get { return _nextState; } internal set { _nextState = value; } }
@@ -89,6 +95,8 @@ namespace GameEngine
 
             _stateNames = null;
             _transitionSequences = null;
+
+            _userData = null;
         }
 
         /// <summary>
@@ -105,6 +113,8 @@ namespace GameEngine
             _isFinished = false;
 
             _launchState = null;
+
+            _userData = null;
         }
 
         #region 状态实例相关操作的接口函数
@@ -169,6 +179,15 @@ namespace GameEngine
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// 设置当前状态图的用户数据
+        /// </summary>
+        /// <param name="data">用户数据实例</param>
+        public void SetUserData(object data)
+        {
+            _userData = data;
         }
 
         #endregion
