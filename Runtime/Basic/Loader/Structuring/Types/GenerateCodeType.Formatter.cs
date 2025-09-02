@@ -177,6 +177,31 @@ namespace GameEngine.Loader.Structuring
 
         #endregion
 
+        #region API回调模块相关的编码信息结构类型对象“ToString”封装
+
+        public static string ToString(ApiCallCodeInfo targetObject)
+        {
+            SystemStringBuilder sb = new SystemStringBuilder();
+            sb.Append("ApiCall={");
+            sb.AppendFormat("ClassType={0},", NovaEngine.Utility.Text.ToString(targetObject.ClassType));
+            sb.AppendFormat("MethodTypes={{{0}}},", NovaEngine.Utility.Text.ToString<ApiCallMethodTypeCodeInfo>(targetObject.MethodTypes?.Values(), (n, obj) =>
+            {
+                return $"{n}={{{ToString(obj)}}}";
+            }));
+            sb.Append("}");
+            return sb.ToString();
+        }
+
+        private static string ToString(ApiCallMethodTypeCodeInfo targetObject)
+        {
+            SystemStringBuilder sb = new SystemStringBuilder();
+            sb.Append(ToString((MethodTypeCodeInfo) targetObject));
+            sb.AppendFormat("FunctionName={0},", targetObject.FunctionName);
+            return sb.ToString();
+        }
+
+        #endregion
+
         #region 切面回调模块相关的编码信息结构类型对象“ToString”封装
 
         public static string ToString(AspectCallCodeInfo targetObject)
