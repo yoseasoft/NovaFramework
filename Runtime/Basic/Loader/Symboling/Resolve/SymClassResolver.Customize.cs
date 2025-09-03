@@ -83,9 +83,13 @@ namespace GameEngine.Loader.Symboling
             bool on_input_system = false;
             bool on_event_system = false;
             bool on_message_system = false;
+            bool on_api_system = false;
 
             IList<SymMethod> methods = symClass.GetAllMethods();
-            for (int n = 0; null != methods && n < methods.Count; ++n)
+            if (null == methods)
+                return;
+
+            for (int n = 0; n < methods.Count; ++n)
             {
                 SymMethod method = methods[n];
                 // 因为是静态类，所以内部的所有方法都必然为静态方法
@@ -151,31 +155,27 @@ namespace GameEngine.Loader.Symboling
 
                         on_extend_supported = true;
                     }
-                }
+                } // method.IsExtension
                 else
                 {
                     if (!on_input_system)
                     {
-                        if (method.HasAttribute(typeof(OnInputDispatchCallAttribute)))
-                        {
-                            on_input_system = true;
-                        }
+                        on_input_system |= method.HasAttribute(typeof(OnInputDispatchCallAttribute));
                     }
 
                     if (!on_event_system)
                     {
-                        if (method.HasAttribute(typeof(OnEventDispatchCallAttribute)))
-                        {
-                            on_event_system = true;
-                        }
+                        on_event_system |= method.HasAttribute(typeof(OnEventDispatchCallAttribute));
                     }
 
                     if (!on_message_system)
                     {
-                        if (method.HasAttribute(typeof(OnMessageDispatchCallAttribute)))
-                        {
-                            on_message_system = true;
-                        }
+                        on_message_system |= method.HasAttribute(typeof(OnMessageDispatchCallAttribute));
+                    }
+
+                    if (!on_api_system)
+                    {
+                        on_api_system |= method.HasAttribute(typeof(OnApiDispatchCallAttribute));
                     }
                 }
             }
@@ -209,6 +209,12 @@ namespace GameEngine.Loader.Symboling
                 // 装配消息系统
                 AutobindFeatureTypeForTargetSymbol(symClass, typeof(MessageSystemAttribute));
             }
+
+            if (on_api_system)
+            {
+                // 装配API调度系统
+                AutobindFeatureTypeForTargetSymbol(symClass, typeof(ApiSystemAttribute));
+            }
         }
 
         /// <summary>
@@ -232,10 +238,11 @@ namespace GameEngine.Loader.Symboling
         /// <param name="featureType">特性类型</param>
         private static void AutobindFeatureTypeForTargetSymbol(SymClass symClass, SystemType featureType)
         {
+            Debugger.Info(LogGroupTag.CodeLoader, "对象类型解析：目标符号类型‘{%s}’动态绑定新的特性‘{%s}’成功。",
+                symClass.ClassName, NovaEngine.Utility.Text.ToString(featureType));
+
             // 为符号类添加特性
             symClass.AddFeatureType(featureType);
-            Debugger.Info(LogGroupTag.CodeLoader, "Automatically adding feature type '{%s}' to target symbol class '{%s}'.",
-                NovaEngine.Utility.Text.ToString(featureType), symClass.ClassName);
         }
     }
 }

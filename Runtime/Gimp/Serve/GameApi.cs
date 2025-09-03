@@ -116,6 +116,31 @@ namespace GameEngine
 
         #endregion
 
+        #region 编程接口相关的服务接口函数
+
+        /// <summary>
+        /// 功能模块回调接口函数
+        /// </summary>
+        /// <param name="functionName">功能名称</param>
+        /// <param name="args">调用参数</param>
+        public static void Call(string functionName, params object[] args)
+        {
+            ApiController.Instance.Call(functionName, args);
+        }
+
+        /// <summary>
+        /// 功能模块回调接口函数
+        /// </summary>
+        /// <param name="obj">目标对象实例</param>
+        /// <param name="functionName">功能名称</param>
+        /// <param name="args">调用参数</param>
+        public static void Call(IBean obj, string functionName, params object[] args)
+        {
+            ApiController.Instance.Call(obj, functionName, args);
+        }
+
+        #endregion
+
         #region 针对“CObject”对象类型业务相关的服务接口函数
 
         /// <summary>

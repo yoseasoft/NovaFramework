@@ -46,29 +46,23 @@ namespace GameEngine
             /// <summary>
             /// 切面调用类的完整名称
             /// </summary>
-            private string _fullname;
+            public string Fullname { get; set; }
             /// <summary>
             /// 切面调用类的目标对象类型
             /// </summary>
-            private SystemType _targetType;
+            public SystemType TargetType { get; set; }
             /// <summary>
             /// 切面调用类的目标函数名称
             /// </summary>
-            private string _methodName;
+            public string MethodName { get; set; }
             /// <summary>
             /// 切面调用类的接入访问方式
             /// </summary>
-            private AspectAccessType _accessType;
+            public AspectAccessType AccessType { get; set; }
             /// <summary>
             /// 切面调用类的回调函数句柄
             /// </summary>
-            private SystemAction_object _callback;
-
-            public string Fullname { get { return _fullname; } internal set { _fullname = value; } }
-            public SystemType TargetType { get { return _targetType; } internal set { _targetType = value; } }
-            public string MethodName { get { return _methodName; } internal set { _methodName = value; } }
-            public AspectAccessType AccessType { get { return _accessType; } internal set { _accessType = value; } }
-            public SystemAction_object Callback { get { return _callback; } internal set { _callback = value; } }
+            public SystemAction_object Callback { get; set; }
         }
 
         /// <summary>
@@ -89,7 +83,7 @@ namespace GameEngine
         /// 切面回调相关内容的初始化回调函数
         /// </summary>
         [OnControllerSubmoduleInitCallback]
-        private void InitAspectCallInfos()
+        private void InitializeForAspectCall()
         {
             // 数据容器初始化
             _genericTypeCallInfos = new Dictionary<SystemType, IList<AspectCallInfo>>();
@@ -101,7 +95,7 @@ namespace GameEngine
         /// 切面回调相关内容的清理回调函数
         /// </summary>
         [OnControllerSubmoduleCleanupCallback]
-        private void CleanupAspectCallInfos()
+        private void CleanupForAspectCall()
         {
             RemoveAllAspectCalls();
 
@@ -198,6 +192,8 @@ namespace GameEngine
             return false;
         }
 
+        #region 切面控制访问相关的回调函数管理接口
+
         /// <summary>
         /// 新增指定的切入函数到当前控制管理容器中
         /// </summary>
@@ -289,6 +285,8 @@ namespace GameEngine
             // 移除缓存
             RemoveAllAspectCallCaches();
         }
+
+        #endregion
 
         /// <summary>
         /// 通过指定的对象类型获取其对应的缓存管理容器

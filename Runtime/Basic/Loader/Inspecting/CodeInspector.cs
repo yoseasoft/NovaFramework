@@ -22,11 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Reflection;
-
 using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
 using SystemMethodInfo = System.Reflection.MethodInfo;
 using SystemParameterInfo = System.Reflection.ParameterInfo;
 

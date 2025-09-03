@@ -47,7 +47,7 @@ namespace GameEngine
         /// 切面行为相关内容的初始化回调函数
         /// </summary>
         [OnControllerSubmoduleInitCallback]
-        private void InitAspectBehaviourInfos()
+        private void InitializeForAspectBehaviour()
         {
             // 数据容器初始化
             _behaviourNameTypes = new Dictionary<string, AspectBehaviourType>();
@@ -59,7 +59,7 @@ namespace GameEngine
         /// 切面行为相关内容的清理回调函数
         /// </summary>
         [OnControllerSubmoduleCleanupCallback]
-        private void CleanupAspectBehaviourInfos()
+        private void CleanupForAspectBehaviour()
         {
             // 移除数据容器
             _behaviourNameTypes.Clear();

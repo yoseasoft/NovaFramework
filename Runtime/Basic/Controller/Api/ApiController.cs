@@ -73,17 +73,5 @@ namespace GameEngine
         protected override sealed void OnDump()
         {
         }
-
-        #region 标准定义函数调用接口
-
-        /// <summary>
-        /// 执行指定文本表达式的内容
-        /// </summary>
-        /// <param name="expression">文本表达式</param>
-        public void Execute(string expression)
-        {
-        }
-
-        #endregion
     }
 }

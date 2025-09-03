@@ -45,7 +45,7 @@ namespace GameEngine
         /// 原型对象状态回调相关内容的初始化回调函数
         /// </summary>
         [OnControllerSubmoduleInitCallback]
-        private void InitBeanStateCallInfos()
+        private void InitializeForStateCall()
         {
             // 数据容器初始化
             _beanStateCallTables = new Dictionary<SystemType, BeanStateCallInfo>();
@@ -55,7 +55,7 @@ namespace GameEngine
         /// 原型对象状态回调相关内容的清理回调函数
         /// </summary>
         [OnControllerSubmoduleCleanupCallback]
-        private void CleanupBeanStateCallInfos()
+        private void CleanupForStateCall()
         {
             RemoveAllBeanStateCalls();
 

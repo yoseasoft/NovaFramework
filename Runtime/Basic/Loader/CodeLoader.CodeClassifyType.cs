@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +34,7 @@ namespace GameEngine.Loader
         /// 程序集的编码分类类型的枚举定义
         /// </summary>
         // [System.Flags]
-        private enum CodeClassifyType : uint
+        private enum CodeClassifyType : byte
         {
             /// <summary>
             /// 未知类型
@@ -41,19 +42,19 @@ namespace GameEngine.Loader
             Unknown = 0,
 
             /// <summary>
+            /// 输入类型
+            /// </summary>
+            Input = 1,
+
+            /// <summary>
             /// 事件类型
             /// </summary>
-            Event = 1,
+            Event = 2,
 
             /// <summary>
             /// 网络类型
             /// </summary>
-            Network = 2,
-
-            /// <summary>
-            /// 输入类型
-            /// </summary>
-            Input = 3,
+            Network = 3,
 
             /// <summary>
             /// 实体类型
@@ -79,6 +80,11 @@ namespace GameEngine.Loader
             /// 对象池类型
             /// </summary>
             Pool = 31,
+
+            /// <summary>
+            /// 编程接口类型
+            /// </summary>
+            Api = 41,
         }
     }
 }
