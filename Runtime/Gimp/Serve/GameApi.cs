@@ -121,22 +121,24 @@ namespace GameEngine
         /// <summary>
         /// 功能模块回调接口函数
         /// </summary>
-        /// <param name="functionName">功能名称</param>
-        /// <param name="args">调用参数</param>
-        public static void Call(string functionName, params object[] args)
-        {
-            ApiController.Instance.Call(functionName, args);
-        }
-
-        /// <summary>
-        /// 功能模块回调接口函数
-        /// </summary>
         /// <param name="obj">目标对象实例</param>
         /// <param name="functionName">功能名称</param>
         /// <param name="args">调用参数</param>
-        public static void Call(IBean obj, string functionName, params object[] args)
+        public static void CallAction(IBean obj, string functionName, params object[] args)
         {
-            ApiController.Instance.Call(obj, functionName, args);
+            ApiController.Instance.CallAction(obj, functionName, args);
+        }
+
+        /// <summary>
+        /// 执行指定序列标识对应的表达式对象实例
+        /// 该表达式对象实例是通过配置数据构建的，仅在第一次调用是进行构建操作
+        /// </summary>
+        /// <param name="obj">原型对象实例</param>
+        /// <param name="serial">序列标识</param>
+        /// <param name="text">配置数据</param>
+        public static void Exec(IBean obj, int serial, string text)
+        {
+            ApiController.Instance.Exec(obj, serial, text);
         }
 
         #endregion

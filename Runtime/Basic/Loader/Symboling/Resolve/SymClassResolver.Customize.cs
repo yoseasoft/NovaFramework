@@ -172,11 +172,12 @@ namespace GameEngine.Loader.Symboling
                     {
                         on_message_system |= method.HasAttribute(typeof(OnMessageDispatchCallAttribute));
                     }
+                }
 
-                    if (!on_api_system)
-                    {
-                        on_api_system |= method.HasAttribute(typeof(OnApiDispatchCallAttribute));
-                    }
+                if (!on_api_system)
+                {
+                    on_api_system |= method.HasAttribute(typeof(OnApiDispatchCallAttribute));
+                    // on_api_system |= method.HasAttribute(typeof(ApiFunctionBindingOfTargetAttribute));
                 }
             }
 

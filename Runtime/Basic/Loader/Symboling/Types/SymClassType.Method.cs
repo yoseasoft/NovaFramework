@@ -46,10 +46,6 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         private string _fullName;
         /// <summary>
-        /// 函数的返回类型
-        /// </summary>
-        private SystemType _returnType;
-        /// <summary>
         /// 函数对象实例
         /// </summary>
         private MethodInfo _methodInfo;
@@ -63,6 +59,11 @@ namespace GameEngine.Loader.Symboling
         /// 函数参数类型
         /// </summary>
         private SystemType[] _parameterTypes;
+
+        /// <summary>
+        /// 函数的返回类型
+        /// </summary>
+        private SystemType _returnType;
 
         /// <summary>
         /// 函数扩展参数类型
@@ -89,7 +90,6 @@ namespace GameEngine.Loader.Symboling
 
                 _methodName = _methodInfo.Name;
                 _fullName = NovaEngine.Utility.Text.GetFullName(_methodInfo);
-                _returnType = _methodInfo.ReturnType;
 
                 ParameterInfo[] parameters = _methodInfo.GetParameters();
                 _parameters = new ParameterInfo[parameters.Length];
@@ -99,6 +99,12 @@ namespace GameEngine.Loader.Symboling
                 {
                     _parameters[n] = parameters[n];
                     _parameterTypes[n] = parameters[n].ParameterType;
+                }
+                _returnType = _methodInfo.ReturnType;
+
+                if (typeof(void) == _returnType)
+                {
+                    _returnType = null;
                 }
 
                 _isStatic = _methodInfo.IsStatic;
@@ -116,10 +122,10 @@ namespace GameEngine.Loader.Symboling
 
         public string MethodName => _methodName;
         public string FullName => _fullName;
-        public SystemType ReturnType => _returnType;
 
         public ParameterInfo[] Parameters => _parameters;
         public SystemType[] ParameterTypes => _parameterTypes;
+        public SystemType ReturnType => _returnType;
         public SystemType ExtensionParameterType => _extensionParameterType;
 
         public bool IsStatic => _isStatic;
@@ -133,6 +139,7 @@ namespace GameEngine.Loader.Symboling
 
             _parameters = null;
             _parameterTypes = null;
+            _returnType = null;
             _extensionParameterType = null;
         }
 
