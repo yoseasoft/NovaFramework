@@ -61,5 +61,21 @@ namespace NovaEngine
 
             return false;
         }
+
+        /// <summary>
+        /// 获取当前动画组件的切换进度
+        /// </summary>
+        /// <param name="self">动画组件</param>
+        /// <param name="layer">层级</param>
+        /// <returns>返回动画切换进度信息</returns>
+        public static float GetCrossFadeProgress(this UnityAnimator self, int layer = 0)
+        {
+            if (self.GetNextAnimatorStateInfo(layer).shortNameHash == 0)
+            {
+                return 1f;
+            }
+
+            return self.GetCurrentAnimatorStateInfo(layer).normalizedTime % 1f;
+        }
     }
 }

@@ -28,6 +28,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using SystemArray = System.Array;
+
 namespace NovaEngine
 {
     /// <summary>
@@ -40,7 +42,7 @@ namespace NovaEngine
         /// </summary>
         public static class Collection
         {
-            #region 容器类型转换相关函数
+            #region 容器类型转换相关的接口函数
 
             /// <summary>
             /// 将枚举列表中的数据进行顺序翻转的接口函数
@@ -190,6 +192,145 @@ namespace NovaEngine
             public static IList<TargetType> CastAndToList<SourceType, TargetType>(ICollection<SourceType> source)
             {
                 return source?.Cast<TargetType>().ToList();
+            }
+
+            #endregion
+
+            #region 容器类型查找相关的接口函数
+
+            /// <summary>
+            /// 获取列表容器中的最小值
+            /// </summary>
+            /// <typeparam name="T">值数据类型</typeparam>
+            /// <typeparam name="K">比较数据类型</typeparam>
+            /// <param name="array">列表容器</param>
+            /// <param name="handler">回调句柄</param>
+            /// <returns>返回列表中的最小值</returns>
+            public static T Min<T, K>(IList<T> array, System.Func<T, K> handler) where K : System.IComparable<K>
+            {
+                T temp = default(T);
+                temp = array[0];
+                foreach (T arr in array)
+                {
+                    if (handler(temp).CompareTo(handler(arr)) > 0)
+                    {
+                        temp = arr;
+                    }
+                }
+
+                return temp;
+            }
+
+            /// <summary>
+            /// 获取列表容器中的最大值
+            /// </summary>
+            /// <typeparam name="T">值数据类型</typeparam>
+            /// <typeparam name="K">比较数据类型</typeparam>
+            /// <param name="array">列表容器</param>
+            /// <param name="handler">回调句柄</param>
+            /// <returns>返回列表中的最大值</returns>
+            public static T Max<T, K>(IList<T> array, System.Func<T, K> handler) where K : System.IComparable<K>
+            {
+                T temp = default(T);
+                temp = array[0];
+                foreach (T arr in array)
+                {
+                    if (handler(temp).CompareTo(handler(arr)) < 0)
+                    {
+                        temp = arr;
+                    }
+                }
+
+                return temp;
+            }
+
+            /// <summary>
+            /// 获取列表容器中的最小值
+            /// </summary>
+            /// <typeparam name="T">数据类型</typeparam>
+            /// <param name="array">列表容器</param>
+            /// <param name="comparison">比较函数的回调句柄</param>
+            /// <returns>返回列表中的最小值</returns>
+            public static T Min<T>(IList<T> array, System.Comparison<T> comparison)
+            {
+                T temp = default(T);
+                temp = array[0];
+                foreach (T arr in array)
+                {
+                    if (comparison(temp, arr) > 0)
+                    {
+                        temp = arr;
+                    }
+                }
+
+                return temp;
+            }
+
+            /// <summary>
+            /// 获取列表容器中的最大值
+            /// </summary>
+            /// <typeparam name="T">数据类型</typeparam>
+            /// <param name="array">列表容器</param>
+            /// <param name="comparison">比较函数的回调句柄</param>
+            /// <returns>返回列表中的最大值</returns>
+            public static T Max<T>(IList<T> array, System.Comparison<T> comparison)
+            {
+                T temp = default(T);
+                temp = array[0];
+                foreach (T arr in array)
+                {
+                    if (comparison(temp, arr) < 0)
+                    {
+                        temp = arr;
+                    }
+                }
+
+                return temp;
+            }
+
+            /// <summary>
+            /// 获得传入元素某个符合条件的所有对象
+            /// </summary>
+            /// <typeparam name="T">数据类型</typeparam>
+            /// <param name="array">列表容器</param>
+            /// <param name="handler">条件函数的回调句柄</param>
+            /// <returns>返回符合条件的目标对象实例</returns>
+            public static T Find<T>(IList<T> array, System.Predicate<T> handler)
+            {
+                T temp = default(T);
+                for (int n = 0; n < array.Count; ++n)
+                {
+                    if (handler(array[n]))
+                    {
+                        return array[n];
+                    }
+                }
+
+                return temp;
+            }
+
+            /// <summary>
+            /// 获得传入元素某个符合条件的所有对象
+            /// </summary>
+            /// <typeparam name="T">数据类型</typeparam>
+            /// <param name="array">列表容器</param>
+            /// <param name="handler">条件函数的回调句柄</param>
+            /// <returns>返回符合条件的对象实例集合</returns>
+            public static T[] FindAll<T>(IList<T> array, System.Predicate<T> handler)
+            {
+                var dstArray = new T[array.Count];
+                int idx = 0;
+                for (int n = 0; n < array.Count; ++n)
+                {
+                    if (handler(array[n]))
+                    {
+                        dstArray[idx] = array[n];
+                        idx++;
+                    }
+                }
+
+                SystemArray.Resize(ref dstArray, idx);
+                return dstArray;
             }
 
             #endregion

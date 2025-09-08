@@ -123,7 +123,13 @@ namespace NovaEngine
                         string fileName = frame.GetFileName();
                         int lineNumber = frame.GetFileLineNumber();
 
-                        sb.AppendFormat("({0}:{1}) (at {2}:{3})\n", declaringTypeName, methodName, fileName, lineNumber);
+                        if (lineNumber <= 0)
+                        {
+                            // 一般这里是系统库，所以无法输出行号
+                            continue;
+                        }
+
+                        sb.AppendFormat("{0}:{1} (at {2}:{3})\n", declaringTypeName, methodName, fileName, lineNumber);
                     }
                 }
 

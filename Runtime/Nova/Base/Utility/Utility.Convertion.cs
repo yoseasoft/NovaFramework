@@ -108,7 +108,7 @@ namespace NovaEngine
                     // 进行类型转换
                     return (T) System.Convert.ChangeType(obj, typeof(T));
                 }
-                catch (System.InvalidCastException e)
+                catch (System.InvalidCastException) // e)
                 {
                     // 如果发生转换异常，尝试返回原对象的强制转换
                     return (T) obj;
@@ -116,11 +116,11 @@ namespace NovaEngine
                 catch (System.Exception e)
                 {
                     // 其它异常直接抛出
-                    throw;
+                    throw e;
                 }
 
                 // 返回目标类型的默认值
-                return default(T);
+                // return default(T);
             }
 
             #endregion
