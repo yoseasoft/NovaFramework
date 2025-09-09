@@ -56,9 +56,9 @@ namespace NovaEngine
     /// 废弃类型标识的属性类，用于声明一个对象类，接口或方法在当前版本中被废弃，不推荐使用
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Class | SystemAttributeTargets.Interface | SystemAttributeTargets.Struct | SystemAttributeTargets.Method)]
-    public class DeprecatedAttribute : SystemAttribute
+    public class DeprecatedAttribute : SystemAttribute // System.ObsoleteAttribute
     {
-        public DeprecatedAttribute() : base()
+        public DeprecatedAttribute(string message) : base() // base(message, true)
         {
         }
     }

@@ -23,35 +23,21 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using UnityGameObject = UnityEngine.GameObject;
-using UnityAudioSource = UnityEngine.AudioSource;
-
 namespace NovaEngine
 {
     /// <summary>
-    /// 基于Unity库音频源类的扩展接口支持类
+    /// 为系统默认的长整型数据类型提供扩展接口支持
     /// </summary>
-    public static class __AudioSource
+    public static class __long
     {
         /// <summary>
-        /// 重置当前音频源内部的成员属性
+        /// 将长整型数值转换为字节数组
         /// </summary>
-        /// <param name="self">音频源组件</param>
-        public static void Reset(this UnityAudioSource self)
+        /// <param name="self">长整型数值</param>
+        /// <returns>返回转换后的字节数组</returns>
+        public static byte[] GetBytes(this long self)
         {
-            self.clip = null;
-            self.mute = false;
-            self.playOnAwake = true;
-            self.loop = false;
-            self.priority = 128;
-            self.volume = 1;
-            self.pitch = 1;
-            self.panStereo = 0;
-            self.spatialBlend = 0;
-            self.reverbZoneMix = 1;
-            self.dopplerLevel = 1;
-            self.spread = 0;
-            self.maxDistance = 500;
+            return System.BitConverter.GetBytes(self);
         }
     }
 }

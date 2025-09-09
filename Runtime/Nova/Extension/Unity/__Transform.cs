@@ -2,6 +2,7 @@
 /// NovaEngine Framework
 ///
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,9 +23,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using UnityTransform = UnityEngine.Transform;
+using UnityRectTransform = UnityEngine.RectTransform;
 using UnityVector2 = UnityEngine.Vector2;
 using UnityVector3 = UnityEngine.Vector3;
-using UnityTransform = UnityEngine.Transform;
+using UnityQuaternion = UnityEngine.Quaternion;
 
 namespace NovaEngine
 {
@@ -33,6 +36,8 @@ namespace NovaEngine
     /// </summary>
     public static class __Transform
     {
+        #region 位置、旋转属性操作的便捷函数接口定义
+
         /// <summary>
         /// 设置绝对位置x坐标
         /// </summary>
@@ -346,6 +351,48 @@ namespace NovaEngine
             UnityVector3 v = self.localScale;
             v.z += z;
             self.localScale = v;
+        }
+
+        #endregion
+
+        public static void ResetWorldTransform(this UnityTransform self)
+        {
+            self.position = UnityVector3.zero;
+            self.rotation = UnityQuaternion.Euler(UnityVector3.zero);
+            self.localScale = UnityVector3.one;
+        }
+
+        public static void ResetLocalTransform(this UnityTransform self)
+        {
+            self.localPosition = UnityVector3.zero;
+            self.localRotation = UnityQuaternion.Euler(UnityVector3.zero);
+            self.localScale = UnityVector3.one;
+        }
+
+        public static void ResetRectTransform(this UnityRectTransform self)
+        {
+            self.localPosition = UnityVector3.zero;
+            self.localRotation = UnityQuaternion.Euler(UnityVector3.zero);
+            self.localScale = UnityVector3.one;
+            self.offsetMax = UnityVector2.zero;
+            self.offsetMin = UnityVector2.zero;
+        }
+
+        /// <summary>
+        /// 二维空间下使 <see cref="Transform" /> 指向指向目标点的算法，使用世界坐标
+        /// </summary>
+        /// <param name="this"><see cref="Transform" /> 对象</param>
+        /// <param name="lookAtPoint2D">要朝向的二维坐标点</param>
+        /// <remarks>假定其 forward 向量为 <see cref="Vector3.up" /></remarks>
+        public static void LookAt2D(this UnityTransform self, UnityVector2 lookAtPoint2D)
+        {
+            UnityVector3 vector = lookAtPoint2D.ToVector3() - self.position;
+            vector.y = 0f;
+
+            if (vector.magnitude > 0f)
+            {
+                self.rotation = UnityQuaternion.LookRotation(vector.normalized, UnityVector3.up);
+            }
         }
     }
 }

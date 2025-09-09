@@ -24,14 +24,14 @@
 
 using UnityGameObject = UnityEngine.GameObject;
 using UnityAnimator = UnityEngine.Animator;
-using UnityRuntimeAnimatorController = UnityEngine.RuntimeAnimatorController;
 using UnityAnimation = UnityEngine.Animation;
 using UnityAnimationClip = UnityEngine.AnimationClip;
+using UnityRuntimeAnimatorController = UnityEngine.RuntimeAnimatorController;
 
 namespace NovaEngine
 {
     /// <summary>
-    /// 基于Unity库Animator的扩展接口支持类
+    /// 基于Unity库动画类的扩展接口支持类
     /// </summary>
     public static class __Animator
     {

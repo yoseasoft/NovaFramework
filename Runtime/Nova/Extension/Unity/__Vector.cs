@@ -2,6 +2,7 @@
 /// NovaEngine Framework
 ///
 /// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +27,7 @@ using UnityMathf = UnityEngine.Mathf;
 using UnityVector2 = UnityEngine.Vector2;
 using UnityVector3 = UnityEngine.Vector3;
 using UnityVector4 = UnityEngine.Vector4;
+using UnityQuaternion = UnityEngine.Quaternion;
 
 namespace NovaEngine
 {
@@ -93,6 +95,19 @@ namespace NovaEngine
         public static UnityVector3 ToVector3(this UnityVector2 self, float y)
         {
             return new UnityVector3(self.x, y, self.y);
+        }
+
+        /// <summary>
+        /// 将二维向量围绕指定轴心旋转一定的角度
+        /// </summary>
+        /// <param name="self">目标向量</param>
+        /// <param name="angle">旋转角度</param>
+        /// <param name="pivot">轴心位置</param>
+        /// <returns>返回旋转后的二维向量实例</returns>
+        public static UnityVector2 Rotate(this UnityVector2 self, float angle, UnityVector2 pivot = default(UnityVector2))
+        {
+            UnityVector2 rotated = UnityQuaternion.Euler(new UnityVector3(0f, 0f, angle)) * (self - pivot);
+            return rotated + pivot;
         }
     }
 }

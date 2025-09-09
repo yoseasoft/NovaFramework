@@ -3,6 +3,7 @@
 ///
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using SystemGuid = System.Guid;
+using SystemDateTime = System.DateTime;
+using SystemEncoding = System.Text.Encoding;
 using SystemRegex = System.Text.RegularExpressions.Regex;
 
 namespace NovaEngine
@@ -33,6 +37,70 @@ namespace NovaEngine
     public static class __string
     {
         /// <summary>
+        /// 将字符串类型数据转换为整型数值
+        /// </summary>
+        /// <param name="self">原始字符串</param>
+        /// <param name="defaultValue">默认值</param>
+        /// <returns>返回转换后的整型数值，若转换失败则返回默认值</returns>
+        public static int ToInt32(this string self, int defaultValue = 0)
+        {
+            return self.TryConvertTo(defaultValue);
+        }
+
+        /// <summary>
+        /// 将字符串类型数据转换为长整型数值
+        /// </summary>
+        /// <param name="self">原始字符串</param>
+        /// <param name="defaultValue">默认值</param>
+        /// <returns>返回转换后的长整型数值，若转换失败则返回默认值</returns>
+        public static long ToInt64(this string self, long defaultValue = 0L)
+        {
+            return self.TryConvertTo(defaultValue);
+        }
+
+        /// <summary>
+        /// 将字符串类型数据转换为浮点型数值
+        /// </summary>
+        /// <param name="self">原始字符串</param>
+        /// <param name="defaultValue">默认值</param>
+        /// <returns>返回转换后的浮点型数值，若转换失败则返回默认值</returns>
+        public static double ToDouble(this string self, double defaultValue = 0)
+        {
+            return self.TryConvertTo(defaultValue);
+        }
+
+        /// <summary>
+        /// 将字符串类型数据转换为日期时间类型对象
+        /// </summary>
+        /// <param name="self">原始字符串</param>
+        /// <returns>返回转换后的日期时间类型对象实例</returns>
+        public static SystemDateTime ToDateTime(this string self)
+        {
+            SystemDateTime.TryParse(self, out var result);
+            return result;
+        }
+
+        /// <summary>
+        /// 将字符串类型数据转换为GUID类型对象
+        /// </summary>
+        /// <param name="self">原始字符串</param>
+        /// <returns>返回转换后的GUID类型对象实例</returns>
+        public static SystemGuid ToGuid(this string self)
+        {
+            return SystemGuid.Parse(self);
+        }
+
+        /// <summary>
+        /// 将字符串类型数据转换为字节数组
+        /// </summary>
+        /// <param name="self">原始字符串</param>
+        /// <returns>返回转换后的字节数组</returns>
+        public static byte[] ToByteArray(this string self)
+        {
+            return SystemEncoding.UTF8.GetBytes(self);
+        }
+
+        /// <summary>
         /// 忽略大小写模式的相等判断检测
         /// </summary>
         /// <param name="self">原始字符串</param>
@@ -41,6 +109,23 @@ namespace NovaEngine
         public static bool EqualsIgnoreCase(this string self, string other)
         {
             return self.ToLower().Equals(other?.ToLower());
+        }
+
+        /// <summary>
+        /// 检查当前字符串中是否包含中文信息
+        /// </summary>
+        /// <param name="self">原始字符串</param>
+        /// <returns>若包含中文则返回true，否则返回false</returns>
+        public static bool IsContainsChinese(this string self)
+        {
+            foreach (char a in self)
+            {
+                if (a >= 0x4e00 && a <= 0x9fff)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>

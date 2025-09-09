@@ -24,34 +24,32 @@
 /// -------------------------------------------------------------------------------
 
 using UnityGameObject = UnityEngine.GameObject;
-using UnityAudioSource = UnityEngine.AudioSource;
+using UnitySprite = UnityEngine.Sprite;
+using UnityTexture2D = UnityEngine.Texture2D;
 
 namespace NovaEngine
 {
     /// <summary>
-    /// 基于Unity库音频源类的扩展接口支持类
+    /// 基于Unity库精灵类的扩展接口支持类
     /// </summary>
-    public static class __AudioSource
+    public static class __Sprite
     {
         /// <summary>
-        /// 重置当前音频源内部的成员属性
+        /// 将 <see cref="UnityEngine.Sprite"/> 转换为 <see cref="UnityEngine.Texture2D"/>
         /// </summary>
-        /// <param name="self">音频源组件</param>
-        public static void Reset(this UnityAudioSource self)
+        /// <param name="self">对象实例</param>
+        /// <returns>返回转换后的纹理对象</returns>
+        public static UnityTexture2D ConvertToSprite(this UnitySprite self)
         {
-            self.clip = null;
-            self.mute = false;
-            self.playOnAwake = true;
-            self.loop = false;
-            self.priority = 128;
-            self.volume = 1;
-            self.pitch = 1;
-            self.panStereo = 0;
-            self.spatialBlend = 0;
-            self.reverbZoneMix = 1;
-            self.dopplerLevel = 1;
-            self.spread = 0;
-            self.maxDistance = 500;
+            var tex = new UnityTexture2D((int) self.rect.width, (int) self.rect.height);
+            var pixels = self.texture.GetPixels(
+                (int) self.textureRect.x,
+                (int) self.textureRect.y,
+                (int) self.textureRect.width,
+                (int) self.textureRect.height);
+            tex.SetPixels(pixels);
+            tex.Apply();
+            return tex;
         }
     }
 }

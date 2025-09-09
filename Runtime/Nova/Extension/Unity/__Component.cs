@@ -34,7 +34,7 @@ using UnityTransform = UnityEngine.Transform;
 namespace NovaEngine
 {
     /// <summary>
-    /// 基于Unity库Component的扩展接口支持类
+    /// 基于Unity库组件类的扩展接口支持类
     /// </summary>
     public static class __Component
     {

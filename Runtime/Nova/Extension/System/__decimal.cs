@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,63 +29,32 @@ using SystemMidpointRounding = System.MidpointRounding;
 namespace NovaEngine
 {
     /// <summary>
-    /// 为系统默认的双精度浮点数据类型提供扩展接口支持
+    /// 为系统默认的数字类型提供扩展接口支持
     /// </summary>
-    public static class __double
+    public static class __decimal
     {
         /// <summary>
-        /// 判断指定的浮点数是否为零
+        /// 将数字类型转换为整数类型数值
         /// </summary>
-        /// <param name="self">浮点数值</param>
-        /// <returns>若给定的浮点数值为零则返回true，否则返回false</returns>
-        public static bool IsZero(this double self)
-        {
-            return (SystemMath.Abs(self) < double.Epsilon);
-        }
-
-        /// <summary>
-        /// 将浮点型数值的小数位截断为8位
-        /// </summary>
-        /// <param name="self">浮点数值</param>
-        /// <returns>返回截断后的浮点数值</returns>
-        public static double Digits8(this double self)
-        {
-            return (long) (self * 1E+8) * 1E-8;
-        }
-
-        /// <summary>
-        /// 将浮点类型数值转换为整数类型数值
-        /// </summary>
-        /// <param name="self">浮点数值</param>
-        /// <returns>返回转换后的整数类型数值</returns>
-        public static int ToInt32(this double self)
+        /// <param name="self">数字对象实例</param>
+        /// <returns>返回整数类型数值</returns>
+        public static int ToInt32(this decimal self)
         {
             return (int) SystemMath.Floor(self);
         }
 
         /// <summary>
-        /// 将浮点类型数值转换为数字类型数值
+        /// 将数字类型转换为浮点数类型数值
         /// </summary>
-        /// <param name="self">浮点数值</param>
-        /// <returns>返回转换后的数字类型数值</returns>
-        public static decimal ToDecimal(this double self)
+        /// <param name="self">数字对象实例</param>
+        /// <returns>返回浮点数类型数值</returns>
+        public static double ToDouble(this decimal self)
         {
-            return self.ConvertTo<decimal>();
+            return (double) self;
         }
 
         /// <summary>
-        /// 将浮点类型数值转换为数字类型数值，并保留指定位数
-        /// </summary>
-        /// <param name="self">浮点数值</param>
-        /// <param name="precision">小数位数</param>
-        /// <returns>返回转换后的数字类型数值</returns>
-        public static decimal ToDecimal(this double self, int precision)
-        {
-            return SystemMath.Round(self.ConvertTo<decimal>(), precision);
-        }
-
-        /// <summary>
-        /// 对浮点数进行舍入的函数
+        /// 对数字进行舍入的函数
         /// 舍入方式的选项包括：
         /// MidpointRounding.ToEven
         /// （默认）银行家舍入规则。如果处于中间值（如 0.5），将向最近的偶数舍入。例如：
@@ -110,25 +79,25 @@ namespace NovaEngine
         /// MidpointRounding.AwayFromZero
         /// 总是向绝对值更大的方向舍入，即传统意义上的“进位”。
         /// </summary>
-        /// <param name="self">浮点数值</param>
+        /// <param name="self">数字对象实例</param>
         /// <param name="decimals">保留小数位数，默认为0，即保留到整数</param>
         /// <param name="mode">舍入方式</param>
         /// <returns>返回舍入后的数值</returns>
-        public static double Round(this double self, int decimals = 0, SystemMidpointRounding mode = SystemMidpointRounding.AwayFromZero)
+        public static decimal Round(this decimal self, int decimals = 0, SystemMidpointRounding mode = SystemMidpointRounding.AwayFromZero)
         {
             self = SystemMath.Round(self, decimals, mode);
             return self;
         }
 
         /// <summary>
-        /// 对浮点数进行舍入的函数，<br/>
-        /// 使用规则请参数<see cref="Round(double, int, SystemMidpointRounding)"/>
+        /// 对数字进行舍入的函数，<br/>
+        /// 使用规则请参数<see cref="Round(decimal, int, SystemMidpointRounding)"/>
         /// </summary>
-        /// <param name="self">浮点数值</param>
+        /// <param name="self">数字对象实例</param>
         /// <param name="decimals">保留小数位数，默认为0，即保留到整数</param>
         /// <param name="mode">舍入方式</param>
         /// <returns>返回舍入后的数值</returns>
-        public static double? Round(this double? self, int decimals = 0, SystemMidpointRounding mode = SystemMidpointRounding.AwayFromZero)
+        public static decimal? Round(this decimal? self, int decimals = 0, SystemMidpointRounding mode = SystemMidpointRounding.AwayFromZero)
         {
             if (self.HasValue)
             {

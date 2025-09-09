@@ -27,24 +27,26 @@
 using System.Collections.Generic;
 
 using SystemType = System.Type;
+using SystemArray = System.Array;
 using SystemStringBuilder = System.Text.StringBuilder;
 
-using UnityMathf = UnityEngine.Mathf;
-using UnityGameObject = UnityEngine.GameObject;
-using UnityComponent = UnityEngine.Component;
+using UnityObject = UnityEngine.Object;
 using UnityTransform = UnityEngine.Transform;
-using UnityLayerMask = UnityEngine.LayerMask;
-using UnityAnimator = UnityEngine.Animator;
-using UnityAnimatorClipInfo = UnityEngine.AnimatorClipInfo;
+using UnityComponent = UnityEngine.Component;
+using UnityGameObject = UnityEngine.GameObject;
 using UnityAnimation = UnityEngine.Animation;
 using UnityAnimationClip = UnityEngine.AnimationClip;
+using UnityAnimator = UnityEngine.Animator;
 using UnityParticleSystem = UnityEngine.ParticleSystem;
 using UnityPlayableDirector = UnityEngine.Playables.PlayableDirector;
+using UnityAnimatorClipInfo = UnityEngine.AnimatorClipInfo;
+using UnityLayerMask = UnityEngine.LayerMask;
+using UnityMathf = UnityEngine.Mathf;
 
 namespace NovaEngine
 {
     /// <summary>
-    /// 基于Unity库GameObject的扩展接口支持类
+    /// 基于Unity库游戏对象类的扩展接口支持类
     /// </summary>
     public static class __GameObject
     {
@@ -228,64 +230,327 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 给当前的实例对象添加一个限定唯一的组件实例，若实例对象中已存在相同类型的组件，则跳过添加操作
+        /// 在当前的GameObject中查找指定类型的组件对象实例<br/>
+        /// 若目标类型的组件不存在，则新创建一个该类型的实例并返回
         /// </summary>
-        /// <typeparam name="T">新增组件类型</typeparam>
-        /// <param name="self">目标对象实例</param>
+        /// <typeparam name="T">目标组件类型</typeparam>
+        /// <param name="self">源节点对象实例</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static T AddUniqueComponent<T>(this UnityGameObject self) where T : UnityComponent
+        public static T GetOrAddComponent<T>(this UnityGameObject self) where T : UnityComponent
         {
-            return self.AddUniqueComponent(typeof(T)) as T;
-        }
-
-        /// <summary>
-        /// 给当前的实例对象添加一个限定唯一的组件实例，若实例对象中已存在相同类型的组件，则跳过添加操作
-        /// </summary>
-        /// <param name="self">目标对象实例</param>
-        /// <param name="type">新增组件类型</param>
-        /// <returns>返回对应类型的组件对象实例</returns>
-        public static UnityComponent AddUniqueComponent(this UnityGameObject self, SystemType type)
-        {
-            UnityComponent component = self.GetComponent(type);
-            if (component == null)
-            {
-                component = self.AddComponent(type);
-            }
-
-            return component;
-        }
-
-        public static T AddUniqueComponentInChildren<T>(this UnityGameObject self) where T : UnityComponent
-        {
-            T component = self.GetComponentInChildren<T>();
+            T component = self.GetComponent<T>();
             if (null == component)
             {
                 component = self.AddComponent<T>();
             }
-
             return component;
         }
 
-        public static T FindComponentOnParent<T>(this UnityGameObject go, int depth = 5) where T : UnityComponent
+        /// <summary>
+        /// 在当前的GameObject中查找指定类型的组件对象实例<br/>
+        /// 若目标类型的组件不存在，则新创建一个该类型的实例并返回
+        /// </summary>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="type">目标组件类型</param>
+        /// <returns>返回对应类型的组件对象实例</returns>
+        public static UnityComponent GetOrAddComponent(this UnityGameObject self, SystemType type)
         {
-            if (depth <= 0)
-            {
-                return null;
-            }
-
-            UnityTransform transform = go.transform.parent;
-            if (null == transform)
-            {
-                return null;
-            }
-
-            T component = transform.GetComponent<T>();
+            UnityComponent component = self.GetComponent(type);
             if (null == component)
             {
-                return transform.gameObject.FindComponentOnParent<T>(depth - 1);
+                component = self.AddComponent(type);
+            }
+            return component;
+        }
+
+        /// <summary>
+        /// 从父节点下指定名称的GameObject中查找指定类型的组件对象实例
+        /// </summary>
+        /// <typeparam name="T">目标组件类型</typeparam>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="name">目标节点名称</param>
+        /// <returns>返回对应类型的组件对象实例</returns>
+        public static T GetComponentInParent<T>(this UnityGameObject self, string name) where T : UnityComponent
+        {
+            UnityTransform[] parents = self.GetComponentsInParent<UnityTransform>();
+            int length = parents.Length;
+            UnityTransform parentTrans = null;
+            for (int n = 0; n < length; ++n)
+            {
+                if (parents[n].name == name)
+                {
+                    parentTrans = parents[n];
+                    break;
+                }
             }
 
-            return component;
+            if (null == parentTrans)
+                return null;
+
+            return parentTrans.GetComponent<T>();
+        }
+
+        /// <summary>
+        /// 从父节点下指定名称的GameObject中查找指定类型的组件对象实例<br/>
+        /// 若目标类型的组件不存在，则在当前节点下新创建一个该类型的实例并返回<br/>
+        /// 此处若未找到指定名称的父节点，则不会创建该类型的组件对象实例，而是直接返回null
+        /// </summary>
+        /// <typeparam name="T">目标组件类型</typeparam>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="name">目标节点名称</param>
+        /// <returns>返回对应类型的组件对象实例</returns>
+        public static T GetOrAddComponentInParent<T>(this UnityGameObject self, string name) where T : UnityComponent
+        {
+            UnityTransform[] parents = self.GetComponentsInParent<UnityTransform>();
+            int length = parents.Length;
+            UnityTransform parentTrans = null;
+            for (int n = 0; n < length; ++n)
+            {
+                if (parents[n].name == name)
+                {
+                    parentTrans = parents[n];
+                    break;
+                }
+            }
+
+            if (null == parentTrans)
+                return null;
+
+            T comp = parentTrans.GetComponent<T>();
+            if (null == comp)
+            {
+                comp = self.gameObject.AddComponent<T>();
+            }
+
+            return comp;
+        }
+
+        /// <summary>
+        /// 在子节点下指定名称的GameObject中查找指定类型的组件对象实例
+        /// </summary>
+        /// <typeparam name="T">目标组件类型</typeparam>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="name">目标节点名称</param>
+        /// <returns>返回对应类型的组件对象实例</returns>
+        public static T GetComponentInChildren<T>(this UnityGameObject self, string name) where T : UnityComponent
+        {
+            UnityTransform[] childs = self.GetComponentsInChildren<UnityTransform>();
+            int length = childs.Length;
+            UnityTransform childTrans = null;
+            for (int n = 0; n < length; ++n)
+            {
+                if (childs[n].name == name)
+                {
+                    childTrans = childs[n];
+                    break;
+                }
+            }
+
+            if (null == childTrans)
+                return null;
+            return childTrans.GetComponent<T>();
+        }
+
+        /// <summary>
+        /// 在子节点下指定名称的GameObject中查找指定类型的组件对象实例<br/>
+        /// 若目标类型的组件不存在，则在最后一个子节点下新创建一个该类型的实例并返回<br/>
+        /// 此处若未找到指定名称的子节点，则不会创建该类型的组件对象实例，而是直接返回null
+        /// </summary>
+        /// <typeparam name="T">目标组件类型</typeparam>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="name">目标节点名称</param>
+        /// <returns>返回对应类型的组件对象实例</returns>
+        public static T GetOrAddComponentInChildren<T>(this UnityGameObject self, string name) where T : UnityComponent
+        {
+            UnityTransform[] childs = self.GetComponentsInChildren<UnityTransform>();
+            int length = childs.Length;
+            UnityTransform childTrans = null;
+            for (int n = 0; n < length; ++n)
+            {
+                if (childs[n].name == name)
+                {
+                    childTrans = childs[n];
+                    break;
+                }
+            }
+
+            if (null == childTrans)
+                return null;
+
+            T comp = childTrans.GetComponent<T>();
+            if (null == comp)
+                comp = childTrans.gameObject.AddComponent<T>();
+
+            return comp;
+        }
+
+        /// <summary>
+        /// 在同级节点下指定名称的GameObject中查找指定类型的组件对象实例
+        /// </summary>
+        /// <typeparam name="T">目标组件类型</typeparam>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="name">目标节点名称</param>
+        /// <returns>返回对应类型的组件对象实例</returns>
+        public static T GetComponentInPeer<T>(this UnityGameObject self, string name) where T : UnityComponent
+        {
+            UnityTransform tran = self.transform.parent.Find(name);
+            if (null != tran)
+            {
+                return tran.GetComponent<T>();
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 在同级节点下指定名称的GameObject中查找指定类型的组件对象实例<br/>
+        /// 若目标类型的组件不存在，则在当前节点下新创建一个该类型的实例并返回<br/>
+        /// 此处若未找到指定名称的同级节点，则不会创建该类型的组件对象实例，而是直接返回null
+        /// </summary>
+        /// <typeparam name="T">目标组件类型</typeparam>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="name">目标节点名称</param>
+        /// <returns>返回对应类型的组件对象实例</returns>
+        public static T GetOrAddComponentInPeer<T>(this UnityGameObject self, string name) where T : UnityComponent
+        {
+            UnityTransform tran = self.transform.parent.Find(name);
+            if (null != tran)
+            {
+                T comp = tran.GetComponent<T>();
+                if (null == comp)
+                    self.gameObject.AddComponent<T>();
+
+                return comp;
+
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 在同级节点下查找出所有节点中包含指定类型的组件对象实例
+        /// </summary>
+        /// <typeparam name="T">目标组件类型</typeparam>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="includeSrc">是否包含源节点对象</param>
+        /// <returns>返回对应类型的组件对象实例的集合</returns>
+        public static T[] GetComponentsInPeer<T>(this UnityGameObject self, bool includeSrc = false) where T : UnityComponent
+        {
+            UnityTransform parentTrans = self.transform.parent;
+            UnityTransform[] childTrans = parentTrans.GetComponentsInChildren<UnityTransform>();
+            int length = childTrans.Length;
+            UnityTransform[] trans;
+
+            if (!includeSrc)
+                trans = Utility.Collection.FindAll(childTrans, t => t.parent == parentTrans);
+            else
+                trans = Utility.Collection.FindAll(childTrans, t => t.parent == parentTrans && t != self);
+
+            int transLength = trans.Length;
+            T[] src = new T[transLength];
+            int idx = 0;
+            for (int n = 0; n < transLength; ++n)
+            {
+                T comp = trans[n].GetComponent<T>();
+                if (null != comp)
+                {
+                    src[idx] = comp;
+                    ++idx;
+                }
+            }
+
+            T[] dst = new T[idx];
+            SystemArray.Copy(src, 0, dst, 0, idx);
+
+            return dst;
+        }
+
+        /// <summary>
+        /// 从当前GameObject节点中移除目标类型的组件对象实例
+        /// </summary>
+        /// <typeparam name="T">目标组件类型</typeparam>
+        /// <param name="self">源节点对象实例</param>
+        /// <returns>返回源节点对象实例</returns>
+        public static UnityGameObject TryRemoveComponent<T>(this UnityGameObject self) where T : UnityComponent
+        {
+            T comp = self.GetComponent<T>();
+
+            if (null != comp)
+            {
+                UnityObject.Destroy(comp);
+            }
+
+            return self;
+        }
+
+        /// <summary>
+        /// 从当前GameObject节点中移除目标类型的组件对象实例
+        /// </summary>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="type">目标组件类型</param>
+        /// <returns>返回源节点对象实例</returns>
+        public static UnityGameObject TryRemoveComponent(this UnityGameObject self, SystemType type)
+        {
+            UnityComponent comp = self.GetComponent(type);
+
+            if (null != comp)
+            {
+                UnityObject.Destroy(comp);
+            }
+
+            return self;
+        }
+
+        /// <summary>
+        /// 从当前GameObject节点中移除目标类型的组件对象实例
+        /// </summary>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="type">目标组件类型</param>
+        /// <returns>返回源节点对象实例</returns>
+        public static UnityGameObject TryRemoveComponent(this UnityGameObject self, string type)
+        {
+            UnityComponent comp = self.GetComponent(type);
+
+            if (null != comp)
+            {
+                UnityObject.Destroy(comp);
+            }
+
+            return self;
+        }
+
+        /// <summary>
+        /// 从当前GameObject节点中移除所有满足目标类型条件的组件对象实例
+        /// </summary>
+        /// <typeparam name="T">目标组件类型</typeparam>
+        /// <param name="self">源节点对象实例</param>
+        /// <returns>返回源节点对象实例</returns>
+        public static UnityGameObject TryRemoveComponents<T>(this UnityGameObject self) where T : UnityComponent
+        {
+            T[] comps = self.GetComponents<T>();
+
+            for (var n = 0; n < comps.Length; ++n)
+            {
+                UnityObject.Destroy(comps[n]);
+            }
+
+            return self;
+        }
+
+        /// <summary>
+        /// 从当前GameObject节点中移除所有满足目标类型条件的组件对象实例
+        /// </summary>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="type">目标组件类型</param>
+        /// <returns>返回源节点对象实例</returns>
+        public static UnityGameObject TryRemoveComponents<T>(this UnityGameObject self, SystemType type)
+        {
+            UnityComponent[] comps = self.GetComponents(type);
+
+            for (var n = 0; n < comps.Length; ++n)
+            {
+                UnityObject.Destroy(comps[n]);
+            }
+
+            return self;
         }
 
         #endregion
@@ -293,44 +558,95 @@ namespace NovaEngine
         #region GameObject对其关联的节点访问操作相关的接口函数
 
         /// <summary>
-        /// 将指定节点添加到当前节点下作为子节点实例
+        /// 在当前的GameObject中查找指定名称的节点对象实例<br/>
+        /// 若目标名称的节点对象不存在，则新创建一个该类型的实例并返回
         /// </summary>
-        /// <param name="self">目标对象实例</param>
-        /// <param name="child">子节点对象实例</param>
-        public static void AddChild(this UnityGameObject self, UnityGameObject child)
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="name">节点名称</param>
+        /// <returns>返回给定名称的节点对象实例</returns>
+        public static UnityGameObject FindOrCreateGameObject(this UnityGameObject self, string name)
         {
-            UnityTransform pTransform = self.transform;
-            UnityTransform cTransform = child.transform;
-            cTransform.SetParent(pTransform);
+            UnityTransform trans = self.transform.Find(name);
+            if (null == trans)
+            {
+                UnityGameObject go = new UnityGameObject(name).SetParent(self);
+                return go;
+            }
+            else
+            {
+                return trans.gameObject;
+            }
         }
 
         /// <summary>
-        /// 通过节点名称查找当前节点下的子节点实例
+        /// 在当前的GameObject中查找指定名称的节点对象实例<br/>
+        /// 若目标名称的节点对象不存在，则新创建一个该类型的实例，并初始化相应的组件列表
         /// </summary>
-        /// <param name="self">查找起始节点</param>
+        /// <param name="self">源节点对象实例</param>
         /// <param name="name">节点名称</param>
-        /// <returns>若查找成功则返回对应的节点实例，否则返回null</returns>
-        public static UnityGameObject FindChild(this UnityGameObject self, string name)
+        /// <param name="componentTypes">组件类型列表</param>
+        /// <returns>返回给定名称的节点对象实例</returns>
+        public static UnityGameObject FindOrCreateGameObject(this UnityGameObject self, string name, params SystemType[] componentTypes)
         {
-            UnityTransform parent = self.transform;
-            UnityTransform child = parent.Find(name);
-            if (null != child)
+            UnityTransform trans = self.transform.Find(name);
+            if (null == trans)
             {
-                return child.gameObject;
+                UnityGameObject go = new UnityGameObject(name, componentTypes).SetParent(self);
+                return go;
             }
-
-            for (int n = 0; n < parent.childCount; n++)
+            else
             {
-                child = parent.GetChild(n);
-
-                self = FindChild(child.gameObject, name);
-                if (null != self)
-                {
-                    return self;
-                }
+                return trans.gameObject;
             }
+        }
 
-            return null;
+        /// <summary>
+        /// 在当前的GameObject节点下创建一个指定名称的节点对象实例
+        /// </summary>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="name">节点名称</param>
+        /// <returns>返回新创建的节点对象实例</returns>
+        public static UnityGameObject CreateGameObject(this UnityGameObject self, string name)
+        {
+            UnityGameObject go = new UnityGameObject(name).SetParent(self);
+            return go;
+        }
+
+        /// <summary>
+        /// 在当前的GameObject节点下创建一个指定名称的节点对象实例，并初始化相应的组件列表
+        /// </summary>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="name">节点名称</param>
+        /// <param name="componentTypes">组件类型列表</param>
+        /// <returns>返回新创建的节点对象实例</returns>
+        public static UnityGameObject CreateGameObject(this UnityGameObject self, string name, params SystemType[] componentTypes)
+        {
+            UnityGameObject go = new UnityGameObject(name, componentTypes).SetParent(self);
+            return go;
+        }
+
+        /// <summary>
+        /// 将指定的节点对象设置为当前节点对象的父节点
+        /// </summary>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="parentGameObject">父节点对象实例</param>
+        /// <returns>返回源节点对象实例</returns>
+        public static UnityGameObject SetParent(this UnityGameObject self, UnityGameObject parentGameObject)
+        {
+            self.transform.SetParent(parentGameObject.transform);
+            return self;
+        }
+
+        /// <summary>
+        /// 将指定的 <see cref="UnityEngine.Transform"/> 设置为当前节点对象的父节点
+        /// </summary>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="parent">父对象实例</param>
+        /// <returns>返回源节点对象实例</returns>
+        public static UnityGameObject SetParent(this UnityGameObject self, UnityTransform parent)
+        {
+            self.transform.SetParent(parent);
+            return self;
         }
 
         #endregion
