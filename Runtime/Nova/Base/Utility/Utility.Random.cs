@@ -52,7 +52,7 @@ namespace NovaEngine
             /// 返回非负随机数
             /// </summary>
             /// <returns>大于等于零且小于System.Int32.MaxValue的32位带符号整数</returns>
-            public static int GetRandom()
+            public static int Next()
             {
                 return _random.Next();
             }
@@ -62,7 +62,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="maxValue">要生成的随机数的上界（随机数不能取该上界值），maxValue必须大于等于零</param>
             /// <returns>大于等于零且小于maxValue的32位带符号整数，即：返回值的范围通常包括零但不包括maxValue；如果maxValue等于零，则返回maxValue</returns>
-            public static int GetRandom(int maxValue)
+            public static int Next(int maxValue)
             {
                 return _random.Next(maxValue);
             }
@@ -73,7 +73,7 @@ namespace NovaEngine
             /// <param name="minValue">返回的随机数的下界（随机数可取该下界值）</param>
             /// <param name="maxValue">返回的随机数的上界（随机数不能取该上界值），maxValue必须大于等于minValue</param>
             /// <returns>一个大于等于minValue且小于maxValue的32位带符号整数，即：返回的值范围包括minValue但不包括maxValue；如果minValue等于maxValue，则返回minValue</returns>
-            public static int GetRandom(int minValue, int maxValue)
+            public static int Next(int minValue, int maxValue)
             {
                 return _random.Next(minValue, maxValue);
             }
@@ -82,7 +82,7 @@ namespace NovaEngine
             /// 返回一个介于0.0和1.0之间的随机数
             /// </summary>
             /// <returns>大于等于0.0并且小于1.0的双精度浮点数</returns>
-            public static double GetRandomDouble()
+            public static double NextDouble()
             {
                 return _random.NextDouble();
             }
@@ -91,7 +91,7 @@ namespace NovaEngine
             /// 用随机数填充指定字节数组的元素
             /// </summary>
             /// <param name="buffer">包含随机数的字节数组</param>
-            public static void GetRandomBytes(byte[] buffer)
+            public static void NextBytes(byte[] buffer)
             {
                 _random.NextBytes(buffer);
             }

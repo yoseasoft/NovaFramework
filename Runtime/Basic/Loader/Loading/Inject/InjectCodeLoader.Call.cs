@@ -49,7 +49,7 @@ namespace GameEngine.Loader
 
             Structuring.InjectCallCodeInfo info = new Structuring.InjectCallCodeInfo();
             info.ClassType = symClass.ClassType;
-            info.BehaviourType = AspectBehaviourConfig.DefaultAutobindBehaviourTypeOfBeanExtensionMethod;
+            info.BehaviourType = AspectBehaviour.AutobindBehaviourTypeOfBeanExtensionMethod;
 
             if (_injectCallCodeInfos.ContainsKey(symClass.ClassType))
             {

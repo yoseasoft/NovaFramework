@@ -23,6 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using SystemGuid = System.Guid;
 using SystemArray = System.Array;
 using SystemConvert = System.Convert;
 using SystemEncoding = System.Text.Encoding;
@@ -43,6 +44,21 @@ namespace NovaEngine
         /// </summary>
         public static class Encryption
         {
+            /// <summary>
+            /// 通过指定的格式生成一个新的GUID实例
+            /// <para>"N" 	32 位，例如 "33ee30121c43457eabb7e838a5e052e6"</para>
+            /// <para>"D" 	32 位，由连字符分隔的 32 位，例如 "33ee3012-1c43-457e-abb7-e838a5e052e6"</para>
+            /// <para>"B" 	32 位，用连字符分隔的 32 位数字，用大括号括起来，例如 "{33ee3012-1c43-457e-abb7-e838a5e052e6}"</para>
+            /// <para>"P" 	32 位，用连字符分隔的 32 位数字，括在括号中，例如 "(33ee3012-1c43-457e-abb7-e838a5e052e6)"</para>
+            /// <para>"X" 	32 位，四个十六进制值括在大括号中，其中第四个值是八个十六进制值的子集，这些值也括在大括号中，例如 "{0x33ee3012,0x1c43,0x457e,{0xab,0xb7,0xe8,0x38,0xa5,0xe0,0x52,0xe6}}"</para>
+            /// </summary>
+            /// <param name="format">格式化类型</param>
+            /// <returns>返回格式化后的GUID</returns>
+            public static string GUID(string format = "D")
+            {
+                return SystemGuid.NewGuid().ToString(format);
+            }
+
             #region 异或加密方式提供的功能函数接口
 
             /// <summary>

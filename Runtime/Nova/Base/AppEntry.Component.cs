@@ -163,7 +163,7 @@ namespace NovaEngine
             }
 
             UnityGameObject gameObject = new UnityGameObject(name);
-            CFrameworkComponent component = (CFrameworkComponent) gameObject.AddUniqueComponent(componentType);
+            CFrameworkComponent component = (CFrameworkComponent) gameObject.GetOrAddComponent(componentType);
 
             if (null != _rootGameObject)
             {

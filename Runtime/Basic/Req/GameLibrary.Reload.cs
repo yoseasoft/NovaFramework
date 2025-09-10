@@ -107,7 +107,7 @@ namespace GameEngine
                     continue;
                 }
 
-                if (lifecycleType > obj.CurrentLifecycleRunningStep)
+                if (lifecycleType > obj.CurrentLifecycleType)
                 {
                     // 当前原型对象的生命周期阶段遍历完成
                     break;

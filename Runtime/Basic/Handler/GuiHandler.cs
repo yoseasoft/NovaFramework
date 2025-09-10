@@ -486,7 +486,7 @@ namespace GameEngine
 
             // 刷新状态时推到销毁队列中
             // if (view.IsOnUpdatingStatus())
-            if (view.CurrentLifecycleProcessRunning)
+            if (view.IsCurrentLifecycleTypeRunning)
             {
                 view.OnPrepareToDestroy();
                 return;

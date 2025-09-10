@@ -30,7 +30,7 @@ namespace NovaEngine
     /// <summary>
     /// 指令转发操作管理类
     /// </summary>
-    public sealed class CommandDispatcher
+    internal sealed class CommandDispatcher
     {
         private readonly Dictionary<string, ICommandAgent> _commandAgents = null;
 
@@ -71,12 +71,12 @@ namespace NovaEngine
         {
             if (null == cname || null == agent)
             {
-                throw new CFrameworkException("Command agent is invalid.");
+                Logger.Throw<System.ArgumentNullException>("Command agent is invalid.");
             }
 
             if (_commandAgents.ContainsKey(cname))
             {
-                throw new CFrameworkException("Agent name '{%s}' is already exist.", cname);
+                Logger.Throw<System.ArgumentException>("Agent name '{%s}' is already exist.", cname);
             }
 
             agent.Initialize();
@@ -91,12 +91,12 @@ namespace NovaEngine
         {
             if (null == cname)
             {
-                throw new CFrameworkException("Command agent is invalid.");
+                Logger.Throw<System.ArgumentNullException>("Command agent is invalid.");
             }
 
             if (false == _commandAgents.ContainsKey(cname))
             {
-                throw new CFrameworkException("Agent name '{%s}' is not exist.", cname);
+                Logger.Throw<System.ArgumentException>("Agent name '{%s}' is not exist.", cname);
             }
 
             ICommandAgent agent = _commandAgents[cname];

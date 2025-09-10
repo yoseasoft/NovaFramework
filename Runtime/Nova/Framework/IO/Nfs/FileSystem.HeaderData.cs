@@ -56,7 +56,7 @@ namespace NovaEngine.IO.FileSystem
             public HeaderData(int maxFileCount, int maxBlockCount)
                 : this(0, new byte[ENCRYPT_BYTES_LENGTH], maxFileCount, maxBlockCount, 0)
             {
-                Utility.Random.GetRandomBytes(this._encryptBytes);
+                Utility.Random.NextBytes(this._encryptBytes);
             }
 
             public HeaderData(byte version, byte[] encryptBytes, int maxFileCount, int maxBlockCount, int blockCount)

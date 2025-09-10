@@ -49,6 +49,99 @@ namespace NovaEngine
         public static class Text
         {
             /// <summary>
+            /// 字符串构建器缓存对象实例，用于内部提供字符串文本组装
+            /// </summary>
+            [System.ThreadStatic] // 每个静态类型字段对于每一个线程都是唯一的
+            private static SystemStringBuilder _stringBuilderCache = new SystemStringBuilder(4096);
+
+            /// <summary>
+            /// 将指定内存尺寸转换为字符串形式，且使用最大单位值
+            /// </summary>
+            /// <param name="size">内存尺寸</param>
+            /// <returns>返回转换后的字符串信息</returns>
+            public static string GetSizeText(long size)
+            {
+                const double KB = 1024;
+                const double MB = 1024 * KB;
+                const double GB = 1024 * MB;
+
+                double gb = (double) size / (double) GB;
+                double mb = (double) size / (double) MB;
+                double kb = (double) size / (double) KB;
+
+                if (gb > 1)
+                {
+                    return string.Format("{0:#.3}gb", gb);
+                }
+                else if (mb > 1)
+                {
+                    return string.Format("{0:#.#}mb", mb);
+                }
+                else if (kb > 1)
+                {
+                    return string.Format("{0:#.#}kb", kb);
+                }
+
+                return string.Format("{0:0.#}b", kb);
+            }
+
+            /// <summary>
+            /// 生成指定长度的随机字符串接口函数
+            /// </summary>
+            /// <param name="length">字符串长度</param>
+            /// <returns>返回生成的随机字符串</returns>
+            public static string GenerateRandomString(int length)
+            {
+                _stringBuilderCache.Clear();
+                for (int n = 0; n < length; ++n)
+                {
+                    _stringBuilderCache.Append(Definition.CCharacter.KEYCODE_ARRAY[Random.Next(62)]);
+                }
+
+                return _stringBuilderCache.ToString();
+            }
+
+            /// <summary>
+            /// 对象 <see cref="object.ToString"/> 信息连接接口函数
+            /// </summary>
+            /// <param name="args">对象数组</param>
+            /// <returns>返回连接后的字符串</returns>
+            public static string Append(params object[] args)
+            {
+                if (null == args)
+                    Logger.Throw<System.ArgumentNullException>("Append is invalid.");
+
+                _stringBuilderCache.Clear();
+                int length = args.Length;
+                for (int n = 0; n < length; ++n)
+                {
+                    _stringBuilderCache.Append(args[n]);
+                }
+
+                return _stringBuilderCache.ToString();
+            }
+
+            /// <summary>
+            /// 字符串合并接口函数
+            /// </summary>
+            /// <param name="strings">字符串数组</param>
+            /// <returns>返回合并后的字符串</returns>
+            public static string Combine(params string[] strings)
+            {
+                if (null == strings)
+                    Logger.Throw<System.ArgumentNullException>("Combine is invalid.");
+
+                _stringBuilderCache.Length = 0;
+                int length = strings.Length;
+                for (int n = 0; n < length; ++n)
+                {
+                    _stringBuilderCache.Append(strings[n]);
+                }
+
+                return _stringBuilderCache.ToString();
+            }
+
+            /// <summary>
             /// 使用指定的格式及参数获取对应的格式化字符串
             /// </summary>
             /// <param name="format">字符串格式</param>

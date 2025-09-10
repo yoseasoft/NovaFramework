@@ -59,14 +59,24 @@ namespace GameEngine
         Start = 0x0008,
 
         /// <summary>
+        /// 逻辑服务节点
+        /// </summary>
+        Execute = 0x0010,
+
+        /// <summary>
+        /// 延迟逻辑服务节点
+        /// </summary>
+        LateExecute = 0x0020,
+
+        /// <summary>
         /// 更新服务节点
         /// </summary>
-        Update = 0x0010,
+        Update = 0x0040,
 
         /// <summary>
         /// 延迟更新服务节点
         /// </summary>
-        LateUpdate = 0x0020,
+        LateUpdate = 0x0080,
 
         /// <summary>
         /// 销毁服务节点<br/>
@@ -85,5 +95,10 @@ namespace GameEngine
         /// 供引擎内部流程使用的调度行为
         /// </summary>
         Cleanup = 0x0400,
+
+        /// <summary>
+        /// 释放服务节点
+        /// </summary>
+        Free = 0x1000,
     }
 }

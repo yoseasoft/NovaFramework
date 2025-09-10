@@ -1323,7 +1323,7 @@ namespace NovaEngine.IO.FileSystem
                 {
                     stringIndex = index;
                     byte[] bytes = new byte[byte.MaxValue];
-                    Utility.Random.GetRandomBytes(bytes);
+                    Utility.Random.NextBytes(bytes);
                     stringData = new StringData(0, bytes);
                 }
             }

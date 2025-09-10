@@ -97,24 +97,24 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 对象当前生命周期的运行步骤
+        /// 对象当前生命周期类型
         /// </summary>
-        private LifecycleKeypointType _currentLifecycleRunningStep = LifecycleKeypointType.Unknown;
+        private LifecycleKeypointType _currentLifecycleType = LifecycleKeypointType.Unknown;
 
         /// <summary>
-        /// 对象当前生命周期的调度状态标识
+        /// 对象当前生命周期的运行状态标识
         /// </summary>
-        private bool _currentLifecycleProcessRunning = false;
+        private bool _isCurrentLifecycleTypeRunning = false;
 
         /// <summary>
-        /// 获取对象当前生命周期的运行步骤
+        /// 获取对象当前生命周期类型
         /// </summary>
-        public LifecycleKeypointType CurrentLifecycleRunningStep => _currentLifecycleRunningStep;
+        public LifecycleKeypointType CurrentLifecycleType => _currentLifecycleType;
 
         /// <summary>
-        /// 获取对象当前生命周期的调度状态
+        /// 获取对象当前生命周期的运行状态
         /// </summary>
-        public bool CurrentLifecycleProcessRunning => _currentLifecycleProcessRunning;
+        public bool IsCurrentLifecycleTypeRunning => _isCurrentLifecycleTypeRunning;
 
         /// <summary>
         /// 对象初始化函数接口
@@ -166,9 +166,9 @@ namespace GameEngine
         /// <returns>若对象处于给定生命周期类型的状态中则返回true，否则返回false</returns>
         protected internal bool IsOnTargetLifecycle(LifecycleKeypointType lifecycleType)
         {
-            Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleRunningStep, "Invalid current lifecycle value.");
+            Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
 
-            if (_currentLifecycleRunningStep == lifecycleType)
+            if (_currentLifecycleType == lifecycleType)
             {
                 return true;
             }
@@ -183,9 +183,9 @@ namespace GameEngine
         /// <returns>若对象处于给定生命周期类型的调度中则返回true，否则返回false</returns>
         protected internal bool IsOnSchedulingProcessForTargetLifecycle(LifecycleKeypointType lifecycleType)
         {
-            Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleRunningStep, "Invalid current lifecycle value.");
+            Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
 
-            if (_currentLifecycleRunningStep == lifecycleType && _currentLifecycleProcessRunning)
+            if (_currentLifecycleType == lifecycleType && _isCurrentLifecycleTypeRunning)
             {
                 return true;
             }
@@ -200,21 +200,21 @@ namespace GameEngine
         /// <returns>若对象已完成给定生命周期类型则返回true，否则返回false</returns>
         protected internal bool IsOnTargetLifecycleSchedulingCompleted(LifecycleKeypointType lifecycleType)
         {
-            Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleRunningStep, "Invalid current lifecycle value.");
+            Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
 
-            if (_currentLifecycleRunningStep == lifecycleType && false == _currentLifecycleProcessRunning)
+            if (_currentLifecycleType == lifecycleType && false == _isCurrentLifecycleTypeRunning)
             {
                 return true;
             }
 
-            if (_currentLifecycleRunningStep > lifecycleType)
+            if (_currentLifecycleType > lifecycleType)
             {
                 // 除了work和idle，正常情况下生命周期的调用步骤的按序增长的
                 if (LifecycleKeypointType.Work != lifecycleType && LifecycleKeypointType.Idle != lifecycleType)
                 {
                     return true;
                 }
-                else if (false == _currentLifecycleProcessRunning)
+                else if (false == _isCurrentLifecycleTypeRunning)
                 {
                     return true;
                 }
@@ -230,11 +230,11 @@ namespace GameEngine
         /// <param name="beginType">开始范围类型</param>
         /// <param name="endType">结束范围类型</param>
         /// <returns>若对象处于给定生命周期范围内则返回true，否则返回false</returns>
-        private bool IsInTargetLifecycleRange(LifecycleKeypointType beginType, LifecycleKeypointType endType)
+        private bool IsBetweenLifecycleRange(LifecycleKeypointType beginType, LifecycleKeypointType endType)
         {
-            Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleRunningStep, "Invalid current lifecycle value.");
+            Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
 
-            if (_currentLifecycleRunningStep >= beginType && _currentLifecycleRunningStep < endType)
+            if (_currentLifecycleType >= beginType && _currentLifecycleType < endType)
             {
                 return true;
             }
@@ -248,7 +248,7 @@ namespace GameEngine
         /// <returns>若对象处于给定生命周期状态则返回true，否则返回false</returns>
         protected internal bool IsOnAwakingStatus()
         {
-            return IsInTargetLifecycleRange(LifecycleKeypointType.Awake, LifecycleKeypointType.Destroy);
+            return IsBetweenLifecycleRange(LifecycleKeypointType.Awake, LifecycleKeypointType.Destroy);
         }
 
         /// <summary>
@@ -257,7 +257,7 @@ namespace GameEngine
         /// <returns>若对象处于给定生命周期状态则返回true，否则返回false</returns>
         protected internal bool IsOnStartingStatus()
         {
-            return IsInTargetLifecycleRange(LifecycleKeypointType.Start, LifecycleKeypointType.Destroy);
+            return IsBetweenLifecycleRange(LifecycleKeypointType.Start, LifecycleKeypointType.Destroy);
         }
 
         /// <summary>
@@ -266,7 +266,7 @@ namespace GameEngine
         /// <returns>若对象处于给定生命周期状态则返回true，否则返回false</returns>
         protected internal bool IsOnDestroyingStatus()
         {
-            return IsInTargetLifecycleRange(LifecycleKeypointType.Destroy, LifecycleKeypointType.Free);
+            return IsBetweenLifecycleRange(LifecycleKeypointType.Destroy, LifecycleKeypointType.Free);
         }
 
         /// <summary>
@@ -305,7 +305,7 @@ namespace GameEngine
             {
                 if (false == typeof(CBase).IsAssignableFrom(obj.GetType()))
                 {
-                    Debugger.Warn("The lifecycle changed target object '{0}' must be inherited from 'CBase'.", obj.GetType().FullName);
+                    Debugger.Warn("The lifecycle changed target object '{%t}' must be inherited from 'CBase'.", obj);
                     return;
                 }
             }
@@ -342,7 +342,7 @@ namespace GameEngine
             {
                 if (false == typeof(CBase).IsAssignableFrom(obj.GetType()))
                 {
-                    Debugger.Warn("The lifecycle changed target object '{0}' must be inherited from 'CBase'.", obj.GetType().FullName);
+                    Debugger.Warn("The lifecycle changed target object '{%t}' must be inherited from 'CBase'.", obj);
                     return;
                 }
             }
@@ -377,7 +377,7 @@ namespace GameEngine
             {
                 if (false == typeof(CBase).IsAssignableFrom(obj.GetType()))
                 {
-                    Debugger.Warn("The lifecycle changed target object '{0}' must be inherited from 'CBase'.", obj.GetType().FullName);
+                    Debugger.Warn("The lifecycle changed target object '{%t}' must be inherited from 'CBase'.", obj);
                     return;
                 }
             }
@@ -414,7 +414,7 @@ namespace GameEngine
             {
                 if (false == typeof(CBase).IsAssignableFrom(obj.GetType()))
                 {
-                    Debugger.Warn("The lifecycle changed target object '{0}' must be inherited from 'CBase'.", obj.GetType().FullName);
+                    Debugger.Warn("The lifecycle changed target object '{%t}' must be inherited from 'CBase'.", obj);
                     return;
                 }
             }
@@ -452,13 +452,13 @@ namespace GameEngine
 
             if (NovaEngine.Environment.IsDevelopmentState())
             {
-                if (obj._currentLifecycleRunningStep > lifecycleType)
+                if (obj._currentLifecycleType > lifecycleType)
                 {
                     // 除了work和idle，正常情况下生命周期的调用步骤的按序增长的
                     if (LifecycleKeypointType.Work != lifecycleType && LifecycleKeypointType.Idle != lifecycleType)
                     {
                         Debugger.Error("Invalid object lifecycle changed from '{0}' to '{1}', please checked target method '{2}.{3}' invoke is legal.",
-                                obj._currentLifecycleRunningStep, lifecycleType, obj.GetType().FullName, methodName);
+                                obj._currentLifecycleType, lifecycleType, obj.GetType().FullName, methodName);
                         return;
                     }
                 }
@@ -472,8 +472,8 @@ namespace GameEngine
 
             // Debugger.Info("Changed object '{0}' lifecycle type from '{1}' to '{2}' with target method '{3}'.", obj.GetType().FullName, obj.m_currentLifecycleRunningStep, lifecycleType, methodName);
 
-            obj._currentLifecycleRunningStep = lifecycleType;
-            obj._currentLifecycleProcessRunning = isBefore;
+            obj._currentLifecycleType = lifecycleType;
+            obj._isCurrentLifecycleTypeRunning = isBefore;
         }
 
         /// <summary>

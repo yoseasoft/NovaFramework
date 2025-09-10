@@ -626,6 +626,18 @@ namespace NovaEngine
         }
 
         /// <summary>
+        /// 将指定节点添加到当前节点下作为子节点实例
+        /// </summary>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="childGameObject">子节点对象实例</param>
+        /// <returns>返回源节点对象实例</returns>
+        public static UnityGameObject AddChild(this UnityGameObject self, UnityGameObject childGameObject)
+        {
+            childGameObject.SetParent(self);
+            return self;
+        }
+
+        /// <summary>
         /// 将指定的节点对象设置为当前节点对象的父节点
         /// </summary>
         /// <param name="self">源节点对象实例</param>
