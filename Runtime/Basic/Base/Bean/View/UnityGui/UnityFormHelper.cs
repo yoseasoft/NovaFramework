@@ -26,27 +26,15 @@
 namespace GameEngine
 {
     /// <summary>
-    /// GUI的辅助工具类
+    /// UGUI的窗口对象辅助工具类
     /// </summary>
-    public static class GuiHelper
+    internal static class UnityFormHelper
     {
-        //private static bool _unityGuiEnabled = false;
-        //private static bool _fairyGuiEnabled = false;
-        //private static bool _toolkitGuiEnabled = false;
-
-        /// <summary>
-        /// 工具类启动状态标识
-        /// </summary>
-        private static bool _isOnStartup = false;
-
         /// <summary>
         /// 工具类启动函数
         /// </summary>
         internal static void Startup()
         {
-            _isOnStartup = true;
-
-            FairyGuiHelper.Startup();
         }
 
         /// <summary>
@@ -54,9 +42,6 @@ namespace GameEngine
         /// </summary>
         internal static void Shutdown()
         {
-            FairyGuiHelper.Shutdown();
-
-            _isOnStartup = false;
         }
 
         /// <summary>
@@ -64,9 +49,6 @@ namespace GameEngine
         /// </summary>
         internal static void Update()
         {
-            Debugger.Assert(_isOnStartup, "Invalide status.");
-
-            FairyGuiHelper.Update();
         }
     }
 }

@@ -92,7 +92,7 @@ namespace GameEngine
                 FairyGRoot.inst.touchable = true;
             }
             FairyGRoot.inst.onSizeChanged.Remove(RefreshWindowSize);
-            FairyGuiHelper.RemoveWindowPackage(_settings.pkgName);
+            FairyFormHelper.RemoveWindowPackage(_settings.pkgName);
         }
 
         /// <summary>
@@ -311,7 +311,7 @@ namespace GameEngine
 
             try
             {
-                FairyGuiHelper.CreateContentPaneAsync(_settings.pkgName, _settings.comName, CreateObjectFinish);
+                FairyFormHelper.CreateContentPaneAsync(_settings.pkgName, _settings.comName, CreateObjectFinish);
             }
             catch (System.Exception e)
             {

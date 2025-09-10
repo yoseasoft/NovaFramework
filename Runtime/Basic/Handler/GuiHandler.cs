@@ -89,7 +89,7 @@ namespace GameEngine
             if (false == base.OnInitialize()) return false;
 
             // 启动视图辅助工具类
-            GuiHelper.Startup();
+            FormHelper.Startup();
 
             return true;
         }
@@ -106,7 +106,7 @@ namespace GameEngine
             UnregisterAllViewClasses();
 
             // 关闭视图辅助工具类
-            GuiHelper.Shutdown();
+            FormHelper.Shutdown();
 
             base.OnCleanup();
         }
@@ -119,7 +119,7 @@ namespace GameEngine
             base.OnUpdate();
 
             // 刷新视图辅助工具类
-            GuiHelper.Update();
+            FormHelper.Update();
         }
 
         /// <summary>

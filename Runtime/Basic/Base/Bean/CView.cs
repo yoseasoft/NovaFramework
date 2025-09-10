@@ -311,6 +311,7 @@ namespace GameEngine
         protected void DestroyWindow()
         {
             window?.Dispose();
+            window = null;
         }
 
         #endregion

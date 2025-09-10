@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,9 +26,19 @@
 namespace GameEngine
 {
     /// <summary>
-    /// UnityGUI的辅助工具类
+    /// 窗口对象类型的枚举定义
     /// </summary>
-    public static class UnityGuiHelper
+    internal enum FormType : byte
     {
+        /// <summary>
+        /// 无效
+        /// </summary>
+        Unknown = 0,
+
+        UGUI,
+
+        FairyGUI,
+
+        UIToolkit,
     }
 }

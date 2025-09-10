@@ -23,9 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-#define ON_FAIRYGUI_SUPPORTED   // 开启FairyGUI框架支持
-#define ON_UGUI_SUPPORTED       // 开启UGUI框架支持
-#define ON_UITOOLKIT_SUPPORTED  // 开启UIToolkit框架支持
+using SystemType = System.Type;
+
+using UniTask = Cysharp.Threading.Tasks.UniTask;
 
 namespace GameEngine
 {
@@ -33,9 +33,9 @@ namespace GameEngine
     /// 基于引擎封装的GUI表单结构对象类<br/>
     /// 该对象类为一个抽象基类，通过封装接口操作显示具体的子类UI<br/>
     /// <br/>
-    /// 目前封装的UI包括：FairyGUI, UGUI, UI Toolkit
+    /// 内部对具体的UI框架进行二次封装，例如：FairyGUI, UGUI, UI Toolkit
     /// </summary>
-    public abstract class GuiForm
+    public abstract class Form
     {
         /*
          * 
@@ -54,18 +54,80 @@ namespace GameEngine
          * 
          */
 
+        // protected abstract void OnOpen(object userData);
 
+        // protected abstract void OnResume();
 
-        protected abstract void OnOpen(object userData);
+        // protected abstract void OnReveal();
 
-        protected abstract void OnResume();
+        // protected abstract void OnPause();
 
-        protected abstract void OnReveal();
+        // protected abstract void OnCover();
 
-        protected abstract void OnPause();
+        // protected abstract void OnClose();
 
-        protected abstract void OnCover();
+        /// <summary>
+        /// 窗口对象所属的视图类型
+        /// </summary>
+        protected SystemType _viewType = null;
 
-        protected abstract void OnClose();
+        /// <summary>
+        /// 窗口对象的根节点实例
+        /// </summary>
+        public abstract object Root { get; }
+
+        protected Form(SystemType viewType)
+        {
+            _viewType = viewType;
+        }
+
+        /// <summary>
+        /// 窗口实例的加载接口函数
+        /// </summary>
+        protected internal virtual async UniTask Load()
+        {
+            await UniTask.CompletedTask;
+
+            Debugger.Throw<System.NotImplementedException>();
+        }
+
+        /// <summary>
+        /// 窗口实例的卸载接口函数
+        /// </summary>
+        protected internal virtual void Unload()
+        {
+            Debugger.Throw<System.NotImplementedException>();
+        }
+
+        /// <summary>
+        /// 窗口实例的显示接口函数
+        /// </summary>
+        protected internal virtual void Show()
+        {
+            Debugger.Throw<System.NotImplementedException>();
+        }
+
+        /// <summary>
+        /// 窗口实例的隐藏接口函数
+        /// </summary>
+        protected internal virtual void Hide()
+        {
+            Debugger.Throw<System.NotImplementedException>();
+        }
+
+        #region 窗口对象内部节点访问相关的接口函数
+
+        /// <summary>
+        /// 通过指定路径搜索窗口对象中的节点元素
+        /// </summary>
+        /// <param name="path">节点路径</param>
+        /// <returns>返回查找到的节点对象实例</returns>
+        public virtual object GetChild(string path)
+        {
+            Debugger.Throw<System.NotImplementedException>();
+            return null;
+        }
+
+        #endregion
     }
 }

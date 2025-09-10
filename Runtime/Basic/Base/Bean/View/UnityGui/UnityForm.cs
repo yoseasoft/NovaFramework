@@ -23,12 +23,18 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using SystemType = System.Type;
+
 namespace GameEngine
 {
     /// <summary>
-    /// ToolkitGUI的辅助工具类
+    /// 基于UGUI封装的窗口对象类
     /// </summary>
-    public static class ToolkitGuiHelper
+    public sealed class UnityForm : Form
     {
+        internal UnityForm(SystemType viewType) : base(viewType)
+        { }
+
+        public override object Root => throw new System.NotImplementedException();
     }
 }

@@ -31,20 +31,20 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 
 using SystemType = System.Type;
-using UnityMathf = UnityEngine.Mathf;
 using UnityObject = UnityEngine.Object;
 using UnityTime = UnityEngine.Time;
 using UnityTextAsset = UnityEngine.TextAsset;
 using UnityTexture2D = UnityEngine.Texture2D;
+using UnityMathf = UnityEngine.Mathf;
 
 using FairyGUI;
 
 namespace GameEngine
 {
     /// <summary>
-    /// FairyGUI的辅助工具类
+    /// FairyGUI的窗口对象辅助工具类
     /// </summary>
-    public static class FairyGuiHelper
+    internal static class FairyFormHelper
     {
         /// <summary>
         /// alpha分离贴图额外名称(FairyGUI.UIPackage.cs : LoadAtlas(PackageItem item) 内)

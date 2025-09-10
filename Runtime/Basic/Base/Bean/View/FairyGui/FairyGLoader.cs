@@ -63,7 +63,7 @@ namespace GameEngine
                 return;
             }
 
-            FairyGuiHelper.LoadExternalIcon(url, OnLoadSuccess, OnLoadFailed);
+            FairyFormHelper.LoadExternalIcon(url, OnLoadSuccess, OnLoadFailed);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace GameEngine
             if (isDisposed || string.IsNullOrEmpty(url) || url.Equals(WaitingLoadTag))
                 return;
 
-            string curUrl = url.Split(FairyGuiHelper.SplitSymbol)[0];
+            string curUrl = url.Split(FairyFormHelper.SplitSymbol)[0];
             if (!curUrl.Equals(textureUrl))
                 return;
 
@@ -98,7 +98,7 @@ namespace GameEngine
             if (isDisposed || string.IsNullOrEmpty(url) || url.Equals(WaitingLoadTag))
                 return;
 
-            string curUrl = url.Split(FairyGuiHelper.SplitSymbol)[0];
+            string curUrl = url.Split(FairyFormHelper.SplitSymbol)[0];
             if (!curUrl.Equals(textureUrl))
                 return;
 
