@@ -353,7 +353,7 @@ namespace GameEngine
         /// 指定实体对象实例的组件列表发生变更时触发的回调通知接口函数
         /// </summary>
         /// <param name="entity">实体对象实例</param>
-        protected internal void OnEntityComponentsChanged(CEntity entity)
+        protected internal void OnEntityInternalComponentsChanged(CEntity entity)
         {
             if (false == entity.IsOnStartingStatus() || entity.IsOnDestroyingStatus())
             {

@@ -340,9 +340,9 @@ namespace GameEngine
         /// <summary>
         /// 当前视图对象内部的组件列表发生改变时的回调通知
         /// </summary>
-        protected override sealed void OnComponentsChanged()
+        protected override sealed void OnInternalComponentsChanged()
         {
-            GuiHandler.OnEntityComponentsChanged(this);
+            GuiHandler.OnEntityInternalComponentsChanged(this);
         }
 
         #endregion

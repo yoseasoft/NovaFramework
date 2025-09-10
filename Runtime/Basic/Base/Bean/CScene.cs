@@ -215,13 +215,13 @@ namespace GameEngine
         /// <summary>
         /// 当前场景对象内部的组件列表发生改变时的回调通知
         /// </summary>
-        protected override sealed void OnComponentsChanged()
+        protected override sealed void OnInternalComponentsChanged()
         {
             // 2025-08-13：
             // 目前通知组件变更主要用于更新刷新列表
             // 但场景对象是默认处于刷新激活状态，无需更新
             // 所以此处暂时屏蔽该调用，若该通知有其它意义后可重新打开此通知
-            // SceneHandler.OnEntityComponentsChanged(this);
+            // SceneHandler.OnEntityInternalComponentsChanged(this);
         }
 
         #endregion

@@ -795,7 +795,7 @@ namespace GameEngine
         /// <summary>
         /// 当前实体对象内部的组件列表发生改变时的回调通知
         /// </summary>
-        protected abstract void OnComponentsChanged();
+        protected abstract void OnInternalComponentsChanged();
 
         /// <summary>
         /// 检测当前实体对象是否存在待更新的组件实例
@@ -952,8 +952,8 @@ namespace GameEngine
                 BeanController.Instance.RegBeanLifecycleNotification(AspectBehaviourType.Start, component);
             }
 
-            // 通知组件被改变
-            OnComponentsChanged();
+            // 通知内部组件被改变
+            OnInternalComponentsChanged();
 
             return component;
         }
@@ -1108,8 +1108,8 @@ namespace GameEngine
             // 回收组件实例
             EntityHandler.ReleaseInstance(component);
 
-            // 通知组件被改变
-            OnComponentsChanged();
+            // 通知内部组件被改变
+            OnInternalComponentsChanged();
         }
 
         /// <summary>

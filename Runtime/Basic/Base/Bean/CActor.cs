@@ -198,9 +198,9 @@ namespace GameEngine
         /// <summary>
         /// 当前角色对象内部的组件列表发生改变时的回调通知
         /// </summary>
-        protected override sealed void OnComponentsChanged()
+        protected override sealed void OnInternalComponentsChanged()
         {
-            ActorHandler.OnEntityComponentsChanged(this);
+            ActorHandler.OnEntityInternalComponentsChanged(this);
         }
 
         #endregion
