@@ -131,11 +131,39 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 获取当前节点对象实例的子节点数量
+        /// </summary>
+        /// <returns>返回节点对象实例的子节点数量</returns>
+        public int GetChildCount()
+        {
+            return _childrens?.Count ?? 0;
+        }
+
+        /// <summary>
         /// 从当前节点对象中移除指定目标子节点实例
         /// </summary>
         /// <param name="child">子节点对象实例</param>
         public void RemoveChild(CNode child)
         {
+            if (null == child)
+            {
+                Debugger.Warn(LogGroupTag.Bean, "移除的目标节点对象不能为空，移除节点操作失败！");
+                return;
+            }
+
+            if (false == _childrens.Contains(child))
+            {
+                Debugger.Warn(LogGroupTag.Bean, "移除目标节点对象异常：当前移除的目标节点对象实例‘{%t}’不属于当前节点对象‘{%t}’的子节点元素，无法使用当前实例对目标节点对象进行移除操作。", child, this);
+                return;
+            }
+
+            if (child.GetChildCount() > 0)
+            {
+                // 先移除其所有子节点
+                child.RemoveAllChildrens();
+            }
+
+            ReleaseNode(child);
         }
 
         /// <summary>
