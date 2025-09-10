@@ -127,6 +127,8 @@ namespace GameEngine
         /// <returns>若节点对象实例添加成功则返回true，否则返回false</returns>
         public bool AddChild(CNode child)
         {
+            child._parent = this;
+
             return false;
         }
 
