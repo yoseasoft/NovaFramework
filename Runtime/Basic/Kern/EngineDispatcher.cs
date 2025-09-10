@@ -27,17 +27,12 @@ namespace GameEngine
     /// <summary>
     /// 引擎转发调度管理器类
     /// </summary>
-    public static class EngineDispatcher
+    internal static class EngineDispatcher
     {
-        /// <summary>
-        /// 应用程序响应回调句柄函数声明
-        /// </summary>
-        public delegate void ApplicationResponseHandler(NovaEngine.Application.ProtocolType protocolType);
-
         /// <summary>
         /// 应用程序响应回调句柄函数委托实例
         /// </summary>
-        private static ApplicationResponseHandler _applicationResponseHandler;
+        private static NovaEngine.Application.ApplicationProtocolTransformationHandler _applicationResponseHandler;
 
         /// <summary>
         /// 应用程序正式启动的状态标识
@@ -106,7 +101,7 @@ namespace GameEngine
         /// <summary>
         /// 新增应用程序响应回调的函数接口
         /// </summary>
-        private static void AddApplicationResponseHandler(ApplicationResponseHandler handler)
+        private static void AddApplicationResponseHandler(NovaEngine.Application.ApplicationProtocolTransformationHandler handler)
         {
             _applicationResponseHandler += handler;
         }
@@ -114,7 +109,7 @@ namespace GameEngine
         /// <summary>
         /// 移除应用程序响应回调的函数接口
         /// </summary>
-        private static void RemoveApplicationResponseHandler(ApplicationResponseHandler handler)
+        private static void RemoveApplicationResponseHandler(NovaEngine.Application.ApplicationProtocolTransformationHandler handler)
         {
             _applicationResponseHandler -= handler;
         }
@@ -123,7 +118,7 @@ namespace GameEngine
         /// 应用层启动回调处理的函数接口
         /// </summary>
         /// <param name="handler">响应句柄</param>
-        public static void OnApplicationStartup(ApplicationResponseHandler handler)
+        public static void OnApplicationStartup(NovaEngine.Application.ApplicationProtocolTransformationHandler handler)
         {
             Debugger.Assert(false == _isOnStartup);
 
@@ -136,7 +131,7 @@ namespace GameEngine
         /// 应用层关闭回调处理的函数接口
         /// </summary>
         /// <param name="handler">响应句柄</param>
-        public static void OnApplicationShutdown(ApplicationResponseHandler handler)
+        public static void OnApplicationShutdown(NovaEngine.Application.ApplicationProtocolTransformationHandler handler)
         {
             Debugger.Assert(_isOnStartup);
 

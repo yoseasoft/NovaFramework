@@ -22,8 +22,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
 using SystemAssembly = System.Reflection.Assembly;
 using SystemMemoryStream = System.IO.MemoryStream;
@@ -67,6 +65,24 @@ namespace GameEngine
         public static void Restart()
         {
             Loader.CodeLoader.Restart();
+        }
+
+        /// <summary>
+        /// 应用层启动回调处理的函数接口
+        /// </summary>
+        /// <param name="handler">响应句柄</param>
+        public static void OnApplicationStartup(NovaEngine.Application.ApplicationProtocolTransformationHandler handler)
+        {
+            EngineDispatcher.OnApplicationStartup(handler);
+        }
+
+        /// <summary>
+        /// 应用层关闭回调处理的函数接口
+        /// </summary>
+        /// <param name="handler">响应句柄</param>
+        public static void OnApplicationShutdown(NovaEngine.Application.ApplicationProtocolTransformationHandler handler)
+        {
+            EngineDispatcher.OnApplicationShutdown(handler);
         }
 
         /// <summary>

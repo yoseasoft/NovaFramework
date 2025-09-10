@@ -28,7 +28,7 @@ namespace GameEngine
     /// <summary>
     /// 切面行为辅助工具类，针对引擎所有回调接口的切面行为进行统一配置管理
     /// </summary>
-    public static class AspectBehaviour
+    internal static class AspectBehaviour
     {
         /// <summary>
         /// 原型对象扩展接口自动绑定的默认行为类型
@@ -112,11 +112,11 @@ namespace GameEngine
         private readonly static int AspectMethodHashCode_Cleanup        = AspectBehaviourType_Cleanup.GetHashCode();
 
         /// <summary>
-        /// 获取切面行为类型的名称<br/>
+        /// 通过切面行为类型获取与之对应的行为名称<br/>
         /// 其实可以直接用枚举类型转换名称，但由于该类型调用比较频繁，出于性能考虑，定义了该接口函数
         /// </summary>
         /// <param name="behaviourType">切面行为类型实例</param>
-        /// <returns>返回切面行为类型名称</returns>
+        /// <returns>返回切面行为名称</returns>
         public static string GetAspectBehaviourName(AspectBehaviourType behaviourType)
         {
             return behaviourType switch
@@ -133,6 +133,35 @@ namespace GameEngine
                 AspectBehaviourType.Shutdown    => AspectBehaviourType_Shutdown,
                 AspectBehaviourType.Cleanup     => AspectBehaviourType_Cleanup,
                 _ => AspectBehaviourType_Unknown,
+            };
+        }
+
+        /// <summary>
+        /// 通过行为名称获取与之对应的切面行为类型<br/>
+        /// 一直在探索性能更好的转换方式：
+        /// <para>1. 通过字符串直接转换枚举类型；</para>
+        /// <para>2. 通过<see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>映射的方式管理名称与类型的对应关系；</para>
+        /// </summary>
+        /// <param name="name">行为名称</param>
+        /// <returns>返回切面行为类型</returns>
+        public static AspectBehaviourType GetAspectBehaviourType(string name)
+        {
+            int hash = name.GetHashCode();
+
+            return hash switch
+            {
+                int when AspectMethodHashCode_Initialize    == hash => AspectBehaviourType.Initialize,
+                int when AspectMethodHashCode_Startup       == hash => AspectBehaviourType.Startup,
+                int when AspectMethodHashCode_Awake         == hash => AspectBehaviourType.Awake,
+                int when AspectMethodHashCode_Start         == hash => AspectBehaviourType.Start,
+                int when AspectMethodHashCode_Execute       == hash => AspectBehaviourType.Execute,
+                int when AspectMethodHashCode_LateExecute   == hash => AspectBehaviourType.LateExecute,
+                int when AspectMethodHashCode_Update        == hash => AspectBehaviourType.Update,
+                int when AspectMethodHashCode_LateUpdate    == hash => AspectBehaviourType.LateUpdate,
+                int when AspectMethodHashCode_Destroy       == hash => AspectBehaviourType.Destroy,
+                int when AspectMethodHashCode_Shutdown      == hash => AspectBehaviourType.Shutdown,
+                int when AspectMethodHashCode_Cleanup       == hash => AspectBehaviourType.Cleanup,
+                _ => AspectBehaviourType.Unknown,
             };
         }
     }

@@ -227,14 +227,14 @@ namespace GameEngine
         /// 检测当前对象的生命周期是否处于指定的范围区间内<br/>
         /// 区间范围的取值为大于等于起始范围类型，小于结束范围类型
         /// </summary>
-        /// <param name="beginType">开始范围类型</param>
-        /// <param name="endType">结束范围类型</param>
+        /// <param name="began">开始范围类型</param>
+        /// <param name="ended">结束范围类型</param>
         /// <returns>若对象处于给定生命周期范围内则返回true，否则返回false</returns>
-        private bool IsBetweenLifecycleRange(LifecycleKeypointType beginType, LifecycleKeypointType endType)
+        private bool IsTheLifecycleTypeBetweenOfTargetRanges(LifecycleKeypointType began, LifecycleKeypointType ended)
         {
             Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
 
-            if (_currentLifecycleType >= beginType && _currentLifecycleType < endType)
+            if (_currentLifecycleType >= began && _currentLifecycleType < ended)
             {
                 return true;
             }
@@ -248,7 +248,7 @@ namespace GameEngine
         /// <returns>若对象处于给定生命周期状态则返回true，否则返回false</returns>
         protected internal bool IsOnAwakingStatus()
         {
-            return IsBetweenLifecycleRange(LifecycleKeypointType.Awake, LifecycleKeypointType.Destroy);
+            return IsTheLifecycleTypeBetweenOfTargetRanges(LifecycleKeypointType.Awake, LifecycleKeypointType.Destroy);
         }
 
         /// <summary>
@@ -257,7 +257,7 @@ namespace GameEngine
         /// <returns>若对象处于给定生命周期状态则返回true，否则返回false</returns>
         protected internal bool IsOnStartingStatus()
         {
-            return IsBetweenLifecycleRange(LifecycleKeypointType.Start, LifecycleKeypointType.Destroy);
+            return IsTheLifecycleTypeBetweenOfTargetRanges(LifecycleKeypointType.Start, LifecycleKeypointType.Destroy);
         }
 
         /// <summary>
@@ -266,7 +266,7 @@ namespace GameEngine
         /// <returns>若对象处于给定生命周期状态则返回true，否则返回false</returns>
         protected internal bool IsOnDestroyingStatus()
         {
-            return IsBetweenLifecycleRange(LifecycleKeypointType.Destroy, LifecycleKeypointType.Free);
+            return IsTheLifecycleTypeBetweenOfTargetRanges(LifecycleKeypointType.Destroy, LifecycleKeypointType.Free);
         }
 
         /// <summary>
