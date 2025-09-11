@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,32 +22,35 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine
+using SystemDateTime = System.DateTime;
+using UnityGUILayout = UnityEngine.GUILayout;
+
+namespace GameEngine.Profiler.Debugging
 {
     /// <summary>
-    /// 游戏层接口调用封装类，用于对远程游戏业务提供的函数访问接口进行方法封装
+    /// 游戏调试器组件对象类，用于定义调试器对象的基础属性及访问操作函数
     /// </summary>
-    internal static partial class GameCall
+    public sealed partial class DebuggerComponent
     {
         /// <summary>
-        /// 运行游戏前的准备工作处理函数
+        /// 定时模块统计信息展示窗口的对象类
         /// </summary>
-        private static void BeforeRunGame()
+        private sealed class RuntimeTimerModuleStatInformationWindow : RuntimeModuleStatInformationWindow<TimerStatModule>
         {
-            if (GameMacros.DEBUGGING_PROFILER_WINDOW_AUTO_MOUNTED)
+            protected override void OnDrawStatInfoTitle()
             {
-                NovaEngine.AppEntry.RegisterComponent<Profiler.Debugging.DebuggerComponent>(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
+                UnityGUILayout.Label("<b>Timer Name</b>");
+                UnityGUILayout.Label("<b>Blink Count</b>", UnityGUILayout.Width(80f));
+                UnityGUILayout.Label("<b>Create Time</b>", UnityGUILayout.Width(160f));
             }
-        }
 
-        /// <summary>
-        /// 停止游戏后的准备工作处理函数
-        /// </summary>
-        private static void AfterStopGame()
-        {
-            if (GameMacros.DEBUGGING_PROFILER_WINDOW_AUTO_MOUNTED)
+            protected override void OnDrawStatInfoContent(IStatInfo info)
             {
-                NovaEngine.AppEntry.UnregisterComponent(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
+                TimerStatInfo tsi = info as TimerStatInfo;
+
+                UnityGUILayout.Label(tsi.TimerName);
+                UnityGUILayout.Label(tsi.BlinkCount.ToString(), UnityGUILayout.Width(80f));
+                UnityGUILayout.Label(StatDateTimeToString(tsi.CreateTime), UnityGUILayout.Width(160f));
             }
         }
     }

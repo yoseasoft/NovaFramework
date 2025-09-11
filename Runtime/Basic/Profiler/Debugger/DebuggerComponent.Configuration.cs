@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,33 +22,23 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine
+namespace GameEngine.Profiler.Debugging
 {
     /// <summary>
-    /// 游戏层接口调用封装类，用于对远程游戏业务提供的函数访问接口进行方法封装
+    /// 游戏调试器组件对象类，用于定义调试器对象的基础属性及访问操作函数
     /// </summary>
-    internal static partial class GameCall
+    public sealed partial class DebuggerComponent
     {
         /// <summary>
-        /// 运行游戏前的准备工作处理函数
+        /// 调试环境的配置参数管理对象类，内部定义类仅用于调试组件的配置参数<br/>
+        /// 注意，此处定义的均为常量参数，动态配置参数由<see cref="GameEngine.Debug.IDebuggerSetting"/>进行管理
         /// </summary>
-        private static void BeforeRunGame()
+        private static class Configuration
         {
-            if (GameMacros.DEBUGGING_PROFILER_WINDOW_AUTO_MOUNTED)
-            {
-                NovaEngine.AppEntry.RegisterComponent<Profiler.Debugging.DebuggerComponent>(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
-            }
-        }
-
-        /// <summary>
-        /// 停止游戏后的准备工作处理函数
-        /// </summary>
-        private static void AfterStopGame()
-        {
-            if (GameMacros.DEBUGGING_PROFILER_WINDOW_AUTO_MOUNTED)
-            {
-                NovaEngine.AppEntry.UnregisterComponent(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
-            }
+            /// <summary>
+            /// 关于模块统计信息的最大显示条目数
+            /// </summary>
+            public const int ModuleStatInfoMaxShowCount = 300;
         }
     }
 }

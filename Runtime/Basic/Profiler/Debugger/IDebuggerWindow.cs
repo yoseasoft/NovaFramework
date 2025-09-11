@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,33 +22,44 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine
+namespace GameEngine.Profiler.Debugging
 {
     /// <summary>
-    /// 游戏层接口调用封装类，用于对远程游戏业务提供的函数访问接口进行方法封装
+    /// 调试器窗口抽象接口类，对调试器窗口的打开，关闭及绘制等操作定义统一的访问调度接口函数
     /// </summary>
-    internal static partial class GameCall
+    public interface IDebuggerWindow
     {
         /// <summary>
-        /// 运行游戏前的准备工作处理函数
+        /// 调试器窗口初始化操作函数
         /// </summary>
-        private static void BeforeRunGame()
-        {
-            if (GameMacros.DEBUGGING_PROFILER_WINDOW_AUTO_MOUNTED)
-            {
-                NovaEngine.AppEntry.RegisterComponent<Profiler.Debugging.DebuggerComponent>(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
-            }
-        }
+        /// <param name="args">参数列表</param>
+        void Initialize(params object[] args);
 
         /// <summary>
-        /// 停止游戏后的准备工作处理函数
+        /// 调试器窗口清理操作函数
         /// </summary>
-        private static void AfterStopGame()
-        {
-            if (GameMacros.DEBUGGING_PROFILER_WINDOW_AUTO_MOUNTED)
-            {
-                NovaEngine.AppEntry.UnregisterComponent(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
-            }
-        }
+        void Cleanup();
+
+        /// <summary>
+        /// 进入调试器窗口
+        /// </summary>
+        void OnEnter();
+
+        /// <summary>
+        /// 退出调试器窗口
+        /// </summary>
+        void OnExit();
+
+        /// <summary>
+        /// 调试器窗口轮询刷新函数
+        /// </summary>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位</param>
+        void OnUpdate(float elapseSeconds, float realElapseSeconds);
+
+        /// <summary>
+        /// 调试器窗口绘制函数
+        /// </summary>
+        void OnDraw();
     }
 }

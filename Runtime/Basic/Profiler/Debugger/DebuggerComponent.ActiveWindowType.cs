@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,33 +22,39 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine
+using System.Collections.Generic;
+
+namespace GameEngine.Profiler.Debugging
 {
     /// <summary>
-    /// 游戏层接口调用封装类，用于对远程游戏业务提供的函数访问接口进行方法封装
+    /// 游戏调试器组件对象类，用于定义调试器对象的基础属性及访问操作函数
     /// </summary>
-    internal static partial class GameCall
+    public sealed partial class DebuggerComponent
     {
         /// <summary>
-        /// 运行游戏前的准备工作处理函数
+        /// 调试器激活窗口类型状态的枚举定义
         /// </summary>
-        private static void BeforeRunGame()
+        public enum ActiveWindowType : byte
         {
-            if (GameMacros.DEBUGGING_PROFILER_WINDOW_AUTO_MOUNTED)
-            {
-                NovaEngine.AppEntry.RegisterComponent<Profiler.Debugging.DebuggerComponent>(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
-            }
-        }
+            /// <summary>
+            /// 总是打开
+            /// </summary>
+            AlwaysOpen = 0,
 
-        /// <summary>
-        /// 停止游戏后的准备工作处理函数
-        /// </summary>
-        private static void AfterStopGame()
-        {
-            if (GameMacros.DEBUGGING_PROFILER_WINDOW_AUTO_MOUNTED)
-            {
-                NovaEngine.AppEntry.UnregisterComponent(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
-            }
+            /// <summary>
+            /// 仅在开发模式时打开
+            /// </summary>
+            OnlyOpenWhenDevelopment,
+
+            /// <summary>
+            /// 仅在编辑器中打开
+            /// </summary>
+            OnlyOpenInEditor,
+
+            /// <summary>
+            /// 总是关闭
+            /// </summary>
+            AlwaysClose,
         }
     }
 }
