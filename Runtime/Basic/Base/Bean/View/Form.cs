@@ -72,9 +72,19 @@ namespace GameEngine
         protected SystemType _viewType = null;
 
         /// <summary>
-        /// 窗口对象的根节点实例
+        /// 窗口对象载入完成状态标识
+        /// </summary>
+        protected bool _isLoaded = false;
+
+        /// <summary>
+        /// 获取窗口对象的根节点实例
         /// </summary>
         public abstract object Root { get; }
+
+        /// <summary>
+        /// 获取窗口对象当前载入状态
+        /// </summary>
+        public bool IsLoaded => _isLoaded;
 
         protected Form(SystemType viewType)
         {

@@ -73,6 +73,7 @@ namespace GameEngine
 
             if (null != _window.contentPane)
             {
+                _isLoaded = true;
                 _window.contentPane.visible = false;
 
                 // 编辑器下显示名字
@@ -90,6 +91,8 @@ namespace GameEngine
         {
             _window?.Dispose();
             _window = null;
+
+            _isLoaded = false;
         }
 
         /// <summary>

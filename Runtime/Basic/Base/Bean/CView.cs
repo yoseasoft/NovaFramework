@@ -60,27 +60,17 @@ namespace GameEngine
         /// <summary>
         /// 视图对象挂载的窗口实例
         /// </summary>
-        protected BaseWindow window;
+        protected Form _form;
 
         /// <summary>
-        /// 视图对象的模型根节点
+        /// 窗口组件的根节点对象实例
         /// </summary>
-        public FairyGComponent ContentPane => window?.contentPane;
-
-        /// <summary>
-        /// 窗口设置
-        /// </summary>
-        protected virtual WindowSettings Settings => new(GetType().Name);
+        public object Window => _form?.Root;
 
         /// <summary>
         /// 取消异步任务
         /// </summary>
         public System.Threading.CancellationTokenSource CancellationTokenSource { get; } = new();
-
-        /// <summary>
-        /// 是否自动准备
-        /// </summary>
-        protected virtual bool IsAutoReady => true;
 
         /// <summary>
         /// 是否准备好显示界面
@@ -90,7 +80,7 @@ namespace GameEngine
         /// <summary>
         /// 视图对象模型加载成功状态标识
         /// </summary>
-        public bool IsLoaded => ContentPane != null;
+        public bool IsLoaded => _form?.IsLoaded ?? false;
 
         /// <summary>
         /// 获取当前视图对象实例的关闭状态
@@ -215,8 +205,7 @@ namespace GameEngine
 
             OnStart();
 
-            if (IsAutoReady)
-                IsReady = true;
+            IsReady = true;
         }
 
         /// <summary>
@@ -276,33 +265,19 @@ namespace GameEngine
         /// <summary>
         /// 加载当前视图对象的窗口实例
         /// </summary>
-        public async UniTask CreateWindow()
+        internal async UniTask CreateWindow()
         {
-            window = new BaseWindow(Settings);
-            window.Show();
+            _form = FormHelper.CreateForm(FormType.FairyGUI, GetType());
 
-            await window.WaitLoadAsync();
-
-            if (ContentPane != null)
-            {
-                ContentPane.visible = false;
-
-                // 编辑器下显示名字
-                if (NovaEngine.Environment.IsDevelopmentState())
-                {
-                    window.gameObjectName = $"{GetType().Name}(Pkg:{Settings.pkgName}, Com:{Settings.comName})";
-                }
-            }
+            await _form.Load();
         }
 
         /// <summary>
         /// 显示当前视图对象的窗口实例
         /// </summary>
-        public void ShowWindow()
+        internal void ShowWindow()
         {
-            // if (ContentPane != null) ContentPane.visible = true;
-
-            window.ShowContentPane();
+            _form?.Show();
         }
 
         /// <summary>
@@ -310,8 +285,8 @@ namespace GameEngine
         /// </summary>
         protected void DestroyWindow()
         {
-            window?.Dispose();
-            window = null;
+            _form?.Unload();
+            _form = null;
         }
 
         #endregion
@@ -323,15 +298,15 @@ namespace GameEngine
         /// </summary>
         /// <param name="path">节点路径</param>
         /// <returns>返回给定路径对应的节点对象实例，若不存在则返回null</returns>
-        public object FindChildByPath(string path)
+        public object GetChild(string path)
         {
-            if (null == ContentPane)
+            if (null == _form || false == _form.IsLoaded)
             {
-                Debugger.Warn("The view's '{0}' root GameObject instance must be non-null.", GetType().FullName);
+                Debugger.Warn(LogGroupTag.Bean, "获取窗口控件实例异常：当前视图对象‘{%t}’的窗口组件尚未载入完成，无法对窗口内部的控件实例进行访问。", this);
                 return null;
             }
 
-            return ContentPane.GetChildByPath(path);
+            return _form.GetChild(path);
         }
 
         #endregion
