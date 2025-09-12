@@ -588,11 +588,11 @@ namespace GameEngine
         /// <summary>
         /// 消息通道类的后缀名称常量定义
         /// </summary>
-        private const string MESSAGE_CHANNEL_CLASS_SUFFIX_NAME = "MessageChannel";
+        private const string MessageChannelClassUnifiedStandardName = "MessageChannel";
         /// <summary>
         /// 消息解析器类的后缀名称常量定义
         /// </summary>
-        private const string MESSAGE_TRANSLATOR_CLASS_SUFFIX_NAME = "MessageTranslator";
+        private const string MessageTranslatorClassUnifiedStandardName = "MessageTranslator";
 
         /// <summary>
         /// 网络消息通道对象类型的加载接口函数
@@ -611,8 +611,8 @@ namespace GameEngine
 
                 string enumName = enumValue.ToString();
                 // 类名反射时需要包含命名空间前缀
-                string channelClassName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, MESSAGE_CHANNEL_CLASS_SUFFIX_NAME);
-                string translatorClassName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, MESSAGE_TRANSLATOR_CLASS_SUFFIX_NAME);
+                string channelClassName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, MessageChannelClassUnifiedStandardName);
+                string translatorClassName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, MessageTranslatorClassUnifiedStandardName);
 
                 SystemType channelClassType = SystemType.GetType(channelClassName);
                 SystemType translatorClassType = SystemType.GetType(translatorClassName);

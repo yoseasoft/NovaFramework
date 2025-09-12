@@ -164,7 +164,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 加载器类的后缀名称常量定义
         /// </summary>
-        private const string CODE_LOADER_CLASS_SUFFIX_NAME = "CodeLoader";
+        private const string CodeLoaderClassUnifiedStandardName = "CodeLoader";
 
         /// <summary>
         /// 通用类加载器类的反射管理容器列表
@@ -188,7 +188,7 @@ namespace GameEngine.Loader
                 }
 
                 // 类名反射时需要包含命名空间前缀
-                string loaderName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, CODE_LOADER_CLASS_SUFFIX_NAME);
+                string loaderName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, CodeLoaderClassUnifiedStandardName);
 
                 SystemType loaderType = SystemType.GetType(loaderName);
                 if (null == loaderType)

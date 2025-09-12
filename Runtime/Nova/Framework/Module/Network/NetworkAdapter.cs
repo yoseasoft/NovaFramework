@@ -44,7 +44,7 @@ namespace NovaEngine
         /// <summary>
         /// 网络服务的后缀名称
         /// </summary>
-        private const string NETWORK_SERVICE_CLASS_SUFFIX_NAME = "Service";
+        private const string NetworkServiceClassUnifiedStandardName = "Service";
 
         /// <summary>
         /// 网络服务对象注册管理容器
@@ -75,7 +75,7 @@ namespace NovaEngine
                 }
 
                 // 类名反射时需要包含命名空间前缀
-                string serviceName = Utility.Text.Format("{%s}.{%s}{%s}", namespaceTag, enumName, NETWORK_SERVICE_CLASS_SUFFIX_NAME);
+                string serviceName = Utility.Text.Format("{%s}.{%s}{%s}", namespaceTag, enumName, NetworkServiceClassUnifiedStandardName);
 
                 SystemType serviceType = SystemType.GetType(serviceName);
                 if (null == serviceType)

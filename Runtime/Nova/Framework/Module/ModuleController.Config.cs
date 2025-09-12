@@ -74,7 +74,7 @@ namespace NovaEngine
             /// <summary>
             /// 模块类的后缀名称常量定义
             /// </summary>
-            private const string MODULE_CLASS_SUFFIX_NAME = "Module";
+            private const string ModuleClassUnifiedStandardName = "Module";
 
             /// <summary>
             /// 模块对象配置信息
@@ -108,7 +108,7 @@ namespace NovaEngine
 
                     string enumName = enumValue.ToString();
                     // 类名反射时需要包含命名空间前缀
-                    string moduleName = Utility.Text.Format("{0}.{1}{2}", namespace_tag, enumName, MODULE_CLASS_SUFFIX_NAME);
+                    string moduleName = Utility.Text.Format("{0}.{1}{2}", namespace_tag, enumName, ModuleClassUnifiedStandardName);
 
                     SystemType moduleType = SystemType.GetType(moduleName);
                     if (null == moduleType)

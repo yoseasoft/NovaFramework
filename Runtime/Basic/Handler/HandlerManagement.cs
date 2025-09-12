@@ -37,7 +37,7 @@ namespace GameEngine
         /// <summary>
         /// 加载器类的后缀名称常量定义
         /// </summary>
-        private const string HANDLER_CLASS_SUFFIX_NAME = "Handler";
+        private const string HandlerClassUnifiedStandardName = "Handler";
 
         /// <summary>
         /// 句柄定义类型的管理容器
@@ -95,7 +95,7 @@ namespace GameEngine
                 }
 
                 // 类名反射时需要包含命名空间前缀
-                string handlerName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, HANDLER_CLASS_SUFFIX_NAME);
+                string handlerName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, HandlerClassUnifiedStandardName);
 
                 SystemType handlerType = SystemType.GetType(handlerName);
                 if (null == handlerType)

@@ -42,7 +42,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器管理类的后缀名称常量定义
         /// </summary>
-        private const string CONTROLLER_CLASS_SUFFIX_NAME = "Controller";
+        private const string ControllerClassUnifiedStandardName = "Controller";
 
         /// <summary>
         /// 控制器对象类的类型映射管理容器
@@ -83,7 +83,7 @@ namespace GameEngine
                 }
 
                 // 类名反射时需要包含命名空间前缀
-                string controllerName = NovaEngine.Utility.Text.Format("{%s}.{%s}{%s}", namespaceTag, enumName, CONTROLLER_CLASS_SUFFIX_NAME);
+                string controllerName = NovaEngine.Utility.Text.Format("{%s}.{%s}{%s}", namespaceTag, enumName, ControllerClassUnifiedStandardName);
 
                 SystemType controllerType = SystemType.GetType(controllerName);
                 if (null == controllerType)

@@ -71,7 +71,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 绑定处理服务类的后缀名称常量定义
         /// </summary>
-        private const string BINDING_PROCESSOR_CLASS_SUFFIX_NAME = "BindingProcessor";
+        private const string BindingProcessorClassUnifiedStandardName = "BindingProcessor";
 
         /// <summary>
         /// 初始化绑定处理服务类相关回调函数的管理容器
@@ -99,7 +99,7 @@ namespace GameEngine.Loader
                 }
 
                 // 类名反射时需要包含命名空间前缀
-                string processorName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, BINDING_PROCESSOR_CLASS_SUFFIX_NAME);
+                string processorName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, BindingProcessorClassUnifiedStandardName);
 
                 SystemType processorType = SystemType.GetType(processorName);
                 if (null == processorType)
