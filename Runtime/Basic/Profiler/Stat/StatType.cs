@@ -38,8 +38,8 @@ namespace GameEngine.Profiler.Statistics
         Timer,
         Network,
         Object,
-        Actor,
         Scene,
+        Actor,
         View,
     }
 }

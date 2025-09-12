@@ -35,9 +35,9 @@ namespace GameEngine.Profiler.Debugging
     public sealed partial class DebuggerComponent
     {
         /// <summary>
-        /// 通用模式的模块统计信息展示窗口的对象类
+        /// 通用模式的统计模块信息展示窗口的对象类
         /// </summary>
-        public abstract class RuntimeModuleStatInformationWindow<T> : BaseScrollableDebuggerWindow where T : Statistics.IStat
+        public abstract class RuntimeStatInformationWindow<T> : BaseScrollableDebuggerWindow where T : Statistics.IStat
         {
             protected override void OnDrawScrollableWindow()
             {

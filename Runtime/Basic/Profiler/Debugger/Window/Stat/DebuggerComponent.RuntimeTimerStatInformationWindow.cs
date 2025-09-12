@@ -33,28 +33,24 @@ namespace GameEngine.Profiler.Debugging
     public sealed partial class DebuggerComponent
     {
         /// <summary>
-        /// 网络模块统计信息展示窗口的对象类
+        /// 定时统计模块信息展示窗口的对象类
         /// </summary>
-        private sealed class RuntimeNetworkModuleStatInformationWindow : RuntimeModuleStatInformationWindow<Statistics.NetworkStat>
+        private sealed class RuntimeTimerStatInformationWindow : RuntimeStatInformationWindow<Statistics.TimerStat>
         {
             protected override void OnDrawStatInfoTitle()
             {
-                UnityGUILayout.Label("<b>URL</b>");
-                UnityGUILayout.Label("<b>Connect Time</b>", UnityGUILayout.Width(120f));
-                UnityGUILayout.Label("<b>Disconnect Time</b>", UnityGUILayout.Width(120f));
-                UnityGUILayout.Label("<b>Send Data</b>", UnityGUILayout.Width(80f));
-                UnityGUILayout.Label("<b>Recv Data</b>", UnityGUILayout.Width(80f));
+                UnityGUILayout.Label("<b>Timer Name</b>");
+                UnityGUILayout.Label("<b>Blink Count</b>", UnityGUILayout.Width(80f));
+                UnityGUILayout.Label("<b>Create Time</b>", UnityGUILayout.Width(160f));
             }
 
             protected override void OnDrawStatInfoContent(Statistics.IStatInfo info)
             {
-                Statistics.NetworkStatInfo networkStatInfo = info as Statistics.NetworkStatInfo;
+                Statistics.TimerStatInfo timerStatInfo = info as Statistics.TimerStatInfo;
 
-                UnityGUILayout.Label(networkStatInfo.Url);
-                UnityGUILayout.Label(networkStatInfo.ConnectTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"), UnityGUILayout.Width(120f));
-                UnityGUILayout.Label(networkStatInfo.ConnectTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"), UnityGUILayout.Width(120f));
-                UnityGUILayout.Label(NovaEngine.Utility.Text.Format("{0}({1})", GetByteLengthString(networkStatInfo.SendSize), networkStatInfo.SendCount.ToString()), UnityGUILayout.Width(80f));
-                UnityGUILayout.Label(NovaEngine.Utility.Text.Format("{0}({1})", GetByteLengthString(networkStatInfo.RecvSize), networkStatInfo.RecvCount.ToString()), UnityGUILayout.Width(80f));
+                UnityGUILayout.Label(timerStatInfo.TimerName);
+                UnityGUILayout.Label(timerStatInfo.BlinkCount.ToString(), UnityGUILayout.Width(80f));
+                UnityGUILayout.Label(StatDateTimeToString(timerStatInfo.CreateTime), UnityGUILayout.Width(160f));
             }
         }
     }

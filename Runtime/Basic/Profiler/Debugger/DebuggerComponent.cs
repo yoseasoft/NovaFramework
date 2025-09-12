@@ -123,11 +123,11 @@ namespace GameEngine.Profiler.Debugging
         private RuntimeMemoryInformationWindow<UnityFont> _runtimeMemoryFontInformationWindow = new RuntimeMemoryInformationWindow<UnityFont>();
         private RuntimeMemoryInformationWindow<UnityTextAsset> _runtimeMemoryTextAssetInformationWindow = new RuntimeMemoryInformationWindow<UnityTextAsset>();
         private RuntimeMemoryInformationWindow<UnityScriptableObject> _runtimeMemoryScriptableObjectInformationWindow = new RuntimeMemoryInformationWindow<UnityScriptableObject>();
-        private RuntimeTimerModuleStatInformationWindow _runtimeTimerModuleStatInformationWindow = new RuntimeTimerModuleStatInformationWindow();
-        private RuntimeNetworkModuleStatInformationWindow _runtimeNetworkModuleStatInformationWindow = new RuntimeNetworkModuleStatInformationWindow();
-        private RuntimeSceneModuleStatInformationWindow _runtimeSceneModuleStatInformationWindow = new RuntimeSceneModuleStatInformationWindow();
-        private RuntimeActorModuleStatInformationWindow _runtimeActorModuleStatInformationWindow = new RuntimeActorModuleStatInformationWindow();
-        private RuntimeViewModuleStatInformationWindow _runtimeViewModuleStatInformationWindow = new RuntimeViewModuleStatInformationWindow();
+        private RuntimeTimerStatInformationWindow _runtimeTimerStatInformationWindow = new RuntimeTimerStatInformationWindow();
+        private RuntimeNetworkStatInformationWindow _runtimeNetworkStatInformationWindow = new RuntimeNetworkStatInformationWindow();
+        private RuntimeSceneStatInformationWindow _runtimeSceneStatInformationWindow = new RuntimeSceneStatInformationWindow();
+        private RuntimeActorStatInformationWindow _runtimeActorStatInformationWindow = new RuntimeActorStatInformationWindow();
+        private RuntimeViewStatInformationWindow _runtimeViewStatInformationWindow = new RuntimeViewStatInformationWindow();
         private SettingsWindow _settingsWindow = new SettingsWindow();
         private OperationsWindow _operationsWindow = new OperationsWindow();
 
@@ -230,11 +230,11 @@ namespace GameEngine.Profiler.Debugging
             RegisterDebuggerWindow("Profiler/Memory/Font", _runtimeMemoryFontInformationWindow);
             RegisterDebuggerWindow("Profiler/Memory/TextAsset", _runtimeMemoryTextAssetInformationWindow);
             RegisterDebuggerWindow("Profiler/Memory/ScriptableObject", _runtimeMemoryScriptableObjectInformationWindow);
-            RegisterDebuggerWindow("Profiler/Module/Timer", _runtimeTimerModuleStatInformationWindow);
-            RegisterDebuggerWindow("Profiler/Module/Network", _runtimeNetworkModuleStatInformationWindow);
-            RegisterDebuggerWindow("Profiler/Module/Scene", _runtimeSceneModuleStatInformationWindow);
-            RegisterDebuggerWindow("Profiler/Module/Object", _runtimeActorModuleStatInformationWindow);
-            RegisterDebuggerWindow("Profiler/Module/View", _runtimeViewModuleStatInformationWindow);
+            RegisterDebuggerWindow("Profiler/Statistic/Timer", _runtimeTimerStatInformationWindow);
+            RegisterDebuggerWindow("Profiler/Statistic/Network", _runtimeNetworkStatInformationWindow);
+            RegisterDebuggerWindow("Profiler/Statistic/Scene", _runtimeSceneStatInformationWindow);
+            RegisterDebuggerWindow("Profiler/Statistic/Actor", _runtimeActorStatInformationWindow);
+            RegisterDebuggerWindow("Profiler/Statistic/View", _runtimeViewStatInformationWindow);
             RegisterDebuggerWindow("Other/Settings", _settingsWindow);
             RegisterDebuggerWindow("Other/Operations", _operationsWindow);
 

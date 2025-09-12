@@ -33,28 +33,28 @@ namespace GameEngine.Profiler.Debugging
     public sealed partial class DebuggerComponent
     {
         /// <summary>
-        /// 视图模块统计信息展示窗口的对象类
+        /// 场景统计模块信息展示窗口的对象类
         /// </summary>
-        private sealed class RuntimeViewModuleStatInformationWindow : RuntimeModuleStatInformationWindow<Statistics.ViewStat>
+        private sealed class RuntimeSceneStatInformationWindow : RuntimeStatInformationWindow<Statistics.SceneStat>
         {
             protected override void OnDrawStatInfoTitle()
             {
                 UnityGUILayout.Label("<b>Index</b>");
-                UnityGUILayout.Label("<b>View Name</b>", UnityGUILayout.Width(120f));
-                UnityGUILayout.Label("<b>Create Time</b>", UnityGUILayout.Width(160f));
-                UnityGUILayout.Label("<b>Close Time</b>", UnityGUILayout.Width(160f));
+                UnityGUILayout.Label("<b>Scene Name</b>", UnityGUILayout.Width(120f));
+                UnityGUILayout.Label("<b>Enter Time</b>", UnityGUILayout.Width(160f));
+                UnityGUILayout.Label("<b>Exit Time</b>", UnityGUILayout.Width(160f));
                 UnityGUILayout.Label("<b>Hash Code</b>", UnityGUILayout.Width(80f));
             }
 
             protected override void OnDrawStatInfoContent(Statistics.IStatInfo info)
             {
-                Statistics.ViewStatInfo viewStatInfo = info as Statistics.ViewStatInfo;
+                Statistics.SceneStatInfo sceneStatInfo = info as Statistics.SceneStatInfo;
 
-                UnityGUILayout.Label(viewStatInfo.Uid.ToString());
-                UnityGUILayout.Label(viewStatInfo.ViewName, UnityGUILayout.Width(120f));
-                UnityGUILayout.Label(StatDateTimeToString(viewStatInfo.CreateTime), UnityGUILayout.Width(160f));
-                UnityGUILayout.Label(StatDateTimeToString(viewStatInfo.CloseTime), UnityGUILayout.Width(160f));
-                UnityGUILayout.Label(viewStatInfo.HashCode.ToString());
+                UnityGUILayout.Label(sceneStatInfo.Uid.ToString());
+                UnityGUILayout.Label(sceneStatInfo.SceneName, UnityGUILayout.Width(120f));
+                UnityGUILayout.Label(StatDateTimeToString(sceneStatInfo.EnterTime), UnityGUILayout.Width(160f));
+                UnityGUILayout.Label(StatDateTimeToString(sceneStatInfo.ExitTime), UnityGUILayout.Width(160f));
+                UnityGUILayout.Label(sceneStatInfo.HashCode.ToString());
             }
         }
     }

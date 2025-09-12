@@ -33,24 +33,28 @@ namespace GameEngine.Profiler.Debugging
     public sealed partial class DebuggerComponent
     {
         /// <summary>
-        /// 定时模块统计信息展示窗口的对象类
+        /// 角色统计模块信息展示窗口的对象类
         /// </summary>
-        private sealed class RuntimeTimerModuleStatInformationWindow : RuntimeModuleStatInformationWindow<Statistics.TimerStat>
+        private sealed class RuntimeActorStatInformationWindow : RuntimeStatInformationWindow<Statistics.ActorStat>
         {
             protected override void OnDrawStatInfoTitle()
             {
-                UnityGUILayout.Label("<b>Timer Name</b>");
-                UnityGUILayout.Label("<b>Blink Count</b>", UnityGUILayout.Width(80f));
+                UnityGUILayout.Label("<b>Index</b>");
+                UnityGUILayout.Label("<b>Actor Name</b>", UnityGUILayout.Width(120f));
                 UnityGUILayout.Label("<b>Create Time</b>", UnityGUILayout.Width(160f));
+                UnityGUILayout.Label("<b>Release Time</b>", UnityGUILayout.Width(160f));
+                UnityGUILayout.Label("<b>Hash Code</b>", UnityGUILayout.Width(80f));
             }
 
             protected override void OnDrawStatInfoContent(Statistics.IStatInfo info)
             {
-                Statistics.TimerStatInfo timerStatInfo = info as Statistics.TimerStatInfo;
+                Statistics.ActorStatInfo actorStatInfo = info as Statistics.ActorStatInfo;
 
-                UnityGUILayout.Label(timerStatInfo.TimerName);
-                UnityGUILayout.Label(timerStatInfo.BlinkCount.ToString(), UnityGUILayout.Width(80f));
-                UnityGUILayout.Label(StatDateTimeToString(timerStatInfo.CreateTime), UnityGUILayout.Width(160f));
+                UnityGUILayout.Label(actorStatInfo.Uid.ToString());
+                UnityGUILayout.Label(actorStatInfo.ActorName, UnityGUILayout.Width(120f));
+                UnityGUILayout.Label(StatDateTimeToString(actorStatInfo.CreateTime), UnityGUILayout.Width(160f));
+                UnityGUILayout.Label(StatDateTimeToString(actorStatInfo.ReleaseTime), UnityGUILayout.Width(160f));
+                UnityGUILayout.Label(actorStatInfo.HashCode.ToString());
             }
         }
     }

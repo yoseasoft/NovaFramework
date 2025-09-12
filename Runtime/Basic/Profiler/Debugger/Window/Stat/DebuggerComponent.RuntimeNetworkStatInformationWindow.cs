@@ -33,28 +33,28 @@ namespace GameEngine.Profiler.Debugging
     public sealed partial class DebuggerComponent
     {
         /// <summary>
-        /// 对象模块统计信息展示窗口的对象类
+        /// 网络统计模块信息展示窗口的对象类
         /// </summary>
-        private sealed class RuntimeActorModuleStatInformationWindow : RuntimeModuleStatInformationWindow<Statistics.ActorStat>
+        private sealed class RuntimeNetworkStatInformationWindow : RuntimeStatInformationWindow<Statistics.NetworkStat>
         {
             protected override void OnDrawStatInfoTitle()
             {
-                UnityGUILayout.Label("<b>Index</b>");
-                UnityGUILayout.Label("<b>Actor Name</b>", UnityGUILayout.Width(120f));
-                UnityGUILayout.Label("<b>Create Time</b>", UnityGUILayout.Width(160f));
-                UnityGUILayout.Label("<b>Release Time</b>", UnityGUILayout.Width(160f));
-                UnityGUILayout.Label("<b>Hash Code</b>", UnityGUILayout.Width(80f));
+                UnityGUILayout.Label("<b>URL</b>");
+                UnityGUILayout.Label("<b>Connect Time</b>", UnityGUILayout.Width(120f));
+                UnityGUILayout.Label("<b>Disconnect Time</b>", UnityGUILayout.Width(120f));
+                UnityGUILayout.Label("<b>Send Data</b>", UnityGUILayout.Width(80f));
+                UnityGUILayout.Label("<b>Recv Data</b>", UnityGUILayout.Width(80f));
             }
 
             protected override void OnDrawStatInfoContent(Statistics.IStatInfo info)
             {
-                Statistics.ActorStatInfo actorStatInfo = info as Statistics.ActorStatInfo;
+                Statistics.NetworkStatInfo networkStatInfo = info as Statistics.NetworkStatInfo;
 
-                UnityGUILayout.Label(actorStatInfo.Uid.ToString());
-                UnityGUILayout.Label(actorStatInfo.ActorName, UnityGUILayout.Width(120f));
-                UnityGUILayout.Label(StatDateTimeToString(actorStatInfo.CreateTime), UnityGUILayout.Width(160f));
-                UnityGUILayout.Label(StatDateTimeToString(actorStatInfo.ReleaseTime), UnityGUILayout.Width(160f));
-                UnityGUILayout.Label(actorStatInfo.HashCode.ToString());
+                UnityGUILayout.Label(networkStatInfo.Url);
+                UnityGUILayout.Label(networkStatInfo.ConnectTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"), UnityGUILayout.Width(120f));
+                UnityGUILayout.Label(networkStatInfo.ConnectTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"), UnityGUILayout.Width(120f));
+                UnityGUILayout.Label(NovaEngine.Utility.Text.Format("{0}({1})", GetByteLengthString(networkStatInfo.SendSize), networkStatInfo.SendCount.ToString()), UnityGUILayout.Width(80f));
+                UnityGUILayout.Label(NovaEngine.Utility.Text.Format("{0}({1})", GetByteLengthString(networkStatInfo.RecvSize), networkStatInfo.RecvCount.ToString()), UnityGUILayout.Width(80f));
             }
         }
     }

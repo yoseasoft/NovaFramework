@@ -50,13 +50,13 @@ namespace GameEngine.Profiler.Statistics
         public const int ObjectCreate = ObjectCode + 0x01;
         public const int ObjectRelease = ObjectCode + 0x02;
 
-        private const int ActorCode = (int) StatType.Actor * StatCodingInterval;
-        public const int ActorCreate = ActorCode + 0x01;
-        public const int ActorRelease = ActorCode + 0x02;
-
         private const int SceneCode = (int) StatType.Scene * StatCodingInterval;
         public const int SceneEnter = SceneCode + 0x01;
         public const int SceneExit = SceneCode + 0x02;
+
+        private const int ActorCode = (int) StatType.Actor * StatCodingInterval;
+        public const int ActorCreate = ActorCode + 0x01;
+        public const int ActorRelease = ActorCode + 0x02;
 
         private const int ViewCode = (int) StatType.View * StatCodingInterval;
         public const int ViewCreate = ViewCode + 0x01;
