@@ -35,7 +35,7 @@ namespace GameEngine.Profiler.Debugging
         /// <summary>
         /// 场景模块统计信息展示窗口的对象类
         /// </summary>
-        private sealed class RuntimeSceneModuleStatInformationWindow : RuntimeModuleStatInformationWindow<SceneStatModule>
+        private sealed class RuntimeSceneModuleStatInformationWindow : RuntimeModuleStatInformationWindow<Statistics.SceneStat>
         {
             protected override void OnDrawStatInfoTitle()
             {
@@ -46,15 +46,15 @@ namespace GameEngine.Profiler.Debugging
                 UnityGUILayout.Label("<b>Hash Code</b>", UnityGUILayout.Width(80f));
             }
 
-            protected override void OnDrawStatInfoContent(IStatInfo info)
+            protected override void OnDrawStatInfoContent(Statistics.IStatInfo info)
             {
-                SceneStatInfo ssi = info as SceneStatInfo;
+                Statistics.SceneStatInfo sceneStatInfo = info as Statistics.SceneStatInfo;
 
-                UnityGUILayout.Label(ssi.Uid.ToString());
-                UnityGUILayout.Label(ssi.SceneName, UnityGUILayout.Width(120f));
-                UnityGUILayout.Label(StatDateTimeToString(ssi.EnterTime), UnityGUILayout.Width(160f));
-                UnityGUILayout.Label(StatDateTimeToString(ssi.ExitTime), UnityGUILayout.Width(160f));
-                UnityGUILayout.Label(ssi.HashCode.ToString());
+                UnityGUILayout.Label(sceneStatInfo.Uid.ToString());
+                UnityGUILayout.Label(sceneStatInfo.SceneName, UnityGUILayout.Width(120f));
+                UnityGUILayout.Label(StatDateTimeToString(sceneStatInfo.EnterTime), UnityGUILayout.Width(160f));
+                UnityGUILayout.Label(StatDateTimeToString(sceneStatInfo.ExitTime), UnityGUILayout.Width(160f));
+                UnityGUILayout.Label(sceneStatInfo.HashCode.ToString());
             }
         }
     }

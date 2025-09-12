@@ -153,9 +153,6 @@ namespace GameEngine
             // 添加句柄相关指令事件代理
             HandlerDispatchedCommandAgent commandAgent = new HandlerDispatchedCommandAgent();
             NovaEngine.ModuleController.AddCommandAgent(HandlerDispatchedCommandAgent.COMMAND_AGENT_NAME, commandAgent);
-
-            // 初始化句柄的统计模块
-            InitAllStatModules();
         }
 
         /// <summary>
@@ -165,9 +162,6 @@ namespace GameEngine
         {
             // 清理所有的句柄实例缓存
             CleanupAllHandlerCaches();
-
-            // 清理句柄的统计模块
-            CleanupAllStatModules();
 
             // 遍历执行清理函数
             // foreach (KeyValuePair<int, IHandler> pair in _handlerRegisterObjects.Reverse())

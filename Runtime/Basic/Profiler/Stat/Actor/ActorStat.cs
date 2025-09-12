@@ -27,28 +27,24 @@ using System.Collections.Generic;
 
 using SystemDateTime = System.DateTime;
 
-namespace GameEngine
+namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
-    /// 定时统计模块，对定时模块对象提供数据统计所需的接口函数
+    /// 角色统计模块，对角色模块对象提供数据统计所需的接口函数
     /// </summary>
-    public sealed class TimerStatModule : HandlerStatSingleton<TimerStatModule>, IStatModule
+    internal sealed class ActorStat : StatSingleton<ActorStat>, IStat
     {
-        public const int ON_TIMER_STARTUP_CALL = 1;
-        public const int ON_TIMER_FINISHED_CALL = 2;
-        public const int ON_TIMER_DISPATCHED_CALL = 3;
-
         /// <summary>
-        /// 定时任务统计信息容器列表
+        /// 角色访问统计信息容器列表
         /// </summary>
-        private IDictionary<int, TimerStatInfo> _timerStatInfos = null;
+        private IList<ActorStatInfo> _actorStatInfos = null;
 
         /// <summary>
         /// 初始化统计模块实例的回调接口
         /// </summary>
         protected override void OnInitialize()
         {
-            _timerStatInfos = new Dictionary<int, TimerStatInfo>();
+            _actorStatInfos = new List<ActorStatInfo>();
         }
 
         /// <summary>
@@ -56,8 +52,8 @@ namespace GameEngine
         /// </summary>
         protected override void OnCleanup()
         {
-            _timerStatInfos.Clear();
-            _timerStatInfos = null;
+            _actorStatInfos.Clear();
+            _actorStatInfos = null;
         }
 
         /// <summary>
@@ -65,61 +61,60 @@ namespace GameEngine
         /// </summary>
         public void Dump()
         {
-            _timerStatInfos.Clear();
+            _actorStatInfos.Clear();
         }
 
         /// <summary>
-        /// 获取当前所有定时任务的统计信息
+        /// 获取当前所有角色访问的统计信息
         /// </summary>
-        /// <returns>返回所有的定时任务统计信息</returns>
+        /// <returns>返回所有的操作访问统计信息</returns>
         public IList<IStatInfo> GetAllStatInfos()
         {
             List<IStatInfo> results = new List<IStatInfo>();
-            results.AddRange(_timerStatInfos.Values);
+            results.AddRange(_actorStatInfos);
 
             return results;
         }
 
-        [IStatModule.OnStatModuleRegisterCallback(ON_TIMER_STARTUP_CALL)]
-        private void OnTimerStartup(int session, string name)
+        [IStat.OnStatFunctionRegister(StatCode.ActorCreate)]
+        private void OnActorCreate(CActor obj)
         {
-            TimerStatInfo info = null;
-            if (false == _timerStatInfos.TryGetValue(session, out info))
-            {
-                info = new TimerStatInfo(session);
-                _timerStatInfos.Add(session, info);
-            }
+            ActorStatInfo info = null;
 
-            info.TimerName = name??NovaEngine.Definition.CString.Unknown;
+            int uid = _actorStatInfos.Count + 1;
+
+            info = new ActorStatInfo(uid, obj.Name, obj.GetHashCode());
             info.CreateTime = SystemDateTime.UtcNow;
-            info.LastUseTime = SystemDateTime.UtcNow;
-            info.ScheduleCount++;
+            _actorStatInfos.Add(info);
         }
 
-        [IStatModule.OnStatModuleRegisterCallback(ON_TIMER_FINISHED_CALL)]
-        private void OnTimerFinished(int session)
+        [IStat.OnStatFunctionRegister(StatCode.ActorRelease)]
+        private void OnActorRelease(CActor obj)
         {
-            TimerStatInfo info = null;
-            if (false == _timerStatInfos.TryGetValue(session, out info))
+            ActorStatInfo info = null;
+            if (false == TryGetActorStatInfoByHashCode(obj.GetHashCode(), out info))
             {
-                Debugger.Warn("Could not found any timer stat info with session '{0}', finished it failed.", session);
+                Debugger.Warn("Could not found any actor stat info with name '{0}', exited it failed.", obj.Name);
                 return;
             }
 
-            info.FinishedCount++;
+            info.ReleaseTime = SystemDateTime.UtcNow;
         }
 
-        [IStatModule.OnStatModuleRegisterCallback(ON_TIMER_DISPATCHED_CALL)]
-        private void OnTimerDispatched(int session)
+        private bool TryGetActorStatInfoByHashCode(int hashCode, out ActorStatInfo info)
         {
-            TimerStatInfo info = null;
-            if (false == _timerStatInfos.TryGetValue(session, out info))
+            for (int n = _actorStatInfos.Count - 1; n >= 0; --n)
             {
-                Debugger.Warn("Could not found any timer stat info with session '{0}', dispatched it failed.", session);
-                return;
+                ActorStatInfo found = _actorStatInfos[n];
+                if (found.HashCode == hashCode)
+                {
+                    info = found;
+                    return true;
+                }
             }
 
-            info.BlinkCount++;
+            info = null;
+            return false;
         }
     }
 }

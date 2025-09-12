@@ -27,18 +27,13 @@ using System.Collections.Generic;
 
 using SystemDateTime = System.DateTime;
 
-namespace GameEngine
+namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
     /// 网络统计模块，对网络模块对象提供数据统计所需的接口函数
     /// </summary>
-    public sealed class NetworkStatModule : HandlerStatSingleton<NetworkStatModule>, IStatModule
+    internal sealed class NetworkStat : StatSingleton<NetworkStat>, IStat
     {
-        public const int ON_NETWORK_CONNECTED_CALL = 1;
-        public const int ON_NETWORK_DISCONNECTED_CALL = 2;
-        public const int ON_NETWORK_SEND_DATA_CALL = 3;
-        public const int ON_NETWORK_RECV_DATA_CALL = 4;
-
         /// <summary>
         /// 网络数据统计信息容器列表
         /// </summary>
@@ -81,11 +76,9 @@ namespace GameEngine
             return results;
         }
 
-        [IStatModule.OnStatModuleRegisterCallback(ON_NETWORK_CONNECTED_CALL)]
+        [IStat.OnStatFunctionRegister(StatCode.NetworkConnected)]
         private void OnConnected(int session)
         {
-            if (!IsActivated()) return;
-
             NetworkStatInfo info = null;
             if (false == Instance._networkStatInfos.TryGetValue(session, out info))
             {
@@ -96,11 +89,9 @@ namespace GameEngine
             info.ConnectTime = SystemDateTime.UtcNow;
         }
 
-        [IStatModule.OnStatModuleRegisterCallback(ON_NETWORK_DISCONNECTED_CALL)]
+        [IStat.OnStatFunctionRegister(StatCode.NetworkDisconnected)]
         private void OnDisconnected(int session)
         {
-            if (!IsActivated()) return;
-
             NetworkStatInfo info = null;
             if (false == Instance._networkStatInfos.TryGetValue(session, out info))
             {
@@ -111,11 +102,9 @@ namespace GameEngine
             info.DisconnectTime = SystemDateTime.UtcNow;
         }
 
-        [IStatModule.OnStatModuleRegisterCallback(ON_NETWORK_SEND_DATA_CALL)]
+        [IStat.OnStatFunctionRegister(StatCode.NetworkSend)]
         private void OnSendData(int session, int dataSize)
         {
-            if (!IsActivated()) return;
-
             NetworkStatInfo info = null;
             if (false == Instance._networkStatInfos.TryGetValue(session, out info))
             {
@@ -127,11 +116,9 @@ namespace GameEngine
             info.SendSize += dataSize;
         }
 
-        [IStatModule.OnStatModuleRegisterCallback(ON_NETWORK_RECV_DATA_CALL)]
+        [IStat.OnStatFunctionRegister(StatCode.NetworkRecv)]
         private void OnRecvData(int session, int dataSize)
         {
-            if (!IsActivated()) return;
-
             NetworkStatInfo info = null;
             if (false == Instance._networkStatInfos.TryGetValue(session, out info))
             {

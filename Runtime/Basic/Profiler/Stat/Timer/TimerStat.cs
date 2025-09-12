@@ -27,27 +27,24 @@ using System.Collections.Generic;
 
 using SystemDateTime = System.DateTime;
 
-namespace GameEngine
+namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
-    /// 视图统计模块，对视图模块对象提供数据统计所需的接口函数
+    /// 定时统计模块，对定时模块对象提供数据统计所需的接口函数
     /// </summary>
-    public sealed class ViewStatModule : HandlerStatSingleton<ViewStatModule>, IStatModule
+    internal sealed class TimerStat : StatSingleton<TimerStat>, IStat
     {
-        public const int ON_VIEW_CREATE_CALL = 1;
-        public const int ON_VIEW_CLOSE_CALL = 2;
-
         /// <summary>
-        /// 视图访问统计信息容器列表
+        /// 定时任务统计信息容器列表
         /// </summary>
-        private IList<ViewStatInfo> _viewStatInfos = null;
+        private IDictionary<int, TimerStatInfo> _timerStatInfos = null;
 
         /// <summary>
         /// 初始化统计模块实例的回调接口
         /// </summary>
         protected override void OnInitialize()
         {
-            _viewStatInfos = new List<ViewStatInfo>();
+            _timerStatInfos = new Dictionary<int, TimerStatInfo>();
         }
 
         /// <summary>
@@ -55,8 +52,8 @@ namespace GameEngine
         /// </summary>
         protected override void OnCleanup()
         {
-            _viewStatInfos.Clear();
-            _viewStatInfos = null;
+            _timerStatInfos.Clear();
+            _timerStatInfos = null;
         }
 
         /// <summary>
@@ -64,60 +61,61 @@ namespace GameEngine
         /// </summary>
         public void Dump()
         {
-            _viewStatInfos.Clear();
+            _timerStatInfos.Clear();
         }
 
         /// <summary>
-        /// 获取当前所有视图访问的统计信息
+        /// 获取当前所有定时任务的统计信息
         /// </summary>
-        /// <returns>返回所有的操作访问统计信息</returns>
+        /// <returns>返回所有的定时任务统计信息</returns>
         public IList<IStatInfo> GetAllStatInfos()
         {
             List<IStatInfo> results = new List<IStatInfo>();
-            results.AddRange(_viewStatInfos);
+            results.AddRange(_timerStatInfos.Values);
 
             return results;
         }
 
-        [IStatModule.OnStatModuleRegisterCallback(ON_VIEW_CREATE_CALL)]
-        private void OnViewCreate(CView view)
+        [IStat.OnStatFunctionRegister(StatCode.TimerStartup)]
+        private void OnTimerStartup(int session, string name)
         {
-            ViewStatInfo info = null;
+            TimerStatInfo info = null;
+            if (false == _timerStatInfos.TryGetValue(session, out info))
+            {
+                info = new TimerStatInfo(session);
+                _timerStatInfos.Add(session, info);
+            }
 
-            int uid = _viewStatInfos.Count + 1;
-
-            info = new ViewStatInfo(uid, view.Name, view.GetHashCode());
+            info.TimerName = name??NovaEngine.Definition.CString.Unknown;
             info.CreateTime = SystemDateTime.UtcNow;
-            _viewStatInfos.Add(info);
+            info.LastUseTime = SystemDateTime.UtcNow;
+            info.ScheduleCount++;
         }
 
-        [IStatModule.OnStatModuleRegisterCallback(ON_VIEW_CLOSE_CALL)]
-        private void OnViewClose(CView view)
+        [IStat.OnStatFunctionRegister(StatCode.TimerFinished)]
+        private void OnTimerFinished(int session)
         {
-            ViewStatInfo info = null;
-            if (false == TryGetViewStatInfoByHashCode(view.GetHashCode(), out info))
+            TimerStatInfo info = null;
+            if (false == _timerStatInfos.TryGetValue(session, out info))
             {
-                Debugger.Warn("Could not found any view stat info with name '{0}', exited it failed.", view.Name);
+                Debugger.Warn("Could not found any timer stat info with session '{0}', finished it failed.", session);
                 return;
             }
 
-            info.CloseTime = SystemDateTime.UtcNow;
+            info.FinishedCount++;
         }
 
-        private bool TryGetViewStatInfoByHashCode(int hashCode, out ViewStatInfo info)
+        [IStat.OnStatFunctionRegister(StatCode.TimerDispatched)]
+        private void OnTimerDispatched(int session)
         {
-            for (int n = _viewStatInfos.Count - 1; n >= 0; --n)
+            TimerStatInfo info = null;
+            if (false == _timerStatInfos.TryGetValue(session, out info))
             {
-                ViewStatInfo found = _viewStatInfos[n];
-                if (found.HashCode == hashCode)
-                {
-                    info = found;
-                    return true;
-                }
+                Debugger.Warn("Could not found any timer stat info with session '{0}', dispatched it failed.", session);
+                return;
             }
 
-            info = null;
-            return false;
+            info.BlinkCount++;
         }
     }
 }

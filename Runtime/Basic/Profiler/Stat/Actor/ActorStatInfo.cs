@@ -25,7 +25,7 @@
 
 using SystemDateTime = System.DateTime;
 
-namespace GameEngine
+namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
     /// 角色模块统计项对象类，对角色模块访问记录进行单项统计的数据单元

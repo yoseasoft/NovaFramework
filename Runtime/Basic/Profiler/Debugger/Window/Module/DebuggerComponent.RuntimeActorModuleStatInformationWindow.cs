@@ -35,7 +35,7 @@ namespace GameEngine.Profiler.Debugging
         /// <summary>
         /// 对象模块统计信息展示窗口的对象类
         /// </summary>
-        private sealed class RuntimeActorModuleStatInformationWindow : RuntimeModuleStatInformationWindow<ActorStatModule>
+        private sealed class RuntimeActorModuleStatInformationWindow : RuntimeModuleStatInformationWindow<Statistics.ActorStat>
         {
             protected override void OnDrawStatInfoTitle()
             {
@@ -46,15 +46,15 @@ namespace GameEngine.Profiler.Debugging
                 UnityGUILayout.Label("<b>Hash Code</b>", UnityGUILayout.Width(80f));
             }
 
-            protected override void OnDrawStatInfoContent(IStatInfo info)
+            protected override void OnDrawStatInfoContent(Statistics.IStatInfo info)
             {
-                ActorStatInfo osi = info as ActorStatInfo;
+                Statistics.ActorStatInfo actorStatInfo = info as Statistics.ActorStatInfo;
 
-                UnityGUILayout.Label(osi.Uid.ToString());
-                UnityGUILayout.Label(osi.ActorName, UnityGUILayout.Width(120f));
-                UnityGUILayout.Label(StatDateTimeToString(osi.CreateTime), UnityGUILayout.Width(160f));
-                UnityGUILayout.Label(StatDateTimeToString(osi.ReleaseTime), UnityGUILayout.Width(160f));
-                UnityGUILayout.Label(osi.HashCode.ToString());
+                UnityGUILayout.Label(actorStatInfo.Uid.ToString());
+                UnityGUILayout.Label(actorStatInfo.ActorName, UnityGUILayout.Width(120f));
+                UnityGUILayout.Label(StatDateTimeToString(actorStatInfo.CreateTime), UnityGUILayout.Width(160f));
+                UnityGUILayout.Label(StatDateTimeToString(actorStatInfo.ReleaseTime), UnityGUILayout.Width(160f));
+                UnityGUILayout.Label(actorStatInfo.HashCode.ToString());
             }
         }
     }

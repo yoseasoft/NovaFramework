@@ -24,7 +24,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine
+namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
     /// 业务框架统计信息接口类，用于对一个统计信息对象的类作标记，在类型判断或反射检测时以该标记作为依据

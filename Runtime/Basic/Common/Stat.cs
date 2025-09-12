@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,36 +23,39 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemDateTime = System.DateTime;
-using UnityGUILayout = UnityEngine.GUILayout;
-
-namespace GameEngine.Profiler.Debugging
+namespace GameEngine
 {
     /// <summary>
-    /// 游戏调试器组件对象类，用于定义调试器对象的基础属性及访问操作函数
+    /// 用于框架内部的统计调用，集中控制业务统计相关的调度转发流程<br/>
+    /// <br/>
+    /// 注意：当正式版发布时，将忽略所有的统计信息
     /// </summary>
-    public sealed partial class DebuggerComponent
+    internal static class Stat
     {
         /// <summary>
-        /// 定时模块统计信息展示窗口的对象类
+        /// 统计模块启动函数
         /// </summary>
-        private sealed class RuntimeTimerModuleStatInformationWindow : RuntimeModuleStatInformationWindow<Statistics.TimerStat>
+        public static void Startup()
         {
-            protected override void OnDrawStatInfoTitle()
-            {
-                UnityGUILayout.Label("<b>Timer Name</b>");
-                UnityGUILayout.Label("<b>Blink Count</b>", UnityGUILayout.Width(80f));
-                UnityGUILayout.Label("<b>Create Time</b>", UnityGUILayout.Width(160f));
-            }
+            Profiler.Statistics.StatisticalCenter.Startup();
+        }
 
-            protected override void OnDrawStatInfoContent(Statistics.IStatInfo info)
-            {
-                Statistics.TimerStatInfo timerStatInfo = info as Statistics.TimerStatInfo;
+        /// <summary>
+        /// 统计模块关闭函数
+        /// </summary>
+        public static void Shutdown()
+        {
+            Profiler.Statistics.StatisticalCenter.Shutdown();
+        }
 
-                UnityGUILayout.Label(timerStatInfo.TimerName);
-                UnityGUILayout.Label(timerStatInfo.BlinkCount.ToString(), UnityGUILayout.Width(80f));
-                UnityGUILayout.Label(StatDateTimeToString(timerStatInfo.CreateTime), UnityGUILayout.Width(160f));
-            }
+        /// <summary>
+        /// 统计模块处理调用函数
+        /// </summary>
+        /// <param name="funcType">功能类型</param>
+        /// <param name="args">参数列表</param>
+        public static void Call(int funcType, params object[] args)
+        {
+            Profiler.Statistics.StatisticalCenter.Call(funcType, args);
         }
     }
 }

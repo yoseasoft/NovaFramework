@@ -35,7 +35,7 @@ namespace GameEngine.Profiler.Debugging
         /// <summary>
         /// 网络模块统计信息展示窗口的对象类
         /// </summary>
-        private sealed class RuntimeNetworkModuleStatInformationWindow : RuntimeModuleStatInformationWindow<NetworkStatModule>
+        private sealed class RuntimeNetworkModuleStatInformationWindow : RuntimeModuleStatInformationWindow<Statistics.NetworkStat>
         {
             protected override void OnDrawStatInfoTitle()
             {
@@ -46,15 +46,15 @@ namespace GameEngine.Profiler.Debugging
                 UnityGUILayout.Label("<b>Recv Data</b>", UnityGUILayout.Width(80f));
             }
 
-            protected override void OnDrawStatInfoContent(IStatInfo info)
+            protected override void OnDrawStatInfoContent(Statistics.IStatInfo info)
             {
-                NetworkStatInfo nsi = info as NetworkStatInfo;
+                Statistics.NetworkStatInfo networkStatInfo = info as Statistics.NetworkStatInfo;
 
-                UnityGUILayout.Label(nsi.Url);
-                UnityGUILayout.Label(nsi.ConnectTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"), UnityGUILayout.Width(120f));
-                UnityGUILayout.Label(nsi.ConnectTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"), UnityGUILayout.Width(120f));
-                UnityGUILayout.Label(NovaEngine.Utility.Text.Format("{0}({1})", GetByteLengthString(nsi.SendSize), nsi.SendCount.ToString()), UnityGUILayout.Width(80f));
-                UnityGUILayout.Label(NovaEngine.Utility.Text.Format("{0}({1})", GetByteLengthString(nsi.RecvSize), nsi.RecvCount.ToString()), UnityGUILayout.Width(80f));
+                UnityGUILayout.Label(networkStatInfo.Url);
+                UnityGUILayout.Label(networkStatInfo.ConnectTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"), UnityGUILayout.Width(120f));
+                UnityGUILayout.Label(networkStatInfo.ConnectTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"), UnityGUILayout.Width(120f));
+                UnityGUILayout.Label(NovaEngine.Utility.Text.Format("{0}({1})", GetByteLengthString(networkStatInfo.SendSize), networkStatInfo.SendCount.ToString()), UnityGUILayout.Width(80f));
+                UnityGUILayout.Label(NovaEngine.Utility.Text.Format("{0}({1})", GetByteLengthString(networkStatInfo.RecvSize), networkStatInfo.RecvCount.ToString()), UnityGUILayout.Width(80f));
             }
         }
     }

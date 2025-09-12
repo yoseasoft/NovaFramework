@@ -27,16 +27,13 @@ using System.Collections.Generic;
 
 using SystemDateTime = System.DateTime;
 
-namespace GameEngine
+namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
     /// 场景统计模块，对场景模块对象提供数据统计所需的接口函数
     /// </summary>
-    public sealed class SceneStatModule : HandlerStatSingleton<SceneStatModule>, IStatModule
+    internal sealed class SceneStat : StatSingleton<SceneStat>, IStat
     {
-        public const int ON_SCENE_ENTER_CALL = 1;
-        public const int ON_SCENE_EXIT_CALL = 2;
-
         /// <summary>
         /// 场景访问统计信息容器列表
         /// </summary>
@@ -79,7 +76,7 @@ namespace GameEngine
             return results;
         }
 
-        [IStatModule.OnStatModuleRegisterCallback(ON_SCENE_ENTER_CALL)]
+        [IStat.OnStatFunctionRegister(StatCode.SceneEnter)]
         private void OnSceneEnter(CScene scene)
         {
             SceneStatInfo info = null;
@@ -91,7 +88,7 @@ namespace GameEngine
             _sceneStatInfos.Add(info);
         }
 
-        [IStatModule.OnStatModuleRegisterCallback(ON_SCENE_EXIT_CALL)]
+        [IStat.OnStatFunctionRegister(StatCode.SceneExit)]
         private void OnSceneExit(CScene scene)
         {
             SceneStatInfo info = null;

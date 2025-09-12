@@ -27,27 +27,24 @@ using System.Collections.Generic;
 
 using SystemDateTime = System.DateTime;
 
-namespace GameEngine
+namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
-    /// 角色统计模块，对角色模块对象提供数据统计所需的接口函数
+    /// 视图统计模块，对视图模块对象提供数据统计所需的接口函数
     /// </summary>
-    public sealed class ActorStatModule : HandlerStatSingleton<ActorStatModule>, IStatModule
+    internal sealed class ViewStat : StatSingleton<ViewStat>, IStat
     {
-        public const int ON_ACTOR_CREATE_CALL = 1;
-        public const int ON_ACTOR_RELEASE_CALL = 2;
-
         /// <summary>
-        /// 角色访问统计信息容器列表
+        /// 视图访问统计信息容器列表
         /// </summary>
-        private IList<ActorStatInfo> _actorStatInfos = null;
+        private IList<ViewStatInfo> _viewStatInfos = null;
 
         /// <summary>
         /// 初始化统计模块实例的回调接口
         /// </summary>
         protected override void OnInitialize()
         {
-            _actorStatInfos = new List<ActorStatInfo>();
+            _viewStatInfos = new List<ViewStatInfo>();
         }
 
         /// <summary>
@@ -55,8 +52,8 @@ namespace GameEngine
         /// </summary>
         protected override void OnCleanup()
         {
-            _actorStatInfos.Clear();
-            _actorStatInfos = null;
+            _viewStatInfos.Clear();
+            _viewStatInfos = null;
         }
 
         /// <summary>
@@ -64,51 +61,51 @@ namespace GameEngine
         /// </summary>
         public void Dump()
         {
-            _actorStatInfos.Clear();
+            _viewStatInfos.Clear();
         }
 
         /// <summary>
-        /// 获取当前所有角色访问的统计信息
+        /// 获取当前所有视图访问的统计信息
         /// </summary>
         /// <returns>返回所有的操作访问统计信息</returns>
         public IList<IStatInfo> GetAllStatInfos()
         {
             List<IStatInfo> results = new List<IStatInfo>();
-            results.AddRange(_actorStatInfos);
+            results.AddRange(_viewStatInfos);
 
             return results;
         }
 
-        [IStatModule.OnStatModuleRegisterCallback(ON_ACTOR_CREATE_CALL)]
-        private void OnActorCreate(CActor obj)
+        [IStat.OnStatFunctionRegister(StatCode.ViewCreate)]
+        private void OnViewCreate(CView view)
         {
-            ActorStatInfo info = null;
+            ViewStatInfo info = null;
 
-            int uid = _actorStatInfos.Count + 1;
+            int uid = _viewStatInfos.Count + 1;
 
-            info = new ActorStatInfo(uid, obj.Name, obj.GetHashCode());
+            info = new ViewStatInfo(uid, view.Name, view.GetHashCode());
             info.CreateTime = SystemDateTime.UtcNow;
-            _actorStatInfos.Add(info);
+            _viewStatInfos.Add(info);
         }
 
-        [IStatModule.OnStatModuleRegisterCallback(ON_ACTOR_RELEASE_CALL)]
-        private void OnActorRelease(CActor obj)
+        [IStat.OnStatFunctionRegister(StatCode.ViewClose)]
+        private void OnViewClose(CView view)
         {
-            ActorStatInfo info = null;
-            if (false == TryGetActorStatInfoByHashCode(obj.GetHashCode(), out info))
+            ViewStatInfo info = null;
+            if (false == TryGetViewStatInfoByHashCode(view.GetHashCode(), out info))
             {
-                Debugger.Warn("Could not found any actor stat info with name '{0}', exited it failed.", obj.Name);
+                Debugger.Warn("Could not found any view stat info with name '{0}', exited it failed.", view.Name);
                 return;
             }
 
-            info.ReleaseTime = SystemDateTime.UtcNow;
+            info.CloseTime = SystemDateTime.UtcNow;
         }
 
-        private bool TryGetActorStatInfoByHashCode(int hashCode, out ActorStatInfo info)
+        private bool TryGetViewStatInfoByHashCode(int hashCode, out ViewStatInfo info)
         {
-            for (int n = _actorStatInfos.Count - 1; n >= 0; --n)
+            for (int n = _viewStatInfos.Count - 1; n >= 0; --n)
             {
-                ActorStatInfo found = _actorStatInfos[n];
+                ViewStatInfo found = _viewStatInfos[n];
                 if (found.HashCode == hashCode)
                 {
                     info = found;

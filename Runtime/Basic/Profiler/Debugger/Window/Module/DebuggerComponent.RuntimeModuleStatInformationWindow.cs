@@ -37,34 +37,34 @@ namespace GameEngine.Profiler.Debugging
         /// <summary>
         /// 通用模式的模块统计信息展示窗口的对象类
         /// </summary>
-        public abstract class RuntimeModuleStatInformationWindow<T> : BaseScrollableDebuggerWindow where T : IStatModule
+        public abstract class RuntimeModuleStatInformationWindow<T> : BaseScrollableDebuggerWindow where T : Statistics.IStat
         {
             protected override void OnDrawScrollableWindow()
             {
-                T stat = HandlerManagement.GetStatModule<T>();
+                T stat = Statistics.StatisticalCenter.GetStat<T>();
 
-                int moduleType = 0;
-                string moduleName = string.Empty;
-                IList<IStatInfo> infos = null;
+                int statType = 0;
+                string statName = string.Empty;
+                IList<Statistics.IStatInfo> infos = null;
                 if (null != stat)
                 {
-                    moduleType = stat.ModuleType;
-                    moduleName = System.Enum.GetName(typeof(NovaEngine.ModuleObject.ModuleEventType), moduleType);
+                    statType = stat.StatType;
+                    statName = System.Enum.GetName(typeof(Statistics.StatType), statType);
 
                     infos = stat.GetAllStatInfos();
                 }
 
-                UnityGUILayout.Label(NovaEngine.Utility.Text.Format("<b>{0} Stat Information</b>", moduleName));
+                UnityGUILayout.Label(NovaEngine.Utility.Text.Format("<b>{0} Stat Information</b>", statName));
                 UnityGUILayout.BeginVertical("box");
                 {
                     if (null == infos || infos.Count <= 0)
                     {
-                        UnityGUILayout.Label(NovaEngine.Utility.Text.Format("<b>Not found any {0} stat infos in module container.</b>", moduleName.ToLower()));
+                        UnityGUILayout.Label(NovaEngine.Utility.Text.Format("<b>Not found any {0} stat infos in module container.</b>", statName.ToLower()));
                     }
                     else
                     {
                         UnityGUILayout.Label(NovaEngine.Utility.Text.Format("<b>{0} {1} infos obtained at {2}.</b>",
-                                infos.Count.ToString(), moduleName.ToLower(), SystemDateTime.UtcNow.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")));
+                                infos.Count.ToString(), statName.ToLower(), SystemDateTime.UtcNow.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")));
 
                         UnityGUILayout.BeginHorizontal();
                         {
@@ -94,7 +94,7 @@ namespace GameEngine.Profiler.Debugging
 
             protected abstract void OnDrawStatInfoTitle();
 
-            protected abstract void OnDrawStatInfoContent(IStatInfo info);
+            protected abstract void OnDrawStatInfoContent(Statistics.IStatInfo info);
 
             /// <summary>
             /// 统计模块中对日期时间类型的显示格式

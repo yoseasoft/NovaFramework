@@ -38,6 +38,9 @@ namespace GameEngine
             {
                 NovaEngine.AppEntry.RegisterComponent<Profiler.Debugging.DebuggerComponent>(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
             }
+
+            // 启动统计功能
+            Stat.Startup();
         }
 
         /// <summary>
@@ -45,6 +48,9 @@ namespace GameEngine
         /// </summary>
         private static void AfterStopGame()
         {
+            // 关闭统计功能
+            Stat.Shutdown();
+
             if (GameMacros.DEBUGGING_PROFILER_WINDOW_AUTO_MOUNTED)
             {
                 NovaEngine.AppEntry.UnregisterComponent(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);

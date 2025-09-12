@@ -25,7 +25,7 @@
 
 using SystemDateTime = System.DateTime;
 
-namespace GameEngine
+namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
     /// 网络模块统计项对象类，对网络模块操作记录进行单项统计的数据单元

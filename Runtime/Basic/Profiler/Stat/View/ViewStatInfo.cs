@@ -1,7 +1,6 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 ///
@@ -24,64 +23,71 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
+using SystemDateTime = System.DateTime;
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
-
-namespace GameEngine
+namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
-    /// 业务框架统计模块对象的接口定义类
-    /// 我们通过该对象对各个模块进行数据统计，方便我们进行程序优化
+    /// 视图模块统计项对象类，对视图模块访问记录进行单项统计的数据单元
     /// </summary>
-    public interface IStatModule
+    public sealed class ViewStatInfo : IStatInfo
     {
         /// <summary>
-        /// 统计模块注册绑定回调函数的声明属性类型定义
+        /// 视图记录索引标识
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        protected internal class OnStatModuleRegisterCallbackAttribute : SystemAttribute
+        private readonly int _uid;
+        /// <summary>
+        /// 视图名称
+        /// </summary>
+        private readonly string _viewName;
+        /// <summary>
+        /// 视图的哈希码，用来确保视图唯一性
+        /// </summary>
+        private readonly int _hashCode;
+        /// <summary>
+        /// 视图的创建时间
+        /// </summary>
+        private SystemDateTime _createTime;
+        /// <summary>
+        /// 视图的关闭时间
+        /// </summary>
+        private SystemDateTime _closeTime;
+
+        public ViewStatInfo(int uid, string viewName, int hashCode)
         {
-            /// <summary>
-            /// 统计模块的功能标识
-            /// </summary>
-            private readonly int _funcType;
+            _uid = uid;
+            _viewName = viewName;
+            _hashCode = hashCode;
+            _createTime = SystemDateTime.MinValue;
+            _closeTime = SystemDateTime.MinValue;
 
-            public int FuncType => _funcType;
-
-            public OnStatModuleRegisterCallbackAttribute(int funcType) : base()
-            {
-                _funcType = funcType;
-            }
         }
 
-        /// <summary>
-        /// 获取统计模块的模块类型标识
-        /// </summary>
-        int ModuleType { get; }
+        public int Uid
+        {
+            get { return _uid; }
+        }
 
-        /// <summary>
-        /// 引擎统计模块实例初始化接口
-        /// </summary>
-        // void Initialize();
+        public string ViewName
+        {
+            get { return _viewName; }
+        }
 
-        /// <summary>
-        /// 引擎统计模块实例清理接口
-        /// </summary>
-        // void Cleanup();
+        public int HashCode
+        {
+            get { return _hashCode; }
+        }
 
-        /// <summary>
-        /// 引擎统计模块实例垃圾卸载接口
-        /// </summary>
-        void Dump();
+        public SystemDateTime CreateTime
+        {
+            get { return _createTime; }
+            set { _createTime = value; }
+        }
 
-        /// <summary>
-        /// 获取当前统计模块实例记录的所有统计项信息
-        /// </summary>
-        /// <returns>返回所有记录的统计项信息</returns>
-        IList<IStatInfo> GetAllStatInfos();
+        public SystemDateTime CloseTime
+        {
+            get { return _closeTime; }
+            set { _closeTime = value; }
+        }
     }
 }

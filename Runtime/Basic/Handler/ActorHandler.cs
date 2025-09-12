@@ -298,7 +298,7 @@ namespace GameEngine
             // 唤醒对象实例
             CallEntityAwakeProcess(obj);
 
-            ActorStatModule.CallStatAction(ActorStatModule.ON_ACTOR_CREATE_CALL, obj);
+            Stat.Call(Profiler.Statistics.StatCode.ActorCreate, obj);
 
             return obj;
         }
@@ -315,7 +315,7 @@ namespace GameEngine
                 return;
             }
 
-            ActorStatModule.CallStatAction(ActorStatModule.ON_ACTOR_RELEASE_CALL, actor);
+            Stat.Call(Profiler.Statistics.StatCode.ActorRelease, actor);
 
             // 销毁角色对象实例
             CallEntityDestroyProcess(actor);

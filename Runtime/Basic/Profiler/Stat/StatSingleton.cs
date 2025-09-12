@@ -29,53 +29,52 @@ using System.Reflection;
 
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
-using SystemDelegate = System.Delegate;
 using SystemBindingFlags = System.Reflection.BindingFlags;
 using SystemMethodInfo = System.Reflection.MethodInfo;
 
-namespace GameEngine
+namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
-    /// 句柄统计模块对象的单例构建类，该类以单例的形式对目标统计对象进行实例化管理
+    /// 统计模块对象的单例构建类，该类以单例的形式对目标统计对象进行实例化管理
     /// </summary>
-    public abstract class HandlerStatSingleton<T> where T : class, IStatModule, new()
+    public abstract class StatSingleton<T> where T : class, IStat, new()
     {
         private static T _instance = null;
 
         /// <summary>
         /// 统计模块的模块类型标识
         /// </summary>
-        private int _moduleType;
+        private int _statType;
 
         /// <summary>
         /// 统计模块对象启动状态标识
         /// </summary>
-        private bool _enabled = false;
+        // private bool _enabled = false;
 
         private IDictionary<int, SystemMethodInfo> _regStatMethodTypes;
 
         /// <summary>
         /// 获取统计模块的模块类型标识
         /// </summary>
-        public int ModuleType => _moduleType;
+        public int StatType => _statType;
 
         /// <summary>
         /// 获取统计模块对象的启动状态
         /// </summary>
-        public bool Enabled => _enabled;
+        // public bool Enabled => _enabled;
 
         /// <summary>
         /// 单例对象的默认构造函数<br/>
         /// 此处将函数的作用域声明为‘protected’，需要在自定义子类时实现该默认构造函数，且打开其访问作用域
         /// </summary>
-        protected HandlerStatSingleton()
+        protected StatSingleton()
         {
         }
 
         /// <summary>
         /// 单例对象的默认析构函数
         /// </summary>
-        ~HandlerStatSingleton()
+        ~StatSingleton()
         {
         }
 
@@ -87,29 +86,29 @@ namespace GameEngine
             get
             {
                 // 禁止被动创建实例，必须通过主动调用“Create”进行实例创建
-                // if (null == HandlerStatSingleton<T>._instance) { HandlerStatSingleton<T>.Create(); }
+                // if (null == ModuleSingleton<T>._instance) { ModuleSingleton<T>.Create(); }
 
-                return HandlerStatSingleton<T>._instance;
+                return StatSingleton<T>._instance;
             }
         }
 
         /// <summary>
         /// 单例类的实例创建接口
         /// </summary>
-        /// <param name="handler">句柄对象实例</param>
-        internal static T Create(IHandler handler)
+        /// <param name="statType">统计类型</param>
+        internal static T Create(int statType)
         {
             // 仅在调试模式下才创建统计模块实例
             if (NovaEngine.Environment.debugMode)
             {
-                if (HandlerStatSingleton<T>._instance == null)
+                if (StatSingleton<T>._instance == null)
                 {
-                    HandlerStatSingleton<T>._instance = System.Activator.CreateInstance<T>();
-                    (HandlerStatSingleton<T>._instance as HandlerStatSingleton<T>).Initialize(handler);
+                    StatSingleton<T>._instance = System.Activator.CreateInstance<T>();
+                    (StatSingleton<T>._instance as StatSingleton<T>).Initialize(statType);
                 }
             }
 
-            return HandlerStatSingleton<T>._instance;
+            return StatSingleton<T>._instance;
         }
 
         /// <summary>
@@ -117,35 +116,33 @@ namespace GameEngine
         /// </summary>
         internal static void Destroy()
         {
-            if (HandlerStatSingleton<T>._instance != null)
+            if (StatSingleton<T>._instance != null)
             {
-                (HandlerStatSingleton<T>._instance as HandlerStatSingleton<T>).Cleanup();
-                HandlerStatSingleton<T>._instance = (T) ((object) null);
+                (StatSingleton<T>._instance as StatSingleton<T>).Cleanup();
+                StatSingleton<T>._instance = (T) ((object) null);
             }
         }
 
         /// <summary>
         /// 单例类初始化回调接口
         /// </summary>
-        /// <param name="handler">句柄对象实例</param>
-        private void Initialize(IHandler handler)
+        /// <param name="statType">统计类型</param>
+        private void Initialize(int statType)
         {
-            Debugger.Assert(null != handler, "Invalid arguments.");
-
-            _moduleType = handler.HandlerType;
+            _statType = statType;
             _regStatMethodTypes = new Dictionary<int, SystemMethodInfo>();
 
             // 仅在调试模块下开启统计功能
-            if (NovaEngine.Environment.debugMode)
-            {
-                _enabled = true;
-            }
+            // 2025-09-12：
+            // 由于整合的统计模块外部访问接口，所以统计模块的可用状态，统一在控制中心管理
+            // 无需在每个单独的实例内部再做处理
+            // if (NovaEngine.Environment.debugMode) { _enabled = true; }
 
             // 统计接口初始化绑定
             InitAllStatMethods();
 
             // 注册统计模块实例
-            HandlerManagement.RegisterStatModule(_moduleType, _instance);
+            StatisticalCenter.RegisterStat(_statType, _instance, GetAllStatMethodTypes());
 
             OnInitialize();
         }
@@ -158,7 +155,7 @@ namespace GameEngine
             OnCleanup();
 
             // 注销统计模块实例
-            HandlerManagement.UnregisterStatModule(_moduleType);
+            StatisticalCenter.UnregisterStat(_statType);
 
             // 注销所有统计回调函数
             UnregisterAllStatMethods();
@@ -176,6 +173,26 @@ namespace GameEngine
         protected abstract void OnCleanup();
 
         /// <summary>
+        /// 检测指定的统计模块对象实例是否处于激活状态
+        /// </summary>
+        /// <returns>返回统计模块实例的激活状态</returns>
+        // internal static bool IsActivated()
+        // {
+        //     if (null == _instance) return false;
+        //     return (StatSingleton<T>._instance as StatSingleton<T>).Enabled;
+        // }
+
+        /// <summary>
+        /// 清理统计模块对象实例中的所有临时记录数据
+        /// </summary>
+        internal static void ClearAll()
+        {
+            if (null == _instance) return;
+
+            _instance.Dump();
+        }
+
+        /// <summary>
         /// 对模块内部所有的统计函数进行初始化绑定操作
         /// </summary>
         private void InitAllStatMethods()
@@ -185,10 +202,10 @@ namespace GameEngine
             for (int n = 0; n < methods.Length; ++n)
             {
                 SystemMethodInfo method = methods[n];
-                SystemAttribute attr = method.GetCustomAttribute(typeof(IStatModule.OnStatModuleRegisterCallbackAttribute));
+                SystemAttribute attr = method.GetCustomAttribute(typeof(IStat.OnStatFunctionRegisterAttribute));
                 if (null != attr)
                 {
-                    IStatModule.OnStatModuleRegisterCallbackAttribute _attr = (IStatModule.OnStatModuleRegisterCallbackAttribute) attr;
+                    IStat.OnStatFunctionRegisterAttribute _attr = (IStat.OnStatFunctionRegisterAttribute) attr;
                     RegisterStatMethod(_attr.FuncType, method);
                 }
             }
@@ -244,24 +261,12 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 检测指定的统计模块对象实例是否处于激活状态
+        /// 获取当前已注册的所有统计函数的编码清单
         /// </summary>
-        /// <returns>返回统计模块实例的激活状态</returns>
-        internal static bool IsActivated()
+        /// <returns>返回所有统计函数的编码清单</returns>
+        private IList<int> GetAllStatMethodTypes()
         {
-            if (null == _instance) return false;
-
-            return (HandlerStatSingleton<T>._instance as HandlerStatSingleton<T>).Enabled;
-        }
-
-        /// <summary>
-        /// 清理统计模块对象实例中的所有临时记录数据
-        /// </summary>
-        internal static void ClearAll()
-        {
-            if (null == _instance) return;
-
-            _instance.Dump();
+            return NovaEngine.Utility.Collection.ToList<int>(_regStatMethodTypes.Keys);
         }
 
         /// <summary>
@@ -269,18 +274,18 @@ namespace GameEngine
         /// </summary>
         /// <param name="funcType">统计类型</param>
         /// <param name="args">参数列表</param>
-        public static void CallStatAction(int funcType, params object[] args)
+        internal static void Process(int funcType, params object[] args)
         {
-            if (false == IsActivated()) return;
+            // if (!IsActivated()) return;
 
             SystemMethodInfo method = null;
-            if (false == (HandlerStatSingleton<T>._instance as HandlerStatSingleton<T>)._regStatMethodTypes.TryGetValue(funcType, out method))
+            if (false == (StatSingleton<T>._instance as StatSingleton<T>)._regStatMethodTypes.TryGetValue(funcType, out method))
             {
                 Debugger.Warn("Could not found any register stat method with type '{0}', invoke it failed.", funcType);
                 return;
             }
 
-            method.Invoke(HandlerStatSingleton<T>._instance as HandlerStatSingleton<T>, args);
+            method.Invoke(StatSingleton<T>._instance as StatSingleton<T>, args);
         }
     }
 }

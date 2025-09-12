@@ -26,10 +26,10 @@
 
 using System.Collections.Generic;
 
+using Cysharp.Threading.Tasks;
+
 using SystemType = System.Type;
 using SystemPath = System.IO.Path;
-
-using Cysharp.Threading.Tasks;
 
 namespace GameEngine
 {
@@ -289,7 +289,7 @@ namespace GameEngine
                     return null;
                 }
 
-                SceneStatModule.CallStatAction(SceneStatModule.ON_SCENE_EXIT_CALL, scene);
+                Stat.Call(Profiler.Statistics.StatCode.SceneExit, scene);
 
                 CallEntityDestroyProcess(scene);
                 Call(scene.Shutdown);
@@ -318,7 +318,7 @@ namespace GameEngine
             // 唤醒场景对象实例
             CallEntityAwakeProcess(scene);
 
-            SceneStatModule.CallStatAction(SceneStatModule.ON_SCENE_ENTER_CALL, scene);
+            Stat.Call(Profiler.Statistics.StatCode.SceneEnter, scene);
 
             return scene;
         }
