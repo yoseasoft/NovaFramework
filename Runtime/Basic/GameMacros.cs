@@ -44,16 +44,22 @@ namespace GameEngine
         public static readonly int DEBUGGING_OUTPUT_GROUP_APPROVE_LEVEL = (int) NovaEngine.LogOutputLevelType.Debug;
 
         /// <summary>
-        /// 调试模式的解析窗口自动挂载的状态标识
+        /// 调试模式的解析窗口的启动状态标识
         /// </summary>
         [DisableOnReleaseMode]
-        public static readonly bool DEBUGGING_PROFILER_WINDOW_AUTO_MOUNTED = false;
+        public static readonly bool DEBUGGING_PROFILER_ONLINE_WINDOW_ENABLED = false;
+
+        /// <summary>
+        /// 调试模式的统计模块的启动状态标识
+        /// </summary>
+        [DisableOnReleaseMode]
+        public static readonly bool DEBUGGING_PROFILER_STAT_MODULE_ENABLED = false;
 
         /// <summary>
         /// 编辑器环境下的编译代码支持补丁热重载功能
         /// </summary>
         [DisableOnReleaseMode]
-        public static readonly bool EDITOR_COMPILING_CODE_HOTFIX_RELOAD_SUPPORTED = true;
+        public static readonly bool EDITOR_COMPILING_CODE_HOTFIX_SUPPORTED = true;
 
         /// <summary>
         /// 业务导入流程的调度转发功能启动的状态标识<br/>

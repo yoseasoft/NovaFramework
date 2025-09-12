@@ -323,7 +323,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         public void UnregisterStateTransition(string stateName, SystemMethodInfo methodInfo)
         {
-            string fullname = GenTools.GenUniqueName(methodInfo);
+            string fullname = _Generator.GenUniqueName(methodInfo);
 
             if (_stateCallInfos.TryGetValue(stateName, out IList<StateCallMethodInfo> infos))
             {
@@ -419,7 +419,7 @@ namespace GameEngine
                     obj = null;
                 }
 
-                string fullname = GenTools.GenUniqueName(methodInfo);
+                string fullname = _Generator.GenUniqueName(methodInfo);
 
                 SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(obj, methodInfo);
                 Debugger.Assert(null != callback, "Invalid method type.");

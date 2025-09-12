@@ -421,7 +421,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         public void RemoveInputResponse(int inputCode, int operationType, SystemMethodInfo methodInfo)
         {
-            string funcName = GenTools.GenUniqueName(methodInfo);
+            string funcName = _Generator.GenUniqueName(methodInfo);
 
             RemoveInputResponse(inputCode, operationType, funcName);
         }
@@ -501,7 +501,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         public void RemoveInputResponse(SystemType inputType, SystemMethodInfo methodInfo)
         {
-            string funcName = GenTools.GenUniqueName(methodInfo);
+            string funcName = _Generator.GenUniqueName(methodInfo);
 
             RemoveInputResponse(inputType, funcName);
         }
@@ -879,7 +879,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         public void Unsubscribe(int eventID, SystemMethodInfo methodInfo)
         {
-            string funcName = GenTools.GenUniqueName(methodInfo);
+            string funcName = _Generator.GenUniqueName(methodInfo);
 
             Unsubscribe(eventID, funcName);
         }
@@ -948,7 +948,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         public void Unsubscribe(SystemType eventType, SystemMethodInfo methodInfo)
         {
-            string funcName = GenTools.GenUniqueName(methodInfo);
+            string funcName = _Generator.GenUniqueName(methodInfo);
 
             Unsubscribe(eventType, funcName);
         }
@@ -1236,7 +1236,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         public void RemoveMessageListener(int opcode, SystemMethodInfo methodInfo)
         {
-            string funcName = GenTools.GenUniqueName(methodInfo);
+            string funcName = _Generator.GenUniqueName(methodInfo);
 
             RemoveMessageListener(opcode, funcName);
         }
@@ -1407,7 +1407,7 @@ namespace GameEngine
                     obj = null;
                 }
 
-                string fullname = GenTools.GenUniqueName(methodInfo);
+                string fullname = _Generator.GenUniqueName(methodInfo);
 
                 SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(obj, methodInfo);
                 Debugger.Assert(null != callback, "Invalid method type.");

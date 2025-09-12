@@ -163,7 +163,7 @@ namespace GameEngine
             public StateAccessType AccessType => _accessType;
 
             internal StateMethodInfo(StateAccessType accessType, SystemMethodInfo methodInfo) :
-                    this(GenTools.GenUniqueName(methodInfo), accessType, methodInfo)
+                    this(_Generator.GenUniqueName(methodInfo), accessType, methodInfo)
             { }
 
             internal StateMethodInfo(string fullname, StateAccessType accessType, SystemMethodInfo methodInfo)
@@ -222,7 +222,7 @@ namespace GameEngine
             /// <param name="methodInfo">执行函数接口</param>
             internal void AddStateMethodInfo(StateAccessType accessType, SystemMethodInfo methodInfo)
             {
-                string fullname = GenTools.GenUniqueName(methodInfo);
+                string fullname = _Generator.GenUniqueName(methodInfo);
 
                 AddStateMethodInfo(fullname, accessType, methodInfo);
             }

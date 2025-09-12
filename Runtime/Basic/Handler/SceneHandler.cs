@@ -289,7 +289,7 @@ namespace GameEngine
                     return null;
                 }
 
-                Stat.Call(Profiler.Statistics.StatCode.SceneExit, scene);
+                _Profiler.CallStat(Profiler.Statistics.StatCode.SceneExit, scene);
 
                 CallEntityDestroyProcess(scene);
                 Call(scene.Shutdown);
@@ -318,7 +318,7 @@ namespace GameEngine
             // 唤醒场景对象实例
             CallEntityAwakeProcess(scene);
 
-            Stat.Call(Profiler.Statistics.StatCode.SceneEnter, scene);
+            _Profiler.CallStat(Profiler.Statistics.StatCode.SceneEnter, scene);
 
             return scene;
         }

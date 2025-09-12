@@ -279,7 +279,7 @@ namespace GameEngine
 
             view.ShowWindow();
 
-            Stat.Call(Profiler.Statistics.StatCode.ViewCreate, view);
+            _Profiler.CallStat(Profiler.Statistics.StatCode.ViewCreate, view);
 
             return view;
         }
@@ -443,7 +443,7 @@ namespace GameEngine
             // 视图尚未关闭，则先执行视图关闭操作
             if (false == view.IsClosed)
             {
-                Stat.Call(Profiler.Statistics.StatCode.ViewClose, view);
+                _Profiler.CallStat(Profiler.Statistics.StatCode.ViewClose, view);
 
                 // 销毁视图对象
                 CallEntityDestroyProcess(view);

@@ -116,7 +116,7 @@ namespace GameEngine
                 case (int) NovaEngine.TimerModule.ProtocolType.Dispatched:
                 {
                     // 统计定时事件派发
-                    Stat.Call(Profiler.Statistics.StatCode.TimerDispatched, tea.Session);
+                    _Profiler.CallStat(Profiler.Statistics.StatCode.TimerDispatched, tea.Session);
 
                     TimerReportingCallback handler;
                     if (false == _timerClockingCallbacks.TryGetValue(tea.Session, out handler))
@@ -129,7 +129,7 @@ namespace GameEngine
                 case (int) NovaEngine.TimerModule.ProtocolType.Finished:
                 {
                     // 统计定时事件结束
-                    Stat.Call(Profiler.Statistics.StatCode.TimerFinished, tea.Session);
+                    _Profiler.CallStat(Profiler.Statistics.StatCode.TimerFinished, tea.Session);
 
                     // 先检查该会话是否需要进行结束回调通知
                     TimerReportingCallback handler;
@@ -412,7 +412,7 @@ namespace GameEngine
             if (newly)
             {
                 // 统计定时事件发生
-                Stat.Call(Profiler.Statistics.StatCode.TimerStartup, sessionID, name);
+                _Profiler.CallStat(Profiler.Statistics.StatCode.TimerStartup, sessionID, name);
             }
 
             return sessionID;

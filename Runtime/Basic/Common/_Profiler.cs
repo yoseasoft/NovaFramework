@@ -30,14 +30,22 @@ namespace GameEngine
     /// <br/>
     /// 注意：当正式版发布时，将忽略所有的统计信息
     /// </summary>
-    internal static class Stat
+    internal static class _Profiler
     {
         /// <summary>
         /// 统计模块启动函数
         /// </summary>
         public static void Startup()
         {
-            Profiler.Statistics.StatisticalCenter.Startup();
+            if (GameMacros.DEBUGGING_PROFILER_ONLINE_WINDOW_ENABLED)
+            {
+                NovaEngine.AppEntry.RegisterComponent<Profiler.Debugging.DebuggerComponent>(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
+            }
+
+            if (GameMacros.DEBUGGING_PROFILER_STAT_MODULE_ENABLED)
+            {
+                Profiler.Statistics.StatisticalCenter.Startup();
+            }
         }
 
         /// <summary>
@@ -45,7 +53,15 @@ namespace GameEngine
         /// </summary>
         public static void Shutdown()
         {
-            Profiler.Statistics.StatisticalCenter.Shutdown();
+            if (GameMacros.DEBUGGING_PROFILER_STAT_MODULE_ENABLED)
+            {
+                Profiler.Statistics.StatisticalCenter.Shutdown();
+            }
+
+            if (GameMacros.DEBUGGING_PROFILER_ONLINE_WINDOW_ENABLED)
+            {
+                NovaEngine.AppEntry.UnregisterComponent(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
+            }
         }
 
         /// <summary>
@@ -53,9 +69,12 @@ namespace GameEngine
         /// </summary>
         /// <param name="funcType">功能类型</param>
         /// <param name="args">参数列表</param>
-        public static void Call(int funcType, params object[] args)
+        public static void CallStat(int funcType, params object[] args)
         {
-            Profiler.Statistics.StatisticalCenter.Call(funcType, args);
+            if (GameMacros.DEBUGGING_PROFILER_STAT_MODULE_ENABLED)
+            {
+                Profiler.Statistics.StatisticalCenter.Call(funcType, args);
+            }
         }
     }
 }

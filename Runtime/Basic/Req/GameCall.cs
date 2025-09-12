@@ -60,10 +60,10 @@ namespace GameEngine
         /// </summary>
         public static void Reload()
         {
-            if (false == GameMacros.EDITOR_COMPILING_CODE_HOTFIX_RELOAD_SUPPORTED)
+            if (false == GameMacros.EDITOR_COMPILING_CODE_HOTFIX_SUPPORTED)
             {
                 // 禁用热重载功能
-                Debugger.Error("Not supported compiling code hotfix reload with current running mode, restarted game context failed.");
+                Debugger.Error("Not supported compiling code hotfix with current running mode, restarted game context failed.");
                 return;
             }
 
