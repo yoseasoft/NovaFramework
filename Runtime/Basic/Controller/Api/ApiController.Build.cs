@@ -166,9 +166,6 @@ namespace GameEngine
                     continue;
                 }
 
-                // 关闭文本流
-                reader.Dispose();
-
                 Api.Expression.ApiCallMethod method = new Api.Expression.ApiCallMethod();
                 method.FunctionName = functionName;
 
@@ -187,6 +184,9 @@ namespace GameEngine
 
                 group.AddExpression(method);
             }
+
+            // 关闭文本流
+            reader.Dispose();
 
             return group;
         }
