@@ -176,8 +176,6 @@ namespace GameEngine
 
             info.IsExtension = NovaEngine.Utility.Reflection.IsTypeOfExtension(callback.Method);
 
-            Debugger.Info("新功能{%s}，类型{%t}，扩展状态{%s}", functionName, targetType, info.IsExtension.ToString());
-
             int pos = 0;
             SystemParameterInfo[] parameters = callback.Method.GetParameters();
             if (info.IsExtension)
@@ -186,7 +184,6 @@ namespace GameEngine
                 Debugger.Assert(parameters.Length > 0, "Invalid arguments.");
                 info.ExtensionObjectType = parameters[pos].ParameterType;
                 pos++;
-                Debugger.Info("扩展类型{%t}", info.ExtensionObjectType);
             }
 
             if (null != parameters && parameters.Length > pos)
@@ -196,7 +193,6 @@ namespace GameEngine
                 for (int n = pos; n < parameters.Length; ++n)
                 {
                     info.ParameterTypes.Add(parameters[n].ParameterType);
-                    Debugger.Info("参数类型{%t}", parameters[n].ParameterType);
                 }
             }
 
