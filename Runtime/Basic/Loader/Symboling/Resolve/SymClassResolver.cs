@@ -197,7 +197,7 @@ namespace GameEngine.Loader.Symboling
                 }
                 else
                 {
-                    Debugger.Error("创建Bean对象实例异常：不能正确解析名字为‘{%s}’的Bean文件配置项！", beanConfigureInfo.Name);
+                    Debugger.Error("不能正确解析名字为‘{%s}’的Bean文件配置项！", beanConfigureInfo.Name);
                     return;
                 }
             }

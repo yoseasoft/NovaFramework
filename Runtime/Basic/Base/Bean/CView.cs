@@ -302,7 +302,7 @@ namespace GameEngine
         {
             if (null == _form || false == _form.IsLoaded)
             {
-                Debugger.Warn(LogGroupTag.Bean, "获取窗口控件实例异常：当前视图对象‘{%t}’的窗口组件尚未载入完成，无法对窗口内部的控件实例进行访问。", this);
+                Debugger.Warn(LogGroupTag.Bean, "当前视图对象‘{%t}’的窗口组件尚未载入完成，无法对窗口内部的控件实例进行访问。", this);
                 return null;
             }
 

@@ -94,7 +94,7 @@ namespace GameEngine.Profiler.Statistics
         /// <summary>
         /// 初始化句柄对象的全部统计模块
         /// </summary>
-        public static void Startup()
+        internal static void Startup()
         {
             // 管理容器初始化
             _statClassTypes = new Dictionary<int, SystemType>();
@@ -127,7 +127,7 @@ namespace GameEngine.Profiler.Statistics
         /// <summary>
         /// 清理句柄对象的全部统计模块
         /// </summary>
-        public static void Shutdown()
+        internal static void Shutdown()
         {
             // 关闭统计功能
             _isOnStarting = false;
@@ -178,13 +178,13 @@ namespace GameEngine.Profiler.Statistics
                 SystemType statType = SystemType.GetType(statName);
                 if (null == statType)
                 {
-                    Debugger.Info(LogGroupTag.Profiler, "Could not found any stat class with target name {0}.", statName);
+                    Debugger.Info(LogGroupTag.Profiler, "无法搜索到能匹配指定名称‘{%s}’的统计模块类型实例。", statName);
                     continue;
                 }
 
                 if (false == typeof(IStat).IsAssignableFrom(statType))
                 {
-                    Debugger.Warn("The stat type {0} must be inherited from 'IStat' interface.", statName);
+                    Debugger.Warn(LogGroupTag.Profiler, "目标对象类型‘{%s}’为非法统计模块类型，它必须继承自‘IStat’接口。", statName);
                     continue;
                 }
 
@@ -219,13 +219,13 @@ namespace GameEngine.Profiler.Statistics
         {
             if (!_isOnStarting)
             {
-                Debugger.Warn(LogGroupTag.Profiler, "调用统计模块处理函数异常：当前统计模块尚未启动，执行统计调用操作失败！");
+                Debugger.Warn(LogGroupTag.Profiler, "当前统计模块尚未启动，执行统计调用操作失败！");
                 return;
             }
 
             if (false == _statCodeTypes.TryGetValue(funcType, out SystemType targetType))
             {
-                Debugger.Warn(LogGroupTag.Profiler, "调用统计模块处理函数异常：当前控制中心的编码映射容器中无法找到匹配指定功能编码‘{%d}’的统计类型，移除该统计编码操作失败！", funcType);
+                Debugger.Warn(LogGroupTag.Profiler, "当前统计模块的编码映射容器中无法找到匹配指定功能编码‘{%d}’的统计类型，移除该统计编码操作失败！", funcType);
                 return;
             }
 
@@ -234,7 +234,7 @@ namespace GameEngine.Profiler.Statistics
 
             if (false == _statProcessCallbacks.TryGetValue(stat.StatType, out StatProcessHandler callback))
             {
-                Debugger.Warn(LogGroupTag.Profiler, "调用统计模块处理函数异常：目标统计模块‘{%d}’下的处理函数句柄缺失，无法正确执行统计调用操作！", stat.StatType);
+                Debugger.Warn(LogGroupTag.Profiler, "目标统计模块‘{%d}’下的处理函数句柄缺失，无法正确执行统计调用操作！", stat.StatType);
                 return;
             }
 
@@ -268,7 +268,7 @@ namespace GameEngine.Profiler.Statistics
         {
             if (_statCodeTypes.ContainsKey(statCode))
             {
-                Debugger.Warn(LogGroupTag.Profiler, "注册统计编码类型异常：目标统计对象‘{%t}’的指定功能编码‘{%d}’已被注册到当前的访问列表中，重复注册相同编码将覆盖原有数据！", targetType, statCode);
+                Debugger.Warn(LogGroupTag.Profiler, "目标统计对象‘{%t}’的指定功能编码‘{%d}’已被注册到当前的访问列表中，重复注册相同编码将覆盖原有数据！", targetType, statCode);
                 _statCodeTypes.Remove(statCode);
             }
 
@@ -287,7 +287,7 @@ namespace GameEngine.Profiler.Statistics
                 int k = codes[n];
                 if (false == _statCodeTypes.TryGetValue(k, out SystemType classType))
                 {
-                    Debugger.Warn(LogGroupTag.Profiler, "移除统计编码类型异常：当前控制中心的编码映射容器中无法找到匹配指定功能编码‘{%d}’的统计类型，移除该统计编码操作失败！", k);
+                    Debugger.Warn(LogGroupTag.Profiler, "当前控制中心的编码映射容器中无法找到匹配指定功能编码‘{%d}’的统计类型，移除该统计编码操作失败！", k);
                     continue;
                 }
 
@@ -312,7 +312,7 @@ namespace GameEngine.Profiler.Statistics
         {
             if (_statObjects.ContainsKey(statType))
             {
-                Debugger.Warn("The stat object '{0}' is already exist, cannot repeat register it.", statType);
+                Debugger.Warn(LogGroupTag.Profiler, "目标统计对象‘{%t}’的类型标识‘{%d}’已被注册到当前的模块列表中，重复注册相同类型操作失败！", stat, statType);
                 return;
             }
 
@@ -330,7 +330,7 @@ namespace GameEngine.Profiler.Statistics
         {
             if (false == _statObjects.ContainsKey(statType))
             {
-                Debugger.Warn("Could not found any stat module object '{0}' in this container, unregister it failed.", statType);
+                Debugger.Warn(LogGroupTag.Profiler, "当前统计模块的模块类型列表中无法找到匹配指定类型标识‘{%d}’的统计模块，移除该统计类型操作失败！", statType);
                 return;
             }
 

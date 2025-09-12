@@ -89,7 +89,7 @@ namespace GameEngine.Loader
                     // 校验失败
                     if (false == verificated)
                     {
-                        Debugger.Error("加载状态转换回调函数异常：将目标函数‘{%t}’作为状态转换接口函数的格式校验失败，请检查函数参数格式是否合法！", symMethod.MethodInfo);
+                        Debugger.Error("将目标函数‘{%t}’作为状态转换接口函数的格式校验失败，请检查函数参数格式是否合法！", symMethod.MethodInfo);
                         return;
                     }
                 }

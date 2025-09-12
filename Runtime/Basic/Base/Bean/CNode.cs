@@ -155,7 +155,7 @@ namespace GameEngine
 
             if (false == _childrens.Contains(child))
             {
-                Debugger.Warn(LogGroupTag.Bean, "移除目标节点对象异常：当前移除的目标节点对象实例‘{%t}’不属于当前节点对象‘{%t}’的子节点元素，无法使用当前实例对目标节点对象进行移除操作。", child, this);
+                Debugger.Warn(LogGroupTag.Bean, "当前移除的目标节点对象实例‘{%t}’不属于当前节点对象‘{%t}’的子节点元素，无法使用当前实例对目标节点对象进行移除操作。", child, this);
                 return;
             }
 

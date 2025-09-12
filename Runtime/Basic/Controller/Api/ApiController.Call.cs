@@ -114,13 +114,13 @@ namespace GameEngine
         {
             if (false == _functionCallInfos.TryGetValue(functionName, out ApiCallInfo info))
             {
-                Debugger.Warn(LogGroupTag.Controller, "调用编程接口回调函数异常：当前编程接口管理器的对象容器中无法检索到能匹配指定功能名称‘{%s}’的回调函数实例，调用该功能接口失败！", functionName);
+                Debugger.Warn(LogGroupTag.Controller, "当前编程接口管理器的对象容器中无法检索到能匹配指定功能名称‘{%s}’的回调函数实例，调用该功能接口失败！", functionName);
                 return;
             }
 
             if (info.ParameterTypes?.Count != args?.Length)
             {
-                Debugger.Warn(LogGroupTag.Controller, "调用编程接口回调函数异常：当前传入指定功能名称‘{%s}’的编程接口回调函数实例的参数与函数实际定义参数个数不匹配，调用该功能接口失败！", functionName);
+                Debugger.Warn(LogGroupTag.Controller, "当前传入指定功能名称‘{%s}’的编程接口回调函数实例的参数与函数实际定义参数个数不匹配，调用该功能接口失败！", functionName);
                 return;
             }
 
@@ -128,13 +128,13 @@ namespace GameEngine
             {
                 if (null == obj)
                 {
-                    Debugger.Warn(LogGroupTag.Controller, "调用编程接口回调函数异常：当前指定功能名称‘{%s}’的编程接口回调函数实例为扩展函数类型，需要指定扩展目标对象才可以正确调用该功能接口！", functionName);
+                    Debugger.Warn(LogGroupTag.Controller, "当前指定功能名称‘{%s}’的编程接口回调函数实例为扩展函数类型，需要指定扩展目标对象才可以正确调用该功能接口！", functionName);
                     return;
                 }
 
                 if (false == info.ExtensionObjectType.IsAssignableFrom(obj.GetType()))
                 {
-                    Debugger.Warn(LogGroupTag.Controller, "调用编程接口回调函数异常：当前指定功能名称‘{%s}’的编程接口回调函数实例扩展的目标对象类型‘{%t}’与实际传入的实体对象类型‘{%t}’不匹配，调用该功能接口失败！",
+                    Debugger.Warn(LogGroupTag.Controller, "当前指定功能名称‘{%s}’的编程接口回调函数实例扩展的目标对象类型‘{%t}’与实际传入的实体对象类型‘{%t}’不匹配，调用该功能接口失败！",
                             functionName, info.ExtensionObjectType, obj);
                     return;
                 }
@@ -208,7 +208,7 @@ namespace GameEngine
 
             if (_functionCallInfos.ContainsKey(functionName))
             {
-                Debugger.Warn(LogGroupTag.Controller, "新增编程接口回调函数异常：当前编程接口管理器的函数对象容器中已存在相同功能名称‘{%s}’的回调函数实例，重复添加将覆盖旧的功能数据。", functionName);
+                Debugger.Warn(LogGroupTag.Controller, "当前编程接口管理器的函数对象容器中已存在相同功能名称‘{%s}’的回调函数实例，重复添加将覆盖旧的功能数据。", functionName);
                 _functionCallInfos.Remove(functionName);
             }
 
@@ -244,7 +244,7 @@ namespace GameEngine
         {
             if (false == _functionCallInfos.ContainsKey(functionName))
             {
-                Debugger.Warn(LogGroupTag.Controller, "移除编程接口回调函数异常：当前编程接口管理器的函数对象容器中无法检索到能匹配指定功能名称‘{%s}’的回调函数实例，移除该功能数据失败！", functionName);
+                Debugger.Warn(LogGroupTag.Controller, "当前编程接口管理器的函数对象容器中无法检索到能匹配指定功能名称‘{%s}’的回调函数实例，移除该功能数据失败！", functionName);
                 return;
             }
 

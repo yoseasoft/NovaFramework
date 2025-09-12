@@ -86,7 +86,7 @@ namespace GameEngine
             {
                 if (null == _stateGraph)
                 {
-                    Debugger.Warn("创建状态构筑对象异常：当前对象类型‘{%t}’没有合法的状态图对象实例，请检查该对象是否在注册状态接口时发生错误！", this);
+                    Debugger.Warn("当前对象类型‘{%t}’没有合法的状态图对象实例，请检查该对象是否在注册状态接口时发生错误！", this);
                     return null;
                 }
 
@@ -292,7 +292,7 @@ namespace GameEngine
 
             if (IsTargetStateTransitionExists(info, infos))
             {
-                Debugger.Warn("注册状态转换回调函数异常：当前实体对象‘{%t}’指定状态‘{%s}’的转换列表中已存在名称为‘{%s}’的目标状态信息实例，不能重复添加相同的状态回调函数！", this, stateName, info.Fullname);
+                Debugger.Warn("当前实体对象‘{%t}’指定状态‘{%s}’的转换列表中已存在名称为‘{%s}’的目标状态信息实例，不能重复添加相同的状态回调函数！", this, stateName, info.Fullname);
                 return false;
             }
 

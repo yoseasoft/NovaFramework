@@ -191,7 +191,7 @@ namespace GameEngine.Loader
             {
                 if (false == _beanClassMaps.TryGetValue(k, out Symboling.Bean bean))
                 {
-                    Debugger.Warn("注销Bean实例异常：无法查找到与指定名字‘{%s}’对应的Bean对象实例！", k);
+                    Debugger.Warn("无法查找到与指定名字‘{%s}’对应的Bean对象实例！", k);
                     continue;
                 }
 

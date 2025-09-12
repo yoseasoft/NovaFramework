@@ -76,7 +76,7 @@ namespace GameEngine
             {
                 if (false == typeof(IBean).IsAssignableFrom(targetType))
                 {
-                    Debugger.Error("新增状态调度函数异常：当前添加状态行为的目标对象类型‘{%t}’匹配错误（需要原型对象类型），请检查状态行为函数‘{%t}’定义的目标对象类型是否合法！", targetType, methodInfo);
+                    Debugger.Error("当前添加状态行为的目标对象类型‘{%t}’匹配错误（需要原型对象类型），请检查状态行为函数‘{%t}’定义的目标对象类型是否合法！", targetType, methodInfo);
                     return;
                 }
 
@@ -101,7 +101,7 @@ namespace GameEngine
             {
                 if (false == typeof(IBean).IsAssignableFrom(targetType))
                 {
-                    Debugger.Error("新增状态调度函数异常：当前添加状态行为的目标对象类型‘{%t}’匹配错误（需要原型对象类型），请检查状态行为函数‘{%t}’定义的目标对象类型是否合法！", targetType, methodInfo);
+                    Debugger.Error("当前添加状态行为的目标对象类型‘{%t}’匹配错误（需要原型对象类型），请检查状态行为函数‘{%t}’定义的目标对象类型是否合法！", targetType, methodInfo);
                     return;
                 }
 
@@ -240,7 +240,7 @@ namespace GameEngine
                     StateMethodInfo info = _stateMethodList[n];
                     if (info.Fullname.Equals(fullname))
                     {
-                        Debugger.Error("新增状态调度函数异常：当前状态实例‘{%s}’中已存在同名的函数实例‘{%s}’，不可重复添加相同的函数实例给同一个目标状态对象！", _stateName, fullname);
+                        Debugger.Error("当前状态实例‘{%s}’中已存在同名的函数实例‘{%s}’，不可重复添加相同的函数实例给同一个目标状态对象！", _stateName, fullname);
                         return;
                     }
                 }
@@ -359,7 +359,7 @@ namespace GameEngine
 
                 if (false == _stateGroupTable.TryGetValue(stateName, out StateGroupInfo stateGroupInfo))
                 {
-                    Debugger.Error("对象状态行为执行异常：无法从当前注册的对象类型‘{%t}’中查找到名称为‘{%s}’的状态数据，请检查该状态是否被正确定义！", _targetType, stateName);
+                    Debugger.Error("无法从当前注册的对象类型‘{%t}’中查找到名称为‘{%s}’的状态数据，请检查该状态是否被正确定义！", _targetType, stateName);
                     return;
                 }
 

@@ -202,7 +202,7 @@ namespace GameEngine
         {
             if (!IsValidState(stateName))
             {
-                Debugger.Warn("设置默认启用状态对象异常：当前对象类型指定的目标状态‘{%s}’为非法值，请检查该状态是否在注册时发生错误！", stateName);
+                Debugger.Warn("当前对象类型指定的目标状态‘{%s}’为非法值，请检查该状态是否在注册时发生错误！", stateName);
                 return;
             }
 
@@ -217,13 +217,13 @@ namespace GameEngine
         {
             if (!IsValidState(stateName))
             {
-                Debugger.Warn("激活状态序列异常：当前对象类型指定的目标状态‘{%s}’为非法值，请检查该状态是否在注册时发生错误！", stateName);
+                Debugger.Warn("当前对象类型指定的目标状态‘{%s}’为非法值，请检查该状态是否在注册时发生错误！", stateName);
                 return;
             }
 
             if (false == _transitionSequences.ContainsKey(stateName))
             {
-                Debugger.Warn("激活状态序列异常：当前对象类型中不存在以指定目标状态‘{%s}’开启的状态序列，激活该状态序列操作失败！", stateName);
+                Debugger.Warn("当前对象类型中不存在以指定目标状态‘{%s}’开启的状态序列，激活该状态序列操作失败！", stateName);
                 return;
             }
 
@@ -238,13 +238,13 @@ namespace GameEngine
         {
             if (!IsValidState(stateName))
             {
-                Debugger.Warn("配置状态序列启动参数异常：当前对象类型指定的目标状态‘{%s}’为非法值，请检查该状态是否在注册时发生错误！", stateName);
+                Debugger.Warn("当前对象类型指定的目标状态‘{%s}’为非法值，请检查该状态是否在注册时发生错误！", stateName);
                 return;
             }
 
             if (_transitionSequences.ContainsKey(stateName))
             {
-                Debugger.Warn("配置状态序列启动参数异常：当前对象类型已开启指定的状态‘{%s}’的转换序列，重复推送将覆盖旧的配置流程！", stateName);
+                Debugger.Warn("当前对象类型已开启指定的状态‘{%s}’的转换序列，重复推送将覆盖旧的配置流程！", stateName);
                 _transitionSequences.Remove(stateName);
             }
 
@@ -265,19 +265,19 @@ namespace GameEngine
         {
             if (string.IsNullOrEmpty(_pushState) || string.IsNullOrEmpty(stateName))
             {
-                Debugger.Warn("配置状态序列转换参数异常：当前对象类型的状态序列转换流程下的启动状态‘{%s}’和转换目标状态‘{%s}’均不能为空，请检查流程和参数后重新执行该操作！", _pushState, stateName);
+                Debugger.Warn("当前对象类型的状态序列转换流程下的启动状态‘{%s}’和转换目标状态‘{%s}’均不能为空，请检查流程和参数后重新执行该操作！", _pushState, stateName);
                 return;
             }
 
             if (!IsValidState(stateName))
             {
-                Debugger.Warn("配置状态序列转换参数异常：当前对象类型指定的目标状态‘{%s}’为非法值，请检查该状态是否在注册时发生错误！", stateName);
+                Debugger.Warn("当前对象类型指定的目标状态‘{%s}’为非法值，请检查该状态是否在注册时发生错误！", stateName);
                 return;
             }
 
             if (false == _transitionSequences.TryGetValue(_pushState, out IList<string> sequences))
             {
-                Debugger.Error("配置状态序列转换参数异常：当前对象类型需要指定一个激活的状态序列后才可以对目标状态‘{%s}’进行该序列的转换管理，请先调用状态序列启动函数激活一个新的序列流程！", stateName);
+                Debugger.Error("当前对象类型需要指定一个激活的状态序列后才可以对目标状态‘{%s}’进行该序列的转换管理，请先调用状态序列启动函数激活一个新的序列流程！", stateName);
                 return;
             }
 
@@ -285,7 +285,7 @@ namespace GameEngine
             // 如果需要支持这种流程，就屏蔽下面的代码，支持同一状态的多次插入
             if (sequences.Contains(stateName))
             {
-                Debugger.Warn("配置状态序列转换参数异常：当前对象类型的激活状态序列链表中已存在目标状态‘{%s}’的转换信息，不能对相同的状态在同一序列流程中进行多次指定。", stateName);
+                Debugger.Warn("当前对象类型的激活状态序列链表中已存在目标状态‘{%s}’的转换信息，不能对相同的状态在同一序列流程中进行多次指定。", stateName);
                 return;
             }
 
@@ -314,13 +314,13 @@ namespace GameEngine
         {
             if (!IsValidState(stateName))
             {
-                Debugger.Warn("状态变更操作异常：当前对象类型指定的目标状态‘{%s}’为非法值，请检查该状态是否在注册时发生错误！", stateName);
+                Debugger.Warn("当前对象类型指定的目标状态‘{%s}’为非法值，请检查该状态是否在注册时发生错误！", stateName);
                 return;
             }
 
             if (false == string.IsNullOrEmpty(_currentState) && _currentState.Equals(stateName))
             {
-                Debugger.Warn("状态变更操作异常：当前对象类型指定转换的目标状态‘{%s}’与调度中的当前状态实例相同，无法对同一状态实例进行转换操作！", stateName);
+                Debugger.Warn("当前对象类型指定转换的目标状态‘{%s}’与调度中的当前状态实例相同，无法对同一状态实例进行转换操作！", stateName);
                 return;
             }
 
@@ -341,7 +341,7 @@ namespace GameEngine
         {
             if (string.IsNullOrEmpty(_currentState))
             {
-                Debugger.Warn("状态结束操作异常：当前对象类型尚未激活任何状态实例，无法对空状态进行结束操作！");
+                Debugger.Warn("当前对象类型尚未激活任何状态实例，无法对空状态进行结束操作！");
                 return;
             }
 
