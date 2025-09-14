@@ -45,7 +45,7 @@ namespace GameEngine.Api.Expression
         /// <param name="obj">目标对象实例</param>
         public override void Invoke(IBean obj)
         {
-            ApiController.Instance.CallAction(obj, FunctionName, ParameterValues);
+            ApiController.Instance.CallFunction(obj, FunctionName, ParameterValues);
         }
     }
 }

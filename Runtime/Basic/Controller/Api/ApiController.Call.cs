@@ -110,7 +110,7 @@ namespace GameEngine
         /// <param name="obj">目标对象实例</param>
         /// <param name="functionName">功能名称</param>
         /// <param name="args">调用参数</param>
-        public void CallAction(IBean obj, string functionName, params object[] args)
+        public void CallFunction(IBean obj, string functionName, params object[] args)
         {
             if (false == _functionCallInfos.TryGetValue(functionName, out ApiCallInfo info))
             {

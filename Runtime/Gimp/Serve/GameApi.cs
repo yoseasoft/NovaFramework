@@ -124,9 +124,9 @@ namespace GameEngine
         /// <param name="obj">目标对象实例</param>
         /// <param name="functionName">功能名称</param>
         /// <param name="args">调用参数</param>
-        public static void CallAction(IBean obj, string functionName, params object[] args)
+        public static void CallFunction(IBean obj, string functionName, params object[] args)
         {
-            ApiController.Instance.CallAction(obj, functionName, args);
+            ApiController.Instance.CallFunction(obj, functionName, args);
         }
 
         /// <summary>
