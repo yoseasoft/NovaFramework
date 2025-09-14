@@ -35,59 +35,31 @@ namespace GameEngine.Profiler.Statistics
         /// <summary>
         /// 场景记录索引标识
         /// </summary>
-        private readonly int _uid;
+        public int Uid { get; private set; }
         /// <summary>
         /// 场景名称
         /// </summary>
-        private readonly string _sceneName;
+        public string SceneName { get; private set; }
         /// <summary>
         /// 场景的哈希码，用来确保场景唯一性
         /// </summary>
-        private readonly int _hashCode;
+        public int HashCode { get; private set; }
         /// <summary>
         /// 场景的进入时间
         /// </summary>
-        private SystemDateTime _enterTime;
+        public SystemDateTime EnterTime { get; internal set; }
         /// <summary>
         /// 场景的退出时间
         /// </summary>
-        private SystemDateTime _exitTime;
+        public SystemDateTime ExitTime { get; internal set; }
 
         public SceneStatInfo(int uid, string sceneName, int hashCode)
         {
-            _uid = uid;
-            _sceneName = sceneName;
-            _hashCode = hashCode;
-            _enterTime = SystemDateTime.MinValue;
-            _exitTime = SystemDateTime.MinValue;
-
-        }
-
-        public int Uid
-        {
-            get { return _uid; }
-        }
-
-        public string SceneName
-        {
-            get { return _sceneName; }
-        }
-
-        public int HashCode
-        {
-            get { return _hashCode; }
-        }
-
-        public SystemDateTime EnterTime
-        {
-            get { return _enterTime; }
-            set { _enterTime = value; }
-        }
-
-        public SystemDateTime ExitTime
-        {
-            get { return _exitTime; }
-            set { _exitTime = value; }
+            this.Uid = uid;
+            this.SceneName = sceneName;
+            this.HashCode = hashCode;
+            this.EnterTime = SystemDateTime.MinValue;
+            this.ExitTime = SystemDateTime.MinValue;
         }
     }
 }

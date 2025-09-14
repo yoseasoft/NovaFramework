@@ -35,93 +35,46 @@ namespace GameEngine.Profiler.Statistics
         /// <summary>
         /// 通道的会话标识
         /// </summary>
-        private readonly int _session;
+        public int Session { get; private set; }
         /// <summary>
         /// 通道连接的地址
         /// </summary>
-        private string _url;
+        public string Url { get; internal set; }
         /// <summary>
         /// 通道连接的时间
         /// </summary>
-        private SystemDateTime _connectTime;
+        public SystemDateTime ConnectTime { get; internal set; }
         /// <summary>
         /// 通道断开连接的时间
         /// </summary>
-        private SystemDateTime _disconnectTime;
+        public SystemDateTime DisconnectTime { get; internal set; }
         /// <summary>
         /// 通道发送数据的次数
         /// </summary>
-        private int _sendCount;
+        public int SendCount { get; internal set; }
         /// <summary>
         /// 通道接收数据的次数
         /// </summary>
-        private int _recvCount;
+        public int RecvCount { get; internal set; }
         /// <summary>
         /// 通道发送数据的大小
         /// </summary>
-        private int _sendSize;
+        public int SendSize { get; internal set; }
         /// <summary>
         /// 通道接收数据的大小
         /// </summary>
-        private int _recvSize;
+        public int RecvSize { get; internal set; }
 
         public NetworkStatInfo(int session)
         {
-            _session = session;
-            _url = string.Empty;
-            _connectTime = SystemDateTime.MinValue;
-            _disconnectTime = SystemDateTime.MinValue;
-            _sendCount = 0;
-            _recvCount = 0;
-            _sendSize = 0;
-            _recvSize = 0;
-        }
-
-        public int Session
-        {
-            get { return _session; }
-        }
-
-        public string Url
-        {
-            get { return _url; }
-            set { _url = value; }
-        }
-
-        public SystemDateTime ConnectTime
-        {
-            get { return _connectTime; }
-            set { _connectTime = value; }
-        }
-
-        public SystemDateTime DisconnectTime
-        {
-            get { return _disconnectTime; }
-            set { _disconnectTime = value; }
-        }
-
-        public int SendCount
-        {
-            get { return _sendCount; }
-            set { _sendCount = value; }
-        }
-
-        public int RecvCount
-        {
-            get { return _recvCount; }
-            set { _recvCount = value; }
-        }
-
-        public int SendSize
-        {
-            get { return _sendSize; }
-            set { _sendSize = value; }
-        }
-
-        public int RecvSize
-        {
-            get { return _recvSize; }
-            set { _recvSize = value; }
+            this.Session = session;
+            this.Url = string.Empty;
+            this.ConnectTime = SystemDateTime.MinValue;
+            this.DisconnectTime = SystemDateTime.MinValue;
+            this.SendCount = 0;
+            this.RecvCount = 0;
+            this.SendSize = 0;
+            this.RecvSize = 0;
         }
     }
 }

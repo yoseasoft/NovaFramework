@@ -35,82 +35,41 @@ namespace GameEngine.Profiler.Statistics
         /// <summary>
         /// 任务的会话标识
         /// </summary>
-        private readonly int _session;
+        public int Session { get; private set; }
         /// <summary>
         /// 任务名称
         /// </summary>
-        private string _timerName;
+        public string TimerName { get; internal set; }
         /// <summary>
         /// 任务的创建时间
         /// </summary>
-        private SystemDateTime _createTime;
+        public SystemDateTime CreateTime { get; internal set; }
         /// <summary>
         /// 任务的最后使用时间
         /// </summary>
-        private SystemDateTime _lastUseTime;
+        public SystemDateTime LastUseTime { get; internal set; }
         /// <summary>
         /// 任务的调度次数
         /// </summary>
-        private int _scheduleCount;
+        public int ScheduleCount { get; internal set; }
         /// <summary>
         /// 任务的结束次数
         /// </summary>
-        private int _finishedCount;
+        public int FinishedCount { get; internal set; }
         /// <summary>
         /// 任务的心跳次数
         /// </summary>
-        private int _blinkCount;
+        public int BlinkCount { get; internal set; }
 
         public TimerStatInfo(int session)
         {
-            _session = session;
-            _timerName = string.Empty;
-            _createTime = SystemDateTime.MinValue;
-            _lastUseTime = SystemDateTime.MinValue;
-            _scheduleCount = 0;
-            _finishedCount = 0;
-            _blinkCount = 0;
-        }
-
-        public int Session
-        {
-            get { return _session; }
-        }
-
-        public string TimerName
-        {
-            get { return _timerName; }
-            set { _timerName = value; }
-        }
-
-        public SystemDateTime CreateTime
-        {
-            get { return _createTime; }
-            set { _createTime = value; }
-        }
-
-        public SystemDateTime LastUseTime
-        {
-            get { return _lastUseTime; }
-            set { _lastUseTime = value; }
-        }
-
-        public int ScheduleCount
-        {
-            get { return _scheduleCount; }
-            set { _scheduleCount = value; }
-        }
-
-        public int FinishedCount
-        {
-            get { return _finishedCount; }
-            set { _finishedCount = value; }
-        }
-
-        public int BlinkCount
-        {
-            get { return _blinkCount; }
-            set { _blinkCount = value; }
+            this.Session = session;
+            this.TimerName = string.Empty;
+            this.CreateTime = SystemDateTime.MinValue;
+            this.LastUseTime = SystemDateTime.MinValue;
+            this.ScheduleCount = 0;
+            this.FinishedCount = 0;
+            this.BlinkCount = 0;
         }
     }
 }

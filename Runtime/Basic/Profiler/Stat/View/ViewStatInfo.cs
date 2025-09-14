@@ -35,59 +35,31 @@ namespace GameEngine.Profiler.Statistics
         /// <summary>
         /// 视图记录索引标识
         /// </summary>
-        private readonly int _uid;
+        public int Uid { get; private set; }
         /// <summary>
         /// 视图名称
         /// </summary>
-        private readonly string _viewName;
+        public string ViewName { get; private set; }
         /// <summary>
         /// 视图的哈希码，用来确保视图唯一性
         /// </summary>
-        private readonly int _hashCode;
+        public int HashCode { get; private set; }
         /// <summary>
         /// 视图的创建时间
         /// </summary>
-        private SystemDateTime _createTime;
+        public SystemDateTime CreateTime { get; internal set; }
         /// <summary>
         /// 视图的关闭时间
         /// </summary>
-        private SystemDateTime _closeTime;
+        public SystemDateTime CloseTime { get; internal set; }
 
         public ViewStatInfo(int uid, string viewName, int hashCode)
         {
-            _uid = uid;
-            _viewName = viewName;
-            _hashCode = hashCode;
-            _createTime = SystemDateTime.MinValue;
-            _closeTime = SystemDateTime.MinValue;
-
-        }
-
-        public int Uid
-        {
-            get { return _uid; }
-        }
-
-        public string ViewName
-        {
-            get { return _viewName; }
-        }
-
-        public int HashCode
-        {
-            get { return _hashCode; }
-        }
-
-        public SystemDateTime CreateTime
-        {
-            get { return _createTime; }
-            set { _createTime = value; }
-        }
-
-        public SystemDateTime CloseTime
-        {
-            get { return _closeTime; }
-            set { _closeTime = value; }
+            this.Uid = uid;
+            this.ViewName = viewName;
+            this.HashCode = hashCode;
+            this.CreateTime = SystemDateTime.MinValue;
+            this.CloseTime = SystemDateTime.MinValue;
         }
     }
 }

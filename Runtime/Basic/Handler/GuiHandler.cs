@@ -532,7 +532,7 @@ namespace GameEngine
         /// <param name="viewType">视图类型</param>
         public void CloseUI(SystemType viewType)
         {
-            foreach (CView view in _views.Reverse<CView>())
+            foreach (CView view in NovaEngine.Utility.Collection.Reverse<CView>(_views))
             {
                 if (view.GetType() == viewType)
                 {

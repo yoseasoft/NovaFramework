@@ -35,58 +35,31 @@ namespace GameEngine.Profiler.Statistics
         /// <summary>
         /// 角色记录索引标识
         /// </summary>
-        private readonly int _uid;
+        public int Uid { get; private set; }
         /// <summary>
         /// 角色名称
         /// </summary>
-        private readonly string _actorName;
+        public string ActorName { get; private set; }
         /// <summary>
         /// 角色的哈希码，用来确保角色唯一性
         /// </summary>
-        private readonly int _hashCode;
+        public int HashCode { get; private set; }
         /// <summary>
         /// 角色的创建时间
         /// </summary>
-        private SystemDateTime _createTime;
+        public SystemDateTime CreateTime { get; internal set; }
         /// <summary>
         /// 角色的释放时间
         /// </summary>
-        private SystemDateTime _releaseTime;
+        public SystemDateTime ReleaseTime { get; internal set; }
 
         public ActorStatInfo(int uid, string objectName, int hashCode)
         {
-            _uid = uid;
-            _actorName = objectName;
-            _hashCode = hashCode;
-            _createTime = SystemDateTime.MinValue;
-            _releaseTime = SystemDateTime.MinValue;
-        }
-
-        public int Uid
-        {
-            get { return _uid; }
-        }
-
-        public string ActorName
-        {
-            get { return _actorName; }
-        }
-
-        public int HashCode
-        {
-            get { return _hashCode; }
-        }
-
-        public SystemDateTime CreateTime
-        {
-            get { return _createTime; }
-            set { _createTime = value; }
-        }
-
-        public SystemDateTime ReleaseTime
-        {
-            get { return _releaseTime; }
-            set { _releaseTime = value; }
+            this.Uid = uid;
+            this.ActorName = objectName;
+            this.HashCode = hashCode;
+            this.CreateTime = SystemDateTime.MinValue;
+            this.ReleaseTime = SystemDateTime.MinValue;
         }
     }
 }
