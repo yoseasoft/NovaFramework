@@ -36,11 +36,15 @@ namespace GameEngine
         /// <summary>
         /// 实体对象的标识
         /// </summary>
-        private long _beanId;
+        private int _beanId;
         /// <summary>
         /// 实体对象的名称
         /// </summary>
         private string _beanName;
+        /// <summary>
+        /// 实体对象的元数据
+        /// </summary>
+        private object _metadata;
 
         /// <summary>
         /// 实体对象的符号标记
@@ -50,11 +54,15 @@ namespace GameEngine
         /// <summary>
         /// 获取或设置实体对象的标识
         /// </summary>
-        public long BeanId { get { return _beanId; } internal set { _beanId = value; } }
+        public int BeanId { get { return _beanId; } internal set { _beanId = value; } }
         /// <summary>
         /// 获取或设置实体对象的名称
         /// </summary>
         public string BeanName { get { return _beanName; } internal set { _beanName = value; } }
+        /// <summary>
+        /// 获取或设置实体对象的元数据
+        /// </summary>
+        public object Metadata { get { return _metadata; } protected set { _metadata = value; } }
 
         /// <summary>
         /// 获取实体对象对应的符号对象实例

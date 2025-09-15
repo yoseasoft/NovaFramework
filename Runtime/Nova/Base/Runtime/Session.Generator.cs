@@ -54,11 +54,11 @@ namespace NovaEngine
         /// <param name="init">会话初始值</param>
         /// <param name="max">会话最大值</param>
         /// <returns>返回自增后的当前会话值标识</returns>
-        private static int __CalcNextSessionID(int session, int init, int max)
+        private static int __CalcNextSession(int session, int init, int max)
         {
             lock (_locked)
             {
-                return __CalcNextUnsafeSessionID(session, init, max);
+                return __UnsafeCalcNextSession(session, init, max);
             }
         }
 
@@ -69,7 +69,7 @@ namespace NovaEngine
         /// <param name="init">会话初始值</param>
         /// <param name="max">会话最大值</param>
         /// <returns>返回自增后的当前会话值标识</returns>
-        private static int __CalcNextUnsafeSessionID(int session, int init, int max)
+        private static int __UnsafeCalcNextSession(int session, int init, int max)
         {
             session++;
             if (session == max || session <= 0)
@@ -87,11 +87,11 @@ namespace NovaEngine
         /// <param name="init">会话初始值</param>
         /// <param name="max">会话最大值</param>
         /// <returns>返回自增后的当前会话值标识</returns>
-        public static int NextSessionID(string name, int init = Session.SESSION_INIT_VALUE, int max = System.Int32.MaxValue)
+        public static int NextSession(string name, int init = Session.SESSION_INIT_VALUE, int max = SESSION_MAX_VALUE)
         {
             lock (_locked)
             {
-                return NextUnsafeSessionID(name, init, max);
+                return UnsafeNextSession(name, init, max);
             }
         }
 
@@ -102,7 +102,7 @@ namespace NovaEngine
         /// <param name="init">会话初始值</param>
         /// <param name="max">会话最大值</param>
         /// <returns>返回自增后的当前会话值标识</returns>
-        public static int NextUnsafeSessionID(string name, int init = Session.SESSION_INIT_VALUE, int max = System.Int32.MaxValue)
+        public static int UnsafeNextSession(string name, int init = Session.SESSION_INIT_VALUE, int max = SESSION_MAX_VALUE)
         {
             int session = 0;
             if (_sessionNameMappings.ContainsKey(name))
@@ -115,7 +115,7 @@ namespace NovaEngine
                 session = init;
             }
 
-            session = __CalcNextUnsafeSessionID(session, init, max);
+            session = __UnsafeCalcNextSession(session, init, max);
             _sessionNameMappings[name] = session;
 
             return session;
@@ -128,11 +128,11 @@ namespace NovaEngine
         /// <param name="init">会话初始值</param>
         /// <param name="max">会话最大值</param>
         /// <returns>返回自增后的当前会话值标识</returns>
-        public static int NextSessionID(int type, int init = Session.SESSION_INIT_VALUE, int max = System.Int32.MaxValue)
+        public static int NextSession(int type, int init = Session.SESSION_INIT_VALUE, int max = SESSION_MAX_VALUE)
         {
             lock (_locked)
             {
-                return NextUnsafeSessionID(type, init, max);
+                return UnsafeNextSession(type, init, max);
             }
         }
 
@@ -143,7 +143,7 @@ namespace NovaEngine
         /// <param name="init">会话初始值</param>
         /// <param name="max">会话最大值</param>
         /// <returns>返回自增后的当前会话值标识</returns>
-        public static int NextUnsafeSessionID(int type, int init = Session.SESSION_INIT_VALUE, int max = System.Int32.MaxValue)
+        public static int UnsafeNextSession(int type, int init = Session.SESSION_INIT_VALUE, int max = SESSION_MAX_VALUE)
         {
             int session = 0;
             if (_sessionTypeMappings.ContainsKey(type))
@@ -156,7 +156,7 @@ namespace NovaEngine
                 session = init;
             }
 
-            session = __CalcNextUnsafeSessionID(session, init, max);
+            session = __UnsafeCalcNextSession(session, init, max);
             _sessionTypeMappings[type] = session;
 
             return session;
@@ -170,7 +170,7 @@ namespace NovaEngine
         {
             lock (_locked)
             {
-                ResetUnsafeSession(name);
+                UnsafeResetSession(name);
             }
         }
 
@@ -178,7 +178,7 @@ namespace NovaEngine
         /// 以非线程安全的方式重置指定名称对应的会话记录信息
         /// </summary>
         /// <param name="name">名称标识</param>
-        public static void ResetUnsafeSession(string name)
+        public static void UnsafeResetSession(string name)
         {
             if (_sessionNameMappings.ContainsKey(name))
             {
@@ -194,7 +194,7 @@ namespace NovaEngine
         {
             lock (_locked)
             {
-                ResetUnsafeSession(type);
+                UnsafeResetSession(type);
             }
         }
 
@@ -202,7 +202,7 @@ namespace NovaEngine
         /// 以非线程安全的方式重置指定类型对应的会话记录信息
         /// </summary>
         /// <param name="type">类型标识</param>
-        public static void ResetUnsafeSession(int type)
+        public static void UnsafeResetSession(int type)
         {
             if (_sessionTypeMappings.ContainsKey(type))
             {
@@ -217,14 +217,14 @@ namespace NovaEngine
         {
             lock (_locked)
             {
-                CleanupAllUnsafeSessions();
+                UnsafeCleanupAllSessions();
             }
         }
 
         /// <summary>
         /// 以非线程安全的方式清理全部会话信息
         /// </summary>
-        public static void CleanupAllUnsafeSessions()
+        public static void UnsafeCleanupAllSessions()
         {
             _sessionNameMappings.Clear();
             _sessionTypeMappings.Clear();

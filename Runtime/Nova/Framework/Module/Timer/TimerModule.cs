@@ -210,7 +210,7 @@ namespace NovaEngine
                 return (info.Session, false);
             }
 
-            int session = Session.NextSessionID((int) ModuleEventType.Timer);
+            int session = Session.NextSession((int) ModuleEventType.Timer);
 
             info = new TimerInfo(this);
             info.Session = session;

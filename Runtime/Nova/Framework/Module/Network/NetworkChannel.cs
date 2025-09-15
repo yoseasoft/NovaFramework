@@ -201,7 +201,7 @@ namespace NovaEngine
         {
             Logger.Assert(null != service);
 
-            this._channelID = Session.NextSessionID((int) ModuleObject.ModuleEventType.Network);
+            this._channelID = Session.NextSession((int) ModuleObject.ModuleEventType.Network);
             this._channelName = name;
             this._url = url;
 

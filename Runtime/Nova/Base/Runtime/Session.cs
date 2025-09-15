@@ -34,6 +34,10 @@ namespace NovaEngine
         /// 初始会话值
         /// </summary>
         public const int SESSION_INIT_VALUE = 10000;
+        /// <summary>
+        /// 最大会话值
+        /// </summary>
+        public const int SESSION_MAX_VALUE = System.Int32.MaxValue;
 
         // private readonly object _locked = new object();
 
@@ -91,7 +95,7 @@ namespace NovaEngine
         /// <param name="init">初始会话值</param>
         /// <param name="max">最大会话值</param>
         /// <returns>若创建会话对象实例成功返回其引用，否则返回null</returns>
-        public static Session Create(int init = SESSION_INIT_VALUE, int max = System.Int32.MaxValue)
+        public static Session Create(int init = SESSION_INIT_VALUE, int max = SESSION_MAX_VALUE)
         {
             if (init <= 0 || max <= 0)
             {
@@ -115,7 +119,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="session">会话对象</param>
         /// <returns>若创建会话对象实例成功返回其引用，否则返回null</returns>
-        public static Session CreateWithSession(Session session)
+        public static Session Create(Session session)
         {
             Session ret = new Session();
             ret.InitWithSession(session);
@@ -128,7 +132,7 @@ namespace NovaEngine
         /// <returns>返回自增后的当前会话值标识</returns>
         public int Next()
         {
-            return __CalcNextUnsafeSessionID(_currValue, _initValue, _maxValue);
+            return __UnsafeCalcNextSession(_currValue, _initValue, _maxValue);
         }
 
         /// <summary>
