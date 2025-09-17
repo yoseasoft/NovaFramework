@@ -75,7 +75,7 @@ namespace GameEngine.HFSM
             _root.Exit();
         }
 
-        public void Tick(float deltaTime)
+        public void Tick()
         {
             if (!_isRunning)
             {
@@ -83,14 +83,14 @@ namespace GameEngine.HFSM
                 return;
             }
 
-            // InternalTick(deltaTime);
+            // InternalTick();
 
             // 这里运行序列器的刷新逻辑，而不直接运行状态机刷新逻辑，是因为序列器中可能存在过渡操作，
             // 在过渡操作运行的过程中，需要先停止当前激活状态自身的刷新逻辑。
-            _sequencer.Tick(deltaTime);
+            _sequencer.Tick();
         }
 
-        internal void InternalTick(float deltaTime) => _root.Update(deltaTime);
+        internal void InternalTick() => _root.Update();
 
         // Perform the actual switch from 'from' to 'to' by exiting up to the shared ancestor, then entering down to the target.
         public void ChangeState(State from, State to)

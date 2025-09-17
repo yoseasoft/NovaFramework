@@ -138,7 +138,7 @@ namespace GameEngine.HFSM
             }
         }
 
-        public void Tick(float deltaTime)
+        public void Tick()
         {
             if (null != _sequencer)
             {
@@ -163,7 +163,7 @@ namespace GameEngine.HFSM
 
             // 当前没有序列工作时，才进行状态机更新
 
-            _machine.InternalTick(deltaTime);
+            _machine.InternalTick();
         }
 
         /// <summary>

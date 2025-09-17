@@ -97,7 +97,7 @@ namespace GameEngine.HFSM
 
         protected virtual void OnExit() { }
 
-        protected virtual void OnUpdate(float deltaTime) { }
+        protected virtual void OnUpdate() { }
 
         #endregion
 
@@ -119,7 +119,7 @@ namespace GameEngine.HFSM
             OnExit();
         }
 
-        internal void Update(float deltaTime)
+        internal void Update()
         {
             State state = GetTransition();
             if (null != state)
@@ -128,9 +128,9 @@ namespace GameEngine.HFSM
                 return;
             }
 
-            if (null != _activeChild) _activeChild.Update(deltaTime);
+            if (null != _activeChild) _activeChild.Update();
 
-            OnUpdate(deltaTime);
+            OnUpdate();
         }
 
         // Returns the deepest currently-active descendant state (the leaf of the active path).
