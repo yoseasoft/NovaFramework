@@ -38,6 +38,9 @@ namespace GameEngine.HFSM
     /// </summary>
     public abstract class State
     {
+        internal const string NameOfStateMachineField = nameof(_machine);
+        internal const string NameOfParentStateField = nameof(_parent);
+
         /// <summary>
         /// 状态机对象实例
         /// </summary>

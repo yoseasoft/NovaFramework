@@ -32,8 +32,13 @@ namespace GameEngine.HFSM
     /// </summary>
     public class StateMachine
     {
+        /// <summary>
+        /// 状态机当前的根节点对象实例
+        /// </summary>
         private State _root;
-
+        /// <summary>
+        /// 状态机当前的状态转换序列管理对象实例
+        /// </summary>
         private StateTransitionSequencer _sequencer;
 
         /// <summary>

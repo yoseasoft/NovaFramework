@@ -35,6 +35,11 @@ namespace GameEngine.HFSM
     /// </summary>
     public static class StateMachineBuilder
     {
+        /// <summary>
+        /// 使用指定的根节点构建一个状态机对象实例
+        /// </summary>
+        /// <param name="root">根节点实例</param>
+        /// <returns>返回一个新构建的状态机对象实例</returns>
         public static StateMachine Build(State root)
         {
             if (null == root) return null;
@@ -50,13 +55,13 @@ namespace GameEngine.HFSM
             if (!visited.Add(state)) return; // State is already wired
 
             SystemBindingFlags flags = SystemBindingFlags.Instance | SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.FlattenHierarchy;
-            SystemFieldInfo machineField = typeof(State).GetField("_machine", flags);
+            SystemFieldInfo machineField = typeof(State).GetField(State.NameOfStateMachineField, flags);
             if (null != machineField) machineField.SetValue(state, machine);
 
             foreach (SystemFieldInfo field in state.GetType().GetFields(flags))
             {
                 if (false == typeof(State).IsAssignableFrom(field.FieldType)) continue; // Only consider fields that are State
-                if ("_parent" == field.Name) continue; // Skip back-edge to parent
+                if (State.NameOfParentStateField == field.Name) continue; // Skip back-edge to parent
 
                 State child = (State) field.GetValue(state);
                 if (null == child) continue;
