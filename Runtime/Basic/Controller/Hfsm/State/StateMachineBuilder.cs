@@ -33,23 +33,18 @@ namespace GameEngine.HFSM
     /// <summary>
     /// 状态机构建器对象类，提供对状态机数据的自动装配
     /// </summary>
-    public sealed class StateMachineBuilder
+    public static class StateMachineBuilder
     {
-        private readonly State _root;
-
-        public StateMachineBuilder(State root)
+        public static StateMachine Build(State root)
         {
-            _root = root;
-        }
+            if (null == root) return null;
 
-        public StateMachine Build()
-        {
-            StateMachine machine = new StateMachine(_root);
-            Wire(_root, machine, new HashSet<State>());
+            StateMachine machine = new StateMachine(root);
+            Wire(root, machine, new HashSet<State>());
             return machine;
         }
 
-        void Wire(State state, StateMachine machine, HashSet<State> visited)
+        static void Wire(State state, StateMachine machine, HashSet<State> visited)
         {
             if (null == state) return;
             if (!visited.Add(state)) return; // State is already wired
