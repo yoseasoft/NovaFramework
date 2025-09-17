@@ -1,10 +1,7 @@
 /// -------------------------------------------------------------------------------
-/// NovaEngine Framework
+/// GameEngine Framework
 ///
-/// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
-/// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
-/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,39 +23,45 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+using SystemTask = System.Threading.Tasks.Task;
+using SystemCancellationToken = System.Threading.CancellationToken;
+
+namespace GameEngine.HFSM
 {
     /// <summary>
-    /// 引擎框架的版本信息配置文件
-    /// 
-    /// 版本信息在每次引擎升级维护时，需同步修改相应的版本号
-    /// 具体字段含义请参考<see cref="NovaEngine.Version"/>类的成员定义
+    /// 状态序列接口类，用于声明状态序列的访问接口
     /// </summary>
-    internal static class VersionInfo
+    public interface IStateSequence
     {
         /// <summary>
-        /// 主版本号，重大变动时更改该值
+        /// 序列执行完成的状态标识
         /// </summary>
-        public const int Major = 1;
+        bool IsDone { get; }
 
         /// <summary>
-        /// 次版本号，功能升级或局部变动时更改该值
+        /// 状态序列的启动接口函数
         /// </summary>
-        public const int Minor = 0;
+        void Start();
 
         /// <summary>
-        /// 修订版本号，功能扩充或BUG修复时更改该值
+        /// 状态序列的更新接口函数，在序列启动后逐帧的调用序列刷新逻辑
         /// </summary>
-        public const int Revision = 1;
+        /// <returns>序列完成后返回true，否则返回false</returns>
+        bool Update();
+    }
 
-        /// <summary>
-        /// 编译版本号，每次重新编译版本时更改该值
-        /// </summary>
-        public const int Build = 202509171;
+    // One activity operation (activate OR deactivate) to run for this phase.
+    public delegate SystemTask StatePhaseStep(SystemCancellationToken cancellationToken);
 
-        /// <summary>
-        /// 字母版本号，用于标识当前软件所属的开发阶段
-        /// </summary>
-        public const Version.PublishType Letter = Version.PublishType.Alpha;
+    /// <summary>
+    /// 空白状态序列对象类
+    /// </summary>
+    public class NoopStatePhase : IStateSequence
+    {
+        public bool IsDone { get; private set; }
+
+        public void Start() => IsDone = true; // completes immediately
+
+        public bool Update() => IsDone;
     }
 }

@@ -23,12 +23,55 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine
+using System.Collections.Generic;
+
+using SystemTask = System.Threading.Tasks.Task;
+using SystemCancellationToken = System.Threading.CancellationToken;
+
+namespace GameEngine.HFSM
 {
     /// <summary>
-    /// 状态转换序列对象类，用于管理状态转换序列调度相关逻辑
+    /// 并行状态序列对象类
+    /// 将所有过渡期间要执行的不同步骤，按照并行方式同时执行
     /// </summary>
-    public class StateTransitionSequencer
+    public class ParallelStatePhase : IStateSequence
     {
+        private readonly IList<StatePhaseStep> _steps;
+        private readonly SystemCancellationToken _cancellationToken;
+        private IList<SystemTask> _tasks;
+
+        public bool IsDone { get; private set; }
+
+        public ParallelStatePhase(IList<StatePhaseStep> steps, SystemCancellationToken cancellationToken)
+        {
+            _steps = steps;
+            _cancellationToken = cancellationToken;
+        }
+
+        public void Start()
+        {
+            // 无事可做就直接结束
+            if (null == _steps || _steps.Count == 0)
+            {
+                IsDone = true;
+                return;
+            }
+
+            _tasks = new List<SystemTask>(_steps.Count);
+            for (int n = 0; n < _steps.Count; ++n)
+            {
+                _tasks.Add(_steps[n](_cancellationToken));
+            }
+        }
+
+        public bool Update()
+        {
+            // 步骤结束直接返回true
+            if (IsDone) return true;
+
+            IsDone = null == _tasks || ((List<SystemTask>) _tasks).TrueForAll(t => t.IsCompleted);
+
+            return IsDone;
+        }
     }
 }

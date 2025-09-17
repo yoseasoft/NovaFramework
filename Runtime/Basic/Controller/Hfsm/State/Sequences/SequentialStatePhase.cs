@@ -23,12 +23,55 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine
+using System.Collections.Generic;
+
+using SystemTask = System.Threading.Tasks.Task;
+using SystemCancellationToken = System.Threading.CancellationToken;
+
+namespace GameEngine.HFSM
 {
     /// <summary>
-    /// 状态机管理对象类，提供对引擎内部的有限状态对象实例进行调度管理
+    /// 顺序状态序列对象类
+    /// 将所有过渡期间要执行的不同步骤，按照传入的顺序依次执行
     /// </summary>
-    public class StateMachine
+    public class SequentialStatePhase : IStateSequence
     {
+        private readonly IList<StatePhaseStep> _steps;
+        private readonly SystemCancellationToken _cancellationToken;
+        private int _index = -1;
+        private SystemTask _current;
+
+        public bool IsDone { get; private set; }
+
+        public SequentialStatePhase(IList<StatePhaseStep> steps, SystemCancellationToken cancellationToken)
+        {
+            _steps = steps;
+            _cancellationToken = cancellationToken;
+        }
+
+        public void Start() => NextPhase();
+
+        public bool Update()
+        {
+            // 步骤结束直接返回true
+            if (IsDone) return true;
+
+            if (null == _current || _current.IsCompleted) NextPhase();
+
+            return IsDone;
+        }
+
+        void NextPhase()
+        {
+            ++_index;
+            // 所有步骤都已经执行完毕
+            if (_index >= _steps.Count)
+            {
+                IsDone = true;
+                return;
+            }
+
+            _current = _steps[_index](_cancellationToken);
+        }
     }
 }
