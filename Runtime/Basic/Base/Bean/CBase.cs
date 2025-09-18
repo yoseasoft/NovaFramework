@@ -121,6 +121,8 @@ namespace GameEngine
         /// </summary>
         public override void Initialize()
         {
+            base.Initialize();
+
             // 初始化转发回调
             OnDispatchCallInitialize();
         }
@@ -132,6 +134,8 @@ namespace GameEngine
         {
             // 清理转发回调
             OnDispatchCallCleanup();
+
+            base.Cleanup();
         }
 
         /// <summary>

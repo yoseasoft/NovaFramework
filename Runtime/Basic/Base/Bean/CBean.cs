@@ -54,7 +54,7 @@ namespace GameEngine
         /// <summary>
         /// 获取或设置实体对象的标识
         /// </summary>
-        public int BeanId { get { return _beanId; } internal set { _beanId = value; } }
+        public int BeanId { get { return _beanId; } }
         /// <summary>
         /// 获取或设置实体对象的名称
         /// </summary>
@@ -84,12 +84,20 @@ namespace GameEngine
         /// <summary>
         /// 对象初始化函数接口
         /// </summary>
-        public abstract void Initialize();
+        public virtual void Initialize()
+        {
+            _beanId = NovaEngine.Session.NextSession(1001);
+        }
 
         /// <summary>
         /// 对象清理函数接口
         /// </summary>
-        public abstract void Cleanup();
+        public virtual void Cleanup()
+        {
+            _beanId = 0;
+            _beanName = null;
+            _metadata = null;
+        }
 
         /// <summary>
         /// 对象重载函数接口

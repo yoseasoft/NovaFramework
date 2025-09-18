@@ -44,7 +44,7 @@ namespace GameEngine
 
             if (GameMacros.DEBUGGING_PROFILER_STAT_MODULE_ENABLED)
             {
-                Profiler.Statistics.StatisticalCenter.Startup();
+                Profiler.Statistics.Statistician.Startup();
             }
         }
 
@@ -55,7 +55,7 @@ namespace GameEngine
         {
             if (GameMacros.DEBUGGING_PROFILER_STAT_MODULE_ENABLED)
             {
-                Profiler.Statistics.StatisticalCenter.Shutdown();
+                Profiler.Statistics.Statistician.Shutdown();
             }
 
             if (GameMacros.DEBUGGING_PROFILER_ONLINE_WINDOW_ENABLED)
@@ -73,7 +73,7 @@ namespace GameEngine
         {
             if (GameMacros.DEBUGGING_PROFILER_STAT_MODULE_ENABLED)
             {
-                Profiler.Statistics.StatisticalCenter.Call(funcType, args);
+                Profiler.Statistics.Statistician.Call(funcType, args);
             }
         }
     }

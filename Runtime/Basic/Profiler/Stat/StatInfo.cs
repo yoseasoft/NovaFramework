@@ -4,6 +4,7 @@
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -24,12 +25,55 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using SystemDateTime = System.DateTime;
+
 namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
-    /// 业务框架统计信息接口类，用于对一个统计信息对象的类作标记，在类型判断或反射检测时以该标记作为依据
+    /// 业务框架统计信息基础对象类，用于标识该类是一个统计信息对象的类，并提供部分通用属性的访问接口
     /// </summary>
-    public interface IStatInfo
+    public abstract class StatInfo
     {
+        /// <summary>
+        /// 统计信息对象唯一标识
+        /// </summary>
+        private readonly int _uid;
+
+        /// <summary>
+        /// 统计信息对象创建时间
+        /// </summary>
+        private readonly SystemDateTime _createTime;
+        /// <summary>
+        /// 统计信息对象释放时间
+        /// </summary>
+        private SystemDateTime _releaseTime;
+        /// <summary>
+        /// 统计信息对象访问时间
+        /// </summary>
+        private SystemDateTime _accessTime;
+
+        public int Uid => _uid;
+
+        public SystemDateTime CreateTime => _createTime;
+        public SystemDateTime ReleaseTime => _releaseTime;
+        public SystemDateTime AccessTime => _accessTime;
+
+        protected StatInfo(int uid)
+        {
+            _uid = uid;
+            _createTime = SystemDateTime.Now;
+            _releaseTime = SystemDateTime.MinValue;
+            _accessTime = _createTime;
+        }
+
+        internal void Release()
+        {
+            _releaseTime = SystemDateTime.Now;
+        }
+
+        internal void Access()
+        {
+            _accessTime = SystemDateTime.Now;
+        }
     }
 }

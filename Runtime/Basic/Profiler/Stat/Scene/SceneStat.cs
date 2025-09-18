@@ -3,6 +3,7 @@
 ///
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -23,98 +24,24 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
-using SystemDateTime = System.DateTime;
-
 namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
     /// 场景统计模块，对场景模块对象提供数据统计所需的接口函数
     /// </summary>
-    internal sealed class SceneStat : StatSingleton<SceneStat>, IStat
+    internal sealed class SceneStat : BaseStat<SceneStat, SceneStatInfo>
     {
-        /// <summary>
-        /// 场景访问统计信息容器列表
-        /// </summary>
-        private IList<SceneStatInfo> _sceneStatInfos = null;
-
-        /// <summary>
-        /// 初始化统计模块实例的回调接口
-        /// </summary>
-        protected override void OnInitialize()
-        {
-            _sceneStatInfos = new List<SceneStatInfo>();
-        }
-
-        /// <summary>
-        /// 清理统计模块实例的回调接口
-        /// </summary>
-        protected override void OnCleanup()
-        {
-            _sceneStatInfos.Clear();
-            _sceneStatInfos = null;
-        }
-
-        /// <summary>
-        /// 卸载统计模块实例中的垃圾数据
-        /// </summary>
-        public void Dump()
-        {
-            _sceneStatInfos.Clear();
-        }
-
-        /// <summary>
-        /// 获取当前所有场景访问的统计信息
-        /// </summary>
-        /// <returns>返回所有的操作访问统计信息</returns>
-        public IList<IStatInfo> GetAllStatInfos()
-        {
-            List<IStatInfo> results = new List<IStatInfo>();
-            results.AddRange(_sceneStatInfos);
-
-            return results;
-        }
-
         [IStat.OnStatFunctionRegister(StatCode.SceneEnter)]
         private void OnSceneEnter(CScene scene)
         {
-            SceneStatInfo info = null;
-
-            int uid = _sceneStatInfos.Count + 1;
-
-            info = new SceneStatInfo(uid, scene.Name, scene.GetHashCode());
-            info.EnterTime = SystemDateTime.UtcNow;
-            _sceneStatInfos.Add(info);
+            SceneStatInfo info = new SceneStatInfo(scene.BeanId, scene.Name);
+            TryAddValue(info);
         }
 
         [IStat.OnStatFunctionRegister(StatCode.SceneExit)]
         private void OnSceneExit(CScene scene)
         {
-            SceneStatInfo info = null;
-            if (false == TryGetSceneStatInfoByHashCode(scene.GetHashCode(), out info))
-            {
-                Debugger.Warn("Could not found any scene stat info with name '{0}', exited it failed.", scene.Name);
-                return;
-            }
-
-            info.ExitTime = SystemDateTime.UtcNow;
-        }
-
-        private bool TryGetSceneStatInfoByHashCode(int hashCode, out SceneStatInfo info)
-        {
-            for (int n = _sceneStatInfos.Count - 1; n >= 0; --n)
-            {
-                SceneStatInfo found = _sceneStatInfos[n];
-                if (found.HashCode == hashCode)
-                {
-                    info = found;
-                    return true;
-                }
-            }
-
-            info = null;
-            return false;
+            TryCloseValue(scene.BeanId);
         }
     }
 }

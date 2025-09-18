@@ -41,20 +41,20 @@ namespace GameEngine.Profiler.Debugging
             {
                 UnityGUILayout.Label("<b>Index</b>");
                 UnityGUILayout.Label("<b>Scene Name</b>", UnityGUILayout.Width(120f));
-                UnityGUILayout.Label("<b>Enter Time</b>", UnityGUILayout.Width(160f));
-                UnityGUILayout.Label("<b>Exit Time</b>", UnityGUILayout.Width(160f));
-                UnityGUILayout.Label("<b>Hash Code</b>", UnityGUILayout.Width(80f));
+                UnityGUILayout.Label("<b>Enter Time</b>", UnityGUILayout.Width(140f));
+                UnityGUILayout.Label("<b>Exit Time</b>", UnityGUILayout.Width(140f));
+                UnityGUILayout.Label("<b>Access Time</b>", UnityGUILayout.Width(140f));
             }
 
-            protected override void OnDrawStatInfoContent(Statistics.IStatInfo info)
+            protected override void OnDrawStatInfoContent(Statistics.StatInfo info)
             {
                 Statistics.SceneStatInfo sceneStatInfo = info as Statistics.SceneStatInfo;
 
                 UnityGUILayout.Label(sceneStatInfo.Uid.ToString());
                 UnityGUILayout.Label(sceneStatInfo.SceneName, UnityGUILayout.Width(120f));
-                UnityGUILayout.Label(StatDateTimeToString(sceneStatInfo.EnterTime), UnityGUILayout.Width(160f));
-                UnityGUILayout.Label(StatDateTimeToString(sceneStatInfo.ExitTime), UnityGUILayout.Width(160f));
-                UnityGUILayout.Label(sceneStatInfo.HashCode.ToString());
+                UnityGUILayout.Label(StatDateTimeToString(sceneStatInfo.CreateTime), UnityGUILayout.Width(140f));
+                UnityGUILayout.Label(StatDateTimeToString(sceneStatInfo.ReleaseTime), UnityGUILayout.Width(140f));
+                UnityGUILayout.Label(StatDateTimeToString(sceneStatInfo.AccessTime), UnityGUILayout.Width(140f));
             }
         }
     }

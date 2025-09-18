@@ -4,6 +4,7 @@
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -29,17 +30,19 @@ using System.Reflection;
 
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 using SystemMethodInfo = System.Reflection.MethodInfo;
+using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
     /// 统计模块对象的单例构建类，该类以单例的形式对目标统计对象进行实例化管理
     /// </summary>
-    public abstract class StatSingleton<T> where T : class, IStat, new()
+    public abstract class StatSingleton<TObject, TRecord>
+        where TObject : class, IStat, new() // IStat<TRecord>
+        where TRecord : StatInfo
     {
-        private static T _instance = null;
+        private static TObject _instance = null;
 
         /// <summary>
         /// 统计模块的模块类型标识
@@ -50,6 +53,8 @@ namespace GameEngine.Profiler.Statistics
         /// 统计模块对象启动状态标识
         /// </summary>
         // private bool _enabled = false;
+
+        private IList<TRecord> _statInfoRecords;
 
         private IDictionary<int, SystemMethodInfo> _regStatMethodTypes;
 
@@ -81,14 +86,14 @@ namespace GameEngine.Profiler.Statistics
         /// <summary>
         /// 获取单例类当前的有效实例
         /// </summary>
-        public static T Instance
+        public static TObject Instance
         {
             get
             {
                 // 禁止被动创建实例，必须通过主动调用“Create”进行实例创建
-                // if (null == ModuleSingleton<T>._instance) { ModuleSingleton<T>.Create(); }
+                // if (null == StatSingleton<TObject, TRecord>._instance) { StatSingleton<TObject, TRecord>.Create(); }
 
-                return StatSingleton<T>._instance;
+                return StatSingleton<TObject, TRecord>._instance;
             }
         }
 
@@ -96,19 +101,19 @@ namespace GameEngine.Profiler.Statistics
         /// 单例类的实例创建接口
         /// </summary>
         /// <param name="statType">统计类型</param>
-        internal static T Create(int statType)
+        internal static TObject Create(int statType)
         {
             // 仅在调试模式下才创建统计模块实例
             if (NovaEngine.Environment.debugMode)
             {
-                if (StatSingleton<T>._instance == null)
+                if (null == StatSingleton<TObject, TRecord>._instance)
                 {
-                    StatSingleton<T>._instance = System.Activator.CreateInstance<T>();
-                    (StatSingleton<T>._instance as StatSingleton<T>).Initialize(statType);
+                    StatSingleton<TObject, TRecord>._instance = System.Activator.CreateInstance<TObject>();
+                    (StatSingleton<TObject, TRecord>._instance as StatSingleton<TObject, TRecord>).Initialize(statType);
                 }
             }
 
-            return StatSingleton<T>._instance;
+            return StatSingleton<TObject, TRecord>._instance;
         }
 
         /// <summary>
@@ -116,10 +121,10 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         internal static void Destroy()
         {
-            if (StatSingleton<T>._instance != null)
+            if (null != StatSingleton<TObject, TRecord>._instance)
             {
-                (StatSingleton<T>._instance as StatSingleton<T>).Cleanup();
-                StatSingleton<T>._instance = (T) ((object) null);
+                (StatSingleton<TObject, TRecord>._instance as StatSingleton<TObject, TRecord>).Cleanup();
+                StatSingleton<TObject, TRecord>._instance = (TObject) ((object) null);
             }
         }
 
@@ -130,6 +135,7 @@ namespace GameEngine.Profiler.Statistics
         private void Initialize(int statType)
         {
             _statType = statType;
+            _statInfoRecords = new List<TRecord>();
             _regStatMethodTypes = new Dictionary<int, SystemMethodInfo>();
 
             // 仅在调试模块下开启统计功能
@@ -142,7 +148,7 @@ namespace GameEngine.Profiler.Statistics
             InitAllStatMethods();
 
             // 注册统计模块实例
-            StatisticalCenter.RegisterStat(_statType, _instance, GetAllStatMethodTypes());
+            Statistician.RegisterStat(_statType, _instance, GetAllStatMethodTypes());
 
             OnInitialize();
         }
@@ -155,22 +161,40 @@ namespace GameEngine.Profiler.Statistics
             OnCleanup();
 
             // 注销统计模块实例
-            StatisticalCenter.UnregisterStat(_statType);
+            Statistician.UnregisterStat(_statType);
 
             // 注销所有统计回调函数
             UnregisterAllStatMethods();
             _regStatMethodTypes = null;
+
+            _statInfoRecords.Clear();
+            _statInfoRecords = null;
+        }
+
+        /// <summary>
+        /// 单例类垃圾卸载回调接口
+        /// </summary>
+        private void Dump()
+        {
+            OnDump();
+
+            _statInfoRecords.Clear();
         }
 
         /// <summary>
         /// 初始化引擎框架模块实例的回调接口
         /// </summary>
-        protected abstract void OnInitialize();
+        protected virtual void OnInitialize() { }
 
         /// <summary>
         /// 清理引擎框架模块实例的回调接口
         /// </summary>
-        protected abstract void OnCleanup();
+        protected virtual void OnCleanup() { }
+
+        /// <summary>
+        /// 回收引擎框架模块实例的回调接口
+        /// </summary>
+        protected virtual void OnDump() { }
 
         /// <summary>
         /// 检测指定的统计模块对象实例是否处于激活状态
@@ -185,12 +209,14 @@ namespace GameEngine.Profiler.Statistics
         /// <summary>
         /// 清理统计模块对象实例中的所有临时记录数据
         /// </summary>
-        internal static void ClearAll()
+        internal static void Clear()
         {
-            if (null == _instance) return;
+            if (null == StatSingleton<TObject, TRecord>._instance) return;
 
-            _instance.Dump();
+            (StatSingleton<TObject, TRecord>._instance as StatSingleton<TObject, TRecord>).Dump();
         }
+
+        #region 模块内部统计函数相关的管理接口函数
 
         /// <summary>
         /// 对模块内部所有的统计函数进行初始化绑定操作
@@ -269,6 +295,8 @@ namespace GameEngine.Profiler.Statistics
             return NovaEngine.Utility.Collection.ToList<int>(_regStatMethodTypes.Keys);
         }
 
+        #endregion
+
         /// <summary>
         /// 调用指定类型的统计函数
         /// </summary>
@@ -279,13 +307,92 @@ namespace GameEngine.Profiler.Statistics
             // if (!IsActivated()) return;
 
             SystemMethodInfo method = null;
-            if (false == (StatSingleton<T>._instance as StatSingleton<T>)._regStatMethodTypes.TryGetValue(funcType, out method))
+            if (false == (StatSingleton<TObject, TRecord>._instance as StatSingleton<TObject, TRecord>)._regStatMethodTypes.TryGetValue(funcType, out method))
             {
                 Debugger.Warn("Could not found any register stat method with type '{0}', invoke it failed.", funcType);
                 return;
             }
 
-            method.Invoke(StatSingleton<T>._instance as StatSingleton<T>, args);
+            method.Invoke(StatSingleton<TObject, TRecord>._instance as StatSingleton<TObject, TRecord>, args);
         }
+
+        #region 统计模块内部容器管理的辅助接口函数
+
+        /// <summary>
+        /// 添加统计信息实例到指定列表中
+        /// 这里会对列表长度进行限制，若超出范围将移除访问间隔时间最长数据
+        /// </summary>
+        /// <param name="targetObject">统计信息实例</param>
+        protected void TryAddValue(TRecord targetObject)
+        {
+            while (_statInfoRecords.Count > 100)
+            {
+                _statInfoRecords.RemoveAt(0);
+            }
+
+            // 理论上不会有重复ID的情况，这里暂时先检测一下，后面再考虑去除掉此处代码
+            for (int n = 0; n < _statInfoRecords.Count; ++n)
+            {
+                if (_statInfoRecords[n].Uid == targetObject.Uid)
+                {
+                    Debugger.Warn(LogGroupTag.Profiler, "目标统计模块对象‘{%t}’的信息记录列表中已存在ID为‘{%d}’的信息对象实例，请勿重复添加相同ID的对象实例！", typeof(TObject), targetObject.Uid);
+                    return;
+                }
+            }
+
+            _statInfoRecords.Add(targetObject);
+        }
+
+        /// <summary>
+        /// 在当前列表中对指定ID的统计信息实例进行访问
+        /// 此方法会自动将访问时间更新，同时调整该信息对象在列表中的位置
+        /// </summary>
+        /// <param name="uid">统计信息标识</param>
+        /// <returns>返回对应的统计信息对象实例</returns>
+        protected TRecord TryGetValue(int uid)
+        {
+            for (int n = _statInfoRecords.Count - 1; n >= 0; --n)
+            {
+                TRecord found = _statInfoRecords[n];
+                if (found.Uid == uid)
+                {
+                    found.Access();
+                    return found;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 获取当前统计信息对象列表
+        /// </summary>
+        /// <returns>返回当前统计信息对象列表</returns>
+        protected IList<TRecord> TryGetAllValues()
+        {
+            return _statInfoRecords;
+        }
+
+        /// <summary>
+        /// 在当前列表中对指定ID的统计信息实例进行释放
+        /// 此方法会更新对应信息实例的释放时间
+        /// </summary>
+        /// <param name="uid">统计信息标识</param>
+        protected void TryCloseValue(int uid)
+        {
+            for (int n = _statInfoRecords.Count - 1; n >= 0; --n)
+            {
+                TRecord found = _statInfoRecords[n];
+                if (found.Uid == uid)
+                {
+                    found.Release();
+                    return;
+                }
+            }
+
+            Debugger.Warn(LogGroupTag.Profiler, "目标统计模块对象‘{%t}’的信息记录列表中无法查找到ID为‘{%d}’的信息对象实例，请检查该实例是否已被提前销毁！", typeof(TObject), uid);
+        }
+
+        #endregion
     }
 }

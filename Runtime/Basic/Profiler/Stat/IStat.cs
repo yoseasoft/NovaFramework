@@ -43,7 +43,7 @@ namespace GameEngine.Profiler.Statistics
         /// 统计模块功能接口注册绑定的声明属性类型定义
         /// </summary>
         [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        protected internal class OnStatFunctionRegisterAttribute : SystemAttribute
+        protected internal sealed class OnStatFunctionRegisterAttribute : SystemAttribute
         {
             /// <summary>
             /// 统计模块的功能标识
@@ -76,12 +76,19 @@ namespace GameEngine.Profiler.Statistics
         /// <summary>
         /// 引擎统计模块实例垃圾卸载接口
         /// </summary>
-        void Dump();
+        // void Dump();
+
+        /// <summary>
+        /// 获取当前统计模块实例中指定标识对应的记录信息
+        /// </summary>
+        /// <param name="uid">统计信息标识</param>
+        /// <returns>返回给定标识对应的统计项信息</returns>
+        StatInfo GetStateInfoByUid(int uid);
 
         /// <summary>
         /// 获取当前统计模块实例记录的所有统计项信息
         /// </summary>
         /// <returns>返回所有记录的统计项信息</returns>
-        IList<IStatInfo> GetAllStatInfos();
+        IList<StatInfo> GetAllStatInfos();
     }
 }

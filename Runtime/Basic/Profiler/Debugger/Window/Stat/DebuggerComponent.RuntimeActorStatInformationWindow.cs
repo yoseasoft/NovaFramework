@@ -41,20 +41,20 @@ namespace GameEngine.Profiler.Debugging
             {
                 UnityGUILayout.Label("<b>Index</b>");
                 UnityGUILayout.Label("<b>Actor Name</b>", UnityGUILayout.Width(120f));
-                UnityGUILayout.Label("<b>Create Time</b>", UnityGUILayout.Width(160f));
-                UnityGUILayout.Label("<b>Release Time</b>", UnityGUILayout.Width(160f));
-                UnityGUILayout.Label("<b>Hash Code</b>", UnityGUILayout.Width(80f));
+                UnityGUILayout.Label("<b>Create Time</b>", UnityGUILayout.Width(140f));
+                UnityGUILayout.Label("<b>Release Time</b>", UnityGUILayout.Width(140f));
+                UnityGUILayout.Label("<b>Access Time</b>", UnityGUILayout.Width(140f));
             }
 
-            protected override void OnDrawStatInfoContent(Statistics.IStatInfo info)
+            protected override void OnDrawStatInfoContent(Statistics.StatInfo info)
             {
                 Statistics.ActorStatInfo actorStatInfo = info as Statistics.ActorStatInfo;
 
                 UnityGUILayout.Label(actorStatInfo.Uid.ToString());
                 UnityGUILayout.Label(actorStatInfo.ActorName, UnityGUILayout.Width(120f));
-                UnityGUILayout.Label(StatDateTimeToString(actorStatInfo.CreateTime), UnityGUILayout.Width(160f));
-                UnityGUILayout.Label(StatDateTimeToString(actorStatInfo.ReleaseTime), UnityGUILayout.Width(160f));
-                UnityGUILayout.Label(actorStatInfo.HashCode.ToString());
+                UnityGUILayout.Label(StatDateTimeToString(actorStatInfo.CreateTime), UnityGUILayout.Width(140f));
+                UnityGUILayout.Label(StatDateTimeToString(actorStatInfo.ReleaseTime), UnityGUILayout.Width(140f));
+                UnityGUILayout.Label(StatDateTimeToString(actorStatInfo.AccessTime), UnityGUILayout.Width(140f));
             }
         }
     }

@@ -36,12 +36,16 @@ namespace GameEngine.Profiler.Statistics
     /// <summary>
     /// 统计模块中心管理工具类，用于对运行时数据进行统计分析接口调度
     /// </summary>
-    internal static class StatisticalCenter
+    internal static class Statistician
     {
         /// <summary>
         /// 统计模块类的统一规范名称定义
         /// </summary>
         private const string StatClassUnifiedStandardName = "Stat";
+        /// <summary>
+        /// 统计信息类的统一规范名称定义
+        /// </summary>
+        private const string StatInfoClassUnifiedStandardName = "StatInfo";
 
         /// <summary>
         /// 单例类的创建函数句柄
@@ -161,7 +165,7 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         private static void LoadAllStats()
         {
-            string namespaceTag = typeof(StatisticalCenter).Namespace;
+            string namespaceTag = typeof(Statistician).Namespace;
 
             foreach (StatType enumType in SystemEnum.GetValues(typeof(StatType)))
             {
@@ -174,11 +178,13 @@ namespace GameEngine.Profiler.Statistics
 
                 // 类名反射时需要包含命名空间前缀
                 string statName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, StatClassUnifiedStandardName);
+                string statInfoName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, StatInfoClassUnifiedStandardName);
 
                 SystemType statType = SystemType.GetType(statName);
-                if (null == statType)
+                SystemType statInfoType = SystemType.GetType(statInfoName);
+                if (null == statType || null == statInfoType)
                 {
-                    Debugger.Info(LogGroupTag.Profiler, "无法搜索到能匹配指定名称‘{%s}’的统计模块类型实例。", statName);
+                    Debugger.Info(LogGroupTag.Profiler, "无法搜索到能匹配相应名称的统计模块类型‘{%s}’或统计信息类型‘{%s}’。", statName, statInfoName);
                     continue;
                 }
 
@@ -188,8 +194,14 @@ namespace GameEngine.Profiler.Statistics
                     continue;
                 }
 
-                SystemType singletonType = typeof(StatSingleton<>);
-                SystemType statGenericType = singletonType.MakeGenericType(new SystemType[] { statType });
+                if (false == typeof(StatInfo).IsAssignableFrom(statInfoType))
+                {
+                    Debugger.Warn(LogGroupTag.Profiler, "目标对象类型‘{%s}’为非法统计信息类型，它必须继承自‘StatInfo’类。", statInfoName);
+                    continue;
+                }
+
+                SystemType singletonType = typeof(StatSingleton<,>);
+                SystemType statGenericType = singletonType.MakeGenericType(new SystemType[] { statType, statInfoType });
 
                 SystemMethodInfo statCreateMethod = statGenericType.GetMethod("Create", SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
                 SystemMethodInfo statDestroyMethod = statGenericType.GetMethod("Destroy", SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);

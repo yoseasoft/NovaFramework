@@ -46,13 +46,13 @@ namespace GameEngine.Profiler.Debugging
                 UnityGUILayout.Label("<b>Recv Data</b>", UnityGUILayout.Width(80f));
             }
 
-            protected override void OnDrawStatInfoContent(Statistics.IStatInfo info)
+            protected override void OnDrawStatInfoContent(Statistics.StatInfo info)
             {
                 Statistics.NetworkStatInfo networkStatInfo = info as Statistics.NetworkStatInfo;
 
                 UnityGUILayout.Label(networkStatInfo.Url);
-                UnityGUILayout.Label(networkStatInfo.ConnectTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"), UnityGUILayout.Width(120f));
-                UnityGUILayout.Label(networkStatInfo.ConnectTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"), UnityGUILayout.Width(120f));
+                UnityGUILayout.Label(networkStatInfo.CreateTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"), UnityGUILayout.Width(120f));
+                UnityGUILayout.Label(networkStatInfo.ReleaseTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"), UnityGUILayout.Width(120f));
                 UnityGUILayout.Label(NovaEngine.Utility.Text.Format("{0}({1})", GetByteLengthString(networkStatInfo.SendSize), networkStatInfo.SendCount.ToString()), UnityGUILayout.Width(80f));
                 UnityGUILayout.Label(NovaEngine.Utility.Text.Format("{0}({1})", GetByteLengthString(networkStatInfo.RecvSize), networkStatInfo.RecvCount.ToString()), UnityGUILayout.Width(80f));
             }

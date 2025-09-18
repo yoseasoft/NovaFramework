@@ -1,8 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,21 +23,54 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
+using SystemDateTime = System.DateTime;
+
 namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
-    /// 角色模块统计项对象类，对角色模块访问记录进行单项统计的数据单元
+    /// 统计模块通用基类，对统计类接口提供一些标准形式的封装
     /// </summary>
-    public sealed class ActorStatInfo : StatInfo
+    internal abstract class BaseStat<TObject, TRecord> : StatSingleton<TObject, TRecord>, IStat
+        where TObject : class, IStat, new()
+        where TRecord : StatInfo
     {
         /// <summary>
-        /// 角色名称
+        /// 初始化统计模块实例的回调接口
         /// </summary>
-        public string ActorName { get; private set; }
+        // protected override void OnInitialize() { }
 
-        public ActorStatInfo(int uid, string objectName) : base(uid)
+        /// <summary>
+        /// 清理统计模块实例的回调接口
+        /// </summary>
+        // protected override void OnCleanup() { }
+
+        /// <summary>
+        /// 回收统计模块实例的回调接口
+        /// </summary>
+        // protected override void OnDump() { }
+
+        /// <summary>
+        /// 获取当前统计模块实例中指定标识对应的记录信息
+        /// </summary>
+        /// <param name="uid">统计信息标识</param>
+        /// <returns>返回给定标识对应的统计项信息</returns>
+        public StatInfo GetStateInfoByUid(int uid)
         {
-            this.ActorName = objectName;
+            return TryGetValue(uid);
+        }
+
+        /// <summary>
+        /// 获取当前所有视图访问的统计信息
+        /// </summary>
+        /// <returns>返回所有的操作访问统计信息</returns>
+        public IList<StatInfo> GetAllStatInfos()
+        {
+            List<StatInfo> results = new List<StatInfo>();
+            results.AddRange(TryGetAllValues());
+
+            return results;
         }
     }
 }

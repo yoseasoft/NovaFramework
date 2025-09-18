@@ -3,6 +3,7 @@
 ///
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -23,80 +24,32 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
-using SystemDateTime = System.DateTime;
-
 namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
     /// 定时统计模块，对定时模块对象提供数据统计所需的接口函数
     /// </summary>
-    internal sealed class TimerStat : StatSingleton<TimerStat>, IStat
+    internal sealed class TimerStat : BaseStat<TimerStat, TimerStatInfo>
     {
-        /// <summary>
-        /// 定时任务统计信息容器列表
-        /// </summary>
-        private IDictionary<int, TimerStatInfo> _timerStatInfos = null;
-
-        /// <summary>
-        /// 初始化统计模块实例的回调接口
-        /// </summary>
-        protected override void OnInitialize()
-        {
-            _timerStatInfos = new Dictionary<int, TimerStatInfo>();
-        }
-
-        /// <summary>
-        /// 清理统计模块实例的回调接口
-        /// </summary>
-        protected override void OnCleanup()
-        {
-            _timerStatInfos.Clear();
-            _timerStatInfos = null;
-        }
-
-        /// <summary>
-        /// 卸载统计模块实例中的垃圾数据
-        /// </summary>
-        public void Dump()
-        {
-            _timerStatInfos.Clear();
-        }
-
-        /// <summary>
-        /// 获取当前所有定时任务的统计信息
-        /// </summary>
-        /// <returns>返回所有的定时任务统计信息</returns>
-        public IList<IStatInfo> GetAllStatInfos()
-        {
-            List<IStatInfo> results = new List<IStatInfo>();
-            results.AddRange(_timerStatInfos.Values);
-
-            return results;
-        }
-
         [IStat.OnStatFunctionRegister(StatCode.TimerStartup)]
         private void OnTimerStartup(int session, string name)
         {
-            TimerStatInfo info = null;
-            if (false == _timerStatInfos.TryGetValue(session, out info))
+            TimerStatInfo info = TryGetValue(session);
+            if (null == info)
             {
                 info = new TimerStatInfo(session);
-                _timerStatInfos.Add(session, info);
+                TryAddValue(info);
             }
 
-            info.TimerName = name??NovaEngine.Definition.CString.Unknown;
-            info.CreateTime = SystemDateTime.UtcNow;
-            info.LastUseTime = SystemDateTime.UtcNow;
+            info.TimerName = name ?? NovaEngine.Definition.CString.Unknown;
             info.ScheduleCount++;
         }
 
         [IStat.OnStatFunctionRegister(StatCode.TimerFinished)]
         private void OnTimerFinished(int session)
         {
-            TimerStatInfo info = null;
-            if (false == _timerStatInfos.TryGetValue(session, out info))
+            TimerStatInfo info = TryGetValue(session);
+            if (null == info)
             {
                 Debugger.Warn("Could not found any timer stat info with session '{0}', finished it failed.", session);
                 return;
@@ -108,8 +61,8 @@ namespace GameEngine.Profiler.Statistics
         [IStat.OnStatFunctionRegister(StatCode.TimerDispatched)]
         private void OnTimerDispatched(int session)
         {
-            TimerStatInfo info = null;
-            if (false == _timerStatInfos.TryGetValue(session, out info))
+            TimerStatInfo info = TryGetValue(session);
+            if (null == info)
             {
                 Debugger.Warn("Could not found any timer stat info with session '{0}', dispatched it failed.", session);
                 return;

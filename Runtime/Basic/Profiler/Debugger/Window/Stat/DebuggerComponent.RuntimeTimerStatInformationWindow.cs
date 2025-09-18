@@ -44,7 +44,7 @@ namespace GameEngine.Profiler.Debugging
                 UnityGUILayout.Label("<b>Create Time</b>", UnityGUILayout.Width(160f));
             }
 
-            protected override void OnDrawStatInfoContent(Statistics.IStatInfo info)
+            protected override void OnDrawStatInfoContent(Statistics.StatInfo info)
             {
                 Statistics.TimerStatInfo timerStatInfo = info as Statistics.TimerStatInfo;
 

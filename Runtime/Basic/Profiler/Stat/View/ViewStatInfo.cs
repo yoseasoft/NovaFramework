@@ -3,6 +3,7 @@
 ///
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -23,43 +24,21 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemDateTime = System.DateTime;
-
 namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
     /// 视图模块统计项对象类，对视图模块访问记录进行单项统计的数据单元
     /// </summary>
-    public sealed class ViewStatInfo : IStatInfo
+    public sealed class ViewStatInfo : StatInfo
     {
-        /// <summary>
-        /// 视图记录索引标识
-        /// </summary>
-        public int Uid { get; private set; }
         /// <summary>
         /// 视图名称
         /// </summary>
         public string ViewName { get; private set; }
-        /// <summary>
-        /// 视图的哈希码，用来确保视图唯一性
-        /// </summary>
-        public int HashCode { get; private set; }
-        /// <summary>
-        /// 视图的创建时间
-        /// </summary>
-        public SystemDateTime CreateTime { get; internal set; }
-        /// <summary>
-        /// 视图的关闭时间
-        /// </summary>
-        public SystemDateTime CloseTime { get; internal set; }
 
-        public ViewStatInfo(int uid, string viewName, int hashCode)
+        public ViewStatInfo(int uid, string viewName) : base(uid)
         {
-            this.Uid = uid;
             this.ViewName = viewName;
-            this.HashCode = hashCode;
-            this.CreateTime = SystemDateTime.MinValue;
-            this.CloseTime = SystemDateTime.MinValue;
         }
     }
 }

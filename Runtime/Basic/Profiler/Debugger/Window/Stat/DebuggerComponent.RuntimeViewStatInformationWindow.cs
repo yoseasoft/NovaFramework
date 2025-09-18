@@ -41,20 +41,20 @@ namespace GameEngine.Profiler.Debugging
             {
                 UnityGUILayout.Label("<b>Index</b>");
                 UnityGUILayout.Label("<b>View Name</b>", UnityGUILayout.Width(120f));
-                UnityGUILayout.Label("<b>Create Time</b>", UnityGUILayout.Width(160f));
-                UnityGUILayout.Label("<b>Close Time</b>", UnityGUILayout.Width(160f));
-                UnityGUILayout.Label("<b>Hash Code</b>", UnityGUILayout.Width(80f));
+                UnityGUILayout.Label("<b>Create Time</b>", UnityGUILayout.Width(140f));
+                UnityGUILayout.Label("<b>Close Time</b>", UnityGUILayout.Width(140f));
+                UnityGUILayout.Label("<b>Access Time</b>", UnityGUILayout.Width(140f));
             }
 
-            protected override void OnDrawStatInfoContent(Statistics.IStatInfo info)
+            protected override void OnDrawStatInfoContent(Statistics.StatInfo info)
             {
                 Statistics.ViewStatInfo viewStatInfo = info as Statistics.ViewStatInfo;
 
                 UnityGUILayout.Label(viewStatInfo.Uid.ToString());
                 UnityGUILayout.Label(viewStatInfo.ViewName, UnityGUILayout.Width(120f));
-                UnityGUILayout.Label(StatDateTimeToString(viewStatInfo.CreateTime), UnityGUILayout.Width(160f));
-                UnityGUILayout.Label(StatDateTimeToString(viewStatInfo.CloseTime), UnityGUILayout.Width(160f));
-                UnityGUILayout.Label(viewStatInfo.HashCode.ToString());
+                UnityGUILayout.Label(StatDateTimeToString(viewStatInfo.CreateTime), UnityGUILayout.Width(140f));
+                UnityGUILayout.Label(StatDateTimeToString(viewStatInfo.ReleaseTime), UnityGUILayout.Width(140f));
+                UnityGUILayout.Label(StatDateTimeToString(viewStatInfo.AccessTime), UnityGUILayout.Width(140f));
             }
         }
     }

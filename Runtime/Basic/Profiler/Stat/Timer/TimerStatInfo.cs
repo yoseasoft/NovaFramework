@@ -3,6 +3,7 @@
 ///
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -23,31 +24,17 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemDateTime = System.DateTime;
-
 namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
     /// 定时模块统计项对象类，对定时模块操作记录进行单项统计的数据单元
     /// </summary>
-    public sealed class TimerStatInfo : IStatInfo
+    public sealed class TimerStatInfo : StatInfo
     {
-        /// <summary>
-        /// 任务的会话标识
-        /// </summary>
-        public int Session { get; private set; }
         /// <summary>
         /// 任务名称
         /// </summary>
         public string TimerName { get; internal set; }
-        /// <summary>
-        /// 任务的创建时间
-        /// </summary>
-        public SystemDateTime CreateTime { get; internal set; }
-        /// <summary>
-        /// 任务的最后使用时间
-        /// </summary>
-        public SystemDateTime LastUseTime { get; internal set; }
         /// <summary>
         /// 任务的调度次数
         /// </summary>
@@ -61,12 +48,9 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         public int BlinkCount { get; internal set; }
 
-        public TimerStatInfo(int session)
+        public TimerStatInfo(int uid) : base(uid)
         {
-            this.Session = session;
             this.TimerName = string.Empty;
-            this.CreateTime = SystemDateTime.MinValue;
-            this.LastUseTime = SystemDateTime.MinValue;
             this.ScheduleCount = 0;
             this.FinishedCount = 0;
             this.BlinkCount = 0;

@@ -41,11 +41,11 @@ namespace GameEngine.Profiler.Debugging
         {
             protected override void OnDrawScrollableWindow()
             {
-                T stat = Statistics.StatisticalCenter.GetStat<T>();
+                T stat = Statistics.Statistician.GetStat<T>();
 
                 int statType = 0;
                 string statName = string.Empty;
-                IList<Statistics.IStatInfo> infos = null;
+                IList<Statistics.StatInfo> infos = null;
                 if (null != stat)
                 {
                     statType = stat.StatType;
@@ -94,7 +94,7 @@ namespace GameEngine.Profiler.Debugging
 
             protected abstract void OnDrawStatInfoTitle();
 
-            protected abstract void OnDrawStatInfoContent(Statistics.IStatInfo info);
+            protected abstract void OnDrawStatInfoContent(Statistics.StatInfo info);
 
             /// <summary>
             /// 统计模块中对日期时间类型的显示格式
