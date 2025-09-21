@@ -45,5 +45,15 @@ namespace GameEngine
         private void CleanupForStateCall()
         {
         }
+
+        /// <summary>
+        /// 使用指定的根节点构建一个状态机对象实例
+        /// </summary>
+        /// <param name="root">根节点实例</param>
+        /// <returns>返回一个新构建的状态机对象实例</returns>
+        public HFSM.StateMachine Build(HFSM.State root)
+        {
+            return HFSM.StateMachineBuilder.Build(root);
+        }
     }
 }

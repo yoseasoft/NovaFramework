@@ -48,9 +48,9 @@ namespace GameEngine.HFSM
 
         public State Root => _root;
 
-        public StateTransitionSequencer Sequencer => _sequencer;
+        internal StateTransitionSequencer Sequencer => _sequencer;
 
-        public StateMachine(State root)
+        internal StateMachine(State root)
         {
             _root = root;
             _sequencer = new StateTransitionSequencer(this);

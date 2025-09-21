@@ -35,7 +35,7 @@ namespace GameEngine.HFSM
     /// <summary>
     /// 状态转换序列对象类，用于管理状态转换序列调度相关逻辑
     /// </summary>
-    public class StateTransitionSequencer
+    internal class StateTransitionSequencer
     {
         /// <summary>
         /// 转换序列所属的状态机对象实例
@@ -54,7 +54,7 @@ namespace GameEngine.HFSM
 
         private readonly bool _useSequential = true; // set false to use parallel
 
-        public StateTransitionSequencer(StateMachine machine)
+        internal StateTransitionSequencer(StateMachine machine)
         {
             _machine = machine;
         }

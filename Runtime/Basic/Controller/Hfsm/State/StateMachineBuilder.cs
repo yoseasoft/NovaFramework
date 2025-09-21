@@ -33,7 +33,7 @@ namespace GameEngine.HFSM
     /// <summary>
     /// 状态机构建器对象类，提供对状态机数据的自动装配
     /// </summary>
-    public static class StateMachineBuilder
+    internal static class StateMachineBuilder
     {
         /// <summary>
         /// 使用指定的根节点构建一个状态机对象实例

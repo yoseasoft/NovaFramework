@@ -143,6 +143,20 @@ namespace GameEngine
 
         #endregion
 
+        #region 状态切换相关的服务接口函数
+
+        /// <summary>
+        /// 使用指定的根节点构建一个状态机对象实例
+        /// </summary>
+        /// <param name="root">根节点实例</param>
+        /// <returns>返回一个新构建的状态机对象实例</returns>
+        public static HFSM.StateMachine BuildStateMachine(HFSM.State root)
+        {
+            return HfsmController.Instance.Build(root);
+        }
+
+        #endregion
+
         #region 针对“CObject”对象类型业务相关的服务接口函数
 
         /// <summary>
