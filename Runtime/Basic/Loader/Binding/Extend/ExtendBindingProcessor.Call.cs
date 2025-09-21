@@ -102,23 +102,6 @@ namespace GameEngine.Loader
                     Debugger.Warn("Could not found any general code info with target type '{%t}', binded message call failed.", callMethodInfo.TargetType);
                 }
             }
-
-            for (int n = 0; n < extendCodeInfo.GetStateCallMethodTypeCount(); ++n)
-            {
-                Structuring.StateTransitioningMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetStateCallMethodType(n);
-
-                Debugger.Info(LogGroupTag.CodeLoader, "Load extend state call {%t} with target class type {%t}.", callMethodInfo.Method, callMethodInfo.TargetType);
-
-                Structuring.GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
-                if (_lookupCodeInfo is Structuring.RefCodeInfo refCodeInfo)
-                {
-                    refCodeInfo.AddStateTransitioningMethodType(callMethodInfo);
-                }
-                else
-                {
-                    Debugger.Warn("Could not found any general code info with target type '{%t}', binded state call failed.", callMethodInfo.TargetType);
-                }
-            }
         }
 
         /// <summary>

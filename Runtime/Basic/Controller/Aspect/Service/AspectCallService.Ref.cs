@@ -181,28 +181,6 @@ namespace GameEngine
                     obj.AddMessageListener(methodTypeCodeInfo.MessageType, methodTypeCodeInfo.Method, true);
                 }
             }
-
-            // 状态监控信息
-            for (int n = 0; n < refCodeInfo.GetStateTransitioningMethodTypeCount(); ++n)
-            {
-                Loader.Structuring.StateTransitioningMethodTypeCodeInfo methodTypeCodeInfo = refCodeInfo.GetStateTransitioningMethodType(n);
-                if (methodTypeCodeInfo.BehaviourType != behaviourType) continue;
-
-                if (false == NovaEngine.Utility.Reflection.IsTypeOfExtension(methodTypeCodeInfo.Method) && reload)
-                {
-                    // 针对对象内部的成员函数，在重载模式下不能对其撤销后再次注册
-                    continue;
-                }
-
-                // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
-                // Debugger.Assert(null != callback, "Invalid method type.");
-
-                Debugger.Info(LogGroupTag.Controller, "Register ref '{0}' state listener with target method '{1}'.", targetType.FullName, NovaEngine.Utility.Text.ToString(methodTypeCodeInfo.Method));
-
-                // if (reload) obj.UnregisterStateTransition(methodTypeCodeInfo.StateName, methodTypeCodeInfo.Method);
-
-                obj.RegisterStateTransition(methodTypeCodeInfo.StateName, methodTypeCodeInfo.AccessType, methodTypeCodeInfo.Method);
-            }
         }
     }
 }

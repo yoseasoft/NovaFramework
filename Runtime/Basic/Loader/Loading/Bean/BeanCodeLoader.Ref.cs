@@ -53,53 +53,8 @@ namespace GameEngine.Loader
         /// <param name="attribute">属性对象</param>
         private static void LoadRefMethodByAttributeType(Symboling.SymClass symClass, Structuring.RefCodeInfo codeInfo, Symboling.SymMethod symMethod, SystemAttribute attribute)
         {
-            if (attribute is StateTransitionBindingOfTargetAttribute)
-            {
-                StateTransitionBindingOfTargetAttribute _attr = (StateTransitionBindingOfTargetAttribute) attribute;
 
-                if (symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfStateCall(symMethod.MethodInfo))
-                {
-                    Debugger.Warn("The state transitioning method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
-                    return;
-                }
-
-                Structuring.StateTransitioningMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.StateTransitioningMethodTypeCodeInfo();
-                methodTypeCodeInfo.StateName = _attr.StateName;
-                methodTypeCodeInfo.AccessType = _attr.AccessType;
-                methodTypeCodeInfo.BehaviourType = AspectBehaviour.AutobindBehaviourTypeOfBeanExtensionMethod;
-                methodTypeCodeInfo.Method = symMethod.MethodInfo;
-
-                // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
-                {
-                    bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            Inspecting.CodeInspector.CheckFunctionFormatOfStateCallWithNullParameterType(symMethod.MethodInfo), symMethod.MethodInfo);
-
-                    if (Inspecting.CodeInspector.CheckFunctionFormatOfStateCallWithNullParameterType(symMethod.MethodInfo))
-                    {
-                        // null parameter type, skip other check process
-                    }
-                    else
-                    {
-                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo),
-                                            symMethod.MethodInfo, typeof(StateGraph));
-                    }
-
-                    // 校验失败
-                    if (false == verificated)
-                    {
-                        Debugger.Error("将目标函数‘{%t}’作为状态转换接口函数的格式校验失败，请检查函数参数格式是否合法！", symMethod.MethodInfo);
-                        return;
-                    }
-                }
-
-                codeInfo.AddStateTransitioningMethodType(methodTypeCodeInfo);
-            }
-            else
-            {
-                LoadBaseMethodByAttributeType(symClass, codeInfo, symMethod, attribute);
-            }
+            LoadBaseMethodByAttributeType(symClass, codeInfo, symMethod, attribute);
         }
     }
 }

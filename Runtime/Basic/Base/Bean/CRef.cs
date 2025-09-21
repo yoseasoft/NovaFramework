@@ -116,9 +116,6 @@ namespace GameEngine
 
             // 任务会话容器初始化
             _schedules = new List<int>();
-
-            // 初始化状态轮询
-            OnStatePollInitialize();
         }
 
         /// <summary>
@@ -130,9 +127,6 @@ namespace GameEngine
             RemoveAllSchedules();
             Debugger.Assert(_schedules.Count == 0);
             _schedules = null;
-
-            // 清理状态轮询
-            OnStatePollCleanup();
 
             base.Cleanup();
 
@@ -154,17 +148,12 @@ namespace GameEngine
         /// <summary>
         /// 引用对象刷新通知接口函数
         /// </summary>
-        public virtual void Update()
-        {
-            OnStateDispatch();
-        }
+        public abstract void Update();
 
         /// <summary>
         /// 引用对象后置刷新通知接口函数
         /// </summary>
-        public virtual void LateUpdate()
-        {
-        }
+        public abstract void LateUpdate();
 
         #region 引用对象行为检测封装接口函数（包括对象接口，特性等标签）
 
@@ -182,12 +171,6 @@ namespace GameEngine
             // 引用对象自身需要刷新
             if (HasAspectBehaviourType(AspectBehaviourType.Update) ||
                 HasAspectBehaviourType(AspectBehaviourType.LateUpdate))
-            {
-                return true;
-            }
-
-            // 引用对象因为注册了状态转换需要刷新
-            if (IsOnDispatchingOfStateGraph())
             {
                 return true;
             }

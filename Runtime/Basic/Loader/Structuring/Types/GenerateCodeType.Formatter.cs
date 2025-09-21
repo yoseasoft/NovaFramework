@@ -156,27 +156,6 @@ namespace GameEngine.Loader.Structuring
 
         #endregion
 
-        #region 状态回调模块相关的编码信息结构类型对象“ToString”封装
-
-        private static string ToString(StateCallMethodTypeCodeInfo targetObject)
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append(ToString((MethodTypeCodeInfo) targetObject));
-            sb.AppendFormat("StateName={0},", targetObject.StateName);
-            sb.AppendFormat("AccessType={0},", targetObject.AccessType.ToString());
-            return sb.ToString();
-        }
-
-        private static string ToString(StateTransitioningMethodTypeCodeInfo targetObject)
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append(ToString((StateCallMethodTypeCodeInfo) targetObject));
-            sb.AppendFormat("BehaviourType={0},", targetObject.BehaviourType.ToString());
-            return sb.ToString();
-        }
-
-        #endregion
-
         #region API回调模块相关的编码信息结构类型对象“ToString”封装
 
         public static string ToString(ApiCallCodeInfo targetObject)
@@ -282,10 +261,6 @@ namespace GameEngine.Loader.Structuring
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append(ToString((BaseBeanCodeInfo) targetObject));
-            sb.AppendFormat("StateTransitioningMethodTypes={{{0}}},", NovaEngine.Utility.Text.ToString<StateTransitioningMethodTypeCodeInfo>(targetObject.StateTransitioningMethodTypes?.Values(), (n, obj) =>
-            {
-                return $"{n}={{{ToString(obj)}}}";
-            }));
             return sb.ToString();
         }
 
@@ -370,10 +345,6 @@ namespace GameEngine.Loader.Structuring
                 return $"{n}={{{ToString(obj)}}}";
             }));
             sb.AppendFormat("MessageCallMethodTypes={{{0}}},", NovaEngine.Utility.Text.ToString<MessageBindingMethodTypeCodeInfo>(targetObject.MessageCallMethodTypes?.Values(), (n, obj) =>
-            {
-                return $"{n}={{{ToString(obj)}}}";
-            }));
-            sb.AppendFormat("StateCallMethodTypes={{{0}}},", NovaEngine.Utility.Text.ToString<StateTransitioningMethodTypeCodeInfo>(targetObject.StateCallMethodTypes?.Values(), (n, obj) =>
             {
                 return $"{n}={{{ToString(obj)}}}";
             }));

@@ -151,8 +151,6 @@ namespace GameEngine
         /// </summary>
         public override void Update()
         {
-            base.Update();
-
             // 组件实例刷新
             UpdateAllComponents();
         }
@@ -162,8 +160,6 @@ namespace GameEngine
         /// </summary>
         public override void LateUpdate()
         {
-            base.LateUpdate();
-
             // 组件实例后置刷新
             LateUpdateAllComponents();
         }

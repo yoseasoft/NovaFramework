@@ -242,64 +242,12 @@ namespace GameEngine.Loader
 
                         info.AddMessageCallMethodType(methodTypeCodeInfo);
                     }
-                    else if (attr is StateTransitionBindingOfTargetAttribute)
-                    {
-                        StateTransitionBindingOfTargetAttribute _attr = (StateTransitionBindingOfTargetAttribute) attr;
-
-                        if (string.IsNullOrEmpty(_attr.StateName))
-                        {
-                            Debugger.Warn("The extend state transition method '{0}.{1}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
-                            continue;
-                        }
-
-                        if (false == Inspecting.CodeInspector.CheckFunctionFormatOfStateCallWithBeanExtensionType(symMethod.MethodInfo))
-                        {
-                            Debugger.Warn("The extend state transition method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
-                            continue;
-                        }
-
-                        SystemType extendClassType = symMethod.GetParameter(0).ParameterType;
-
-                        Structuring.StateTransitioningMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.StateTransitioningMethodTypeCodeInfo();
-                        methodTypeCodeInfo.TargetType = extendClassType;
-                        methodTypeCodeInfo.StateName = _attr.StateName;
-                        methodTypeCodeInfo.AccessType = _attr.AccessType;
-                        methodTypeCodeInfo.BehaviourType = AspectBehaviour.AutobindBehaviourTypeOfBeanExtensionMethod;
-                        methodTypeCodeInfo.Method = symMethod.MethodInfo;
-
-                        // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                        if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
-                        {
-                            bool verificated = false;
-
-                            if (Inspecting.CodeInspector.CheckFunctionFormatOfStateCallWithNullParameterType(symMethod.MethodInfo))
-                            {
-                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
-                            }
-                            else
-                            {
-                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                        symMethod.MethodInfo, methodTypeCodeInfo.TargetType, typeof(StateGraph));
-                            }
-
-                            // 校验失败
-                            if (false == verificated)
-                            {
-                                Debugger.Error("Cannot verificated from method info '{0}' to extend state transitioning call, loaded this method failed.", symMethod.MethodName);
-                                continue;
-                            }
-                        }
-
-                        info.AddStateCallMethodType(methodTypeCodeInfo);
-                    }
                 }
             }
 
             if (info.GetInputCallMethodTypeCount() <= 0 &&
                 info.GetEventCallMethodTypeCount() <= 0 &&
-                info.GetMessageCallMethodTypeCount() <= 0 &&
-                info.GetStateCallMethodTypeCount() <= 0)
+                info.GetMessageCallMethodTypeCount() <= 0)
             {
                 Debugger.Warn("The extend call method types count must be great than zero, newly added class '{0}' failed.", info.ClassType.FullName);
                 return false;

@@ -147,14 +147,6 @@ namespace GameEngine.Loader.Symboling
 
                         on_extend_supported = true;
                     }
-
-                    else if (method.HasAttribute(typeof(StateTransitionBindingOfTargetAttribute)))
-                    {
-                        // 激活扩展的目标类型的状态转换特性
-                        // AutobindFeatureTypeForTargetSymbol(method.ExtensionParameterType, typeof(StateActivationAttribute));
-
-                        on_extend_supported = true;
-                    }
                 } // method.IsExtension
                 else
                 {

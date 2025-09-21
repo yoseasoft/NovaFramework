@@ -102,8 +102,6 @@ namespace GameEngine
         /// </summary>
         public override sealed void Update()
         {
-            base.Update();
-
             OnUpdate();
         }
 
@@ -117,8 +115,6 @@ namespace GameEngine
         /// </summary>
         public override sealed void LateUpdate()
         {
-            base.LateUpdate();
-
             OnLateUpdate();
         }
 

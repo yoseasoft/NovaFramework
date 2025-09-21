@@ -52,18 +52,11 @@ namespace GameEngine.Loader.Structuring
         /// </summary>
         private MethodTypeList<MessageBindingMethodTypeCodeInfo> _messageCallMethodTypes;
 
-        /// <summary>
-        /// 原型对象状态监控的扩展定义调用模块的数据管理容器
-        /// </summary>
-        private MethodTypeList<StateTransitioningMethodTypeCodeInfo> _stateCallMethodTypes;
-
         internal MethodTypeList<InputResponsingMethodTypeCodeInfo> InputCallMethodTypes => _inputCallMethodTypes;
 
         internal MethodTypeList<EventSubscribingMethodTypeCodeInfo> EventCallMethodTypes => _eventCallMethodTypes;
 
         internal MethodTypeList<MessageBindingMethodTypeCodeInfo> MessageCallMethodTypes => _messageCallMethodTypes;
-
-        internal MethodTypeList<StateTransitioningMethodTypeCodeInfo> StateCallMethodTypes => _stateCallMethodTypes;
 
         #region 扩展输入调用模块结构信息操作函数
 
@@ -199,52 +192,6 @@ namespace GameEngine.Loader.Structuring
         public MessageBindingMethodTypeCodeInfo GetMessageCallMethodType(int index)
         {
             return _messageCallMethodTypes?.Get(index);
-        }
-
-        #endregion
-
-        #region 扩展状态调用模块结构信息操作函数
-
-        /// <summary>
-        /// 新增指定函数的回调句柄相关的结构信息
-        /// </summary>
-        /// <param name="invoke">函数的结构信息</param>
-        public void AddStateCallMethodType(StateTransitioningMethodTypeCodeInfo invoke)
-        {
-            if (null == _stateCallMethodTypes)
-            {
-                _stateCallMethodTypes = new MethodTypeList<StateTransitioningMethodTypeCodeInfo>();
-            }
-
-            _stateCallMethodTypes.Add(invoke);
-        }
-
-        /// <summary>
-        /// 移除所有函数的回调句柄相关的结构信息
-        /// </summary>
-        public void RemoveAllStateCallMethodTypes()
-        {
-            _stateCallMethodTypes?.Clear();
-            _stateCallMethodTypes = null;
-        }
-
-        /// <summary>
-        /// 获取当前函数回调句柄的结构信息数量
-        /// </summary>
-        /// <returns>返回函数回调句柄的结构信息数量</returns>
-        public int GetStateCallMethodTypeCount()
-        {
-            return _stateCallMethodTypes?.Count() ?? 0;
-        }
-
-        /// <summary>
-        /// 获取当前函数回调句柄的结构信息容器中指索引对应的实例
-        /// </summary>
-        /// <param name="index">索引值</param>
-        /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
-        public StateTransitioningMethodTypeCodeInfo GetStateCallMethodType(int index)
-        {
-            return _stateCallMethodTypes?.Get(index);
         }
 
         #endregion
