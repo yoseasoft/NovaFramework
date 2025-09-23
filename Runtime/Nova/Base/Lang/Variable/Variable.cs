@@ -61,9 +61,9 @@ namespace NovaEngine
         public abstract void SetValue(object value);
 
         /// <summary>
-        /// 重置变量值
+        /// 清理变量值
         /// </summary>
-        public abstract void Reset();
+        public abstract void Clear();
     }
 
     #region 泛型通用变量类声明
@@ -78,15 +78,17 @@ namespace NovaEngine
         /// <summary>
         /// 泛型变量的新实例构建接口
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         protected Variable()
         {
-            _value = default;
+            _value = default(T);
         }
 
         /// <summary>
         /// 泛型变量的新实例构建接口
         /// </summary>
         /// <param name="value">初始值</param>
+        [UnityEngine.Scripting.Preserve]
         protected Variable(T value)
         {
             _value = value;
@@ -95,6 +97,7 @@ namespace NovaEngine
         /// <summary>
         /// 获取变量类型
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public override System.Type Type
         {
             get
@@ -106,6 +109,7 @@ namespace NovaEngine
         /// <summary>
         /// 获取或设置变量值
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         public T Value
         {
             get
@@ -122,6 +126,7 @@ namespace NovaEngine
         /// 获取变量值
         /// </summary>
         /// <returns>返回当前变量值</returns>
+        [UnityEngine.Scripting.Preserve]
         public override object GetValue()
         {
             return _value;
@@ -131,6 +136,7 @@ namespace NovaEngine
         /// 设置变量值
         /// </summary>
         /// <param name="value">变量值</param>
+        [UnityEngine.Scripting.Preserve]
         public override void SetValue(object value)
         {
             _value = (T) value;
@@ -139,15 +145,17 @@ namespace NovaEngine
         /// <summary>
         /// 重置变量值
         /// </summary>
-        public override void Reset()
+        [UnityEngine.Scripting.Preserve]
+        public override void Clear()
         {
-            _value = default;
+            _value = default(T);
         }
 
         /// <summary>
         /// 获取变量字符串
         /// </summary>
         /// <returns>返回变量字符串</returns>
+        [UnityEngine.Scripting.Preserve]
         public override string ToString()
         {
             return (null != _value) ? _value.ToString() : "<Null>";

@@ -56,6 +56,7 @@ namespace NovaEngine
 
         public Value(byte value)
         {
+            _variable = CByte.Instantiate(value);
         }
 
         public Value(int value) { }

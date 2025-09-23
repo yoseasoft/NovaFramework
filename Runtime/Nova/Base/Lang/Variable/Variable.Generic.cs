@@ -31,7 +31,7 @@ namespace NovaEngine
     /// </summary>
     public abstract partial class Variable
     {
-        public static Variable InstantiateVar(object v)
+        public static Variable Instantiate(object v)
         {
             Logger.Debug(v.GetType());
             return null;

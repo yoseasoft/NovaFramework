@@ -50,6 +50,7 @@ namespace NovaEngine
     /// </summary>
     public static class __GameObject
     {
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static UnityGameObject DontDestroy(this UnityGameObject self)
         {
             UnityGameObject.DontDestroyOnLoad(self);

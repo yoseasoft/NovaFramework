@@ -24,10 +24,12 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemGuid = System.Guid;
-using SystemDateTime = System.DateTime;
 using SystemEncoding = System.Text.Encoding;
 using SystemRegex = System.Text.RegularExpressions.Regex;
+using SystemMatch = System.Text.RegularExpressions.Match;
+
+using SystemGuid = System.Guid;
+using SystemDateTime = System.DateTime;
 
 namespace NovaEngine
 {
@@ -42,6 +44,7 @@ namespace NovaEngine
         /// <param name="self">原始字符串</param>
         /// <param name="defaultValue">默认值</param>
         /// <returns>返回转换后的整型数值，若转换失败则返回默认值</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static int ToInt32(this string self, int defaultValue = 0)
         {
             return self.TryConvertTo(defaultValue);
@@ -53,6 +56,7 @@ namespace NovaEngine
         /// <param name="self">原始字符串</param>
         /// <param name="defaultValue">默认值</param>
         /// <returns>返回转换后的长整型数值，若转换失败则返回默认值</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static long ToInt64(this string self, long defaultValue = 0L)
         {
             return self.TryConvertTo(defaultValue);
@@ -64,6 +68,7 @@ namespace NovaEngine
         /// <param name="self">原始字符串</param>
         /// <param name="defaultValue">默认值</param>
         /// <returns>返回转换后的浮点型数值，若转换失败则返回默认值</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static double ToDouble(this string self, double defaultValue = 0)
         {
             return self.TryConvertTo(defaultValue);
@@ -74,6 +79,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>返回转换后的日期时间类型对象实例</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static SystemDateTime ToDateTime(this string self)
         {
             SystemDateTime.TryParse(self, out var result);
@@ -85,6 +91,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>返回转换后的GUID类型对象实例</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static SystemGuid ToGuid(this string self)
         {
             return SystemGuid.Parse(self);
@@ -95,9 +102,54 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>返回转换后的字节数组</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static byte[] ToByteArray(this string self)
         {
             return SystemEncoding.UTF8.GetBytes(self);
+        }
+
+        /// <summary>
+        /// 判断字符串是否为null或空字符串
+        /// </summary>
+        /// <param name="self">原始字符串</param>
+        /// <returns>若给定字符串为null或空字符串则返回true，否则返回false</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static bool IsNullOrEmpty(this string self)
+        {
+            return string.IsNullOrEmpty(self);
+        }
+
+        /// <summary>
+        /// 判断字符串是否不为null且非空字符串
+        /// </summary>
+        /// <param name="self">原始字符串</param>
+        /// <returns>若给定字符串不为null且非空字符串则返回true，否则返回false</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static bool IsNotNullOrEmpty(this string self)
+        {
+            return !self.IsNullOrEmpty();
+        }
+
+        /// <summary>
+        /// 判断字符串是否为null或空白字符
+        /// </summary>
+        /// <param name="self">原始字符串</param>
+        /// <returns>若给定字符串为null或空白字符则返回true，否则返回false</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static bool IsNullOrWhiteSpace(this string self)
+        {
+            return string.IsNullOrWhiteSpace(self) || self.EqualsIgnoreCase(Definition.CString.Null);
+        }
+
+        /// <summary>
+        /// 判断字符串是否不为null且非空白字符
+        /// </summary>
+        /// <param name="self">原始字符串</param>
+        /// <returns>若给定字符串不为null且非空白字符则返回true，否则返回false</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static bool IsNotNullOrWhiteSpace(this string self)
+        {
+            return !self.IsNullOrWhiteSpace();
         }
 
         /// <summary>
@@ -106,6 +158,7 @@ namespace NovaEngine
         /// <param name="self">原始字符串</param>
         /// <param name="other">对比字符串</param>
         /// <returns>若两个字符串相等则返回true，否则返回false</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static bool EqualsIgnoreCase(this string self, string other)
         {
             return self.ToLower().Equals(other?.ToLower());
@@ -183,26 +236,43 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 将当前字符串转换为大驼峰的文本格式
+        /// 将驼峰命名的字符串转换为下划线分隔的小写形式（蛇形命名）
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>返回转换后的字符串实例</returns>
-        public static string ToLargeHumpFormat(this string self)
+        public static string ToSnakeCaseName(this string self)
         {
+            if (string.IsNullOrEmpty(self))
+                return self;
+
+            SystemMatch startUnderscores = SystemRegex.Match(self, @"^_+");
+            return startUnderscores + SystemRegex.Replace(self, @"([a-z0-9])([A-Z])", "$1_$2").ToLower();
+        }
+
+        /// <summary>
+        /// 将当前字符串转换为大驼峰的文本格式名称
+        /// </summary>
+        /// <param name="self">原始字符串</param>
+        /// <returns>返回转换后的字符串实例</returns>
+        public static string ToLargeHumpName(this string self)
+        {
+            if (string.IsNullOrEmpty(self))
+                return self;
+
             string result = SystemRegex.Replace(self, @"([^\p{L}\p{N}])(\p{L})", m => $"{m.Groups[1]}{char.ToUpper(m.Groups[2].Value[0])}");
             result = SystemRegex.Replace(result, @"[^A-Za-z0-9]", "");
             return result;
         }
 
         /// <summary>
-        /// 将当前字符串转换为小驼峰的文本格式
+        /// 将当前字符串转换为小驼峰的文本格式名称
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>返回转换后的字符串实例</returns>
-        public static string ToLittleHumpFormat(this string self)
+        public static string ToLittleHumpName(this string self)
         {
-            string result = self.ToLargeHumpFormat();
-            if (char.IsLower(result[0]))
+            string result = self.ToLargeHumpName();
+            if (false == string.IsNullOrEmpty(self) && char.IsLower(result[0]))
             {
                 result = char.ToUpper(result[0]) + result.Substring(1);
             }

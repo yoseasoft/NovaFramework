@@ -39,6 +39,7 @@ namespace NovaEngine
         /// <typeparam name="T">目标类型</typeparam>
         /// <param name="self">源对象实例</param>
         /// <returns>返回转换类型后的对象实例</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static T ConvertTo<T>(this SystemIConvertible self) where T : SystemIConvertible
         {
             return (T) ConvertTo(self, typeof(T));
@@ -51,6 +52,7 @@ namespace NovaEngine
         /// <param name="self">源对象实例</param>
         /// <param name="defaultValue">默认值</param>
         /// <returns>返回转换类型后的对象实例</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static T TryConvertTo<T>(this SystemIConvertible self, T defaultValue = default) where T : SystemIConvertible
         {
             try
@@ -70,6 +72,7 @@ namespace NovaEngine
         /// <param name="self">源对象实例</param>
         /// <param name="result">转换的目标对象实例</param>
         /// <returns>若转换成功返回true，否则返回false</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static bool TryConvertTo<T>(this SystemIConvertible self, out T result) where T : SystemIConvertible
         {
             try
@@ -91,6 +94,7 @@ namespace NovaEngine
         /// <param name="type">目标类型</param>
         /// <param name="result">转换的目标对象实例</param>
         /// <returns>若转换成功返回true，否则返回false</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static bool TryConvertTo(this SystemIConvertible self, SystemType type, out object result)
         {
             try
