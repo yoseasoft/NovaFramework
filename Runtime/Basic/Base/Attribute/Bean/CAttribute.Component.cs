@@ -22,7 +22,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
 using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
 using SystemAttributeTargets = System.AttributeTargets;
@@ -39,15 +38,33 @@ namespace GameEngine
         /// 组件名称
         /// </summary>
         private readonly string _componentName;
+        /// <summary>
+        /// 组件优先级
+        /// </summary>
+        private readonly int _priority;
 
         /// <summary>
         /// 组件名称获取函数
         /// </summary>
         public string ComponentName => _componentName;
 
-        public DeclareComponentClassAttribute(string componentName) : base()
+        /// <summary>
+        /// 组件优先级获取函数
+        /// </summary>
+        public int Priority => _priority;
+
+        public DeclareComponentClassAttribute(string componentName) : this(componentName, 0)
+        {
+        }
+
+        public DeclareComponentClassAttribute(int priority) : this(string.Empty, priority)
+        {
+        }
+
+        public DeclareComponentClassAttribute(string componentName, int priority) : base()
         {
             _componentName = componentName ?? string.Empty;
+            _priority = priority;
         }
     }
 }

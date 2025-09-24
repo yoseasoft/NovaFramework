@@ -153,12 +153,12 @@ namespace GameEngine
             NTexture.CustomDestroyMethod += obj =>
             {
                 RemoveAssetRecord(obj);
-                ResourceHandler.UnloadAsset(obj);
+                ResourceHandler.Instance.UnloadAsset(obj);
             };
             NAudioClip.CustomDestroyMethod += obj =>
             {
                 RemoveAssetRecord(obj);
-                ResourceHandler.UnloadAsset(obj);
+                ResourceHandler.Instance.UnloadAsset(obj);
             };
         }
 
@@ -294,11 +294,11 @@ namespace GameEngine
         static async UniTask<bool> AddPackage(string pkgName)
         {
             UIPackage pkg;
-            UnityTextAsset pkgTextAsset = await ResourceHandler.LoadAssetAsync<UnityTextAsset>($"{FairyGuiResourcePath}{pkgName}{FairyGuiBinaryFileExtensionName}");
+            UnityTextAsset pkgTextAsset = await ResourceHandler.Instance.LoadAssetAsync<UnityTextAsset>($"{FairyGuiResourcePath}{pkgName}{FairyGuiBinaryFileExtensionName}");
             if (pkgTextAsset != null)
             {
                 UIPackage.AddPackage(pkgTextAsset.bytes, pkgName, CustomLoadFairyGUIAsset);
-                ResourceHandler.UnloadAsset(pkgTextAsset);
+                ResourceHandler.Instance.UnloadAsset(pkgTextAsset);
 
                 pkg = UIPackage.GetByName(pkgName);
                 if (pkg is null)
@@ -324,7 +324,7 @@ namespace GameEngine
 
                 string address = $"{FairyGuiResourcePath}{pkgItem.file}";
                 address2Asset ??= new Dictionary<string, GooAsset.Asset>();
-                GooAsset.Asset asset = ResourceHandler.LoadAssetAsync<UnityObject>(address, null);
+                GooAsset.Asset asset = ResourceHandler.Instance.LoadAssetAsync<UnityObject>(address, null);
                 if (asset is null)
                 {
                     return false;
@@ -392,7 +392,7 @@ namespace GameEngine
             {
                 if (_addressToAsset.Remove(address, out UnityObject obj))
                 {
-                    ResourceHandler.UnloadAsset(obj);
+                    ResourceHandler.Instance.UnloadAsset(obj);
                 }
             }
         }
@@ -757,7 +757,7 @@ namespace GameEngine
                 if (!isSyncLoad)
                 {
                     // 异步加载
-                    ResourceHandler.LoadAssetAsync<UnityTexture2D>(url, tex => { OnLoadTextureFinish(url, tex as UnityTexture2D, onSuccess, onFail); });
+                    ResourceHandler.Instance.LoadAssetAsync<UnityTexture2D>(url, tex => { OnLoadTextureFinish(url, tex as UnityTexture2D, onSuccess, onFail); });
                 }
                 else
                 {
@@ -800,7 +800,7 @@ namespace GameEngine
                 }
                 else
                 {
-                    ResourceHandler.UnloadAsset(texture2D);
+                    ResourceHandler.Instance.UnloadAsset(texture2D);
                 }
 
                 onSuccess?.Invoke(texture, url);

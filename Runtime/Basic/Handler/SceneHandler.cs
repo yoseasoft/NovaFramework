@@ -29,7 +29,6 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
 using SystemType = System.Type;
-using SystemPath = System.IO.Path;
 
 namespace GameEngine
 {
@@ -328,6 +327,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="assetName">场景资源名称</param>
         /// <param name="assetUrl">场景资源路径</param>
+        /// <param name="completed">结束回调</param>
         public GooAsset.Scene LoadSceneAsset(string assetName, string assetUrl, System.Action<GooAsset.Scene> completed = null)
         {
             return SceneModule.LoadScene(assetName, assetUrl, completed);
@@ -336,10 +336,12 @@ namespace GameEngine
         /// <summary>
         /// 异步加载场景资源
         /// </summary>
-        public async UniTask<GooAsset.Scene> LoadSceneAsync(string assetUrl)
+        /// <param name="assetName">场景资源名称</param>
+        /// <param name="assetUrl">场景资源路径</param>
+        public async UniTask<GooAsset.Scene> LoadSceneAssetAsync(string assetName, string assetUrl)
         {
-            string sceneName = SystemPath.GetFileNameWithoutExtension(assetUrl);
-            return await SceneModule.LoadScene(sceneName, assetUrl).Task;
+            // string assetName = System.IO.Path.GetFileNameWithoutExtension(assetUrl);
+            return await SceneModule.LoadScene(assetName, assetUrl).Task;
         }
 
         /// <summary>

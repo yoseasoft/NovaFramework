@@ -30,7 +30,6 @@ using System.Collections.Generic;
 using UnityObject = UnityEngine.Object;
 using UnityGameObject = UnityEngine.GameObject;
 using UnityTransform = UnityEngine.Transform;
-using UnityVector3 = UnityEngine.Vector3;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
 namespace NovaEngine

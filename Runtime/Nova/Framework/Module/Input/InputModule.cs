@@ -268,35 +268,23 @@ namespace NovaEngine
             SystemStringBuilder sb = new SystemStringBuilder();
 
             // 当前帧按下行为通知的编码信息
-            sb.Append("KeyCode Pressed = { ");
-            foreach (UnityKeyCode keyCode in _keycodePressedOnThisFrame)
-            {
-                sb.Append(keyCode.ToString() + ", ");
-            }
-            sb.Append("}, ");
+            sb.Append("Pressed={");
+            sb.Append(Utility.Text.ToString<UnityKeyCode>(_keycodePressedOnThisFrame));
+            sb.Append("},");
 
             // 当前帧长按行为通知的编码信息
-            sb.Append("KeyCode Moved = { ");
-            foreach (UnityKeyCode keyCode in _keycodeMovedOnThisFrame)
-            {
-                sb.Append(keyCode.ToString() + ", ");
-            }
-            sb.Append("}, ");
+            sb.Append("Moved={");
+            sb.Append(Utility.Text.ToString<UnityKeyCode>(_keycodeMovedOnThisFrame));
+            sb.Append("},");
 
             // 当前帧释放行为通知的编码信息
-            sb.Append("KeyCode Released = { ");
-            foreach (UnityKeyCode keyCode in _keycodeReleasedOnThisFrame)
-            {
-                sb.Append(keyCode.ToString() + ", ");
-            }
-            sb.Append("}, ");
+            sb.Append("Released={");
+            sb.Append(Utility.Text.ToString<UnityKeyCode>(_keycodeReleasedOnThisFrame));
+            sb.Append("},");
 
             // 上一帧和当前帧之间的变化行为通知的编码信息
-            sb.Append("KeyCode Changed = { ");
-            foreach (UnityKeyCode keyCode in _keycodeChangedOnPreviousFrame)
-            {
-                sb.Append(keyCode.ToString() + ", ");
-            }
+            sb.Append("Changed={");
+            sb.Append(Utility.Text.ToString<UnityKeyCode>(_keycodeChangedOnPreviousFrame));
             sb.Append("}");
 
             Debugger.Log(sb.ToString());

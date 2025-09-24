@@ -83,16 +83,16 @@ namespace GameEngine
         {
         }
 
-        #region 资源加载和卸载
+        #region 资源加载/卸载相关的接口函数
 
         /// <summary>
         /// 同步加载资源
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="type">资源类型</param>
-        public static UnityObject LoadAsset(string url, SystemType type)
+        public UnityObject LoadAsset(string url, SystemType type)
         {
-            return NovaEngine.ResourceModule.LoadAsset(url, type);
+            return ResourceModule.LoadAsset(url, type);
         }
 
         /// <summary>
@@ -100,18 +100,18 @@ namespace GameEngine
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="completed">加载完成回调</param>
-        public static Asset LoadAssetAsync<T>(string url, System.Action<UnityObject> completed) where T : UnityObject
+        public Asset LoadAssetAsync<T>(string url, System.Action<UnityObject> completed) where T : UnityObject
         {
-            return NovaEngine.ResourceModule.LoadAssetAsync(url, typeof(T), completed);
+            return ResourceModule.LoadAssetAsync(url, typeof(T), completed);
         }
 
         /// <summary>
         /// 异步加载资源
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
-        public static async Cysharp.Threading.Tasks.UniTask<T> LoadAssetAsync<T>(string url) where T : UnityObject
+        public async Cysharp.Threading.Tasks.UniTask<T> LoadAssetAsync<T>(string url) where T : UnityObject
         {
-            Asset asset = NovaEngine.ResourceModule.LoadAssetAsync(url, typeof(T));
+            Asset asset = ResourceModule.LoadAssetAsync(url, typeof(T));
             if (asset is null)
                 return null;
 
@@ -123,40 +123,40 @@ namespace GameEngine
         /// 释放资源(加载完成或加载中都可以使用此接口释放资源)
         /// </summary>
         /// <param name="asset">资源对象</param>
-        public static void UnloadAsset(Asset asset)
+        public void UnloadAsset(Asset asset)
         {
-            NovaEngine.ResourceModule.UnloadAsset(asset);
+            ResourceModule.UnloadAsset(asset);
         }
 
         /// <summary>
         /// 释放已加载的资源
         /// </summary>
         /// <param name="obj">Unity对象</param>
-        public static void UnloadAsset(UnityObject obj)
+        public void UnloadAsset(UnityObject obj)
         {
-            NovaEngine.ResourceModule.UnloadAsset(obj);
+            ResourceModule.UnloadAsset(obj);
         }
 
         /// <summary>
         /// 清理所有资源
         /// </summary>
-        public static void RemoveAllAssets()
+        public void RemoveAllAssets()
         {
-            NovaEngine.ResourceModule.RemoveAllAssets();
+            ResourceModule.RemoveAllAssets();
         }
 
         #endregion
 
-        #region 场景加载和卸载
+        #region 场景加载/卸载相关的接口函数
 
         /// <summary>
         /// 同步加载场景
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="isAdditive">是否使用叠加方式加载</param>
-        public static Scene LoadScene(string url, bool isAdditive = false)
+        public Scene LoadScene(string url, bool isAdditive = false)
         {
-            return NovaEngine.ResourceModule.LoadScene(url, isAdditive);
+            return ResourceModule.LoadScene(url, isAdditive);
         }
 
         /// <summary>
@@ -165,9 +165,9 @@ namespace GameEngine
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="isAdditive">是否使用叠加方式加载</param>
         /// <param name="completed">加载完成回调</param>
-        public static Scene LoadSceneAsync(string url, bool isAdditive, System.Action<Scene> completed)
+        public Scene LoadSceneAsync(string url, bool isAdditive, System.Action<Scene> completed)
         {
-            return NovaEngine.ResourceModule.LoadSceneAsync(url, isAdditive, completed);
+            return ResourceModule.LoadSceneAsync(url, isAdditive, completed);
         }
 
         /// <summary>
@@ -175,9 +175,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="isAdditive">是否使用叠加方式加载</param>
-        public static async Cysharp.Threading.Tasks.UniTask<Scene> LoadSceneAsync(string url, bool isAdditive = false)
+        public async Cysharp.Threading.Tasks.UniTask<Scene> LoadSceneAsync(string url, bool isAdditive = false)
         {
-            Scene scene = NovaEngine.ResourceModule.LoadSceneAsync(url, isAdditive);
+            Scene scene = ResourceModule.LoadSceneAsync(url, isAdditive);
             await scene.Task;
             return scene;
         }
@@ -186,40 +186,40 @@ namespace GameEngine
         /// 卸载场景
         /// </summary>
         /// <param name="scene">场景对象</param>
-        public static void UnloadScene(Scene scene)
+        public void UnloadScene(Scene scene)
         {
-            NovaEngine.ResourceModule.UnloadScene(scene);
+            ResourceModule.UnloadScene(scene);
         }
 
         #endregion
 
-        # region 原始文件加载
+        # region 原始文件加载相关的接口函数
 
         /// <summary>
         /// 同步加载原文件(直接读取persistentDataPath中的文件, 然后可根据文件保存路径(RawFile.savePath)读取文件, 使用同步加载前需已保证文件更新)
         /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
         /// </summary>
-        public static RawFile LoadRawFile(string url)
+        public RawFile LoadRawFile(string url)
         {
-            return NovaEngine.ResourceModule.LoadRawFile(url);
+            return ResourceModule.LoadRawFile(url);
         }
 
         /// <summary>
         /// 异步加载原文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
         /// /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
         /// </summary>
-        public static RawFile LoadRawFileAsync(string url, System.Action<RawFile> completed)
+        public RawFile LoadRawFileAsync(string url, System.Action<RawFile> completed)
         {
-            return NovaEngine.ResourceModule.LoadRawFileAsync(url, completed);
+            return ResourceModule.LoadRawFileAsync(url, completed);
         }
 
         /// <summary>
         /// 异步加载原文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
         /// /// <param name="address">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
         /// </summary>
-        public static async Cysharp.Threading.Tasks.UniTask<RawFile> LoadRawFileAsync(string address)
+        public async Cysharp.Threading.Tasks.UniTask<RawFile> LoadRawFileAsync(string address)
         {
-            RawFile rawFile = NovaEngine.ResourceModule.LoadRawFileAsync(address);
+            RawFile rawFile = ResourceModule.LoadRawFileAsync(address);
             await rawFile.Task;
             return rawFile;
         }

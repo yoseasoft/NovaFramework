@@ -205,7 +205,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="id">事件标识</param>
         /// <param name="type">事件类型</param>
-        public void SendModuleCommand(int id, int type)
+        internal void SendModuleCommand(int id, int type)
         {
             ModuleController.CallCommand(id, type);
         }
@@ -214,7 +214,7 @@ namespace NovaEngine
         /// 发送模块指令，由当前系统控制器立即执行处理
         /// </summary>
         /// <param name="args">指令参数实例</param>
-        public void SendModuleCommand(ModuleCommandArgs args)
+        internal void SendModuleCommand(ModuleCommandArgs args)
         {
             ModuleController.CallCommand(args);
         }

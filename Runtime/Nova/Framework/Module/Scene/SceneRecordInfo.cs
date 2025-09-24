@@ -25,8 +25,8 @@
 using System.Collections.Generic;
 
 using UnityObject = UnityEngine.Object;
-using UnityScene = UnityEngine.SceneManagement.Scene;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
+using UnityScene = UnityEngine.SceneManagement.Scene;
 
 namespace NovaEngine
 {
@@ -96,7 +96,7 @@ namespace NovaEngine
         {
             if (_assetScene != null)
             {
-                ResourceModule.UnloadScene(_assetScene);
+                ModuleObject.GetModule<ResourceModule>().UnloadScene(_assetScene);
                 _assetScene = null;
             }
         }

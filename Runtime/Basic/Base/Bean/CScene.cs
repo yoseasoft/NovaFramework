@@ -24,6 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using Cysharp.Threading.Tasks;
+
 namespace GameEngine
 {
     /// <summary>
@@ -180,20 +182,33 @@ namespace GameEngine
         { }
 
         /// <summary>
+        /// 加载指定名称及路径的场景资源对象实例
+        /// </summary>
+        /// <param name="assetName">场景资源名称</param>
+        /// <param name="assetUrl">场景资源路径</param>
+        /// <param name="completed">结束回调</param>
+        public GooAsset.Scene LoadSceneAsset(string assetName, string assetUrl, System.Action<GooAsset.Scene> completed = null)
+        {
+            return SceneHandler.Instance.LoadSceneAsset(assetName, assetUrl, completed);
+        }
+
+        /// <summary>
         /// 加载场景资源的接口函数
         /// </summary>
         /// <param name="assetName">资源名称</param>
         /// <param name="assetUrl">资源路径</param>
-        public void LoadAsset(string assetName, string assetUrl)
+        public async UniTask<GooAsset.Scene> LoadSceneAssetAsync(string assetName, string assetUrl)
         {
+            return await SceneHandler.LoadSceneAssetAsync(assetName, assetUrl);
         }
 
         /// <summary>
         /// 卸载场景资源的接口函数
         /// </summary>
         /// <param name="assetName">资源名称</param>
-        public void UnloadAsset(string assetName)
+        public void UnloadSceneAsset(string assetName)
         {
+            SceneHandler.UnloadSceneAsset(assetName);
         }
 
         #region 场景对象功能检测相关接口函数合集
