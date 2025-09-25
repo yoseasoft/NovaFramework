@@ -39,8 +39,8 @@ using SystemSeekOrigin = System.IO.SeekOrigin;
 using SystemXmlDocument = System.Xml.XmlDocument;
 using SystemXmlElement = System.Xml.XmlElement;
 using SystemXmlNode = System.Xml.XmlNode;
-using SystemXmlNodeType = System.Xml.XmlNodeType;
 using SystemXmlNodeList = System.Xml.XmlNodeList;
+using SystemXmlNodeType = System.Xml.XmlNodeType;
 
 namespace GameEngine.Loader
 {

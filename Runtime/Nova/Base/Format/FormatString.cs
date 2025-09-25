@@ -39,7 +39,7 @@ namespace NovaEngine
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
-        public static string Format(object value) { return Formatter.ToString(value); }
+        public static string Format(object value) { return ObjectFormatter.ToString(value); }
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]

@@ -23,14 +23,14 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Loader.Symboling
+namespace GameEngine.Loader
 {
     /// <summary>
     /// 针对标记符号类型对象的格式化辅助工具类，通过该类定义一些用于标记符号对象的格式化接口函数
     /// </summary>
-    internal static class Formatter
+    public static partial class CodeLoaderObject
     {
-        public static string ToString(SymClass targetObject)
+        public static string ToString(Symboling.SymClass targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("SymClass={");
@@ -55,7 +55,7 @@ namespace GameEngine.Loader.Symboling
             return fsb.ToString();
         }
 
-        public static string ToString(SymField targetObject)
+        public static string ToString(Symboling.SymField targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("SymField={");
@@ -68,7 +68,7 @@ namespace GameEngine.Loader.Symboling
             return fsb.ToString();
         }
 
-        public static string ToString(SymProperty targetObject)
+        public static string ToString(Symboling.SymProperty targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("SymProperty={");
@@ -81,7 +81,7 @@ namespace GameEngine.Loader.Symboling
             return fsb.ToString();
         }
 
-        public static string ToString(SymMethod targetObject)
+        public static string ToString(Symboling.SymMethod targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("SymMethod={");
@@ -95,7 +95,7 @@ namespace GameEngine.Loader.Symboling
             return fsb.ToString();
         }
 
-        public static string ToString(Bean targetObject)
+        public static string ToString(Symboling.Bean targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Bean={");
@@ -105,17 +105,17 @@ namespace GameEngine.Loader.Symboling
             fsb.Append("Inherited={%b},", targetObject.Inherited);
             fsb.Append("Fields={{{%s}}},", targetObject.Fields, (k, v) => v.FieldName);
             fsb.Append("Properties={{{%s}}},", targetObject.Properties, (k, v) => v.PropertyName);
-            fsb.Append("Components={{{%s}}},", NovaEngine.Utility.Text.ToString<BeanComponent>(targetObject.Components, (index, v) =>
+            fsb.Append("Components={{{%s}}},", targetObject.Components, (index, v) =>
             {
                 if (null != v.ReferenceClassType) return $"ClassType={NovaEngine.Utility.Text.GetFullName(v.ReferenceClassType)}";
                 else if (null != v.ReferenceBeanName) return $"BeanName={v.ReferenceBeanName}";
                 else return NovaEngine.Definition.CString.Null;
-            }));
+            });
             fsb.Append("}");
             return fsb.ToString();
         }
 
-        public static string ToString(BeanField targetObject)
+        public static string ToString(Symboling.BeanField targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("BeanField={");
@@ -127,7 +127,7 @@ namespace GameEngine.Loader.Symboling
             return fsb.ToString();
         }
 
-        public static string ToString(BeanProperty targetObject)
+        public static string ToString(Symboling.BeanProperty targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("BeanProperty={");
@@ -139,7 +139,7 @@ namespace GameEngine.Loader.Symboling
             return fsb.ToString();
         }
 
-        public static string ToString(BeanComponent targetObject)
+        public static string ToString(Symboling.BeanComponent targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("BeanComponent={");

@@ -103,7 +103,7 @@ namespace GameEngine.Loader
             // 安全检查
             Debugger.Assert(false == _symClassMaps.ContainsKey(symbol.ClassName), $"Load class symbol {symbol.ClassName} error.");
 
-            Debugger.Log(LogGroupTag.CodeLoader, "Load class symbol '{%s}' succeed from target class type '{%t}'.", Symboling.Formatter.ToString(symbol), targetType);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load class symbol '{%s}' succeed from target class type '{%t}'.", CodeLoaderObject.ToString(symbol), targetType);
 
             // 添加标记信息
             _symClassMaps.Add(symbol);

@@ -32,7 +32,7 @@ namespace NovaEngine
     /// <summary>
     /// 格式化接口集合工具类
     /// </summary>
-    public static partial class Formatter
+    internal static partial class ObjectFormatter
     {
         /// <summary>
         /// 对象实例格式化字符串信息接口定义

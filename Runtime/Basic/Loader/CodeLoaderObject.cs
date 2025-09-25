@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,17 +23,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Loader.Configuring
+namespace GameEngine.Loader
 {
     /// <summary>
-    /// 基础配置信息的枚举类型定义
+    /// 针对分析处理对象的格式化辅助工具类。
+    /// 您可以通过该类提供的方式，查看加载对象内部具体的数据信息。
     /// </summary>
-    public enum ConfigureInfoType : byte
+    public static partial class CodeLoaderObject
     {
-        Unknown = 0,
-        Comment = 1,
-        Constant = 2,
-        Bean = 3,
-        File = 4,
     }
 }

@@ -29,7 +29,7 @@ namespace GameEngine.Loader.Configuring
     /// <summary>
     /// 配置数据源的节点标签命名
     /// </summary>
-    public static class ConfigureNodeName
+    internal static class ConfigureNodeName
     {
         public const string Comment = "#comment";
         public const string File = "file";
@@ -44,7 +44,7 @@ namespace GameEngine.Loader.Configuring
     /// <summary>
     /// 配置数据的语法标签定义
     /// </summary>
-    public static class ConfigureNodeAttributeName
+    internal static class ConfigureNodeAttributeName
     {
         public const string K_NAME = "name";
         public const string K_CLASS_TYPE = "class_type";

@@ -30,14 +30,14 @@ namespace NovaEngine
     /// <summary>
     /// 格式化接口集合工具类
     /// </summary>
-    public static partial class Formatter
+    internal static partial class ObjectFormatter
     {
         /// <summary>
-        /// 摘要模式的对象字符串信息输出接口函数
+        /// 详细模式的对象字符串信息输出接口函数
         /// </summary>
         /// <param name="obj">对象实例</param>
-        /// <returns>返回对象实例的摘要字符串信息</returns>
-        private static string ToSummaryInfo(object obj)
+        /// <returns>返回对象实例的详细字符串信息</returns>
+        private static string ToVerboseInfo(object obj)
         {
             if (null == obj)
             {
@@ -55,7 +55,7 @@ namespace NovaEngine
             // 但也有部分自定义容器类，不属于系统类，所以没法放在系统类中统一进行检测
             if (IsContainerObjectType(classType))
             {
-                return GetContainerObjectInfo(obj, ToSummaryInfo);
+                return GetContainerObjectInfo(obj, ToVerboseInfo);
             }
 
             if (IsCoreSystemObjectType(classType))
@@ -63,10 +63,7 @@ namespace NovaEngine
                 return GetCoreSystemObjectInfo(obj);
             }
 
-            return GetCustomObjectInfo(obj, (element) =>
-            {
-                return element?.ToString();
-            });
+            return GetCustomObjectInfo(obj, ToSummaryInfo);
         }
     }
 }

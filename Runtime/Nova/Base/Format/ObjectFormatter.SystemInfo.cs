@@ -36,7 +36,7 @@ namespace NovaEngine
     /// <summary>
     /// 格式化接口集合工具类
     /// </summary>
-    public static partial class Formatter
+    internal static partial class ObjectFormatter
     {
         /// <summary>
         /// 尝试获取系统反射对象相关的字符串信息

@@ -23,8 +23,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 using SystemType = System.Type;
 using SystemStringBuilder = System.Text.StringBuilder;
 using SystemFieldInfo = System.Reflection.FieldInfo;
@@ -36,7 +34,7 @@ namespace NovaEngine
     /// <summary>
     /// 格式化接口集合工具类
     /// </summary>
-    public static partial class Formatter
+    internal static partial class ObjectFormatter
     {
         /// <summary>
         /// 获取指定对象实例的字符串信息<br/>

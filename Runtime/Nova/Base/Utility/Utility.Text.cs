@@ -149,7 +149,7 @@ namespace NovaEngine
             /// <returns>返回格式化后的字符串</returns>
             public static string Format(string format, params object[] args)
             {
-                return Formatter.TextFormatConvertionProcess(format, args);
+                return ObjectFormatter.TextFormatConvertionProcess(format, args);
             }
 
             /// <summary>
@@ -166,7 +166,7 @@ namespace NovaEngine
                 }
 
                 buff.Length = 0;
-                buff.Append(Formatter.TextFormatConvertionProcess(format, args));
+                buff.Append(ObjectFormatter.TextFormatConvertionProcess(format, args));
             }
 
             #region 对象的字符串输出封装接口函数

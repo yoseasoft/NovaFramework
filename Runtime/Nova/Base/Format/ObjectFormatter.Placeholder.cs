@@ -37,7 +37,7 @@ namespace NovaEngine
     /// <summary>
     /// 格式化接口集合工具类
     /// </summary>
-    public static partial class Formatter
+    internal static partial class ObjectFormatter
     {
         private const char Placeholder_B = 'b'; // 用于输出布尔值
         private const char Placeholder_D = 'd'; // 用于输出十进制整数
