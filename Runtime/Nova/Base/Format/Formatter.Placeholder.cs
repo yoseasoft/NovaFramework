@@ -39,6 +39,7 @@ namespace NovaEngine
     /// </summary>
     public static partial class Formatter
     {
+        private const char Placeholder_B = 'b'; // 用于输出布尔值
         private const char Placeholder_D = 'd'; // 用于输出十进制整数
         private const char Placeholder_O = 'o'; // 用于输出八进制整数
         private const char Placeholder_X = 'x'; // 用于输出十六进制整数
@@ -56,6 +57,7 @@ namespace NovaEngine
         private enum TextFormatParameterType
         {
             Unknown,
+            Boolean,
             DecimalInteger,
             OctalInteger,
             HexadecimalInteger,
@@ -252,6 +254,11 @@ namespace NovaEngine
                                             convertionCallback = null,
                                          },
             new TextFormatConvertionInfo {
+                                            parameterType = TextFormatParameterType.Boolean,
+                                            formatSymbol = Placeholder_B,
+                                            convertionCallback = _TextFormatParameterConvertionCallback_Boolean,
+                                         },
+            new TextFormatConvertionInfo {
                                             parameterType = TextFormatParameterType.DecimalInteger,
                                             formatSymbol = Placeholder_D,
                                             convertionCallback = _TextFormatParameterConvertionCallback_DecimalInteger,
@@ -302,6 +309,12 @@ namespace NovaEngine
                                             convertionCallback = _TextFormatParameterConvertionCallback_ObjectInfo,
                                          },
         };
+
+        private static string _TextFormatParameterConvertionCallback_Boolean(object obj)
+        {
+            bool b = System.Convert.ToBoolean(obj);
+            return b ? Definition.CString.True : Definition.CString.False;
+        }
 
         private static string _TextFormatParameterConvertionCallback_DecimalInteger(object obj)
         {

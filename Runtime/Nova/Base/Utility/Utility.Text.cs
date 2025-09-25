@@ -469,6 +469,23 @@ namespace NovaEngine
             /// <param name="array">数组容器对象实例</param>
             /// <param name="callback">输出回调句柄</param>
             /// <returns>返回数组容器对应的字符串输出结果</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            [UnityEngine.Scripting.Preserve]
+            public static string ToString(System.Array array, System.Func<object, string> callback)
+            {
+                return ToString(array, (n, obj) =>
+                {
+                    return $"{n}={{{callback(obj)}}}";
+                });
+            }
+
+            /// <summary>
+            /// 数组容器的字符串描述输出函数
+            /// </summary>
+            /// <param name="array">数组容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回数组容器对应的字符串输出结果</returns>
+            [UnityEngine.Scripting.Preserve]
             public static string ToString(System.Array array, System.Func<int, object, string> callback = null)
             {
                 if (null == array)
@@ -485,7 +502,7 @@ namespace NovaEngine
 
                     if (null == callback)
                     {
-                        sb.AppendFormat("[{0}]={1}", n, item.ToString());
+                        sb.AppendFormat("{0}={1}", n, item.ToString());
                     }
                     else
                     {
@@ -504,6 +521,24 @@ namespace NovaEngine
             /// <param name="array">数组容器对象实例</param>
             /// <param name="callback">输出回调句柄</param>
             /// <returns>返回数组容器对应的字符串输出结果</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            [UnityEngine.Scripting.Preserve]
+            public static string ToString<T>(T[] array, System.Func<T, string> callback)
+            {
+                return ToString<T>(array, (n, obj) =>
+                {
+                    return $"{n}={{{callback(obj)}}}";
+                });
+            }
+
+            /// <summary>
+            /// 数组容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">容器内的元素类型</typeparam>
+            /// <param name="array">数组容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回数组容器对应的字符串输出结果</returns>
+            [UnityEngine.Scripting.Preserve]
             public static string ToString<T>(T[] array, System.Func<int, T, string> callback = null)
             {
                 if (null == array)
@@ -520,7 +555,7 @@ namespace NovaEngine
 
                     if (null == callback)
                     {
-                        sb.AppendFormat("[{0}]={1}", n, array[n].ToString());
+                        sb.AppendFormat("{0}={1}", n, array[n].ToString());
                     }
                     else
                     {
@@ -537,6 +572,23 @@ namespace NovaEngine
             /// <param name="collection">集合容器对象实例</param>
             /// <param name="callback">输出回调句柄</param>
             /// <returns>返回集合容器对应的字符串输出结果</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            [UnityEngine.Scripting.Preserve]
+            public static string ToString(System.Collections.ICollection collection, System.Func<object, string> callback)
+            {
+                return ToString(collection, (n, obj) =>
+                {
+                    return $"{n}={{{callback(obj)}}}";
+                });
+            }
+
+            /// <summary>
+            /// 集合容器的字符串描述输出函数
+            /// </summary>
+            /// <param name="collection">集合容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回集合容器对应的字符串输出结果</returns>
+            [UnityEngine.Scripting.Preserve]
             public static string ToString(System.Collections.ICollection collection, System.Func<int, object, string> callback = null)
             {
                 if (null == collection)
@@ -556,11 +608,11 @@ namespace NovaEngine
                     {
                         if (e.Current is System.Collections.DictionaryEntry entry)
                         {
-                            sb.AppendFormat("[{0}]={1}", entry.Key.ToString(), entry.Value.ToString());
+                            sb.AppendFormat("{0}={1}", entry.Key.ToString(), entry.Value.ToString());
                         }
                         else
                         {
-                            sb.AppendFormat("[{0}]={1}", n, e.Current.ToString());
+                            sb.AppendFormat("{0}={1}", n, e.Current.ToString());
                         }
                     }
                     else
@@ -580,7 +632,25 @@ namespace NovaEngine
             /// <param name="collection">集合容器对象实例</param>
             /// <param name="callback">回调句柄</param>
             /// <returns>返回集合容器对应的字符串输出结果</returns>
-            public static string ToString<T>(ICollection<T> collection, System.Func<int, T, string> callback)
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            [UnityEngine.Scripting.Preserve]
+            public static string ToString<T>(ICollection<T> collection, System.Func<T, string> callback)
+            {
+                return ToString<T>(collection, (n, obj) =>
+                {
+                    return $"{n}={{{callback(obj)}}}";
+                });
+            }
+
+            /// <summary>
+            /// 集合容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">数据值类型</typeparam>
+            /// <param name="collection">集合容器对象实例</param>
+            /// <param name="callback">回调句柄</param>
+            /// <returns>返回集合容器对应的字符串输出结果</returns>
+            [UnityEngine.Scripting.Preserve]
+            public static string ToString<T>(ICollection<T> collection, System.Func<int, T, string> callback = null)
             {
                 if (null == collection)
                 {
@@ -597,7 +667,7 @@ namespace NovaEngine
 
                     if (null == callback)
                     {
-                        sb.AppendFormat("[{0}]={1}", n, e.Current.ToString());
+                        sb.AppendFormat("{0}={1}", n, e.Current.ToString());
                     }
                     else
                     {
@@ -618,7 +688,8 @@ namespace NovaEngine
             /// <param name="collection">集合容器对象实例</param>
             /// <param name="callback">回调句柄</param>
             /// <returns>返回集合容器对应的字符串输出结果</returns>
-            public static string ToString<K, V>(ICollection<KeyValuePair<K, V>> collection, System.Func<K, V, string> callback)
+            [UnityEngine.Scripting.Preserve]
+            public static string ToString<K, V>(ICollection<KeyValuePair<K, V>> collection, System.Func<K, V, string> callback = null)
             {
                 if (null == collection)
                 {
@@ -635,7 +706,7 @@ namespace NovaEngine
 
                     if (null == callback)
                     {
-                        sb.AppendFormat("[{0}]={1}", e.Current.Key.ToString(), e.Current.Value.ToString());
+                        sb.AppendFormat("{0}={1}", e.Current.Key.ToString(), e.Current.Value.ToString());
                     }
                     else
                     {
@@ -654,6 +725,21 @@ namespace NovaEngine
             /// <param name="list">列表容器对象实例</param>
             /// <param name="callback">输出回调句柄</param>
             /// <returns>返回列表容器对应的字符串输出结果</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            [UnityEngine.Scripting.Preserve]
+            public static string ToString(System.Collections.IList list, System.Func<object, string> callback)
+            {
+                return ToString(list as System.Collections.ICollection, callback);
+            }
+
+            /// <summary>
+            /// 列表容器的字符串描述输出函数
+            /// </summary>
+            /// <param name="list">列表容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回列表容器对应的字符串输出结果</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            [UnityEngine.Scripting.Preserve]
             public static string ToString(System.Collections.IList list, System.Func<int, object, string> callback = null)
             {
                 return ToString(list as System.Collections.ICollection, callback);
@@ -666,6 +752,22 @@ namespace NovaEngine
             /// <param name="list">列表容器对象实例</param>
             /// <param name="callback">输出回调句柄</param>
             /// <returns>返回列表容器对应的字符串输出结果</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            [UnityEngine.Scripting.Preserve]
+            public static string ToString<T>(IList<T> list, System.Func<T, string> callback)
+            {
+                return ToString(list as ICollection<T>, callback);
+            }
+
+            /// <summary>
+            /// 列表容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">容器内的元素类型</typeparam>
+            /// <param name="list">列表容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回列表容器对应的字符串输出结果</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            [UnityEngine.Scripting.Preserve]
             public static string ToString<T>(IList<T> list, System.Func<int, T, string> callback = null)
             {
                 return ToString(list as ICollection<T>, callback);
@@ -677,6 +779,21 @@ namespace NovaEngine
             /// <param name="list">列表容器对象实例</param>
             /// <param name="callback">输出回调句柄</param>
             /// <returns>返回列表容器对应的字符串输出结果</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            [UnityEngine.Scripting.Preserve]
+            public static string ToString(IList<int> list, System.Func<int, string> callback)
+            {
+                return ToString<int>(list, callback);
+            }
+
+            /// <summary>
+            /// 列表容器的字符串描述输出函数
+            /// </summary>
+            /// <param name="list">列表容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回列表容器对应的字符串输出结果</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            [UnityEngine.Scripting.Preserve]
             public static string ToString(IList<int> list, System.Func<int, int, string> callback = null)
             {
                 return ToString<int>(list, callback);
@@ -688,6 +805,21 @@ namespace NovaEngine
             /// <param name="list">列表容器对象实例</param>
             /// <param name="callback">输出回调句柄</param>
             /// <returns>返回列表容器对应的字符串输出结果</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            [UnityEngine.Scripting.Preserve]
+            public static string ToString(IList<string> list, System.Func<string, string> callback)
+            {
+                return ToString<string>(list, callback);
+            }
+
+            /// <summary>
+            /// 列表容器的字符串描述输出函数
+            /// </summary>
+            /// <param name="list">列表容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回列表容器对应的字符串输出结果</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            [UnityEngine.Scripting.Preserve]
             public static string ToString(IList<string> list, System.Func<int, string, string> callback = null)
             {
                 return ToString<string>(list, callback);
@@ -699,6 +831,7 @@ namespace NovaEngine
             /// <param name="dictionary">字典容器对象实例</param>
             /// <param name="callback">输出回调句柄</param>
             /// <returns>返回字典容器对应的字符串输出结果</returns>
+            [UnityEngine.Scripting.Preserve]
             public static string ToString(System.Collections.IDictionary dictionary, System.Func<object, object, string> callback = null)
             {
                 if (null == callback)
@@ -737,6 +870,8 @@ namespace NovaEngine
             /// <param name="dictionary">字典容器对象实例</param>
             /// <param name="callback">输出回调句柄</param>
             /// <returns>返回字典容器对应的字符串输出结果</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            [UnityEngine.Scripting.Preserve]
             public static string ToString<K, V>(IDictionary<K, V> dictionary, System.Func<K, V, string> callback = null)
             {
                 return ToString(dictionary as ICollection<KeyValuePair<K, V>>, callback);
