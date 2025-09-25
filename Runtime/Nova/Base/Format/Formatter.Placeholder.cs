@@ -49,7 +49,7 @@ namespace NovaEngine
         private const char Placeholder_S = 's'; // 用于输出字符串
         private const char Placeholder_P = 'p'; // 用于输出对象的内存指针地址
         private const char Placeholder_T = 't'; // 用于输出对象类型
-        private const char Placeholder_V = 'v'; // 用于输出对象的详细信息
+        private const char Placeholder_I = 'i'; // 用于输出对象的详细信息
 
         /// <summary>
         /// 文本格式的参数类型分类的枚举定义
@@ -305,7 +305,7 @@ namespace NovaEngine
                                          },
             new TextFormatConvertionInfo {
                                             parameterType = TextFormatParameterType.ObjectInfo,
-                                            formatSymbol = Placeholder_V,
+                                            formatSymbol = Placeholder_I,
                                             convertionCallback = _TextFormatParameterConvertionCallback_ObjectInfo,
                                          },
         };

@@ -30,7 +30,7 @@ using SystemStringBuilder = System.Text.StringBuilder;
 namespace NovaEngine
 {
     /// <summary>
-    /// 格式化可变字符串的构建器对象类，此类是无法继承的
+    /// 格式化可变字符串的构建器对象类，此类是无法继承的。
     /// 对于执行大量字符串操作的例程（例如在循环中多次修改字符串的应用），反复修改字符串可能会产生显著的性能损失。
     /// 替代方法是使用 <b>FormatStringBuilder</b>，这是可变字符串类。
     /// 可变性意味着，在创建类的实例后，可以通过追加、删除、替换或插入字符来修改该类。

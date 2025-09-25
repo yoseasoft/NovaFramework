@@ -146,7 +146,7 @@ namespace GameEngine.Loader.Symboling
             if (null != targetObject.ReferenceClassType) fsb.Append("ReferenceClassType={%t},", targetObject.ReferenceClassType);
             if (null != targetObject.ReferenceBeanName) fsb.Append("ReferenceBeanName={%s},", targetObject.ReferenceBeanName);
             fsb.Append("Priority={%d},", targetObject.Priority);
-            fsb.Append("ActivationBehaviourType={%v},", targetObject.ActivationBehaviourType);
+            fsb.Append("ActivationBehaviourType={%i},", targetObject.ActivationBehaviourType);
             fsb.Append("}");
             return fsb.ToString();
         }
