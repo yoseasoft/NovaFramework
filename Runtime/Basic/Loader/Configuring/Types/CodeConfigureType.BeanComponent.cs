@@ -24,14 +24,13 @@
 /// -------------------------------------------------------------------------------
 
 using SystemType = System.Type;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Configuring
 {
     /// <summary>
     /// 通用Bean的组件配置类型的结构信息
     /// </summary>
-    public class BeanComponentConfigureInfo : ICodeConfigureEffectivateVerification
+    public sealed class BeanComponentConfigureInfo : ICodeConfigureEffectivateVerification
     {
         /// <summary>
         /// 节点组件的引用名称
@@ -75,18 +74,6 @@ namespace GameEngine.Loader.Configuring
                 return false;
 
             return true;
-        }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("ReferenceName = {0}, ", _referenceName);
-            sb.AppendFormat("ReferenceType = {0}, ", NovaEngine.Utility.Text.ToString(_referenceType));
-            sb.AppendFormat("Priority = {0}, ", _priority);
-            sb.AppendFormat("ActivationBehaviourType = {0}, ", _activationBehaviourType);
-            sb.Append("}");
-            return sb.ToString();
         }
     }
 }

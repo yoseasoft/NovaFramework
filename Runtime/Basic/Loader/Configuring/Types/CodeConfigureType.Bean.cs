@@ -26,14 +26,13 @@
 using System.Collections.Generic;
 
 using SystemType = System.Type;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Configuring
 {
     /// <summary>
     /// 通用Bean配置类型的结构信息
     /// </summary>
-    public class BeanConfigureInfo : BaseConfigureInfo
+    public sealed class BeanConfigureInfo : BaseConfigureInfo
     {
         /// <summary>
         /// 节点对应的对象类型
@@ -258,21 +257,6 @@ namespace GameEngine.Loader.Configuring
             }
 
             return _components[index];
-        }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("Bean = { ");
-            sb.AppendFormat("Base = {{{0}}}, ", base.ToString());
-            sb.AppendFormat("ClassType = {0}, ", NovaEngine.Utility.Text.ToString(_classType));
-            sb.AppendFormat("ParentName = {0}, ", _parentName);
-            sb.AppendFormat("Singleton = {0}, ", _singleton);
-            sb.AppendFormat("Inherited = {0}, ", _inherited);
-            sb.AppendFormat("Fields = {{{0}}}, ", NovaEngine.Utility.Text.ToString<string, BeanFieldConfigureInfo>(_fields));
-            sb.AppendFormat("Components = {{{0}}}, ", NovaEngine.Utility.Text.ToString<BeanComponentConfigureInfo>(_components));
-            sb.Append("}");
-            return sb.ToString();
         }
     }
 }

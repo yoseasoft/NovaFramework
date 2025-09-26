@@ -23,14 +23,14 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Loader.Structuring
+namespace GameEngine.Loader
 {
     /// <summary>
     /// 针对编码信息结构类型对象的格式化辅助工具类，通过该类定义一些用于编码信息结构对象的格式化接口函数
     /// </summary>
-    internal static class Formatter
+    public static partial class CodeLoaderObject
     {
-        private static string ToString(MethodTypeCodeInfo targetObject)
+        private static string ToString(Structuring.MethodTypeCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Fullname={%s},", targetObject.Fullname);
@@ -41,7 +41,7 @@ namespace GameEngine.Loader.Structuring
 
         #region 输入回调模块相关的编码信息结构类型对象“ToString”封装
 
-        public static string ToString(InputCallCodeInfo targetObject)
+        internal static string ToString(Structuring.InputCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("InputCall={");
@@ -50,20 +50,20 @@ namespace GameEngine.Loader.Structuring
             return fsb.ToString();
         }
 
-        private static string ToString(InputCallMethodTypeCodeInfo targetObject)
+        private static string ToString(Structuring.InputCallMethodTypeCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
-            fsb.Append(ToString((MethodTypeCodeInfo) targetObject));
+            fsb.Append(ToString((Structuring.MethodTypeCodeInfo) targetObject));
             fsb.Append("InputCode={%d},", targetObject.InputCode);
             fsb.Append("OperationType={%i},", targetObject.OperationType);
             fsb.Append("InputDataType={%t},", targetObject.InputDataType);
             return fsb.ToString();
         }
 
-        private static string ToString(InputResponsingMethodTypeCodeInfo targetObject)
+        private static string ToString(Structuring.InputResponsingMethodTypeCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
-            fsb.Append(ToString((InputCallMethodTypeCodeInfo) targetObject));
+            fsb.Append(ToString((Structuring.InputCallMethodTypeCodeInfo) targetObject));
             fsb.Append("BehaviourType={%i},", targetObject.BehaviourType);
             return fsb.ToString();
         }
@@ -72,7 +72,7 @@ namespace GameEngine.Loader.Structuring
 
         #region 事件回调模块相关的编码信息结构类型对象“ToString”封装
 
-        public static string ToString(EventCallCodeInfo targetObject)
+        internal static string ToString(Structuring.EventCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("EventCall={");
@@ -82,19 +82,19 @@ namespace GameEngine.Loader.Structuring
             return fsb.ToString();
         }
 
-        private static string ToString(EventCallMethodTypeCodeInfo targetObject)
+        private static string ToString(Structuring.EventCallMethodTypeCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
-            fsb.Append(ToString((MethodTypeCodeInfo) targetObject));
+            fsb.Append(ToString((Structuring.MethodTypeCodeInfo) targetObject));
             fsb.Append("EventID={%d},", targetObject.EventID);
             fsb.Append("EventDataType={%t},", targetObject.EventDataType);
             return fsb.ToString();
         }
 
-        private static string ToString(EventSubscribingMethodTypeCodeInfo targetObject)
+        private static string ToString(Structuring.EventSubscribingMethodTypeCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
-            fsb.Append(ToString((EventCallMethodTypeCodeInfo) targetObject));
+            fsb.Append(ToString((Structuring.EventCallMethodTypeCodeInfo) targetObject));
             fsb.Append("BehaviourType={%i},", targetObject.BehaviourType);
             return fsb.ToString();
         }
@@ -103,7 +103,7 @@ namespace GameEngine.Loader.Structuring
 
         #region 消息回调模块相关的编码信息结构类型对象“ToString”封装
 
-        public static string ToString(NetworkMessageCodeInfo targetObject)
+        internal static string ToString(Structuring.NetworkMessageCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("NetworkMessage={");
@@ -114,7 +114,7 @@ namespace GameEngine.Loader.Structuring
             return fsb.ToString();
         }
 
-        public static string ToString(MessageCallCodeInfo targetObject)
+        internal static string ToString(Structuring.MessageCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("MessageCall={");
@@ -124,19 +124,19 @@ namespace GameEngine.Loader.Structuring
             return fsb.ToString();
         }
 
-        private static string ToString(MessageCallMethodTypeCodeInfo targetObject)
+        private static string ToString(Structuring.MessageCallMethodTypeCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
-            fsb.Append(ToString((MethodTypeCodeInfo) targetObject));
+            fsb.Append(ToString((Structuring.MethodTypeCodeInfo) targetObject));
             fsb.Append("Opcode={%d},", targetObject.Opcode);
             fsb.Append("MessageType={%t},", targetObject.MessageType);
             return fsb.ToString();
         }
 
-        private static string ToString(MessageBindingMethodTypeCodeInfo targetObject)
+        private static string ToString(Structuring.MessageBindingMethodTypeCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
-            fsb.Append(ToString((MessageCallMethodTypeCodeInfo) targetObject));
+            fsb.Append(ToString((Structuring.MessageCallMethodTypeCodeInfo) targetObject));
             fsb.Append("BehaviourType={%i},", targetObject.BehaviourType);
             return fsb.ToString();
         }
@@ -145,7 +145,7 @@ namespace GameEngine.Loader.Structuring
 
         #region API回调模块相关的编码信息结构类型对象“ToString”封装
 
-        public static string ToString(ApiCallCodeInfo targetObject)
+        internal static string ToString(Structuring.ApiCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("ApiCall={");
@@ -155,10 +155,10 @@ namespace GameEngine.Loader.Structuring
             return fsb.ToString();
         }
 
-        private static string ToString(ApiCallMethodTypeCodeInfo targetObject)
+        private static string ToString(Structuring.ApiCallMethodTypeCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
-            fsb.Append(ToString((MethodTypeCodeInfo) targetObject));
+            fsb.Append(ToString((Structuring.MethodTypeCodeInfo) targetObject));
             fsb.Append("FunctionName={%s},", targetObject.FunctionName);
             return fsb.ToString();
         }
@@ -167,7 +167,7 @@ namespace GameEngine.Loader.Structuring
 
         #region 切面回调模块相关的编码信息结构类型对象“ToString”封装
 
-        public static string ToString(AspectCallCodeInfo targetObject)
+        internal static string ToString(Structuring.AspectCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("AspectCall={");
@@ -177,10 +177,10 @@ namespace GameEngine.Loader.Structuring
             return fsb.ToString();
         }
 
-        private static string ToString(AspectCallMethodTypeCodeInfo targetObject)
+        private static string ToString(Structuring.AspectCallMethodTypeCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
-            fsb.Append(ToString((MethodTypeCodeInfo) targetObject));
+            fsb.Append(ToString((Structuring.MethodTypeCodeInfo) targetObject));
             fsb.Append("MethodName={%s},", targetObject.MethodName);
             fsb.Append("AccessType={%i},", targetObject.AccessType);
             return fsb.ToString();
@@ -190,7 +190,7 @@ namespace GameEngine.Loader.Structuring
 
         #region 注入回调模块相关的编码信息结构类型对象“ToString”封装
 
-        public static string ToString(InjectCallCodeInfo targetObject)
+        internal static string ToString(Structuring.InjectCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("InjectCall={");
@@ -204,7 +204,7 @@ namespace GameEngine.Loader.Structuring
 
         #region 缓存回调模块相关的编码信息结构类型对象“ToString”封装
 
-        public static string ToString(PoolCallCodeInfo targetObject)
+        internal static string ToString(Structuring.PoolCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("PoolCall={");
@@ -217,7 +217,7 @@ namespace GameEngine.Loader.Structuring
 
         #region 原型对象模块相关的编码信息结构类型对象“ToString”封装
 
-        private static string ToString(BaseBeanCodeInfo targetObject)
+        private static string ToString(Structuring.BaseBeanCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("ClassType={%t},", targetObject.ClassType);
@@ -227,57 +227,57 @@ namespace GameEngine.Loader.Structuring
             return fsb.ToString();
         }
 
-        private static string ToString(RefCodeInfo targetObject)
+        private static string ToString(Structuring.RefCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
-            fsb.Append(ToString((BaseBeanCodeInfo) targetObject));
+            fsb.Append(ToString((Structuring.BaseBeanCodeInfo) targetObject));
             return fsb.ToString();
         }
 
-        public static string ToString(ObjectCodeInfo targetObject)
+        internal static string ToString(Structuring.ObjectCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Object={");
-            fsb.Append(ToString((RefCodeInfo) targetObject));
+            fsb.Append(ToString((Structuring.RefCodeInfo) targetObject));
             fsb.Append("Name={%s},", targetObject.ObjectName);
             fsb.Append("Priority={%d},", targetObject.Priority);
             fsb.Append("}");
             return fsb.ToString();
         }
 
-        public static string ToString(ComponentCodeInfo targetObject)
+        internal static string ToString(Structuring.ComponentCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Component={");
-            fsb.Append(ToString((BaseBeanCodeInfo) targetObject));
+            fsb.Append(ToString((Structuring.BaseBeanCodeInfo) targetObject));
             fsb.Append("Name={%s},", targetObject.ComponentName);
             fsb.Append("}");
             return fsb.ToString();
         }
 
-        private static string ToString(EntityCodeInfo targetObject)
+        private static string ToString(Structuring.EntityCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
-            fsb.Append(ToString((RefCodeInfo) targetObject));
+            fsb.Append(ToString((Structuring.RefCodeInfo) targetObject));
             return fsb.ToString();
         }
 
-        public static string ToString(ActorCodeInfo targetObject)
+        internal static string ToString(Structuring.ActorCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Actor={");
-            fsb.Append(ToString((EntityCodeInfo) targetObject));
+            fsb.Append(ToString((Structuring.EntityCodeInfo) targetObject));
             fsb.Append("Name={%s},", targetObject.ActorName);
             fsb.Append("Priority={%d},", targetObject.Priority);
             fsb.Append("}");
             return fsb.ToString();
         }
 
-        public static string ToString(SceneCodeInfo targetObject)
+        internal static string ToString(Structuring.SceneCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Scene={");
-            fsb.Append(ToString((EntityCodeInfo) targetObject));
+            fsb.Append(ToString((Structuring.EntityCodeInfo) targetObject));
             fsb.Append("Name={%s},", targetObject.SceneName);
             fsb.Append("Priority={%d},", targetObject.Priority);
             fsb.Append("AutoDisplayViews={{{%s}}},", targetObject.AutoDisplayViewNames);
@@ -285,11 +285,11 @@ namespace GameEngine.Loader.Structuring
             return fsb.ToString();
         }
 
-        public static string ToString(ViewCodeInfo targetObject)
+        internal static string ToString(Structuring.ViewCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("View={");
-            fsb.Append(ToString((EntityCodeInfo) targetObject));
+            fsb.Append(ToString((Structuring.EntityCodeInfo) targetObject));
             fsb.Append("Name={%s},", targetObject.ViewName);
             fsb.Append("Priority={%d},", targetObject.Priority);
             fsb.Append("GroupViews={{{%s}}},", targetObject.GroupOfSymbioticViewNames);
@@ -301,7 +301,7 @@ namespace GameEngine.Loader.Structuring
 
         #region 扩展定义模块相关的编码信息结构类型对象“ToString”封装
 
-        public static string ToString(ExtendCallCodeInfo targetObject)
+        internal static string ToString(Structuring.ExtendCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("ExtendCall={");

@@ -55,30 +55,13 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 设置当前调试环境下指定分组的日志输出级别
-        /// </summary>
-        /// <param name="groupID">模块组标识</param>
-        /// <param name="level">日志输出级别</param>
-        internal static void SetTargetOutputGroupLevel(int groupID, int level)
-        {
-            if (false == _debuggingOutputGroupInfos.ContainsKey(groupID))
-            {
-                Warn("Could not found any output group with target ID '{%d}', setted it level failed.", groupID);
-                return;
-            }
-
-            DebuggingOutputGroupInfo info = _debuggingOutputGroupInfos[groupID];
-            info.LogLevel = level;
-        }
-
-        /// <summary>
         /// 新增当前调试环境下指定分组的信息
         /// </summary>
         /// <param name="groupID">分组标识</param>
         /// <param name="groupName">分组名称</param>
         /// <param name="enabled">启用状态标识</param>
         /// <param name="level">日志输出级别</param>
-        internal static void AddTargetOutputGroup(int groupID, string groupName, bool enabled, int level)
+        internal static void AddTargetOutputGroup(int groupID, string groupName, bool enabled)
         {
             if (groupID <= 0 || string.IsNullOrEmpty(groupName))
             {
@@ -91,7 +74,7 @@ namespace GameEngine
                 _debuggingOutputGroupInfos.Remove(groupID);
             }
 
-            DebuggingOutputGroupInfo info = new DebuggingOutputGroupInfo(groupID, groupName, enabled, level);
+            DebuggingOutputGroupInfo info = new DebuggingOutputGroupInfo(groupID, groupName, enabled);
             _debuggingOutputGroupInfos.Add(groupID, info);
         }
 
@@ -335,22 +318,16 @@ namespace GameEngine
             /// 调试日志分组的开启状态标识
             /// </summary>
             private bool _enabled;
-            /// <summary>
-            /// 调试日志分组的可输出日志级别
-            /// </summary>
-            private int _logLevel;
 
             public int GroupID => _groupID;
             public string GroupName => _groupName;
             public bool Enabled { get { return _enabled; } set { _enabled = value; } }
-            public int LogLevel { get { return _logLevel; } set { _logLevel = value; } }
 
-            public DebuggingOutputGroupInfo(int groupID, string groupName, bool enabled, int logLevel)
+            public DebuggingOutputGroupInfo(int groupID, string groupName, bool enabled)
             {
                 _groupID = groupID;
                 _groupName = groupName;
                 _enabled = enabled;
-                _logLevel = logLevel;
             }
 
             /// <summary>
@@ -360,12 +337,12 @@ namespace GameEngine
             /// <param name="message">日志内容</param>
             public void Output(NovaEngine.LogOutputLevelType level, object message)
             {
-                if (false == IsOutputEnabled(level))
+                if (false == IsOutputEnabled())
                 {
                     return;
                 }
 
-                NovaEngine.Debugger.Output(level, $"[{_groupName}]: {message}");
+                NovaEngine.Debugger.Output(level, $"【{_groupName}】 {message}");
             }
 
             /// <summary>
@@ -375,12 +352,12 @@ namespace GameEngine
             /// <param name="message">日志内容</param>
             public void Output(NovaEngine.LogOutputLevelType level, string message)
             {
-                if (false == IsOutputEnabled(level))
+                if (false == IsOutputEnabled())
                 {
                     return;
                 }
 
-                NovaEngine.Debugger.Output(level, $"[{_groupName}]: {message}");
+                NovaEngine.Debugger.Output(level, $"【{_groupName}】 {message}");
             }
 
             /// <summary>
@@ -391,22 +368,21 @@ namespace GameEngine
             /// <param name="args">日志格式化参数</param>
             public void Output(NovaEngine.LogOutputLevelType level, string format, params object[] args)
             {
-                if (false == IsOutputEnabled(level))
+                if (false == IsOutputEnabled())
                 {
                     return;
                 }
 
-                NovaEngine.Debugger.Output(level, $"[{_groupName}]: {format}", args);
+                NovaEngine.Debugger.Output(level, $"【{_groupName}】 {format}", args);
             }
 
             /// <summary>
             /// 检测当前的调试分组是否启用了指定级别的日志输出
             /// </summary>
-            /// <param name="level">日志级别</param>
             /// <returns>若启用给定级别的调试输出返回true，否则返回false</returns>
-            private bool IsOutputEnabled(NovaEngine.LogOutputLevelType level)
+            private bool IsOutputEnabled()
             {
-                if (_enabled && (int) level >= _logLevel)
+                if (_enabled)
                 {
                     return true;
                 }

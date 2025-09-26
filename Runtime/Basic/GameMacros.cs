@@ -38,12 +38,6 @@ namespace GameEngine
         public static readonly bool DEBUGGING_OUTPUT_GROUP_POLICY_ENABLED = true;
 
         /// <summary>
-        /// 调试模式的输出分组许可通过级别
-        /// </summary>
-        [AssignableOnReleaseMode((int) NovaEngine.LogOutputLevelType.Warning)]
-        public static readonly int DEBUGGING_OUTPUT_GROUP_APPROVE_LEVEL = (int) NovaEngine.LogOutputLevelType.Debug;
-
-        /// <summary>
         /// 调试模式的解析窗口的启动状态标识
         /// </summary>
         [DisableOnReleaseMode]

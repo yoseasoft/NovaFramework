@@ -24,14 +24,13 @@
 /// -------------------------------------------------------------------------------
 
 using SystemType = System.Type;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Configuring
 {
     /// <summary>
     /// 通用Bean的属性配置类型的结构信息
     /// </summary>
-    public class BeanPropertyConfigureInfo : ICodeConfigureEffectivateVerification
+    public sealed class BeanPropertyConfigureInfo : ICodeConfigureEffectivateVerification
     {
         /// <summary>
         /// 节点属性的完整名称
@@ -78,18 +77,6 @@ namespace GameEngine.Loader.Configuring
                 return false;
 
             return true;
-        }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("{ ");
-            sb.AppendFormat("PropertyName = {0}, ", _propertyName);
-            sb.AppendFormat("ReferenceName = {0}, ", _referenceName);
-            sb.AppendFormat("ReferenceType = {0}, ", NovaEngine.Utility.Text.ToString(_referenceType));
-            sb.AppendFormat("ReferenceValue = {0}, ", _referenceValue);
-            sb.Append("}");
-            return sb.ToString();
         }
     }
 }

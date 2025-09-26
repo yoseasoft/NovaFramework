@@ -22,9 +22,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemStringBuilder = System.Text.StringBuilder;
-
 namespace GameEngine.Loader.Configuring
 {
     /// <summary>
@@ -39,13 +36,5 @@ namespace GameEngine.Loader.Configuring
 
         public abstract ConfigureInfoType Type { get; }
         public string Name { get { return _name; } internal set { _name = value; } }
-
-        public override string ToString()
-        {
-            SystemStringBuilder sb = new SystemStringBuilder();
-            sb.AppendFormat("Type = {0}, ", Type.ToString());
-            sb.AppendFormat("Name = {0}, ", _name);
-            return sb.ToString();
-        }
     }
 }

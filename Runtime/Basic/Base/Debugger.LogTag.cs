@@ -74,24 +74,14 @@ namespace GameEngine
             /// 日志分组启用状态标识
             /// </summary>
             private readonly bool _enabled;
-            /// <summary>
-            /// 日志分组的输出级别
-            /// </summary>
-            private readonly int _logLevel;
 
             public bool Enabled => _enabled;
-            public int LogLevel => _logLevel;
 
             public LogOutputGroupAttribute() : this(GameMacros.DEBUGGING_OUTPUT_GROUP_POLICY_ENABLED) { }
 
-            public LogOutputGroupAttribute(bool enabled) : this(enabled, GameMacros.DEBUGGING_OUTPUT_GROUP_APPROVE_LEVEL) { }
-
-            public LogOutputGroupAttribute(int level) : this(GameMacros.DEBUGGING_OUTPUT_GROUP_POLICY_ENABLED, level) { }
-
-            private LogOutputGroupAttribute(bool enabled, int level) : base()
+            private LogOutputGroupAttribute(bool enabled) : base()
             {
                 _enabled = enabled;
-                _logLevel = level;
             }
         }
 
@@ -114,7 +104,7 @@ namespace GameEngine
                         {
                             LogOutputGroupAttribute _attr = (LogOutputGroupAttribute) attr;
 
-                            AddTargetOutputGroup(System.Convert.ToInt32(fieldInfo.GetValue(null)), fieldInfo.Name, _attr.Enabled, _attr.LogLevel);
+                            AddTargetOutputGroup(System.Convert.ToInt32(fieldInfo.GetValue(null)), fieldInfo.Name, _attr.Enabled);
                         }
                     }
                 }
