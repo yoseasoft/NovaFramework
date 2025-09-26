@@ -65,20 +65,11 @@ namespace GameEngine
         /// <summary>
         /// 世界对象重载函数
         /// </summary>
-        public static void OnReload()
+        /// <param name="type">类型标识</param>
+        public static void OnReload(int type)
         {
             // 重载业务层模块
-            GameCall.Reload();
-        }
-
-        /// <summary>
-        /// 世界对象重新导入函数
-        /// </summary>
-        /// <param name="type">导入类型</param>
-        public static void OnReimport(int type)
-        {
-            // 重新导入资源
-            GameCall.Reimport(type);
+            GameCall.Reload(type);
         }
 
         /// <summary>

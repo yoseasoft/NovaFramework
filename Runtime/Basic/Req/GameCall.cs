@@ -58,7 +58,29 @@ namespace GameEngine
         /// <summary>
         /// 重载业务层模块
         /// </summary>
-        public static void Reload()
+        /// <param name="type">类型标识</param>
+        public static void Reload(int type)
+        {
+            switch (type)
+            {
+                case (int) GameEngine.EngineCommandType.Hotfix:
+                    // 重载修补程序
+                    ReloadHotfix();
+                    break;
+                case (int) GameEngine.EngineCommandType.Configure:
+                    // 重新配置数据
+                    ReloadConfigure();
+                    break;
+                default:
+                    Debugger.Throw<System.InvalidOperationException>($"Invalid reload type {type}.");
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 重载修补程序
+        /// </summary>
+        static void ReloadHotfix()
         {
             if (false == GameMacros.EDITOR_COMPILING_CODE_HOTFIX_SUPPORTED)
             {
@@ -71,20 +93,19 @@ namespace GameEngine
             GameLibrary.Restart();
 
             // 业务重载
-            ReloadGame();
+            ReloadGame((int) EngineCommandType.Hotfix);
 
             // 业务重载完成后，对其上下文进行刷新操作
             GameLibrary.ReloadContext();
         }
 
         /// <summary>
-        /// 重新导入业务层模块
+        /// 重载配置数据
         /// </summary>
-        /// <param name="type">导入类型</param>
-        public static void Reimport(int type)
+        static void ReloadConfigure()
         {
             // 业务重新导入
-            ReimportGame(type);
+            ReloadGame((int) EngineCommandType.Configure);
         }
 
         /// <summary>
@@ -113,20 +134,11 @@ namespace GameEngine
         /// <summary>
         /// 重载游戏业务层模块
         /// </summary>
-        private static void ReloadGame()
+        /// <param name="type">类型标识</param>
+        private static void ReloadGame(int type)
         {
             // 通知中间层模块重载业务
-            CallRemoteService(GameMacros.GAME_REMOTE_PROCESS_CALL_RELOAD_SERVICE_NAME);
-        }
-
-        /// <summary>
-        /// 重新导入资源
-        /// </summary>
-        /// <param name="type">导入类型</param>
-        private static void ReimportGame(int type)
-        {
-            // 通知中间层模块重新导入业务
-            CallRemoteService(GameMacros.GAME_REMOTE_PROCESS_CALL_REIMPORT_SERVICE_NAME, type);
+            CallRemoteService(GameMacros.GAME_REMOTE_PROCESS_CALL_RELOAD_SERVICE_NAME, type);
         }
 
         /// <summary>

@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,59 +25,30 @@
 namespace GameEngine
 {
     /// <summary>
-    /// 程序的世界加载器入口封装对象类，提供业务层相关模块数据的动态加载
+    /// 引擎控制访问指令参数的枚举类型定义
     /// </summary>
-    public static partial class GameImport
+    public enum EngineCommandType : byte
     {
         /// <summary>
-        /// 世界加载器的开始函数
+        /// 无效指令
         /// </summary>
-        public static void Startup()
-        {
-            CheckVersion();
-        }
+        Unknown = 0,
 
         /// <summary>
-        /// 世界加载器的关闭函数
+        /// 热修复代码
         /// </summary>
-        public static void Shutdown()
-        {
-            if (NovaEngine.AppEntry.HasManager<Updation>())
-            {
-                NovaEngine.AppEntry.RemoveManager<Updation>();
-            }
-
-            CallGameFunc(GameMacros.GAME_REMOTE_PROCESS_CALL_STOP_SERVICE_NAME);
-        }
-
+        Hotfix,
         /// <summary>
-        /// 世界加载器的重启函数
+        /// 配置
         /// </summary>
-        public static void Restart()
-        {
-        }
-
+        Configure,
         /// <summary>
-        /// 世界加载器的重载函数
+        /// 协议
         /// </summary>
-        /// <param name="type">重载类型</param>
-        public static void OnReload(int type)
-        {
-            CallGameFunc(GameMacros.GAME_REMOTE_PROCESS_CALL_RELOAD_SERVICE_NAME, type);
-        }
-
-        internal static void CheckVersion()
-        {
-            NovaEngine.AppEntry.CreateManager<Updation>();
-        }
-
-        internal static void OnVersionUpdateCompleted()
-        {
-            Debugger.Log("版本更新结束，进入业务层服务逻辑！");
-
-            NovaEngine.AppEntry.RemoveManager<Updation>();
-
-            CallGameFunc(GameMacros.GAME_REMOTE_PROCESS_CALL_RUN_SERVICE_NAME);
-        }
+        Protocol,
+        /// <summary>
+        /// 资源
+        /// </summary>
+        Asset,
     }
 }

@@ -49,18 +49,10 @@ namespace GameEngine
         /// <summary>
         /// 世界加载器的重载函数
         /// </summary>
-        public static void Reload()
+        /// <param name="type">重载类型</param>
+        public static void Reload(int type)
         {
-            OnReload();
-        }
-
-        /// <summary>
-        /// 世界加载器的重新导入函数
-        /// </summary>
-        /// <param name="type">导入类型</param>
-        public static void Reimport(int type)
-        {
-            OnReimport(type);
+            OnReload(type);
         }
 
         /// <summary>

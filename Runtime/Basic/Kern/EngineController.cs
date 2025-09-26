@@ -55,20 +55,11 @@ namespace GameEngine
         /// <summary>
         /// 重载引擎的外部调用接口函数
         /// </summary>
-        public static void Reload()
+        /// <param name="type">重载类型</param>
+        public static void Reload(int type)
         {
             // 重载引擎
-            EngineLauncher.OnReload();
-        }
-
-        /// <summary>
-        /// 重新导入资源的外部调用接口函数
-        /// </summary>
-        /// <param name="type">导入类型</param>
-        public static void Reimport(int type)
-        {
-            // 重新导入资源
-            EngineLauncher.OnReimport(type);
+            EngineLauncher.OnReload(type);
         }
 
         /// <summary>
