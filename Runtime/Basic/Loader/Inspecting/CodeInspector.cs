@@ -48,8 +48,11 @@ namespace GameEngine.Loader.Inspecting
         /// </summary>
         /// <param name="methodInfo">函数类型</param>
         /// <returns>若为无参格式则返回true，否则返回false</returns>
-        private static bool CheckFunctionFormatOfTargetWithNullParameterType(SystemMethodInfo methodInfo)
+        public static bool CheckFunctionFormatOfTargetWithNullParameterType(SystemMethodInfo methodInfo)
         {
+            // 无参类型的函数有两种格式:
+            // 1. [static] void OnFunctionCall();
+            // 2. static void OnFunctionCall(IBean obj);
             SystemParameterInfo[] paramInfos = methodInfo.GetParameters();
             if (null == paramInfos || paramInfos.Length <= 0)
             {
@@ -59,7 +62,10 @@ namespace GameEngine.Loader.Inspecting
             if (NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
             {
                 // 扩展函数存在一个参数，就是扩展对象自身
-                if (paramInfos.Length == 1) { return true; }
+                if (paramInfos.Length == 1 && typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType))
+                {
+                    return true;
+                }
             }
 
             return false;
