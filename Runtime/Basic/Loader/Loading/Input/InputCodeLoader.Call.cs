@@ -73,7 +73,7 @@ namespace GameEngine.Loader
                         callMethodInfo.OperationType = _attr.OperationType;
                         callMethodInfo.InputDataType = _attr.InputDataType;
 
-                        if (callMethodInfo.InputCode <= 0 && callMethodInfo.OperationType <= 0)
+                        if (callMethodInfo.InputCode <= 0 && callMethodInfo.OperationType <= 0 && null == callMethodInfo.InputDataType)
                         {
                             // 未进行合法标识的函数忽略它
                             continue;

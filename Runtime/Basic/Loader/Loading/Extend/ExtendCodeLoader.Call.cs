@@ -59,6 +59,8 @@ namespace GameEngine.Loader
                     continue;
                 }
 
+                SystemType extendClassType = symMethod.GetParameter(0).ParameterType;
+
                 IList<SystemAttribute> attrs = symMethod.Attributes;
                 for (int m = 0; null != attrs && m < attrs.Count; ++m)
                 {
@@ -80,14 +82,13 @@ namespace GameEngine.Loader
                             continue;
                         }
 
-                        SystemType extendClassType = symMethod.GetParameter(0).ParameterType;
-
                         Structuring.InputResponsingMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.InputResponsingMethodTypeCodeInfo();
                         methodTypeCodeInfo.TargetType = extendClassType;
                         methodTypeCodeInfo.InputCode = _attr.InputCode;
                         methodTypeCodeInfo.OperationType = _attr.OperationType;
                         methodTypeCodeInfo.InputDataType = _attr.InputDataType;
                         methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                        methodTypeCodeInfo.Fullname = symMethod.FullName;
                         methodTypeCodeInfo.Method = symMethod.MethodInfo;
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
@@ -140,13 +141,12 @@ namespace GameEngine.Loader
                             continue;
                         }
 
-                        SystemType extendClassType = symMethod.GetParameter(0).ParameterType;
-
                         Structuring.EventSubscribingMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.EventSubscribingMethodTypeCodeInfo();
                         methodTypeCodeInfo.TargetType = extendClassType;
                         methodTypeCodeInfo.EventID = _attr.EventID;
                         methodTypeCodeInfo.EventDataType = _attr.EventDataType;
                         methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                        methodTypeCodeInfo.Fullname = symMethod.FullName;
                         methodTypeCodeInfo.Method = symMethod.MethodInfo;
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
@@ -199,13 +199,12 @@ namespace GameEngine.Loader
                             continue;
                         }
 
-                        SystemType extendClassType = symMethod.GetParameter(0).ParameterType;
-
                         Structuring.MessageBindingMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.MessageBindingMethodTypeCodeInfo();
                         methodTypeCodeInfo.TargetType = extendClassType;
                         methodTypeCodeInfo.Opcode = _attr.Opcode;
                         methodTypeCodeInfo.MessageType = _attr.MessageType;
                         methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                        methodTypeCodeInfo.Fullname = symMethod.FullName;
                         methodTypeCodeInfo.Method = symMethod.MethodInfo;
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理

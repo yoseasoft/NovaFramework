@@ -71,6 +71,7 @@ namespace GameEngine.Loader
                 methodTypeCodeInfo.OperationType = _attr.OperationType;
                 methodTypeCodeInfo.InputDataType = _attr.InputDataType;
                 methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                methodTypeCodeInfo.Fullname = symMethod.FullName;
                 methodTypeCodeInfo.Method = symMethod.MethodInfo;
 
                 // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
@@ -120,6 +121,7 @@ namespace GameEngine.Loader
                 methodTypeCodeInfo.EventID = _attr.EventID;
                 methodTypeCodeInfo.EventDataType = _attr.EventDataType;
                 methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                methodTypeCodeInfo.Fullname = symMethod.FullName;
                 methodTypeCodeInfo.Method = symMethod.MethodInfo;
 
                 // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
@@ -169,6 +171,7 @@ namespace GameEngine.Loader
                 methodTypeCodeInfo.Opcode = _attr.Opcode;
                 methodTypeCodeInfo.MessageType = _attr.MessageType;
                 methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                methodTypeCodeInfo.Fullname = symMethod.FullName;
                 methodTypeCodeInfo.Method = symMethod.MethodInfo;
 
                 // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理

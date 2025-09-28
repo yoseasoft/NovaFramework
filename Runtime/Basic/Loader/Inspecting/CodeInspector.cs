@@ -50,18 +50,20 @@ namespace GameEngine.Loader.Inspecting
         /// <returns>若为无参格式则返回true，否则返回false</returns>
         public static bool CheckFunctionFormatOfTargetWithNullParameterType(SystemMethodInfo methodInfo)
         {
-            // 无参类型的函数有两种格式:
+            // 无参类型的函数有三种格式:
             // 1. [static] void OnFunctionCall();
             // 2. static void OnFunctionCall(IBean obj);
+            // 2. static void OnFunctionCall(this IBean obj);
             SystemParameterInfo[] paramInfos = methodInfo.GetParameters();
             if (null == paramInfos || paramInfos.Length <= 0)
             {
                 return true;
             }
 
-            if (NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
+            if (methodInfo.IsStatic || NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
             {
                 // 扩展函数存在一个参数，就是扩展对象自身
+                // 静态函数也允许指定一个Bean对象的参数
                 if (paramInfos.Length == 1 && typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType))
                 {
                     return true;
