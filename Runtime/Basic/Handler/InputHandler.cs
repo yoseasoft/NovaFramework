@@ -29,7 +29,7 @@
 using System.Collections.Generic;
 
 using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
+using SystemMethodInfo = System.Reflection.MethodInfo;
 
 using UnityKeyCode = UnityEngine.KeyCode;
 
@@ -59,12 +59,12 @@ namespace GameEngine
         /// <summary>
         /// 通过按键编码分发调度接口的数据结构容器
         /// </summary>
-        private IDictionary<int, IList<InputCallInfo>> _inputCodeDistributeCallInfos = null;
+        private IDictionary<int, IList<InputCallMethodInfo>> _inputCodeDistributeCallInfos = null;
 
         /// <summary>
         /// 通过输入数据分发调度接口的数据结构容器
         /// </summary>
-        private IDictionary<SystemType, IList<InputCallInfo>> _inputDataDistributeCallInfos = null;
+        private IDictionary<SystemType, IList<InputCallMethodInfo>> _inputDataDistributeCallInfos = null;
 
         /// <summary>
         /// 句柄对象内置初始化接口函数
@@ -76,8 +76,8 @@ namespace GameEngine
             _inputListenersForCode = new Dictionary<int, IList<IInputDispatch>>();
             _inputListenersForType = new Dictionary<SystemType, IList<IInputDispatch>>();
             // 初始化全局转发调度管理容器
-            _inputCodeDistributeCallInfos = new Dictionary<int, IList<InputCallInfo>>();
-            _inputDataDistributeCallInfos = new Dictionary<SystemType, IList<InputCallInfo>>();
+            _inputCodeDistributeCallInfos = new Dictionary<int, IList<InputCallMethodInfo>>();
+            _inputDataDistributeCallInfos = new Dictionary<SystemType, IList<InputCallMethodInfo>>();
 
             return true;
         }
@@ -472,13 +472,13 @@ namespace GameEngine
         /// <param name="operationType">按键操作类型</param>
         private void OnInputDistributeCallDispatched(int inputCode, int operationType)
         {
-            IList<InputCallInfo> list = null;
+            IList<InputCallMethodInfo> list = null;
             if (_inputCodeDistributeCallInfos.TryGetValue(inputCode, out list))
             {
-                IEnumerator<InputCallInfo> e_info = list.GetEnumerator();
+                IEnumerator<InputCallMethodInfo> e_info = list.GetEnumerator();
                 while (e_info.MoveNext())
                 {
-                    InputCallInfo info = e_info.Current;
+                    InputCallMethodInfo info = e_info.Current;
                     if (null == info.TargetType)
                     {
                         info.Invoke(inputCode, operationType);
@@ -508,13 +508,13 @@ namespace GameEngine
         {
             SystemType inputDataType = inputData.GetType();
 
-            IList<InputCallInfo> list = null;
+            IList<InputCallMethodInfo> list = null;
             if (_inputDataDistributeCallInfos.TryGetValue(inputDataType, out list))
             {
-                IEnumerator<InputCallInfo> e_info = list.GetEnumerator();
+                IEnumerator<InputCallMethodInfo> e_info = list.GetEnumerator();
                 while (e_info.MoveNext())
                 {
-                    InputCallInfo info = e_info.Current;
+                    InputCallMethodInfo info = e_info.Current;
                     if (null == info.TargetType)
                     {
                         info.Invoke(inputData);
@@ -541,23 +541,23 @@ namespace GameEngine
         /// </summary>
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
+        /// <param name="methodInfo">函数对象</param>
         /// <param name="inputCode">按键编码</param>
         /// <param name="operationType">操作类型</param>
-        /// <param name="callback">函数回调句柄</param>
-        private void AddInputDistributeCallInfo(string fullname, SystemType targetType, int inputCode, int operationType, SystemDelegate callback)
+        private void AddInputDistributeCallInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int inputCode, int operationType)
         {
-            InputCallInfo info = new InputCallInfo(fullname, targetType, inputCode, operationType, callback);
+            InputCallMethodInfo info = new InputCallMethodInfo(fullname, targetType, methodInfo, inputCode, operationType);
 
             Debugger.Info(LogGroupTag.Module, "新增指定的按键编码‘{%d}’及操作类型‘{%d}’对应的输入响应监听事件，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     inputCode, operationType, targetType, fullname);
             if (_inputCodeDistributeCallInfos.ContainsKey(inputCode))
             {
-                IList<InputCallInfo> list = _inputCodeDistributeCallInfos[inputCode];
+                IList<InputCallMethodInfo> list = _inputCodeDistributeCallInfos[inputCode];
                 list.Add(info);
             }
             else
             {
-                IList<InputCallInfo> list = new List<InputCallInfo>();
+                IList<InputCallMethodInfo> list = new List<InputCallMethodInfo>();
                 list.Add(info);
                 _inputCodeDistributeCallInfos.Add(inputCode, list);
             }
@@ -568,22 +568,22 @@ namespace GameEngine
         /// </summary>
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
+        /// <param name="methodInfo">函数对象</param>
         /// <param name="inputDataType">输入数据类型</param>
-        /// <param name="callback">函数回调句柄</param>
-        private void AddInputDistributeCallInfo(string fullname, SystemType targetType, SystemType inputDataType, SystemDelegate callback)
+        private void AddInputDistributeCallInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType inputDataType)
         {
-            InputCallInfo info = new InputCallInfo(fullname, targetType, inputDataType, callback);
+            InputCallMethodInfo info = new InputCallMethodInfo(fullname, targetType, methodInfo, inputDataType);
 
             Debugger.Info(LogGroupTag.Module, "新增指定的按键编码的数据类型‘{%t}’对应的输入响应监听事件，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     inputDataType, targetType, fullname);
             if (_inputDataDistributeCallInfos.ContainsKey(inputDataType))
             {
-                IList<InputCallInfo> list = _inputDataDistributeCallInfos[inputDataType];
+                IList<InputCallMethodInfo> list = _inputDataDistributeCallInfos[inputDataType];
                 list.Add(info);
             }
             else
             {
-                IList<InputCallInfo> list = new List<InputCallInfo>();
+                IList<InputCallMethodInfo> list = new List<InputCallMethodInfo>();
                 list.Add(info);
                 _inputDataDistributeCallInfos.Add(inputDataType, list);
             }
@@ -606,10 +606,10 @@ namespace GameEngine
             }
 
             bool succ = false;
-            IList<InputCallInfo> list = _inputCodeDistributeCallInfos[inputCode];
+            IList<InputCallMethodInfo> list = _inputCodeDistributeCallInfos[inputCode];
             for (int n = list.Count - 1; n >= 0; --n)
             {
-                InputCallInfo info = list[n];
+                InputCallMethodInfo info = list[n];
                 if (info.Fullname.Equals(fullname))
                 {
                     Debugger.Assert(info.TargetType == targetType && info.InputCode == inputCode, "Invalid arguments.");
@@ -648,10 +648,10 @@ namespace GameEngine
             }
 
             bool succ = false;
-            IList<InputCallInfo> list = _inputDataDistributeCallInfos[inputDataType];
+            IList<InputCallMethodInfo> list = _inputDataDistributeCallInfos[inputDataType];
             for (int n = list.Count - 1; n >= 0; --n)
             {
-                InputCallInfo info = list[n];
+                InputCallMethodInfo info = list[n];
                 if (info.Fullname.Equals(fullname))
                 {
                     Debugger.Assert(info.TargetType == targetType && info.InputDataType == inputDataType, "Invalid arguments.");
@@ -680,156 +680,6 @@ namespace GameEngine
         {
             _inputCodeDistributeCallInfos.Clear();
             _inputDataDistributeCallInfos.Clear();
-        }
-
-        #endregion
-
-        #region 全局转发类型的输入响应调度接口的数据信息结构对象声明
-
-        /// <summary>
-        /// 输入响应的数据信息类
-        /// </summary>
-        private class InputCallInfo
-        {
-            /// <summary>
-            /// 输入响应类的完整名称
-            /// </summary>
-            private string _fullname;
-            /// <summary>
-            /// 输入响应类的目标对象类型
-            /// </summary>
-            private SystemType _targetType;
-            /// <summary>
-            /// 输入响应类的编码信息
-            /// </summary>
-            private int _inputCode;
-            /// <summary>
-            /// 输入响应类的操作类型
-            /// </summary>
-            private int _operationType;
-            /// <summary>
-            /// 输入响应类的键码数据类型
-            /// </summary>
-            private SystemType _inputDataType;
-            /// <summary>
-            /// 输入响应类的回调句柄
-            /// </summary>
-            private SystemDelegate _callback;
-            /// <summary>
-            /// 输入响应回调函数的无参状态标识
-            /// </summary>
-            private bool _isNullParameterType;
-
-            public string Fullname => _fullname;
-            public SystemType TargetType => _targetType;
-            public int InputCode => _inputCode;
-            public int OperationType => _operationType;
-            public SystemType InputDataType => _inputDataType;
-            public SystemDelegate Callback => _callback;
-            public bool IsNullParameterType => _isNullParameterType;
-
-            public InputCallInfo(string fullname, SystemType targetType, int inputCode, int operationType, SystemDelegate callback)
-                : this(fullname, targetType, inputCode, operationType, null, callback)
-            {
-            }
-
-            public InputCallInfo(string fullname, SystemType targetType, SystemType inputDataType, SystemDelegate callback)
-                : this(fullname, targetType, 0, 0, inputDataType, callback)
-            {
-            }
-
-            private InputCallInfo(string fullname, SystemType targetType, int inputCode, int operationType, SystemType inputDataType, SystemDelegate callback)
-            {
-                Debugger.Assert(null != callback, "Invalid arguments.");
-
-                _fullname = fullname;
-                _targetType = targetType;
-                _inputCode = inputCode;
-                _operationType = operationType;
-                _inputDataType = inputDataType;
-                _callback = callback;
-                _isNullParameterType = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(callback.Method);
-            }
-
-            /// <summary>
-            /// 基于按键编码的输入回调转发函数
-            /// </summary>
-            /// <param name="inputCode">按键编码</param>
-            /// <param name="operationType">按键操作类型</param>
-            public void Invoke(int inputCode, int operationType)
-            {
-                if (_operationType == 0 || (_operationType & operationType) == 0)
-                {
-                    // ignore
-                    return;
-                }
-
-                if (_isNullParameterType)
-                {
-                    _callback.DynamicInvoke();
-                }
-                else
-                {
-                    _callback.DynamicInvoke(inputCode, operationType);
-                }
-            }
-
-            /// <summary>
-            /// 基于按键编码的输入回调转发函数
-            /// </summary>
-            /// <param name="bean">目标原型对象</param>
-            /// <param name="inputCode">按键编码</param>
-            /// <param name="operationType">按键操作类型</param>
-            public void Invoke(IBean bean, int inputCode, int operationType)
-            {
-                if (_operationType == 0 || (_operationType & operationType) == 0)
-                {
-                    // ignore
-                    return;
-                }
-
-                if (_isNullParameterType)
-                {
-                    _callback.DynamicInvoke(bean);
-                }
-                else
-                {
-                    _callback.DynamicInvoke(bean, inputCode, operationType);
-                }
-            }
-
-            /// <summary>
-            /// 基于数据集合类型的输入回调转发函数
-            /// </summary>
-            /// <param name="inputData">输入数据</param>
-            public void Invoke(object inputData)
-            {
-                if (_isNullParameterType)
-                {
-                    _callback.DynamicInvoke();
-                }
-                else
-                {
-                    _callback.DynamicInvoke(inputData);
-                }
-            }
-
-            /// <summary>
-            /// 基于数据集合类型的输入回调转发函数
-            /// </summary>
-            /// <param name="bean">目标原型对象</param>
-            /// <param name="inputData">输入数据</param>
-            public void Invoke(IBean bean, object inputData)
-            {
-                if (_isNullParameterType)
-                {
-                    _callback.DynamicInvoke(bean);
-                }
-                else
-                {
-                    _callback.DynamicInvoke(bean, inputData);
-                }
-            }
         }
 
         #endregion

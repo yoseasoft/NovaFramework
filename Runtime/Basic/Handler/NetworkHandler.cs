@@ -29,8 +29,8 @@ using System.Collections.Generic;
 
 using SystemEnum = System.Enum;
 using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
 using SystemAction = System.Action;
+using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
@@ -63,7 +63,7 @@ namespace GameEngine
         /// <summary>
         /// 通过协议编码分发调度接口的数据结构容器
         /// </summary>
-        private IDictionary<int, IList<MessageCallInfo>> _messageDistributeCallInfos = null;
+        private IDictionary<int, IList<MessageCallMethodInfo>> _messageDistributeCallInfos = null;
 
         /// <summary>
         /// 网络消息转发监听回调管理容器
@@ -103,7 +103,7 @@ namespace GameEngine
             // 初始化网络消息解析对象管理容器
             _messageTranslators = new Dictionary<int, IMessageTranslator>();
             // 初始化回调句柄映射字典
-            _messageDistributeCallInfos = new Dictionary<int, IList<MessageCallInfo>>();
+            _messageDistributeCallInfos = new Dictionary<int, IList<MessageCallMethodInfo>>();
             // 初始化消息转发监听回调映射字典
             _messageDispatchListeners = new Dictionary<int, IList<IMessageDispatch>>();
 
@@ -757,15 +757,15 @@ namespace GameEngine
         /// </summary>
         /// <param name="opcode">协议编码</param>
         /// <param name="message">消息内容</param>
-        private void OnMessageDistributeCallDispatched(int opcode, object message)
+        private void OnMessageDistributeCallDispatched(int opcode, ProtoBuf.Extension.IMessage message)
         {
-            IList<MessageCallInfo> list = null;
+            IList<MessageCallMethodInfo> list = null;
             if (_messageDistributeCallInfos.TryGetValue(opcode, out list))
             {
-                IEnumerator<MessageCallInfo> e_info = list.GetEnumerator();
+                IEnumerator<MessageCallMethodInfo> e_info = list.GetEnumerator();
                 while (e_info.MoveNext())
                 {
-                    MessageCallInfo info = e_info.Current;
+                    MessageCallMethodInfo info = e_info.Current;
                     if (null == info.TargetType)
                     {
                         info.Invoke(message);
@@ -792,22 +792,22 @@ namespace GameEngine
         /// </summary>
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
+        /// <param name="methodInfo">函数对象</param>
         /// <param name="opcode">协议编码</param>
-        /// <param name="callback">函数回调句柄</param>
-        private void AddMessageDistributeCallInfo(string fullname, SystemType targetType, int opcode, SystemDelegate callback)
+        private void AddMessageDistributeCallInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int opcode)
         {
-            MessageCallInfo info = new MessageCallInfo(fullname, targetType, opcode, callback);
+            MessageCallMethodInfo info = new MessageCallMethodInfo(fullname, targetType, methodInfo, opcode);
 
-            Debugger.Info(LogGroupTag.Module, "Add new message distribute call '{0}' to target opcode '{1}' of the class type '{2}'.",
-                    NovaEngine.Utility.Text.ToString(callback), opcode, NovaEngine.Utility.Text.ToString(targetType));
+            Debugger.Info(LogGroupTag.Module, "Add new message distribute call '{%t}' to target opcode '{%d}' of the class type '{%t}'.",
+                    methodInfo, opcode, targetType);
             if (_messageDistributeCallInfos.ContainsKey(opcode))
             {
-                IList<MessageCallInfo> list = _messageDistributeCallInfos[opcode];
+                IList<MessageCallMethodInfo> list = _messageDistributeCallInfos[opcode];
                 list.Add(info);
             }
             else
             {
-                IList<MessageCallInfo> list = new List<MessageCallInfo>();
+                IList<MessageCallMethodInfo> list = new List<MessageCallMethodInfo>();
                 list.Add(info);
                 _messageDistributeCallInfos.Add(opcode, list);
             }
@@ -818,13 +818,13 @@ namespace GameEngine
         /// </summary>
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
+        /// <param name="methodInfo">函数对象</param>
         /// <param name="messageType">消息对象类型</param>
-        /// <param name="callback">函数回调句柄</param>
-        private void AddMessageDistributeCallInfo(string fullname, SystemType targetType, SystemType messageType, SystemDelegate callback)
+        private void AddMessageDistributeCallInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType messageType)
         {
             int opcode = GetOpcodeByMessageType(messageType);
 
-            AddMessageDistributeCallInfo(fullname, targetType, opcode, callback);
+            AddMessageDistributeCallInfo(fullname, targetType, methodInfo, opcode);
         }
 
         /// <summary>
@@ -835,18 +835,18 @@ namespace GameEngine
         /// <param name="opcode">协议编码</param>
         private void RemoveMessageDistributeCallInfo(string fullname, SystemType targetType, int opcode)
         {
-            Debugger.Info(LogGroupTag.Module, "Remove message distribute call '{0}' with target opcode '{1}' and class type '{2}'.",
-                    fullname, opcode, NovaEngine.Utility.Text.ToString(targetType));
+            Debugger.Info(LogGroupTag.Module, "Remove message distribute call '{%s}' with target opcode '{%d}' and class type '{%t}'.",
+                    fullname, opcode, targetType);
             if (false == _messageDistributeCallInfos.ContainsKey(opcode))
             {
-                Debugger.Warn("Could not found any message distribute call '{0}' with target opcode '{1}', removed it failed.", fullname, opcode);
+                Debugger.Warn("Could not found any message distribute call '{%s}' with target opcode '{%d}', removed it failed.", fullname, opcode);
                 return;
             }
 
-            IList<MessageCallInfo> list = _messageDistributeCallInfos[opcode];
+            IList<MessageCallMethodInfo> list = _messageDistributeCallInfos[opcode];
             for (int n = 0; n < list.Count; ++n)
             {
-                MessageCallInfo info = list[n];
+                MessageCallMethodInfo info = list[n];
                 if (info.Fullname.Equals(fullname))
                 {
                     Debugger.Assert(info.TargetType == targetType && info.Opcode == opcode, "Invalid arguments.");
@@ -861,8 +861,8 @@ namespace GameEngine
                 }
             }
 
-            Debugger.Warn("Could not found any message distribute call '{0}' with target opcode '{1}' and class type '{2}', removed it failed.",
-                    fullname, opcode, NovaEngine.Utility.Text.ToString(targetType));
+            Debugger.Warn("Could not found any message distribute call '{%s}' with target opcode '{%d}' and class type '{%t}', removed it failed.",
+                    fullname, opcode, targetType);
         }
 
         /// <summary>
@@ -884,87 +884,6 @@ namespace GameEngine
         private void RemoveAllMessageDistributeCalls()
         {
             _messageDistributeCallInfos.Clear();
-        }
-
-        #endregion
-
-        #region 网络消息监听的数据信息结构对象声明
-
-        /// <summary>
-        /// 消息监听的数据信息类
-        /// </summary>
-        private class MessageCallInfo
-        {
-            /// <summary>
-            /// 消息监听类的完整名称
-            /// </summary>
-            private string _fullname;
-            /// <summary>
-            /// 消息监听类的目标对象类型
-            /// </summary>
-            private SystemType _targetType;
-            /// <summary>
-            /// 消息监听类的协议编码
-            /// </summary>
-            protected int _opcode;
-            /// <summary>
-            /// 消息监听类的回调句柄
-            /// </summary>
-            private SystemDelegate _callback;
-            /// <summary>
-            /// 消息监听回调函数的无参状态标识
-            /// </summary>
-            private bool _isNullParameterType;
-
-            public string Fullname => _fullname;
-            public SystemType TargetType => _targetType;
-            public int Opcode => _opcode;
-            public SystemDelegate Callback => _callback;
-            public bool IsNullParameterType => _isNullParameterType;
-
-            public MessageCallInfo(string fullname, SystemType targetType, int opcode, SystemDelegate callback)
-            {
-                Debugger.Assert(null != callback, "Invalid arguments.");
-
-                _fullname = fullname;
-                _targetType = targetType;
-                _opcode = opcode;
-                _callback = callback;
-                _isNullParameterType = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(callback.Method);
-            }
-
-            /// <summary>
-            /// 基于网络数据类型的消息回调转发函数
-            /// </summary>
-            /// <param name="message">消息内容</param>
-            public void Invoke(object message)
-            {
-                if (_isNullParameterType)
-                {
-                    _callback.DynamicInvoke();
-                }
-                else
-                {
-                    _callback.DynamicInvoke(message);
-                }
-            }
-
-            /// <summary>
-            /// 基于网络数据类型的消息回调转发函数
-            /// </summary>
-            /// <param name="bean">目标原型对象</param>
-            /// <param name="message">消息内容</param>
-            public void Invoke(IBean bean, object message)
-            {
-                if (_isNullParameterType)
-                {
-                    _callback.DynamicInvoke(bean);
-                }
-                else
-                {
-                    _callback.DynamicInvoke(bean, message);
-                }
-            }
         }
 
         #endregion

@@ -23,8 +23,6 @@
 /// -------------------------------------------------------------------------------
 
 using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemDelegate = System.Delegate;
 
 namespace GameEngine
 {
@@ -55,12 +53,14 @@ namespace GameEngine
             {
                 Loader.Structuring.EventCallMethodTypeCodeInfo callMethodInfo = eventCodeInfo.GetMethodType(n);
 
-                SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(callMethodInfo.Method);
-                if (null == callback)
-                {
-                    Debugger.Warn("Cannot converted from method info '{0}' to event standard call, loaded this method failed.", NovaEngine.Utility.Text.ToString(callMethodInfo.Method));
-                    continue;
-                }
+                // 2025-09-28：
+                // 函数委托调整为在控制器内部创建，外部只进行校验和参数传递
+                // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(callMethodInfo.Method);
+                // if (null == callback)
+                // {
+                //     Debugger.Warn("Cannot converted from method info '{%t}' to event standard call, loaded this method failed.", callMethodInfo.Method);
+                //     continue;
+                // }
 
                 if (callMethodInfo.EventID > 0)
                 {
@@ -69,7 +69,7 @@ namespace GameEngine
                         Instance.RemoveEventDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.EventID);
                     }
 
-                    Instance.AddEventDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.EventID, callback);
+                    Instance.AddEventDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.Method, callMethodInfo.EventID);
                 }
                 else
                 {
@@ -78,7 +78,7 @@ namespace GameEngine
                         Instance.RemoveEventDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.EventDataType);
                     }
 
-                    Instance.AddEventDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.EventDataType, callback);
+                    Instance.AddEventDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.Method, callMethodInfo.EventDataType);
                 }
             }
         }

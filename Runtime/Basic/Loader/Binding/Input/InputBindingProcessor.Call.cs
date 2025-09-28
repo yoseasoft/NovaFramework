@@ -24,8 +24,6 @@
 /// -------------------------------------------------------------------------------
 
 using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemDelegate = System.Delegate;
 
 namespace GameEngine
 {
@@ -56,12 +54,14 @@ namespace GameEngine
             {
                 Loader.Structuring.InputCallMethodTypeCodeInfo callMethodInfo = inputCodeInfo.GetMethodType(n);
 
-                SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(callMethodInfo.Method);
-                if (null == callback)
-                {
-                    Debugger.Warn("Cannot converted from method info '{0}' to input listener call, loaded this method failed.", NovaEngine.Utility.Text.ToString(callMethodInfo.Method));
-                    continue;
-                }
+                // 2025-09-28：
+                // 函数委托调整为在控制器内部创建，外部只进行校验和参数传递
+                // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(callMethodInfo.Method);
+                // if (null == callback)
+                // {
+                //     Debugger.Warn("Cannot converted from method info '{%t}' to input listener call, loaded this method failed.", callMethodInfo.Method);
+                //     continue;
+                // }
 
                 if (callMethodInfo.InputCode > 0)
                 {
@@ -70,7 +70,7 @@ namespace GameEngine
                         Instance.RemoveInputDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.InputCode, (int) callMethodInfo.OperationType);
                     }
 
-                    Instance.AddInputDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.InputCode, (int) callMethodInfo.OperationType, callback);
+                    Instance.AddInputDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.Method, callMethodInfo.InputCode, (int) callMethodInfo.OperationType);
                 }
                 else
                 {
@@ -79,7 +79,7 @@ namespace GameEngine
                         Instance.RemoveInputDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.InputDataType);
                     }
 
-                    Instance.AddInputDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.InputDataType, callback);
+                    Instance.AddInputDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.Method, callMethodInfo.InputDataType);
                 }
             }
         }

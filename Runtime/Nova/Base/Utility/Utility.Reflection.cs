@@ -343,6 +343,7 @@ namespace NovaEngine
             /// <param name="handler">委托回调函数</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若目标函数的参数类型匹配则返回true，否则返回false</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static bool IsGenericDelegateParameterTypeMatched(SystemDelegate handler, params SystemType[] parameterTypes)
             {
                 if (null == handler) return false;
@@ -356,6 +357,7 @@ namespace NovaEngine
             /// <param name="methodInfo">函数信息</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若目标函数的参数类型匹配则返回true，否则返回false</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static bool IsGenericDelegateParameterTypeMatched(SystemMethodInfo methodInfo, params SystemType[] parameterTypes)
             {
                 return IsGenericDelegateParameterAndReturnTypeMatched(methodInfo, null, parameterTypes);
@@ -368,6 +370,7 @@ namespace NovaEngine
             /// <param name="returnType">函数返回类型</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若目标函数的参数类型匹配则返回true，否则返回false</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static bool IsGenericDelegateParameterAndReturnTypeMatched(SystemDelegate handler, SystemType returnType, params SystemType[] parameterTypes)
             {
                 if (null == handler) return false;
@@ -436,6 +439,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="methodInfo">函数信息</param>
             /// <returns>返回包装后的代理函数</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static SystemDelegate CreateGenericActionDelegate(SystemMethodInfo methodInfo)
             {
                 return CreateGenericActionDelegate(null, methodInfo);
@@ -449,11 +453,13 @@ namespace NovaEngine
             /// <returns>返回包装后的代理函数</returns>
             public static SystemDelegate CreateGenericActionDelegate(object self, SystemMethodInfo methodInfo)
             {
-                if (null == self && false == methodInfo.IsStatic)
-                {
-                    Logger.Error("The target method '{0}' wasn't static function, the 'self' object must be non-null.", methodInfo.Name);
-                    return null;
-                }
+                // 2025-09-28：
+                // 允许普通的成员函数在初始构建时不传入自身实例，而在实际调用时传入
+                // if (null == self && false == methodInfo.IsStatic)
+                // {
+                //     Logger.Error("The target method '{0}' wasn't static function, the 'self' object must be non-null.", methodInfo.Name);
+                //     return null;
+                // }
 
                 SystemParameterInfo[] paramInfos = methodInfo.GetParameters();
                 if (null == paramInfos || paramInfos.Length <= 0)
@@ -496,6 +502,7 @@ namespace NovaEngine
             /// <param name="methodInfo">函数信息</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若创建委托成功并符合指定参数类型则返回新创建的函数，否则返回null</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static SystemDelegate CreateGenericActionDelegateAndCheckParameterType(SystemMethodInfo methodInfo, params SystemType[] parameterTypes)
             {
                 return CreateGenericActionDelegateAndCheckParameterType(null ,methodInfo, parameterTypes);
@@ -508,6 +515,7 @@ namespace NovaEngine
             /// <param name="methodInfo">函数信息</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若创建委托成功并符合指定参数类型则返回新创建的函数，否则返回null</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static SystemDelegate CreateGenericActionDelegateAndCheckParameterType(object self, SystemMethodInfo methodInfo, params SystemType[] parameterTypes)
             {
                 Debugger.Verification.CheckGenericDelegateParameterTypeMatched(methodInfo, parameterTypes);
@@ -523,6 +531,7 @@ namespace NovaEngine
             /// <param name="outType">返回值类型</param>
             /// <param name="paramTypes">参数类型</param>
             /// <returns>返回包装后的代理函数</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static SystemDelegate CreateGenericFuncDelegate(SystemMethodInfo methodInfo)
             {
                 return CreateGenericFuncDelegate(null, methodInfo);
@@ -538,11 +547,13 @@ namespace NovaEngine
             /// <returns>返回包装后的代理函数</returns>
             public static SystemDelegate CreateGenericFuncDelegate(object self, SystemMethodInfo methodInfo)
             {
-                if (null == self && false == methodInfo.IsStatic)
-                {
-                    Logger.Error("The target method '{0}' wasn't static function, the 'self' object must be non-null.", methodInfo.Name);
-                    return null;
-                }
+                // 2025-09-28：
+                // 允许普通的成员函数在初始构建时不传入自身实例，而在实际调用时传入
+                // if (null == self && false == methodInfo.IsStatic)
+                // {
+                //     Logger.Error("The target method '{0}' wasn't static function, the 'self' object must be non-null.", methodInfo.Name);
+                //     return null;
+                // }
 
                 SystemType returnType = methodInfo.ReturnType;
                 if (null == returnType)
@@ -596,6 +607,7 @@ namespace NovaEngine
             /// <param name="methodInfo">函数信息</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若创建委托成功并符合指定参数类型则返回新创建的函数，否则返回null</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static SystemDelegate CreateGenericFuncDelegateAndCheckParameterAndReturnType(SystemMethodInfo methodInfo, SystemType returnType, params SystemType[] parameterTypes)
             {
                 return CreateGenericFuncDelegateAndCheckParameterAndReturnType(null, methodInfo, returnType, parameterTypes);
@@ -608,6 +620,7 @@ namespace NovaEngine
             /// <param name="methodInfo">函数信息</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若创建委托成功并符合指定参数类型则返回新创建的函数，否则返回null</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static SystemDelegate CreateGenericFuncDelegateAndCheckParameterAndReturnType(object self, SystemMethodInfo methodInfo, SystemType returnType, params SystemType[] parameterTypes)
             {
                 Debugger.Verification.CheckGenericDelegateParameterAndReturnTypeMatched(methodInfo, returnType, parameterTypes);
@@ -621,22 +634,23 @@ namespace NovaEngine
             /// </summary>
             /// <param name="paramCount">参数数量</param>
             /// <returns>返回Action泛型类型</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             private static SystemType CreateGenericActionType(int paramCount)
             {
-                switch (paramCount)
+                return paramCount switch
                 {
-                    case 0: return typeof(System.Action);
-                    case 1: return typeof(System.Action<>);
-                    case 2: return typeof(System.Action<,>);
-                    case 3: return typeof(System.Action<,,>);
-                    case 4: return typeof(System.Action<,,,>);
-                    case 5: return typeof(System.Action<,,,,>);
-                    case 6: return typeof(System.Action<,,,,,>);
-                    case 7: return typeof(System.Action<,,,,,,>);
-                    case 8: return typeof(System.Action<,,,,,,,>);
-                    case 9: return typeof(System.Action<,,,,,,,,>);
-                    default: return null;
-                }
+                    0 => typeof(System.Action),
+                    1 => typeof(System.Action<>),
+                    2 => typeof(System.Action<,>),
+                    3 => typeof(System.Action<,,>),
+                    4 => typeof(System.Action<,,,>),
+                    5 => typeof(System.Action<,,,,>),
+                    6 => typeof(System.Action<,,,,,>),
+                    7 => typeof(System.Action<,,,,,,>),
+                    8 => typeof(System.Action<,,,,,,,>),
+                    9 => typeof(System.Action<,,,,,,,,>),
+                    _ => null,
+                };
             }
 
             /// <summary>
@@ -644,22 +658,23 @@ namespace NovaEngine
             /// </summary>
             /// <param name="paramCount">参数数量</param>
             /// <returns>返回Func泛型类型</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             private static SystemType CreateGenericFuncType(int paramCount)
             {
-                switch (paramCount)
+                return paramCount switch
                 {
-                    case 0: return typeof(System.Func<>);
-                    case 1: return typeof(System.Func<,>);
-                    case 2: return typeof(System.Func<,,>);
-                    case 3: return typeof(System.Func<,,,>);
-                    case 4: return typeof(System.Func<,,,,>);
-                    case 5: return typeof(System.Func<,,,,,>);
-                    case 6: return typeof(System.Func<,,,,,,>);
-                    case 7: return typeof(System.Func<,,,,,,,>);
-                    case 8: return typeof(System.Func<,,,,,,,,>);
-                    case 9: return typeof(System.Func<,,,,,,,,,>);
-                    default: return null;
-                }
+                    0 => typeof(System.Func<>),
+                    1 => typeof(System.Func<,>),
+                    2 => typeof(System.Func<,,>),
+                    3 => typeof(System.Func<,,,>),
+                    4 => typeof(System.Func<,,,,>),
+                    5 => typeof(System.Func<,,,,,>),
+                    6 => typeof(System.Func<,,,,,,>),
+                    7 => typeof(System.Func<,,,,,,,>),
+                    8 => typeof(System.Func<,,,,,,,,>),
+                    9 => typeof(System.Func<,,,,,,,,,>),
+                    _ => null,
+                };
             }
 
             /// <summary>
@@ -669,6 +684,7 @@ namespace NovaEngine
             /// <param name="methodInfo">函数信息</param>
             /// <param name="paramType">参数对象类型</param>
             /// <returns>返回包装后的代理函数</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static System.Action<T> CreateGenericAction<T>(SystemMethodInfo methodInfo, SystemType paramType)
             {
                 return CreateGenericAction<T>(null, methodInfo, paramType);
@@ -732,6 +748,7 @@ namespace NovaEngine
             /// <param name="methodInfo">函数信息</param>
             /// <param name="parameterType">参数类型</param>
             /// <returns>若创建委托成功并符合指定参数类型则返回新创建的函数，否则返回null</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static System.Action<T> CreateGenericActionAndCheckParameterType<T>(SystemMethodInfo methodInfo, SystemType parameterType)
             {
                 return CreateGenericActionAndCheckParameterType<T>(null, methodInfo, parameterType);
@@ -744,6 +761,7 @@ namespace NovaEngine
             /// <param name="methodInfo">函数信息</param>
             /// <param name="parameterType">参数类型</param>
             /// <returns>若创建委托成功并符合指定参数类型则返回新创建的函数，否则返回null</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static System.Action<T> CreateGenericActionAndCheckParameterType<T>(object self, SystemMethodInfo methodInfo, SystemType parameterType)
             {
                 Debugger.Verification.CheckGenericDelegateParameterTypeMatched(methodInfo, parameterType);
@@ -760,6 +778,7 @@ namespace NovaEngine
             /// <param name="methodInfo">函数信息</param>
             /// <param name="paramTypes">参数类型列表</param>
             /// <returns>返回包装后的代理函数，若创建失败返回null</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static System.Action<T1, T2> CreateGenericAction<T1, T2>(SystemMethodInfo methodInfo, params SystemType[] paramTypes)
             {
                 return CreateGenericAction<T1, T2>(null, methodInfo, paramTypes);
@@ -774,6 +793,7 @@ namespace NovaEngine
             /// <param name="methodInfo">函数信息</param>
             /// <param name="paramTypes">参数类型列表</param>
             /// <returns>返回包装后的代理函数，若创建失败返回null</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static System.Action<T1, T2> CreateGenericAction<T1, T2>(object self, SystemMethodInfo methodInfo, params SystemType[] paramTypes)
             {
                 return (System.Action<T1, T2>) CreateGenericAction(self, methodInfo, new SystemType[] { typeof(T1), typeof(T2) }, paramTypes);
@@ -785,6 +805,7 @@ namespace NovaEngine
             /// <param name="methodInfo">函数信息</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若创建委托成功并符合指定参数类型则返回新创建的函数，否则返回null</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static System.Action<T1, T2> CreateGenericActionAndCheckParameterType<T1, T2>(SystemMethodInfo methodInfo, params SystemType[] parameterTypes)
             {
                 return CreateGenericActionAndCheckParameterType<T1, T2>(null, methodInfo, parameterTypes);
@@ -797,6 +818,7 @@ namespace NovaEngine
             /// <param name="methodInfo">函数信息</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若创建委托成功并符合指定参数类型则返回新创建的函数，否则返回null</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static System.Action<T1, T2> CreateGenericActionAndCheckParameterType<T1, T2>(object self, SystemMethodInfo methodInfo, params SystemType[] parameterTypes)
             {
                 Debugger.Verification.CheckGenericDelegateParameterTypeMatched(methodInfo, parameterTypes);

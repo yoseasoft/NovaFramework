@@ -23,8 +23,6 @@
 /// -------------------------------------------------------------------------------
 
 using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemDelegate = System.Delegate;
 
 namespace GameEngine
 {
@@ -96,12 +94,14 @@ namespace GameEngine
             {
                 Loader.Structuring.MessageCallMethodTypeCodeInfo callMethodInfo = messageCodeInfo.GetMethodType(n);
 
-                SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(callMethodInfo.Method);
-                if (null == callback)
-                {
-                    Debugger.Warn("Cannot converted from method info '{0}' to network message call, loaded this method failed.", NovaEngine.Utility.Text.ToString(callMethodInfo.Method));
-                    continue;
-                }
+                // 2025-09-28：
+                // 函数委托调整为在控制器内部创建，外部只进行校验和参数传递
+                // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(callMethodInfo.Method);
+                // if (null == callback)
+                // {
+                //     Debugger.Warn("Cannot converted from method info '{%t}' to network message call, loaded this method failed.", callMethodInfo.Method);
+                //     continue;
+                // }
 
                 if (callMethodInfo.Opcode > 0)
                 {
@@ -110,7 +110,7 @@ namespace GameEngine
                         Instance.RemoveMessageDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.Opcode);
                     }
 
-                    Instance.AddMessageDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.Opcode, callback);
+                    Instance.AddMessageDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.Method, callMethodInfo.Opcode);
                 }
                 else
                 {
@@ -119,7 +119,7 @@ namespace GameEngine
                         Instance.RemoveMessageDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.MessageType);
                     }
 
-                    Instance.AddMessageDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.MessageType, callback);
+                    Instance.AddMessageDistributeCallInfo(callMethodInfo.Fullname, callMethodInfo.TargetType, callMethodInfo.Method, callMethodInfo.MessageType);
                 }
             }
         }
