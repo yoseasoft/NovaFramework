@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +24,9 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Reflection;
 
 using SystemEnum = System.Enum;
 using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemDelegate = System.Delegate;
 using SystemMethodInfo = System.Reflection.MethodInfo;
 using SystemBindingFlags = System.Reflection.BindingFlags;
 
@@ -174,6 +172,17 @@ namespace GameEngine
             foreach (KeyValuePair<int, IController> pair in _controllerObjects)
             {
                 pair.Value.LateUpdate();
+            }
+        }
+
+        /// <summary>
+        /// 控制器管理类重载通知接口函数
+        /// </summary>
+        public static void Reload()
+        {
+            foreach (KeyValuePair<int, IController> pair in _controllerObjects)
+            {
+                pair.Value.Reload();
             }
         }
 

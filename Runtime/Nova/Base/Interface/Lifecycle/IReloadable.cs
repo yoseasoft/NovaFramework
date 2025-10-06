@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
-/// GameEngine Framework
+/// NovaEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,59 +23,16 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
-using SystemType = System.Type;
-
-namespace GameEngine
+namespace NovaEngine
 {
     /// <summary>
-    /// 状态管理对象类，用于对场景上下文中的所有引用对象的状态进行集中管理及分发
+    /// 对象重载操作访问接口定义，预定义对象类的重载函数的对外访问接口
     /// </summary>
-    internal sealed partial class HfsmController : BaseController<HfsmController>
+    public interface IReloadable
     {
         /// <summary>
-        /// 状态管理初始化通知接口函数
+        /// 对象重载调度函数接口
         /// </summary>
-        protected override void OnInitialize()
-        {
-            // 初始化监听列表
-        }
-
-        /// <summary>
-        /// 状态管理清理通知接口函数
-        /// </summary>
-        protected override void OnCleanup()
-        {
-            // 清理监听列表
-        }
-
-        /// <summary>
-        /// 状态管理刷新通知接口函数
-        /// </summary>
-        protected override sealed void OnUpdate()
-        {
-        }
-
-        /// <summary>
-        /// 状态管理后置刷新通知接口函数
-        /// </summary>
-        protected override sealed void OnLateUpdate()
-        {
-        }
-
-        /// <summary>
-        /// 状态管理重载调度函数接口
-        /// </summary>
-        protected override sealed void OnReload()
-        {
-        }
-
-        /// <summary>
-        /// 状态管理倾泻调度函数接口
-        /// </summary>
-        protected override void OnDump()
-        {
-        }
+        void Reload();
     }
 }

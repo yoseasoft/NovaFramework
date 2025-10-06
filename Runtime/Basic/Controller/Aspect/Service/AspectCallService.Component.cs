@@ -3,7 +3,7 @@
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -110,13 +110,13 @@ namespace GameEngine
                 {
                     // if (reload) { component.RemoveInputResponse(methodTypeCodeInfo.InputCode, (int) methodTypeCodeInfo.OperationType); }
 
-                    component.AddInputResponse(methodTypeCodeInfo.InputCode, (int) methodTypeCodeInfo.OperationType, methodTypeCodeInfo.Method, true);
+                    component.AddInputResponse(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.InputCode, (int) methodTypeCodeInfo.OperationType, true);
                 }
                 else
                 {
                     // if (reload) { component.RemoveInputResponse(methodTypeCodeInfo.InputDataType); }
 
-                    component.AddInputResponse(methodTypeCodeInfo.InputDataType, methodTypeCodeInfo.Method, true);
+                    component.AddInputResponse(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.InputDataType, true);
                 }
             }
 
@@ -141,13 +141,13 @@ namespace GameEngine
                 {
                     // if (reload) { component.Unsubscribe(methodTypeCodeInfo.EventID); }
 
-                    component.Subscribe(methodTypeCodeInfo.EventID, methodTypeCodeInfo.Method, true);
+                    component.Subscribe(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.EventID, true);
                 }
                 else
                 {
                     // if (reload) { component.Unsubscribe(methodTypeCodeInfo.EventDataType); }
 
-                    component.Subscribe(methodTypeCodeInfo.EventDataType, methodTypeCodeInfo.Method, true);
+                    component.Subscribe(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.EventDataType, true);
                 }
             }
 
@@ -172,13 +172,13 @@ namespace GameEngine
                 {
                     // if (reload) { component.RemoveMessageListener(methodTypeCodeInfo.Opcode); }
 
-                    component.AddMessageListener(methodTypeCodeInfo.Opcode, methodTypeCodeInfo.Method, true);
+                    component.AddMessageListener(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.Opcode, true);
                 }
                 else
                 {
                     // if (reload) { component.RemoveMessageListener(methodTypeCodeInfo.MessageType); }
 
-                    component.AddMessageListener(methodTypeCodeInfo.MessageType, methodTypeCodeInfo.Method, true);
+                    component.AddMessageListener(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.MessageType, true);
                 }
             }
         }

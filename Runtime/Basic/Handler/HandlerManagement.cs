@@ -188,6 +188,20 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 句柄管理器重载操作函数
+        /// </summary>
+        public static void Reload()
+        {
+            // 遍历执行重载函数
+            // foreach (KeyValuePair<int, IHandler> pair in _handlerRegisterObjects.Reverse())
+            IEnumerable<IHandler> enumerable = NovaEngine.Utility.Collection.Reverse<IHandler>(_handlerSortingList);
+            foreach (IHandler handler in enumerable)
+            {
+                handler.Reload();
+            }
+        }
+
+        /// <summary>
         /// 句柄管理器刷新操作函数
         /// </summary>
         public static void Update()

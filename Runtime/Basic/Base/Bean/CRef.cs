@@ -3,7 +3,7 @@
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -256,7 +256,7 @@ namespace GameEngine
         /// <param name="inputCode">输入编码</param>
         /// <param name="operationType">输入操作类型</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        public override sealed bool AddInputResponse(int inputCode, int operationType)
+        protected internal override sealed bool AddInputResponse(int inputCode, int operationType)
         {
             if (_inputCodes.Contains(inputCode))
             {
@@ -280,7 +280,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="inputType">输入类型</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        public override sealed bool AddInputResponse(SystemType inputType)
+        protected internal override sealed bool AddInputResponse(SystemType inputType)
         {
             if (_inputTypes.Contains(inputType))
             {
@@ -304,7 +304,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="inputCode">输入编码</param>
         /// <param name="operationType">输入操作类型</param>
-        public override sealed void RemoveInputResponse(int inputCode, int operationType)
+        protected internal override sealed void RemoveInputResponse(int inputCode, int operationType)
         {
             if (false == _inputCodes.Contains(inputCode))
             {
@@ -322,7 +322,7 @@ namespace GameEngine
         /// 取消当前引用对象对指定输入的响应
         /// </summary>
         /// <param name="inputType">输入类型</param>
-        public override sealed void RemoveInputResponse(SystemType inputType)
+        protected internal override sealed void RemoveInputResponse(SystemType inputType)
         {
             if (false == _inputTypes.Contains(inputType))
             {
@@ -549,7 +549,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="opcode">协议操作码</param>
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
-        public override sealed bool AddMessageListener(int opcode)
+        protected internal override sealed bool AddMessageListener(int opcode)
         {
             if (_messageTypes.Contains(opcode))
             {

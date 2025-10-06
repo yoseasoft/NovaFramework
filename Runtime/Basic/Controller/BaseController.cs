@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -105,6 +106,17 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 控制器对象重载调度函数接口
+        /// </summary>
+        public void Reload()
+        {
+            OnReload();
+
+            // 子模块重载回调
+            OnSubmoduleReloadCallback();
+        }
+
+        /// <summary>
         /// 控制器对象倾泻调度函数接口
         /// </summary>
         public void Dump()
@@ -126,6 +138,11 @@ namespace GameEngine
         protected abstract void OnLateUpdate();
 
         /// <summary>
+        /// 控制器对象重载回调函数
+        /// </summary>
+        protected abstract void OnReload();
+
+        /// <summary>
         /// 控制器对象倾泻回调函数
         /// </summary>
         protected abstract void OnDump();
@@ -133,6 +150,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器对象子模块初始化回调处理接口函数
         /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         private void OnSubmoduleInitCallback()
         {
             OnSubmoduleActionCallbackOfTargetAttribute(typeof(OnControllerSubmoduleInitCallbackAttribute));
@@ -141,6 +159,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器对象子模块清理回调处理接口函数
         /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         private void OnSubmoduleCleanupCallback()
         {
             OnSubmoduleActionCallbackOfTargetAttribute(typeof(OnControllerSubmoduleCleanupCallbackAttribute));
@@ -149,6 +168,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器对象子模块刷新回调处理接口函数
         /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         private void OnSubmoduleUpdateCallback()
         {
             OnSubmoduleActionCallbackOfTargetAttribute(typeof(OnControllerSubmoduleUpdateCallbackAttribute));
@@ -157,14 +177,25 @@ namespace GameEngine
         /// <summary>
         /// 控制器对象子模块后置刷新回调处理接口函数
         /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         private void OnSubmoduleLateUpdateCallback()
         {
             OnSubmoduleActionCallbackOfTargetAttribute(typeof(OnControllerSubmoduleLateUpdateCallbackAttribute));
         }
 
         /// <summary>
+        /// 控制器对象子模块重载回调处理接口函数
+        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        private void OnSubmoduleReloadCallback()
+        {
+            OnSubmoduleActionCallbackOfTargetAttribute(typeof(OnControllerSubmoduleReloadCallbackAttribute));
+        }
+
+        /// <summary>
         /// 控制器对象子模块倾泻回调处理接口函数
         /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         private void OnSubmoduleDumpCallback()
         {
             OnSubmoduleActionCallbackOfTargetAttribute(typeof(OnControllerSubmoduleDumpCallbackAttribute));
@@ -174,6 +205,7 @@ namespace GameEngine
         /// 控制器对象子模块指定类型的回调函数触发处理接口
         /// </summary>
         /// <param name="attrType">属性类型</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         private void OnSubmoduleActionCallbackOfTargetAttribute(SystemType attrType)
         {
             SystemDelegate callback;

@@ -90,6 +90,8 @@ namespace GameEngine
         private static void UnloadAllCallBindCodeTypes()
         {
             Instance.RemoveAllEventDistributeCalls();
+
+            Instance.RemoveAllEventSubscribeBindingCalls();
         }
     }
 }

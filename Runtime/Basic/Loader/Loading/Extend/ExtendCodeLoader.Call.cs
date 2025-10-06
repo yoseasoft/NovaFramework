@@ -59,7 +59,7 @@ namespace GameEngine.Loader
                     continue;
                 }
 
-                SystemType extendClassType = symMethod.GetParameter(0).ParameterType;
+                SystemType extendClassType = symMethod.ExtensionParameterType;
 
                 IList<SystemAttribute> attrs = symMethod.Attributes;
                 for (int m = 0; null != attrs && m < attrs.Count; ++m)

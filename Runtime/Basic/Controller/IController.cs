@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +29,7 @@ namespace GameEngine
     /// 针对控制器流程服务进行管理接口封装的对象类的预定义接口<br/>
     /// 所有实现了该接口的子类，均由<see cref="GameEngine.ControllerManagement"/>实例化，并进行统一调度管理
     /// </summary>
-    public interface IController : NovaEngine.IUpdatable, NovaEngine.IDumpable
+    public interface IController : NovaEngine.IUpdatable, NovaEngine.IReloadable, NovaEngine.IDumpable
     {
     }
 }

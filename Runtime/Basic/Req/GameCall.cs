@@ -3,7 +3,7 @@
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -88,6 +88,9 @@ namespace GameEngine
                 Debugger.Error("Not supported compiling code hotfix with current running mode, restarted game context failed.");
                 return;
             }
+
+            ControllerManagement.Reload();
+            HandlerManagement.Reload();
 
             // 先重启系统库在进行业务重载
             GameLibrary.Restart();

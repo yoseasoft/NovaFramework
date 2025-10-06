@@ -62,6 +62,13 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 原型管理对象重载调度函数接口
+        /// </summary>
+        protected override sealed void OnReload()
+        {
+        }
+
+        /// <summary>
         /// 原型管理对象倾泻调度函数接口
         /// </summary>
         protected override void OnDump()

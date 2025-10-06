@@ -65,6 +65,15 @@ namespace GameEngine
     }
 
     /// <summary>
+    /// 控制器类的子模块重载回调句柄的声明属性类型定义
+    /// </summary>
+    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnControllerSubmoduleReloadCallbackAttribute : SystemAttribute
+    {
+        public OnControllerSubmoduleReloadCallbackAttribute() : base() { }
+    }
+
+    /// <summary>
     /// 控制器类的子模块倾泻回调句柄的声明属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]

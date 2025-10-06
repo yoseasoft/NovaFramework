@@ -36,17 +36,17 @@ namespace GameEngine
         /// <summary>
         /// 针对事件标识进行分发的监听对象管理列表容器
         /// </summary>
-        private IDictionary<int, IList<IEventDispatch>> _eventListenersForId = null;
+        private IDictionary<int, IList<IEventDispatch>> _eventListenersForId;
 
         /// <summary>
         /// 针对事件类型进行分发的监听对象管理列表容器
         /// </summary>
-        private IDictionary<SystemType, IList<IEventDispatch>> _eventListenersForType = null;
+        private IDictionary<SystemType, IList<IEventDispatch>> _eventListenersForType;
 
         /// <summary>
         /// 事件分发数据的缓冲管理队列
         /// </summary>
-        private Queue<EventData> _eventBuffers = null;
+        private Queue<EventData> _eventBuffers;
 
         /// <summary>
         /// 事件分发对象初始化通知接口函数
@@ -99,6 +99,13 @@ namespace GameEngine
         /// 事件管理对象后置刷新通知接口函数
         /// </summary>
         protected override sealed void OnLateUpdate()
+        {
+        }
+
+        /// <summary>
+        /// 事件管理对象重载调度函数接口
+        /// </summary>
+        protected override sealed void OnReload()
         {
         }
 

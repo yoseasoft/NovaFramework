@@ -63,6 +63,15 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 句柄对象类的子模块清理回调句柄的声明属性类型定义
+        /// </summary>
+        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        protected sealed class OnSubmoduleReloadCallbackAttribute : SystemAttribute
+        {
+            public OnSubmoduleReloadCallbackAttribute() : base() { }
+        }
+
+        /// <summary>
         /// 句柄对象的类型标识
         /// </summary>
         private int _handlerType = 0;
@@ -206,6 +215,17 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 句柄对象重载接口函数
+        /// </summary>
+        public void Reload()
+        {
+            // 子模块重载
+            OnSubmoduleReloadCallback();
+
+            OnReload();
+        }
+
+        /// <summary>
         /// 句柄对象刷新接口
         /// </summary>
         public void Update()
@@ -241,6 +261,11 @@ namespace GameEngine
         protected abstract void OnCleanup();
 
         /// <summary>
+        /// 句柄对象内置重载接口函数
+        /// </summary>
+        protected abstract void OnReload();
+
+        /// <summary>
         /// 句柄对象内置刷新接口
         /// </summary>
         protected abstract void OnUpdate();
@@ -272,6 +297,14 @@ namespace GameEngine
         private void OnSubmoduleCleanupCallback()
         {
             OnSubmoduleActionCallbackOfTargetAttribute(typeof(OnSubmoduleCleanupCallbackAttribute));
+        }
+
+        /// <summary>
+        /// 句柄对象子模块重载回调处理接口函数
+        /// </summary>
+        private void OnSubmoduleReloadCallback()
+        {
+            OnSubmoduleActionCallbackOfTargetAttribute(typeof(OnSubmoduleReloadCallbackAttribute));
         }
 
         /// <summary>

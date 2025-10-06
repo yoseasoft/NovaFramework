@@ -52,6 +52,11 @@ namespace GameEngine
         void Cleanup();
 
         /// <summary>
+        /// 句柄对象重载接口函数
+        /// </summary>
+        void Reload();
+
+        /// <summary>
         /// 句柄对象刷新接口
         /// </summary>
         void Update();

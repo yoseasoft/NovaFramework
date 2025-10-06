@@ -112,6 +112,14 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 句柄对象内置重载接口函数
+        /// </summary>
+        protected override void OnReload()
+        {
+            base.OnReload();
+        }
+
+        /// <summary>
         /// 句柄对象内置刷新接口
         /// </summary>
         protected override void OnUpdate()

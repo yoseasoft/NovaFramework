@@ -3,7 +3,7 @@
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -108,15 +108,15 @@ namespace GameEngine
 
                 if (methodTypeCodeInfo.InputCode > 0)
                 {
-                    // if (reload) { obj.RemoveInputResponse(methodTypeCodeInfo.InputCode, (int) methodTypeCodeInfo.OperationType, methodTypeCodeInfo.Method); }
+                    // if (reload) { obj.RemoveInputResponse(methodTypeCodeInfo.Method, methodTypeCodeInfo.InputCode, (int) methodTypeCodeInfo.OperationType); }
 
-                    obj.AddInputResponse(methodTypeCodeInfo.InputCode, (int) methodTypeCodeInfo.OperationType, methodTypeCodeInfo.Method, true);
+                    obj.AddInputResponse(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.InputCode, (int) methodTypeCodeInfo.OperationType, true);
                 }
                 else
                 {
-                    // if (reload) { obj.RemoveInputResponse(methodTypeCodeInfo.InputDataType, methodTypeCodeInfo.Method); }
+                    // if (reload) { obj.RemoveInputResponse(methodTypeCodeInfo.Method, methodTypeCodeInfo.InputDataType); }
 
-                    obj.AddInputResponse(methodTypeCodeInfo.InputDataType, methodTypeCodeInfo.Method, true);
+                    obj.AddInputResponse(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.InputDataType, true);
                 }
             }
 
@@ -139,15 +139,15 @@ namespace GameEngine
 
                 if (methodTypeCodeInfo.EventID > 0)
                 {
-                    // if (reload) { obj.Unsubscribe(methodTypeCodeInfo.EventID, methodTypeCodeInfo.Method); }
+                    // if (reload) { obj.Unsubscribe(methodTypeCodeInfo.Method, methodTypeCodeInfo.EventID); }
 
-                    obj.Subscribe(methodTypeCodeInfo.EventID, methodTypeCodeInfo.Method, true);
+                    obj.Subscribe(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.EventID, true);
                 }
                 else
                 {
-                    // if (reload) { obj.Unsubscribe(methodTypeCodeInfo.EventDataType, methodTypeCodeInfo.Method); }
+                    // if (reload) { obj.Unsubscribe(methodTypeCodeInfo.Method, methodTypeCodeInfo.EventDataType); }
 
-                    obj.Subscribe(methodTypeCodeInfo.EventDataType, methodTypeCodeInfo.Method, true);
+                    obj.Subscribe(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.EventDataType, true);
                 }
             }
 
@@ -170,15 +170,15 @@ namespace GameEngine
 
                 if (methodTypeCodeInfo.Opcode > 0)
                 {
-                    // if (reload) { obj.RemoveMessageListener(methodTypeCodeInfo.Opcode, methodTypeCodeInfo.Method); }
+                    // if (reload) { obj.RemoveMessageListener(methodTypeCodeInfo.Method, methodTypeCodeInfo.Opcode); }
 
-                    obj.AddMessageListener(methodTypeCodeInfo.Opcode, methodTypeCodeInfo.Method, true);
+                    obj.AddMessageListener(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.Opcode, true);
                 }
                 else
                 {
-                    // if (reload) { obj.RemoveMessageListener(methodTypeCodeInfo.MessageType, methodTypeCodeInfo.Method); }
+                    // if (reload) { obj.RemoveMessageListener(methodTypeCodeInfo.Method, methodTypeCodeInfo.MessageType); }
 
-                    obj.AddMessageListener(methodTypeCodeInfo.MessageType, methodTypeCodeInfo.Method, true);
+                    obj.AddMessageListener(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.MessageType, true);
                 }
             }
         }
