@@ -38,6 +38,7 @@ namespace GameEngine
         /// <summary>
         /// 基础对象的转发回调初始化函数接口
         /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         private void OnDispatchCallInitialize()
         {
             OnInputResponseCallInitialize();
@@ -48,6 +49,7 @@ namespace GameEngine
         /// <summary>
         /// 基础对象的转发回调清理函数接口
         /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         private void OnDispatchCallCleanup()
         {
             OnInputResponseCallCleanup();
