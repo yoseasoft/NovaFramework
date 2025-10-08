@@ -5,6 +5,7 @@
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +26,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using UnityMonoBehaviour = UnityEngine.MonoBehaviour;
-
 namespace NovaEngine
 {
     /// <summary>
@@ -46,22 +45,22 @@ namespace NovaEngine
     ///     -> OnDestroy
     ///     -> OnApplicationQuit
     /// </summary>
-    public partial class Engine : IUpdatable
+    public sealed /*partial*/ class Engine : IUpdatable
     {
         /// <summary>
         /// 核心引擎对象静态实例
         /// </summary>
-        protected static Engine _instance;
+        private static Engine _instance;
 
         /// <summary>
         /// 表现层管理对象实例
         /// </summary>
-        protected Facade _facade = null;
+        private Facade _facade = null;
 
         /// <summary>
         /// 记录当前引擎对象实例是否已经启动的状态标识
         /// </summary>
-        protected bool _isOnStartup = false;
+        private bool _isOnStartup = false;
 
         /// <summary>
         /// 引擎对象实例所依赖的MONO组件对象
@@ -87,7 +86,7 @@ namespace NovaEngine
         /// <summary>
         /// 引擎对象构造函数
         /// </summary>
-        protected Engine()
+        private Engine()
         {
             // MONO组件初始化
             // _monoBehaviour = monoBehaviour;
@@ -105,7 +104,7 @@ namespace NovaEngine
         /// 对象初始化回调接口，在实例构建成功时调用，子类中可以不处理该接口
         /// </summary>
         /// <returns>默认返回true，若返回值为false，则实例初始化失败</returns>
-        protected virtual bool Initialize()
+        private bool Initialize()
         {
             // 该初始化接口仅可调用一次，若需再次初始化该接口，需将之前的实例销毁掉
             Logger.Assert(null == _instance);
@@ -124,7 +123,7 @@ namespace NovaEngine
         /// <summary>
         /// 对象清理回调接口，在实例销毁之前调用，子类中可以不处理该接口
         /// </summary>
-        protected virtual void Cleanup()
+        private void Cleanup()
         {
             if (_isOnStartup)
             {
@@ -177,7 +176,7 @@ namespace NovaEngine
             }
         }
 
-        public virtual void Startup()
+        public void Startup()
         {
             // 程序正式启动
             Application.Instance.Startup();
@@ -190,7 +189,7 @@ namespace NovaEngine
             _isOnStartup = true;
         }
 
-        public virtual void Shutdown()
+        public void Shutdown()
         {
             // 引擎尚未启动
             if (false == _isOnStartup)
@@ -207,11 +206,24 @@ namespace NovaEngine
             Application.Instance.Shutdown();
         }
 
+        // FixedExecute is often called more frequently than Execute
+        // public void FixedExecute() { }
+
+        // Execute is called once per frame
+        public void Execute()
+        {
+        }
+
+        // LateExecute is called once per frame, after Execute has finished
+        public void LateExecute()
+        {
+        }
+
         // FixedUpdate is often called more frequently than Update
-        // public virtual void FixedUpdate() { }
+        // public void FixedUpdate() { }
 
         // Update is called once per frame
-        public virtual void Update()
+        public void Update()
         {
             // 刷新时间戳
             Timestamp.RefreshTimeOnUpdate();
@@ -220,7 +232,7 @@ namespace NovaEngine
         }
 
         // LateUpdate is called once per frame, after Update has finished
-        public virtual void LateUpdate()
+        public void LateUpdate()
         {
             _facade.LateUpdate();
         }

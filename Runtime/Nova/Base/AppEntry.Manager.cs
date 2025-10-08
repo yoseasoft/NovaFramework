@@ -2,6 +2,7 @@
 /// NovaEngine Framework
 ///
 /// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +26,6 @@
 using System.Collections.Generic;
 
 using SystemType = System.Type;
-using SystemStringComparison = System.StringComparison;
 
 namespace NovaEngine
 {
@@ -40,6 +40,10 @@ namespace NovaEngine
         private static readonly CacheLinkedList<IManager> _frameworkManagers = new CacheLinkedList<IManager>();
 
         /// <summary>
+        /// 管理器对象的可执行列表容器
+        /// </summary>
+        private static readonly CacheLinkedList<IExecutable> _executedManagers = new CacheLinkedList<IExecutable>();
+        /// <summary>
         /// 管理器对象的可更新列表容器
         /// </summary>
         private static readonly CacheLinkedList<IUpdatable> _updatedManagers = new CacheLinkedList<IUpdatable>();
@@ -50,9 +54,9 @@ namespace NovaEngine
         private static readonly IList<IManager> _expiredManagers = new List<IManager>();
 
         /// <summary>
-        /// 管理器对象处于刷新调度中的状态标识
+        /// 管理器对象处于调度中的状态标识
         /// </summary>
-        private static bool _isManagerUpdating = false;
+        private static bool _isManagerProcessing = false;
 
         /// <summary>
         /// 检查当前容器中是否已注册指定类型的管理器实例
@@ -161,21 +165,27 @@ namespace NovaEngine
                 _frameworkManagers.AddLast(manager);
             }
 
-            // 更新管理器实例的刷新列表
-            RefreshManagerUpdateList();
+            // 更新管理器实例的调度列表
+            RefreshManagerProcessingList();
 
             return manager;
         }
 
         /// <summary>
-        /// 刷新当前总控中所有管理器实例的刷新回调通知列表
+        /// 刷新当前总控中所有管理器实例的回调通知接口列表
         /// </summary>
-        private static void RefreshManagerUpdateList()
+        private static void RefreshManagerProcessingList()
         {
+            _executedManagers.Clear();
             _updatedManagers.Clear();
 
             foreach (IManager manager in _frameworkManagers)
             {
+                if (typeof(IExecutable).IsAssignableFrom(manager.GetType()) && false == IsExpiredManager(manager))
+                {
+                    _executedManagers.AddLast(manager as IExecutable);
+                }
+
                 if (typeof(IUpdatable).IsAssignableFrom(manager.GetType()) && false == IsExpiredManager(manager))
                 {
                     _updatedManagers.AddLast(manager as IUpdatable);
@@ -221,7 +231,7 @@ namespace NovaEngine
             Logger.Assert(null != manager, "Invalid manager instance.");
 
             // 处于更新中
-            if (_isManagerUpdating)
+            if (_isManagerProcessing)
             {
                 if (IsExpiredManager(manager))
                 {
@@ -250,7 +260,7 @@ namespace NovaEngine
             // 管理器列表已改变，重置管理器刷新列表
             if (changed)
             {
-                RefreshManagerUpdateList();
+                RefreshManagerProcessingList();
             }
         }
 
@@ -259,13 +269,14 @@ namespace NovaEngine
         /// </summary>
         private static void RemoveAllManagers()
         {
-            Logger.Assert(!_isManagerUpdating, "Cannot remove manager within update progressing!");
+            Logger.Assert(!_isManagerProcessing, "Cannot remove manager within update progressing!");
             for (LinkedListNode<IManager> current = _frameworkManagers.Last; null != current; current = current.Next)
             {
                 DestroyManager(current.Value);
             }
 
             _frameworkManagers.Clear();
+            _executedManagers.Clear();
             _updatedManagers.Clear();
         }
 
@@ -311,12 +322,54 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 对当前注册的所有管理器对象实例执行刷新调度操作<br/>
+        /// 对当前注册的所有管理器对象实例调用执行操作<br/>
+        /// 需注意的是，仅有实现了<see cref="NovaEngine.IExecutable"/>接口的实例，才具备执行调度的功能
+        /// </summary>
+        private static void CallManagerExecute()
+        {
+            _isManagerProcessing = true;
+
+            foreach (IExecutable v in _executedManagers)
+            {
+                if (IsExpiredManager(v as IManager))
+                {
+                    continue;
+                }
+
+                v.Execute();
+            }
+
+            _isManagerProcessing = false;
+        }
+
+        /// <summary>
+        /// 对当前注册的所有管理器对象实例调用后置执行操作<br/>
+        /// 需注意的是，仅有实现了<see cref="NovaEngine.IExecutable"/>接口的实例，才具备执行调度的功能
+        /// </summary>
+        private static void CallManagerLateExecute()
+        {
+            _isManagerProcessing = true;
+
+            foreach (IExecutable v in _executedManagers)
+            {
+                if (IsExpiredManager(v as IManager))
+                {
+                    continue;
+                }
+
+                v.LateExecute();
+            }
+
+            _isManagerProcessing = false;
+        }
+
+        /// <summary>
+        /// 对当前注册的所有管理器对象实例调用刷新操作<br/>
         /// 需注意的是，仅有实现了<see cref="NovaEngine.IUpdatable"/>接口的实例，才具备刷新调度的功能
         /// </summary>
-        private static void UpdateAllManagers()
+        private static void CallManagerUpdate()
         {
-            _isManagerUpdating = true;
+            _isManagerProcessing = true;
 
             foreach (IUpdatable v in _updatedManagers)
             {
@@ -328,16 +381,16 @@ namespace NovaEngine
                 v.Update();
             }
 
-            _isManagerUpdating = false;
+            _isManagerProcessing = false;
         }
 
         /// <summary>
-        /// 对当前注册的所有管理器对象实例执行后置刷新调度操作<br/>
+        /// 对当前注册的所有管理器对象实例调用后置刷新操作<br/>
         /// 需注意的是，仅有实现了<see cref="NovaEngine.IUpdatable"/>接口的实例，才具备后置刷新调度的功能
         /// </summary>
-        private static void LateUpdateAllManagers()
+        private static void CallManagerLateUpdate()
         {
-            _isManagerUpdating = true;
+            _isManagerProcessing = true;
 
             foreach (IUpdatable v in _updatedManagers)
             {
@@ -349,7 +402,7 @@ namespace NovaEngine
                 v.LateUpdate();
             }
 
-            _isManagerUpdating = false;
+            _isManagerProcessing = false;
 
             // 在更新结束标识后，移除过期管理器实例
             RemoveAllExpiredManagers();

@@ -154,6 +154,20 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 控制器管理类执行通知接口函数
+        /// </summary>
+        public static void Execute()
+        {
+        }
+
+        /// <summary>
+        /// 控制器管理类后置执行通知接口函数
+        /// </summary>
+        public static void LateExecute()
+        {
+        }
+
+        /// <summary>
         /// 控制器管理类刷新通知接口函数
         /// </summary>
         public static void Update()

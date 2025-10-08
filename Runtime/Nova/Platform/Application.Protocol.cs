@@ -85,21 +85,6 @@ namespace NovaEngine
             Restart = 43,
 
             /// <summary>
-            /// 程序模块固定刷新通知
-            /// </summary>
-            FixedUpdate = 51,
-
-            /// <summary>
-            /// 程序模块刷新通知
-            /// </summary>
-            Update = 52,
-
-            /// <summary>
-            /// 程序模块后置刷新通知
-            /// </summary>
-            LateUpdate = 53,
-
-            /// <summary>
             /// 程序模块固定执行通知
             /// </summary>
             FixedExecute = 61,
@@ -113,6 +98,21 @@ namespace NovaEngine
             /// 程序模块后置执行通知
             /// </summary>
             LateExecute = 63,
+
+            /// <summary>
+            /// 程序模块固定刷新通知
+            /// </summary>
+            FixedUpdate = 71,
+
+            /// <summary>
+            /// 程序模块刷新通知
+            /// </summary>
+            Update = 72,
+
+            /// <summary>
+            /// 程序模块后置刷新通知
+            /// </summary>
+            LateUpdate = 73,
         }
     }
 }

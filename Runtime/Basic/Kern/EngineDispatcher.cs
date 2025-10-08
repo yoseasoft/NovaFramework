@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -63,6 +64,21 @@ namespace GameEngine
 
             _isOnStartup = false;
         }
+
+        /// <summary>
+        /// 程序固定执行事件转发通知函数
+        /// </summary>
+        internal static void OnDispatchingFixedExecute() { OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.FixedExecute); }
+
+        /// <summary>
+        /// 程序执行事件转发通知函数
+        /// </summary>
+        internal static void OnDispatchingExecute() { OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.Execute); }
+
+        /// <summary>
+        /// 程序后置执行事件转发通知函数
+        /// </summary>
+        internal static void OnDispatchingLateExecute() { OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.LateExecute); }
 
         /// <summary>
         /// 程序固定刷新事件转发通知函数

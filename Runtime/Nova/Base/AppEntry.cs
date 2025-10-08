@@ -2,6 +2,7 @@
 /// NovaEngine Framework
 ///
 /// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
-
-using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 using UnityGameObject = UnityEngine.GameObject;
 using UnityComponent = UnityEngine.Component;
@@ -190,6 +187,34 @@ namespace NovaEngine
         }
 
         /// <summary>
+        /// 总控对象的执行回调函数
+        /// </summary>
+        public static void Execute()
+        {
+            if (_isRunning)
+            {
+                _engine.Execute();
+            }
+
+            // 管理器执行通知
+            CallManagerExecute();
+        }
+
+        /// <summary>
+        /// 总控对象的后置执行回调函数
+        /// </summary>
+        public static void LateExecute()
+        {
+            if (_isRunning)
+            {
+                _engine.LateExecute();
+            }
+
+            // 管理器后置执行通知
+            CallManagerLateExecute();
+        }
+
+        /// <summary>
         ///总控对象的刷新回调函数
         /// </summary>
         public static void Update()
@@ -200,7 +225,7 @@ namespace NovaEngine
             }
 
             // 管理器刷新通知
-            UpdateAllManagers();
+            CallManagerUpdate();
         }
 
         /// <summary>
@@ -214,7 +239,7 @@ namespace NovaEngine
             }
 
             // 管理器后置刷新通知
-            LateUpdateAllManagers();
+            CallManagerLateUpdate();
         }
     }
 }

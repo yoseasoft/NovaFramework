@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -199,6 +200,20 @@ namespace GameEngine
             {
                 handler.Reload();
             }
+        }
+
+        /// <summary>
+        /// 句柄管理器执行操作函数
+        /// </summary>
+        public static void Execute()
+        {
+        }
+
+        /// <summary>
+        /// 句柄管理器后置执行操作函数
+        /// </summary>
+        public static void LateExecute()
+        {
         }
 
         /// <summary>

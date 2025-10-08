@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -129,26 +130,79 @@ namespace GameEngine
         /// </summary>
         private static void OnFixedUpdate()
         {
-        }
-
-        /// <summary>
-        /// 世界对象执行函数
-        /// </summary>
-        private static void OnExecute()
-        {
-        }
-
-        /// <summary>
-        /// 世界对象延迟执行函数
-        /// </summary>
-        private static void OnLateExecute()
-        {
+            InternalFixedUpdate();
         }
 
         /// <summary>
         /// 世界对象刷新函数
         /// </summary>
         private static void OnUpdate()
+        {
+            InternalUpdate();
+        }
+
+        /// <summary>
+        /// 世界对象延迟刷新函数
+        /// </summary>
+        private static void OnLateUpdate()
+        {
+            InternalLateUpdate();
+        }
+
+        #region 管理器内部调用的执行/刷新回调接口
+
+        /// <summary>
+        /// 管理器内部固定执行函数
+        /// </summary>
+        private static void InternalFixedExecute()
+        {
+        }
+
+        /// <summary>
+        /// 管理器内部执行函数
+        /// </summary>
+        private static void InternalExecute()
+        {
+            // 总控实例执行
+            NovaEngine.AppEntry.Execute();
+
+            // 控制器管理对象执行
+            ControllerManagement.Execute();
+            // 管理句柄执行
+            HandlerManagement.Execute();
+
+            // 外部通知执行
+            EngineDispatcher.OnDispatchingExecute();
+        }
+
+        /// <summary>
+        /// 管理器内部延迟执行函数
+        /// </summary>
+        private static void InternalLateExecute()
+        {
+            // 总控实例后置执行
+            NovaEngine.AppEntry.LateExecute();
+
+            // 控制器管理对象后置执行
+            ControllerManagement.LateExecute();
+            // 管理句柄后置执行
+            HandlerManagement.LateExecute();
+
+            // 外部通知后置执行
+            EngineDispatcher.OnDispatchingLateExecute();
+        }
+
+        /// <summary>
+        /// 管理器内部固定刷新函数
+        /// </summary>
+        private static void InternalFixedUpdate()
+        {
+        }
+
+        /// <summary>
+        /// 管理器内部刷新函数
+        /// </summary>
+        private static void InternalUpdate()
         {
             // 总控实例刷新
             NovaEngine.AppEntry.Update();
@@ -163,9 +217,9 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 世界对象延迟刷新函数
+        /// 管理器内部延迟刷新函数
         /// </summary>
-        private static void OnLateUpdate()
+        private static void InternalLateUpdate()
         {
             // 总控实例后置刷新
             NovaEngine.AppEntry.LateUpdate();
@@ -181,6 +235,8 @@ namespace GameEngine
             // 控制器管理对象倾泻
             ControllerManagement.Dump();
         }
+
+        #endregion
 
         private static void OnApplicationFocus(bool focus)
         {
