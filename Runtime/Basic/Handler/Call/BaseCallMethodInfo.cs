@@ -74,7 +74,7 @@ namespace GameEngine
 
         protected BaseCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, bool automatically)
         {
-            Debugger.Assert(null != targetType, "Invalid arguments.");
+            Debugger.Assert(null != targetType || !automatically, "Invalid arguments.");
 
             _targetType = targetType;
             _fullname = fullname;
