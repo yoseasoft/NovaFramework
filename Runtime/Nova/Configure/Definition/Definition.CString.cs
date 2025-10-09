@@ -2,7 +2,7 @@
 /// NovaEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -137,6 +137,8 @@ namespace NovaEngine
             public const string None = "none";
             // 字符串类型常量，值为“unknown”，用于表示字符类型无效值
             public const string Unknown = "unknown";
+            // 字符串类型常量，值为“default”，用于表示字符类型默认值
+            public const string Default = "default";
 
             // 字符串类型常量，值为HTML中的And符转译“&amp;” -> “&”
             public const string HtmlAmp = "&amp;";

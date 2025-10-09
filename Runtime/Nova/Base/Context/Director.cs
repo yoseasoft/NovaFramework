@@ -30,7 +30,7 @@ namespace NovaEngine
     /// <summary>
     /// 应用接口管理导演类，用于在引擎内部对事件及函数进行统一的调度转发
     /// </summary>
-    public static partial class Director
+    internal static class Director
     {
         #region 应用程序管理相关原生UNITY通知接口
 

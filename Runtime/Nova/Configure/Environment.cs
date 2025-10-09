@@ -6,7 +6,7 @@
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -31,8 +31,8 @@ using System.Collections.Generic;
 
 using SystemType = System.Type;
 using SystemStringBuilder = System.Text.StringBuilder;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 using SystemFieldInfo = System.Reflection.FieldInfo;
+using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace NovaEngine
 {
@@ -358,27 +358,26 @@ namespace NovaEngine
         public static string ToCString()
         {
             SystemStringBuilder sb = new SystemStringBuilder();
-            sb.Append("Environment = { PROPERTIES = { ");
+            sb.Append("PROPERTIES={");
             SystemFieldInfo[] fields = typeof(Environment).GetFields(SystemBindingFlags.Static | SystemBindingFlags.Public | SystemBindingFlags.NonPublic);
             for (int n = 0; n < fields.Length; ++n)
             {
                 SystemFieldInfo field = fields[n];
-                sb.AppendFormat("{0} = {1}, ", field.Name, field.GetValue(null));
+                sb.AppendFormat("{0}={1},", field.Name, field.GetValue(null));
             }
 
-            sb.Append("}, VARIABLES = { ");
+            sb.Append("},VARIABLES={");
             foreach (KeyValuePair<string, string> pair in _variables)
             {
-                sb.AppendFormat("{0} = {1}, ", pair.Key, pair.Value);
+                sb.AppendFormat("{0}={1},", pair.Key, pair.Value);
             }
 
-            sb.Append("}, ");
+            sb.Append("},");
 
             // 打印环境配置同时，后面加入版本信息
-            sb.AppendFormat("FRAMEWORK_VERSION = {0}, ", Version.FrameworkVersionName());
-            sb.AppendFormat("APPLICATION_VERSION = {0} ", Version.ApplicationVersionName());
+            sb.AppendFormat("FRAMEWORK_VERSION={0},", Version.FrameworkVersionName());
+            sb.AppendFormat("APPLICATION_VERSION={0}", Version.ApplicationVersionName());
 
-            sb.Append("}");
             return sb.ToString();
         }
     }

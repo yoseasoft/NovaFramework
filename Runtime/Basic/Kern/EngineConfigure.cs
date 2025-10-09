@@ -30,8 +30,8 @@ using System.Reflection;
 
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 using SystemFieldInfo = System.Reflection.FieldInfo;
+using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace GameEngine
 {
@@ -97,8 +97,7 @@ namespace GameEngine
             // 加载环境参数
             NovaEngine.Environment.Load(variables);
 
-            Debugger.Info(NovaEngine.Environment.ToCString());
-            Debugger.Info(NovaEngine.Configuration.ToCString());
+            Debugger.Log("Environment={{{%s}}}, Configuration={{{%s}}}", NovaEngine.Environment.ToCString(), NovaEngine.Configuration.ToCString());
         }
 
         #endregion

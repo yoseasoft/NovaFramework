@@ -154,9 +154,7 @@ namespace GameEngine
         /// <summary>
         /// 管理器内部固定执行函数
         /// </summary>
-        private static void InternalFixedExecute()
-        {
-        }
+        private static void InternalFixedExecute() { }
 
         /// <summary>
         /// 管理器内部执行函数
@@ -195,9 +193,7 @@ namespace GameEngine
         /// <summary>
         /// 管理器内部固定刷新函数
         /// </summary>
-        private static void InternalFixedUpdate()
-        {
-        }
+        private static void InternalFixedUpdate() { }
 
         /// <summary>
         /// 管理器内部刷新函数

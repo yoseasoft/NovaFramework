@@ -2,7 +2,7 @@
 /// NovaEngine Framework
 ///
 /// Copyright (C) 2024, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,11 +39,11 @@ namespace NovaEngine
         /// <summary>
         /// 配置类的所有字段映射集合
         /// </summary>
-        private static IDictionary<string, SystemFieldInfo> _configureFields = null;
+        private static IDictionary<string, SystemFieldInfo> _configureFields;
         /// <summary>
         /// 配置类的参数存储容器
         /// </summary>
-        private static IDictionary<string, string> _variables = null;
+        private static IDictionary<string, string> _variables;
 
         /// <summary>
         /// 设置属性参数
