@@ -3,7 +3,7 @@
 ///
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -168,12 +168,19 @@ namespace NovaEngine
             private string GetActivatedTaskString()
             {
                 /**
-                 * 如果是在主任务队列，则显示为：M:999
-                 * 如果是在逻辑任务对象，则显示为：M:999|R:333 - 前面为当前逻辑任务所属的主任务信息
-                 * 如果是在扩展线程中，则显示为：T(10010):333
+                 * 如果是在主任务队列，则显示为：PlayerLoop:999
+                 * 如果是在逻辑任务对象，则显示为：Default(0):333 - 前面为当前逻辑任务所属的主任务信息
+                 * 如果是在扩展线程中，则显示为：T(1001):333
                  */
 
-                return string.Format("{0}:{1}", "M", Timestamp.FrameCount);
+                if (Workbench.IsSubworkExecuting)
+                {
+                    return string.Format("{0}({1}):{2}",
+                            Workbench.CurrentExecutingSubworkName,
+                            Workbench.CurrentExecutingSubworkId,
+                            Workbench.CurrentSubworkFrameCount);
+                }
+                return string.Format("PlayerLoop:{0}", Timestamp.FrameCount);
             }
 
             private SystemStringBuilder GetHighlightedLogText(LogOutputLevelType level, string message)

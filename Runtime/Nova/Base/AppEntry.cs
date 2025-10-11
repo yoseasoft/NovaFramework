@@ -161,6 +161,8 @@ namespace NovaEngine
 
             // 引擎实例启动
             _engine.Startup();
+            // 工作台启动
+            Workbench.Startup();
 
             _isRunning = true;
         }
@@ -180,21 +182,66 @@ namespace NovaEngine
             // 移除所有组件实例
             RemoveAllComponents();
 
+            // 工作台关闭
+            Workbench.Shutdown();
             // 引擎实例关闭
             _engine.Shutdown();
 
             _isRunning = false;
         }
 
+        #region 逻辑帧调度相关操作的回调通知接口函数
+
+        /// <summary>
+        /// 总控对象帧调度激活接口函数，检测当前是否有子任务激活
+        /// </summary>
+        /// <returns>若有子任务激活返回true，否则返回false</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static bool OnFrameDispatchActivation()
+        {
+            _engine.SyncTimestamp();
+
+            return Workbench.OnWorkTimingAlarmClock();
+        }
+
+        /// <summary>
+        /// 总控对象帧调度结束接口函数，对子任务进行收尾处理
+        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void OnFrameDispatchFinished()
+        {
+            Workbench.OnWorkTimingCompleted();
+        }
+
+        /// <summary>
+        /// 总控对象帧调度开始接口函数
+        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void OnFrameDispatchStart()
+        {
+            Workbench.OnWorkTimingStart();
+        }
+
+        /// <summary>
+        /// 总控对象帧调度停止接口函数
+        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void OnFrameDispatchStop()
+        {
+            Workbench.OnWorkTimingStop();
+        }
+
+        #endregion
+
         /// <summary>
         /// 总控对象的执行回调函数
         /// </summary>
         public static void Execute()
         {
-            if (_isRunning)
-            {
-                _engine.Execute();
-            }
+            Logger.Assert(_isRunning, "The application entry was not running.");
+
+            // 引擎执行通知
+            _engine.Execute();
 
             // 管理器执行通知
             CallManagerExecute();
@@ -205,10 +252,10 @@ namespace NovaEngine
         /// </summary>
         public static void LateExecute()
         {
-            if (_isRunning)
-            {
-                _engine.LateExecute();
-            }
+            Logger.Assert(_isRunning, "The application entry was not running.");
+
+            // 引擎后置执行通知
+            _engine.LateExecute();
 
             // 管理器后置执行通知
             CallManagerLateExecute();
@@ -219,10 +266,10 @@ namespace NovaEngine
         /// </summary>
         public static void Update()
         {
-            if (_isRunning)
-            {
-                _engine.Update();
-            }
+            Logger.Assert(_isRunning, "The application entry was not running.");
+
+            // 引擎刷新通知
+            _engine.Update();
 
             // 管理器刷新通知
             CallManagerUpdate();
@@ -233,10 +280,10 @@ namespace NovaEngine
         /// </summary>
         public static void LateUpdate()
         {
-            if (_isRunning)
-            {
-                _engine.LateUpdate();
-            }
+            Logger.Assert(_isRunning, "The application entry was not running.");
+
+            // 引擎后置刷新通知
+            _engine.LateUpdate();
 
             // 管理器后置刷新通知
             CallManagerLateUpdate();

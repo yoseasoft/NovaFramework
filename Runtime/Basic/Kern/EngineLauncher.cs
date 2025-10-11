@@ -33,6 +33,15 @@ namespace GameEngine
     internal static class EngineLauncher
     {
         /// <summary>
+        /// 总控管理器运行状态
+        /// </summary>
+        private static bool _isRunning = false;
+        /// <summary>
+        /// 总控管理器当前帧执行函数调度状态
+        /// </summary>
+        private static bool _isExecutingOnFrame = false;
+
+        /// <summary>
         /// 世界对象构建函数
         /// </summary>
         public static void OnCreate(object controller, IReadOnlyDictionary<string, string> variables)
@@ -98,6 +107,9 @@ namespace GameEngine
             // 广播应用启动的事件通知
             // 已调整到业务层主动调用，因为其内部绑定的回调监听是在业务层启动时绑定的
             // EngineDispatcher.OnDispatchingStartup();
+
+            _isRunning = true;
+            _isExecutingOnFrame = false;
         }
 
         /// <summary>
@@ -105,6 +117,9 @@ namespace GameEngine
         /// </summary>
         private static void OnShutdown()
         {
+            _isRunning = false;
+            _isExecutingOnFrame = false;
+
             // 广播应用关闭的事件通知
             // 已调整到业务层主动调用，因为其内部绑定的回调监听是在业务层关闭时卸载的
             // EngineDispatcher.OnDispatchingShutdown();
@@ -130,6 +145,8 @@ namespace GameEngine
         /// </summary>
         private static void OnFixedUpdate()
         {
+            if (!_isRunning) return;
+
             InternalFixedUpdate();
         }
 
@@ -138,6 +155,14 @@ namespace GameEngine
         /// </summary>
         private static void OnUpdate()
         {
+            if (!_isRunning) return;
+
+            if (NovaEngine.AppEntry.OnFrameDispatchActivation())
+            {
+                _isExecutingOnFrame = true;
+                InternalExecute();
+            }
+
             InternalUpdate();
         }
 
@@ -146,6 +171,15 @@ namespace GameEngine
         /// </summary>
         private static void OnLateUpdate()
         {
+            if (!_isRunning) return;
+
+            if (_isExecutingOnFrame)
+            {
+                InternalLateExecute();
+                _isExecutingOnFrame = false;
+                NovaEngine.AppEntry.OnFrameDispatchFinished();
+            }
+
             InternalLateUpdate();
         }
 
@@ -154,13 +188,25 @@ namespace GameEngine
         /// <summary>
         /// 管理器内部固定执行函数
         /// </summary>
-        private static void InternalFixedExecute() { }
+        private static void InternalFixedExecute()
+        {
+            // 帧调度启动
+            NovaEngine.AppEntry.OnFrameDispatchStart();
+
+            // do nothing
+
+            // 帧调度停止
+            NovaEngine.AppEntry.OnFrameDispatchStop();
+        }
 
         /// <summary>
         /// 管理器内部执行函数
         /// </summary>
         private static void InternalExecute()
         {
+            // 帧调度启动
+            NovaEngine.AppEntry.OnFrameDispatchStart();
+
             // 总控实例执行
             NovaEngine.AppEntry.Execute();
 
@@ -171,6 +217,9 @@ namespace GameEngine
 
             // 外部通知执行
             EngineDispatcher.OnDispatchingExecute();
+
+            // 帧调度停止
+            NovaEngine.AppEntry.OnFrameDispatchStop();
         }
 
         /// <summary>
@@ -178,6 +227,9 @@ namespace GameEngine
         /// </summary>
         private static void InternalLateExecute()
         {
+            // 帧调度启动
+            NovaEngine.AppEntry.OnFrameDispatchStart();
+
             // 总控实例后置执行
             NovaEngine.AppEntry.LateExecute();
 
@@ -188,12 +240,18 @@ namespace GameEngine
 
             // 外部通知后置执行
             EngineDispatcher.OnDispatchingLateExecute();
+
+            // 帧调度停止
+            NovaEngine.AppEntry.OnFrameDispatchStop();
         }
 
         /// <summary>
         /// 管理器内部固定刷新函数
         /// </summary>
-        private static void InternalFixedUpdate() { }
+        private static void InternalFixedUpdate()
+        {
+            // do nothing
+        }
 
         /// <summary>
         /// 管理器内部刷新函数

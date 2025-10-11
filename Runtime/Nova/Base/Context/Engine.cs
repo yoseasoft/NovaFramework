@@ -206,6 +206,16 @@ namespace NovaEngine
             Application.Instance.Shutdown();
         }
 
+        /// <summary>
+        /// 时间戳同步接口，用于刷新时间戳
+        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public void SyncTimestamp()
+        {
+            // 刷新时间戳
+            Timestamp.RefreshTimeOnUpdate();
+        }
+
         // FixedExecute is often called more frequently than Execute
         // public void FixedExecute() { }
 
@@ -225,9 +235,6 @@ namespace NovaEngine
         // Update is called once per frame
         public void Update()
         {
-            // 刷新时间戳
-            Timestamp.RefreshTimeOnUpdate();
-
             _facade.Update();
         }
 
