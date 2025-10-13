@@ -58,6 +58,7 @@ namespace GameEngine
         {
             // 移除所有消息通知
             RemoveAllMessageListeners();
+
             _messageListenerCallForType = null;
         }
 

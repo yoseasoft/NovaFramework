@@ -63,6 +63,7 @@ namespace GameEngine
         {
             // 移除所有输入响应
             RemoveAllInputResponses();
+
             _inputResponseCallsForCode = null;
             _inputResponseCallsForType = null;
         }

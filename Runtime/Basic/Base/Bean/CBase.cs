@@ -184,7 +184,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="lifecycleType">生命周期类型</param>
         /// <returns>若对象处于给定生命周期类型的调度中则返回true，否则返回false</returns>
-        protected internal bool IsOnSchedulingProcessForTargetLifecycle(LifecycleKeypointType lifecycleType)
+        protected internal bool IsOnProcessingForTargetLifecycle(LifecycleKeypointType lifecycleType)
         {
             Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
 
@@ -201,7 +201,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="lifecycleType">生命周期类型</param>
         /// <returns>若对象已完成给定生命周期类型则返回true，否则返回false</returns>
-        protected internal bool IsOnTargetLifecycleSchedulingCompleted(LifecycleKeypointType lifecycleType)
+        protected internal bool IsOnProcessCompletedForTargetLifecycle(LifecycleKeypointType lifecycleType)
         {
             Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
 

@@ -60,6 +60,7 @@ namespace GameEngine
         /// <summary>
         /// 基础对象的转发回调重载函数接口
         /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         private void OnDispatchCallReload()
         {
             // 卸载自动绑定的扩展通知接口

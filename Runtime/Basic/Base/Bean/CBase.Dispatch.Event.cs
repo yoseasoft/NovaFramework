@@ -63,6 +63,7 @@ namespace GameEngine
         {
             // 移除所有订阅事件
             UnsubscribeAllEvents();
+
             _eventSubscribeCallForId = null;
             _eventSubscribeCallForType = null;
         }
