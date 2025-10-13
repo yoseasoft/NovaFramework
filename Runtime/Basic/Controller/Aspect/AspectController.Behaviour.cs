@@ -2,7 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,11 +25,7 @@
 
 using System.Collections.Generic;
 
-using SystemType = System.Type;
 using SystemEnum = System.Enum;
-using SystemDelegate = System.Delegate;
-
-using SystemAction_object = System.Action<object>;
 
 namespace GameEngine
 {

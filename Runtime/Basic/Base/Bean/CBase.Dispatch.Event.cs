@@ -67,6 +67,48 @@ namespace GameEngine
             _eventSubscribeCallForType = null;
         }
 
+        #region 基础对象事件分发提供的服务接口函数
+
+        /// <summary>
+        /// 发送事件消息到事件管理器中等待派发
+        /// </summary>
+        /// <param name="eventID">事件标识</param>
+        /// <param name="args">事件参数列表</param>
+        public void Send(int eventID, params object[] args)
+        {
+            EventController.Instance.Send(eventID, args);
+        }
+
+        /// <summary>
+        /// 发送事件消息到事件管理器中等待派发
+        /// </summary>
+        /// <param name="arg">事件数据</param>
+        public void Send<T>(T arg) where T : struct
+        {
+            EventController.Instance.Send<T>(arg);
+        }
+
+        /// <summary>
+        /// 发送事件消息到事件管理器中并立即处理掉它
+        /// </summary>
+        /// <param name="eventID">事件标识</param>
+        /// <param name="args">事件参数列表</param>
+        public void Fire(int eventID, params object[] args)
+        {
+            EventController.Instance.Fire(eventID, args);
+        }
+
+        /// <summary>
+        /// 发送事件消息到事件管理器中并立即处理掉它
+        /// </summary>
+        /// <param name="arg">事件数据</param>
+        public void Fire<T>(T arg) where T : struct
+        {
+            EventController.Instance.Fire<T>(arg);
+        }
+
+        #endregion
+
         #region 基础对象事件订阅相关回调函数的操作接口定义
 
         /// <summary>

@@ -146,10 +146,8 @@ namespace GameEngine
         {
             base.Reload();
 
-            // 卸载自动绑定的扩展通知接口
-            this.RemoveAllAutomaticallyInputResponses();
-            this.UnsubscribeAllAutomaticallyEvents();
-            this.RemoveAllAutomaticallyMessageListeners();
+            // 重载转发回调
+            OnDispatchCallReload();
         }
 
         /// <summary>
@@ -681,48 +679,6 @@ namespace GameEngine
             try { value = Call<T, V>(func, arg0); } catch (System.Exception e) { Debugger.Error(e); value = default(V); return false; }
 
             return true;
-        }
-
-        #endregion
-
-        #region 事件分发层提供的服务回调函数
-
-        /// <summary>
-        /// 发送事件消息到事件管理器中等待派发
-        /// </summary>
-        /// <param name="eventID">事件标识</param>
-        /// <param name="args">事件参数列表</param>
-        public void Send(int eventID, params object[] args)
-        {
-            EventController.Instance.Send(eventID, args);
-        }
-
-        /// <summary>
-        /// 发送事件消息到事件管理器中等待派发
-        /// </summary>
-        /// <param name="arg">事件数据</param>
-        public void Send<T>(T arg) where T : struct
-        {
-            EventController.Instance.Send<T>(arg);
-        }
-
-        /// <summary>
-        /// 发送事件消息到事件管理器中并立即处理掉它
-        /// </summary>
-        /// <param name="eventID">事件标识</param>
-        /// <param name="args">事件参数列表</param>
-        public void Fire(int eventID, params object[] args)
-        {
-            EventController.Instance.Fire(eventID, args);
-        }
-
-        /// <summary>
-        /// 发送事件消息到事件管理器中并立即处理掉它
-        /// </summary>
-        /// <param name="arg">事件数据</param>
-        public void Fire<T>(T arg) where T : struct
-        {
-            EventController.Instance.Fire<T>(arg);
         }
 
         #endregion

@@ -58,6 +58,17 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 基础对象的转发回调重载函数接口
+        /// </summary>
+        private void OnDispatchCallReload()
+        {
+            // 卸载自动绑定的扩展通知接口
+            RemoveAllAutomaticallyInputResponses();
+            UnsubscribeAllAutomaticallyEvents();
+            RemoveAllAutomaticallyMessageListeners();
+        }
+
+        /// <summary>
         /// 处理所有包装类型回调信息数据
         /// </summary>
         /// <typeparam name="SourceType">注册类型</typeparam>
