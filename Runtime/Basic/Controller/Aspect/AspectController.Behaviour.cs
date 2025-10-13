@@ -73,9 +73,12 @@ namespace GameEngine
         {
             foreach (AspectBehaviourType aspectBehaviourType in SystemEnum.GetValues(typeof(AspectBehaviourType)))
             {
-                if (AspectBehaviourType.Unknown == aspectBehaviourType)
+                // if (AspectBehaviourType.Unknown == aspectBehaviourType)
+                if ((int) AspectBehaviourType.Unknown == ((int) aspectBehaviourType & 0xff))
                 {
                     // 未知类型直接忽略
+                    // 2025-10-13：
+                    // 将边界定义的类型也一起包含进来，所有边界类型的低8位都为0
                     continue;
                 }
 

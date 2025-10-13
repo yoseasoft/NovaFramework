@@ -3,6 +3,7 @@
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +31,7 @@ namespace GameEngine
     /// <summary>
     /// 基础对象抽象类，对场景中的基础对象上下文进行封装及调度管理
     /// </summary>
-    public abstract class CObject : CRef, NovaEngine.IUpdatable, IBeanLifecycle
+    public abstract class CObject : CRef, IBeanLifecycle
     {
         /// <summary>
         /// 基础对象等待销毁状态标识
@@ -96,6 +97,32 @@ namespace GameEngine
         /// 基础对象内部关闭通知接口函数
         /// </summary>
         protected virtual void OnShutdown() { }
+
+        /// <summary>
+        /// 基础对象执行通知接口函数
+        /// </summary>
+        public override sealed void Execute()
+        {
+            OnExecute();
+        }
+
+        /// <summary>
+        /// 基础对象内部执行通知接口函数
+        /// </summary>
+        protected virtual void OnExecute() { }
+
+        /// <summary>
+        /// 基础对象后置执行通知接口函数
+        /// </summary>
+        public override sealed void LateExecute()
+        {
+            OnLateExecute();
+        }
+
+        /// <summary>
+        /// 基础对象内部后置执行通知接口函数
+        /// </summary>
+        protected virtual void OnLateExecute() { }
 
         /// <summary>
         /// 基础对象刷新通知接口函数

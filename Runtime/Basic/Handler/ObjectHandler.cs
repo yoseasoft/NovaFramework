@@ -49,9 +49,13 @@ namespace GameEngine
         /// </summary>
         private readonly IList<CObject> _objects;
         /// <summary>
+        /// 基础对象执行列表容器
+        /// </summary>
+        private IList<CObject> _objectExecuteList;
+        /// <summary>
         /// 基础对象刷新列表容器
         /// </summary>
-        private IList<CObject> _objectUpdateList = null;
+        private IList<CObject> _objectUpdateList;
 
         /// <summary>
         /// 句柄对象的单例访问获取接口
@@ -67,6 +71,8 @@ namespace GameEngine
             _objectClassTypes = new Dictionary<string, SystemType>();
             _objectPriorities = new Dictionary<string, int>();
             _objects = new List<CObject>();
+            // 对象执行列表初始化
+            _objectExecuteList = new List<CObject>();
             // 对象刷新列表初始化
             _objectUpdateList = new List<CObject>();
         }
@@ -80,7 +86,14 @@ namespace GameEngine
             _objectClassTypes.Clear();
             _objectPriorities.Clear();
             _objects.Clear();
+
+            // 清理对象执行列表容器
+            _objectExecuteList.Clear();
+            _objectExecuteList = null;
+
+            // 清理对象刷新列表容器
             _objectUpdateList.Clear();
+            _objectUpdateList = null;
         }
 
         /// <summary>
@@ -104,6 +117,20 @@ namespace GameEngine
         /// 句柄对象内置重载接口函数
         /// </summary>
         protected override void OnReload()
+        {
+        }
+
+        /// <summary>
+        /// 句柄对象内置执行接口
+        /// </summary>
+        protected override void OnExecute()
+        {
+        }
+
+        /// <summary>
+        /// 句柄对象内置延迟执行接口
+        /// </summary>
+        protected override void OnLateExecute()
         {
         }
 
@@ -327,6 +354,7 @@ namespace GameEngine
             Call(obj.Shutdown);
 
             // 从管理容器中移除实例
+            _objectExecuteList.Remove(obj);
             _objectUpdateList.Remove(obj);
             _objects.Remove(obj);
 
@@ -477,6 +505,13 @@ namespace GameEngine
 
             // 开始运行实例
             Call(obj.Start);
+
+            // 激活执行接口的对象实例，放入到执行队列中
+            //if (typeof(IExecuteActivation).IsAssignableFrom(obj.GetType()))
+            if (obj.IsExecuteActivation())
+            {
+                _objectExecuteList.Add(obj);
+            }
 
             // 激活刷新接口的对象实例，放入到刷新队列中
             //if (typeof(IUpdateActivation).IsAssignableFrom(obj.GetType()))

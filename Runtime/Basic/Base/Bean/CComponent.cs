@@ -3,7 +3,7 @@
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -34,10 +34,12 @@ namespace GameEngine
 {
     /// <summary>
     /// 基于ECS模式的组件对象封装类，该类定义组件对象的常用接口及基础调度逻辑<br/>
-    /// 组件的具体实现类可以通过继承<see cref="NovaEngine.IUpdatable"/>来声明该类是否具备自刷新功能<br/>
-    /// 但除了需要继承指定接口外，还要求上层的实体对象必须打开刷新调度才可以正常工作
+    /// 组件的具体实现类可以通过继承<see cref="NovaEngine.IExecutable"/>来声明该类是否具备自执行功能<br/>
+    /// 也可以通过继承<see cref="NovaEngine.IUpdatable"/>来声明该类是否具备自刷新功能<br/>
+    /// 但除了需要继承指定接口外，还要求上层的实体对象必须打开执行或刷新调度才可以正常工作
     /// </summary>
-    public abstract class CComponent : CBase, IComponent, NovaEngine.IUpdatable, IBeanLifecycle, IEventDispatch, IMessageDispatch
+    public abstract class CComponent : CBase, IComponent,
+        NovaEngine.IExecutable, NovaEngine.IUpdatable, IBeanLifecycle, IEventDispatch, IMessageDispatch
     {
         /// <summary>
         /// 获取组件对象所属的实体对象实例
@@ -73,6 +75,18 @@ namespace GameEngine
         /// 组件对象关闭函数接口
         /// </summary>
         public override sealed void Shutdown()
+        { }
+
+        /// <summary>
+        /// 组件对象执行通知接口函数
+        /// </summary>
+        public void Execute()
+        { }
+
+        /// <summary>
+        /// 组件对象后置执行通知接口函数
+        /// </summary>
+        public void LateExecute()
         { }
 
         /// <summary>

@@ -35,66 +35,96 @@ namespace GameEngine
         Unknown = 0x00,
 
         /// <summary>
+        /// 开启标签
+        /// </summary>
+        // Opening = 0x0100,
+
+        /// <summary>
         /// 初始化服务节点<br/>
         /// 供引擎内部流程使用的调度行为
         /// </summary>
-        Initialize = 0x0001,
+        Initialize = 0x0101,
 
         /// <summary>
         /// 启动服务节点<br/>
         /// 供引擎内部流程使用的调度行为
         /// </summary>
-        Startup = 0x0002,
+        Startup = 0x0102,
 
         /// <summary>
         /// 唤醒服务节点<br/>
         /// 供业务层使用的调度行为
         /// </summary>
-        Awake = 0x0004,
+        Awake = 0x0104,
 
         /// <summary>
         /// 开始服务节点<br/>
         /// 供业务层使用的调度行为
         /// </summary>
-        Start = 0x0008,
+        Start = 0x0108,
+
+        /// <summary>
+        /// 打开结束标签
+        /// </summary>
+        // OpenFinished = 0x0200,
+
+        /// <summary>
+        /// 工作标签
+        /// </summary>
+        // Working = 0x0200,
 
         /// <summary>
         /// 逻辑服务节点
         /// </summary>
-        Execute = 0x0010,
+        Execute = 0x0201,
 
         /// <summary>
         /// 延迟逻辑服务节点
         /// </summary>
-        LateExecute = 0x0020,
+        LateExecute = 0x0202,
 
         /// <summary>
         /// 更新服务节点
         /// </summary>
-        Update = 0x0040,
+        Update = 0x0204,
 
         /// <summary>
         /// 延迟更新服务节点
         /// </summary>
-        LateUpdate = 0x0080,
+        LateUpdate = 0x0208,
+
+        /// <summary>
+        /// 工作结束标签
+        /// </summary>
+        // WorkFinished = 0x0300,
+
+        /// <summary>
+        /// 关闭标签
+        /// </summary>
+        // Closing = 0x0400,
 
         /// <summary>
         /// 销毁服务节点<br/>
         /// 供业务层使用的调度行为
         /// </summary>
-        Destroy = 0x0100,
+        Destroy = 0x0401,
 
         /// <summary>
         /// 关闭服务节点<br/>
         /// 供引擎内部流程使用的调度行为
         /// </summary>
-        Shutdown = 0x0200,
+        Shutdown = 0x0402,
 
         /// <summary>
         /// 清理服务节点<br/>
         /// 供引擎内部流程使用的调度行为
         /// </summary>
-        Cleanup = 0x0400,
+        Cleanup = 0x0404,
+
+        /// <summary>
+        /// 关闭结束标签
+        /// </summary>
+        // CloseFinished = 0x0500,
 
         /// <summary>
         /// 释放服务节点

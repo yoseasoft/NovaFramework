@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -55,6 +56,16 @@ namespace GameEngine
         /// 句柄对象重载接口函数
         /// </summary>
         void Reload();
+
+        /// <summary>
+        /// 句柄对象执行接口
+        /// </summary>
+        void Execute();
+
+        /// <summary>
+        /// 句柄对象后置执行接口
+        /// </summary>
+        void LateExecute();
 
         /// <summary>
         /// 句柄对象刷新接口

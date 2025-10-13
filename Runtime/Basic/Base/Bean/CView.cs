@@ -149,6 +149,36 @@ namespace GameEngine
         protected virtual void OnShutdown() { }
 
         /// <summary>
+        /// 视图对象执行通知接口函数
+        /// </summary>
+        public override sealed void Execute()
+        {
+            base.Execute();
+
+            OnExecute();
+        }
+
+        /// <summary>
+        /// 视图对象内部执行通知接口函数
+        /// </summary>
+        protected virtual void OnExecute() { }
+
+        /// <summary>
+        /// 视图对象后置执行通知接口函数
+        /// </summary>
+        public override sealed void LateExecute()
+        {
+            base.LateExecute();
+
+            OnLateExecute();
+        }
+
+        /// <summary>
+        /// 视图对象内部后置执行通知接口函数
+        /// </summary>
+        protected virtual void OnLateExecute() { }
+
+        /// <summary>
         /// 视图对象刷新通知接口函数
         /// </summary>
         public override sealed void Update()

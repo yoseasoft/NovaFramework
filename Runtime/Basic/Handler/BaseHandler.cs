@@ -4,6 +4,7 @@
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +33,6 @@ using SystemAttribute = System.Attribute;
 using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
 using SystemAttributeTargets = System.AttributeTargets;
 using SystemDelegate = System.Delegate;
-using SystemActivator = System.Activator;
 using SystemMethodInfo = System.Reflection.MethodInfo;
 using SystemBindingFlags = System.Reflection.BindingFlags;
 
@@ -77,9 +77,9 @@ namespace GameEngine
         private int _handlerType = 0;
 
         /// <summary>
-        /// 句柄对象当前是否处于刷新逻辑的状态标识
+        /// 句柄对象当前是否处于任务调度中的状态标识
         /// </summary>
-        private bool _isOnUpdatingStatus = false;
+        private bool _isOnWorkingStatus = false;
 
         /// <summary>
         /// 定时器模块的实例引用
@@ -125,9 +125,9 @@ namespace GameEngine
         public int HandlerType { get { return _handlerType; } internal set { _handlerType = value; } }
 
         /// <summary>
-        /// 获取句柄对象当前的刷新状态标识
+        /// 获取句柄对象当前的任务调度状态标识
         /// </summary>
-        protected internal bool IsOnUpdatingStatus => _isOnUpdatingStatus;
+        protected internal bool IsOnWorkingStatus => _isOnWorkingStatus;
 
         /// <summary>
         /// 获取定时器模块的对象实例
@@ -226,15 +226,39 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 句柄对象执行接口
+        /// </summary>
+        public void Execute()
+        {
+            _isOnWorkingStatus = true;
+
+            OnExecute();
+
+            _isOnWorkingStatus = false;
+        }
+
+        /// <summary>
+        /// 句柄对象延迟执行接口
+        /// </summary>
+        public void LateExecute()
+        {
+            _isOnWorkingStatus = true;
+
+            OnLateExecute();
+
+            _isOnWorkingStatus = false;
+        }
+
+        /// <summary>
         /// 句柄对象刷新接口
         /// </summary>
         public void Update()
         {
-            _isOnUpdatingStatus = true;
+            _isOnWorkingStatus = true;
 
             OnUpdate();
 
-            _isOnUpdatingStatus = false;
+            _isOnWorkingStatus = false;
         }
 
         /// <summary>
@@ -242,11 +266,11 @@ namespace GameEngine
         /// </summary>
         public void LateUpdate()
         {
-            _isOnUpdatingStatus = true;
+            _isOnWorkingStatus = true;
 
             OnLateUpdate();
 
-            _isOnUpdatingStatus = false;
+            _isOnWorkingStatus = false;
         }
 
         /// <summary>
@@ -264,6 +288,16 @@ namespace GameEngine
         /// 句柄对象内置重载接口函数
         /// </summary>
         protected abstract void OnReload();
+
+        /// <summary>
+        /// 句柄对象内置执行接口
+        /// </summary>
+        protected abstract void OnExecute();
+
+        /// <summary>
+        /// 句柄对象内置延迟执行接口
+        /// </summary>
+        protected abstract void OnLateExecute();
 
         /// <summary>
         /// 句柄对象内置刷新接口

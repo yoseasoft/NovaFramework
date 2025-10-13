@@ -3,7 +3,7 @@
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Tecdhnology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ namespace GameEngine
     /// 这里定义的实体类，默认将开启内部刷新模式，可能将造成一定的性能消耗<br/>
     /// 如果您对实体不存在调度刷新的需求（包括内部的组件等），可以手动关闭它
     /// </summary>
-    public abstract class CEntity : CRef, IEntity, NovaEngine.IUpdatable, IBeanLifecycle
+    public abstract class CEntity : CRef, IEntity, IBeanLifecycle
     {
         /// <summary>
         /// 实体对象过期状态标识
@@ -51,6 +51,11 @@ namespace GameEngine
         /// 实体对象的组件列表容器
         /// </summary>
         protected IDictionary<string, CComponent> _components = null;
+
+        /// <summary>
+        /// 实体对象内部组件实例的执行统计列表
+        /// </summary>
+        protected IList<CComponent> _componentExecuteList = null;
 
         /// <summary>
         /// 实体对象内部组件实例的刷新统计列表
@@ -96,6 +101,8 @@ namespace GameEngine
 
             // 组件列表初始化
             _components = new Dictionary<string, CComponent>();
+            // 组件执行列表初始化
+            _componentExecuteList = new List<CComponent>();
             // 组件刷新列表初始化
             _componentUpdateList = new List<CComponent>();
             // 组件输入分发列表初始化
@@ -126,6 +133,7 @@ namespace GameEngine
             // 移除全部组件对象实例
             RemoveAllComponents();
             _components = null;
+            _componentExecuteList = null;
             _componentUpdateList = null;
             _componentInputDispatchList = null;
             _componentEventDispatchList = null;
@@ -145,6 +153,24 @@ namespace GameEngine
         /// </summary>
         public override void Shutdown()
         { }
+
+        /// <summary>
+        /// 实体对象执行通知接口函数
+        /// </summary>
+        public override void Execute()
+        {
+            // 组件实例执行
+            ExecuteAllComponents();
+        }
+
+        /// <summary>
+        /// 实体对象后置执行通知接口函数
+        /// </summary>
+        public override void LateExecute()
+        {
+            // 组件实例后置执行
+            LateExecuteAllComponents();
+        }
 
         /// <summary>
         /// 实体对象刷新通知接口函数
@@ -265,6 +291,27 @@ namespace GameEngine
         }
 
         #region 实体对象功能检测相关接口函数合集
+
+        /// <summary>
+        /// 检测当前实体对象是否激活执行行为<br/>
+        /// 检测的激活条件包括实体自身和其内部的组件实例
+        /// </summary>
+        /// <returns>若实体对象激活执行行为则返回true，否则返回false</returns>
+        protected internal override bool IsExecuteActivation()
+        {
+            if (base.IsExecuteActivation())
+            {
+                return true;
+            }
+
+            // 实体对象内部组件需要执行
+            if (HasMoreExecuteComponents())
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// 检测当前实体对象是否激活刷新行为<br/>
@@ -794,6 +841,20 @@ namespace GameEngine
         protected abstract void OnInternalComponentsChanged();
 
         /// <summary>
+        /// 检测当前实体对象中是否存在待执行的组件实例
+        /// </summary>
+        /// <returns>若实体对象存在执行组件则返回true，否则返回false</returns>
+        private bool HasMoreExecuteComponents()
+        {
+            if (null != _componentExecuteList && _componentExecuteList.Count > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// 检测当前实体对象是否存在待更新的组件实例
         /// </summary>
         /// <returns>若实体对象存在更新组件则返回true，否则返回false</returns>
@@ -1088,6 +1149,7 @@ namespace GameEngine
                 Call(component.Destroy, LifecycleKeypointType.Destroy);
             }
 
+            _componentExecuteList.Remove(component);
             _componentUpdateList.Remove(component);
 
             // 关闭组件实例
@@ -1175,6 +1237,14 @@ namespace GameEngine
             // 开始运行实例
             Call(component.Start, LifecycleKeypointType.Start);
 
+            // 2025-10-12：
+            // 新增组件执行通知列表
+            if (component.HasAspectBehaviourType(AspectBehaviourType.Execute) ||
+                component.HasAspectBehaviourType(AspectBehaviourType.LateExecute))
+            {
+                _componentExecuteList.Add(component);
+            }
+
             // 如果组件实现了刷新接口，则添加到刷新队列中
             // 2025-07-13：
             // 取消接口标识，转而使用特性标签来检测
@@ -1184,6 +1254,30 @@ namespace GameEngine
                 component.HasAspectBehaviourType(AspectBehaviourType.LateUpdate))
             {
                 _componentUpdateList.Add(component);
+            }
+        }
+
+        /// <summary>
+        /// 执行当前实体对象中记录的所有组件对象实例<br/>
+        /// 您可以关闭实体对象的帧执行标识，然后在子类中根据需要手动调用组件的执行接口
+        /// </summary>
+        protected void ExecuteAllComponents()
+        {
+            for (int n = 0; false == IsOnExpired && n < _componentExecuteList.Count; ++n)
+            {
+                Call(_componentExecuteList[n].Execute);
+            }
+        }
+
+        /// <summary>
+        /// 后置执行当前实体对象中记录的所有组件对象实例<br/>
+        /// 您可以关闭实体对象的帧执行标识，然后在子类中根据需要手动调用组件的执行接口
+        /// </summary>
+        protected void LateExecuteAllComponents()
+        {
+            for (int n = 0; false == IsOnExpired && n < _componentExecuteList.Count; ++n)
+            {
+                Call(_componentExecuteList[n].LateExecute);
             }
         }
 

@@ -38,32 +38,36 @@ namespace GameEngine
         /// <summary>
         /// 实体对象映射管理容器
         /// </summary>
-        private IList<CEntity> _entities = null;
+        private IList<CEntity> _entities;
+        /// <summary>
+        /// 实体对象执行列表容器
+        /// </summary>
+        private IList<CEntity> _executeEntitiesList;
         /// <summary>
         /// 实体对象刷新列表容器
         /// </summary>
-        private IList<CEntity> _updateEntitiesList = null;
+        private IList<CEntity> _updateEntitiesList;
 
         /// <summary>
         /// 系统对象注册列表容器
         /// </summary>
-        private IList<ISystem> _systems = null;
+        private IList<ISystem> _systems;
         /// <summary>
         /// 系统对象初始化回调列表容器
         /// </summary>
-        private IList<IInitializeSystem> _initializeSystems = null;
+        private IList<IInitializeSystem> _initializeSystems;
         /// <summary>
         /// 系统对象清理回调列表容器
         /// </summary>
-        private IList<ICleanupSystem> _cleanupSystems = null;
+        private IList<ICleanupSystem> _cleanupSystems;
         /// <summary>
         /// 系统对象刷新回调列表容器
         /// </summary>
-        private IList<IUpdateSystem> _updateSystems = null;
+        private IList<IUpdateSystem> _updateSystems;
         /// <summary>
         /// 系统对象后置刷新回调列表容器
         /// </summary>
-        private IList<ILateUpdateSystem> _lateUpdateSystems = null;
+        private IList<ILateUpdateSystem> _lateUpdateSystems;
 
         /// <summary>
         /// 获取当前记录的全部实体对象实例
@@ -92,6 +96,8 @@ namespace GameEngine
         {
             // 实体映射容器初始化
             _entities = new List<CEntity>();
+            // 实体执行列表初始化
+            _executeEntitiesList = new List<CEntity>();
             // 实体刷新列表初始化
             _updateEntitiesList = new List<CEntity>();
 
@@ -118,6 +124,7 @@ namespace GameEngine
             RemoveAllEntities();
 
             _entities = null;
+            _executeEntitiesList = null;
             _updateEntitiesList = null;
 
             // 移除所有系统对象实例
@@ -135,6 +142,24 @@ namespace GameEngine
         /// </summary>
         protected override void OnReload()
         {
+        }
+
+        /// <summary>
+        /// 句柄对象内置执行接口
+        /// </summary>
+        protected override void OnExecute()
+        {
+            // 实体实例执行
+            OnEntitiesExecute();
+        }
+
+        /// <summary>
+        /// 句柄对象内置延迟执行接口
+        /// </summary>
+        protected override void OnLateExecute()
+        {
+            // 实体实例后置执行
+            OnEntitiesLateExecute();
         }
 
         /// <summary>
@@ -235,7 +260,7 @@ namespace GameEngine
             // 只有唤醒后且尚未销毁的实体对象，需要关心当前被移除的时候是否处于刷新循环中，
             // 因为只有处于这个生命周期范围内的实体对象才会注册到刷新列表中进行刷新操作，
             // 处于这个生命周期范围之外的实体对象，无需关心当前是否在刷新循环中
-            if (IsOnUpdatingStatus && entity.IsOnAwakingStatus())
+            if (IsOnWorkingStatus && entity.IsOnAwakingStatus())
             {
                 entity.OnPrepareToDestroy();
 
@@ -250,6 +275,7 @@ namespace GameEngine
             }
 
             // 以防万一，先删为敬
+            _executeEntitiesList.Remove(entity);
             _updateEntitiesList.Remove(entity);
             _entities.Remove(entity);
 
@@ -348,6 +374,13 @@ namespace GameEngine
             // 开始运行实例
             Call(entity.Start);
 
+            // 激活执行接口的对象实例，放入到执行队列中
+            // if (typeof(IExecuteActivation).IsAssignableFrom(entity.GetType()))
+            if (entity.IsExecuteActivation())
+            {
+                _executeEntitiesList.Add(entity);
+            }
+
             // 激活刷新接口的对象实例，放入到刷新队列中
             // if (typeof(IUpdateActivation).IsAssignableFrom(entity.GetType()))
             if (entity.IsUpdateActivation())
@@ -367,6 +400,17 @@ namespace GameEngine
                 return;
             }
 
+            if (entity.IsExecuteActivation())
+            {
+                if (false == _executeEntitiesList.Contains(entity))
+                    _executeEntitiesList.Add(entity);
+            }
+            else
+            {
+                if (_executeEntitiesList.Contains(entity))
+                    _executeEntitiesList.Remove(entity);
+            }
+
             if (entity.IsUpdateActivation())
             {
                 if (false == _updateEntitiesList.Contains(entity))
@@ -376,6 +420,44 @@ namespace GameEngine
             {
                 if (_updateEntitiesList.Contains(entity))
                     _updateEntitiesList.Remove(entity);
+            }
+        }
+
+        /// <summary>
+        /// 执行当前句柄容器中记录的所有实体对象实例
+        /// </summary>
+        protected void OnEntitiesExecute()
+        {
+            for (int n = 0; n < _executeEntitiesList.Count; ++n)
+            {
+                CEntity entity = _executeEntitiesList[n];
+                // 过期对象跳过该操作
+                if (entity.IsOnExpired)
+                {
+                    continue;
+                }
+
+                // 对象执行操作
+                Call(entity.Execute);
+            }
+        }
+
+        /// <summary>
+        /// 后置执行当前句柄容器中记录的所有实体对象实例
+        /// </summary>
+        protected void OnEntitiesLateExecute()
+        {
+            for (int n = 0; n < _executeEntitiesList.Count; ++n)
+            {
+                CEntity entity = _executeEntitiesList[n];
+                // 过期对象跳过该操作
+                if (entity.IsOnExpired)
+                {
+                    continue;
+                }
+
+                // 对象后置执行操作
+                Call(entity.LateExecute);
             }
         }
 

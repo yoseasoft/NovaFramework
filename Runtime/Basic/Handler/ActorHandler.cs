@@ -113,6 +113,22 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 句柄对象内置执行接口
+        /// </summary>
+        protected override void OnExecute()
+        {
+            base.OnExecute();
+        }
+
+        /// <summary>
+        /// 句柄对象内置延迟执行接口
+        /// </summary>
+        protected override void OnLateExecute()
+        {
+            base.OnLateExecute();
+        }
+
+        /// <summary>
         /// 句柄对象内置刷新接口
         /// </summary>
         protected override void OnUpdate()

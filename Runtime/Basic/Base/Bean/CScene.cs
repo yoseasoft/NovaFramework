@@ -104,6 +104,36 @@ namespace GameEngine
         protected virtual void OnShutdown() { }
 
         /// <summary>
+        /// 场景对象执行通知接口函数
+        /// </summary>
+        public override sealed void Execute()
+        {
+            base.Execute();
+
+            OnExecute();
+        }
+
+        /// <summary>
+        /// 场景对象内部执行通知接口函数
+        /// </summary>
+        protected virtual void OnExecute() { }
+
+        /// <summary>
+        /// 场景对象后置执行通知接口函数
+        /// </summary>
+        public override sealed void LateExecute()
+        {
+            base.LateExecute();
+
+            OnLateExecute();
+        }
+
+        /// <summary>
+        /// 场景对象内部后置执行通知接口函数
+        /// </summary>
+        protected virtual void OnLateExecute() { }
+
+        /// <summary>
         /// 场景对象刷新通知接口函数
         /// </summary>
         public override sealed void Update()
@@ -212,6 +242,16 @@ namespace GameEngine
         }
 
         #region 场景对象功能检测相关接口函数合集
+
+        /// <summary>
+        /// 检测当前实体对象是否激活执行行为<br/>
+        /// 检测的激活条件包括实体自身和其内部的组件实例
+        /// </summary>
+        /// <returns>若实体对象激活执行行为则返回true，否则返回false</returns>
+        protected internal override bool IsExecuteActivation()
+        {
+            return true;
+        }
 
         /// <summary>
         /// 检测当前实体对象是否激活刷新行为<br/>

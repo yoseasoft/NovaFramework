@@ -207,6 +207,10 @@ namespace GameEngine
         /// </summary>
         public static void Execute()
         {
+            foreach (IHandler handler in _handlerSortingList)
+            {
+                handler.Execute();
+            }
         }
 
         /// <summary>
@@ -214,6 +218,10 @@ namespace GameEngine
         /// </summary>
         public static void LateExecute()
         {
+            foreach (IHandler handler in _handlerSortingList)
+            {
+                handler.LateExecute();
+            }
         }
 
         /// <summary>
