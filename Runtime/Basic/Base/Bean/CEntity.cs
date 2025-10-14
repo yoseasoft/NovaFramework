@@ -208,7 +208,7 @@ namespace GameEngine
                 if (false == component.IsOnAwakingStatus() && false == component.IsOnDestroyingStatus())
                 {
                     // 唤醒组件实例
-                    Call(component.Awake, LifecycleKeypointType.Awake);
+                    Call(component.Awake, AspectBehaviourType.Awake);
                 }
             }
         }
@@ -257,7 +257,7 @@ namespace GameEngine
                 if (component.IsOnAwakingStatus() && false == component.IsOnDestroyingStatus())
                 {
                     // 销毁组件实例
-                    Call(component.Destroy, LifecycleKeypointType.Destroy);
+                    Call(component.Destroy, AspectBehaviourType.Destroy);
                 }
             }
         }
@@ -963,7 +963,7 @@ namespace GameEngine
             component.Entity = this;
 
             // 初始化组件实例
-            Call(component.Initialize, LifecycleKeypointType.Initialize);
+            Call(component.Initialize, AspectBehaviourType.Initialize);
 
             _components.Add(componentName, component);
 
@@ -993,13 +993,13 @@ namespace GameEngine
             }
 
             // 启动组件实例
-            Call(component.Startup, LifecycleKeypointType.Startup);
+            Call(component.Startup, AspectBehaviourType.Startup);
 
             // 实体对象已经唤醒
             if (IsOnAwakingStatus())
             {
                 // 唤醒组件实例
-                Call(component.Awake, LifecycleKeypointType.Awake);
+                Call(component.Awake, AspectBehaviourType.Awake);
             }
 
             // 实体对象已经开始
@@ -1146,14 +1146,14 @@ namespace GameEngine
             if (component.IsOnAwakingStatus())
             {
                 // 销毁组件实例
-                Call(component.Destroy, LifecycleKeypointType.Destroy);
+                Call(component.Destroy, AspectBehaviourType.Destroy);
             }
 
             _componentExecuteList.Remove(component);
             _componentUpdateList.Remove(component);
 
             // 关闭组件实例
-            Call(component.Shutdown, LifecycleKeypointType.Shutdown);
+            Call(component.Shutdown, AspectBehaviourType.Shutdown);
 
             _componentInputDispatchList.Remove(component);
             _componentEventDispatchList.Remove(component);
@@ -1161,7 +1161,7 @@ namespace GameEngine
             _components.Remove(name);
 
             // 清理组件实例
-            Call(component.Cleanup, LifecycleKeypointType.Cleanup);
+            Call(component.Cleanup, AspectBehaviourType.Cleanup);
 
             // 回收组件实例
             EntityHandler.ReleaseInstance(component);
@@ -1235,7 +1235,7 @@ namespace GameEngine
             }
 
             // 开始运行实例
-            Call(component.Start, LifecycleKeypointType.Start);
+            Call(component.Start, AspectBehaviourType.Start);
 
             // 2025-10-12：
             // 新增组件执行通知列表

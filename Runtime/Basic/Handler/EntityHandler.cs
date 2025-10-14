@@ -326,7 +326,7 @@ namespace GameEngine
                 return;
             }
 
-            if (false == entity.IsOnTargetLifecycle(CBase.LifecycleKeypointType.Startup))
+            if (false == entity.IsOnTargetLifecycle(AspectBehaviourType.Startup))
             {
                 Debugger.Error("The entity instance '{0}' was startup incompleted, wakeup it failed.", entity.GetType().FullName);
                 // 无效的生命周期，直接终结目标实体对象

@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +38,7 @@ namespace GameEngine
         /// <summary>
         /// 开启标签
         /// </summary>
-        // Opening = 0x0100,
+        OpeningBegan = 0x0100,
 
         /// <summary>
         /// 初始化服务节点<br/>
@@ -66,12 +67,12 @@ namespace GameEngine
         /// <summary>
         /// 打开结束标签
         /// </summary>
-        // OpenFinished = 0x0200,
+        OpeningEnded = 0x0200,
 
         /// <summary>
         /// 工作标签
         /// </summary>
-        // Working = 0x0200,
+        WorkingBegan = 0x0200,
 
         /// <summary>
         /// 逻辑服务节点
@@ -96,12 +97,12 @@ namespace GameEngine
         /// <summary>
         /// 工作结束标签
         /// </summary>
-        // WorkFinished = 0x0300,
+        WorkingEnded = 0x0300,
 
         /// <summary>
         /// 关闭标签
         /// </summary>
-        // Closing = 0x0400,
+        ClosingBegan = 0x0400,
 
         /// <summary>
         /// 销毁服务节点<br/>
@@ -124,7 +125,7 @@ namespace GameEngine
         /// <summary>
         /// 关闭结束标签
         /// </summary>
-        // CloseFinished = 0x0500,
+        ClosingEnded = 0x0500,
 
         /// <summary>
         /// 释放服务节点

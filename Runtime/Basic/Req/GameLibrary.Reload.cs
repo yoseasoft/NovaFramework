@@ -2,6 +2,8 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -97,11 +99,12 @@ namespace GameEngine
 
             obj.Reload();
 
-            System.Array lifecycleTypes = System.Enum.GetValues(typeof(CBase.LifecycleKeypointType));
+            System.Array lifecycleTypes = System.Enum.GetValues(typeof(AspectBehaviourType));
             for (int n = 0; n < lifecycleTypes.Length; ++n)
             {
-                CBase.LifecycleKeypointType lifecycleType = (CBase.LifecycleKeypointType) lifecycleTypes.GetValue(n);
-                if (CBase.LifecycleKeypointType.Unknown == lifecycleType)
+                AspectBehaviourType lifecycleType = (AspectBehaviourType) lifecycleTypes.GetValue(n);
+                // if (AspectBehaviourType.Unknown == lifecycleType)
+                if ((int) AspectBehaviourType.Unknown == ((int) lifecycleType & 0xff))
                 {
                     // 跳过未定义类型
                     continue;

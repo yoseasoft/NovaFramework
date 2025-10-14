@@ -270,7 +270,7 @@ namespace GameEngine
             _isClosed = true;
 
             // 关闭通知
-            Call(Shutdown, LifecycleKeypointType.Shutdown);
+            Call(Shutdown, AspectBehaviourType.Shutdown);
 
             // 销毁窗口
             DestroyWindow();

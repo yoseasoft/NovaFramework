@@ -25,8 +25,6 @@
 /// -------------------------------------------------------------------------------
 
 using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
@@ -37,70 +35,9 @@ namespace GameEngine
             NovaEngine.IReference, NovaEngine.ILaunchable, IInputDispatch, IEventDispatch, IMessageDispatch
     {
         /// <summary>
-        /// 对象生命周期关键点类型的枚举定义
-        /// </summary>
-        public enum LifecycleKeypointType : byte
-        {
-            /// <summary>
-            /// 未知
-            /// </summary>
-            Unknown = 0,
-
-            /// <summary>
-            /// 初始化节点
-            /// </summary>
-            Initialize,
-
-            /// <summary>
-            /// 启动节点
-            /// </summary>
-            Startup,
-
-            /// <summary>
-            /// 唤醒节点
-            /// </summary>
-            Awake,
-
-            /// <summary>
-            /// 开始节点
-            /// </summary>
-            Start,
-
-            /// <summary>
-            /// 闲置节点
-            /// </summary>
-            Idle,
-
-            /// <summary>
-            /// 工作节点
-            /// </summary>
-            Work,
-
-            /// <summary>
-            /// 销毁节点
-            /// </summary>
-            Destroy,
-
-            /// <summary>
-            /// 关闭节点
-            /// </summary>
-            Shutdown,
-
-            /// <summary>
-            /// 清理节点
-            /// </summary>
-            Cleanup,
-
-            /// <summary>
-            /// 释放节点
-            /// </summary>
-            Free,
-        }
-
-        /// <summary>
         /// 对象当前生命周期类型
         /// </summary>
-        private LifecycleKeypointType _currentLifecycleType = LifecycleKeypointType.Unknown;
+        private AspectBehaviourType _currentLifecycleType = AspectBehaviourType.Unknown;
 
         /// <summary>
         /// 对象当前生命周期的运行状态标识
@@ -110,7 +47,7 @@ namespace GameEngine
         /// <summary>
         /// 获取对象当前生命周期类型
         /// </summary>
-        public LifecycleKeypointType CurrentLifecycleType => _currentLifecycleType;
+        public AspectBehaviourType CurrentLifecycleType => _currentLifecycleType;
 
         /// <summary>
         /// 获取对象当前生命周期的运行状态
@@ -167,9 +104,10 @@ namespace GameEngine
         /// </summary>
         /// <param name="lifecycleType">生命周期类型</param>
         /// <returns>若对象处于给定生命周期类型的状态中则返回true，否则返回false</returns>
-        protected internal bool IsOnTargetLifecycle(LifecycleKeypointType lifecycleType)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        protected internal bool IsOnTargetLifecycle(AspectBehaviourType lifecycleType)
         {
-            Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
+            Debugger.Assert(AspectBehaviourType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
 
             if (_currentLifecycleType == lifecycleType)
             {
@@ -184,43 +122,14 @@ namespace GameEngine
         /// </summary>
         /// <param name="lifecycleType">生命周期类型</param>
         /// <returns>若对象处于给定生命周期类型的调度中则返回true，否则返回false</returns>
-        protected internal bool IsOnProcessingForTargetLifecycle(LifecycleKeypointType lifecycleType)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        protected internal bool IsOnProcessingForTargetLifecycle(AspectBehaviourType lifecycleType)
         {
-            Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
+            Debugger.Assert(AspectBehaviourType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
 
             if (_currentLifecycleType == lifecycleType && _isCurrentLifecycleTypeRunning)
             {
                 return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// 检测指定的生命周期对于当前对象是否处于完成阶段
-        /// </summary>
-        /// <param name="lifecycleType">生命周期类型</param>
-        /// <returns>若对象已完成给定生命周期类型则返回true，否则返回false</returns>
-        protected internal bool IsOnProcessCompletedForTargetLifecycle(LifecycleKeypointType lifecycleType)
-        {
-            Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
-
-            if (_currentLifecycleType == lifecycleType && false == _isCurrentLifecycleTypeRunning)
-            {
-                return true;
-            }
-
-            if (_currentLifecycleType > lifecycleType)
-            {
-                // 除了work和idle，正常情况下生命周期的调用步骤的按序增长的
-                if (LifecycleKeypointType.Work != lifecycleType && LifecycleKeypointType.Idle != lifecycleType)
-                {
-                    return true;
-                }
-                else if (false == _isCurrentLifecycleTypeRunning)
-                {
-                    return true;
-                }
             }
 
             return false;
@@ -233,9 +142,10 @@ namespace GameEngine
         /// <param name="began">开始范围类型</param>
         /// <param name="ended">结束范围类型</param>
         /// <returns>若对象处于给定生命周期范围内则返回true，否则返回false</returns>
-        private bool IsTheLifecycleTypeBetweenOfTargetRanges(LifecycleKeypointType began, LifecycleKeypointType ended)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        private bool IsTheLifecycleTypeBetweenOfTargetRanges(AspectBehaviourType began, AspectBehaviourType ended)
         {
-            Debugger.Assert(LifecycleKeypointType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
+            Debugger.Assert(AspectBehaviourType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
 
             if (_currentLifecycleType >= began && _currentLifecycleType < ended)
             {
@@ -249,289 +159,55 @@ namespace GameEngine
         /// 检测当前对象的生命周期是否处于唤醒激活状态
         /// </summary>
         /// <returns>若对象处于给定生命周期状态则返回true，否则返回false</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         protected internal bool IsOnAwakingStatus()
         {
-            return IsTheLifecycleTypeBetweenOfTargetRanges(LifecycleKeypointType.Awake, LifecycleKeypointType.Destroy);
+            return IsTheLifecycleTypeBetweenOfTargetRanges(AspectBehaviourType.Awake, AspectBehaviourType.Destroy);
         }
 
         /// <summary>
         /// 检测当前对象的生命周期是否处于开始激活状态
         /// </summary>
         /// <returns>若对象处于给定生命周期状态则返回true，否则返回false</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         protected internal bool IsOnStartingStatus()
         {
-            return IsTheLifecycleTypeBetweenOfTargetRanges(LifecycleKeypointType.Start, LifecycleKeypointType.Destroy);
+            return IsTheLifecycleTypeBetweenOfTargetRanges(AspectBehaviourType.Start, AspectBehaviourType.Destroy);
         }
 
         /// <summary>
         /// 检测当前对象的生命周期是否处于开始激活状态
         /// </summary>
         /// <returns>若对象处于给定生命周期状态则返回true，否则返回false</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         protected internal bool IsOnDestroyingStatus()
         {
-            return IsTheLifecycleTypeBetweenOfTargetRanges(LifecycleKeypointType.Destroy, LifecycleKeypointType.Free);
+            return IsTheLifecycleTypeBetweenOfTargetRanges(AspectBehaviourType.Destroy, AspectBehaviourType.Free);
         }
 
         /// <summary>
         /// 检测当前对象的生命周期是否处于刷新激活状态
         /// </summary>
         /// <returns>若对象处于给定生命周期状态则返回true，否则返回false</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         protected internal bool IsOnWorkingStatus()
         {
-            return IsOnTargetLifecycle(LifecycleKeypointType.Work);
+            // return IsOnTargetLifecycle(AspectBehaviourType.Execute) ||
+            //        IsOnTargetLifecycle(AspectBehaviourType.LateExecute) ||
+            //        IsOnTargetLifecycle(AspectBehaviourType.Update) ||
+            //        IsOnTargetLifecycle(AspectBehaviourType.LateUpdate);
+            return IsTheLifecycleTypeBetweenOfTargetRanges(AspectBehaviourType.WorkingBegan, AspectBehaviourType.WorkingEnded);
         }
 
         /// <summary>
-        /// 在函数调用前的对象生命周期改变处理的操作函数
-        /// </summary>
-        /// <param name="obj">目标对象</param>
-        /// <param name="method">函数实例</param>
-        protected static void OnLifecycleChangedBeforeMethodInvoke(object obj, SystemMethodInfo method)
-        {
-            if (null == method)
-            {
-                Debugger.Warn("The lifecycle changed method must be non-null.");
-                return;
-            }
-
-            OnLifecycleChangedBeforeMethodInvoke(obj, method.Name);
-        }
-
-        /// <summary>
-        /// 在函数调用前的对象生命周期改变处理的操作函数
-        /// </summary>
-        /// <param name="obj">目标对象</param>
-        /// <param name="methodName">函数名称</param>
-        protected static void OnLifecycleChangedBeforeMethodInvoke(object obj, string methodName)
-        {
-            if (NovaEngine.Environment.IsDevelopmentState())
-            {
-                if (false == typeof(CBase).IsAssignableFrom(obj.GetType()))
-                {
-                    Debugger.Warn("The lifecycle changed target object '{%t}' must be inherited from 'CBase'.", obj);
-                    return;
-                }
-            }
-
-            OnLifecycleChangedByMethodName(obj as CBase, methodName, true);
-        }
-
-        /// <summary>
-        /// 在函数调用前的对象生命周期改变处理的操作函数
-        /// </summary>
-        /// <param name="obj">目标对象</param>
-        /// <param name="method">函数实例</param>
-        /// <param name="lifecycleType">生命周期类型</param>
-        protected static void OnLifecycleChangedBeforeMethodInvoke(object obj, SystemMethodInfo method, LifecycleKeypointType lifecycleType)
-        {
-            if (null == method)
-            {
-                Debugger.Warn("The lifecycle changed method must be non-null.");
-                return;
-            }
-
-            OnLifecycleChangedBeforeMethodInvoke(obj, method.Name, lifecycleType);
-        }
-
-        /// <summary>
-        /// 在函数调用前的对象生命周期改变处理的操作函数
-        /// </summary>
-        /// <param name="obj">目标对象</param>
-        /// <param name="methodName">函数名称</param>
-        /// <param name="lifecycleType">生命周期类型</param>
-        protected static void OnLifecycleChangedBeforeMethodInvoke(object obj, string methodName, LifecycleKeypointType lifecycleType)
-        {
-            if (NovaEngine.Environment.IsDevelopmentState())
-            {
-                if (false == typeof(CBase).IsAssignableFrom(obj.GetType()))
-                {
-                    Debugger.Warn("The lifecycle changed target object '{%t}' must be inherited from 'CBase'.", obj);
-                    return;
-                }
-            }
-
-            OnLifecycleChangedByMethodName(obj as CBase, methodName, lifecycleType, true);
-        }
-
-        /// <summary>
-        /// 在函数调用后的对象生命周期改变处理的操作函数
-        /// </summary>
-        /// <param name="obj">目标对象</param>
-        /// <param name="method">函数实例</param>
-        protected static void OnLifecycleChangedAfterMethodInvoke(object obj, SystemMethodInfo method)
-        {
-            if (null == method)
-            {
-                Debugger.Warn("The lifecycle changed method must be non-null.");
-                return;
-            }
-
-            OnLifecycleChangedAfterMethodInvoke(obj, method.Name);
-        }
-
-        /// <summary>
-        /// 在函数调用前的对象生命周期改变处理的操作函数
-        /// </summary>
-        /// <param name="obj">目标对象</param>
-        /// <param name="methodName">函数名称</param>
-        protected static void OnLifecycleChangedAfterMethodInvoke(object obj, string methodName)
-        {
-            if (NovaEngine.Environment.IsDevelopmentState())
-            {
-                if (false == typeof(CBase).IsAssignableFrom(obj.GetType()))
-                {
-                    Debugger.Warn("The lifecycle changed target object '{%t}' must be inherited from 'CBase'.", obj);
-                    return;
-                }
-            }
-
-            OnLifecycleChangedByMethodName(obj as CBase, methodName, false);
-        }
-
-        /// <summary>
-        /// 在函数调用后的对象生命周期改变处理的操作函数
-        /// </summary>
-        /// <param name="obj">目标对象</param>
-        /// <param name="method">函数实例</param>
-        /// <param name="lifecycleType">生命周期类型</param>
-        protected static void OnLifecycleChangedAfterMethodInvoke(object obj, SystemMethodInfo method, LifecycleKeypointType lifecycleType)
-        {
-            if (null == method)
-            {
-                Debugger.Warn("The lifecycle changed method must be non-null.");
-                return;
-            }
-
-            OnLifecycleChangedAfterMethodInvoke(obj, method.Name, lifecycleType);
-        }
-
-        /// <summary>
-        /// 在函数调用前的对象生命周期改变处理的操作函数
-        /// </summary>
-        /// <param name="obj">目标对象</param>
-        /// <param name="methodName">函数名称</param>
-        /// <param name="lifecycleType">生命周期类型</param>
-        protected static void OnLifecycleChangedAfterMethodInvoke(object obj, string methodName, LifecycleKeypointType lifecycleType)
-        {
-            if (NovaEngine.Environment.IsDevelopmentState())
-            {
-                if (false == typeof(CBase).IsAssignableFrom(obj.GetType()))
-                {
-                    Debugger.Warn("The lifecycle changed target object '{%t}' must be inherited from 'CBase'.", obj);
-                    return;
-                }
-            }
-
-            OnLifecycleChangedByMethodName(obj as CBase, methodName, lifecycleType, false);
-        }
-
-        /// <summary>
-        /// 通过指定的函数名称和调用位置，改变目标对象的生命周期步骤
-        /// </summary>
-        /// <param name="obj">目标对象</param>
-        /// <param name="methodName">函数名称</param>
-        /// <param name="isBefore">调用位置标识</param>
-        private static void OnLifecycleChangedByMethodName(CBase obj, string methodName, bool isBefore)
-        {
-            LifecycleKeypointType lifecycleType = GetLifecycleTypeByMethodName(methodName, isBefore);
-
-            OnLifecycleChangedByMethodName(obj, methodName, lifecycleType, isBefore);
-        }
-
-        /// <summary>
-        /// 通过指定的函数名称和调用位置，改变目标对象的生命周期步骤
-        /// </summary>
-        /// <param name="obj">目标对象</param>
-        /// <param name="methodName">函数名称</param>
-        /// <param name="lifecycleType">生命周期类型</param>
-        /// <param name="isBefore">调用位置标识</param>
-        private static void OnLifecycleChangedByMethodName(CBase obj, string methodName, LifecycleKeypointType lifecycleType, bool isBefore)
-        {
-            if (LifecycleKeypointType.Unknown == lifecycleType)
-            {
-                // 扩展函数调用，不需要进行生命周期变更
-                return;
-            }
-
-            if (NovaEngine.Environment.IsDevelopmentState())
-            {
-                if (obj._currentLifecycleType > lifecycleType)
-                {
-                    // 除了work和idle，正常情况下生命周期的调用步骤的按序增长的
-                    if (LifecycleKeypointType.Work != lifecycleType && LifecycleKeypointType.Idle != lifecycleType)
-                    {
-                        Debugger.Error("Invalid object lifecycle changed from '{0}' to '{1}', please checked target method '{2}.{3}' invoke is legal.",
-                                obj._currentLifecycleType, lifecycleType, obj.GetType().FullName, methodName);
-                        return;
-                    }
-                }
-            }
-
-            // cleanup函数调用结束后，将生命周期步骤重置为unknown状态
-            if (LifecycleKeypointType.Cleanup == lifecycleType && !isBefore)
-            {
-                lifecycleType = LifecycleKeypointType.Unknown;
-            }
-
-            // Debugger.Info("Changed object '{0}' lifecycle type from '{1}' to '{2}' with target method '{3}'.", obj.GetType().FullName, obj.m_currentLifecycleRunningStep, lifecycleType, methodName);
-
-            obj._currentLifecycleType = lifecycleType;
-            obj._isCurrentLifecycleTypeRunning = isBefore;
-        }
-
-        /// <summary>
-        /// 通过指定的函数名称和调用位置，获取对应的生命周期步骤
+        /// 通过指定的函数名称，获取对应的生命周期步骤
         /// </summary>
         /// <param name="methodName">函数名称</param>
-        /// <param name="isBefore">调用位置标识</param>
         /// <returns>返回生命周期步骤类型，若不存在对应步骤则返回unknown状态</returns>
-        private static LifecycleKeypointType GetLifecycleTypeByMethodName(string methodName, bool isBefore)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        private static AspectBehaviourType GetLifecycleTypeByMethodName(string methodName)
         {
-            LifecycleKeypointType lifecycleType;
-            if (BeanController.Instance.TryGetBeanMethodLifecycleType(methodName, isBefore, out lifecycleType))
-            {
-                return lifecycleType;
-            }
-
-            AspectBehaviourType behaviourType = NovaEngine.Utility.Convertion.GetEnumFromString<AspectBehaviourType>(methodName);
-            lifecycleType = LifecycleKeypointType.Unknown;
-
-            switch (behaviourType)
-            {
-                case AspectBehaviourType.Initialize:
-                    if (isBefore) lifecycleType = LifecycleKeypointType.Initialize;
-                    break;
-                case AspectBehaviourType.Startup:
-                    if (isBefore) lifecycleType = LifecycleKeypointType.Startup;
-                    break;
-                case AspectBehaviourType.Awake:
-                    if (isBefore) lifecycleType = LifecycleKeypointType.Awake;
-                    break;
-                case AspectBehaviourType.Start:
-                    if (isBefore) lifecycleType = LifecycleKeypointType.Start;
-                    break;
-                case AspectBehaviourType.Execute:
-                case AspectBehaviourType.LateExecute:
-                case AspectBehaviourType.Update:
-                case AspectBehaviourType.LateUpdate:
-                    if (isBefore) lifecycleType = LifecycleKeypointType.Work;
-                    else lifecycleType = LifecycleKeypointType.Idle;
-                    break;
-                case AspectBehaviourType.Destroy:
-                    if (isBefore) lifecycleType = LifecycleKeypointType.Destroy;
-                    break;
-                case AspectBehaviourType.Shutdown:
-                    if (isBefore) lifecycleType = LifecycleKeypointType.Shutdown;
-                    break;
-                case AspectBehaviourType.Cleanup:
-                    lifecycleType = LifecycleKeypointType.Cleanup;
-                    break;
-            }
-
-            // 缓存对应类型
-            BeanController.Instance.AddBeanMethodLifecycleType(methodName, isBefore, lifecycleType);
-
-            return lifecycleType;
+            return NovaEngine.Utility.Convertion.GetEnumFromString<AspectBehaviourType>(methodName);
         }
 
         #endregion
@@ -544,11 +220,16 @@ namespace GameEngine
         /// <param name="methodName">函数名称</param>
         public void Call(string methodName)
         {
-            OnLifecycleChangedBeforeMethodInvoke(this, methodName);
+            AspectBehaviourType lifecycleType = GetLifecycleTypeByMethodName(methodName);
+            if (AspectBehaviourType.Unknown != lifecycleType)
+            {
+                _currentLifecycleType = lifecycleType;
+                _isCurrentLifecycleTypeRunning = true;
+            }
 
             AspectController.Instance.Call(this, methodName);
 
-            OnLifecycleChangedAfterMethodInvoke(this, methodName);
+            _isCurrentLifecycleTypeRunning = false;
         }
 
         /// <summary>
@@ -569,11 +250,20 @@ namespace GameEngine
         /// <param name="f">目标函数</param>
         protected internal void Call(System.Action f)
         {
-            OnLifecycleChangedBeforeMethodInvoke(f.Target, f.Method);
+            AspectBehaviourType lifecycleType = GetLifecycleTypeByMethodName(f.Method.Name);
+
+            CBase obj = f.Target as CBase;
+            Debugger.Assert(obj, "Invalid arguments.");
+
+            if (AspectBehaviourType.Unknown != lifecycleType)
+            {
+                obj._currentLifecycleType = lifecycleType;
+                obj._isCurrentLifecycleTypeRunning = true;
+            }
 
             AspectController.Instance.Call(f);
 
-            OnLifecycleChangedAfterMethodInvoke(f.Target, f.Method);
+            obj._isCurrentLifecycleTypeRunning = false;
         }
 
         /// <summary>
@@ -581,13 +271,19 @@ namespace GameEngine
         /// </summary>
         /// <param name="f">目标函数</param>
         /// <param name="lifecycleType">生命周期类型</param>
-        protected internal void Call(System.Action f, LifecycleKeypointType lifecycleType)
+        protected internal void Call(System.Action f, AspectBehaviourType lifecycleType)
         {
-            OnLifecycleChangedBeforeMethodInvoke(f.Target, f.Method, lifecycleType);
+            Debugger.Assert(AspectBehaviourType.Unknown != lifecycleType, "Invalid arguments.");
+
+            CBase obj = f.Target as CBase;
+            Debugger.Assert(obj, "Invalid arguments.");
+
+            obj._currentLifecycleType = lifecycleType;
+            obj._isCurrentLifecycleTypeRunning = true;
 
             AspectController.Instance.Call(f);
 
-            OnLifecycleChangedAfterMethodInvoke(f.Target, f.Method, lifecycleType);
+            obj._isCurrentLifecycleTypeRunning = false;
         }
 
         /// <summary>
