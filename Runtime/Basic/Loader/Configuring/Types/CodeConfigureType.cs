@@ -31,8 +31,8 @@ namespace GameEngine.Loader.Configuring
     {
         Unknown = 0,
         Comment = 1,
-        Constant = 2,
-        Bean = 3,
-        File = 4,
+        File = 2,
+        Constant = 11,
+        Bean = 12,
     }
 }

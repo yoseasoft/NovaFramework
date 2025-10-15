@@ -23,10 +23,19 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Runtime.CompilerServices;
+namespace GameEngine.Loader.Configuring
+{
+    /// <summary>
+    /// 导入文件配置类型的结构信息
+    /// </summary>
+    public sealed class FileConfigureInfo : BaseConfigureInfo
+    {
+        /// <summary>
+        /// 导入文件名称
+        /// </summary>
+        private string _include;
 
-// 外部友元
-// [assembly: InternalsVisibleTo("Assembly-CSharp")]
-// [assembly: InternalsVisibleTo("Assembly-CSharp-Editor")]
-[assembly: InternalsVisibleTo("Nova.Import")]
-[assembly: InternalsVisibleTo("Nova.Sample")]
+        public override ConfigureInfoType Type => ConfigureInfoType.File;
+        public string Include { get { return _include; } internal set { _include = value; } }
+    }
+}

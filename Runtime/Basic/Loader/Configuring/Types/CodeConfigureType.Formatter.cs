@@ -30,7 +30,7 @@ namespace GameEngine.Loader
     /// </summary>
     public static partial class CodeLoaderObject
     {
-        public static string ToString(Configuring.BaseConfigureInfo targetObject)
+        private static string ToString(Configuring.BaseConfigureInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Type={%i},", targetObject.Type);
@@ -38,7 +38,17 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        public static string ToString(Configuring.BeanConfigureInfo targetObject)
+        internal static string ToString(Configuring.FileConfigureInfo targetObject)
+        {
+            NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
+            fsb.Append("File={");
+            fsb.Append(ToString((Configuring.BaseConfigureInfo) targetObject));
+            fsb.Append("Include={%s},", targetObject.Include);
+            fsb.Append("}");
+            return fsb.ToString();
+        }
+
+        internal static string ToString(Configuring.BeanConfigureInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Bean={");
@@ -53,7 +63,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        public static string ToString(Configuring.BeanFieldConfigureInfo targetObject)
+        private static string ToString(Configuring.BeanFieldConfigureInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("FieldName={%s},", targetObject.FieldName);
@@ -63,7 +73,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        public static string ToString(Configuring.BeanPropertyConfigureInfo targetObject)
+        private static string ToString(Configuring.BeanPropertyConfigureInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("PropertyName={%s},", targetObject.PropertyName);
@@ -73,7 +83,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        public static string ToString(Configuring.BeanComponentConfigureInfo targetObject)
+        private static string ToString(Configuring.BeanComponentConfigureInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("ReferenceName={%s},", targetObject.ReferenceName);

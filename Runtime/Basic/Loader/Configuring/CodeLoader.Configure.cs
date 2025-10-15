@@ -212,6 +212,7 @@ namespace GameEngine.Loader
             do
             {
                 SystemMemoryStream ms = new SystemMemoryStream();
+                Debugger.Info(LogGroupTag.CodeLoader, "指定的实体配置文件‘{%s}’开始进行进入加载队列中……", path);
                 if (false == callback(path, ms))
                 {
                     Debugger.Error(LogGroupTag.CodeLoader, "重载Bean配置数据失败：指定路径‘{%s}’下的配置文件加载回调接口执行异常！", path);
@@ -222,6 +223,9 @@ namespace GameEngine.Loader
                 LoadGeneralConfigure(ms);
 
                 ms.Dispose();
+
+                // 标识该路径加载完成
+                OnConfigureFileLoadingCompleted(path);
 
                 // 获取下一个文件路径
                 path = GetNextUnprocessedConfigureFileLoadPath();
@@ -243,6 +247,7 @@ namespace GameEngine.Loader
 
             do
             {
+                Debugger.Info(LogGroupTag.CodeLoader, "指定的实体配置文件‘{%s}’开始进行进入加载队列中……", path);
                 string text = callback(path);
 
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(text);
@@ -254,6 +259,9 @@ namespace GameEngine.Loader
                 LoadGeneralConfigure(memoryStream);
 
                 memoryStream.Dispose();
+
+                // 标识该路径加载完成
+                OnConfigureFileLoadingCompleted(path);
 
                 // 获取下一个文件路径
                 path = GetNextUnprocessedConfigureFileLoadPath();
@@ -292,13 +300,21 @@ namespace GameEngine.Loader
                 return;
             }
 
-            if (_nodeConfigureInfos.ContainsKey(info.Name))
+            switch (info.Type)
             {
-                Debugger.Warn("The resolve configure info '{0}' was already exist, repeat added it will be override old value.", info.Name);
-                _nodeConfigureInfos.Remove(info.Name);
-            }
+                case Configuring.ConfigureInfoType.File:
+                    AddConfigureFilePath((info as Configuring.FileConfigureInfo)?.Include);
+                    break;
+                case Configuring.ConfigureInfoType.Bean:
+                    if (_nodeConfigureInfos.ContainsKey(info.Name))
+                    {
+                        Debugger.Warn("The resolve configure info '{0}' was already exist, repeat added it will be override old value.", info.Name);
+                        _nodeConfigureInfos.Remove(info.Name);
+                    }
 
-            _nodeConfigureInfos.Add(info.Name, info);
+                    _nodeConfigureInfos.Add(info.Name, info);
+                    break;
+            }
         }
 
         /// <summary>

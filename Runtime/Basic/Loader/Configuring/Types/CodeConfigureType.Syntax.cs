@@ -47,6 +47,8 @@ namespace GameEngine.Loader.Configuring
     internal static class ConfigureNodeAttributeName
     {
         public const string K_NAME = "name";
+        public const string K_PATH = "path";
+        public const string K_INCLUDE = "include";
         public const string K_CLASS_TYPE = "class_type";
         public const string K_PARENT_NAME = "parent_name";
         public const string K_SINGLETON = "singleton";
@@ -59,6 +61,5 @@ namespace GameEngine.Loader.Configuring
         //public const string K_REFERENCE_PROPERTY = "reference_property";
         public const string K_PRIORITY = "priority";
         public const string K_ACTIVATION_ON = "activation_on";
-        public const string K_INCLUDE = "include";
     }
 }
