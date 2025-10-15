@@ -56,11 +56,19 @@ namespace GameEngine
         /// 实体对象内部组件实例的执行统计列表
         /// </summary>
         protected IList<CComponent> _componentExecuteList = null;
+        /// <summary>
+        /// 实体对象内部组件实例的执行数量
+        /// </summary>
+        private int _componentExecuteCount = 0;
 
         /// <summary>
         /// 实体对象内部组件实例的刷新统计列表
         /// </summary>
         protected IList<CComponent> _componentUpdateList = null;
+        /// <summary>
+        /// 实体对象内部组件实例的刷新数量
+        /// </summary>
+        private int _componentUpdateCount = 0;
 
         /// <summary>
         /// 实体对象内部组件实例的输入分发列表
@@ -844,28 +852,20 @@ namespace GameEngine
         /// 检测当前实体对象中是否存在待执行的组件实例
         /// </summary>
         /// <returns>若实体对象存在执行组件则返回true，否则返回false</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         private bool HasMoreExecuteComponents()
         {
-            if (null != _componentExecuteList && _componentExecuteList.Count > 0)
-            {
-                return true;
-            }
-
-            return false;
+            return _componentExecuteCount > 0;
         }
 
         /// <summary>
         /// 检测当前实体对象是否存在待更新的组件实例
         /// </summary>
         /// <returns>若实体对象存在更新组件则返回true，否则返回false</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         private bool HasMoreUpdateComponents()
         {
-            if (null != _componentUpdateList && _componentUpdateList.Count > 0)
-            {
-                return true;
-            }
-
-            return false;
+            return _componentUpdateCount > 0;
         }
 
         /// <summary>
@@ -1152,6 +1152,9 @@ namespace GameEngine
             _componentExecuteList.Remove(component);
             _componentUpdateList.Remove(component);
 
+            _componentExecuteCount = _componentExecuteList.Count;
+            _componentUpdateCount = _componentUpdateList.Count;
+
             // 关闭组件实例
             Call(component.Shutdown, AspectBehaviourType.Shutdown);
 
@@ -1243,6 +1246,7 @@ namespace GameEngine
                 component.HasAspectBehaviourType(AspectBehaviourType.LateExecute))
             {
                 _componentExecuteList.Add(component);
+                _componentExecuteCount = _componentExecuteList.Count;
             }
 
             // 如果组件实现了刷新接口，则添加到刷新队列中
@@ -1254,6 +1258,7 @@ namespace GameEngine
                 component.HasAspectBehaviourType(AspectBehaviourType.LateUpdate))
             {
                 _componentUpdateList.Add(component);
+                _componentUpdateCount = _componentUpdateList.Count;
             }
         }
 
@@ -1263,9 +1268,9 @@ namespace GameEngine
         /// </summary>
         protected void ExecuteAllComponents()
         {
-            for (int n = 0; false == IsOnExpired && n < _componentExecuteList.Count; ++n)
+            for (int n = 0; n < _componentExecuteCount; ++n)
             {
-                Call(_componentExecuteList[n].Execute);
+                Call(_componentExecuteList[n].Execute, AspectBehaviourType.Execute);
             }
         }
 
@@ -1275,9 +1280,9 @@ namespace GameEngine
         /// </summary>
         protected void LateExecuteAllComponents()
         {
-            for (int n = 0; false == IsOnExpired && n < _componentExecuteList.Count; ++n)
+            for (int n = 0; n < _componentExecuteCount; ++n)
             {
-                Call(_componentExecuteList[n].LateExecute);
+                Call(_componentExecuteList[n].LateExecute, AspectBehaviourType.LateExecute);
             }
         }
 
@@ -1287,9 +1292,9 @@ namespace GameEngine
         /// </summary>
         protected void UpdateAllComponents()
         {
-            for (int n = 0; false == IsOnExpired && n < _componentUpdateList.Count; ++n)
+            for (int n = 0; n < _componentUpdateCount; ++n)
             {
-                Call(_componentUpdateList[n].Update);
+                Call(_componentUpdateList[n].Update, AspectBehaviourType.Update);
             }
         }
 
@@ -1299,9 +1304,9 @@ namespace GameEngine
         /// </summary>
         protected void LateUpdateAllComponents()
         {
-            for (int n = 0; false == IsOnExpired && n < _componentUpdateList.Count; ++n)
+            for (int n = 0; n < _componentUpdateCount; ++n)
             {
-                Call(_componentUpdateList[n].LateUpdate);
+                Call(_componentUpdateList[n].LateUpdate, AspectBehaviourType.LateUpdate);
             }
         }
 
