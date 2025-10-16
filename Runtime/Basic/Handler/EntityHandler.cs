@@ -238,7 +238,7 @@ namespace GameEngine
             }
 
             // 初始化实体实例
-            Call(entity.Initialize);
+            Call(entity, entity.Initialize, AspectBehaviourType.Initialize);
 
             // 调用系统初始化回调接口
             CallInitializeForSystem(entity);
@@ -283,7 +283,7 @@ namespace GameEngine
             CallCleanupForSystem(entity);
 
             // 清理实体实例
-            Call(entity.Cleanup);
+            Call(entity, entity.Cleanup, AspectBehaviourType.Cleanup);
         }
 
         /// <summary>
@@ -335,7 +335,7 @@ namespace GameEngine
             }
 
             // 唤醒实例
-            Call(entity.Awake);
+            Call(entity, entity.Awake, AspectBehaviourType.Awake);
 
             BeanController.Instance.RegBeanLifecycleNotification(AspectBehaviourType.Start, entity);
         }
@@ -356,7 +356,7 @@ namespace GameEngine
             BeanController.Instance.UnregBeanLifecycleNotification(entity);
 
             // 销毁实例
-            Call(entity.Destroy);
+            Call(entity, entity.Destroy, AspectBehaviourType.Destroy);
         }
 
         /// <summary>
@@ -372,7 +372,7 @@ namespace GameEngine
             }
 
             // 开始运行实例
-            Call(entity.Start);
+            Call(entity, entity.Start, AspectBehaviourType.Start);
 
             // 激活执行接口的对象实例，放入到执行队列中
             // if (typeof(IExecuteActivation).IsAssignableFrom(entity.GetType()))
@@ -438,7 +438,7 @@ namespace GameEngine
                 }
 
                 // 对象执行操作
-                Call(entity.Execute);
+                Call(entity, entity.Execute, AspectBehaviourType.Execute);
             }
         }
 
@@ -457,7 +457,7 @@ namespace GameEngine
                 }
 
                 // 对象后置执行操作
-                Call(entity.LateExecute);
+                Call(entity, entity.LateExecute, AspectBehaviourType.LateExecute);
             }
         }
 
@@ -476,7 +476,7 @@ namespace GameEngine
                 }
 
                 // 对象刷新操作
-                Call(entity.Update);
+                Call(entity, entity.Update, AspectBehaviourType.Update);
 
                 // 调用系统刷新回调接口
                 CallUpdateForSystem(entity);
@@ -498,7 +498,7 @@ namespace GameEngine
                 }
 
                 // 对象后置刷新操作
-                Call(entity.LateUpdate);
+                Call(entity, entity.LateUpdate, AspectBehaviourType.LateUpdate);
 
                 // 调用系统后置刷新回调接口
                 CallLateUpdateForSystem(entity);

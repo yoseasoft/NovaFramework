@@ -313,16 +313,16 @@ namespace GameEngine
             CObject obj = CreateInstance(objectType) as CObject;
 
             // 初始化实体实例
-            Call(obj.Initialize);
+            Call(obj, obj.Initialize, AspectBehaviourType.Initialize);
 
             // 添加实例到管理容器中
             _objects.Add(obj);
 
             // 启动对象实例
-            Call(obj.Startup);
+            Call(obj, obj.Startup, AspectBehaviourType.Startup);
 
             // 唤醒实例
-            Call(obj.Awake);
+            Call(obj, obj.Awake, AspectBehaviourType.Awake);
 
             BeanController.Instance.RegBeanLifecycleNotification(AspectBehaviourType.Start, obj);
 
@@ -348,10 +348,10 @@ namespace GameEngine
             BeanController.Instance.UnregBeanLifecycleNotification(obj);
 
             // 销毁实例
-            Call(obj.Destroy);
+            Call(obj, obj.Destroy, AspectBehaviourType.Destroy);
 
             // 关闭基础对象实例
-            Call(obj.Shutdown);
+            Call(obj, obj.Shutdown, AspectBehaviourType.Shutdown);
 
             // 从管理容器中移除实例
             _objectExecuteList.Remove(obj);
@@ -359,7 +359,7 @@ namespace GameEngine
             _objects.Remove(obj);
 
             // 移除实例
-            Call(obj.Cleanup);
+            Call(obj, obj.Cleanup, AspectBehaviourType.Cleanup);
 
             // 回收对象实例
             ReleaseInstance(obj);
@@ -504,7 +504,7 @@ namespace GameEngine
             }
 
             // 开始运行实例
-            Call(obj.Start);
+            Call(obj, obj.Start, AspectBehaviourType.Start);
 
             // 激活执行接口的对象实例，放入到执行队列中
             //if (typeof(IExecuteActivation).IsAssignableFrom(obj.GetType()))

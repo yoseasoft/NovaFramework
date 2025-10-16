@@ -410,6 +410,31 @@ namespace GameEngine
         /// <summary>
         /// 支持切面控制的函数调用接口
         /// </summary>
+        /// <param name="obj">目标对象</param>
+        /// <param name="f">目标函数</param>
+        protected void Call(CBase obj, System.Action f)
+        {
+            Debugger.Assert(null != obj && obj == f.Target, "Invalid arguments.");
+
+            obj.Call(f);
+        }
+
+        /// <summary>
+        /// 支持切面控制的函数调用接口
+        /// </summary>
+        /// <param name="obj">目标对象</param>
+        /// <param name="f">目标函数</param>
+        /// <param name="lifecycleType">生命周期类型</param>
+        protected void Call(CBase obj, System.Action f, AspectBehaviourType lifecycleType)
+        {
+            Debugger.Assert(null != obj && obj == f.Target, "Invalid arguments.");
+
+            obj.Call(f, lifecycleType);
+        }
+
+        /// <summary>
+        /// 支持切面控制的函数调用接口
+        /// </summary>
         /// <param name="f">目标函数</param>
         protected void Call(System.Action f)
         {

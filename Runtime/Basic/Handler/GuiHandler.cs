@@ -294,7 +294,7 @@ namespace GameEngine
             }
 
             // 启动视图对象
-            Call(view.Startup);
+            Call(view, view.Startup, AspectBehaviourType.Startup);
 
             // 唤醒视图对象
             CallEntityAwakeProcess(view);

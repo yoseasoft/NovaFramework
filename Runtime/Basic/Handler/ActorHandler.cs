@@ -317,7 +317,7 @@ namespace GameEngine
             _actors.Add(obj);
 
             // 启动对象实例
-            Call(obj.Startup);
+            Call(obj, obj.Startup, AspectBehaviourType.Startup);
 
             // 唤醒对象实例
             CallEntityAwakeProcess(obj);
@@ -345,7 +345,7 @@ namespace GameEngine
             CallEntityDestroyProcess(actor);
 
             // 关闭角色对象实例
-            Call(actor.Shutdown);
+            Call(actor, actor.Shutdown, AspectBehaviourType.Shutdown);
 
             // 从管理容器中移除实例
             _actors.Remove(actor);

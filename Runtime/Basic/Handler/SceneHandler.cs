@@ -106,7 +106,7 @@ namespace GameEngine
             if (null != scene)
             {
                 CallEntityDestroyProcess(scene);
-                Call(scene.Shutdown);
+                Call(scene, scene.Shutdown, AspectBehaviourType.Shutdown);
                 RemoveEntity(scene);
 
                 // 回收场景实例
@@ -315,7 +315,7 @@ namespace GameEngine
                 _Profiler.CallStat(Profiler.Statistics.StatCode.SceneExit, scene);
 
                 CallEntityDestroyProcess(scene);
-                Call(scene.Shutdown);
+                Call(scene, scene.Shutdown, AspectBehaviourType.Shutdown);
                 RemoveEntity(scene);
 
                 // 回收场景实例
@@ -336,7 +336,7 @@ namespace GameEngine
             _waitingSceneType = null;
 
             // 设置当前场景后再启动场景
-            Call(scene.Startup);
+            Call(scene, scene.Startup, AspectBehaviourType.Startup);
 
             // 唤醒场景对象实例
             CallEntityAwakeProcess(scene);
