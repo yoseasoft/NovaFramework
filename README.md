@@ -36,5 +36,37 @@ git clone https://github.com/yoseasoft/NovaFramework.git
 
 更新版本号说明，如：1.0.0，第一位代表大版本，第二位代表框架的使用有修改，第三位代表修订版本。
 
+## 新手指南
+
+如果您从未了解过该框架，建议从[示例工程](https://github.com/yoseasoft/nova-unity)开始熟悉如何搭建基础环境，  
+以及框架的简单使用方法，从而帮助您快速上手。  
+
+## 社区与支持
+
+- 💬 **QQ讨论群**:
+- 🐛 **问题反馈**: [GitHub Issues](https://github.com/yoseasoft/NovaFramework/issues)
+- 💡 **功能建议**: [GitHub Discussions](https://github.com/yoseasoft/NovaFramework/discussions)
+- 📧 **邮件联系**: yoseasoft@outlook.com
+
+## 开源协议
+
+本项目采用 [MIT License](LICENSE.md) 开源协议。
+
+## 作者信息
+
+**Hurley**
+- 📧 Email: yoseasoft@outlook.com
+- 🌐 Website: 
+- 🐙 GitHub: [@yoseasoft](https://github.com/yoseasoft)
+
+---
+
+<div align="center">
+
+**如果这个项目对您有帮助，请给我们一个 ⭐ Star！**
+
+[⬆ 回到顶部](#nova-framework)
+
+</div>
 
 

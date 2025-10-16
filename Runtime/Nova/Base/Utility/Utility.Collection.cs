@@ -289,6 +289,18 @@ namespace NovaEngine
             }
 
             /// <summary>
+            /// 检测列表容器中是否存在指定类型的对象实例
+            /// </summary>
+            /// <typeparam name="TSource">容器数据类型</typeparam>
+            /// <typeparam name="TValue">目标数据类型</typeparam>
+            /// <param name="array">列表容器</param>
+            /// <returns>若存在指定类型的对象实例则返回true，否则返回false</returns>
+            public static bool ContainsType<TSource, TValue>(IList<TSource> array)
+            {
+                return array.OfType<TValue>().Any();
+            }
+
+            /// <summary>
             /// 获得传入元素某个符合条件的所有对象
             /// </summary>
             /// <typeparam name="T">数据类型</typeparam>
@@ -331,6 +343,42 @@ namespace NovaEngine
 
                 SystemArray.Resize(ref dstArray, idx);
                 return dstArray;
+            }
+
+            /// <summary>
+            /// 获取字典容器中的第一个元素
+            /// </summary>
+            /// <typeparam name="TKey">键数据类型</typeparam>
+            /// <typeparam name="TValue">值数据类型</typeparam>
+            /// <param name="dictionary">字典容器对象实例</param>
+            /// <returns>返回字典容器中的第一个元素</returns>
+            public static KeyValuePair<TKey, TValue> First<TKey, TValue>(IDictionary<TKey, TValue> dictionary)
+            {
+                return dictionary.First();
+            }
+
+            /// <summary>
+            /// 获取字典容器中的第一个元素的键
+            /// </summary>
+            /// <typeparam name="TKey">键数据类型</typeparam>
+            /// <typeparam name="TValue">值数据类型</typeparam>
+            /// <param name="dictionary">字典容器对象实例</param>
+            /// <returns>返回字典容器中的第一个元素的键</returns>
+            public static TKey FirstKey<TKey, TValue>(IDictionary<TKey, TValue> dictionary)
+            {
+                return dictionary.First().Key;
+            }
+
+            /// <summary>
+            /// 获取字典容器中的第一个元素的值
+            /// </summary>
+            /// <typeparam name="TKey">键数据类型</typeparam>
+            /// <typeparam name="TValue">值数据类型</typeparam>
+            /// <param name="dictionary">字典容器对象实例</param>
+            /// <returns>返回字典容器中的第一个元素的值</returns>
+            public static TValue FirstValue<TKey, TValue>(IDictionary<TKey, TValue> dictionary)
+            {
+                return dictionary.First().Value;
             }
 
             #endregion

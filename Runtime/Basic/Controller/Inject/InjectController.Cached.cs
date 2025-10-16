@@ -23,7 +23,6 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Linq;
 
 using SystemType = System.Type;
 
@@ -254,7 +253,7 @@ namespace GameEngine
         {
             while (_singletonBeanInstanceCaches.Count > 0)
             {
-                string beanName = _singletonBeanInstanceCaches.First().Key;
+                string beanName = NovaEngine.Utility.Collection.FirstKey<string, CBean>(_singletonBeanInstanceCaches);
                 ReleaseSingletonBeanInstanceFromCache(beanName);
             }
         }
