@@ -59,7 +59,7 @@ namespace GameEngine.Loader
                 if (typeof(DeclareSceneClassAttribute) == attrType)
                 {
                     DeclareSceneClassAttribute _attr = (DeclareSceneClassAttribute) attr;
-                    info.SceneName = _attr.SceneName;
+                    info.SceneName = _attr.Name;
                     info.Priority = _attr.Priority;
                 }
                 else if (typeof(SceneAutoDisplayOnTargetViewAttribute) == attrType)

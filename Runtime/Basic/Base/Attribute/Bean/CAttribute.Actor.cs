@@ -32,39 +32,16 @@ namespace GameEngine
     /// 角色实现类声明属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class DeclareActorClassAttribute : SystemAttribute
+    public class DeclareActorClassAttribute : DeclareEntityClassAttribute
     {
-        /// <summary>
-        /// 角色名称
-        /// </summary>
-        private readonly string _actorName;
-        /// <summary>
-        /// 角色优先级
-        /// </summary>
-        private readonly int _priority;
-
-        /// <summary>
-        /// 角色名称获取函数
-        /// </summary>
-        public string ActorName => _actorName;
-
-        /// <summary>
-        /// 角色优先级获取函数
-        /// </summary>
-        public int Priority => _priority;
-
         public DeclareActorClassAttribute(string actorName) : this(actorName, 0)
-        {
-        }
+        { }
 
         public DeclareActorClassAttribute(int priority) : this(string.Empty, priority)
-        {
-        }
+        { }
 
-        public DeclareActorClassAttribute(string actorName, int priority) : base()
+        public DeclareActorClassAttribute(string actorName, int priority) : base(actorName, priority)
         {
-            _actorName = actorName ?? string.Empty;
-            _priority = priority;
         }
     }
 }

@@ -40,6 +40,7 @@ git clone https://github.com/yoseasoft/NovaFramework.git
 
 如果您从未了解过该框架，建议从[示例工程](https://github.com/yoseasoft/nova-unity)开始熟悉如何搭建基础环境，  
 以及框架的简单使用方法，从而帮助您快速上手。  
+或者通过[教程案例](https://github.com/yoseasoft/com.novaframework.unity.sample)来了解具体模块的使用方式。  
 
 ## 社区与支持
 

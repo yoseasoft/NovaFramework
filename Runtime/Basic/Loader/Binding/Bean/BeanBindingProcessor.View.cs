@@ -61,7 +61,13 @@ namespace GameEngine
                 return;
             }
 
-            Instance.RegisterViewClass(viewCodeInfo.ViewName, viewCodeInfo.ClassType, viewCodeInfo.Priority);
+            Instance.RegisterViewClass(viewCodeInfo.ViewName, viewCodeInfo.ClassType, viewCodeInfo.Priority, viewCodeInfo.FormType);
+
+            // 添加视图绑定分组信息
+            if (false == string.IsNullOrEmpty(viewCodeInfo.GroupName))
+            {
+                Instance.AddViewBindingGroupName(viewCodeInfo.ClassType, viewCodeInfo.GroupName);
+            }
         }
 
         /// <summary>
@@ -71,6 +77,8 @@ namespace GameEngine
         private static void UnloadAllCodeTypes()
         {
             Instance.UnregisterAllViewClasses();
+
+            Instance.RemoveAllViewGroups();
         }
     }
 }

@@ -30,6 +30,38 @@ using SystemAttributeTargets = System.AttributeTargets;
 namespace GameEngine
 {
     /// <summary>
+    /// 实体类声明属性类型定义
+    /// </summary>
+    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public abstract class DeclareEntityClassAttribute : SystemAttribute
+    {
+        /// <summary>
+        /// 实体名称
+        /// </summary>
+        private readonly string _name;
+        /// <summary>
+        /// 实体优先级
+        /// </summary>
+        private readonly int _priority;
+
+        /// <summary>
+        /// 实体名称获取函数
+        /// </summary>
+        public string Name => _name;
+
+        /// <summary>
+        /// 实体优先级获取函数
+        /// </summary>
+        public int Priority => _priority;
+
+        protected DeclareEntityClassAttribute(string name, int priority) : base()
+        {
+            _name = name ?? string.Empty;
+            _priority = priority;
+        }
+    }
+
+    /// <summary>
     /// 实体自动挂载的目标组件的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = true, Inherited = true)]

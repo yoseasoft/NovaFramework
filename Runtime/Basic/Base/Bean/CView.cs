@@ -4,6 +4,7 @@
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +29,23 @@ using UniTask = Cysharp.Threading.Tasks.UniTask;
 
 namespace GameEngine
 {
+    /// <summary>
+    /// 视图对象窗口类型的枚举定义
+    /// </summary>
+    public enum ViewFormType : byte
+    {
+        /// <summary>
+        /// 无效
+        /// </summary>
+        Unknown = 0,
+
+        UGUI,
+
+        FairyGUI,
+
+        UIToolkit,
+    }
+
     /// <summary>
     /// 视图对象抽象类，对用户界面对象上下文进行封装及调度管理
     /// 

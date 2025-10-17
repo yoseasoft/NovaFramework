@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -41,6 +42,14 @@ namespace GameEngine.Loader.Structuring
         /// 视图优先级
         /// </summary>
         public int Priority { get; internal set; }
+        /// <summary>
+        /// 视图分组名称
+        /// </summary>
+        public string GroupName { get; internal set; }
+        /// <summary>
+        /// 视图窗口类型
+        /// </summary>
+        public ViewFormType FormType { get; internal set; }
 
         /// <summary>
         /// 共生关系的视图名称列表

@@ -59,7 +59,7 @@ namespace GameEngine.Loader
                 if (typeof(DeclareActorClassAttribute) == attrType)
                 {
                     DeclareActorClassAttribute _attr = (DeclareActorClassAttribute) attr;
-                    info.ActorName = _attr.ActorName;
+                    info.ActorName = _attr.Name;
                     info.Priority = _attr.Priority;
                 }
                 else

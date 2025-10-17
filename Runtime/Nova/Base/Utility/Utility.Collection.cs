@@ -88,6 +88,17 @@ namespace NovaEngine
             }
 
             /// <summary>
+            /// 集合类型数据转换为数组类型数据的接口函数
+            /// </summary>
+            /// <typeparam name="T">数据类型</typeparam>
+            /// <param name="source">集合数据容器</param>
+            /// <returns>返回转换后的数组类型数据容器</returns>
+            public static T[] ToArray<T>(HashSet<T> source)
+            {
+                return source?.ToArray();
+            }
+
+            /// <summary>
             /// 通过字典类型数据的键信息转换为数组类型数据的接口函数
             /// </summary>
             /// <typeparam name="K">字典的键类型</typeparam>
@@ -379,6 +390,17 @@ namespace NovaEngine
             public static TValue FirstValue<TKey, TValue>(IDictionary<TKey, TValue> dictionary)
             {
                 return dictionary.First().Value;
+            }
+
+            /// <summary>
+            /// 获取集合容器中的第一个元素
+            /// </summary>
+            /// <typeparam name="T">数据类型</typeparam>
+            /// <param name="source">集合容器对象实例</param>
+            /// <returns>返回集合容器中的第一个元素</returns>
+            public static T FirstOrDefault<T>(HashSet<T> source)
+            {
+                return source.FirstOrDefault();
             }
 
             #endregion

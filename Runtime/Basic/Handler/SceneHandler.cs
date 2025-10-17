@@ -44,15 +44,6 @@ namespace GameEngine
         private readonly object _lock = new object();
 
         /// <summary>
-        /// 场景对象类型映射注册管理容器
-        /// </summary>
-        private readonly IDictionary<string, SystemType> _sceneClassTypes;
-        /// <summary>
-        /// 场景优先级映射注册管理容器
-        /// </summary>
-        private readonly IDictionary<string, int> _scenePriorities;
-
-        /// <summary>
         /// 当前运行的场景对象类型
         /// </summary>
         private SystemType _currentSceneType;
@@ -71,9 +62,6 @@ namespace GameEngine
         /// </summary>
         public SceneHandler()
         {
-            // 初始化场景类注册容器
-            _sceneClassTypes = new Dictionary<string, SystemType>();
-            _scenePriorities = new Dictionary<string, int>();
         }
 
         /// <summary>
@@ -81,9 +69,6 @@ namespace GameEngine
         /// </summary>
         ~SceneHandler()
         {
-            // 清理场景类注册容器
-            _sceneClassTypes.Clear();
-            _scenePriorities.Clear();
         }
 
         /// <summary>
@@ -205,7 +190,7 @@ namespace GameEngine
         public void ReplaceScene(string sceneName)
         {
             SystemType sceneType;
-            if (_sceneClassTypes.TryGetValue(sceneName, out sceneType))
+            if (_entityClassTypes.TryGetValue(sceneName, out sceneType))
             {
                 ReplaceScene(sceneType);
             }
@@ -238,7 +223,7 @@ namespace GameEngine
                 return;
             }
 
-            if (false == _sceneClassTypes.Values.Contains(sceneType))
+            if (false == _entityClassTypes.Values.Contains(sceneType))
             {
                 Debugger.Error("Could not found any correct scene class with target type '{0}', replaced scene failed.", sceneType.FullName);
                 return;
@@ -260,7 +245,7 @@ namespace GameEngine
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
         private CScene CreateScene(SystemType sceneType)
         {
-            if (false == _sceneClassTypes.Values.Contains(sceneType))
+            if (false == _entityClassTypes.Values.Contains(sceneType))
             {
                 Debugger.Error("Unknown scene type '{0}', create the scene instance failed.", sceneType.FullName);
                 return null;
@@ -277,7 +262,7 @@ namespace GameEngine
         public CScene ChangeScene(string sceneName)
         {
             SystemType sceneType;
-            if (_sceneClassTypes.TryGetValue(sceneName, out sceneType))
+            if (_entityClassTypes.TryGetValue(sceneName, out sceneType))
             {
                 return ChangeScene(sceneType);
             }
@@ -396,7 +381,7 @@ namespace GameEngine
         /// <returns>返回对应场景的名称，若场景不存在则返回null</returns>
         internal string GetSceneNameForType(SystemType sceneType)
         {
-            foreach (KeyValuePair<string, SystemType> pair in _sceneClassTypes)
+            foreach (KeyValuePair<string, SystemType> pair in _entityClassTypes)
             {
                 if (pair.Value == sceneType)
                 {
@@ -423,23 +408,17 @@ namespace GameEngine
 
             if (false == typeof(CScene).IsAssignableFrom(clsType))
             {
-                Debugger.Warn("The register type '{0}' must be inherited from 'CScene'.", clsType.Name);
+                Debugger.Warn("The register type '{%t}' must be inherited from 'CScene'.", clsType);
                 return false;
             }
 
-            if (_sceneClassTypes.ContainsKey(sceneName))
+            if (false == RegisterEntityClass(sceneName, clsType, priority))
             {
-                Debugger.Warn("The scene name '{0}' was already registed, repeat add will be override old name.", sceneName);
-                _sceneClassTypes.Remove(sceneName);
+                Debugger.Warn("The scene class '{%t}' was already registed, repeat added it failed.", clsType);
+                return false;
             }
 
-            _sceneClassTypes.Add(sceneName, clsType);
-            if (priority > 0)
-            {
-                _scenePriorities.Add(sceneName, priority);
-            }
-
-            // Debugger.Info("Register new scene class type '{0}' with target name '{1}'.", clsType.FullName, sceneName);
+            // Debugger.Info("Register new scene class type '{%t}' with target name '{%s}'.", clsType, sceneName);
 
             return true;
         }
@@ -449,8 +428,7 @@ namespace GameEngine
         /// </summary>
         private void UnregisterAllSceneClasses()
         {
-            _sceneClassTypes.Clear();
-            _scenePriorities.Clear();
+            UnregisterAllEntityClasses();
         }
 
         #endregion

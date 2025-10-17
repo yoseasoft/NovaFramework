@@ -23,7 +23,6 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Linq;
 
 using SystemArray = System.Array;
 
@@ -132,7 +131,7 @@ namespace NovaEngine
                 return SystemArray.Empty<TValue>();
             }
 
-            return set.ToArray();
+            return Utility.Collection.ToArray<TValue>(set);
         }
 
         /// <summary>
@@ -146,7 +145,7 @@ namespace NovaEngine
             HashSet<TValue> set;
             if (TryGetValue(key, out set) && set.Count > 0)
             {
-                return set.FirstOrDefault();
+                return Utility.Collection.FirstOrDefault<TValue>(set);
             }
 
             return default(TValue);

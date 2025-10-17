@@ -32,39 +32,16 @@ namespace GameEngine
     /// 场景实现类声明属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class DeclareSceneClassAttribute : SystemAttribute
+    public class DeclareSceneClassAttribute : DeclareEntityClassAttribute
     {
-        /// <summary>
-        /// 场景名称
-        /// </summary>
-        private readonly string _sceneName;
-        /// <summary>
-        /// 场景优先级
-        /// </summary>
-        private readonly int _priority;
-
-        /// <summary>
-        /// 场景名称获取函数
-        /// </summary>
-        public string SceneName => _sceneName;
-
-        /// <summary>
-        /// 场景优先级获取函数
-        /// </summary>
-        public int Priority => _priority;
-
         public DeclareSceneClassAttribute(string sceneName) : this(sceneName, 0)
-        {
-        }
+        { }
 
         public DeclareSceneClassAttribute(int priority) : this(string.Empty, priority)
-        {
-        }
+        { }
 
-        public DeclareSceneClassAttribute(string sceneName, int priority) : base()
+        public DeclareSceneClassAttribute(string sceneName, int priority) : base(sceneName, priority)
         {
-            _sceneName = sceneName ?? string.Empty;
-            _priority = priority;
         }
     }
 

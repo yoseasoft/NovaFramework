@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -32,39 +33,61 @@ namespace GameEngine
     /// 视图实现类声明属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class DeclareViewClassAttribute : SystemAttribute
+    public class DeclareViewClassAttribute : DeclareEntityClassAttribute
     {
         /// <summary>
-        /// 视图名称
+        /// 视图窗口类型
         /// </summary>
-        private readonly string _viewName;
-        /// <summary>
-        /// 视图优先级
-        /// </summary>
-        private readonly int _priority;
+        private readonly ViewFormType _formType;
 
         /// <summary>
-        /// 视图名称获取函数
+        /// 视图窗口类型获取函数
         /// </summary>
-        public string ViewName => _viewName;
-
-        /// <summary>
-        /// 视图优先级获取函数
-        /// </summary>
-        public int Priority => _priority;
+        public ViewFormType FormType => _formType;
 
         public DeclareViewClassAttribute(string viewName) : this(viewName, 0)
-        {
-        }
+        { }
 
-        public DeclareViewClassAttribute(int priority) : this(string.Empty, priority)
-        {
-        }
+        public DeclareViewClassAttribute(int priority) : this(null, priority)
+        { }
 
-        public DeclareViewClassAttribute(string viewName, int priority) : base()
+        public DeclareViewClassAttribute(ViewFormType formType) : this(null, formType)
+        { }
+
+        public DeclareViewClassAttribute(string viewName, int priority) : this(viewName, priority, ViewFormType.Unknown)
+        { }
+
+        public DeclareViewClassAttribute(string viewName, ViewFormType formType) : this(viewName, 0, formType)
+        { }
+
+        public DeclareViewClassAttribute(int priority, ViewFormType formType) : this(null, priority, formType)
+        { }
+
+        public DeclareViewClassAttribute(string viewName, int priority, ViewFormType formType) : base(viewName, priority)
         {
-            _viewName = viewName ?? string.Empty;
-            _priority = priority;
+            _formType = formType;
+        }
+    }
+
+    /// <summary>
+    /// 视图分组策略类声明属性类型定义
+    /// </summary>
+    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class CViewGroupAttribute : SystemAttribute
+    {
+        /// <summary>
+        /// 视图分组名称
+        /// </summary>
+        private readonly string _groupName;
+
+        /// <summary>
+        /// 视图分组名称获取函数
+        /// </summary>
+        public string GroupName => _groupName;
+
+        public CViewGroupAttribute(string groupName) : base()
+        {
+            _groupName = groupName;
         }
     }
 

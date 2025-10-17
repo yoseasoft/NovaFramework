@@ -39,18 +39,9 @@ namespace GameEngine
     public sealed partial class ActorHandler : EntityHandler
     {
         /// <summary>
-        /// 角色对象类型映射注册管理容器
-        /// </summary>
-        private readonly IDictionary<string, SystemType> _actorClassTypes;
-        /// <summary>
-        /// 角色优先级映射注册管理容器
-        /// </summary>
-        private readonly IDictionary<string, int> _actorPriorities;
-
-        /// <summary>
         /// 通过当前模块实例化的对象实例管理容器
         /// </summary>
-        private readonly IList<CActor> _actors;
+        private IList<CActor> _actors;
 
         /// <summary>
         /// 句柄对象的单例访问获取接口
@@ -62,10 +53,6 @@ namespace GameEngine
         /// </summary>
         public ActorHandler()
         {
-            // 初始化对象类注册容器
-            _actorClassTypes = new Dictionary<string, SystemType>();
-            _actorPriorities = new Dictionary<string, int>();
-            _actors = new List<CActor>();
         }
 
         /// <summary>
@@ -73,10 +60,6 @@ namespace GameEngine
         /// </summary>
         ~ActorHandler()
         {
-            // 清理对象类注册容器
-            _actorClassTypes.Clear();
-            _actorPriorities.Clear();
-            _actors.Clear();
         }
 
         /// <summary>
@@ -86,6 +69,9 @@ namespace GameEngine
         protected override bool OnInitialize()
         {
             if (false == base.OnInitialize()) return false;
+
+            // 初始化角色实例容器
+            _actors = new List<CActor>();
 
             return true;
         }
@@ -168,21 +154,17 @@ namespace GameEngine
 
             if (false == typeof(CActor).IsAssignableFrom(clsType))
             {
-                Debugger.Warn("The register type {0} must be inherited from 'CActor'.", clsType.Name);
+                Debugger.Warn("The register type '{%t}' must be inherited from 'CActor'.", clsType);
                 return false;
             }
 
-            if (_actorClassTypes.ContainsKey(actorName))
+            if (false == RegisterEntityClass(actorName, clsType, priority))
             {
-                Debugger.Warn("The actor name {0} was already registed, repeat add will be override old name.", actorName);
-                _actorClassTypes.Remove(actorName);
+                Debugger.Warn("The scene class '{%t}' was already registed, repeat added it failed.", clsType);
+                return false;
             }
 
-            _actorClassTypes.Add(actorName, clsType);
-            if (priority > 0)
-            {
-                _actorPriorities.Add(actorName, priority);
-            }
+            // Debugger.Info("Register new actor class type '{%t}' with target name '{%s}'.", clsType, actorName);
 
             return true;
         }
@@ -192,8 +174,7 @@ namespace GameEngine
         /// </summary>
         private void UnregisterAllActorClasses()
         {
-            _actorClassTypes.Clear();
-            _actorPriorities.Clear();
+            UnregisterAllEntityClasses();
         }
 
         #endregion
@@ -208,7 +189,7 @@ namespace GameEngine
         public IList<CActor> GetActor(string actorName)
         {
             SystemType actorType = null;
-            if (_actorClassTypes.TryGetValue(actorName, out actorType))
+            if (_entityClassTypes.TryGetValue(actorName, out actorType))
             {
                 return GetActor(actorType);
             }
@@ -270,7 +251,7 @@ namespace GameEngine
         public CActor CreateActor(string actorName)
         {
             SystemType actorType = null;
-            if (false == _actorClassTypes.TryGetValue(actorName, out actorType))
+            if (false == _entityClassTypes.TryGetValue(actorName, out actorType))
             {
                 Debugger.Warn("Could not found any correct actor class with target name '{0}', created actor failed.", actorName);
                 return null;
@@ -299,7 +280,7 @@ namespace GameEngine
         public CActor CreateActor(SystemType actorType)
         {
             Debugger.Assert(null != actorType, "Invalid arguments.");
-            if (false == _actorClassTypes.Values.Contains(actorType))
+            if (false == _entityClassTypes.Values.Contains(actorType))
             {
                 Debugger.Error("Could not found any correct actor class with target type '{0}', created actor failed.", actorType.FullName);
                 return null;
@@ -364,7 +345,7 @@ namespace GameEngine
         internal void RemoveActor(string actorName)
         {
             SystemType actorType = null;
-            if (_actorClassTypes.TryGetValue(actorName, out actorType))
+            if (_entityClassTypes.TryGetValue(actorName, out actorType))
             {
                 RemoveActor(actorType);
             }
@@ -439,7 +420,7 @@ namespace GameEngine
         public void DestroyActor(string actorName)
         {
             SystemType actorType = null;
-            if (_actorClassTypes.TryGetValue(actorName, out actorType))
+            if (_entityClassTypes.TryGetValue(actorName, out actorType))
             {
                 DestroyActor(actorType);
             }
@@ -515,7 +496,7 @@ namespace GameEngine
         /// <returns>返回对应角色的名称，若角色不存在则返回null</returns>
         internal string GetActorNameForType(SystemType actorType)
         {
-            foreach (KeyValuePair<string, SystemType> pair in _actorClassTypes)
+            foreach (KeyValuePair<string, SystemType> pair in _entityClassTypes)
             {
                 if (pair.Value == actorType)
                 {

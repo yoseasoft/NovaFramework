@@ -292,6 +292,8 @@ namespace GameEngine.Loader
             fsb.Append(ToString((Structuring.EntityCodeInfo) targetObject));
             fsb.Append("Name={%s},", targetObject.ViewName);
             fsb.Append("Priority={%d},", targetObject.Priority);
+            fsb.Append("GroupName={%s},", targetObject.GroupName);
+            fsb.Append("FormType={%i},", targetObject.FormType);
             fsb.Append("GroupViews={{{%s}}},", targetObject.GroupOfSymbioticViewNames);
             fsb.Append("}");
             return fsb.ToString();

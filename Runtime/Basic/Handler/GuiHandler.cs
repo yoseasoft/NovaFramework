@@ -4,6 +4,7 @@
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +26,6 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Linq;
 
 using SystemType = System.Type;
 
@@ -38,19 +38,14 @@ namespace GameEngine
     public sealed partial class GuiHandler : EntityHandler
     {
         /// <summary>
-        /// 视图对象类型映射注册管理容器
+        /// 视图窗口类型映射注册管理容器
         /// </summary>
-        private readonly IDictionary<string, SystemType> _viewClassTypes;
-
-        /// <summary>
-        /// 视图优先级映射注册管理容器
-        /// </summary>
-        private readonly IDictionary<string, int> _viewPriorities;
+        private IDictionary<SystemType, ViewFormType> _viewFormTypes;
 
         /// <summary>
         /// 当前环境下所有实例化的视图对象
         /// </summary>
-        private readonly IList<CView> _views;
+        private IList<CView> _views;
 
         /// <summary>
         /// 句柄对象的单例访问获取接口
@@ -62,12 +57,6 @@ namespace GameEngine
         /// </summary>
         public GuiHandler()
         {
-            // 初始化视图类注册容器
-            _viewClassTypes = new Dictionary<string, SystemType>();
-            _viewPriorities = new Dictionary<string, int>();
-
-            // 初始化视图实例容器
-            _views = new List<CView>();
         }
 
         /// <summary>
@@ -75,9 +64,6 @@ namespace GameEngine
         /// </summary>
         ~GuiHandler()
         {
-            // 清理视图类注册容器
-            _viewClassTypes.Clear();
-            _viewPriorities.Clear();
         }
 
         /// <summary>
@@ -87,6 +73,12 @@ namespace GameEngine
         protected override bool OnInitialize()
         {
             if (false == base.OnInitialize()) return false;
+
+            // 初始化视图窗口类型注册列表
+            _viewFormTypes = new Dictionary<SystemType, ViewFormType>();
+
+            // 初始化视图实例容器
+            _views = new List<CView>();
 
             // 启动视图辅助工具类
             FormHelper.Startup();
@@ -171,27 +163,33 @@ namespace GameEngine
         /// <param name="viewName">视图名称</param>
         /// <param name="clsType">视图类型</param>
         /// <param name="priority">视图优先级</param>
+        /// <param name="formType">视图窗口类型</param>
         /// <returns>若视图类型注册成功则返回true，否则返回false</returns>
-        private bool RegisterViewClass(string viewName, SystemType clsType, int priority)
+        private bool RegisterViewClass(string viewName, SystemType clsType, int priority, ViewFormType formType)
         {
             Debugger.Assert(false == string.IsNullOrEmpty(viewName) && null != clsType, "Invalid arguments");
 
             if (false == typeof(CView).IsAssignableFrom(clsType))
             {
-                Debugger.Warn("The register type {0} must be inherited from 'CView'.", clsType.Name);
+                Debugger.Warn("The register type '{%t}' must be inherited from 'CView'.", clsType);
                 return false;
             }
 
-            if (_viewClassTypes.ContainsKey(viewName))
+            if (false == RegisterEntityClass(viewName, clsType, priority))
             {
-                Debugger.Warn("The view name '{0}' was already registed, repeat add will be override old name.", viewName);
-                _viewClassTypes.Remove(viewName);
+                Debugger.Warn("The view class '{%t}' was already registed, repeat added it failed.", clsType);
+                return false;
             }
 
-            _viewClassTypes.Add(viewName, clsType);
-            if (priority > 0)
+            if (_viewFormTypes.ContainsKey(clsType))
             {
-                _viewPriorities.Add(viewName, priority);
+                Debugger.Warn("The view class '{%t}' binding group '{%i}' was already registed, repeat add will be override old value.", clsType, formType);
+                _viewFormTypes.Remove(clsType);
+            }
+
+            if (ViewFormType.Unknown != formType)
+            {
+                _viewFormTypes.Add(clsType, formType);
             }
 
             return true;
@@ -202,8 +200,9 @@ namespace GameEngine
         /// </summary>
         private void UnregisterAllViewClasses()
         {
-            _viewClassTypes.Clear();
-            _viewPriorities.Clear();
+            UnregisterAllEntityClasses();
+
+            _viewFormTypes.Clear();
         }
 
         #endregion
@@ -216,7 +215,7 @@ namespace GameEngine
         public async Cysharp.Threading.Tasks.UniTask<CView> OpenUI(string viewName)
         {
             SystemType viewType;
-            if (false == _viewClassTypes.TryGetValue(viewName, out viewType))
+            if (false == _entityClassTypes.TryGetValue(viewName, out viewType))
             {
                 Debugger.Warn("Could not found any correct view class with target name '{0}', opened view failed.", viewName);
                 return null;
@@ -234,7 +233,7 @@ namespace GameEngine
         public async Cysharp.Threading.Tasks.UniTask<T> OpenUI<T>() where T : CView
         {
             SystemType viewType = typeof(T);
-            if (false == _viewClassTypes.Values.Contains(viewType))
+            if (false == _entityClassTypes.Values.Contains(viewType))
             {
                 Debugger.Error("Could not found any correct view class with target type '{0}', opened view failed.", viewType.FullName);
                 return null;
@@ -252,7 +251,7 @@ namespace GameEngine
         public async Cysharp.Threading.Tasks.UniTask<CView> OpenUI(SystemType viewType)
         {
             Debugger.Assert(null != viewType, "Invalid arguments.");
-            if (false == _viewClassTypes.Values.Contains(viewType))
+            if (false == _entityClassTypes.Values.Contains(viewType))
             {
                 Debugger.Error("Could not found any correct view class with target type '{0}', opened view failed.", viewType.FullName);
 
@@ -316,7 +315,7 @@ namespace GameEngine
         public bool HasUI(string viewName)
         {
             SystemType viewType;
-            if (false == _viewClassTypes.TryGetValue(viewName, out viewType))
+            if (false == _entityClassTypes.TryGetValue(viewName, out viewType))
             {
                 Debugger.Warn("Could not found any correct view class with target name '{0}', found view failed.", viewName);
                 return false;
@@ -332,7 +331,7 @@ namespace GameEngine
         /// <returns>若视图处于打开状态则返回true，否则返回false</returns>
         public bool HasUI<T>() where T : CView
         {
-            return _views.OfType<T>().Any();
+            return NovaEngine.Utility.Collection.ContainsType<CView, T>(_views);
         }
 
         /// <summary>
@@ -361,7 +360,7 @@ namespace GameEngine
         public CView FindUI(string viewName)
         {
             SystemType viewType;
-            if (false == _viewClassTypes.TryGetValue(viewName, out viewType))
+            if (false == _entityClassTypes.TryGetValue(viewName, out viewType))
             {
                 Debugger.Warn("Could not found any correct view class with target name '{0}', found view failed.", viewName);
                 return null;
@@ -378,7 +377,7 @@ namespace GameEngine
         public T FindUI<T>() where T : CView
         {
             SystemType viewType = typeof(T);
-            if (false == _viewClassTypes.Values.Contains(viewType))
+            if (false == _entityClassTypes.Values.Contains(viewType))
             {
                 Debugger.Error("Could not found any correct view class with target type '{0}', found view failed.", viewType.FullName);
                 return null;
@@ -419,7 +418,7 @@ namespace GameEngine
         public async Cysharp.Threading.Tasks.UniTask<T> FindUIAsync<T>() where T : CView
         {
             SystemType viewType = typeof(T);
-            if (false == _viewClassTypes.Values.Contains(viewType))
+            if (false == _entityClassTypes.Values.Contains(viewType))
             {
                 Debugger.Error("Could not found any correct view class with target type '{0}', found view failed.", viewType.FullName);
                 return null;
@@ -528,7 +527,7 @@ namespace GameEngine
         public void CloseUI(string viewName)
         {
             SystemType viewType;
-            if (false == _viewClassTypes.TryGetValue(viewName, out viewType))
+            if (false == _entityClassTypes.TryGetValue(viewName, out viewType))
             {
                 Debugger.Warn("Could not found any correct view class with target name '{0}', closed view failed.", viewName);
                 return;
@@ -595,7 +594,7 @@ namespace GameEngine
         /// <returns>返回对应视图的名称，若视图不存在则返回null</returns>
         internal string GetViewNameForType(SystemType viewType)
         {
-            foreach (KeyValuePair<string, SystemType> pair in _viewClassTypes)
+            foreach (KeyValuePair<string, SystemType> pair in _entityClassTypes)
             {
                 if (pair.Value == viewType)
                 {

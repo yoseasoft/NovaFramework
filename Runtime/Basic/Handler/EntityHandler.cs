@@ -36,6 +36,15 @@ namespace GameEngine
     public abstract partial class EntityHandler : BaseHandler
     {
         /// <summary>
+        /// 实体对象类型映射注册管理容器
+        /// </summary>
+        protected IDictionary<string, SystemType> _entityClassTypes;
+        /// <summary>
+        /// 实体优先级映射注册管理容器
+        /// </summary>
+        protected IDictionary<string, int> _entityPriorities;
+
+        /// <summary>
         /// 实体对象映射管理容器
         /// </summary>
         private IList<CEntity> _entities;
@@ -94,6 +103,10 @@ namespace GameEngine
         /// <returns>若句柄对象初始化成功则返回true，否则返回false</returns>
         protected override bool OnInitialize()
         {
+            // 初始化实体类注册容器
+            _entityClassTypes = new Dictionary<string, SystemType>();
+            _entityPriorities = new Dictionary<string, int>();
+
             // 实体映射容器初始化
             _entities = new List<CEntity>();
             // 实体执行列表初始化
@@ -126,6 +139,13 @@ namespace GameEngine
             _entities = null;
             _executeEntitiesList = null;
             _updateEntitiesList = null;
+
+            // 清理实体类注册容器
+            _entityClassTypes.Clear();
+            _entityPriorities.Clear();
+
+            _entityClassTypes = null;
+            _entityPriorities = null;
 
             // 移除所有系统对象实例
             RemoveAllSystems();
@@ -188,6 +208,52 @@ namespace GameEngine
         /// </summary>
         /// <param name="e">模块事件参数</param>
         // public abstract void OnEventDispatch(NovaEngine.ModuleEventArgs e);
+
+        #region 实体类动态注册绑定接口函数
+
+        /// <summary>
+        /// 注册指定的实体名称及对应的对象类到当前的句柄管理容器中
+        /// 注意，注册的对象类必须继承自<see cref="GameEngine.CEntity"/>，否则无法正常注册
+        /// </summary>
+        /// <param name="entityName">实体名称</param>
+        /// <param name="clsType">实体类型</param>
+        /// <param name="priority">实体优先级</param>
+        /// <returns>若实体类型注册成功则返回true，否则返回false</returns>
+        protected bool RegisterEntityClass(string entityName, SystemType clsType, int priority)
+        {
+            Debugger.Assert(false == string.IsNullOrEmpty(entityName) && null != clsType, "Invalid arguments");
+
+            if (false == typeof(CEntity).IsAssignableFrom(clsType))
+            {
+                Debugger.Warn("The register type '{%t}' must be inherited from 'CEntity'.", clsType);
+                return false;
+            }
+
+            if (_entityClassTypes.ContainsKey(entityName))
+            {
+                Debugger.Warn("The entity name '{%s}' was already registed, repeat add will be override old name.", entityName);
+                _entityClassTypes.Remove(entityName);
+            }
+
+            _entityClassTypes.Add(entityName, clsType);
+            if (priority > 0)
+            {
+                _entityPriorities.TryAdd(entityName, priority);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 注销当前句柄实例绑定的所有实体类型
+        /// </summary>
+        protected void UnregisterAllEntityClasses()
+        {
+            _entityClassTypes.Clear();
+            _entityPriorities.Clear();
+        }
+
+        #endregion
 
         #region 实体对象相关操作函数合集
 

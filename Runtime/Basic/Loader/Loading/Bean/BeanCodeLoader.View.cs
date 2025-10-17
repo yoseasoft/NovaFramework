@@ -59,8 +59,14 @@ namespace GameEngine.Loader
                 if (typeof(DeclareViewClassAttribute) == attrType)
                 {
                     DeclareViewClassAttribute _attr = (DeclareViewClassAttribute) attr;
-                    info.ViewName = _attr.ViewName;
+                    info.ViewName = _attr.Name;
                     info.Priority = _attr.Priority;
+                    info.FormType = _attr.FormType;
+                }
+                else if (typeof(CViewGroupAttribute) == attrType)
+                {
+                    CViewGroupAttribute _attr = (CViewGroupAttribute) attr;
+                    info.GroupName = _attr.GroupName;
                 }
                 else if (typeof(ViewGroupOfSymbioticRelationshipsAttribute) == attrType)
                 {
