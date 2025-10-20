@@ -277,12 +277,12 @@ namespace GameEngine
             }
 
             // 添加实例到管理容器中
-            _views.Add(view);
+            _AddView(view);
 
             await view.CreateWindow();
             if (!view.IsLoaded)
             {
-                _views.Remove(view);
+                _RemoveView(view);
                 RemoveEntity(view);
 
                 // 回收视图实例
@@ -343,7 +343,7 @@ namespace GameEngine
         {
             foreach (CView view in _views)
             {
-                if (view.GetType() == viewType)
+                if (view.BeanType == viewType)
                 {
                     return view.IsReady;
                 }
@@ -395,7 +395,7 @@ namespace GameEngine
         {
             foreach (CView view in _views)
             {
-                if (view.GetType() == viewType)
+                if (view.BeanType == viewType)
                 {
                     if (view.IsReady)
                     {
@@ -436,7 +436,7 @@ namespace GameEngine
         {
             foreach (CView view in _views)
             {
-                if (view.GetType() == viewType)
+                if (view.BeanType == viewType)
                 {
                     if (view.IsReady)
                     {
@@ -459,7 +459,7 @@ namespace GameEngine
         {
             if (false == _views.Contains(view))
             {
-                Debugger.Error("Could not found any view reference '{0}' with manage container, removed it failed.", view.GetType().FullName);
+                Debugger.Error("Could not found any view reference '{%t}' with manage container, removed it failed.", view.BeanType);
                 return;
             }
 
@@ -476,7 +476,8 @@ namespace GameEngine
                 return;
             }
 
-            _views.Remove(view);
+            // 从管理容器中移除实例
+            _RemoveView(view);
             // 移除视图实例
             RemoveEntity(view);
 
@@ -503,7 +504,7 @@ namespace GameEngine
         {
             if (false == _views.Contains(view))
             {
-                Debugger.Error("Could not found any view reference '{0}' with manage container, removed it failed.", view.GetType().FullName);
+                Debugger.Error("Could not found any view reference '{%t}' with manage container, removed it failed.", view.BeanType);
                 return;
             }
 
@@ -557,7 +558,7 @@ namespace GameEngine
         {
             foreach (CView view in NovaEngine.Utility.Collection.Reverse<CView>(_views))
             {
-                if (view.GetType() == viewType)
+                if (view.BeanType == viewType)
                 {
                     CloseUI(view);
                 }
@@ -573,6 +574,32 @@ namespace GameEngine
             {
                 _views[n].Close();
             }
+        }
+
+        /// <summary>
+        /// 新增视图对象实例到管理容器中
+        /// </summary>
+        /// <param name="view">视图对象实例</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        private void _AddView(CView view)
+        {
+            _views.Add(view);
+
+            ViewGroup viewGroup = FindGroupByViewType(view.BeanType);
+            viewGroup.OnViewOpening(view);
+        }
+
+        /// <summary>
+        /// 从管理容器中移除指定的视图对象实例
+        /// </summary>
+        /// <param name="view">视图对象实例</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        private void _RemoveView(CView view)
+        {
+            ViewGroup viewGroup = FindGroupByViewType(view.BeanType);
+            viewGroup.OnViewClosing(view);
+
+            _views.Remove(view);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -627,7 +654,7 @@ namespace GameEngine
             while (e.MoveNext())
             {
                 CView view = e.Current;
-                if (viewType.IsAssignableFrom(view.GetType()))
+                if (viewType.IsAssignableFrom(view.BeanType))
                 {
                     result.Add(view);
                 }

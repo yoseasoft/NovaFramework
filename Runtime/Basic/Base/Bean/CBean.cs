@@ -42,6 +42,10 @@ namespace GameEngine
         /// </summary>
         private string _beanName;
         /// <summary>
+        /// 实体对象的类型
+        /// </summary>
+        private SystemType _beanType;
+        /// <summary>
         /// 实体对象的元数据
         /// </summary>
         private object _metadata;
@@ -59,6 +63,10 @@ namespace GameEngine
         /// 获取或设置实体对象的名称
         /// </summary>
         public string BeanName { get { return _beanName; } internal set { _beanName = value; } }
+        /// <summary>
+        /// 获取或设置实体对象的类型
+        /// </summary>
+        public SystemType BeanType { get { return _beanType; } }
         /// <summary>
         /// 获取或设置实体对象的元数据
         /// </summary>
@@ -87,6 +95,7 @@ namespace GameEngine
         public virtual void Initialize()
         {
             _beanId = NovaEngine.Session.NextSession(1001);
+            _beanType = GetType();
         }
 
         /// <summary>
@@ -96,6 +105,7 @@ namespace GameEngine
         {
             _beanId = 0;
             _beanName = null;
+            _beanType = null;
             _metadata = null;
         }
 
@@ -117,10 +127,7 @@ namespace GameEngine
         {
             if (null == _beanName)
             {
-                Loader.Symboling.SymClass symClass = Loader.CodeLoader.GetSymClassByType(GetType());
-                Debugger.Assert(null != symClass, "Could not found any symbol class with type '{0}'.", NovaEngine.Utility.Text.ToString(GetType()));
-
-                return symClass.DefaultBeanName;
+                return Symbol.DefaultBeanName;
             }
 
             return _beanName;

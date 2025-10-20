@@ -313,7 +313,7 @@ namespace GameEngine
         /// </summary>
         internal async UniTask CreateWindow()
         {
-            _form = FormHelper.CreateForm(FormType.FairyGUI, GetType());
+            _form = FormHelper.CreateForm(FormType.FairyGUI, BeanType);
 
             await _form.Load();
         }

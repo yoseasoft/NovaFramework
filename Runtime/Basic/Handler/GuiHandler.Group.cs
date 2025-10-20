@@ -75,6 +75,8 @@ namespace GameEngine
         {
             // 初始化视图分组对象管理容器
             _viewGroups = new Dictionary<string, ViewGroup>();
+            // 初始化视图分组排序容器
+            _sortingGroupList = new List<ViewGroup>();
 
             _defaultViewGroupName = $"{NovaEngine.Definition.CString.Default}_{typeof(ViewGroup).Name.ToLower()}";
 
@@ -82,7 +84,7 @@ namespace GameEngine
             _viewBindingGroupNames = new Dictionary<SystemType, string>();
 
             // 注册默认分组
-            AddViewGroup(_defaultViewGroupName, 0);
+            AddViewGroup(_defaultViewGroupName, 0, ViewGroupStrategyType.None);
         }
 
         /// <summary>
@@ -99,6 +101,7 @@ namespace GameEngine
             // 清理视图分组对象管理容器
             RemoveAllViewGroups();
             _viewGroups = null;
+            _sortingGroupList = null;
         }
 
         /// <summary>
@@ -117,7 +120,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="groupName">分组名称</param>
         /// <param name="level">分组层级</param>
-        public void AddViewGroup(string groupName, int level)
+        public void AddViewGroup(string groupName, int level, ViewGroupStrategyType strategyType)
         {
             if (_viewGroups.ContainsKey(groupName))
             {
@@ -137,14 +140,15 @@ namespace GameEngine
             }
 
             // 创建视图分组对象
-            ViewGroup viewGroup = new ViewGroup()
-            {
-                GroupName = groupName,
-                Level = level
-            };
+            ViewGroup viewGroup = new ViewGroup(groupName, level, strategyType);
 
             // 添加视图分组对象
             _viewGroups.Add(groupName, viewGroup);
+            // 分组对象添加到排序列表
+            _sortingGroupList.Add(viewGroup);
+
+            // 视图分组排序
+            SortingViewGroups();
         }
 
         /// <summary>
@@ -153,14 +157,19 @@ namespace GameEngine
         /// <param name="groupName">分组名称</param>
         public void RemoveViewGroup(string groupName)
         {
-            if (false == _viewGroups.ContainsKey(groupName))
+            if (false == _viewGroups.TryGetValue(groupName, out ViewGroup viewGroup))
             {
                 Debugger.Warn(LogGroupTag.Module, "在视图管理句柄未找到名称为‘{%s}’的视图分组对象实例，对目标分组对象删除操作执行失败！", groupName);
                 return;
             }
 
+            // 从排序列表移除
+            _sortingGroupList.Remove(viewGroup);
             // 移除视图分组对象
             _viewGroups.Remove(groupName);
+
+            // 视图分组排序
+            SortingViewGroups();
         }
 
         /// <summary>
@@ -170,25 +179,98 @@ namespace GameEngine
         {
             // 移除所有视图分组对象
             _viewGroups.Clear();
+            // 移除所有视图分组排序信息
+            _sortingGroupList.Clear();
+        }
+
+        /// <summary>
+        /// 对当前句柄容器中注册的所有视图分组对象实例进行排序
+        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        private void SortingViewGroups()
+        {
+            ((List<ViewGroup>) _sortingGroupList).Sort();
         }
 
         /// <summary>
         /// 视图分组对象类，用于对窗口对象进行分组标记，以及同组内的变化通知
         /// </summary>
-        private sealed class ViewGroup
+        private sealed class ViewGroup : System.IComparable<ViewGroup>
         {
             /// <summary>
             /// 分组对象的名称
             /// </summary>
-            private string _groupName;
-
+            private readonly string _groupName;
             /// <summary>
             /// 分组对象的挂载层级
             /// </summary>
-            private int _level;
+            private readonly int _level;
+            /// <summary>
+            /// 分组对象策略类型
+            /// </summary>
+            private readonly ViewGroupStrategyType _strategyType;
 
-            public string GroupName { get { return _groupName; } internal set { _groupName = value; } }
-            public int Level { get { return _level; } internal set { _level = value; } }
+            /// <summary>
+            /// 分组对象内部管理的视图实例
+            /// </summary>
+            private readonly IList<CView> _groupViews;
+
+            public string GroupName => _groupName;
+            public int Level => _level;
+            public ViewGroupStrategyType StrategyType => _strategyType;
+
+            public ViewGroup(string groupName, int level, ViewGroupStrategyType strategyType)
+            {
+                _groupName = groupName;
+                _level = level;
+                _strategyType = strategyType;
+                _groupViews = new List<CView>();
+            }
+
+            ~ViewGroup()
+            {
+                Debugger.Assert(0 == _groupViews.Count, "The view list has more instance was not removed.");
+                // 这里应该已经为空表了，但还是再清理一次吧
+                _groupViews.Clear();
+                // _groupViews = null;
+            }
+
+            public int CompareTo(ViewGroup other)
+            {
+                return other.Level.CompareTo(this.Level);
+            }
+
+            /// <summary>
+            /// 视图对象打开操作的分组回调管理接口函数
+            /// </summary>
+            /// <param name="view">视图对象实例</param>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void OnViewOpening(CView view)
+            {
+                if (_groupViews.Contains(view))
+                {
+                    Debugger.Error(LogGroupTag.Module, "目标视图对象实例‘{%t}’已经被注册到分组管理容器‘{%s}’中，请勿对相同视图对象进行重复添加！", view, _groupName);
+                    return;
+                }
+
+                _groupViews.Add(view);
+            }
+
+            /// <summary>
+            /// 视图对象关闭操作的分组回调管理接口函数
+            /// </summary>
+            /// <param name="view">视图对象实例</param>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void OnViewClosing(CView view)
+            {
+                if (false == _groupViews.Contains(view))
+                {
+                    Debugger.Error(LogGroupTag.Module, "目标视图对象实例‘{%t}’从未被注册到分组管理容器‘{%s}’中，对无效视图对象进行移除操作失败！", view, _groupName);
+                    return;
+                }
+
+                _groupViews.Remove(view);
+            }
         }
 
         #endregion
@@ -196,7 +278,8 @@ namespace GameEngine
         #region 视图类型绑定分组相关的接口函数
 
         /// <summary>
-        /// 注册指定视图类型及分组名称到当前分组绑定映射容器中
+        /// 注册指定视图类型及分组名称到当前分组绑定映射容器中<br/>
+        /// 若该分组名称尚未在分组容器中进行注册，将自动修改为默认分组
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <param name="groupName">分组名称</param>
@@ -205,6 +288,15 @@ namespace GameEngine
             if (_viewBindingGroupNames.ContainsKey(viewType))
             {
                 Debugger.Warn(LogGroupTag.Module, "视图管理句柄的分组绑定映射容器中已存在类型为‘{%t}’的视图记录，重复进行相同类型视图的分组绑定工作执行失败！", viewType);
+                return;
+            }
+
+            if (false == _viewGroups.ContainsKey(groupName))
+            {
+                Debugger.Warn(LogGroupTag.Module, "视图管理句柄的分组容器中不存在名称为‘{%s}’的分组对象实例，视图类型‘{%t}’将自动添加到默认分组中。", groupName, viewType);
+
+                // groupName = _defaultViewGroupName;
+                // 默认分组无需注册，直接返回即可
                 return;
             }
 
