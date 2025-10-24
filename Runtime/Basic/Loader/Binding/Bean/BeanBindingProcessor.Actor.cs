@@ -61,7 +61,7 @@ namespace GameEngine
                 return;
             }
 
-            Instance.RegisterActorClass(actorCodeInfo.ActorName, actorCodeInfo.ClassType, actorCodeInfo.Priority);
+            Instance.RegisterActorClass(actorCodeInfo.EntityName, actorCodeInfo.ClassType, actorCodeInfo.Priority);
         }
 
         /// <summary>

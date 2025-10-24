@@ -34,7 +34,7 @@ namespace GameEngine.Profiler.Statistics
         [IStat.OnStatFunctionRegister(StatCode.ActorCreate)]
         private void OnActorCreate(CActor obj)
         {
-            ActorStatInfo info = new ActorStatInfo(obj.BeanId, obj.Name);
+            ActorStatInfo info = new ActorStatInfo(obj.BeanId, obj.DeclareClassName);
             TryAddValue(info);
         }
 

@@ -24,14 +24,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Reflection;
-
 using SystemType = System.Type;
-using SystemAction = System.Action;
-using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemParameterInfo = System.Reflection.ParameterInfo;
 
 namespace GameEngine
 {
@@ -43,49 +36,49 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CRef), AspectBehaviourType.Initialize)]
         private static void CallServiceProcessOfRefInitialize(CRef obj, bool reload)
         {
-            // Debugger.Info("Register ref '{0}' event and message listener with target behaviour type '{1}'.", obj.GetType().FullName, AspectBehaviourType.Initialize.ToString());
+            // Debugger.Info("Register ref '{%t}' dispatch call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Initialize);
 
-            RegRefEventAndMessageListenerByTargetType(obj, AspectBehaviourType.Initialize, reload);
+            RegRefDispatchCallByTargetType(obj, AspectBehaviourType.Initialize, reload);
         }
 
         [OnServiceProcessRegisterOfTarget(typeof(CRef), AspectBehaviourType.Startup)]
         private static void CallServiceProcessOfRefStartup(CRef obj, bool reload)
         {
-            // Debugger.Info("Register ref '{0}' event and message listener with target behaviour type '{1}'.", obj.GetType().FullName, AspectBehaviourType.Startup.ToString());
+            // Debugger.Info("Register ref '{%t}' dispatch call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Startup);
 
-            RegRefEventAndMessageListenerByTargetType(obj, AspectBehaviourType.Startup, reload);
+            RegRefDispatchCallByTargetType(obj, AspectBehaviourType.Startup, reload);
         }
 
         [OnServiceProcessRegisterOfTarget(typeof(CRef), AspectBehaviourType.Awake)]
         private static void CallServiceProcessOfRefAwake(CRef obj, bool reload)
         {
-            // Debugger.Info("Register ref '{0}' event and message listener with target behaviour type '{1}'.", obj.GetType().FullName, AspectBehaviourType.Awake.ToString());
+            // Debugger.Info("Register ref '{%t}' dispatch call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Awake);
 
-            RegRefEventAndMessageListenerByTargetType(obj, AspectBehaviourType.Awake, reload);
+            RegRefDispatchCallByTargetType(obj, AspectBehaviourType.Awake, reload);
         }
 
         [OnServiceProcessRegisterOfTarget(typeof(CRef), AspectBehaviourType.Start)]
         private static void CallServiceProcessOfRefStart(CRef obj, bool reload)
         {
-            // Debugger.Info("Register ref '{0}' event and message listener with target behaviour type '{1}'.", obj.GetType().FullName, AspectBehaviourType.Start.ToString());
+            // Debugger.Info("Register ref '{%t}' dispatch call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Start);
 
-            RegRefEventAndMessageListenerByTargetType(obj, AspectBehaviourType.Start, reload);
+            RegRefDispatchCallByTargetType(obj, AspectBehaviourType.Start, reload);
         }
 
-        private static void RegRefEventAndMessageListenerByTargetType(CRef obj, AspectBehaviourType behaviourType, bool reload)
+        private static void RegRefDispatchCallByTargetType(CRef obj, AspectBehaviourType behaviourType, bool reload)
         {
             SystemType targetType = obj.GetType();
             Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CRef));
             if (null == codeInfo)
             {
-                Debugger.Warn("Could not found any aspect call ref service process with target type '{0}', called it failed.", targetType.FullName);
+                Debugger.Warn("Could not found any aspect call ref service process with target type '{%t}', called it failed.", targetType);
                 return;
             }
 
             Loader.Structuring.RefCodeInfo refCodeInfo = codeInfo as Loader.Structuring.RefCodeInfo;
             if (null == refCodeInfo)
             {
-                Debugger.Warn("The aspect call ref service process getting error code info '{0}' with target type '{1}', called it failed.", codeInfo.GetType().FullName, targetType.FullName);
+                Debugger.Warn("The aspect call ref service process getting error code info '{%t}' with target type '{%t}', called it failed.", codeInfo.GetType(), targetType);
                 return;
             }
 
@@ -104,7 +97,7 @@ namespace GameEngine
                 // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
                 // Debugger.Assert(null != callback, "Invalid method type.");
 
-                Debugger.Info(LogGroupTag.Controller, "Register ref '{0}' input listener with target method '{1}'.", targetType.FullName, NovaEngine.Utility.Text.ToString(methodTypeCodeInfo.Method));
+                Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' input listener with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);
 
                 if (methodTypeCodeInfo.InputCode > 0)
                 {
@@ -135,7 +128,7 @@ namespace GameEngine
                 // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
                 // Debugger.Assert(null != callback, "Invalid method type.");
 
-                Debugger.Info(LogGroupTag.Controller, "Register ref '{0}' event listener with target method '{1}'.", targetType.FullName, NovaEngine.Utility.Text.ToString(methodTypeCodeInfo.Method));
+                Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' event listener with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);
 
                 if (methodTypeCodeInfo.EventID > 0)
                 {
@@ -166,7 +159,7 @@ namespace GameEngine
                 // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
                 // Debugger.Assert(null != callback, "Invalid method type.");
 
-                Debugger.Info(LogGroupTag.Controller, "Register ref '{0}' message listener with target method '{1}'.", targetType.FullName, NovaEngine.Utility.Text.ToString(methodTypeCodeInfo.Method));
+                Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' message listener with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);
 
                 if (methodTypeCodeInfo.Opcode > 0)
                 {

@@ -70,7 +70,7 @@ namespace GameEngine
     }
 
     /// <summary>
-    /// 视图分组策略类声明属性类型定义
+    /// 视图分组策略声明属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class CViewGroupAttribute : SystemAttribute
@@ -88,6 +88,35 @@ namespace GameEngine
         public CViewGroupAttribute(string groupName) : base()
         {
             _groupName = groupName;
+        }
+    }
+
+    /// <summary>
+    /// 视图通知函数的属性类型定义
+    /// </summary>
+    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+    public class CViewNoticeCallAttribute : SystemAttribute
+    {
+        /// <summary>
+        /// 视图通知类型
+        /// </summary>
+        private readonly ViewNoticeType _noticeType;
+
+        /// <summary>
+        /// 监听绑定的观察行为类型
+        /// </summary>
+        private readonly AspectBehaviourType _behaviourType;
+
+        public ViewNoticeType NoticeType => _noticeType;
+        public AspectBehaviourType BehaviourType => _behaviourType;
+
+        public CViewNoticeCallAttribute(ViewNoticeType noticeType) : this(noticeType, AspectBehaviourType.Initialize)
+        { }
+
+        public CViewNoticeCallAttribute(ViewNoticeType noticeType, AspectBehaviourType behaviourType) : base()
+        {
+            _noticeType = noticeType;
+            _behaviourType = behaviourType;
         }
     }
 

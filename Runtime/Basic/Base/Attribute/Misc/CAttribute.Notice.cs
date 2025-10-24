@@ -1,8 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,24 +23,40 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Profiler.Statistics
+using SystemType = System.Type;
+using SystemAttribute = System.Attribute;
+using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
+using SystemAttributeTargets = System.AttributeTargets;
+
+namespace GameEngine
 {
     /// <summary>
-    /// 场景统计模块，对场景模块对象提供数据统计所需的接口函数
+    /// 角色对象通知定义类的属性类型定义
     /// </summary>
-    internal sealed class SceneStat : BaseStat<SceneStat, SceneStatInfo>
+    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class NoticeSupportedOnActorAttribute : SystemAttribute
     {
-        [IStat.OnStatFunctionRegister(StatCode.SceneEnter)]
-        private void OnSceneEnter(CScene scene)
-        {
-            SceneStatInfo info = new SceneStatInfo(scene.BeanId, scene.DeclareClassName);
-            TryAddValue(info);
-        }
+        public NoticeSupportedOnActorAttribute() : base()
+        { }
+    }
 
-        [IStat.OnStatFunctionRegister(StatCode.SceneExit)]
-        private void OnSceneExit(CScene scene)
-        {
-            TryCloseValue(scene.BeanId);
-        }
+    /// <summary>
+    /// 场景对象通知定义类的属性类型定义
+    /// </summary>
+    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class NoticeSupportedOnSceneAttribute : SystemAttribute
+    {
+        public NoticeSupportedOnSceneAttribute() : base()
+        { }
+    }
+
+    /// <summary>
+    /// 视图对象通知定义类的属性类型定义
+    /// </summary>
+    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class NoticeSupportedOnViewAttribute : SystemAttribute
+    {
+        public NoticeSupportedOnViewAttribute() : base()
+        { }
     }
 }

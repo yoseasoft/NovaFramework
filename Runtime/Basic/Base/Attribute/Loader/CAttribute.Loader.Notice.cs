@@ -1,8 +1,6 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,24 +22,28 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Profiler.Statistics
+using SystemType = System.Type;
+using SystemAttribute = System.Attribute;
+using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
+using SystemAttributeTargets = System.AttributeTargets;
+
+namespace GameEngine
 {
     /// <summary>
-    /// 场景统计模块，对场景模块对象提供数据统计所需的接口函数
+    /// 通知定义类型注册函数的属性类型定义
     /// </summary>
-    internal sealed class SceneStat : BaseStat<SceneStat, SceneStatInfo>
+    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnNoticeDefinitionRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
     {
-        [IStat.OnStatFunctionRegister(StatCode.SceneEnter)]
-        private void OnSceneEnter(CScene scene)
-        {
-            SceneStatInfo info = new SceneStatInfo(scene.BeanId, scene.DeclareClassName);
-            TryAddValue(info);
-        }
+        public OnNoticeDefinitionRegisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
+    }
 
-        [IStat.OnStatFunctionRegister(StatCode.SceneExit)]
-        private void OnSceneExit(CScene scene)
-        {
-            TryCloseValue(scene.BeanId);
-        }
+    /// <summary>
+    /// 通知定义类型注销函数的属性类型定义
+    /// </summary>
+    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnNoticeDefinitionUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
+    {
+        public OnNoticeDefinitionUnregisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
     }
 }

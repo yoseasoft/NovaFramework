@@ -47,6 +47,33 @@ namespace GameEngine
     }
 
     /// <summary>
+    /// 视图对象通知类型的枚举定义
+    /// </summary>
+    public enum ViewNoticeType : byte
+    {
+        /// <summary>
+        /// 未知模式
+        /// </summary>
+        Unknown = 0,
+        /// <summary>
+        /// 窗口恢复通知类型
+        /// </summary>
+        Resume = 1,
+        /// <summary>
+        /// 窗口暂停通知类型
+        /// </summary>
+        Pause = 2,
+        /// <summary>
+        /// 窗口在顶层通知类型
+        /// </summary>
+        Reveal = 3,
+        /// <summary>
+        /// 窗口被覆盖通知类型
+        /// </summary>
+        Cover = 4,
+    }
+
+    /// <summary>
     /// 视图对象抽象类，对用户界面对象上下文进行封装及调度管理
     /// 
     /// 2024-06-22：
@@ -56,7 +83,7 @@ namespace GameEngine
     /// 2025-08-13：
     /// 将刷新激活流程统一作动态检测处理，避免无效的刷新调度消耗性能
     /// </summary>
-    public abstract class CView : CEntity
+    public abstract partial class CView : CEntity
     {
         /// <summary>
         /// 获取视图句柄对象
@@ -66,7 +93,7 @@ namespace GameEngine
         /// <summary>
         /// 获取视图对象的名称
         /// </summary>
-        public override sealed string Name => GuiHandler.GetViewNameForType(GetType());
+        public override sealed string DeclareClassName => GuiHandler.GetViewNameForType(BeanType);
 
         /// <summary>
         /// 视图对象实例已经关闭的状态标识
@@ -110,6 +137,9 @@ namespace GameEngine
         {
             base.Initialize();
 
+            // 初始化通知调度
+            OnNoticeProcessingInitialize();
+
             OnInitialize();
         }
 
@@ -128,7 +158,21 @@ namespace GameEngine
 
             OnCleanup();
 
+            // 清理通知调度
+            OnNoticeProcessingCleanup();
+
             base.Cleanup();
+        }
+
+        /// <summary>
+        /// 视图对象重载通知接口函数
+        /// </summary>
+        internal override sealed void Reload()
+        {
+            base.Reload();
+
+            // 重载通知调度
+            OnNoticeProcessingReload();
         }
 
         /// <summary>

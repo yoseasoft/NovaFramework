@@ -30,5 +30,14 @@ namespace GameEngine.Loader.Structuring
     /// 实体对象模块的结构信息
     /// </summary>
     internal abstract class EntityCodeInfo : RefCodeInfo
-    { }
+    {
+        /// <summary>
+        /// 实体名称
+        /// </summary>
+        public string EntityName { get; internal set; }
+        /// <summary>
+        /// 实体优先级
+        /// </summary>
+        public int Priority { get; internal set; }
+    }
 }

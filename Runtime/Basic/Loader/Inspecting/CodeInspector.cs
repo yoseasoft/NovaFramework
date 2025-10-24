@@ -60,11 +60,11 @@ namespace GameEngine.Loader.Inspecting
                 return true;
             }
 
-            if (methodInfo.IsStatic || NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
+            if (paramInfos.Length == 1 && methodInfo.IsStatic) // 无参类型消息如果存在一个参数，那必然是静态函数
             {
                 // 扩展函数存在一个参数，就是扩展对象自身
                 // 静态函数也允许指定一个Bean对象的参数
-                if (paramInfos.Length == 1 && typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType))
+                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType))
                 {
                     return true;
                 }

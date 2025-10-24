@@ -259,6 +259,8 @@ namespace GameEngine.Loader
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append(ToString((Structuring.RefCodeInfo) targetObject));
+            fsb.Append("EntityName={%s},", targetObject.EntityName);
+            fsb.Append("Priority={%d},", targetObject.Priority);
             return fsb.ToString();
         }
 
@@ -267,8 +269,6 @@ namespace GameEngine.Loader
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Actor={");
             fsb.Append(ToString((Structuring.EntityCodeInfo) targetObject));
-            fsb.Append("Name={%s},", targetObject.ActorName);
-            fsb.Append("Priority={%d},", targetObject.Priority);
             fsb.Append("}");
             return fsb.ToString();
         }
@@ -278,8 +278,6 @@ namespace GameEngine.Loader
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Scene={");
             fsb.Append(ToString((Structuring.EntityCodeInfo) targetObject));
-            fsb.Append("Name={%s},", targetObject.SceneName);
-            fsb.Append("Priority={%d},", targetObject.Priority);
             fsb.Append("AutoDisplayViews={{{%s}}},", targetObject.AutoDisplayViewNames);
             fsb.Append("}");
             return fsb.ToString();
@@ -290,12 +288,34 @@ namespace GameEngine.Loader
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("View={");
             fsb.Append(ToString((Structuring.EntityCodeInfo) targetObject));
-            fsb.Append("Name={%s},", targetObject.ViewName);
-            fsb.Append("Priority={%d},", targetObject.Priority);
             fsb.Append("GroupName={%s},", targetObject.GroupName);
             fsb.Append("FormType={%i},", targetObject.FormType);
+            fsb.Append("NoticeMethodTypes={{{%s}}},", targetObject.NoticeMethodTypes?.Values(), ToString);
             fsb.Append("GroupViews={{{%s}}},", targetObject.GroupOfSymbioticViewNames);
             fsb.Append("}");
+            return fsb.ToString();
+        }
+
+        #endregion
+
+        #region 原型对象模块通知接口相关的编码信息结构类型对象“ToString”封装
+
+        internal static string ToString(Structuring.CViewNoticeCallCodeInfo targetObject)
+        {
+            NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
+            fsb.Append("CViewNoticeCall={");
+            fsb.Append("ClassType={%t},", targetObject.ClassType);
+            fsb.Append("MethodTypes={{{%s}}},", targetObject.MethodTypes?.Values(), ToString);
+            fsb.Append("}");
+            return fsb.ToString();
+        }
+
+        private static string ToString(Structuring.CViewNoticeMethodTypeCodeInfo targetObject)
+        {
+            NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
+            fsb.Append(ToString((Structuring.MethodTypeCodeInfo) targetObject));
+            fsb.Append("NoticeType={%i},", targetObject.NoticeType);
+            fsb.Append("BehaviourType={%i},", targetObject.BehaviourType);
             return fsb.ToString();
         }
 

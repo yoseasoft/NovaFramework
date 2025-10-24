@@ -59,7 +59,7 @@ namespace GameEngine.Loader
                 if (typeof(DeclareActorClassAttribute) == attrType)
                 {
                     DeclareActorClassAttribute _attr = (DeclareActorClassAttribute) attr;
-                    info.ActorName = _attr.Name;
+                    info.EntityName = _attr.Name;
                     info.Priority = _attr.Priority;
                 }
                 else
@@ -76,27 +76,27 @@ namespace GameEngine.Loader
                 LoadActorMethod(symClass, info, symMethod);
             }
 
-            if (string.IsNullOrEmpty(info.ActorName))
+            if (string.IsNullOrEmpty(info.EntityName))
             {
                 // Debugger.Warn(LogGroupTag.CodeLoader, "The actor '{%s}' name must be non-null or empty space.", symClass.FullName);
-                info.ActorName = symClass.ClassName;
+                info.EntityName = symClass.ClassName;
             }
 
-            if (_actorCodeInfos.ContainsKey(info.ActorName))
+            if (_actorCodeInfos.ContainsKey(info.EntityName))
             {
                 if (reload)
                 {
-                    _actorCodeInfos.Remove(info.ActorName);
+                    _actorCodeInfos.Remove(info.EntityName);
                 }
                 else
                 {
-                    Debugger.Warn("The actor name '{0}' was already existed, repeat added it failed.", info.ActorName);
+                    Debugger.Warn("The actor name '{%s}' was already existed, repeat added it failed.", info.EntityName);
                     return false;
                 }
             }
 
-            _actorCodeInfos.Add(info.ActorName, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CActor' code info '{0}' succeed from target class type '{1}'.", CodeLoaderObject.ToString(info), symClass.FullName);
+            _actorCodeInfos.Add(info.EntityName, info);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CActor' code info '{%s}' succeed from target class type '{%s}'.", CodeLoaderObject.ToString(info), symClass.FullName);
 
             return true;
         }

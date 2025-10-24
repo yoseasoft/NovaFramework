@@ -67,6 +67,11 @@ namespace GameEngine.Loader
             Extend = 12,
 
             /// <summary>
+            /// 通知类型
+            /// </summary>
+            Notice = 13,
+
+            /// <summary>
             /// 切面类型
             /// </summary>
             Aspect = 21,

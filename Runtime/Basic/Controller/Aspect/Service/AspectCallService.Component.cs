@@ -24,14 +24,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Reflection;
-
 using SystemType = System.Type;
-using SystemAction = System.Action;
-using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemParameterInfo = System.Reflection.ParameterInfo;
 
 namespace GameEngine
 {
@@ -43,49 +36,49 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CComponent), AspectBehaviourType.Initialize)]
         private static void CallServiceProcessOfComponentInitialize(CComponent component, bool reload)
         {
-            // Debugger.Info("Register component '{0}' event and message listener with target behaviour type '{1}'.", component.GetType().FullName, AspectBehaviourType.Initialize.ToString());
+            // Debugger.Info("Register component '{%t}' dispatch call with target behaviour type '{%i}'.", component.BeanType, AspectBehaviourType.Initialize);
 
-            RegComponentEventAndMessageListenerByTargetType(component, AspectBehaviourType.Initialize, reload);
+            RegComponentDispatchCallByTargetType(component, AspectBehaviourType.Initialize, reload);
         }
 
         [OnServiceProcessRegisterOfTarget(typeof(CComponent), AspectBehaviourType.Startup)]
         private static void CallServiceProcessOfComponentStartup(CComponent component, bool reload)
         {
-            // Debugger.Info("Register component '{0}' event and message listener with target behaviour type '{1}'.", component.GetType().FullName, AspectBehaviourType.Startup.ToString());
+            // Debugger.Info("Register component '{%t}' dispatch call with target behaviour type '{%i}'.", component.BeanType, AspectBehaviourType.Startup);
 
-            RegComponentEventAndMessageListenerByTargetType(component, AspectBehaviourType.Startup, reload);
+            RegComponentDispatchCallByTargetType(component, AspectBehaviourType.Startup, reload);
         }
 
         [OnServiceProcessRegisterOfTarget(typeof(CComponent), AspectBehaviourType.Awake)]
         private static void CallServiceProcessOfComponentAwake(CComponent component, bool reload)
         {
-            // Debugger.Info("Register component '{0}' event and message listener with target behaviour type '{1}'.", component.GetType().FullName, AspectBehaviourType.Awake.ToString());
+            // Debugger.Info("Register component '{%t}' dispatch call with target behaviour type '{%i}'.", component.BeanType, AspectBehaviourType.Awake);
 
-            RegComponentEventAndMessageListenerByTargetType(component, AspectBehaviourType.Awake, reload);
+            RegComponentDispatchCallByTargetType(component, AspectBehaviourType.Awake, reload);
         }
 
         [OnServiceProcessRegisterOfTarget(typeof(CComponent), AspectBehaviourType.Start)]
         private static void CallServiceProcessOfComponentStart(CComponent component, bool reload)
         {
-            // Debugger.Info("Register component '{0}' event and message listener with target behaviour type '{1}'.", component.GetType().FullName, AspectBehaviourType.Start.ToString());
+            // Debugger.Info("Register component '{%t}' dispatch call with target behaviour type '{%i}'.", component.BeanType, AspectBehaviourType.Start);
 
-            RegComponentEventAndMessageListenerByTargetType(component, AspectBehaviourType.Start, reload);
+            RegComponentDispatchCallByTargetType(component, AspectBehaviourType.Start, reload);
         }
 
-        private static void RegComponentEventAndMessageListenerByTargetType(CComponent component, AspectBehaviourType behaviourType, bool reload)
+        private static void RegComponentDispatchCallByTargetType(CComponent component, AspectBehaviourType behaviourType, bool reload)
         {
             SystemType targetType = component.GetType();
             Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CComponent));
             if (null == codeInfo)
             {
-                Debugger.Warn("Could not found any aspect call component service process with target type '{0}', called it failed.", targetType.FullName);
+                Debugger.Warn("Could not found any aspect call component service process with target type '{%t}', called it failed.", targetType);
                 return;
             }
 
             Loader.Structuring.ComponentCodeInfo componentCodeInfo = codeInfo as Loader.Structuring.ComponentCodeInfo;
             if (null == componentCodeInfo)
             {
-                Debugger.Warn("The aspect call component service process getting error code info '{0}' with target type '{1}', called it failed.", codeInfo.GetType().FullName, targetType.FullName);
+                Debugger.Warn("The aspect call component service process getting error code info '{%t}' with target type '{%t}', called it failed.", codeInfo.GetType(), targetType);
                 return;
             }
 
@@ -104,7 +97,7 @@ namespace GameEngine
                 // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
                 // Debugger.Assert(null != callback, "Invalid method type.");
 
-                Debugger.Info(LogGroupTag.Controller, "Register component '{0}' input listener with target method '{1}'.", targetType.FullName, NovaEngine.Utility.Text.ToString(methodTypeCodeInfo.Method));
+                Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' input listener with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);
 
                 if (methodTypeCodeInfo.InputCode > 0)
                 {
@@ -135,7 +128,7 @@ namespace GameEngine
                 // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
                 // Debugger.Assert(null != callback, "Invalid method type.");
 
-                Debugger.Info(LogGroupTag.Controller, "Register component '{0}' event listener with target method '{1}'.", targetType.FullName, NovaEngine.Utility.Text.ToString(methodTypeCodeInfo.Method));
+                Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' event listener with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);
 
                 if (methodTypeCodeInfo.EventID > 0)
                 {
@@ -166,7 +159,7 @@ namespace GameEngine
                 // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
                 // Debugger.Assert(null != callback, "Invalid method type.");
 
-                Debugger.Info(LogGroupTag.Controller, "Register component '{0}' message listener with target method '{1}'.", targetType.FullName, NovaEngine.Utility.Text.ToString(methodTypeCodeInfo.Method));
+                Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' message listener with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);
 
                 if (methodTypeCodeInfo.Opcode > 0)
                 {

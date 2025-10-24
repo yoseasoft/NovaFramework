@@ -34,14 +34,6 @@ namespace GameEngine.Loader.Structuring
     internal sealed class SceneCodeInfo : EntityCodeInfo
     {
         /// <summary>
-        /// 场景名称
-        /// </summary>
-        public string SceneName { get; internal set; }
-        /// <summary>
-        /// 场景优先级
-        /// </summary>
-        public int Priority { get; internal set; }
-        /// <summary>
         /// 自动展示的场景名称列表
         /// </summary>
         private IList<string> _autoDisplayViewNames;

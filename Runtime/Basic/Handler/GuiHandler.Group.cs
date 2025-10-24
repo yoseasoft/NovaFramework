@@ -254,6 +254,11 @@ namespace GameEngine
                 }
 
                 _groupViews.Add(view);
+
+                // 视图对象恢复通知
+                view.OnInternalNoticeProcess(ViewNoticeType.Resume);
+                // 视图对象置顶通知
+                view.OnInternalNoticeProcess(ViewNoticeType.Reveal);
             }
 
             /// <summary>
@@ -268,6 +273,11 @@ namespace GameEngine
                     Debugger.Error(LogGroupTag.Module, "目标视图对象实例‘{%t}’从未被注册到分组管理容器‘{%s}’中，对无效视图对象进行移除操作失败！", view, _groupName);
                     return;
                 }
+
+                // 视图对象遮挡通知
+                view.OnInternalNoticeProcess(ViewNoticeType.Cover);
+                // 视图对象暂停通知
+                view.OnInternalNoticeProcess(ViewNoticeType.Pause);
 
                 _groupViews.Remove(view);
             }

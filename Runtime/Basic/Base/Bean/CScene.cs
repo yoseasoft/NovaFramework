@@ -41,7 +41,7 @@ namespace GameEngine
         /// <summary>
         /// 获取实体对象的名称
         /// </summary>
-        public override sealed string Name => SceneHandler.GetSceneNameForType(GetType());
+        public override sealed string DeclareClassName => SceneHandler.GetSceneNameForType(BeanType);
 
         /// <summary>
         /// 场景对象初始化函数

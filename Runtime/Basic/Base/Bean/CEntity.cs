@@ -96,9 +96,9 @@ namespace GameEngine
         public bool IsOnExpired => (_isOnExpired || _isOnWaitingDestroy);
 
         /// <summary>
-        /// 获取实体对象的名称
+        /// 获取实体对象预定义的名称
         /// </summary>
-        public abstract string Name { get; }
+        public abstract string DeclareClassName { get; }
 
         /// <summary>
         /// 实体对象初始化通知接口函数

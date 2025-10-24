@@ -31,13 +31,5 @@ namespace GameEngine.Loader.Structuring
     /// </summary>
     internal sealed class ActorCodeInfo : EntityCodeInfo
     {
-        /// <summary>
-        /// 角色名称
-        /// </summary>
-        public string ActorName { get; internal set; }
-        /// <summary>
-        /// 角色优先级
-        /// </summary>
-        public int Priority { get; internal set; }
     }
 }

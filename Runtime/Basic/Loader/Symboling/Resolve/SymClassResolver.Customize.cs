@@ -57,21 +57,21 @@ namespace GameEngine.Loader.Symboling
             }
             else
             {
-                // 数据类的自动填充流程
-                AutoFillEntityClassFeatures(symClass);
+                // 对象类的自动填充流程
+                AutoFillInstantiationClassFeatures(symClass);
             }
         }
 
         /// <summary>
-        /// 自动填充实体类型的标记类的特性
+        /// 自动填充实例对象类型的标记类的特性
         /// </summary>
         /// <param name="symClass">类标记对象</param>
-        private static void AutoFillEntityClassFeatures(SymClass symClass)
+        private static void AutoFillInstantiationClassFeatures(SymClass symClass)
         {
         }
 
         /// <summary>
-        /// 自动填充系统类型的标记类的特性
+        /// 自动填充系统对象类型的标记类的特性
         /// </summary>
         /// <param name="symClass">类标记对象</param>
         private static void AutoFillSystemClassFeatures(SymClass symClass)
@@ -147,6 +147,11 @@ namespace GameEngine.Loader.Symboling
 
                         on_extend_supported = true;
                     }
+
+                    else
+                    {
+                        AutoFillOtherExtensionMethodFeatures(symClass, method);
+                    }
                 } // method.IsExtension
                 else
                 {
@@ -207,6 +212,25 @@ namespace GameEngine.Loader.Symboling
             {
                 // 装配API调度系统
                 AutobindFeatureTypeForTargetSymbol(symClass, typeof(ApiSystemAttribute));
+            }
+        }
+
+        /// <summary>
+        /// 自动填充其它系统对象类型扩展函数的标记类的特性
+        /// </summary>
+        /// <param name="symClass">类标记对象</param>
+        private static void AutoFillOtherExtensionMethodFeatures(SymClass symClass, SymMethod symMethod)
+        {
+            if (!symMethod.IsExtension)
+            {
+                // 该接口仅服务于扩展函数
+                return;
+            }
+
+            // 服务于‘CEntity’的扩展函数解析
+            if (typeof(CEntity).IsAssignableFrom(symMethod.ExtensionParameterType))
+            {
+                AutoFillEntityExtensionMethodFeatures(symClass, symMethod);
             }
         }
 

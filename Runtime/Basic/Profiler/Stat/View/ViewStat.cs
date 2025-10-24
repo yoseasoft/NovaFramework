@@ -34,7 +34,7 @@ namespace GameEngine.Profiler.Statistics
         [IStat.OnStatFunctionRegister(StatCode.ViewCreate)]
         private void OnViewCreate(CView view)
         {
-            ViewStatInfo info = new ViewStatInfo(view.BeanId, view.Name);
+            ViewStatInfo info = new ViewStatInfo(view.BeanId, view.DeclareClassName);
             TryAddValue(info);
         }
 

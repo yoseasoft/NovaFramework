@@ -1,8 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,24 +23,40 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Profiler.Statistics
+using System.Collections.Generic;
+
+using SystemType = System.Type;
+
+namespace GameEngine.Loader.Symboling
 {
     /// <summary>
-    /// 场景统计模块，对场景模块对象提供数据统计所需的接口函数
+    /// 标记对象的解析类，对基础对象类的注入标记进行解析和构建
     /// </summary>
-    internal sealed class SceneStat : BaseStat<SceneStat, SceneStatInfo>
+    internal static partial class SymClassResolver
     {
-        [IStat.OnStatFunctionRegister(StatCode.SceneEnter)]
-        private void OnSceneEnter(CScene scene)
+        /// <summary>
+        /// 自动填充实体类型的系统对象的标记类的特性
+        /// </summary>
+        /// <param name="symClass">类标记对象</param>
+        private static void AutoFillEntityExtensionMethodFeatures(SymClass symClass, SymMethod symMethod)
         {
-            SceneStatInfo info = new SceneStatInfo(scene.BeanId, scene.DeclareClassName);
-            TryAddValue(info);
+            if (typeof(CView).IsAssignableFrom(symMethod.ExtensionParameterType))
+            {
+                AutoFillViewExtensionMethodFeatures(symClass, symMethod);
+            }
         }
 
-        [IStat.OnStatFunctionRegister(StatCode.SceneExit)]
-        private void OnSceneExit(CScene scene)
+        /// <summary>
+        /// 自动填充视图类型的系统对象的标记类的特性
+        /// </summary>
+        /// <param name="symClass">类标记对象</param>
+        private static void AutoFillViewExtensionMethodFeatures(SymClass symClass, SymMethod symMethod)
         {
-            TryCloseValue(scene.BeanId);
+            if (symMethod.HasAttribute(typeof(CViewNoticeCallAttribute)))
+            {
+                // 装配通知支持
+                AutobindFeatureTypeForTargetSymbol(symClass, typeof(NoticeSupportedOnViewAttribute));
+            }
         }
     }
 }

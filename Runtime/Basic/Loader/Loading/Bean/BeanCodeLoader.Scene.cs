@@ -59,7 +59,7 @@ namespace GameEngine.Loader
                 if (typeof(DeclareSceneClassAttribute) == attrType)
                 {
                     DeclareSceneClassAttribute _attr = (DeclareSceneClassAttribute) attr;
-                    info.SceneName = _attr.Name;
+                    info.EntityName = _attr.Name;
                     info.Priority = _attr.Priority;
                 }
                 else if (typeof(SceneAutoDisplayOnTargetViewAttribute) == attrType)
@@ -81,27 +81,27 @@ namespace GameEngine.Loader
                 LoadSceneMethod(symClass, info, symMethod);
             }
 
-            if (string.IsNullOrEmpty(info.SceneName))
+            if (string.IsNullOrEmpty(info.EntityName))
             {
                 // Debugger.Warn(LogGroupTag.CodeLoader, "The scene '{%s}' name must be non-null or empty space.", symClass.FullName);
-                info.SceneName = symClass.ClassName;
+                info.EntityName = symClass.ClassName;
             }
 
-            if (_sceneCodeInfos.ContainsKey(info.SceneName))
+            if (_sceneCodeInfos.ContainsKey(info.EntityName))
             {
                 if (reload)
                 {
-                    _sceneCodeInfos.Remove(info.SceneName);
+                    _sceneCodeInfos.Remove(info.EntityName);
                 }
                 else
                 {
-                    Debugger.Warn("The scene name '{0}' was already existed, repeat added it failed.", info.SceneName);
+                    Debugger.Warn("The scene name '{%s}' was already existed, repeat added it failed.", info.EntityName);
                     return false;
                 }
             }
 
-            _sceneCodeInfos.Add(info.SceneName, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CScene' code info '{0}' succeed from target class type '{1}'.", CodeLoaderObject.ToString(info), symClass.FullName);
+            _sceneCodeInfos.Add(info.EntityName, info);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CScene' code info '{%s}' succeed from target class type '{%s}'.", CodeLoaderObject.ToString(info), symClass.FullName);
 
             return true;
         }

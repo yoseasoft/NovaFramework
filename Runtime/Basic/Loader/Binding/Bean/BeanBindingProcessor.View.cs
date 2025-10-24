@@ -61,7 +61,7 @@ namespace GameEngine
                 return;
             }
 
-            Instance.RegisterViewClass(viewCodeInfo.ViewName, viewCodeInfo.ClassType, viewCodeInfo.Priority, viewCodeInfo.FormType);
+            Instance.RegisterViewClass(viewCodeInfo.EntityName, viewCodeInfo.ClassType, viewCodeInfo.Priority, viewCodeInfo.FormType);
 
             // 添加视图绑定分组信息
             if (false == string.IsNullOrEmpty(viewCodeInfo.GroupName))

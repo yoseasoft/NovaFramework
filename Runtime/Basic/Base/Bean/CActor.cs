@@ -44,7 +44,7 @@ namespace GameEngine
         /// <summary>
         /// 获取角色对象的名称
         /// </summary>
-        public override sealed string Name => ActorHandler.GetActorNameForType(GetType());
+        public override sealed string DeclareClassName => ActorHandler.GetActorNameForType(BeanType);
 
         /// <summary>
         /// 对象初始化通知接口函数

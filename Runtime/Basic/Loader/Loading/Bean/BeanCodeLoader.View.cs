@@ -59,7 +59,7 @@ namespace GameEngine.Loader
                 if (typeof(DeclareViewClassAttribute) == attrType)
                 {
                     DeclareViewClassAttribute _attr = (DeclareViewClassAttribute) attr;
-                    info.ViewName = _attr.Name;
+                    info.EntityName = _attr.Name;
                     info.Priority = _attr.Priority;
                     info.FormType = _attr.FormType;
                 }
@@ -87,27 +87,27 @@ namespace GameEngine.Loader
                 LoadViewMethod(symClass, info, symMethod);
             }
 
-            if (string.IsNullOrEmpty(info.ViewName))
+            if (string.IsNullOrEmpty(info.EntityName))
             {
                 // Debugger.Warn(LogGroupTag.CodeLoader, "The view '{%s}' name must be non-null or empty space.", symClass.FullName);
-                info.ViewName = symClass.ClassName;
+                info.EntityName = symClass.ClassName;
             }
 
-            if (_viewCodeInfos.ContainsKey(info.ViewName))
+            if (_viewCodeInfos.ContainsKey(info.EntityName))
             {
                 if (reload)
                 {
-                    _viewCodeInfos.Remove(info.ViewName);
+                    _viewCodeInfos.Remove(info.EntityName);
                 }
                 else
                 {
-                    Debugger.Warn("The view name '{0}' was already existed, repeat added it failed.", info.ViewName);
+                    Debugger.Warn("The view name '{%s}' was already existed, repeat added it failed.", info.EntityName);
                     return false;
                 }
             }
 
-            _viewCodeInfos.Add(info.ViewName, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CView' code info '{0}' succeed from target class type '{1}'.", CodeLoaderObject.ToString(info), symClass.FullName);
+            _viewCodeInfos.Add(info.EntityName, info);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CView' code info '{%s}' succeed from target class type '{%s}'.", CodeLoaderObject.ToString(info), symClass.FullName);
 
             return true;
         }
