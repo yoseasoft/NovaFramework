@@ -37,18 +37,19 @@ namespace GameEngine
         /// <param name="targetType">对象类型</param>
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
+        [UnityEngine.Scripting.Preserve]
         [OnBeanRegisterClassOfTarget(typeof(CView))]
         private static void LoadCodeType(SystemType targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
             if (targetType.IsInterface || targetType.IsAbstract)
             {
-                Debugger.Log("The load code type '{0}' cannot be interface or abstract class, recv arguments invalid.", targetType.FullName);
+                Debugger.Log("The load code type '{%t}' cannot be interface or abstract class, recv arguments invalid.", targetType);
                 return;
             }
 
             if (null == codeInfo)
             {
-                Debugger.Warn("The load code info '{0}' must be non-null, recv arguments invalid.", targetType.FullName);
+                Debugger.Warn("The load code info '{%t}' must be non-null, recv arguments invalid.", targetType);
                 return;
             }
 
@@ -73,11 +74,13 @@ namespace GameEngine
         /// <summary>
         /// 视图类型的全部代码的注销回调函数
         /// </summary>
+        [UnityEngine.Scripting.Preserve]
         [OnBeanUnregisterClassOfTarget(typeof(CView))]
         private static void UnloadAllCodeTypes()
         {
+            // 注销所有的视图类映射
             Instance.UnregisterAllViewClasses();
-
+            // 移除所有视图分组对象
             Instance.RemoveAllViewGroups();
         }
     }

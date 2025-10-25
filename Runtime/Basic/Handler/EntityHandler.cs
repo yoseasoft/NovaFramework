@@ -388,13 +388,13 @@ namespace GameEngine
         {
             if (false == _entities.Contains(entity))
             {
-                Debugger.Error("Could not found any entity instance '{0}' from current instantiation list, wakeup it failed.", entity.GetType().FullName);
+                Debugger.Error("Could not found any entity instance '{%t}' from current instantiation list, wakeup it failed.", entity.BeanType);
                 return;
             }
 
             if (false == entity.IsOnTargetLifecycle(AspectBehaviourType.Startup))
             {
-                Debugger.Error("The entity instance '{0}' was startup incompleted, wakeup it failed.", entity.GetType().FullName);
+                Debugger.Error("The entity instance '{%t}' was startup incompleted, wakeup it failed.", entity.BeanType);
                 // 无效的生命周期，直接终结目标实体对象
                 RemoveEntity(entity);
                 return;
@@ -415,7 +415,7 @@ namespace GameEngine
         {
             if (false == entity.IsOnAwakingStatus())
             {
-                Debugger.Warn("The entity instance '{0}' was startup incompleted, wakeup it failed.", entity.GetType().FullName);
+                Debugger.Warn("The entity instance '{%t}' was startup incompleted, wakeup it failed.", entity.BeanType);
                 return;
             }
 
@@ -433,7 +433,7 @@ namespace GameEngine
         {
             if (false == _entities.Contains(entity))
             {
-                Debugger.Error("Could not found any added record of the entity instance '{0}', calling start process failed.", entity.GetType().FullName);
+                Debugger.Error("Could not found any added record of the entity instance '{%t}', calling start process failed.", entity.BeanType);
                 return;
             }
 
@@ -441,14 +441,14 @@ namespace GameEngine
             Call(entity, entity.Start, AspectBehaviourType.Start);
 
             // 激活执行接口的对象实例，放入到执行队列中
-            // if (typeof(IExecuteActivation).IsAssignableFrom(entity.GetType()))
+            // if (typeof(IExecuteActivation).IsAssignableFrom(entity.BeanType))
             if (entity.IsExecuteActivation())
             {
                 _executeEntitiesList.Add(entity);
             }
 
             // 激活刷新接口的对象实例，放入到刷新队列中
-            // if (typeof(IUpdateActivation).IsAssignableFrom(entity.GetType()))
+            // if (typeof(IUpdateActivation).IsAssignableFrom(entity.BeanType))
             if (entity.IsUpdateActivation())
             {
                 _updateEntitiesList.Add(entity);

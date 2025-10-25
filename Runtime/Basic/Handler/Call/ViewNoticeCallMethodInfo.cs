@@ -40,20 +40,14 @@ namespace GameEngine
 
         public ViewNoticeType NoticeType => _noticeType;
 
+        public ViewNoticeCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, ViewNoticeType noticeType)
+            : this(fullname, targetType, methodInfo, noticeType, false)
+        { }
+
         public ViewNoticeCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, ViewNoticeType noticeType, bool automatically)
             : base(fullname, targetType, methodInfo, automatically)
         {
             _noticeType = noticeType;
-        }
-
-        /// <summary>
-        /// 检测目标函数是否符合当前调用类型的无参格式要求
-        /// </summary>
-        /// <param name="methodInfo">函数对象</param>
-        /// <returns>若符合无参格式则返回true，否则返回false</returns>
-        protected override sealed bool CheckFunctionFormatWasNullParameterType(SystemMethodInfo methodInfo)
-        {
-            return Loader.Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(methodInfo);
         }
 
         /// <summary>

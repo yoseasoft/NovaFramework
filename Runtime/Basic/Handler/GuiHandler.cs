@@ -217,7 +217,7 @@ namespace GameEngine
             SystemType viewType;
             if (false == _entityClassTypes.TryGetValue(viewName, out viewType))
             {
-                Debugger.Warn("Could not found any correct view class with target name '{0}', opened view failed.", viewName);
+                Debugger.Warn("Could not found any correct view class with target name '{%s}', opened view failed.", viewName);
                 return null;
             }
 
@@ -235,7 +235,7 @@ namespace GameEngine
             SystemType viewType = typeof(T);
             if (false == _entityClassTypes.Values.Contains(viewType))
             {
-                Debugger.Error("Could not found any correct view class with target type '{0}', opened view failed.", viewType.FullName);
+                Debugger.Error("Could not found any correct view class with target type '{%t}', opened view failed.", viewType);
                 return null;
             }
 
@@ -253,7 +253,7 @@ namespace GameEngine
             Debugger.Assert(null != viewType, "Invalid arguments.");
             if (false == _entityClassTypes.Values.Contains(viewType))
             {
-                Debugger.Error("Could not found any correct view class with target type '{0}', opened view failed.", viewType.FullName);
+                Debugger.Error("Could not found any correct view class with target type '{%t}', opened view failed.", viewType);
 
                 // return null;
                 throw new NovaEngine.CFrameworkException();
@@ -270,7 +270,7 @@ namespace GameEngine
             view = CreateInstance(viewType) as CView;
             if (false == AddEntity(view))
             {
-                Debugger.Warn("The view instance '{0}' initialization for error, added it failed.", viewType.FullName);
+                Debugger.Warn("The view instance '{%t}' initialization for error, added it failed.", viewType);
 
                 // return null;
                 throw new NovaEngine.CFrameworkException();
@@ -317,7 +317,7 @@ namespace GameEngine
             SystemType viewType;
             if (false == _entityClassTypes.TryGetValue(viewName, out viewType))
             {
-                Debugger.Warn("Could not found any correct view class with target name '{0}', found view failed.", viewName);
+                Debugger.Warn("Could not found any correct view class with target name '{%s}', found view failed.", viewName);
                 return false;
             }
 
@@ -379,7 +379,7 @@ namespace GameEngine
             SystemType viewType = typeof(T);
             if (false == _entityClassTypes.Values.Contains(viewType))
             {
-                Debugger.Error("Could not found any correct view class with target type '{0}', found view failed.", viewType.FullName);
+                Debugger.Error("Could not found any correct view class with target type '{%t}', found view failed.", viewType);
                 return null;
             }
 
@@ -420,7 +420,7 @@ namespace GameEngine
             SystemType viewType = typeof(T);
             if (false == _entityClassTypes.Values.Contains(viewType))
             {
-                Debugger.Error("Could not found any correct view class with target type '{0}', found view failed.", viewType.FullName);
+                Debugger.Error("Could not found any correct view class with target type '{%t}', found view failed.", viewType);
                 return null;
             }
 
@@ -530,7 +530,7 @@ namespace GameEngine
             SystemType viewType;
             if (false == _entityClassTypes.TryGetValue(viewName, out viewType))
             {
-                Debugger.Warn("Could not found any correct view class with target name '{0}', closed view failed.", viewName);
+                Debugger.Warn("Could not found any correct view class with target name '{%s}', closed view failed.", viewName);
                 return;
             }
 
@@ -586,7 +586,7 @@ namespace GameEngine
             _views.Add(view);
 
             ViewGroup viewGroup = FindGroupByViewType(view.BeanType);
-            viewGroup.OnViewOpening(view);
+            viewGroup.OnViewGroupBinding(view);
         }
 
         /// <summary>
@@ -597,7 +597,7 @@ namespace GameEngine
         private void _RemoveView(CView view)
         {
             ViewGroup viewGroup = FindGroupByViewType(view.BeanType);
-            viewGroup.OnViewClosing(view);
+            viewGroup.OnViewGroupUnbinding(view);
 
             _views.Remove(view);
         }

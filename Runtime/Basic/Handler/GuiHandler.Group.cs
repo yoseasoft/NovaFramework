@@ -39,6 +39,15 @@ namespace GameEngine
         /// 空白
         /// </summary>
         None = 0,
+
+        /// <summary>
+        /// 堆叠
+        /// </summary>
+        Overlap = 0x01,
+        /// <summary>
+        /// 平铺
+        /// </summary>
+        Tile = 0x02,
     }
 
     /// <summary>
@@ -241,11 +250,11 @@ namespace GameEngine
             }
 
             /// <summary>
-            /// 视图对象打开操作的分组回调管理接口函数
+            /// 视图对象分组绑定操作的管理接口函数
             /// </summary>
             /// <param name="view">视图对象实例</param>
             [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-            public void OnViewOpening(CView view)
+            public void OnViewGroupBinding(CView view)
             {
                 if (_groupViews.Contains(view))
                 {
@@ -256,17 +265,17 @@ namespace GameEngine
                 _groupViews.Add(view);
 
                 // 视图对象恢复通知
-                view.OnInternalNoticeProcess(ViewNoticeType.Resume);
+                view.OnResume();
                 // 视图对象置顶通知
-                view.OnInternalNoticeProcess(ViewNoticeType.Reveal);
+                view.OnReveal();
             }
 
             /// <summary>
-            /// 视图对象关闭操作的分组回调管理接口函数
+            /// 视图对象分组解绑操作的管理接口函数
             /// </summary>
             /// <param name="view">视图对象实例</param>
             [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-            public void OnViewClosing(CView view)
+            public void OnViewGroupUnbinding(CView view)
             {
                 if (false == _groupViews.Contains(view))
                 {
@@ -275,9 +284,9 @@ namespace GameEngine
                 }
 
                 // 视图对象遮挡通知
-                view.OnInternalNoticeProcess(ViewNoticeType.Cover);
+                view.OnCover();
                 // 视图对象暂停通知
-                view.OnInternalNoticeProcess(ViewNoticeType.Pause);
+                view.OnPause();
 
                 _groupViews.Remove(view);
             }

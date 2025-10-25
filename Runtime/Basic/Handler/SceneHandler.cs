@@ -219,19 +219,19 @@ namespace GameEngine
             Debugger.Assert(null != sceneType, "Invalid arguments.");
             if (sceneType == _currentSceneType)
             {
-                Debugger.Warn("The replace scene '{0}' must be not equals to current scene, replaced it failed.", sceneType.FullName);
+                Debugger.Warn("The replace scene '{%t}' must be not equals to current scene, replaced it failed.", sceneType);
                 return;
             }
 
             if (false == _entityClassTypes.Values.Contains(sceneType))
             {
-                Debugger.Error("Could not found any correct scene class with target type '{0}', replaced scene failed.", sceneType.FullName);
+                Debugger.Error("Could not found any correct scene class with target type '{%t}', replaced scene failed.", sceneType);
                 return;
             }
 
             if (sceneType == _waitingSceneType)
             {
-                Debugger.Warn("The target scene '{0}' was already in a waiting state, repeat setted it failed.", sceneType.FullName);
+                Debugger.Warn("The target scene '{%t}' was already in a waiting state, repeat setted it failed.", sceneType);
                 return;
             }
 
@@ -247,7 +247,7 @@ namespace GameEngine
         {
             if (false == _entityClassTypes.Values.Contains(sceneType))
             {
-                Debugger.Error("Unknown scene type '{0}', create the scene instance failed.", sceneType.FullName);
+                Debugger.Error("Unknown scene type '{%t}', create the scene instance failed.", sceneType);
                 return null;
             }
 
@@ -292,7 +292,7 @@ namespace GameEngine
             if (null != scene)
             {
                 // 相同的场景无需切换
-                if (scene.GetType() == sceneType)
+                if (scene.BeanType == sceneType)
                 {
                     return null;
                 }
@@ -312,7 +312,7 @@ namespace GameEngine
             scene = CreateScene(sceneType);
             if (null == scene || false == AddEntity(scene))
             {
-                Debugger.Error("Create or register the scene instance '{0}' failed.", sceneType.FullName);
+                Debugger.Error("Create or register the scene instance '{%t}' failed.", sceneType);
                 return null;
             }
 

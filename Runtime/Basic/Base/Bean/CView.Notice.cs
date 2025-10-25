@@ -75,10 +75,46 @@ namespace GameEngine
         #region 视图对象通知接口相关回调函数的操作接口定义
 
         /// <summary>
+        /// 视图对象窗口恢复通知的接口函数
+        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        protected internal void OnResume()
+        {
+            OnInternalNoticeProcess(ViewNoticeType.Resume);
+        }
+
+        /// <summary>
+        /// 视图对象窗口暂停通知的接口函数
+        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        protected internal void OnPause()
+        {
+            OnInternalNoticeProcess(ViewNoticeType.Pause);
+        }
+
+        /// <summary>
+        /// 视图对象窗口置顶通知的接口函数
+        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        protected internal void OnReveal()
+        {
+            OnInternalNoticeProcess(ViewNoticeType.Reveal);
+        }
+
+        /// <summary>
+        /// 视图对象窗口遮挡通知的接口函数
+        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        protected internal void OnCover()
+        {
+            OnInternalNoticeProcess(ViewNoticeType.Cover);
+        }
+
+        /// <summary>
         /// 视图对象的本地通知的监听回调函数
         /// </summary>
         /// <param name="noticeType">通知类型</param>
-        protected internal void OnInternalNoticeProcess(ViewNoticeType noticeType)
+        private void OnInternalNoticeProcess(ViewNoticeType noticeType)
         {
             if (_noticeCalls.TryGetValue(noticeType, out IList<string> calls))
             {

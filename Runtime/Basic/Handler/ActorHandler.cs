@@ -220,7 +220,7 @@ namespace GameEngine
             for (int n = 0; n < _actors.Count; ++n)
             {
                 CActor actor = _actors[n];
-                if (actor.GetType() == actorType)
+                if (actor.BeanType == actorType)
                 {
                     actors.Add(actor);
                 }
@@ -253,7 +253,7 @@ namespace GameEngine
             SystemType actorType = null;
             if (false == _entityClassTypes.TryGetValue(actorName, out actorType))
             {
-                Debugger.Warn("Could not found any correct actor class with target name '{0}', created actor failed.", actorName);
+                Debugger.Warn("Could not found any correct actor class with target name '{%s}', created actor failed.", actorName);
                 return null;
             }
 
@@ -282,7 +282,7 @@ namespace GameEngine
             Debugger.Assert(null != actorType, "Invalid arguments.");
             if (false == _entityClassTypes.Values.Contains(actorType))
             {
-                Debugger.Error("Could not found any correct actor class with target type '{0}', created actor failed.", actorType.FullName);
+                Debugger.Error("Could not found any correct actor class with target type '{%t}', created actor failed.", actorType);
                 return null;
             }
 
@@ -290,7 +290,7 @@ namespace GameEngine
             CActor obj = CreateInstance(actorType) as CActor;
             if (false == AddEntity(obj))
             {
-                Debugger.Warn("The actor instance '{0}' initialization for error, added it failed.", actorType.FullName);
+                Debugger.Warn("The actor instance '{%t}' initialization for error, added it failed.", actorType);
                 return null;
             }
 
@@ -316,7 +316,7 @@ namespace GameEngine
         {
             if (false == _actors.Contains(actor))
             {
-                Debugger.Warn("Could not found target actor instance '{0}' from current container, removed it failed.", actor.GetType().FullName);
+                Debugger.Warn("Could not found target actor instance '{%t}' from current container, removed it failed.", actor.BeanType);
                 return;
             }
 
@@ -371,7 +371,7 @@ namespace GameEngine
             IEnumerable<CActor> actors = NovaEngine.Utility.Collection.Reverse<CActor>(_actors);
             foreach (CActor obj in actors)
             {
-                if (obj.GetType() == actorType)
+                if (obj.BeanType == actorType)
                 {
                     RemoveActor(obj);
                 }
@@ -397,7 +397,7 @@ namespace GameEngine
         {
             if (false == _actors.Contains(actor))
             {
-                Debugger.Warn("Could not found target actor instance '{0}' from current container, removed it failed.", actor.GetType().FullName);
+                Debugger.Warn("Could not found target actor instance '{%t}' from current container, removed it failed.", actor.BeanType);
                 return;
             }
 
@@ -446,7 +446,7 @@ namespace GameEngine
             IEnumerable<CActor> actors = NovaEngine.Utility.Collection.Reverse<CActor>(_actors);
             foreach (CActor obj in actors)
             {
-                if (obj.GetType() == actorType)
+                if (obj.BeanType == actorType)
                 {
                     DestroyActor(obj);
                 }
@@ -520,7 +520,7 @@ namespace GameEngine
             while (e.MoveNext())
             {
                 CActor obj = e.Current;
-                if (actorType.IsAssignableFrom(obj.GetType()))
+                if (actorType.IsAssignableFrom(obj.BeanType))
                 {
                     result.Add(obj);
                 }
