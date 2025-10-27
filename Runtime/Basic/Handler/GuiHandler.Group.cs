@@ -48,6 +48,16 @@ namespace GameEngine
         /// 平铺
         /// </summary>
         Tile = 0x02,
+
+        /// <summary>
+        /// 单一展示
+        /// </summary>
+        Single = 0x04,
+
+        /// <summary>
+        /// 遮罩
+        /// </summary>
+        Mask = 0x10,
     }
 
     /// <summary>
@@ -346,6 +356,13 @@ namespace GameEngine
         /// <returns>返回视图类型对应的分组对象实例</returns>
         private ViewGroup FindGroupByViewType(SystemType viewType)
         {
+            if (null == _viewGroups)
+            {
+                // 这里补充一个检查，只是因为在销毁阶段子模块先被清除的原因
+                // 是否有必要因为这个，在每次调用该接口时都多一步检查？
+                return null;
+            }
+
             if (false == _viewBindingGroupNames.TryGetValue(viewType, out string groupName))
             {
                 groupName = _defaultViewGroupName;

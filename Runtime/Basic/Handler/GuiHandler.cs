@@ -597,7 +597,7 @@ namespace GameEngine
         private void _RemoveView(CView view)
         {
             ViewGroup viewGroup = FindGroupByViewType(view.BeanType);
-            viewGroup.OnViewGroupUnbinding(view);
+            viewGroup?.OnViewGroupUnbinding(view);
 
             _views.Remove(view);
         }

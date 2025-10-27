@@ -54,8 +54,17 @@ namespace GameEngine
         private static IDictionary<int, IHandler> _handlerRegisterObjects = null;
         /// <summary>
         /// 句柄对象实例的排序容器
+        /// <br/>
+        /// 2025-10-26：
+        /// 将<b>LinkedList</b>类型修改为数组类型
         /// </summary>
-        private static LinkedList<IHandler> _handlerSortingList = null;
+        // private static LinkedList<IHandler> _handlerSortingList = null;
+        private static IHandler[] _handlerSortingArray = null;
+
+        /// <summary>
+        /// 句柄管理器启动状态标识
+        /// </summary>
+        private static bool _isOnStartup = false;
 
         /// <summary>
         /// 句柄管理器启动操作函数
@@ -71,7 +80,7 @@ namespace GameEngine
             // 实例管理容器初始化
             _handlerRegisterObjects = new Dictionary<int, IHandler>();
             // 排序容器初始化
-            _handlerSortingList = new LinkedList<IHandler>();
+            // _handlerSortingList = new LinkedList<IHandler>();
 
             foreach (HandlerClassType enumValue in SystemEnum.GetValues(typeof(HandlerClassType)))
             {
@@ -128,7 +137,9 @@ namespace GameEngine
                 _handlerClassTypes.Add(handler.HandlerType, handlerType);
                 _handlerRegisterObjects.Add(handler.HandlerType, handler);
                 // 添加到排序列表
-                _handlerSortingList.AddLast(handler);
+                // 2025-10-26：
+                // 不在此处添加列表，改为所有句柄实例都解析完成后，一次性添加并排序
+                // _handlerSortingList.AddLast(handler);
 
                 // 添加所有定义的句柄基类
                 SystemType baseType = handlerType.BaseType;
@@ -154,6 +165,8 @@ namespace GameEngine
             // 添加句柄相关指令事件代理
             HandlerDispatchedCommandAgent commandAgent = new HandlerDispatchedCommandAgent();
             NovaEngine.ModuleController.AddCommandAgent(HandlerDispatchedCommandAgent.COMMAND_AGENT_NAME, commandAgent);
+
+            _isOnStartup = true;
         }
 
         /// <summary>
@@ -161,19 +174,26 @@ namespace GameEngine
         /// </summary>
         public static void Shutdown()
         {
-            // 清理所有的句柄实例缓存
-            CleanupAllHandlerCaches();
+            _isOnStartup = false;
+
+            // 移除句柄相关指令事件代理
+            NovaEngine.ModuleController.RemoveCommandAgent(HandlerDispatchedCommandAgent.COMMAND_AGENT_NAME);
 
             // 遍历执行清理函数
             // foreach (KeyValuePair<int, IHandler> pair in _handlerRegisterObjects.Reverse())
-            IEnumerable<IHandler> enumerable = NovaEngine.Utility.Collection.Reverse<IHandler>(_handlerSortingList);
+            // IEnumerable<IHandler> enumerable = NovaEngine.Utility.Collection.Reverse<IHandler>(_handlerSortingList);
+            IEnumerable<IHandler> enumerable = NovaEngine.Utility.Collection.Reverse<IHandler>(_handlerSortingArray);
             foreach (IHandler handler in enumerable)
             {
                 handler.Cleanup();
             }
 
-            // 移除句柄相关指令事件代理
-            NovaEngine.ModuleController.RemoveCommandAgent(HandlerDispatchedCommandAgent.COMMAND_AGENT_NAME);
+            // 清理所有的句柄实例缓存
+            //
+            // 2025-10-26：
+            // 在所有句柄对象实例清理后再移除相应的缓存实例
+            // 因为在句柄清理过程中，可能其内部管理的实体对象在回收时，会调用到其它句柄实例提供的服务接口
+            CleanupAllHandlerCaches();
 
             _handlerDeclaringTypes.Clear();
             _handlerDeclaringTypes = null;
@@ -184,8 +204,9 @@ namespace GameEngine
             _handlerRegisterObjects.Clear();
             _handlerRegisterObjects = null;
 
-            _handlerSortingList.Clear();
-            _handlerSortingList = null;
+            // _handlerSortingList.Clear();
+            // _handlerSortingList = null;
+            _handlerSortingArray = null;
         }
 
         /// <summary>
@@ -195,7 +216,8 @@ namespace GameEngine
         {
             // 遍历执行重载函数
             // foreach (KeyValuePair<int, IHandler> pair in _handlerRegisterObjects.Reverse())
-            IEnumerable<IHandler> enumerable = NovaEngine.Utility.Collection.Reverse<IHandler>(_handlerSortingList);
+            // IEnumerable<IHandler> enumerable = NovaEngine.Utility.Collection.Reverse<IHandler>(_handlerSortingList);
+            IEnumerable<IHandler> enumerable = NovaEngine.Utility.Collection.Reverse<IHandler>(_handlerSortingArray);
             foreach (IHandler handler in enumerable)
             {
                 handler.Reload();
@@ -207,8 +229,10 @@ namespace GameEngine
         /// </summary>
         public static void Execute()
         {
-            foreach (IHandler handler in _handlerSortingList)
+            // foreach (IHandler handler in _handlerSortingList)
+            for (int n = 0; n < _handlerSortingArray.Length; ++n)
             {
+                IHandler handler = _handlerSortingArray[n];
                 handler.Execute();
             }
         }
@@ -218,8 +242,10 @@ namespace GameEngine
         /// </summary>
         public static void LateExecute()
         {
-            foreach (IHandler handler in _handlerSortingList)
+            // foreach (IHandler handler in _handlerSortingList)
+            for (int n = 0; n < _handlerSortingArray.Length; ++n)
             {
+                IHandler handler = _handlerSortingArray[n];
                 handler.LateExecute();
             }
         }
@@ -229,8 +255,10 @@ namespace GameEngine
         /// </summary>
         public static void Update()
         {
-            foreach (IHandler handler in _handlerSortingList)
+            // foreach (IHandler handler in _handlerSortingList)
+            for (int n = 0; n < _handlerSortingArray.Length; ++n)
             {
+                IHandler handler = _handlerSortingArray[n];
                 handler.Update();
             }
         }
@@ -240,8 +268,10 @@ namespace GameEngine
         /// </summary>
         public static void LateUpdate()
         {
-            foreach (IHandler handler in _handlerSortingList)
+            // foreach (IHandler handler in _handlerSortingList)
+            for (int n = 0; n < _handlerSortingArray.Length; ++n)
             {
+                IHandler handler = _handlerSortingArray[n];
                 handler.LateUpdate();
             }
         }
@@ -254,8 +284,12 @@ namespace GameEngine
             LinkedList<IHandler> result = new LinkedList<IHandler>();
 
             LinkedListNode<IHandler> lln;
-            foreach (IHandler handler in _handlerSortingList)
+            IList<IHandler> all_handlers = NovaEngine.Utility.Collection.ToListForValues<int, IHandler>(_handlerRegisterObjects);
+            // foreach (IHandler handler in _handlerSortingList)
+            for (int n = 0; n < all_handlers.Count; ++n)
             {
+                IHandler handler = all_handlers[n];
+
                 lln = result.First;
                 while (true)
                 {
@@ -277,11 +311,16 @@ namespace GameEngine
                 }
             }
 
-            _handlerSortingList.Clear();
+            // _handlerSortingList.Clear();
+            int index = 0;
+            _handlerSortingArray = new IHandler[result.Count];
             lln = result.First;
             while (null != lln)
             {
-                _handlerSortingList.AddLast(lln.Value);
+                // _handlerSortingList.AddLast(lln.Value);
+                _handlerSortingArray[index] = lln.Value;
+                ++index;
+
                 lln = lln.Next;
             }
         }

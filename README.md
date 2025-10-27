@@ -38,13 +38,15 @@ git clone https://github.com/yoseasoft/NovaFramework.git
 
 ## 新手指南
 
+该框架使用了一套区别于其它框架的编程模式，因此具备一定的上手门槛。  
 如果您从未了解过该框架，建议从[示例工程](https://github.com/yoseasoft/nova-unity)开始熟悉如何搭建基础环境，  
 以及框架的简单使用方法，从而帮助您快速上手。  
-或者通过[教程案例](https://github.com/yoseasoft/com.novaframework.unity.sample)来了解具体模块的使用方式。  
+或者您也可以使用已创建好的工程项目，在导入该框架后，
+通过[教程案例](https://github.com/yoseasoft/com.novaframework.unity.sample)来了解具体模块的使用方式。  
 
 ## 社区与支持
 
-- 💬 **QQ讨论群**:
+- 💬 **QQ讨论群**: 738774220
 - 🐛 **问题反馈**: [GitHub Issues](https://github.com/yoseasoft/NovaFramework/issues)
 - 💡 **功能建议**: [GitHub Discussions](https://github.com/yoseasoft/NovaFramework/discussions)
 - 📧 **邮件联系**: yoseasoft@outlook.com

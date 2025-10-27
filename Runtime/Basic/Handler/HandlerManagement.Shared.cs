@@ -89,6 +89,7 @@ namespace GameEngine
             {
                 if (null == _timerHandler)
                 {
+                    Debugger.Assert(_isOnStartup, "The handler management is now closed.");
                     _timerHandler = GetHandler<TimerHandler>();
                 }
                 return _timerHandler;
@@ -105,6 +106,7 @@ namespace GameEngine
             {
                 if (null == _threadHandler)
                 {
+                    Debugger.Assert(_isOnStartup, "The handler management is now closed.");
                     _threadHandler = GetHandler<ThreadHandler>();
                 }
                 return _threadHandler;
@@ -121,6 +123,7 @@ namespace GameEngine
             {
                 if (null == _taskHandler)
                 {
+                    Debugger.Assert(_isOnStartup, "The handler management is now closed.");
                     _taskHandler = GetHandler<TaskHandler>();
                 }
                 return _taskHandler;
@@ -137,6 +140,7 @@ namespace GameEngine
             {
                 if (null == _networkHandler)
                 {
+                    Debugger.Assert(_isOnStartup, "The handler management is now closed.");
                     _networkHandler = GetHandler<NetworkHandler>();
                 }
                 return _networkHandler;
@@ -153,6 +157,7 @@ namespace GameEngine
             {
                 if (null == _inputHandler)
                 {
+                    Debugger.Assert(_isOnStartup, "The handler management is now closed.");
                     _inputHandler = GetHandler<InputHandler>();
                 }
                 return _inputHandler;
@@ -169,6 +174,7 @@ namespace GameEngine
             {
                 if (null == _resourceHandler)
                 {
+                    Debugger.Assert(_isOnStartup, "The handler management is now closed.");
                     _resourceHandler = GetHandler<ResourceHandler>();
                 }
                 return _resourceHandler;
@@ -185,6 +191,7 @@ namespace GameEngine
             {
                 if (null == _fileHandler)
                 {
+                    Debugger.Assert(_isOnStartup, "The handler management is now closed.");
                     _fileHandler = GetHandler<FileHandler>();
                 }
                 return _fileHandler;
@@ -201,6 +208,7 @@ namespace GameEngine
             {
                 if (null == _objectHandler)
                 {
+                    Debugger.Assert(_isOnStartup, "The handler management is now closed.");
                     _objectHandler = GetHandler<ObjectHandler>();
                 }
                 return _objectHandler;
@@ -217,6 +225,7 @@ namespace GameEngine
             {
                 if (null == _sceneHandler)
                 {
+                    Debugger.Assert(_isOnStartup, "The handler management is now closed.");
                     _sceneHandler = GetHandler<SceneHandler>();
                 }
                 return _sceneHandler;
@@ -233,6 +242,7 @@ namespace GameEngine
             {
                 if (null == _actorHandler)
                 {
+                    Debugger.Assert(_isOnStartup, "The handler management is now closed.");
                     _actorHandler = GetHandler<ActorHandler>();
                 }
                 return _actorHandler;
@@ -249,6 +259,7 @@ namespace GameEngine
             {
                 if (null == _guiHandler)
                 {
+                    Debugger.Assert(_isOnStartup, "The handler management is now closed.");
                     _guiHandler = GetHandler<GuiHandler>();
                 }
                 return _guiHandler;
@@ -265,6 +276,7 @@ namespace GameEngine
             {
                 if (null == _soundHandler)
                 {
+                    Debugger.Assert(_isOnStartup, "The handler management is now closed.");
                     _soundHandler = GetHandler<SoundHandler>();
                 }
                 return _soundHandler;
