@@ -176,9 +176,6 @@ namespace GameEngine
         {
             _isOnStartup = false;
 
-            // 移除句柄相关指令事件代理
-            NovaEngine.ModuleController.RemoveCommandAgent(HandlerDispatchedCommandAgent.COMMAND_AGENT_NAME);
-
             // 遍历执行清理函数
             // foreach (KeyValuePair<int, IHandler> pair in _handlerRegisterObjects.Reverse())
             // IEnumerable<IHandler> enumerable = NovaEngine.Utility.Collection.Reverse<IHandler>(_handlerSortingList);
@@ -187,6 +184,14 @@ namespace GameEngine
             {
                 handler.Cleanup();
             }
+
+            // 移除句柄相关指令事件代理
+            // 2025-10-27：
+            // 修复在句柄管理器内部的实体对象销毁时，引擎内的服务模块不能正常转发事件通知的问题，
+            // 例如：移除引用对象实例时，其内部需要先注销所有的定时器实例，
+            // 但定时器需要通知到‘TimerModule’并在底层移除后通过事件转播的形式告知‘TimerHandler’管理器一个定时任务‘Finished’的结果，
+            // 如果此时转发代理已被移除，那么上层将永远接收不到定时任务已结束的通知。
+            NovaEngine.ModuleController.RemoveCommandAgent(HandlerDispatchedCommandAgent.COMMAND_AGENT_NAME);
 
             // 清理所有的句柄实例缓存
             //
