@@ -88,7 +88,7 @@ namespace GameEngine
             CObject obj = reference as CObject;
             Debugger.Assert(null != obj, "Invalid arguments");
 
-            Debugger.Log(LogGroupTag.Controller, "Acquire object class '{0}' from the pool.", NovaEngine.Utility.Text.ToString(obj.GetType()));
+            Debugger.Log(LogGroupTag.Controller, "Acquire object class '{%t}' from the pool.", obj.BeanType);
             // obj.Call(obj.Initialize);
         }
 
@@ -101,7 +101,7 @@ namespace GameEngine
             CObject obj = reference as CObject;
             Debugger.Assert(null != obj, "Invalid arguments");
 
-            Debugger.Log(LogGroupTag.Controller, "Release object class '{0}' to the pool.", NovaEngine.Utility.Text.ToString(obj.GetType()));
+            Debugger.Log(LogGroupTag.Controller, "Release object class '{%t}' to the pool.", obj.BeanType);
             // obj.Call(obj.Cleanup);
         }
 

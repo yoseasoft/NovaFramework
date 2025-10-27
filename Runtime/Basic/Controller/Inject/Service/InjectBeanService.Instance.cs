@@ -185,16 +185,15 @@ namespace GameEngine
                 return;
             }
 
-            SystemType beanType = bean.GetType();
-            if (false == _beanInstanceInfos.TryGetValue(beanType, out IDictionary<string, GeneralInstantiateGenerator> classInfos))
+            if (false == _beanInstanceInfos.TryGetValue(bean.BeanType, out IDictionary<string, GeneralInstantiateGenerator> classInfos))
             {
-                Debugger.Warn("Could not found any bean instance info with target class '{0}', released it failed.", NovaEngine.Utility.Text.ToString(beanType));
+                Debugger.Warn("Could not found any bean instance info with target class '{%t}', released it failed.", bean.BeanType);
                 return;
             }
 
             if (false == classInfos.TryGetValue(bean.BeanName, out GeneralInstantiateGenerator instanceInfo))
             {
-                Debugger.Warn("Could not found any bean instance info with target name '{0} - {1}', released it failed.", NovaEngine.Utility.Text.ToString(beanType), bean.BeanName);
+                Debugger.Warn("Could not found any bean instance info with target name '{%t} - {%s}', released it failed.", bean.BeanType, bean.BeanName);
                 return;
             }
 
@@ -292,7 +291,7 @@ namespace GameEngine
             /// <param name="obj">目标对象实例</param>
             protected void DestroyInstance(CBean obj)
             {
-                Debugger.Assert(obj.GetType() == _classType, "Invalid arguments.");
+                Debugger.Assert(obj.BeanType == _classType, "Invalid arguments.");
 
                 // 卸载待销毁的对象实例
                 AutowiredProcessingOnReleaseTargetObject(obj);

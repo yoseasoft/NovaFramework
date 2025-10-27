@@ -40,16 +40,15 @@ namespace GameEngine
         /// <returns>若目标对象装配成功返回true，否则返回false</returns>
         public static bool AutowiredProcessingOnCreateTargetObject(CBean obj)
         {
-            Loader.Symboling.SymClass symClass = Loader.CodeLoader.GetSymClassByType(obj.GetType());
+            Loader.Symboling.SymClass symClass = obj.Symbol;
             if (null == symClass)
             {
-                Debugger.Warn("Could not found any bean class info with target type '{0}', processed it autowired failed.",
-                        NovaEngine.Utility.Text.ToString(obj.GetType()));
+                Debugger.Warn("Could not found any bean class info with target type '{%t}', processed it autowired failed.", obj.BeanType);
                 return false;
             }
 
             Loader.Symboling.Bean bean = symClass.GetBean(obj.BeanName);
-            // Debugger.Info("find bean name '{0}' and field count '{1}' with target object '{2}' !!!", obj.BeanName, bean.GetFieldCount(), NovaEngine.Utility.Text.ToString(obj.GetType()));
+            // Debugger.Info("find bean name '{%s}' and field count '{%d}' with target object '{%t}' !!!", obj.BeanName, bean.GetFieldCount(), obj.BeanType);
 
             IEnumerator<KeyValuePair<string, Loader.Symboling.BeanField>> e_beanField = bean.GetFieldEnumerator();
             if (null != e_beanField)
@@ -59,11 +58,11 @@ namespace GameEngine
                     Loader.Symboling.BeanField beanField = e_beanField.Current.Value;
                     Loader.Symboling.SymField symField = beanField.SymField;
 
-                    // Debugger.Warn("create field '{0}' with target object '{1}' !!!", beanField.FieldName, obj.GetType().FullName);
+                    // Debugger.Warn("create field '{%s}' with target object '{%t}' !!!", beanField.FieldName, obj.BeanType);
 
                     if (null == symField)
                     {
-                        Debugger.Warn("Could not found any symbol field instance with name '{0}' and class type '{1}', injected it failed.",
+                        Debugger.Warn("Could not found any symbol field instance with name '{%s}' and class type '{%s}', injected it failed.",
                                 beanField.FieldName, beanField.BeanObject.BeanName);
                         continue;
                     }
@@ -73,7 +72,7 @@ namespace GameEngine
                         object value = __CreateAutowiredObjectForClassType(beanField);
                         if (null == value)
                         {
-                            Debugger.Warn("Create autowired object error with target field name '{0}', setting it failed.", symField.FieldName);
+                            Debugger.Warn("Create autowired object error with target field name '{%s}', setting it failed.", symField.FieldName);
                             continue;
                         }
 
@@ -85,7 +84,7 @@ namespace GameEngine
                         object value = __CreateAutowiredObjectFromConstantType(beanField);
                         if (null == value)
                         {
-                            Debugger.Warn("Create autowired constant error with target field name '{0}', setting it failed.", symField.FieldName);
+                            Debugger.Warn("Create autowired constant error with target field name '{%s}', setting it failed.", symField.FieldName);
                             continue;
                         }
 
@@ -104,7 +103,7 @@ namespace GameEngine
                 Loader.Symboling.Bean referenceBean = Loader.CodeLoader.GetBeanClassByName(beanField.ReferenceBeanName);
                 if (null == referenceBean)
                 {
-                    Debugger.Warn("Could not found any reference bean class with reference name '{0}' from target field '{1}', setting this field value failed.",
+                    Debugger.Warn("Could not found any reference bean class with reference name '{%s}' from target field '{%s}', setting this field value failed.",
                             beanField.ReferenceBeanName, beanField.FieldName);
                     return null;
                 }
@@ -133,11 +132,11 @@ namespace GameEngine
         /// <param name="obj">目标对象实例</param>
         public static void AutowiredProcessingOnReleaseTargetObject(CBean obj)
         {
-            Loader.Symboling.SymClass symClass = Loader.CodeLoader.GetSymClassByType(obj.GetType());
-            // InjectController.BeanClass beanClass = InjectController.Instance.FindGenericBeanClassByType(obj.GetType());
+            Loader.Symboling.SymClass symClass = obj.Symbol;
+            // InjectController.BeanClass beanClass = InjectController.Instance.FindGenericBeanClassByType(obj.BeanType);
             if (null == symClass)
             {
-                Debugger.Warn("Could not found any bean class with target type '{0}', processed it autowired failed.", NovaEngine.Utility.Text.ToString(obj.GetType()));
+                Debugger.Warn("Could not found any bean class with target type '{%t}', processed it autowired failed.", obj.BeanType);
                 return;
             }
 
@@ -153,7 +152,7 @@ namespace GameEngine
 
                     if (null == symField)
                     {
-                        Debugger.Warn("Could not found any symbol field instance with name '{0}' and class type '{1}', injected it failed.",
+                        Debugger.Warn("Could not found any symbol field instance with name '{%s}' and class type '{%s}', injected it failed.",
                                 beanField.FieldName, beanField.BeanObject.BeanName);
                         continue;
                     }

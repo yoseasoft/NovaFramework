@@ -86,7 +86,7 @@ namespace GameEngine
 
             if (_beanStartNotificationList.Contains(bean))
             {
-                Debugger.Warn("The register start notification bean object '{0}' was already exist, repeat added it failed.", bean.GetType().FullName);
+                Debugger.Warn("The register start notification bean object '{%t}' was already exist, repeat added it failed.", bean.GetType());
                 return;
             }
 
@@ -129,7 +129,7 @@ namespace GameEngine
                 OnBeanLifecycleProcessingHandler callback;
                 if (false == TryGetBeanLifecycleProcessingCallback(bean.GetType(), AspectBehaviourType.Start, out callback))
                 {
-                    Debugger.Warn("Could not found any bean start processing callback with target type '{0}', calling start process failed.", bean.GetType().FullName);
+                    Debugger.Warn("Could not found any bean start processing callback with target type '{%t}', calling start process failed.", bean.GetType());
                     continue;
                 }
 
@@ -182,14 +182,14 @@ namespace GameEngine
             if (false == component.Entity.IsOnStartingStatus())
             {
                 // 宿主实体对象尚未进入开始阶段或已经进入销毁阶段，组件实例跳过开始处理逻辑
-                Debugger.Warn("The component parent entity '{0}' instance doesnot entry starting status, started component failed.", component.Entity.GetType().FullName);
+                Debugger.Warn("The component parent entity '{%t}' instance doesnot entry starting status, started component failed.", component.Entity.BeanType);
                 return;
             }
 
             // Entity对象在BeforeStart阶段添加的组件对象实例，组件的Start通知会多调用一次
             if (component.IsOnStartingStatus() || component.IsOnDestroyingStatus())
             {
-                Debugger.Info(LogGroupTag.Controller, "The component '{0}' was already entry starting or destroying status, repeat started component failed.", component.GetType().FullName);
+                Debugger.Info(LogGroupTag.Controller, "The component '{%t}' was already entry starting or destroying status, repeat started component failed.", component.BeanType);
                 return;
             }
 

@@ -242,7 +242,7 @@ namespace GameEngine
         {
             SceneHandler handler = SceneHandler.Instance;
             CScene currentScene = handler.GetCurrentScene();
-            if (null != currentScene && classType.IsAssignableFrom(currentScene.GetType()))
+            if (null != currentScene && classType.IsAssignableFrom(currentScene.BeanType))
             {
                 IList<IBean> result = new List<IBean>(1);
                 result.Add(currentScene);

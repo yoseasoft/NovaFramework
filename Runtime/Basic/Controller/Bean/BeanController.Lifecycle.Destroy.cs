@@ -86,7 +86,7 @@ namespace GameEngine
 
             if (_beanDestroyNotificationList.Contains(bean))
             {
-                Debugger.Warn("The register destroy notification bean object '{0}' was already exist, repeat added it failed.", bean.GetType().FullName);
+                Debugger.Warn("The register destroy notification bean object '{%t}' was already exist, repeat added it failed.", bean.GetType());
                 return;
             }
 
@@ -147,7 +147,7 @@ namespace GameEngine
                 OnBeanLifecycleProcessingHandler callback;
                 if (false == TryGetBeanLifecycleProcessingCallback(bean.GetType(), AspectBehaviourType.Destroy, out callback))
                 {
-                    Debugger.Error("Could not found any bean destroy processing callback with target type '{0}', calling destroy process failed.", bean.GetType().FullName);
+                    Debugger.Error("Could not found any bean destroy processing callback with target type '{%t}', calling destroy process failed.", bean.GetType());
                     continue;
                 }
 
@@ -201,7 +201,7 @@ namespace GameEngine
             // Entity对象在BeforeDestroy阶段移除的组件对象实例，组件的Destroy通知会多调用一次
             if (false == component.IsOnAwakingStatus() || component.IsOnDestroyingStatus())
             {
-                Debugger.Info(LogGroupTag.Controller, "The component '{0}' was already entry destroying status, repeat destroyed component failed.", component.GetType().FullName);
+                Debugger.Info(LogGroupTag.Controller, "The component '{%t}' was already entry destroying status, repeat destroyed component failed.", component.BeanType);
                 return;
             }
 

@@ -87,7 +87,7 @@ namespace GameEngine
             CEntity entity = reference as CEntity;
             Debugger.Assert(null != entity, "Invalid arguments");
 
-            Debugger.Log(LogGroupTag.Controller, "Acquire entity class '{0}' from the pool.", NovaEngine.Utility.Text.ToString(entity.GetType()));
+            Debugger.Log(LogGroupTag.Controller, "Acquire entity class '{%t}' from the pool.", entity.BeanType);
             // entity.Call(entity.Initialize);
         }
 
@@ -100,7 +100,7 @@ namespace GameEngine
             CEntity entity = reference as CEntity;
             Debugger.Assert(null != entity, "Invalid arguments");
 
-            Debugger.Log(LogGroupTag.Controller, "Release entity class '{0}' to the pool.", NovaEngine.Utility.Text.ToString(entity.GetType()));
+            Debugger.Log(LogGroupTag.Controller, "Release entity class '{%t}' to the pool.", entity.BeanType);
             // entity.Call(entity.Cleanup);
         }
 

@@ -96,7 +96,7 @@ namespace GameEngine
             CComponent component = reference as CComponent;
             Debugger.Assert(null != component, "Invalid arguments");
 
-            Debugger.Log(LogGroupTag.Controller, "Acquire component class '{0}' from the pool.", NovaEngine.Utility.Text.ToString(component.GetType()));
+            Debugger.Log(LogGroupTag.Controller, "Acquire component class '{%t}' from the pool.", component.BeanType);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace GameEngine
             CComponent component = reference as CComponent;
             Debugger.Assert(null != component, "Invalid arguments");
 
-            Debugger.Log(LogGroupTag.Controller, "Release component class '{0}' to the pool.", NovaEngine.Utility.Text.ToString(component.GetType()));
+            Debugger.Log(LogGroupTag.Controller, "Release component class '{%t}' to the pool.", component.BeanType);
         }
 
         #endregion

@@ -161,8 +161,7 @@ namespace GameEngine
                 return;
             }
 
-            Debugger.Warn("Unsupported release object with target type '{0}' from pool controller, released instance failed.",
-                    NovaEngine.Utility.Text.ToString(obj.GetType()));
+            Debugger.Warn("Unsupported release object with target type '{%t}' from pool controller, released instance failed.", obj);
         }
 
         #region 池对象类型注册/注销操作接口函数

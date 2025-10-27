@@ -416,7 +416,7 @@ namespace GameEngine
                 MessageChannel channel = GetChannel(channelID);
                 if (null == channel)
                 {
-                    Debugger.Error("Could not found any message channel instance with channel ID '{0}', the connect was invalid type.", channelID);
+                    Debugger.Error("Could not found any message channel instance with channel ID '{%d}', the connect was invalid type.", channelID);
                     Disconnect(channelID);
                     return;
                 }
@@ -487,21 +487,21 @@ namespace GameEngine
                 MessageChannel channel = GetChannel(channelID);
                 if (null == channel)
                 {
-                    Debugger.Error("Could not found any message channel instance with channel ID '{0}', the recv message and processing was failed.", channelID);
+                    Debugger.Error("Could not found any message channel instance with channel ID '{%d}', the recv message and processing was failed.", channelID);
                     Disconnect(channelID);
                     return;
                 }
 
                 if (false == channel.IsConnected)
                 {
-                    Debugger.Warn("The message channel instance '{0}' was not connected, the recv message and processing was failed.", channelID);
+                    Debugger.Warn("The message channel instance '{%d}' was not connected, the recv message and processing was failed.", channelID);
                     return;
                 }
 
                 object message = channel.MessageTranslator.Decode(buffer);
                 if (null == message)
                 {
-                    Debugger.Warn("Decode received message failed with target channel '{0}', please checked the channel translator is running normally.", NovaEngine.Utility.Text.ToString(channel.GetType()));
+                    Debugger.Warn("Decode received message failed with target channel '{%t}', please checked the channel translator is running normally.", channel);
                 }
                 else if (typeof(ProtoBuf.Extension.IMessage).IsAssignableFrom(message.GetType()))
                 {
@@ -624,27 +624,27 @@ namespace GameEngine
 
                 string enumName = enumValue.ToString();
                 // 类名反射时需要包含命名空间前缀
-                string channelClassName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, MessageChannelClassUnifiedStandardName);
-                string translatorClassName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, MessageTranslatorClassUnifiedStandardName);
+                string channelClassName = NovaEngine.FormatString.Format("{%s}.{%s}{%s}", namespaceTag, enumName, MessageChannelClassUnifiedStandardName);
+                string translatorClassName = NovaEngine.FormatString.Format("{%s}.{%s}{%s}", namespaceTag, enumName, MessageTranslatorClassUnifiedStandardName);
 
                 SystemType channelClassType = SystemType.GetType(channelClassName);
                 SystemType translatorClassType = SystemType.GetType(translatorClassName);
 
                 if (null == channelClassType)
                 {
-                    Debugger.Info(LogGroupTag.Module, "Could not found any message channel class with target name {0}.", channelClassName);
+                    Debugger.Info(LogGroupTag.Module, "Could not found any message channel class with target name {%s}.", channelClassName);
                     continue;
                 }
 
                 if (null == translatorClassType)
                 {
-                    Debugger.Info(LogGroupTag.Module, "Could not found any message translator class with target name {0}.", translatorClassName);
+                    Debugger.Info(LogGroupTag.Module, "Could not found any message translator class with target name {%s}.", translatorClassName);
                     continue;
                 }
 
                 if (false == typeof(IMessageTranslator).IsAssignableFrom(translatorClassType))
                 {
-                    Debugger.Warn("The message translator class type {0} must be inherited from 'IMessageTranslator' interface.", translatorClassName);
+                    Debugger.Warn("The message translator class type {%s} must be inherited from 'IMessageTranslator' interface.", translatorClassName);
                     continue;
                 }
 
@@ -652,11 +652,11 @@ namespace GameEngine
                 IMessageTranslator messageTranslator = System.Activator.CreateInstance(translatorClassType) as IMessageTranslator;
                 if (null == messageTranslator)
                 {
-                    Debugger.Error("The message translator class type {0} created failed.", translatorClassName);
+                    Debugger.Error("The message translator class type {%s} created failed.", translatorClassName);
                     continue;
                 }
 
-                Debugger.Info(LogGroupTag.Module, "Register new message channel type '{0}' and translator class '{1}' to target service type '{2}'.",
+                Debugger.Info(LogGroupTag.Module, "Register new message channel type '{%s}' and translator class '{%s}' to target service type '{%s}'.",
                         channelClassName, translatorClassName, enumName);
 
                 _messageChannelTypes.Add((int) enumValue, channelClassType);
@@ -673,7 +673,7 @@ namespace GameEngine
         {
             if (false == _messageChannelTypes.ContainsKey(serviceType))
             {
-                Debugger.Warn("Could not found any message channel class by service type '{0}', please checked it was loaded failed.", serviceType);
+                Debugger.Warn("Could not found any message channel class by service type '{%d}', please checked it was loaded failed.", serviceType);
             }
 
             return _messageChannelTypes[serviceType];
@@ -688,7 +688,7 @@ namespace GameEngine
         {
             if (false == _messageTranslators.ContainsKey(serviceType))
             {
-                Debugger.Warn("Could not found any message translator class by service type '{0}', please checked it was loaded failed.", serviceType);
+                Debugger.Warn("Could not found any message translator class by service type '{%d}', please checked it was loaded failed.", serviceType);
             }
 
             return _messageTranslators[serviceType];
