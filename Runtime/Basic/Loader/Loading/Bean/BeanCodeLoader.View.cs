@@ -56,9 +56,9 @@ namespace GameEngine.Loader
             {
                 SystemAttribute attr = attrs[n];
                 SystemType attrType = attr.GetType();
-                if (typeof(DeclareViewClassAttribute) == attrType)
+                if (typeof(CViewClassAttribute) == attrType)
                 {
-                    DeclareViewClassAttribute _attr = (DeclareViewClassAttribute) attr;
+                    CViewClassAttribute _attr = (CViewClassAttribute) attr;
                     info.EntityName = _attr.Name;
                     info.Priority = _attr.Priority;
                     info.FormType = _attr.FormType;

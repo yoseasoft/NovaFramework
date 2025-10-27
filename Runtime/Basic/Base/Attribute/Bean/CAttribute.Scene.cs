@@ -32,15 +32,15 @@ namespace GameEngine
     /// 场景实现类声明属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class DeclareSceneClassAttribute : DeclareEntityClassAttribute
+    public class CSceneClassAttribute : DeclareEntityClassAttribute
     {
-        public DeclareSceneClassAttribute(string sceneName) : this(sceneName, 0)
+        public CSceneClassAttribute(string sceneName) : this(sceneName, 0)
         { }
 
-        public DeclareSceneClassAttribute(int priority) : this(string.Empty, priority)
+        public CSceneClassAttribute(int priority) : this(string.Empty, priority)
         { }
 
-        public DeclareSceneClassAttribute(string sceneName, int priority) : base(sceneName, priority)
+        public CSceneClassAttribute(string sceneName, int priority) : base(sceneName, priority)
         {
         }
     }

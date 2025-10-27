@@ -33,7 +33,7 @@ namespace GameEngine
     /// 视图实现类声明属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class DeclareViewClassAttribute : DeclareEntityClassAttribute
+    public class CViewClassAttribute : DeclareEntityClassAttribute
     {
         /// <summary>
         /// 视图窗口类型
@@ -45,25 +45,25 @@ namespace GameEngine
         /// </summary>
         public ViewFormType FormType => _formType;
 
-        public DeclareViewClassAttribute(string viewName) : this(viewName, 0)
+        public CViewClassAttribute(string viewName) : this(viewName, 0)
         { }
 
-        public DeclareViewClassAttribute(int priority) : this(null, priority)
+        public CViewClassAttribute(int priority) : this(null, priority)
         { }
 
-        public DeclareViewClassAttribute(ViewFormType formType) : this(null, formType)
+        public CViewClassAttribute(ViewFormType formType) : this(null, formType)
         { }
 
-        public DeclareViewClassAttribute(string viewName, int priority) : this(viewName, priority, ViewFormType.Unknown)
+        public CViewClassAttribute(string viewName, int priority) : this(viewName, priority, ViewFormType.Unknown)
         { }
 
-        public DeclareViewClassAttribute(string viewName, ViewFormType formType) : this(viewName, 0, formType)
+        public CViewClassAttribute(string viewName, ViewFormType formType) : this(viewName, 0, formType)
         { }
 
-        public DeclareViewClassAttribute(int priority, ViewFormType formType) : this(null, priority, formType)
+        public CViewClassAttribute(int priority, ViewFormType formType) : this(null, priority, formType)
         { }
 
-        public DeclareViewClassAttribute(string viewName, int priority, ViewFormType formType) : base(viewName, priority)
+        public CViewClassAttribute(string viewName, int priority, ViewFormType formType) : base(viewName, priority)
         {
             _formType = formType;
         }

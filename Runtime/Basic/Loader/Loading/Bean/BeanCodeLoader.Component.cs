@@ -56,9 +56,9 @@ namespace GameEngine.Loader
             {
                 SystemAttribute attr = attrs[n];
                 SystemType attrType = attr.GetType();
-                if (typeof(DeclareComponentClassAttribute) == attrType)
+                if (typeof(CComponentClassAttribute) == attrType)
                 {
-                    DeclareComponentClassAttribute _attr = (DeclareComponentClassAttribute) attr;
+                    CComponentClassAttribute _attr = (CComponentClassAttribute) attr;
                     info.ComponentName = _attr.ComponentName;
                 }
             }

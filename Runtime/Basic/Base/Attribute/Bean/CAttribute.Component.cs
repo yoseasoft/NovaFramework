@@ -32,7 +32,7 @@ namespace GameEngine
     /// 组件实现类声明属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class DeclareComponentClassAttribute : SystemAttribute
+    public class CComponentClassAttribute : SystemAttribute
     {
         /// <summary>
         /// 组件名称
@@ -53,15 +53,15 @@ namespace GameEngine
         /// </summary>
         public int Priority => _priority;
 
-        public DeclareComponentClassAttribute(string componentName) : this(componentName, 0)
+        public CComponentClassAttribute(string componentName) : this(componentName, 0)
         {
         }
 
-        public DeclareComponentClassAttribute(int priority) : this(string.Empty, priority)
+        public CComponentClassAttribute(int priority) : this(string.Empty, priority)
         {
         }
 
-        public DeclareComponentClassAttribute(string componentName, int priority) : base()
+        public CComponentClassAttribute(string componentName, int priority) : base()
         {
             _componentName = componentName ?? string.Empty;
             _priority = priority;

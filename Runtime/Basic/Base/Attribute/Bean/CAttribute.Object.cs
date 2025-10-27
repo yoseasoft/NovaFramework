@@ -33,7 +33,7 @@ namespace GameEngine
     /// 对象实现类声明属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class DeclareObjectClassAttribute : SystemAttribute
+    public class CObjectClassAttribute : SystemAttribute
     {
         /// <summary>
         /// 对象名称
@@ -54,15 +54,15 @@ namespace GameEngine
         /// </summary>
         public int Priority => _priority;
 
-        public DeclareObjectClassAttribute(string objectName) : this(objectName, 0)
+        public CObjectClassAttribute(string objectName) : this(objectName, 0)
         {
         }
 
-        public DeclareObjectClassAttribute(int priority) : this(string.Empty, priority)
+        public CObjectClassAttribute(int priority) : this(string.Empty, priority)
         {
         }
 
-        public DeclareObjectClassAttribute(string objectName, int priority) : base()
+        public CObjectClassAttribute(string objectName, int priority) : base()
         {
             _objectName = objectName ?? string.Empty;
             _priority = priority;
