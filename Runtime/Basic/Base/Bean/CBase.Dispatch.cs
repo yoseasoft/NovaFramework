@@ -81,7 +81,6 @@ namespace GameEngine
         {
             IDictionary<SourceType, IList<string>> dict = new Dictionary<SourceType, IList<string>>();
 
-            SystemType targetType = GetType();
             foreach (KeyValuePair<SourceType, IDictionary<string, bool>> kvp in container)
             {
                 foreach (KeyValuePair<string, bool> call_kvp in kvp.Value)
@@ -97,7 +96,7 @@ namespace GameEngine
 
                         if (infos.Contains(fullname))
                         {
-                            Debugger.Warn("The call info was already exist with target type '{0}' and name '{1}', repeat added it will override old value.", targetType, fullname);
+                            Debugger.Warn("The call info was already exist with target type '{%t}' and name '{%s}', repeat added it will override old value.", BeanType, fullname);
                             infos.Remove(fullname);
                         }
 

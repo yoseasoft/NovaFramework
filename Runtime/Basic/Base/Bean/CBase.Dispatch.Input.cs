@@ -81,10 +81,9 @@ namespace GameEngine
         {
             if (_inputResponseCallsForCode.TryGetValue(inputCode, out IDictionary<string, bool> calls))
             {
-                SystemType classType = GetType();
                 foreach (KeyValuePair<string, bool> kvp in calls)
                 {
-                    InputHandler.Instance.InvokeInputResponseBindingCall(kvp.Key, classType, this, inputCode, operationType);
+                    InputHandler.Instance.InvokeInputResponseBindingCall(kvp.Key, BeanType, this, inputCode, operationType);
                 }
             }
 
@@ -101,10 +100,9 @@ namespace GameEngine
         {
             if (_inputResponseCallsForType.TryGetValue(inputData.GetType(), out IDictionary<string, bool> calls))
             {
-                SystemType classType = GetType();
                 foreach (KeyValuePair<string, bool> kvp in calls)
                 {
-                    InputHandler.Instance.InvokeInputResponseBindingCall(kvp.Key, classType, this, inputData);
+                    InputHandler.Instance.InvokeInputResponseBindingCall(kvp.Key, BeanType, this, inputData);
                 }
             }
 
@@ -215,7 +213,7 @@ namespace GameEngine
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
         protected internal bool AddInputResponse(string fullname, SystemMethodInfo methodInfo, int inputCode, int operationType, bool automatically)
         {
-            InputHandler.Instance.AddInputResponseBindingCallInfo(fullname, GetType(), methodInfo, inputCode, operationType, automatically);
+            InputHandler.Instance.AddInputResponseBindingCallInfo(fullname, BeanType, methodInfo, inputCode, operationType, automatically);
 
             if (false == _inputResponseCallsForCode.TryGetValue(inputCode, out IDictionary<string, bool> calls))
             {
@@ -231,8 +229,8 @@ namespace GameEngine
 
             if (calls.ContainsKey(fullname))
             {
-                Debugger.Warn("The '{0}' instance's input '{1}' was already add same listener by name '{2}', repeat do it failed.",
-                        NovaEngine.Utility.Text.ToString(GetType()), inputCode, fullname);
+                Debugger.Warn("The '{%t}' instance's input '{%d}' was already add same listener by name '{%s}', repeat do it failed.",
+                        BeanType, inputCode, fullname);
                 return false;
             }
 
@@ -295,7 +293,7 @@ namespace GameEngine
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
         protected internal bool AddInputResponse(string fullname, SystemMethodInfo methodInfo, SystemType inputType, bool automatically)
         {
-            InputHandler.Instance.AddInputResponseBindingCallInfo(fullname, GetType(), methodInfo, inputType, automatically);
+            InputHandler.Instance.AddInputResponseBindingCallInfo(fullname, BeanType, methodInfo, inputType, automatically);
 
             if (false == _inputResponseCallsForType.TryGetValue(inputType, out IDictionary<string, bool> calls))
             {
@@ -311,8 +309,8 @@ namespace GameEngine
 
             if (calls.ContainsKey(fullname))
             {
-                Debugger.Warn("The '{0}' instance's input '{1}' was already add same listener by name '{2}', repeat do it failed.",
-                        NovaEngine.Utility.Text.ToString(GetType()), inputType.FullName, fullname);
+                Debugger.Warn("The '{%t}' instance's input '{%t}' was already add same listener by name '{%s}', repeat do it failed.",
+                        BeanType, inputType, fullname);
                 return false;
             }
 

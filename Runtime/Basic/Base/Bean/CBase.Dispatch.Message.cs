@@ -75,10 +75,9 @@ namespace GameEngine
         {
             if (_messageListenerCallForType.TryGetValue(opcode, out IDictionary<string, bool> calls))
             {
-                SystemType classType = GetType();
                 foreach (KeyValuePair<string, bool> kvp in calls)
                 {
-                    NetworkHandler.Instance.InvokeMessageListenerBindingCall(kvp.Key, classType, this, message);
+                    NetworkHandler.Instance.InvokeMessageListenerBindingCall(kvp.Key, BeanType, this, message);
                 }
             }
 
@@ -151,7 +150,7 @@ namespace GameEngine
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
         protected internal bool AddMessageListener(string fullname, SystemMethodInfo methodInfo, int opcode, bool automatically)
         {
-            NetworkHandler.Instance.AddMessageListenerBindingCallInfo(fullname, GetType(), methodInfo, opcode, automatically);
+            NetworkHandler.Instance.AddMessageListenerBindingCallInfo(fullname, BeanType, methodInfo, opcode, automatically);
 
             if (false == _messageListenerCallForType.TryGetValue(opcode, out IDictionary<string, bool> calls))
             {
@@ -167,8 +166,8 @@ namespace GameEngine
 
             if (calls.ContainsKey(fullname))
             {
-                Debugger.Warn("The '{0}' instance's message type '{1}' was already add same listener by name '{2}', repeat added it failed.",
-                    NovaEngine.Utility.Text.ToString(GetType()), opcode, fullname);
+                Debugger.Warn("The '{%t}' instance's message type '{%d}' was already add same listener by name '{%s}', repeat added it failed.",
+                    BeanType, opcode, fullname);
                 return false;
             }
 

@@ -46,9 +46,9 @@ namespace GameEngine
         /// </summary>
         private SystemType _beanType;
         /// <summary>
-        /// 实体对象的元数据
+        /// 实体对象的用户数据
         /// </summary>
-        private object _metadata;
+        private object _userdata;
 
         /// <summary>
         /// 实体对象的符号标记
@@ -68,9 +68,9 @@ namespace GameEngine
         /// </summary>
         public SystemType BeanType { get { return _beanType; } }
         /// <summary>
-        /// 获取或设置实体对象的元数据
+        /// 获取或设置实体对象的用户数据
         /// </summary>
-        public object Metadata { get { return _metadata; } protected set { _metadata = value; } }
+        public object Userdata { get { return _userdata; } protected set { _userdata = value; } }
 
         /// <summary>
         /// 获取实体对象对应的符号对象实例
@@ -81,7 +81,7 @@ namespace GameEngine
             {
                 if (null == _symbol)
                 {
-                    _symbol = Loader.CodeLoader.GetSymClassByType(GetType());
+                    _symbol = Loader.CodeLoader.GetSymClassByType(BeanType);
                     Debugger.Assert(null != _symbol, "Invalid bean object type.");
                 }
 
@@ -89,13 +89,21 @@ namespace GameEngine
             }
         }
 
+        protected CBean()
+        {
+            _beanType = GetType();
+        }
+
+        ~CBean()
+        { }
+
         /// <summary>
         /// 对象初始化函数接口
         /// </summary>
         public virtual void Initialize()
         {
             _beanId = NovaEngine.Session.NextSession(1001);
-            _beanType = GetType();
+            // _beanType = GetType();
         }
 
         /// <summary>
@@ -105,8 +113,8 @@ namespace GameEngine
         {
             _beanId = 0;
             _beanName = null;
-            _beanType = null;
-            _metadata = null;
+            // _beanType = null;
+            _userdata = null;
         }
 
         /// <summary>

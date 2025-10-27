@@ -243,7 +243,7 @@ namespace GameEngine
             for (int n = 0; n < _objects.Count; ++n)
             {
                 CObject actor = _objects[n];
-                if (actor.GetType() == objectType)
+                if (actor.BeanType == objectType)
                 {
                     objects.Add(actor);
                 }
@@ -339,7 +339,7 @@ namespace GameEngine
         {
             if (false == _objects.Contains(obj))
             {
-                Debugger.Warn("Could not found target object instance '{0}' from current container, removed it failed.", obj.GetType().FullName);
+                Debugger.Warn("Could not found target object instance '{%t}' from current container, removed it failed.", obj.BeanType);
                 return;
             }
 
@@ -398,7 +398,7 @@ namespace GameEngine
             IEnumerable<CObject> objects = NovaEngine.Utility.Collection.Reverse<CObject>(_objects);
             foreach (CObject obj in objects)
             {
-                if (obj.GetType() == objectType)
+                if (obj.BeanType == objectType)
                 {
                     RemoveObject(obj);
                 }
@@ -424,7 +424,7 @@ namespace GameEngine
         {
             if (false == _objects.Contains(obj))
             {
-                Debugger.Warn("Could not found target object instance '{0}' from current container, removed it failed.", obj.GetType().FullName);
+                Debugger.Warn("Could not found target object instance '{%t}' from current container, removed it failed.", obj.BeanType);
                 return;
             }
 
@@ -473,7 +473,7 @@ namespace GameEngine
             IEnumerable<CObject> objects = NovaEngine.Utility.Collection.Reverse<CObject>(_objects);
             foreach (CObject obj in objects)
             {
-                if (obj.GetType() == objectType)
+                if (obj.BeanType == objectType)
                 {
                     DestroyObject(obj);
                 }
@@ -499,7 +499,7 @@ namespace GameEngine
         {
             if (false == _objects.Contains(obj))
             {
-                Debugger.Error("Could not found any added record of the object instance '{0}', calling start process failed.", obj.GetType().FullName);
+                Debugger.Error("Could not found any added record of the object instance '{%t}', calling start process failed.", obj.BeanType);
                 return;
             }
 
@@ -507,14 +507,14 @@ namespace GameEngine
             Call(obj, obj.Start, AspectBehaviourType.Start);
 
             // 激活执行接口的对象实例，放入到执行队列中
-            //if (typeof(IExecuteActivation).IsAssignableFrom(obj.GetType()))
+            //if (typeof(IExecuteActivation).IsAssignableFrom(obj.BeanType))
             if (obj.IsExecuteActivation())
             {
                 _objectExecuteList.Add(obj);
             }
 
             // 激活刷新接口的对象实例，放入到刷新队列中
-            //if (typeof(IUpdateActivation).IsAssignableFrom(obj.GetType()))
+            //if (typeof(IUpdateActivation).IsAssignableFrom(obj.BeanType))
             if (obj.IsUpdateActivation())
             {
                 _objectUpdateList.Add(obj);
@@ -566,7 +566,7 @@ namespace GameEngine
             while (e.MoveNext())
             {
                 CObject obj = e.Current;
-                if (objectType.IsAssignableFrom(obj.GetType()))
+                if (objectType.IsAssignableFrom(obj.BeanType))
                 {
                     result.Add(obj);
                 }

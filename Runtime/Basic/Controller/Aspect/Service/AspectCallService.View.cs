@@ -73,7 +73,7 @@ namespace GameEngine
 
         private static void RegViewNoticeCallByTargetType(CView obj, AspectBehaviourType behaviourType, bool reload)
         {
-            SystemType targetType = obj.GetType();
+            SystemType targetType = obj.BeanType;
             Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CRef));
             if (null == codeInfo)
             {

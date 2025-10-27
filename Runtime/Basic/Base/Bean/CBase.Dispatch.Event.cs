@@ -123,10 +123,9 @@ namespace GameEngine
         {
             if (_eventSubscribeCallForId.TryGetValue(eventID, out IDictionary<string, bool> calls))
             {
-                SystemType classType = GetType();
                 foreach (KeyValuePair<string, bool> kvp in calls)
                 {
-                    EventController.Instance.InvokeEventSubscribeBindingCall(kvp.Key, classType, this, eventID, args);
+                    EventController.Instance.InvokeEventSubscribeBindingCall(kvp.Key, BeanType, this, eventID, args);
                 }
             }
 
@@ -143,10 +142,9 @@ namespace GameEngine
         {
             if (_eventSubscribeCallForType.TryGetValue(eventData.GetType(), out IDictionary<string, bool> calls))
             {
-                SystemType classType = GetType();
                 foreach (KeyValuePair<string, bool> kvp in calls)
                 {
-                    EventController.Instance.InvokeEventSubscribeBindingCall(kvp.Key, classType, this, eventData);
+                    EventController.Instance.InvokeEventSubscribeBindingCall(kvp.Key, BeanType, this, eventData);
                 }
             }
 
@@ -251,7 +249,7 @@ namespace GameEngine
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
         protected internal bool Subscribe(string fullname, SystemMethodInfo methodInfo, int eventID, bool automatically)
         {
-            EventController.Instance.AddEventSubscribeBindingCallInfo(fullname, GetType(), methodInfo, eventID, automatically);
+            EventController.Instance.AddEventSubscribeBindingCallInfo(fullname, BeanType, methodInfo, eventID, automatically);
 
             if (false == _eventSubscribeCallForId.TryGetValue(eventID, out IDictionary<string, bool> calls))
             {
@@ -267,8 +265,8 @@ namespace GameEngine
 
             if (calls.ContainsKey(fullname))
             {
-                Debugger.Warn("The '{0}' instance's event '{1}' was already add same listener by name '{2}', repeat do it failed.",
-                        NovaEngine.Utility.Text.ToString(GetType()), eventID, fullname);
+                Debugger.Warn("The '{%t}' instance's event '{%d}' was already add same listener by name '{%s}', repeat do it failed.",
+                        BeanType, eventID, fullname);
                 return false;
             }
 
@@ -331,7 +329,7 @@ namespace GameEngine
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
         protected internal bool Subscribe(string fullname, SystemMethodInfo methodInfo, SystemType eventType, bool automatically)
         {
-            EventController.Instance.AddEventSubscribeBindingCallInfo(fullname, GetType(), methodInfo, eventType, automatically);
+            EventController.Instance.AddEventSubscribeBindingCallInfo(fullname, BeanType, methodInfo, eventType, automatically);
 
             if (false == _eventSubscribeCallForType.TryGetValue(eventType, out IDictionary<string, bool> calls))
             {
@@ -347,8 +345,8 @@ namespace GameEngine
 
             if (calls.ContainsKey(fullname))
             {
-                Debugger.Warn("The '{0}' instance's event '{1}' was already add same listener by name '{2}', repeat do it failed.",
-                        NovaEngine.Utility.Text.ToString(GetType()), eventType.FullName, fullname);
+                Debugger.Warn("The '{%t}' instance's event '{%t}' was already add same listener by name '{%s}', repeat do it failed.",
+                        BeanType, eventType, fullname);
                 return false;
             }
 

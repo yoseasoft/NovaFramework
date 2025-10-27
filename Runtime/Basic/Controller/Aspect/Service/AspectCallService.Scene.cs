@@ -41,7 +41,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CScene), AspectBehaviourType.Startup)]
         private static void CallServiceProcessOfSceneStartup(CScene scene, bool reload)
         {
-            SystemType targetType = scene.GetType();
+            SystemType targetType = scene.BeanType;
             Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CScene));
             if (null == codeInfo)
             {

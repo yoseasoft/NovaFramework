@@ -67,7 +67,7 @@ namespace GameEngine
 
         private static void RegComponentDispatchCallByTargetType(CComponent component, AspectBehaviourType behaviourType, bool reload)
         {
-            SystemType targetType = component.GetType();
+            SystemType targetType = component.BeanType;
             Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CComponent));
             if (null == codeInfo)
             {

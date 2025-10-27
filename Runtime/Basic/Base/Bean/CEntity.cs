@@ -948,14 +948,14 @@ namespace GameEngine
             // 是否有检查的必要呢？
             if (HasComponent(component))
             {
-                Debugger.Warn("The component instance '{0}' was already registed, repeat added it failed.", component.GetType().FullName);
+                Debugger.Warn("The component instance '{%t}' was already registed, repeat added it failed.", component.BeanType);
                 return null;
             }
 
             string componentName = GetComponentName(component);
             if (_components.ContainsKey(componentName))
             {
-                Debugger.Warn("The component name '{0}' was already registed, repeat added it failed.", componentName);
+                Debugger.Warn("The component name '{%s}' was already registed, repeat added it failed.", componentName);
                 return null;
             }
 
@@ -972,21 +972,21 @@ namespace GameEngine
             // 这样可以通过符号类在解析过程中动态接入的方式简化标识定义的过程
 
             // 如果组件激活了输入分发接口，则添加到输入分发队列中
-            // if (typeof(IInputActivation).IsAssignableFrom(component.GetType()))
+            // if (typeof(IInputActivation).IsAssignableFrom(component.BeanType))
             if (component.HasFeatureType(typeof(InputActivationAttribute)))
             {
                 _componentInputDispatchList.Add(component);
             }
 
             // 如果组件激活了事件分发接口，则添加到事件分发队列中
-            // if (typeof(IEventActivation).IsAssignableFrom(component.GetType()))
+            // if (typeof(IEventActivation).IsAssignableFrom(component.BeanType))
             if (component.HasFeatureType(typeof(EventActivationAttribute)))
             {
                 _componentEventDispatchList.Add(component);
             }
 
             // 如果组件激活了消息分发接口，则添加到消息分发队列中
-            // if (typeof(IMessageActivation).IsAssignableFrom(component.GetType()))
+            // if (typeof(IMessageActivation).IsAssignableFrom(component.BeanType))
             if (component.HasFeatureType(typeof(MessageActivationAttribute)))
             {
                 _componentMessageDispatchList.Add(component);
@@ -1077,7 +1077,7 @@ namespace GameEngine
             IList<CComponent> list = null;
             foreach (KeyValuePair<string, CComponent> kvp in _components)
             {
-                if (componentType.IsAssignableFrom(kvp.Value.GetType()))
+                if (componentType.IsAssignableFrom(kvp.Value.BeanType))
                 {
                     if (null == list) list = new List<CComponent>();
 
@@ -1104,7 +1104,7 @@ namespace GameEngine
         /// <returns>返回给定组件实例对应的名称</returns>
         private string GetComponentName(CComponent component)
         {
-            SystemType componentType = component.GetType();
+            SystemType componentType = component.BeanType;
 
             return GetComponentNameByType(componentType);
         }
@@ -1233,7 +1233,7 @@ namespace GameEngine
         {
             if (false == _components.Values.Contains(component))
             {
-                Debugger.Error("Could not found any added record of the component instance '{0}', calling start process failed.", component.GetType().FullName);
+                Debugger.Error("Could not found any added record of the component instance '{%t}', calling start process failed.", component.BeanType);
                 return;
             }
 
@@ -1253,7 +1253,7 @@ namespace GameEngine
             // 2025-07-13：
             // 取消接口标识，转而使用特性标签来检测
             // 这样可以通过符号类在解析过程中动态接入的方式简化标识定义的过程
-            // if (typeof(IUpdateActivation).IsAssignableFrom(component.GetType()))
+            // if (typeof(IUpdateActivation).IsAssignableFrom(component.BeanType))
             if (component.HasAspectBehaviourType(AspectBehaviourType.Update) ||
                 component.HasAspectBehaviourType(AspectBehaviourType.LateUpdate))
             {
@@ -1321,7 +1321,7 @@ namespace GameEngine
         /// <returns>若随机因子初始化成功返回true，否则返回false</returns>
         public bool InitRandomSeed(int seed)
         {
-            return InitRandomSeed(NovaEngine.Utility.Text.GetFullName(this.GetType()), seed);
+            return InitRandomSeed(NovaEngine.Utility.Text.GetFullName(this.BeanType), seed);
         }
 
         /// <summary>
@@ -1355,7 +1355,7 @@ namespace GameEngine
         /// <returns>返回随机值</returns>
         public int RandomNext()
         {
-            return RandomNext(NovaEngine.Utility.Text.GetFullName(this.GetType()));
+            return RandomNext(NovaEngine.Utility.Text.GetFullName(this.BeanType));
         }
 
         /// <summary>
@@ -1381,7 +1381,7 @@ namespace GameEngine
         /// <returns>返回随机值</returns>
         public int RandomNext(int maxValue)
         {
-            return RandomNext(NovaEngine.Utility.Text.GetFullName(this.GetType()), maxValue);
+            return RandomNext(NovaEngine.Utility.Text.GetFullName(this.BeanType), maxValue);
         }
 
         /// <summary>
@@ -1409,7 +1409,7 @@ namespace GameEngine
         /// <returns>返回随机值</returns>
         public int RandomNext(int minValue, int maxValue)
         {
-            return RandomNext(NovaEngine.Utility.Text.GetFullName(this.GetType()), minValue, maxValue);
+            return RandomNext(NovaEngine.Utility.Text.GetFullName(this.BeanType), minValue, maxValue);
         }
 
         /// <summary>

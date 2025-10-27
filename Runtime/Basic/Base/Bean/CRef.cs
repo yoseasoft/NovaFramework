@@ -96,7 +96,7 @@ namespace GameEngine
         /// <returns>若引用对象激活执行行为则返回true，否则返回false</returns>
         protected internal virtual bool IsExecuteActivation()
         {
-            if (typeof(IExecuteActivation).IsAssignableFrom(GetType()))
+            if (typeof(IExecuteActivation).IsAssignableFrom(BeanType))
             {
                 return true;
             }
@@ -116,7 +116,7 @@ namespace GameEngine
         /// <returns>若引用对象激活刷新行为则返回true，否则返回false</returns>
         protected internal virtual bool IsUpdateActivation()
         {
-            if (typeof(IUpdateActivation).IsAssignableFrom(GetType()))
+            if (typeof(IUpdateActivation).IsAssignableFrom(BeanType))
             {
                 return true;
             }

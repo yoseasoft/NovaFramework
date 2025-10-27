@@ -41,11 +41,11 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CEntity), AspectBehaviourType.Initialize)]
         private static void CallServiceProcessOfEntityInitialize(CEntity entity, bool reload)
         {
-            SystemType targetType = entity.GetType();
+            SystemType targetType = entity.BeanType;
             Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CEntity));
             if (null == codeInfo)
             {
-                Debugger.Warn("Could not found any aspect call entity service process with target type '{0}', called it failed.", targetType.FullName);
+                Debugger.Warn("Could not found any aspect call entity service process with target type '{%t}', called it failed.", targetType);
                 return;
             }
 
