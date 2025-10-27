@@ -65,7 +65,7 @@ namespace GameEngine
     /// 实体自动挂载的目标组件的属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = true, Inherited = true)]
-    public class EntityActivationComponentAttribute : SystemAttribute
+    public class CEntityAutomaticActivationComponentAttribute : SystemAttribute
     {
         /// <summary>
         /// 组件引用对象类型
@@ -93,15 +93,15 @@ namespace GameEngine
         /// </summary>
         public AspectBehaviourType ActivationBehaviourType => _activationBehaviourType;
 
-        public EntityActivationComponentAttribute(SystemType referenceType) : this(referenceType, 0, AspectBehaviourType.Initialize)
+        public CEntityAutomaticActivationComponentAttribute(SystemType referenceType) : this(referenceType, 0, AspectBehaviourType.Initialize)
         {
         }
 
-        public EntityActivationComponentAttribute(SystemType referenceType, int priority) : this(referenceType, priority, AspectBehaviourType.Initialize)
+        public CEntityAutomaticActivationComponentAttribute(SystemType referenceType, int priority) : this(referenceType, priority, AspectBehaviourType.Initialize)
         {
         }
 
-        public EntityActivationComponentAttribute(SystemType referenceType, int priority, AspectBehaviourType activationBehaviourType) : base()
+        public CEntityAutomaticActivationComponentAttribute(SystemType referenceType, int priority, AspectBehaviourType activationBehaviourType) : base()
         {
             _referenceType = referenceType;
             _priority = priority;
