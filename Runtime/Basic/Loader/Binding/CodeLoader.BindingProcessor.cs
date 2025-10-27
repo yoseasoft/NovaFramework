@@ -99,7 +99,7 @@ namespace GameEngine.Loader
                 }
 
                 // 类名反射时需要包含命名空间前缀
-                string processorName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, BindingProcessorClassUnifiedStandardName);
+                string processorName = NovaEngine.FormatString.Format("{%s}.{%s}{%s}", namespaceTag, enumName, BindingProcessorClassUnifiedStandardName);
 
                 SystemType processorType = SystemType.GetType(processorName);
                 if (null == processorType)

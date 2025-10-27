@@ -30,23 +30,6 @@ using UniTask = Cysharp.Threading.Tasks.UniTask;
 namespace GameEngine
 {
     /// <summary>
-    /// 视图对象窗口类型的枚举定义
-    /// </summary>
-    public enum ViewFormType : byte
-    {
-        /// <summary>
-        /// 无效
-        /// </summary>
-        Unknown = 0,
-
-        UGUI,
-
-        FairyGUI,
-
-        UIToolkit,
-    }
-
-    /// <summary>
     /// 视图对象通知类型的枚举定义
     /// </summary>
     public enum ViewNoticeType : byte

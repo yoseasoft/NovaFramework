@@ -47,12 +47,12 @@ namespace GameEngine
         /// <summary>
         /// 实体名称获取函数
         /// </summary>
-        public string Name => _name;
+        protected internal string Name => _name;
 
         /// <summary>
         /// 实体优先级获取函数
         /// </summary>
-        public int Priority => _priority;
+        protected internal int Priority => _priority;
 
         protected DeclareEntityClassAttribute(string name, int priority) : base()
         {

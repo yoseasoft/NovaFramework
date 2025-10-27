@@ -32,6 +32,23 @@ using SystemType = System.Type;
 namespace GameEngine
 {
     /// <summary>
+    /// 视图对象窗口表单类型的枚举定义
+    /// </summary>
+    public enum ViewFormType : byte
+    {
+        /// <summary>
+        /// 无效
+        /// </summary>
+        Unknown = 0,
+
+        UGUI = 1,
+
+        FairyGUI = 2,
+
+        UIToolkit = 3,
+    }
+
+    /// <summary>
     /// 用户界面模块封装的句柄对象类
     /// 模块具体功能接口请参考<see cref="NovaEngine.GuiModule"/>类
     /// </summary>

@@ -147,6 +147,7 @@ namespace NovaEngine
             /// <param name="format">字符串格式</param>
             /// <param name="args">字符串参数</param>
             /// <returns>返回格式化后的字符串</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static string Format(string format, params object[] args)
             {
                 return ObjectFormatter.TextFormatConvertionProcess(format, args);
@@ -158,6 +159,7 @@ namespace NovaEngine
             /// <param name="buff">目标缓冲区</param>
             /// <param name="format">字符串格式</param>
             /// <param name="args">字符串参数</param>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static void FormatToBuffer(SystemStringBuilder buff, string format, params object[] args)
             {
                 if (buff == null)

@@ -43,6 +43,17 @@ namespace NovaEngine
         public readonly static bool screenNeverSleep = false;
 
         /// <summary>
+        /// 默认选择的网络协议序列化类型
+        /// </summary>
+        public readonly static int protocolSerializationType = 0;
+
+        /// <summary>
+        /// 默认选择的窗口表单系统类型
+        /// 这里只是记录，在实际的业务实现层定义具体的类型值
+        /// </summary>
+        public readonly static int formSystemType = 0;
+
+        /// <summary>
         /// 自动开启的日志通道类型标识
         /// </summary>
         public readonly static int logChannel = 0;
@@ -61,13 +72,13 @@ namespace NovaEngine
         /// 教程模式，打开该选项后，将跳转至框架示例环境，执行教程代码<br/>
         /// 在正式版本中，该标识将默认关闭，仅在开发环境中有效
         /// </summary>
-        public static readonly bool tutorialMode = false;
+        public readonly static bool tutorialMode = false;
 
         /// <summary>
         /// 教程案例类型，通过该类型引导跳转到具体的示例代码环境<br/>
         /// 在正式版本中，该类型将默认置空，仅在开发环境中有效
         /// </summary>
-        public static readonly string tutorialSampleType = null;
+        public readonly static string tutorialSampleType = null;
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
 

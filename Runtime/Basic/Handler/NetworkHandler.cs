@@ -35,6 +35,23 @@ using SystemMethodInfo = System.Reflection.MethodInfo;
 namespace GameEngine
 {
     /// <summary>
+    /// 网络协议序列化类型的枚举定义
+    /// </summary>
+    public enum ProtocolSerializationType : byte
+    {
+        /// <summary>
+        /// 无效
+        /// </summary>
+        Unknown = 0,
+
+        Protobuf = 1,
+
+        MessagePack = 2,
+
+        MemoryPack = 3,
+    }
+
+    /// <summary>
     /// 网络模块封装的句柄对象类
     /// 模块具体功能接口请参考<see cref="NovaEngine.NetworkModule"/>类
     /// </summary>
