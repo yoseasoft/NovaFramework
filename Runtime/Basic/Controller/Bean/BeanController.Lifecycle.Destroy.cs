@@ -86,7 +86,7 @@ namespace GameEngine
 
             if (_beanDestroyNotificationList.Contains(bean))
             {
-                Debugger.Warn("The register destroy notification bean object '{%t}' was already exist, repeat added it failed.", bean.GetType());
+                Debugger.Warn("The register destroy notification bean object '{%t}' was already exist, repeat added it failed.", bean.BeanType);
                 return;
             }
 
@@ -145,9 +145,9 @@ namespace GameEngine
                 _beanDestroyNotificationList.Remove(bean);
 
                 OnBeanLifecycleProcessingHandler callback;
-                if (false == TryGetBeanLifecycleProcessingCallback(bean.GetType(), AspectBehaviourType.Destroy, out callback))
+                if (false == TryGetBeanLifecycleProcessingCallback(bean.BeanType, AspectBehaviourType.Destroy, out callback))
                 {
-                    Debugger.Error("Could not found any bean destroy processing callback with target type '{%t}', calling destroy process failed.", bean.GetType());
+                    Debugger.Error("Could not found any bean destroy processing callback with target type '{%t}', calling destroy process failed.", bean.BeanType);
                     continue;
                 }
 

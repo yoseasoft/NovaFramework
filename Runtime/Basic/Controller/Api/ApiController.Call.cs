@@ -132,7 +132,7 @@ namespace GameEngine
                     return;
                 }
 
-                if (false == info.ExtensionObjectType.IsAssignableFrom(obj.GetType()))
+                if (false == info.ExtensionObjectType.IsAssignableFrom(obj.BeanType))
                 {
                     Debugger.Warn(LogGroupTag.Controller, "当前指定功能名称‘{%s}’的编程接口回调函数实例扩展的目标对象类型‘{%t}’与实际传入的实体对象类型‘{%t}’不匹配，调用该功能接口失败！",
                             functionName, info.ExtensionObjectType, obj);

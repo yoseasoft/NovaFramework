@@ -86,7 +86,7 @@ namespace GameEngine
 
             if (_beanStartNotificationList.Contains(bean))
             {
-                Debugger.Warn("The register start notification bean object '{%t}' was already exist, repeat added it failed.", bean.GetType());
+                Debugger.Warn("The register start notification bean object '{%t}' was already exist, repeat added it failed.", bean.BeanType);
                 return;
             }
 
@@ -127,9 +127,9 @@ namespace GameEngine
                 IBean bean = list[n];
 
                 OnBeanLifecycleProcessingHandler callback;
-                if (false == TryGetBeanLifecycleProcessingCallback(bean.GetType(), AspectBehaviourType.Start, out callback))
+                if (false == TryGetBeanLifecycleProcessingCallback(bean.BeanType, AspectBehaviourType.Start, out callback))
                 {
-                    Debugger.Warn("Could not found any bean start processing callback with target type '{%t}', calling start process failed.", bean.GetType());
+                    Debugger.Warn("Could not found any bean start processing callback with target type '{%t}', calling start process failed.", bean.BeanType);
                     continue;
                 }
 
