@@ -94,7 +94,7 @@ namespace GameEngine
                 // 2025-08-12：
                 // 此处是否有必要检查该值的一致性，理论上同名即可
                 // 值相同的意义在哪里？转发事件的来源模块检测需要？
-                NovaEngine.ModuleObject.ModuleEventType eventType = NovaEngine.Utility.Convertion.GetEnumFromString<NovaEngine.ModuleObject.ModuleEventType>(enumName);
+                NovaEngine.ModuleObject.ModuleEventType eventType = NovaEngine.Utility.Convertion.GetEnumFromName<NovaEngine.ModuleObject.ModuleEventType>(enumName);
                 if (NovaEngine.ModuleObject.ModuleEventType.Default != eventType)
                 {
                     if (System.Convert.ToInt32(enumValue) != System.Convert.ToInt32(eventType))

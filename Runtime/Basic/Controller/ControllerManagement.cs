@@ -96,7 +96,7 @@ namespace GameEngine
                     continue;
                 }
 
-                int enumType = (int) NovaEngine.Utility.Convertion.GetEnumFromString<ModuleType>(enumName);
+                int enumType = (int) NovaEngine.Utility.Convertion.GetEnumFromName<ModuleType>(enumName);
                 SystemType singletonType = typeof(NovaEngine.Singleton<>);
                 SystemType controllerGenericType = singletonType.MakeGenericType(new SystemType[] { controllerType });
 

@@ -207,7 +207,7 @@ namespace GameEngine
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         private static AspectBehaviourType GetLifecycleTypeByMethodName(string methodName)
         {
-            return NovaEngine.Utility.Convertion.GetEnumFromString<AspectBehaviourType>(methodName);
+            return NovaEngine.Utility.Convertion.GetEnumFromName<AspectBehaviourType>(methodName);
         }
 
         #endregion

@@ -1,7 +1,6 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,6 +24,8 @@
 
 using SystemType = System.Type;
 
+using UnityGameObject = UnityEngine.GameObject;
+
 namespace GameEngine
 {
     /// <summary>
@@ -32,9 +33,17 @@ namespace GameEngine
     /// </summary>
     public sealed class UnityForm : Form
     {
+        /// <summary>
+        /// 视图对象的游戏节点对象实例
+        /// </summary>
+        private UnityGameObject _gameObject;
+
+        /// <summary>
+        /// 窗口根节点对象实例
+        /// </summary>
+        public override object Root => _gameObject;
+
         internal UnityForm(SystemType viewType) : base(viewType)
         { }
-
-        public override object Root => throw new System.NotImplementedException();
     }
 }

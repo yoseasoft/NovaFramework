@@ -55,6 +55,11 @@ namespace GameEngine
     public sealed partial class GuiHandler : EntityHandler
     {
         /// <summary>
+        /// 默认视图分组名称
+        /// </summary>
+        private ViewFormType _defaultViewFormType;
+
+        /// <summary>
         /// 视图窗口类型映射注册管理容器
         /// </summary>
         private IDictionary<SystemType, ViewFormType> _viewFormTypes;
@@ -90,6 +95,10 @@ namespace GameEngine
         protected override bool OnInitialize()
         {
             if (false == base.OnInitialize()) return false;
+
+            // 必须存在一个有效的视图窗口的表单类型
+            _defaultViewFormType = NovaEngine.Utility.Convertion.GetEnumFromValue<ViewFormType>(NovaEngine.Configuration.formSystemType);
+            Debugger.Assert(ViewFormType.Unknown != _defaultViewFormType, "The view form type must be non-null.");
 
             // 初始化视图窗口类型注册列表
             _viewFormTypes = new Dictionary<SystemType, ViewFormType>();
@@ -204,7 +213,7 @@ namespace GameEngine
                 _viewFormTypes.Remove(clsType);
             }
 
-            if (ViewFormType.Unknown != formType)
+            if (ViewFormType.Unknown != formType && _defaultViewFormType != formType)
             {
                 _viewFormTypes.Add(clsType, formType);
             }
@@ -220,6 +229,22 @@ namespace GameEngine
             UnregisterAllEntityClasses();
 
             _viewFormTypes.Clear();
+        }
+
+        /// <summary>
+        /// 通过视图类型获取其对应的窗口表单类型，
+        /// 若未配置该视图类型的映射关系，则返回系统默认配置的窗口表单类型
+        /// </summary>
+        /// <param name="viewType">视图类型</param>
+        /// <returns>返回该视图类型对应的窗口表单类型</returns>
+        internal ViewFormType GetFormTypeByViewType(SystemType viewType)
+        {
+            if (_viewFormTypes.TryGetValue(viewType, out ViewFormType formType))
+            {
+                return formType;
+            }
+
+            return _defaultViewFormType;
         }
 
         #endregion

@@ -192,7 +192,7 @@ namespace GameEngine.Loader.Configuring
                         componentInfo.Priority = int.Parse(attr.Value);
                         break;
                     case ConfigureNodeAttributeName.K_ACTIVATION_ON:
-                        componentInfo.ActivationBehaviourType = NovaEngine.Utility.Convertion.GetEnumFromString<AspectBehaviourType>(attr.Value);
+                        componentInfo.ActivationBehaviourType = NovaEngine.Utility.Convertion.GetEnumFromName<AspectBehaviourType>(attr.Value);
                         break;
                 }
             }

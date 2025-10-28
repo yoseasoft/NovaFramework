@@ -307,7 +307,7 @@ namespace NovaEngine
             /// <typeparam name="T">枚举类型</typeparam>
             /// <param name="value">枚举值</param>
             /// <returns>若给定值合法则返回true，否则返回false</returns>
-            public static bool IsCorrectedEnumValue<T>(int value)
+            public static bool IsCorrectedEnumValue<T>(int value) where T : SystemEnum
             {
                 foreach (object v in SystemEnum.GetValues(typeof(T)))
                 {
@@ -326,7 +326,7 @@ namespace NovaEngine
             /// <typeparam name="T">枚举类型</typeparam>
             /// <param name="value">枚举值</param>
             /// <returns>返回枚举值对应的索引序号，若该枚举值为无效值，则返回-1</returns>
-            public static int GetEnumIndex<T>(int value)
+            public static int GetEnumIndex<T>(int value) where T : SystemEnum
             {
                 int n = 0;
                 foreach (object v in SystemEnum.GetValues(typeof(T)))
@@ -349,7 +349,7 @@ namespace NovaEngine
             /// <param name="value">枚举索引序号</param>
             /// <returns>返回索引序号对应的枚举值</returns>
             /// <exception cref="ArgumentOutOfRangeException"></exception>
-            public static T GetEnumFromIndex<T>(int value)
+            public static T GetEnumFromIndex<T>(int value) where T : SystemEnum
             {
                 SystemArray array = SystemEnum.GetValues(typeof(T));
                 if (array.Length <= value)
@@ -366,7 +366,7 @@ namespace NovaEngine
             /// <typeparam name="T">枚举类型</typeparam>
             /// <param name="value">字符串名称</param>
             /// <returns>返回字符串名称对应的枚举值，若名称为无效参数，则返回枚举的默认值</returns>
-            public static T GetEnumFromString<T>(string value)
+            public static T GetEnumFromName<T>(string value) where T : SystemEnum
             {
                 if (false == SystemEnum.IsDefined(typeof(T), value))
                 {
@@ -374,6 +374,23 @@ namespace NovaEngine
                 }
 
                 return (T) SystemEnum.Parse(typeof(T), value);
+            }
+
+            /// <summary>
+            /// 通过指定枚举类型的数值，查找其对应的枚举值
+            /// </summary>
+            /// <typeparam name="T">枚举类型</typeparam>
+            /// <param name="value">数值</param>
+            /// <returns>返回数值对应的枚举值，若数值为无效参数，则返回枚举的默认值</returns>
+            public static T GetEnumFromValue<T>(int value) where T : SystemEnum
+            {
+                object obj = System.Convert.ChangeType(value, SystemEnum.GetUnderlyingType(typeof(T)));
+                if (false == SystemEnum.IsDefined(typeof(T), obj))
+                {
+                    return default(T);
+                }
+
+                return (T) SystemEnum.ToObject(typeof(T), obj);
             }
 
             #endregion

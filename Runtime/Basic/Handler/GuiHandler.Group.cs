@@ -67,6 +67,11 @@ namespace GameEngine
     public sealed partial class GuiHandler : EntityHandler
     {
         /// <summary>
+        /// 默认视图分组名称
+        /// </summary>
+        private readonly static string _defaultViewGroupName = $"{NovaEngine.Definition.CString.Default}_{typeof(ViewGroup).Name.ToLower()}";
+
+        /// <summary>
         /// 视图分组对象管理列表
         /// </summary>
         private IDictionary<string, ViewGroup> _viewGroups;
@@ -74,11 +79,6 @@ namespace GameEngine
         /// 视图分组对象排序列表
         /// </summary>
         private IList<ViewGroup> _sortingGroupList;
-
-        /// <summary>
-        /// 默认视图分组名称
-        /// </summary>
-        private string _defaultViewGroupName;
 
         /// <summary>
         /// 视图类型绑定分组名称映射容器
@@ -96,8 +96,6 @@ namespace GameEngine
             _viewGroups = new Dictionary<string, ViewGroup>();
             // 初始化视图分组排序容器
             _sortingGroupList = new List<ViewGroup>();
-
-            _defaultViewGroupName = $"{NovaEngine.Definition.CString.Default}_{typeof(ViewGroup).Name.ToLower()}";
 
             // 初始化视图绑定分组名称映射容器
             _viewBindingGroupNames = new Dictionary<SystemType, string>();

@@ -79,12 +79,12 @@ namespace GameEngine
         /// <param name="formType">窗口类型标识</param>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回窗口对象实例</returns>
-        internal static Form CreateForm(FormType formType, SystemType viewType)
+        internal static Form CreateForm(ViewFormType formType, SystemType viewType)
         {
             return formType switch
             {
-                FormType.UGUI => CreateUnityForm(viewType),
-                FormType.FairyGUI => CreateFairyForm(viewType),
+                ViewFormType.UGUI => CreateUnityForm(viewType),
+                ViewFormType.FairyGUI => CreateFairyForm(viewType),
                 _ => null,
             };
         }
