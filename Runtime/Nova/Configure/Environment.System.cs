@@ -58,5 +58,16 @@ namespace NovaEngine
         {
             return CoreEngine.SystemPath.GetPath(name);
         }
+
+        /// <summary>
+        /// 获取系统路径配置
+        /// </summary>
+        /// <param name="name">参数键</param>
+        /// <param name="paths">路径参数</param>
+        /// <returns>返回给定键对应的路径配置</returns>
+        public static string GetSystemFilePath(string name, params string[] paths)
+        {
+            return CoreEngine.SystemPath.GetFilePath(name, paths);
+        }
     }
 }
