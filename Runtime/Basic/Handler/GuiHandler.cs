@@ -243,6 +243,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回该视图类型对应的窗口表单类型</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         internal ViewFormType GetFormTypeByViewType(SystemType viewType)
         {
             if (_viewFormTypes.TryGetValue(viewType, out ViewFormType formType))

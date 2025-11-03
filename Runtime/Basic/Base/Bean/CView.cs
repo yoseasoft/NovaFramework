@@ -97,6 +97,17 @@ namespace GameEngine
         private Form _form;
 
         /// <summary>
+        /// 获取当前视图的窗口表单类型
+        /// </summary>
+        public ViewFormType FormType
+        {
+            get
+            {
+                return GuiHandler.GetFormTypeByViewType(BeanType);
+            }
+        }
+
+        /// <summary>
         /// 窗口组件的根节点对象实例
         /// </summary>
         public object Window => _form?.Root;
@@ -356,9 +367,7 @@ namespace GameEngine
         /// </summary>
         internal async UniTask CreateWindow()
         {
-            ViewFormType formType = GuiHandler.GetFormTypeByViewType(BeanType);
-
-            _form = FormHelper.CreateForm(formType, BeanType);
+            _form = FormHelper.CreateForm(FormType, BeanType);
 
             await _form.Load();
         }

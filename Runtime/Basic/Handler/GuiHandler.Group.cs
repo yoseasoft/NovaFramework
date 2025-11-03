@@ -41,21 +41,17 @@ namespace GameEngine
         None = 0,
 
         /// <summary>
-        /// 堆叠
+        /// 平铺，若未设置该标识，则默认为堆叠模式 Overlap
         /// </summary>
-        Overlap = 0x01,
-        /// <summary>
-        /// 平铺
-        /// </summary>
-        Tile = 0x02,
+        Tile = 0x01,
 
         /// <summary>
-        /// 单一展示
+        /// 单一模式，若开启该模式，将只存在最后开启的一个视图对象实例，其它实例将自动关闭
         /// </summary>
-        Single = 0x04,
+        Single = 0x02,
 
         /// <summary>
-        /// 遮罩
+        /// 遮罩模式，自动为视图添加遮罩
         /// </summary>
         Mask = 0x10,
     }
@@ -101,7 +97,7 @@ namespace GameEngine
             _viewBindingGroupNames = new Dictionary<SystemType, string>();
 
             // 注册默认分组
-            AddViewGroup(_defaultViewGroupName, 0, ViewGroupStrategyType.None);
+            AddViewGroup(_defaultViewGroupName, 0, _defaultViewFormType, ViewGroupStrategyType.None);
         }
 
         /// <summary>
@@ -137,7 +133,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="groupName">分组名称</param>
         /// <param name="level">分组层级</param>
-        public void AddViewGroup(string groupName, int level, ViewGroupStrategyType strategyType)
+        /// <param name="formType">视图表单类型</param>
+        /// <param name="strategyType">分组策略类型</param>
+        public void AddViewGroup(string groupName, byte level, ViewFormType formType, ViewGroupStrategyType strategyType = ViewGroupStrategyType.None)
         {
             if (_viewGroups.ContainsKey(groupName))
             {
@@ -157,7 +155,7 @@ namespace GameEngine
             }
 
             // 创建视图分组对象
-            ViewGroup viewGroup = new ViewGroup(groupName, level, strategyType);
+            ViewGroup viewGroup = new ViewGroup(groupName, level, formType, strategyType);
 
             // 添加视图分组对象
             _viewGroups.Add(groupName, viewGroup);
@@ -221,7 +219,11 @@ namespace GameEngine
             /// <summary>
             /// 分组对象的挂载层级
             /// </summary>
-            private readonly int _level;
+            private readonly byte _level;
+            /// <summary>
+            /// 分组对象的默认表单类型
+            /// </summary>
+            private readonly ViewFormType _formType;
             /// <summary>
             /// 分组对象策略类型
             /// </summary>
@@ -233,13 +235,15 @@ namespace GameEngine
             private readonly IList<CView> _groupViews;
 
             public string GroupName => _groupName;
-            public int Level => _level;
+            public byte Level => _level;
+            public ViewFormType FormType => _formType;
             public ViewGroupStrategyType StrategyType => _strategyType;
 
-            public ViewGroup(string groupName, int level, ViewGroupStrategyType strategyType)
+            public ViewGroup(string groupName, byte level, ViewFormType formType, ViewGroupStrategyType strategyType)
             {
                 _groupName = groupName;
                 _level = level;
+                _formType = formType;
                 _strategyType = strategyType;
                 _groupViews = new List<CView>();
             }
@@ -264,6 +268,12 @@ namespace GameEngine
             [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public void OnViewGroupBinding(CView view)
             {
+                if (view.FormType != _formType)
+                {
+                    Debugger.Error(LogGroupTag.Module, "目标视图对象实例‘{%t}’的窗口类型‘{%i}’与当前绑定的分组管理窗口类型‘{%i}’不匹配，该视图对象绑定分组操作失败！", view, view.FormType, _formType);
+                    return;
+                }
+
                 if (_groupViews.Contains(view))
                 {
                     Debugger.Error(LogGroupTag.Module, "目标视图对象实例‘{%t}’已经被注册到分组管理容器‘{%s}’中，请勿对相同视图对象进行重复添加！", view, _groupName);
@@ -318,14 +328,19 @@ namespace GameEngine
                 return;
             }
 
-            if (false == _viewGroups.ContainsKey(groupName))
-            {
-                Debugger.Warn(LogGroupTag.Module, "视图管理句柄的分组容器中不存在名称为‘{%s}’的分组对象实例，视图类型‘{%t}’将自动添加到默认分组中。", groupName, viewType);
+            // 2025-11-03：
+            // 由于分组可能是类解析流程结束后才添加的，所以这里也进行分组记录
+            // 后面在视图构建时再进行查找
+            // if (false == _viewGroups.ContainsKey(groupName))
+            // {
+            //     Debugger.Warn(LogGroupTag.Module, "视图管理句柄的分组容器中不存在名称为‘{%s}’的分组对象实例，视图类型‘{%t}’将自动添加到默认分组中。", groupName, viewType);
 
-                // groupName = _defaultViewGroupName;
-                // 默认分组无需注册，直接返回即可
-                return;
-            }
+            //     // groupName = _defaultViewGroupName;
+            //     // 默认分组无需注册，直接返回即可
+            //     return;
+            // }
+
+            // Debugger.Log(LogGroupTag.Module, "新增目标视图类型‘{%t}’到指定的分组‘{%s}’中。", viewType, groupName);
 
             // 添加视图类型绑定分组名称
             _viewBindingGroupNames.Add(viewType, groupName);

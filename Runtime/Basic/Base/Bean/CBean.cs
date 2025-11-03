@@ -44,7 +44,7 @@ namespace GameEngine
         /// <summary>
         /// 实体对象的类型
         /// </summary>
-        private SystemType _beanType;
+        private readonly SystemType _beanType;
         /// <summary>
         /// 实体对象的用户数据
         /// </summary>

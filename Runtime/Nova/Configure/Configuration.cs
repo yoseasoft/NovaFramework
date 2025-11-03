@@ -58,6 +58,11 @@ namespace NovaEngine
         public readonly static bool fairyFormSupported = false;
 
         /// <summary>
+        /// UIToolkit视图窗口表单支持的状态标识
+        /// </summary>
+        public readonly static bool toolkitFormSupported = false;
+
+        /// <summary>
         /// 默认选择的窗口表单系统类型
         /// 这里只是记录，在实际的业务实现层定义具体的类型值
         /// </summary>

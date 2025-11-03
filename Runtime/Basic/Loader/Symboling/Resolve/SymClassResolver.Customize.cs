@@ -114,11 +114,11 @@ namespace GameEngine.Loader.Symboling
                             // 将切面行为类型附加到扩展的目标对象上
                             extensionTargetClass.AddAspectBehaviourType(aspectBehaviourType);
 
-                            // Debugger.Info("新增切面行为类型‘{%s}’到目标对象实例‘{%s}’", aspectBehaviourType.ToString(), extensionTargetClass.ClassName);
+                            // Debugger.Log(LogGroupTag.CodeLoader, "新增切面行为类型‘{%i}’到目标对象实例‘{%s}’", aspectBehaviourType, extensionTargetClass.ClassName);
                         }
                         else
                         {
-                            Debugger.Info("新增扩展切面函数‘{%s}’给目标对象实例‘{%s}’！", aspectCallAttribute.MethodName, NovaEngine.Utility.Text.ToString(method.ExtensionParameterType));
+                            Debugger.Log(LogGroupTag.CodeLoader, "新增扩展切面函数‘{%s}’给目标对象实例‘{%t}’！", aspectCallAttribute.MethodName, method.ExtensionParameterType);
                         }
 
                         on_aspect_supported = true;
@@ -255,7 +255,7 @@ namespace GameEngine.Loader.Symboling
         /// <param name="featureType">特性类型</param>
         private static void AutobindFeatureTypeForTargetSymbol(SymClass symClass, SystemType featureType)
         {
-            Debugger.Info(LogGroupTag.CodeLoader, "对象类型解析：目标符号类型‘{%s}’动态绑定新的特性‘{%s}’成功。",
+            Debugger.Log(LogGroupTag.CodeLoader, "对象类型解析：目标符号类型‘{%s}’动态绑定新的特性‘{%s}’成功。",
                 symClass.ClassName, NovaEngine.Utility.Text.ToString(featureType));
 
             // 为符号类添加特性
