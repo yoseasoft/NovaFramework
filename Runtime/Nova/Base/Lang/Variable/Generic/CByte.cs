@@ -62,5 +62,15 @@ namespace NovaEngine
         {
             return value.Value;
         }
+
+        public static CByte operator +(CByte left, CByte right)
+        {
+            return new CByte((byte) (left.Value + right.Value));
+        }
+
+        public static CByte operator -(CByte left, CByte right)
+        {
+            return new CByte((byte) (left.Value - right.Value));
+        }
     }
 }

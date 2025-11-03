@@ -55,7 +55,7 @@ namespace GameEngine
     public sealed partial class GuiHandler : EntityHandler
     {
         /// <summary>
-        /// 默认视图分组名称
+        /// 视图默认窗口表单类型
         /// </summary>
         private ViewFormType _defaultViewFormType;
 
@@ -73,6 +73,11 @@ namespace GameEngine
         /// 句柄对象的单例访问获取接口
         /// </summary>
         public static GuiHandler Instance => HandlerManagement.GuiHandler;
+
+        /// <summary>
+        /// 视图默认窗口表单类型的获取接口
+        /// </summary>
+        internal ViewFormType DefaultViewFormType => _defaultViewFormType;
 
         /// <summary>
         /// 句柄对象默认构造函数
@@ -215,6 +220,7 @@ namespace GameEngine
 
             if (ViewFormType.Unknown != formType && _defaultViewFormType != formType)
             {
+                // Debugger.Info("Add view form type {%i} with target class {%t}", formType, clsType);
                 _viewFormTypes.Add(clsType, formType);
             }
 

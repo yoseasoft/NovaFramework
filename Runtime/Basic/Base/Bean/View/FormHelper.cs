@@ -23,10 +23,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-#define ON_FAIRYGUI_SUPPORTED   // 开启FairyGUI框架支持
-#define ON_UGUI_SUPPORTED       // 开启UGUI框架支持
-#define ON_UITOOLKIT_SUPPORTED  // 开启UIToolkit框架支持
-
 using SystemType = System.Type;
 
 using UniTask = Cysharp.Threading.Tasks.UniTask;
@@ -50,7 +46,16 @@ namespace GameEngine
         {
             _isOnStartup = true;
 
-            FairyFormHelper.Startup();
+            // UGUI表单支持
+            if (NovaEngine.Configuration.unityFormSupported)
+            {
+                UnityFormHelper.Startup();
+            }
+            // FairyGUI表单支持
+            if (NovaEngine.Configuration.fairyFormSupported)
+            {
+                FairyFormHelper.Startup();
+            }
         }
 
         /// <summary>
@@ -58,7 +63,16 @@ namespace GameEngine
         /// </summary>
         internal static void Shutdown()
         {
-            FairyFormHelper.Shutdown();
+            // UGUI表单支持
+            if (NovaEngine.Configuration.unityFormSupported)
+            {
+                UnityFormHelper.Shutdown();
+            }
+            // FairyGUI表单支持
+            if (NovaEngine.Configuration.fairyFormSupported)
+            {
+                FairyFormHelper.Shutdown();
+            }
 
             _isOnStartup = false;
         }
@@ -70,7 +84,16 @@ namespace GameEngine
         {
             Debugger.Assert(_isOnStartup, "Invalide status.");
 
-            FairyFormHelper.Update();
+            // UGUI表单支持
+            if (NovaEngine.Configuration.unityFormSupported)
+            {
+                UnityFormHelper.Update();
+            }
+            // FairyGUI表单支持
+            if (NovaEngine.Configuration.fairyFormSupported)
+            {
+                FairyFormHelper.Update();
+            }
         }
 
         /// <summary>

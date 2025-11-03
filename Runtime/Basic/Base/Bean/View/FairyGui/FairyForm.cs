@@ -61,6 +61,9 @@ namespace GameEngine
             _settings = new WindowSettings(viewType?.Name);
         }
 
+        ~FairyForm()
+        { }
+
         /// <summary>
         /// 窗口实例的加载接口函数
         /// </summary>

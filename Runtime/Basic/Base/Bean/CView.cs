@@ -79,14 +79,22 @@ namespace GameEngine
         public override sealed string DeclareClassName => GuiHandler.GetViewNameForType(BeanType);
 
         /// <summary>
+        /// 视图对象实例恢复运行的状态标识
+        /// </summary>
+        private bool _isResumed = false;
+        /// <summary>
+        /// 视图对象实例置顶显示的状态标识
+        /// </summary>
+        private bool _isRevealed = false;
+        /// <summary>
         /// 视图对象实例已经关闭的状态标识
         /// </summary>
-        protected bool _isClosed = false;
+        private bool _isClosed = false;
 
         /// <summary>
         /// 视图对象挂载的窗口实例
         /// </summary>
-        protected Form _form;
+        private Form _form;
 
         /// <summary>
         /// 窗口组件的根节点对象实例
@@ -106,12 +114,20 @@ namespace GameEngine
         /// <summary>
         /// 视图对象模型加载成功状态标识
         /// </summary>
-        public bool IsLoaded => _form?.IsLoaded ?? false;
+        internal bool IsLoaded => _form?.IsLoaded ?? false;
 
+        /// <summary>
+        /// 获取当前视图对象实例的恢复状态
+        /// </summary>
+        internal bool IsResumed => _isResumed;
+        /// <summary>
+        /// 获取当前视图对象实例的置顶状态
+        /// </summary>
+        internal bool IsRevealed => _isRevealed;
         /// <summary>
         /// 获取当前视图对象实例的关闭状态
         /// </summary>
-        public bool IsClosed => _isClosed;
+        internal bool IsClosed => _isClosed;
 
         /// <summary>
         /// 视图对象初始化通知接口函数

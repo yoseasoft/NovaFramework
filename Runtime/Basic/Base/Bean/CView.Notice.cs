@@ -80,6 +80,9 @@ namespace GameEngine
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         protected internal void OnResume()
         {
+            if (_isResumed) return;
+
+            _isResumed = true;
             OnInternalNoticeProcess(ViewNoticeType.Resume);
         }
 
@@ -89,6 +92,9 @@ namespace GameEngine
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         protected internal void OnPause()
         {
+            if (!_isResumed) return;
+
+            _isResumed = false;
             OnInternalNoticeProcess(ViewNoticeType.Pause);
         }
 
@@ -98,6 +104,9 @@ namespace GameEngine
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         protected internal void OnReveal()
         {
+            if (_isRevealed) return;
+
+            _isRevealed = true;
             OnInternalNoticeProcess(ViewNoticeType.Reveal);
         }
 
@@ -107,6 +116,9 @@ namespace GameEngine
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         protected internal void OnCover()
         {
+            if (!_isRevealed) return;
+
+            _isRevealed = false;
             OnInternalNoticeProcess(ViewNoticeType.Cover);
         }
 

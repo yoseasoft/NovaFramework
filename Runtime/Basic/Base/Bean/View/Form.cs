@@ -82,6 +82,11 @@ namespace GameEngine
         public abstract object Root { get; }
 
         /// <summary>
+        /// 获取窗口对象所属的视图类型
+        /// </summary>
+        public SystemType ViewType => _viewType;
+
+        /// <summary>
         /// 获取窗口对象当前载入状态
         /// </summary>
         public bool IsLoaded => _isLoaded;

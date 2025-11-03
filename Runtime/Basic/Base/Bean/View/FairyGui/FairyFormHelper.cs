@@ -59,7 +59,7 @@ namespace GameEngine
         /// <summary>
         /// UI资源目录
         /// </summary>
-        static string _fairyGuiResourcePath = null;
+        static string _fairyGuiResourcePath;
 
         /// <summary>
         /// UI常驻包列表
@@ -91,7 +91,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 辅助对象启动接口函数
+        /// Fairy窗口表单辅助类启动接口函数
         /// </summary>
         public static void Startup()
         {
@@ -106,12 +106,15 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 辅助对象关闭接口函数
+        /// Fairy窗口表单辅助类关闭接口函数
         /// </summary>
         public static void Shutdown()
         {
         }
 
+        /// <summary>
+        /// Fairy窗口表单辅助类刷新接口函数
+        /// </summary>
         public static void Update()
         {
             CheckNTextureCache();
