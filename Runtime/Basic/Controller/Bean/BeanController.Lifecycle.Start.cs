@@ -141,7 +141,7 @@ namespace GameEngine
         private void OnObjectStartProcess(IBean bean)
         {
             CObject obj = bean as CObject;
-            Debugger.Assert(null != obj, "Invalid arguments.");
+            Debugger.Assert(obj, NovaEngine.ErrorText.InvalidArguments);
 
             ObjectHandler.Instance.OnObjectStartProcessing(obj);
         }
@@ -150,7 +150,7 @@ namespace GameEngine
         private void OnSceneStartProcess(IBean bean)
         {
             CScene scene = bean as CScene;
-            Debugger.Assert(null != scene, "Invalid arguments.");
+            Debugger.Assert(scene, NovaEngine.ErrorText.InvalidArguments);
 
             SceneHandler.Instance.OnEntityStartProcessing(scene);
         }
@@ -159,7 +159,7 @@ namespace GameEngine
         private void OnActorStartProcess(IBean bean)
         {
             CActor actor = bean as CActor;
-            Debugger.Assert(null != actor, "Invalid arguments.");
+            Debugger.Assert(actor, NovaEngine.ErrorText.InvalidArguments);
 
             ActorHandler.Instance.OnEntityStartProcessing(actor);
         }
@@ -168,7 +168,7 @@ namespace GameEngine
         private void OnViewStartProcess(IBean bean)
         {
             CView view = bean as CView;
-            Debugger.Assert(null != view, "Invalid arguments.");
+            Debugger.Assert(view, NovaEngine.ErrorText.InvalidArguments);
 
             GuiHandler.Instance.OnEntityStartProcessing(view);
         }
@@ -177,7 +177,7 @@ namespace GameEngine
         private void OnComponentStartProcess(IBean bean)
         {
             CComponent component = bean as CComponent;
-            Debugger.Assert(null != component && null != component.Entity, "Invalid arguments.");
+            Debugger.Assert(component, NovaEngine.ErrorText.InvalidArguments);
 
             if (false == component.Entity.IsOnStartingStatus())
             {

@@ -90,7 +90,7 @@ namespace NovaEngine
         private static void RegErrorCodeForTargetException(SystemType exceptionType)
         {
             int errorCode = ErrorCode.GetErrorCodeByExceptionType(exceptionType);
-            Logger.Assert(errorCode > 0, "Invalid arguments.");
+            Logger.Assert(errorCode > 0, ErrorText.InvalidArguments);
 
             if (_ExceptionCode.ContainsKey(errorCode))
             {

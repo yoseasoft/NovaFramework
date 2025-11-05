@@ -246,7 +246,7 @@ namespace GameEngine
                 AspectCallInfo info = list[n];
                 if (info.Fullname.Equals(fullname))
                 {
-                    Debugger.Assert(info.TargetType == targetType && info.MethodName.Equals(methodName) && info.AccessType == accessType, "Invalid arguments.");
+                    Debugger.Assert(info.TargetType == targetType && info.MethodName.Equals(methodName) && info.AccessType == accessType, NovaEngine.ErrorText.InvalidArguments);
 
                     list.RemoveAt(n);
                     if (list.Count <= 0)
@@ -376,7 +376,7 @@ namespace GameEngine
         {
             if (null == targetType || string.IsNullOrEmpty(methodName) || AspectAccessType.Unknown == accessType || null == callback || null == container)
             {
-                Debugger.Error("Invalid arguments with aspect callback on combine.");
+                Debugger.Error(LogGroupTag.Controller, "Invalid arguments with aspect callback on combine.");
                 return;
             }
 

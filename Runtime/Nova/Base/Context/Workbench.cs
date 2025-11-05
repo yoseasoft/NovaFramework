@@ -172,7 +172,7 @@ namespace NovaEngine
                 return;
             }
 
-            Logger.Assert(!_currentExecutingSubworkName.IsNullOrEmpty(), "Invalid arguments.");
+            Logger.Assert(!_currentExecutingSubworkName.IsNullOrEmpty(), ErrorText.InvalidArguments);
 
             Subwork subwork = GetSubwork(_currentExecutingSubworkName);
             if (null == subwork)

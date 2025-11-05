@@ -106,7 +106,7 @@ namespace GameEngine
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public void Invoke(IBean targetObject, int eventID, params object[] args)
         {
-            Debugger.Assert(targetObject, "Invalid arguments.");
+            Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
 
             if (_isNullParameterType)
             {
@@ -143,7 +143,7 @@ namespace GameEngine
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public void Invoke(IBean targetObject, object eventData)
         {
-            Debugger.Assert(targetObject, "Invalid arguments.");
+            Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
 
             if (_isNullParameterType)
             {

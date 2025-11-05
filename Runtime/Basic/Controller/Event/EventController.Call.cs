@@ -225,7 +225,7 @@ namespace GameEngine
                 EventCallMethodInfo info = list[n];
                 if (info.Fullname.Equals(fullname))
                 {
-                    Debugger.Assert(info.TargetType == targetType && info.EventID == eventID, "Invalid arguments.");
+                    Debugger.Assert(info.TargetType == targetType && info.EventID == eventID, NovaEngine.ErrorText.InvalidArguments);
 
                     list.RemoveAt(n);
                     if (list.Count <= 0)
@@ -264,7 +264,7 @@ namespace GameEngine
                 EventCallMethodInfo info = list[n];
                 if (info.Fullname.Equals(fullname))
                 {
-                    Debugger.Assert(info.TargetType == targetType && info.EventDataType == eventDataType, "Invalid arguments.");
+                    Debugger.Assert(info.TargetType == targetType && info.EventDataType == eventDataType, NovaEngine.ErrorText.InvalidArguments);
 
                     list.RemoveAt(n);
                     if (list.Count <= 0)

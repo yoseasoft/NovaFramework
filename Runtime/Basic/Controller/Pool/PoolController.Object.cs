@@ -86,7 +86,7 @@ namespace GameEngine
         private void OnPostProcessAfterObjectCreate(NovaEngine.IReference reference)
         {
             CObject obj = reference as CObject;
-            Debugger.Assert(null != obj, "Invalid arguments");
+            Debugger.Assert(obj, NovaEngine.ErrorText.InvalidArguments);
 
             Debugger.Log(LogGroupTag.Controller, "Acquire object class '{%t}' from the pool.", obj.BeanType);
             // obj.Call(obj.Initialize);
@@ -99,7 +99,7 @@ namespace GameEngine
         private void OnPostProcessBeforeObjectRelease(NovaEngine.IReference reference)
         {
             CObject obj = reference as CObject;
-            Debugger.Assert(null != obj, "Invalid arguments");
+            Debugger.Assert(obj, NovaEngine.ErrorText.InvalidArguments);
 
             Debugger.Log(LogGroupTag.Controller, "Release object class '{%t}' to the pool.", obj.BeanType);
             // obj.Call(obj.Cleanup);

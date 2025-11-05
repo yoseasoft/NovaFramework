@@ -131,7 +131,7 @@ namespace GameEngine
             SystemType classType = bean.TargetClass.ClassType;
             string beanName = bean.BeanName;
 
-            Debugger.Assert(classType.IsClass && false == string.IsNullOrEmpty(beanName), "Invalid arguments.");
+            Debugger.Assert(classType.IsClass && false == string.IsNullOrEmpty(beanName), NovaEngine.ErrorText.InvalidArguments);
 
             if (false == _beanInstanceInfos.TryGetValue(classType, out IDictionary<string, GeneralInstantiateGenerator> classInfos))
             {
@@ -225,7 +225,7 @@ namespace GameEngine
 
             protected GeneralInstantiateGenerator(SystemType classType, string beanName)
             {
-                Debugger.Assert(typeof(CBean).IsAssignableFrom(classType), "Invalid arguments.");
+                Debugger.Assert(typeof(CBean).IsAssignableFrom(classType), NovaEngine.ErrorText.InvalidArguments);
 
                 _classType = classType;
                 _beanName = beanName;
@@ -291,7 +291,7 @@ namespace GameEngine
             /// <param name="obj">目标对象实例</param>
             protected void DestroyInstance(CBean obj)
             {
-                Debugger.Assert(obj.BeanType == _classType, "Invalid arguments.");
+                Debugger.Assert(obj.BeanType == _classType, NovaEngine.ErrorText.InvalidArguments);
 
                 // 卸载待销毁的对象实例
                 AutowiredProcessingOnReleaseTargetObject(obj);
@@ -377,7 +377,7 @@ namespace GameEngine
             /// <param name="obj">目标对象实例</param>
             public override void Release(CBean obj)
             {
-                Debugger.Assert(null != obj, "Invalid arguments.");
+                Debugger.Assert(obj, NovaEngine.ErrorText.InvalidArguments);
 
                 _objects.Remove(obj);
                 DestroyInstance(obj);
@@ -444,7 +444,7 @@ namespace GameEngine
             /// <param name="obj">目标对象实例</param>
             public override void Release(CBean obj)
             {
-                Debugger.Assert(obj == _instance, "Invalid arguments.");
+                Debugger.Assert(obj == _instance, NovaEngine.ErrorText.InvalidArguments);
 
                 if (null == obj)
                 {

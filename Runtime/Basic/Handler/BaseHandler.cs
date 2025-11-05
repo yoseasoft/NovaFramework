@@ -414,7 +414,7 @@ namespace GameEngine
         /// <param name="f">目标函数</param>
         protected void Call(CBase obj, System.Action f)
         {
-            Debugger.Assert(null != obj && obj == f.Target, "Invalid arguments.");
+            Debugger.Assert(null != obj && obj == f.Target, NovaEngine.ErrorText.InvalidArguments);
 
             obj.Call(f);
         }
@@ -427,7 +427,7 @@ namespace GameEngine
         /// <param name="lifecycleType">生命周期类型</param>
         protected void Call(CBase obj, System.Action f, AspectBehaviourType lifecycleType)
         {
-            Debugger.Assert(null != obj && obj == f.Target, "Invalid arguments.");
+            Debugger.Assert(null != obj && obj == f.Target, NovaEngine.ErrorText.InvalidArguments);
 
             obj.Call(f, lifecycleType);
         }

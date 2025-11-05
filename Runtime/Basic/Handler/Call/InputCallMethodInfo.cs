@@ -118,7 +118,7 @@ namespace GameEngine
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public void Invoke(IBean targetObject, int inputCode, int operationType)
         {
-            Debugger.Assert(targetObject, "Invalid arguments.");
+            Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
 
             if (/*_operationType == 0 ||*/ (_operationType & operationType) == 0)
             {
@@ -161,7 +161,7 @@ namespace GameEngine
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public void Invoke(IBean targetObject, object inputData)
         {
-            Debugger.Assert(targetObject, "Invalid arguments.");
+            Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
 
             if (_isNullParameterType)
             {

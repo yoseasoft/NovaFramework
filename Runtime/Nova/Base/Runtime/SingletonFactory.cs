@@ -87,7 +87,7 @@ namespace NovaEngine
 
             if (Environment.IsDevelopmentState())
             {
-                Logger.Assert(Utility.Reflection.IsTypeOfInstantiableClass(classType), "Invalid arguments.");
+                Logger.Assert(Utility.Reflection.IsTypeOfInstantiableClass(classType), ErrorText.InvalidArguments);
             }
 
             if (_instances.TryGetValue(classType, out ISingleton instance))

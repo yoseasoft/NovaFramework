@@ -309,7 +309,7 @@ namespace NovaEngine
         /// <returns>若远程链接被关闭返回true，否则返回false</returns>
         private bool IsRemoteClosed()
         {
-            Logger.Assert(null != this._webSocket || null != this._cancellationTokenSource, "Invalid arguments.");
+            Logger.Assert(null != this._webSocket || null != this._cancellationTokenSource, ErrorText.InvalidArguments);
 
             if (false == this._isConnected) // IsClosed
             {

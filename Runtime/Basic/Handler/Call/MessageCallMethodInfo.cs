@@ -104,7 +104,7 @@ namespace GameEngine
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public void Invoke(IBean targetObject, ProtoBuf.Extension.IMessage message)
         {
-            Debugger.Assert(targetObject, "Invalid arguments.");
+            Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
 
             if (_isNullParameterType)
             {

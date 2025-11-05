@@ -100,7 +100,7 @@ namespace GameEngine
         /// <returns>若组件类型注册成功则返回true，否则返回false</returns>
         internal bool RegisterComponentClass(string componentName, SystemType clsType)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(componentName) && null != clsType, "Invalid arguments");
+            Debugger.Assert(false == string.IsNullOrEmpty(componentName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
 
             if (false == typeof(CComponent).IsAssignableFrom(clsType))
             {

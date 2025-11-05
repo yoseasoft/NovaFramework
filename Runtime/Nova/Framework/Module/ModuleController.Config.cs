@@ -155,7 +155,7 @@ namespace NovaEngine
             private static void RegModuleConfigureInfo(ModuleObject.ModuleEventType moduleType, SystemType clsType)
             {
                 // 若打开启用标识，则必须提供映射类型参数
-                Logger.Assert(null != clsType, "Invalid arguments.");
+                Logger.Assert(null != clsType, ErrorText.InvalidArguments);
 
                 ModuleConfigureInfo found = GetModuleConfigureInfoByType(moduleType);
                 if (null != found)

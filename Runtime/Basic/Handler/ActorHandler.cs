@@ -150,7 +150,7 @@ namespace GameEngine
         /// <returns>若对象类型注册成功则返回true，否则返回false</returns>
         private bool RegisterActorClass(string actorName, SystemType clsType, int priority)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(actorName) && null != clsType, "Invalid arguments");
+            Debugger.Assert(false == string.IsNullOrEmpty(actorName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
 
             if (false == typeof(CActor).IsAssignableFrom(clsType))
             {
@@ -279,7 +279,7 @@ namespace GameEngine
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
         public CActor CreateActor(SystemType actorType)
         {
-            Debugger.Assert(null != actorType, "Invalid arguments.");
+            Debugger.Assert(actorType, NovaEngine.ErrorText.InvalidArguments);
             if (false == _entityClassTypes.Values.Contains(actorType))
             {
                 Debugger.Error("Could not found any correct actor class with target type '{%t}', created actor failed.", actorType);

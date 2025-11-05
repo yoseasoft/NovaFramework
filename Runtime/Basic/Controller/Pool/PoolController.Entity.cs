@@ -85,7 +85,7 @@ namespace GameEngine
         private void OnPostProcessAfterEntityCreate(NovaEngine.IReference reference)
         {
             CEntity entity = reference as CEntity;
-            Debugger.Assert(null != entity, "Invalid arguments");
+            Debugger.Assert(entity, NovaEngine.ErrorText.InvalidArguments);
 
             Debugger.Log(LogGroupTag.Controller, "Acquire entity class '{%t}' from the pool.", entity.BeanType);
             // entity.Call(entity.Initialize);
@@ -98,7 +98,7 @@ namespace GameEngine
         private void OnPostProcessBeforeEntityRelease(NovaEngine.IReference reference)
         {
             CEntity entity = reference as CEntity;
-            Debugger.Assert(null != entity, "Invalid arguments");
+            Debugger.Assert(entity, NovaEngine.ErrorText.InvalidArguments);
 
             Debugger.Log(LogGroupTag.Controller, "Release entity class '{%t}' to the pool.", entity.BeanType);
             // entity.Call(entity.Cleanup);

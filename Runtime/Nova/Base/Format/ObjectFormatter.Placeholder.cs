@@ -364,7 +364,7 @@ namespace NovaEngine
 
         private static string _TextFormatParameterConvertionCallback_String(object obj)
         {
-            Debugger.Assert(obj is string, "Invalid arguments.");
+            Debugger.Assert(obj is string, ErrorText.InvalidArguments);
 
             return obj.ToString();
         }

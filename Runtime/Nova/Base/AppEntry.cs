@@ -151,7 +151,7 @@ namespace NovaEngine
         /// </summary>
         public static void Startup()
         {
-            Logger.Assert(null != _engine, "Invalid arguments.");
+            Logger.Assert(null != _engine, ErrorText.InvalidArguments);
 
             if (_engine.IsOnStartup)
             {

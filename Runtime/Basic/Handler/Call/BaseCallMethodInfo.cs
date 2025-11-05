@@ -74,7 +74,7 @@ namespace GameEngine
 
         protected BaseCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, bool automatically)
         {
-            Debugger.Assert(null != targetType || !automatically, "Invalid arguments.");
+            Debugger.Assert(null != targetType || !automatically, NovaEngine.ErrorText.InvalidArguments);
 
             _targetType = targetType;
             _fullname = fullname;
@@ -90,7 +90,7 @@ namespace GameEngine
             // _fullname = fullname;
 
             SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(null, methodInfo);
-            Debugger.Assert(null != callback, "Invalid arguments.");
+            Debugger.Assert(callback, NovaEngine.ErrorText.InvalidArguments);
             _callback = callback;
         }
 

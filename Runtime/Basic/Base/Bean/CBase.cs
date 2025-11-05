@@ -253,7 +253,7 @@ namespace GameEngine
             AspectBehaviourType lifecycleType = GetLifecycleTypeByMethodName(f.Method.Name);
 
             CBase obj = f.Target as CBase;
-            Debugger.Assert(obj, "Invalid arguments.");
+            Debugger.Assert(obj, NovaEngine.ErrorText.InvalidArguments);
 
             if (AspectBehaviourType.Unknown != lifecycleType)
             {
@@ -273,10 +273,10 @@ namespace GameEngine
         /// <param name="lifecycleType">生命周期类型</param>
         protected internal void Call(System.Action f, AspectBehaviourType lifecycleType)
         {
-            Debugger.Assert(AspectBehaviourType.Unknown != lifecycleType, "Invalid arguments.");
+            Debugger.Assert(AspectBehaviourType.Unknown != lifecycleType, NovaEngine.ErrorText.InvalidArguments);
 
             CBase obj = f.Target as CBase;
-            Debugger.Assert(obj, "Invalid arguments.");
+            Debugger.Assert(obj, NovaEngine.ErrorText.InvalidArguments);
 
             obj._currentLifecycleType = lifecycleType;
             obj._isCurrentLifecycleTypeRunning = true;

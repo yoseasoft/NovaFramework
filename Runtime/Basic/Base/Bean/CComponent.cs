@@ -295,6 +295,24 @@ namespace GameEngine
             Entity?.RemoveComponent<T>();
         }
 
+        /// <summary>
+        /// 从当前组件所挂载的实体对象中移除指定类型的组件对象实例
+        /// </summary>
+        /// <param name="componentType">组件类型</param>
+        public void RemoveComponent(SystemType componentType)
+        {
+            Entity?.RemoveComponent(componentType);
+        }
+
+        /// <summary>
+        /// 从当前组件所挂载的实体对象中移除指定的组件对象实例
+        /// </summary>
+        /// <param name="component">组件对象实例</param>
+        public void RemoveComponent(CComponent component)
+        {
+            Entity?.RemoveComponent(component);
+        }
+
         #endregion
 
         #region 组件对象输入响应相关操作函数合集

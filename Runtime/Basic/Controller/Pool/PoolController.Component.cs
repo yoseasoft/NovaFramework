@@ -94,7 +94,7 @@ namespace GameEngine
         private void OnPostProcessAfterComponentCreate(NovaEngine.IReference reference)
         {
             CComponent component = reference as CComponent;
-            Debugger.Assert(null != component, "Invalid arguments");
+            Debugger.Assert(component, NovaEngine.ErrorText.InvalidArguments);
 
             Debugger.Log(LogGroupTag.Controller, "Acquire component class '{%t}' from the pool.", component.BeanType);
         }
@@ -106,7 +106,7 @@ namespace GameEngine
         private void OnPostProcessBeforeComponentRelease(NovaEngine.IReference reference)
         {
             CComponent component = reference as CComponent;
-            Debugger.Assert(null != component, "Invalid arguments");
+            Debugger.Assert(component, NovaEngine.ErrorText.InvalidArguments);
 
             Debugger.Log(LogGroupTag.Controller, "Release component class '{%t}' to the pool.", component.BeanType);
         }

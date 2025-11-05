@@ -42,7 +42,7 @@ namespace GameEngine
         /// <returns>若满足检测条件返回true，否则返回false</returns>
         public static bool IsBehaviourTypeOfTheLoadingStage(AspectBehaviourType behaviourType)
         {
-            Debugger.Assert(behaviourType > AspectBehaviourType.Unknown, "Invalid arguments.");
+            Debugger.Assert(behaviourType > AspectBehaviourType.Unknown, NovaEngine.ErrorText.InvalidArguments);
 
             if (behaviourType >= AspectBehaviourType.Initialize && behaviourType <= AspectBehaviourType.Start)
             {
@@ -59,7 +59,7 @@ namespace GameEngine
         /// <returns>若满足检测条件返回true，否则返回false</returns>
         public static bool IsBehaviourTypeOfTheUnloadingStage(AspectBehaviourType behaviourType)
         {
-            Debugger.Assert(behaviourType > AspectBehaviourType.Unknown, "Invalid arguments.");
+            Debugger.Assert(behaviourType > AspectBehaviourType.Unknown, NovaEngine.ErrorText.InvalidArguments);
 
             if (behaviourType >= AspectBehaviourType.Destroy && behaviourType <= AspectBehaviourType.Cleanup)
             {
@@ -76,7 +76,7 @@ namespace GameEngine
         /// <returns>若满足检测条件返回true，否则返回false</returns>
         public static bool IsBehaviourTypeOfTheProcessingStage(AspectBehaviourType behaviourType)
         {
-            Debugger.Assert(behaviourType > AspectBehaviourType.Unknown, "Invalid arguments.");
+            Debugger.Assert(behaviourType > AspectBehaviourType.Unknown, NovaEngine.ErrorText.InvalidArguments);
 
             if (behaviourType > AspectBehaviourType.Start && behaviourType < AspectBehaviourType.Destroy)
             {
