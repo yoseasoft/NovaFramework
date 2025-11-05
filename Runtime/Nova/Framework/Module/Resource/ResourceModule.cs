@@ -110,10 +110,10 @@ namespace NovaEngine
         public UnityObject LoadAsset(string url, SystemType type)
         {
             Asset asset = AssetManagement.LoadAsset(url, type);
-            UnityObject Object = asset?.result;
-            if (Object != null && !_objectAssets.ContainsKey(Object))
-                _objectAssets.Add(Object, asset);
-            return Object;
+            UnityObject obj = asset?.result;
+            if (obj != null && !_objectAssets.ContainsKey(obj))
+                _objectAssets.Add(obj, asset);
+            return obj;
         }
 
         /// <summary>
@@ -149,15 +149,15 @@ namespace NovaEngine
         /// <summary>
         /// 释放已加载的资源
         /// </summary>
-        /// <param name="Object">Unity对象</param>
-        public void UnloadAsset(UnityObject Object)
+        /// <param name="obj">Unity对象</param>
+        public void UnloadAsset(UnityObject obj)
         {
-            if (Object == null || !_objectAssets.TryGetValue(Object, out Asset asset))
+            if (obj == null || !_objectAssets.TryGetValue(obj, out Asset asset))
                 return;
 
             asset.Release();
             if (asset.reference.IsUnused)
-                _objectAssets.Remove(Object);
+                _objectAssets.Remove(obj);
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace NovaEngine
         # region 原始文件加载相关的接口函数
 
         /// <summary>
-        /// 同步加载原文件(直接读取persistentDataPath中的文件, 然后可根据文件保存路径(RawFile.savePath)读取文件, 使用同步加载前需已保证文件更新)
+        /// 同步加载原始流式文件(直接读取persistentDataPath中的文件, 然后可根据文件保存路径(RawFile.savePath)读取文件, 使用同步加载前需已保证文件更新)
         /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
         /// </summary>
         public GooAsset.RawFile LoadRawFile(string url)
@@ -221,7 +221,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 异步加载原文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
+        /// 异步加载原始流式文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
         /// /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
         /// </summary>
         public GooAsset.RawFile LoadRawFileAsync(string url, System.Action<GooAsset.RawFile> completed = null)

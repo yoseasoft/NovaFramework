@@ -36,7 +36,7 @@ namespace GameEngine
     /// 这里定义的实体类，默认将开启内部刷新模式，可能将造成一定的性能消耗<br/>
     /// 如果您对实体不存在调度刷新的需求（包括内部的组件等），可以手动关闭它
     /// </summary>
-    public abstract class CEntity : CRef, IEntity, IBeanLifecycle
+    public abstract partial class CEntity : CRef, IEntity, IBeanLifecycle
     {
         /// <summary>
         /// 实体对象过期状态标识
@@ -122,6 +122,9 @@ namespace GameEngine
 
             // 随机因子管理容器初始化
             _randoms = new Dictionary<string, SystemRandom>();
+
+            // 资源加载器模块初始化
+            OnAssetLoaderInitialize();
         }
 
         /// <summary>
@@ -133,6 +136,9 @@ namespace GameEngine
             _isOnExpired = false;
             // 重置销毁待命状态标识
             _isOnWaitingDestroy = false;
+
+            // 资源加载器模块清理
+            OnAssetLoaderCleanup();
 
             // 移除全部随机因子对象实例
             _randoms.Clear();

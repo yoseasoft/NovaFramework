@@ -335,22 +335,22 @@ namespace GameEngine
         /// 加载指定名称及路径的场景资源对象实例
         /// </summary>
         /// <param name="assetName">场景资源名称</param>
-        /// <param name="assetUrl">场景资源路径</param>
+        /// <param name="url">场景资源路径</param>
         /// <param name="completed">结束回调</param>
-        public GooAsset.Scene LoadSceneAsset(string assetName, string assetUrl, System.Action<GooAsset.Scene> completed = null)
+        public GooAsset.Scene LoadSceneAsset(string assetName, string url, System.Action<GooAsset.Scene> completed = null)
         {
-            return SceneModule.LoadScene(assetName, assetUrl, completed);
+            return SceneModule.LoadScene(assetName, url, completed);
         }
 
         /// <summary>
         /// 异步加载场景资源
         /// </summary>
         /// <param name="assetName">场景资源名称</param>
-        /// <param name="assetUrl">场景资源路径</param>
-        public async UniTask<GooAsset.Scene> LoadSceneAssetAsync(string assetName, string assetUrl)
+        /// <param name="url">场景资源路径</param>
+        public async UniTask<GooAsset.Scene> LoadSceneAssetAsync(string assetName, string url)
         {
             // string assetName = System.IO.Path.GetFileNameWithoutExtension(assetUrl);
-            return await SceneModule.LoadScene(assetName, assetUrl).Task;
+            return await SceneModule.LoadScene(assetName, url).Task;
         }
 
         /// <summary>

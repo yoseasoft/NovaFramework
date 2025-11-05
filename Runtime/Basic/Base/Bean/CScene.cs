@@ -219,7 +219,7 @@ namespace GameEngine
         /// <param name="completed">结束回调</param>
         public GooAsset.Scene LoadSceneAsset(string assetName, string assetUrl, System.Action<GooAsset.Scene> completed = null)
         {
-            return SceneHandler.Instance.LoadSceneAsset(assetName, assetUrl, completed);
+            return SceneHandler.LoadSceneAsset(assetName, assetUrl, completed);
         }
 
         /// <summary>

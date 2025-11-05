@@ -74,7 +74,7 @@ namespace GameEngine
         private static void RegViewNoticeCallByTargetType(CView obj, AspectBehaviourType behaviourType, bool reload)
         {
             SystemType targetType = obj.BeanType;
-            Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CRef));
+            Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CEntity));
             if (null == codeInfo)
             {
                 Debugger.Warn("Could not found any aspect call ref service process with target type '{%t}', called it failed.", targetType);

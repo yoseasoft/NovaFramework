@@ -217,7 +217,7 @@ namespace GameEngine
         # region 原始文件加载相关的接口函数
 
         /// <summary>
-        /// 同步加载原文件(直接读取persistentDataPath中的文件, 然后可根据文件保存路径(RawFile.savePath)读取文件, 使用同步加载前需已保证文件更新)
+        /// 同步加载原始流式文件(直接读取persistentDataPath中的文件, 然后可根据文件保存路径(RawFile.savePath)读取文件, 使用同步加载前需已保证文件更新)
         /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
         /// </summary>
         public RawFile LoadRawFile(string url)
@@ -226,7 +226,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 异步加载原文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
+        /// 异步加载原始流式文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
         /// /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
         /// </summary>
         public RawFile LoadRawFileAsync(string url, System.Action<RawFile> completed)
@@ -235,7 +235,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 异步加载原文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
+        /// 异步加载原始流式文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
         /// /// <param name="address">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
         /// </summary>
         public async Cysharp.Threading.Tasks.UniTask<RawFile> LoadRawFileAsync(string address)
