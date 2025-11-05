@@ -55,7 +55,7 @@ namespace NovaEngine
             /// <returns>返回规范的路径</returns>
             public static string GetRegularPath(string path)
             {
-                if (string.IsNullOrEmpty(path))
+                if (path.IsNullOrEmpty())
                 {
                     return null;
                 }
@@ -71,7 +71,7 @@ namespace NovaEngine
             public static string GetRemotePath(string path)
             {
                 string regularPath = GetRegularPath(path);
-                if (string.IsNullOrEmpty(regularPath))
+                if (regularPath.IsNullOrEmpty())
                 {
                     return null;
                 }
@@ -90,7 +90,7 @@ namespace NovaEngine
                 for (int i = 0; i < level; i++)
                 {
                     path = System.IO.Path.GetDirectoryName(path);
-                    if (string.IsNullOrEmpty(path))
+                    if (path.IsNullOrEmpty())
                         break;
                 }
 
@@ -104,7 +104,7 @@ namespace NovaEngine
             /// <returns>若目标目录存在则返回true，否则返回false</returns>
             public static bool IsDirectoryExists(string path)
             {
-                if (string.IsNullOrEmpty(path))
+                if (path.IsNullOrEmpty())
                 {
                     return false;
                 }
@@ -130,7 +130,7 @@ namespace NovaEngine
             /// <param name="path">文件路径名称</param>
             public static void CreateDirectoryOnFilePath(string path)
             {
-                if (string.IsNullOrEmpty(path))
+                if (path.IsNullOrEmpty())
                 {
                     return;
                 }
@@ -178,7 +178,7 @@ namespace NovaEngine
             /// <returns>若目标文件存在则返回true，否则返回false</returns>
             public static bool IsFileExists(string path)
             {
-                if (string.IsNullOrEmpty(path))
+                if (path.IsNullOrEmpty())
                 {
                     return false;
                 }
@@ -301,7 +301,7 @@ namespace NovaEngine
             /// <returns>若目标文件写入成功则返回true，否则返回false</returns>
             public static bool WriteAllBytes(string file, byte[] bytes)
             {
-                if (string.IsNullOrEmpty(file))
+                if (file.IsNullOrEmpty())
                 {
                     return false;
                 }
@@ -335,7 +335,7 @@ namespace NovaEngine
             /// <returns>若目标文件写入成功则返回true，否则返回false</returns>
             public static bool WriteAllLines(string file, string[] lines, SystemEncoding encoding)
             {
-                if (string.IsNullOrEmpty(file))
+                if (file.IsNullOrEmpty())
                 {
                     return false;
                 }
@@ -369,7 +369,7 @@ namespace NovaEngine
             /// <returns>若目标文件写入成功则返回true，否则返回false</returns>
             public static bool WriteAllText(string file, string text, SystemEncoding encoding)
             {
-                if (string.IsNullOrEmpty(file))
+                if (file.IsNullOrEmpty())
                 {
                     return false;
                 }
@@ -489,9 +489,10 @@ namespace NovaEngine
             /// <param name="absolutePath">完整路径</param>
             /// <param name="filePath">文件路径</param>
             /// <returns>返回文件的完整路径</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             private static string __GetFullPath(string absolutePath, string filePath)
             {
-                if (string.IsNullOrEmpty(filePath))
+                if (filePath.IsNullOrEmpty())
                 {
                     return absolutePath;
                 }

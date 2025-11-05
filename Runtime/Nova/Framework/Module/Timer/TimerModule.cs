@@ -128,7 +128,7 @@ namespace NovaEngine
         public bool IsTimerInfoExistByName(string name)
         {
             // 名称为空则认定为不存在重复定时器
-            if (string.IsNullOrEmpty(name))
+            if (name.IsNullOrEmpty())
             {
                 return false;
             }
@@ -156,7 +156,7 @@ namespace NovaEngine
             info = null;
 
             // 名称为空则认定为不存在重复定时器
-            if (string.IsNullOrEmpty(name))
+            if (name.IsNullOrEmpty())
             {
                 return false;
             }
@@ -247,7 +247,7 @@ namespace NovaEngine
         /// <param name="name">任务名称</param>
         public void Unschedule(string name)
         {
-            if (string.IsNullOrEmpty(name))
+            if (name.IsNullOrEmpty())
             {
                 Logger.Warn("The unschedule task name must be non-null or empty space.");
                 return;

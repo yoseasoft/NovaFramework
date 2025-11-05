@@ -43,7 +43,7 @@ namespace NovaEngine
         /// <param name="text">目标文本串</param>
         private static string[] ResolveVersionContent(string text)
         {
-            if (string.IsNullOrEmpty(text))
+            if (text.IsNullOrEmpty())
             {
                 return null;
             }

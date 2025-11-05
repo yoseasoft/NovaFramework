@@ -135,7 +135,7 @@ namespace NovaEngine
         /// <returns>返回注册的组件对象实例</returns>
         public static CFrameworkComponent RegisterComponent(string name, SystemType componentType)
         {
-            if (string.IsNullOrEmpty(name))
+            if (name.IsNullOrEmpty())
             {
                 Logger.Error("The register component name must be non-null.");
                 return null;
@@ -186,7 +186,7 @@ namespace NovaEngine
         /// <param name="name">节点名称</param>
         public static void UnregisterComponent(string name)
         {
-            if (string.IsNullOrEmpty(name))
+            if (name.IsNullOrEmpty())
             {
                 Logger.Error("The unregister component name must be non-null.");
                 return;

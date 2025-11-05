@@ -120,7 +120,7 @@ namespace NovaEngine.ObjectPool
             }
 
             string typeName = _type.FullName;
-            return string.IsNullOrEmpty(_name) ? typeName : Utility.Text.Format("{0}.{1}", typeName, _name);
+            return _name.IsNullOrEmpty() ? typeName : Utility.Text.Format("{0}.{1}", typeName, _name);
         }
 
         /// <summary>

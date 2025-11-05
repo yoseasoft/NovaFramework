@@ -95,7 +95,7 @@ namespace NovaEngine
         /// <returns>返回格式转换的参数类型，若解析标识符非法，则返回Unknown类型</returns>
         private static TextFormatParameterType GetTextFormatParameterTypeBySymbolName(string symbolName)
         {
-            if (string.IsNullOrEmpty(symbolName))
+            if (symbolName.IsNullOrEmpty())
             {
                 return TextFormatParameterType.Unknown;
             }
@@ -125,7 +125,7 @@ namespace NovaEngine
         public static string TextFormatConvertionProcess(string text, params object[] args)
         {
             // 格式内容不能为空
-            if (string.IsNullOrEmpty(text))
+            if (text.IsNullOrEmpty())
             {
                 return string.Empty;
             }
@@ -353,7 +353,7 @@ namespace NovaEngine
             }
 
             string str = obj.ToString();
-            if (string.IsNullOrEmpty(str))
+            if (str.IsNullOrEmpty())
             {
                 return Definition.CString.Null;
             }

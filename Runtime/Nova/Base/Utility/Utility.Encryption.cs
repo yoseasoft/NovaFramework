@@ -200,7 +200,7 @@ namespace NovaEngine
             /// <returns>返回加密后的字符串信息，若加密失败则返回null</returns>
             public static string GetAesEncryptString(string data, string key, string vector)
             {
-                if (string.IsNullOrEmpty(data))
+                if (data.IsNullOrEmpty())
                 {
                     Logger.Warn("Invalid arguments to perform AES encryption.");
                     return null;
@@ -223,7 +223,7 @@ namespace NovaEngine
             /// <returns>返回加密后的字节流信息，若加密失败则返回null</returns>
             public static byte[] GetAesEncryptBytes(byte[] data, string key, string vector)
             {
-                if (null == data || string.IsNullOrEmpty(key) || string.IsNullOrEmpty(vector))
+                if (null == data || key.IsNullOrEmpty() || vector.IsNullOrEmpty())
                 {
                     Logger.Warn("Invalid arguments to perform AES encryption.");
                     return null;
@@ -276,7 +276,7 @@ namespace NovaEngine
             /// <returns>返回解密后的字符串信息，若解密失败则返回null</returns>
             public static string GetAesDecryptString(string data, string key, string vector)
             {
-                if (string.IsNullOrEmpty(data))
+                if (data.IsNullOrEmpty())
                 {
                     Logger.Warn("Invalid arguments to perform AES decryption.");
                     return null;
@@ -299,7 +299,7 @@ namespace NovaEngine
             /// <returns>返回解密后的字节流信息，若解密失败则返回null</returns>
             public static byte[] GetAesDecryptBytes(byte[] data, string key, string vector)
             {
-                if (null == data || string.IsNullOrEmpty(key) || string.IsNullOrEmpty(vector))
+                if (null == data || key.IsNullOrEmpty() || vector.IsNullOrEmpty())
                 {
                     Logger.Warn("Invalid arguments to perform AES decryption.");
                     return null;

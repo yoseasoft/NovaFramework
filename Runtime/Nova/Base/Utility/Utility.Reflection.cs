@@ -151,7 +151,7 @@ namespace NovaEngine
             /// <returns>返回转换后的成员名称</returns>
             public static string ConvertMixedNamesToCapitalizeWithUnderlineNames(string memberName)
             {
-                if (string.IsNullOrEmpty(memberName))
+                if (memberName.IsNullOrEmpty())
                 {
                     return memberName;
                 }

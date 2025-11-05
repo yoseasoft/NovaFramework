@@ -207,7 +207,7 @@ namespace NovaEngine
         /// <returns>返回异常名称对应的错误码值，若名称映射失败，则返回0</returns>
         public static int GetErrorCodeByExceptionName(string exceptionName)
         {
-            if (string.IsNullOrEmpty(exceptionName))
+            if (exceptionName.IsNullOrEmpty())
             {
                 return UNKNOWN;
             }

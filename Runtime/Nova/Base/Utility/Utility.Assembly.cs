@@ -190,7 +190,7 @@ namespace NovaEngine
             /// <returns>返回程序集中指定类型名称的对应定义类型</returns>
             public static SystemType GetType(string typeName)
             {
-                if (string.IsNullOrEmpty(typeName))
+                if (typeName.IsNullOrEmpty())
                 {
                     throw new CFrameworkException("Type name is invalid.");
                 }
