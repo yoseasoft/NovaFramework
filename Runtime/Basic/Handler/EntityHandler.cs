@@ -221,7 +221,7 @@ namespace GameEngine
         /// <returns>若实体类型注册成功则返回true，否则返回false</returns>
         protected bool RegisterEntityClass(string entityName, SystemType clsType, int priority)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(entityName) && null != clsType, "Invalid arguments");
+            Debugger.Assert(false == string.IsNullOrEmpty(entityName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
 
             if (false == typeof(CEntity).IsAssignableFrom(clsType))
             {

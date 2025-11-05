@@ -168,7 +168,7 @@ namespace GameEngine
         /// <returns>若对象类型注册成功则返回true，否则返回false</returns>
         private bool RegisterObjectClass(string objectName, SystemType clsType, int priority)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(objectName) && null != clsType, "Invalid arguments");
+            Debugger.Assert(false == string.IsNullOrEmpty(objectName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
 
             if (false == typeof(CObject).IsAssignableFrom(clsType))
             {
@@ -302,7 +302,7 @@ namespace GameEngine
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
         public CObject CreateObject(SystemType objectType)
         {
-            Debugger.Assert(null != objectType, "Invalid arguments.");
+            Debugger.Assert(objectType, NovaEngine.ErrorText.InvalidArguments);
             if (false == _objectClassTypes.Values.Contains(objectType))
             {
                 Debugger.Error("Could not found any correct object class with target type '{0}', created object failed.", objectType.FullName);

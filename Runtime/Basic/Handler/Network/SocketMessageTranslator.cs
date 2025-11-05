@@ -44,7 +44,7 @@ namespace GameEngine
         public byte[] Encode(object message)
         {
             ProtoBuf.Extension.IMessage msg = message as ProtoBuf.Extension.IMessage;
-            Debugger.Assert(null != msg, "Invalid arguments type.");
+            Debugger.Assert(null != msg, NovaEngine.ErrorText.InvalidArguments);
 
             int opcode = NetworkHandler.Instance.GetOpcodeByMessageType(message.GetType());
             byte[] msgBytes = ProtoBuf.Extension.ProtobufHelper.ToBytes(message);

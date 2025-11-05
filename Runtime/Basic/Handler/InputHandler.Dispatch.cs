@@ -390,7 +390,7 @@ namespace GameEngine
                 InputCallMethodInfo info = list[n];
                 if (info.Fullname.Equals(fullname))
                 {
-                    Debugger.Assert(info.TargetType == targetType && info.InputCode == inputCode, "Invalid arguments.");
+                    Debugger.Assert(info.TargetType == targetType && info.InputCode == inputCode, NovaEngine.ErrorText.InvalidArguments);
 
                     list.RemoveAt(n);
                     if (list.Count <= 0)
@@ -432,7 +432,7 @@ namespace GameEngine
                 InputCallMethodInfo info = list[n];
                 if (info.Fullname.Equals(fullname))
                 {
-                    Debugger.Assert(info.TargetType == targetType && info.InputDataType == inputDataType, "Invalid arguments.");
+                    Debugger.Assert(info.TargetType == targetType && info.InputDataType == inputDataType, NovaEngine.ErrorText.InvalidArguments);
 
                     list.RemoveAt(n);
                     if (list.Count <= 0)

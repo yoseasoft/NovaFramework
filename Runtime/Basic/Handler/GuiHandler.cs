@@ -198,7 +198,7 @@ namespace GameEngine
         /// <returns>若视图类型注册成功则返回true，否则返回false</returns>
         private bool RegisterViewClass(string viewName, SystemType clsType, int priority, ViewFormType formType)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(viewName) && null != clsType, "Invalid arguments");
+            Debugger.Assert(false == string.IsNullOrEmpty(viewName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
 
             if (false == typeof(CView).IsAssignableFrom(clsType))
             {
@@ -299,7 +299,7 @@ namespace GameEngine
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
         public async Cysharp.Threading.Tasks.UniTask<CView> OpenUI(SystemType viewType)
         {
-            Debugger.Assert(null != viewType, "Invalid arguments.");
+            Debugger.Assert(viewType, NovaEngine.ErrorText.InvalidArguments);
             if (false == _entityClassTypes.Values.Contains(viewType))
             {
                 Debugger.Error("Could not found any correct view class with target type '{%t}', opened view failed.", viewType);

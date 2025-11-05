@@ -216,7 +216,7 @@ namespace GameEngine
         /// <param name="sceneType">场景类型</param>
         public void ReplaceScene(SystemType sceneType)
         {
-            Debugger.Assert(null != sceneType, "Invalid arguments.");
+            Debugger.Assert(sceneType, NovaEngine.ErrorText.InvalidArguments);
             if (sceneType == _currentSceneType)
             {
                 Debugger.Warn("The replace scene '{%t}' must be not equals to current scene, replaced it failed.", sceneType);
@@ -404,7 +404,7 @@ namespace GameEngine
         /// <returns>若场景类型注册成功则返回true，否则返回false</returns>
         private bool RegisterSceneClass(string sceneName, SystemType clsType, int priority)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(sceneName) && null != clsType, "Invalid arguments");
+            Debugger.Assert(false == string.IsNullOrEmpty(sceneName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
 
             if (false == typeof(CScene).IsAssignableFrom(clsType))
             {

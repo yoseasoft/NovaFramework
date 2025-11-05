@@ -507,8 +507,8 @@ namespace GameEngine
                                           TimerReportingHandler emptyCallback,
                                           TimerReportingForSessionHandler sessionCallback)
             {
-                Debugger.Assert(null != handler, "Invalid arguments");
-                Debugger.Assert(null != emptyCallback || null != sessionCallback, "Invalid arguments.");
+                Debugger.Assert(null != handler, NovaEngine.ErrorText.InvalidArguments);
+                Debugger.Assert(null != emptyCallback || null != sessionCallback, NovaEngine.ErrorText.InvalidArguments);
 
                 _handler = handler;
                 _emptyCallback = emptyCallback;

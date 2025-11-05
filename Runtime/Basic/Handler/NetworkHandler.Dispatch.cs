@@ -281,7 +281,7 @@ namespace GameEngine
                 MessageCallMethodInfo info = list[n];
                 if (info.Fullname.Equals(fullname))
                 {
-                    Debugger.Assert(info.TargetType == targetType && info.Opcode == opcode, "Invalid arguments.");
+                    Debugger.Assert(info.TargetType == targetType && info.Opcode == opcode, NovaEngine.ErrorText.InvalidArguments);
 
                     list.RemoveAt(n);
                     if (list.Count <= 0)

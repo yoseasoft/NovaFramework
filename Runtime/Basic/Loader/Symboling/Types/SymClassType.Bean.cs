@@ -98,7 +98,7 @@ namespace GameEngine.Loader.Symboling
         /// <param name="field">字段信息</param>
         public void AddField(BeanField field)
         {
-            Debugger.Assert(null != field && false == string.IsNullOrEmpty(field.FieldName), "Invalid arguments.");
+            Debugger.Assert(null != field && false == string.IsNullOrEmpty(field.FieldName), NovaEngine.ErrorText.InvalidArguments);
 
             if (null == _fields)
             {
@@ -121,7 +121,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若存在目标字段信息实例则返回true，否则返回false</returns>
         public bool HasFieldByName(string fieldName)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(fieldName), "Invalid arguments.");
+            Debugger.Assert(false == string.IsNullOrEmpty(fieldName), NovaEngine.ErrorText.InvalidArguments);
 
             if (null == _fields)
             {
@@ -230,7 +230,7 @@ namespace GameEngine.Loader.Symboling
         /// <param name="property">属性信息</param>
         public void AddProperty(BeanProperty property)
         {
-            Debugger.Assert(null != property && false == string.IsNullOrEmpty(property.PropertyName), "Invalid arguments.");
+            Debugger.Assert(null != property && false == string.IsNullOrEmpty(property.PropertyName), NovaEngine.ErrorText.InvalidArguments);
 
             if (null == _properties)
             {
@@ -253,7 +253,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若存在目标属性信息实例则返回true，否则返回false</returns>
         public bool HasPropertyByName(string propertyName)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(propertyName), "Invalid arguments.");
+            Debugger.Assert(false == string.IsNullOrEmpty(propertyName), NovaEngine.ErrorText.InvalidArguments);
 
             if (null == _properties)
             {
