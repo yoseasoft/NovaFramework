@@ -66,6 +66,8 @@ namespace GameEngine
 
         public AssetSource(string name, string url, SystemType type, UnityObject obj)
         {
+            Debugger.Assert(false == string.IsNullOrEmpty(name), NovaEngine.ErrorText.InvalidArguments);
+
             _name = name;
             _url = url;
             _type = type;

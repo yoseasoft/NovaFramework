@@ -131,5 +131,18 @@ namespace NovaEngine
             Logger.Error("The argument must be an exception type.");
             return null;
         }
+
+        /// <summary>
+        /// 获取错误码所对应的异常类型
+        /// </summary>
+        /// <param name="errorCode">错误码</param>
+        /// <returns>返回错误码注册的异常类型，若未注册则返回null</returns>
+        public static SystemType GetExceptionType(int errorCode)
+        {
+            if (_ExceptionCode.ContainsKey(errorCode))
+                return _ExceptionCode[errorCode];
+
+            return null;
+        }
     }
 }

@@ -38,7 +38,7 @@ namespace GameEngine
     /// 也可以通过继承<see cref="NovaEngine.IUpdatable"/>来声明该类是否具备自刷新功能<br/>
     /// 但除了需要继承指定接口外，还要求上层的实体对象必须打开执行或刷新调度才可以正常工作
     /// </summary>
-    public abstract class CComponent : CBase, IComponent,
+    public abstract partial class CComponent : CBase, IComponent,
         NovaEngine.IExecutable, NovaEngine.IUpdatable, IBeanLifecycle, IEventDispatch, IMessageDispatch
     {
         /// <summary>
@@ -52,6 +52,9 @@ namespace GameEngine
         public override sealed void Initialize()
         {
             base.Initialize();
+
+            // 资源收集初始化
+            OnAssetCollectInitialize();
         }
 
         /// <summary>
@@ -59,6 +62,9 @@ namespace GameEngine
         /// </summary>
         public override sealed void Cleanup()
         {
+            // 资源收集清理
+            OnAssetCollectCleanup();
+
             base.Cleanup();
 
             // 清空宿主

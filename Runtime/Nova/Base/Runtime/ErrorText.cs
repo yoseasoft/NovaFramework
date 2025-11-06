@@ -36,5 +36,20 @@ namespace NovaEngine
         /// 无效参数
         /// </summary>
         public const string InvalidArguments = @"Invalid arguments.";
+
+        /// <summary>
+        /// 空对象引用
+        /// </summary>
+        public const string NullObjectReference = @"Null object reference.";
+
+        /// <summary>
+        /// 参数超出范围
+        /// </summary>
+        public const string ArgumentOutOfRange = @"Argument out of range.";
+
+        /// <summary>
+        /// 索引超出范围
+        /// </summary>
+        public const string IndexOutOfRange = @"Index out of range.";
     }
 }
