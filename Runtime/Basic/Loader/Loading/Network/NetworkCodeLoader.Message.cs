@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -39,38 +40,55 @@ namespace GameEngine.Loader
         /// </summary>
         private static IDictionary<int, Structuring.NetworkMessageCodeInfo> _networkMessageCodeInfos = new Dictionary<int, Structuring.NetworkMessageCodeInfo>();
 
-        [OnCodeLoaderClassLoadOfTarget(typeof(ProtoBuf.Extension.MessageAttribute))]
+        [OnCodeLoaderClassLoadOfTarget(typeof(MessageObjectAttribute))]
         private static bool LoadNetworkMessageClass(Symboling.SymClass symClass, bool reload)
         {
-            if (false == typeof(ProtoBuf.Extension.IMessage).IsAssignableFrom(symClass.ClassType))
+            if (false == NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(symClass.ClassType))
             {
-                Debugger.Warn("The target class type '{0}' must be inherited from 'IMessage' interface, load it failed.", symClass.FullName);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The target class type '{%s}' must be instantiable class, load it failed.", symClass.FullName);
                 return false;
             }
 
             Structuring.NetworkMessageCodeInfo info = new Structuring.NetworkMessageCodeInfo();
             info.ClassType = symClass.ClassType;
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
-            for (int n = 0; null != attrs && n < attrs.Count; ++n)
-            {
-                SystemAttribute attr = attrs[n];
-                SystemType attrType = attr.GetType();
-                if (typeof(ProtoBuf.Extension.MessageAttribute) == attrType)
-                {
-                    ProtoBuf.Extension.MessageAttribute _attr = (ProtoBuf.Extension.MessageAttribute) attr;
-                    info.Opcode = _attr.Opcode;
-                }
-                else if (typeof(ProtoBuf.Extension.MessageResponseTypeAttribute) == attrType)
-                {
-                    ProtoBuf.Extension.MessageResponseTypeAttribute _attr = (ProtoBuf.Extension.MessageResponseTypeAttribute) attr;
-                    info.ResponseCode = _attr.Opcode;
-                }
-            }
+            // IMessageObjectTypeResolver messageObjectTypeResolver = NetworkHandler.Instance.GetMessageObjectTypeResolver();
+            // if (null == messageObjectTypeResolver)
+            // {
+            //     Debugger.Error(LogGroupTag.CodeLoader, "The message object type resolver must be non-null, resolve message object '{%s}' failed.", symClass.FullName);
+            //     return false;
+            // }
+
+            /**
+             * 2025-11-07：
+             * 通过外部设置的解析器来对消息对象进行解析
+             * 这样可以支持非ProtoBuf的消息对象类
+             * 
+             * IList<SystemAttribute> attrs = symClass.Attributes;
+             * for (int n = 0; null != attrs && n < attrs.Count; ++n)
+             * {
+             *     SystemAttribute attr = attrs[n];
+             *     SystemType attrType = attr.GetType();
+             *     if (typeof(ProtoBuf.Extension.MessageAttribute) == attrType)
+             *     {
+             *         ProtoBuf.Extension.MessageAttribute _attr = (ProtoBuf.Extension.MessageAttribute) attr;
+             *         info.Opcode = _attr.Opcode;
+             *     }
+             *     else if (typeof(ProtoBuf.Extension.MessageResponseTypeAttribute) == attrType)
+             *     {
+             *         ProtoBuf.Extension.MessageResponseTypeAttribute _attr = (ProtoBuf.Extension.MessageResponseTypeAttribute) attr;
+             *         info.ResponseCode = _attr.Opcode;
+             *     }
+             * }
+             */
+
+            IMessageObjectTypeLoader.MessageObjectTypeInfo messageObjectTypeInfo = NetworkHandler.Instance.ParseMessageObjectType(symClass.ClassType);
+            info.Opcode = messageObjectTypeInfo.opcode;
+            info.ResponseCode = messageObjectTypeInfo.responseCode;
 
             if (info.Opcode <= 0)
             {
-                Debugger.Warn("The network message opcode '{0}' was invalid, newly added class '{1}' failed.", info.Opcode, symClass.FullName);
+                Debugger.Warn("The network message opcode '{%d}' was invalid, newly added class '{%s}' failed.", info.Opcode, symClass.FullName);
                 return false;
             }
 
@@ -82,24 +100,24 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The network message opcode '{0}' was already existed, repeat added it failed.", info.Opcode);
+                    Debugger.Warn("The network message opcode '{%d}' was already existed, repeat added it failed.", info.Opcode);
                     return false;
                 }
             }
 
             _networkMessageCodeInfos.Add(info.Opcode, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load 'IMessage' code info '{0}' succeed from target class type '{1}'.", CodeLoaderObject.ToString(info), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load 'IMessage' code info '{%s}' succeed from target class type '{%s}'.", CodeLoaderObject.ToString(info), symClass.FullName);
 
             return true;
         }
 
-        [OnCodeLoaderClassCleanupOfTarget(typeof(ProtoBuf.Extension.MessageAttribute))]
+        [OnCodeLoaderClassCleanupOfTarget(typeof(MessageObjectAttribute))]
         private static void CleanupAllNetworkMessageClasses()
         {
             _networkMessageCodeInfos.Clear();
         }
 
-        [OnCodeLoaderClassLookupOfTarget(typeof(ProtoBuf.Extension.MessageAttribute))]
+        [OnCodeLoaderClassLookupOfTarget(typeof(MessageObjectAttribute))]
         private static Structuring.NetworkMessageCodeInfo LookupNetworkMessageCodeInfo(Symboling.SymClass symClass)
         {
             foreach (KeyValuePair<int, Structuring.NetworkMessageCodeInfo> pair in _networkMessageCodeInfos)

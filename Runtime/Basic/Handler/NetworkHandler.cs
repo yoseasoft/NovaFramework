@@ -61,7 +61,7 @@ namespace GameEngine
         /// 消息处理回调句柄
         /// </summary>
         /// <param name="message">消息内容</param>
-        public delegate void MessageProcessHandler(ProtoBuf.Extension.IMessage message);
+        public delegate void MessageProcessHandler(object message);
 
         /// <summary>
         /// 网络消息协议对象类映射字典
@@ -86,6 +86,11 @@ namespace GameEngine
         /// 消息通道对象实例管理容器
         /// </summary>
         private IDictionary<int, MessageChannel> _messageChannels;
+
+        /// <summary>
+        /// 消息对象类型加载器的绑定实例
+        /// </summary>
+        private IMessageObjectTypeLoader _messageObjectTypeLoader;
 
         /// <summary>
         /// 消息的调用队列
@@ -150,6 +155,8 @@ namespace GameEngine
             // 移除消息通道数据
             RemoveAllMessageChannelTypes();
 
+            // 清理网络消息对象类型加载器
+            _messageObjectTypeLoader = null;
             // 清理网络消息解析对象管理容器
             _messageTranslators.Clear();
             _messageTranslators = null;
@@ -216,11 +223,11 @@ namespace GameEngine
             NovaEngine.NetworkEventArgs networkEventArgs = e as NovaEngine.NetworkEventArgs;
             if (null == networkEventArgs)
             {
-                Debugger.Error("The ModuleEventArgs unabled convert to NetworkEventArgs, dispatched it {0} failed.", e.ID);
+                Debugger.Error("The ModuleEventArgs unabled convert to NetworkEventArgs, dispatched it {%d} failed.", e.ID);
                 return;
             }
 
-            // Debugger.Info("On network event dispatched for protocol type '{0}' with target channel '{1}'.", networkEventArgs.Type, networkEventArgs.ChannelID);
+            // Debugger.Info("On network event dispatched for protocol type '{%d}' with target channel '{%d}'.", networkEventArgs.Type, networkEventArgs.ChannelID);
 
             switch (networkEventArgs.Type)
             {
@@ -267,7 +274,7 @@ namespace GameEngine
                 // 如果有重名的网络通道，则直接返回已有的实例
                 if (channels.Current.Name.Equals(name))
                 {
-                    Debugger.Warn("The network connect name '{0}' was already existed, don't repeat used it.", name);
+                    Debugger.Warn("The network connect name '{%s}' was already existed, don't repeat used it.", name);
                     return channels.Current;
                 }
             }
@@ -275,18 +282,18 @@ namespace GameEngine
             int channelID = NetworkModule.Connect(protocol, name, url);
             if (channelID <= 0)
             {
-                Debugger.Warn("Connect target address '{0}' with protocol type '{1}' failed.", url, protocol);
+                Debugger.Warn("Connect target address '{%s}' with protocol type '{%d}' failed.", url, protocol);
                 return null;
             }
 
             MessageChannel channel = MessageChannel.Create(channelID, protocol, name, url);
             if (null == channel)
             {
-                Debugger.Error("Create message channel with protocol type '{0}' failed.", protocol);
+                Debugger.Error("Create message channel with protocol type '{%d}' failed.", protocol);
                 return null;
             }
 
-            Debugger.Info(LogGroupTag.Module, "The network connect new channel [ID = {0}, Type = {1}, Name = {2}] on target url '{3}'.", channelID, protocol, name, url);
+            Debugger.Info(LogGroupTag.Module, "The network connect new channel [ID={%d},Type={%d},Name={%s}] on target url '{%s}'.", channelID, protocol, name, url);
             _messageChannels.Add(channelID, channel);
 
             return channel;
@@ -308,7 +315,7 @@ namespace GameEngine
                     NetworkModule.Disconnect(channelID);
                 }
 
-                Debugger.Info(LogGroupTag.Module, "The network disconnect target channel [ID = {0}, Type = {1}, Name = {2}] now.", channel.ChannelID, channel.ChannelType, channel.Name);
+                Debugger.Info(LogGroupTag.Module, "The network disconnect target channel [ID={%d},Type={%d},Name={%s}] now.", channel.ChannelID, channel.ChannelType, channel.Name);
                 _messageChannels.Remove(channelID);
 
                 // 销毁消息通道
@@ -378,11 +385,12 @@ namespace GameEngine
         /// </summary>
         /// <param name="channelID">网络通道标识</param>
         /// <param name="message">消息对象</param>
-        public void SendMessage(int channelID, ProtoBuf.Extension.IMessage message)
+        public void SendMessage(int channelID, object message)
         {
-            byte[] buffer = ProtoBuf.Extension.ProtobufHelper.ToBytes(message);
+            // byte[] buffer = ProtoBuf.Extension.ProtobufHelper.ToBytes(message);
+            // SendMessage(channelID, buffer);
 
-            SendMessage(channelID, buffer);
+            Debugger.Throw<System.NotImplementedException>();
         }
 
         /// <summary>
@@ -503,17 +511,13 @@ namespace GameEngine
                 {
                     Debugger.Warn("Decode received message failed with target channel '{%t}', please checked the channel translator is running normally.", channel);
                 }
-                else if (typeof(ProtoBuf.Extension.IMessage).IsAssignableFrom(message.GetType()))
+                else
                 {
                     // Debugger.Info("message:" + message.GetType() + ", Content:" + message);
 
                     Debugger.Assert(typeof(SocketMessageChannel).IsAssignableFrom(channel.GetType()), "无效的网络通道类型：{%t}", channel);
 
-                    OnReceiveMessageOfProtoBuf(channel as SocketMessageChannel, message as ProtoBuf.Extension.IMessage);
-                }
-                else
-                {
-                    Debugger.Error("无法找到任何匹配目标消息类型‘{%t}’的处理通道，对目标消息的接收和转发操作处理失败！", message);
+                    OnReceiveMessageOfProtoBuf(channel as SocketMessageChannel, message);
                 }
             });
         }
@@ -525,7 +529,7 @@ namespace GameEngine
         /// 因此，我们建议外部业务代码仅在测试情况下使用该接口，且完成测试后尽快移除相关逻辑
         /// </summary>
         /// <param name="message">消息对象实例</param>
-        public void OnSimulationReceiveMessageOfProtoBuf(ProtoBuf.Extension.IMessage message)
+        public void OnSimulationReceiveMessageOfProtoBuf(object message)
         {
             if (false == NovaEngine.Environment.IsDevelopmentState())
             {
@@ -541,7 +545,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="channel">通道对象实例</param>
         /// <param name="message">消息对象实例</param>
-        private void OnReceiveMessageOfProtoBuf(SocketMessageChannel channel, ProtoBuf.Extension.IMessage message)
+        private void OnReceiveMessageOfProtoBuf(SocketMessageChannel channel, object message)
         {
             int opcode = GetOpcodeByMessageType(message.GetType());
 
@@ -605,7 +609,7 @@ namespace GameEngine
         /// <summary>
         /// 消息解析器类的后缀名称常量定义
         /// </summary>
-        private const string MessageTranslatorClassUnifiedStandardName = "MessageTranslator";
+        // private const string MessageTranslatorClassUnifiedStandardName = "MessageTranslator";
 
         /// <summary>
         /// 网络消息通道对象类型的加载接口函数
@@ -625,10 +629,10 @@ namespace GameEngine
                 string enumName = enumValue.ToString();
                 // 类名反射时需要包含命名空间前缀
                 string channelClassName = NovaEngine.FormatString.Format("{%s}.{%s}{%s}", namespaceTag, enumName, MessageChannelClassUnifiedStandardName);
-                string translatorClassName = NovaEngine.FormatString.Format("{%s}.{%s}{%s}", namespaceTag, enumName, MessageTranslatorClassUnifiedStandardName);
+                // string translatorClassName = NovaEngine.FormatString.Format("{%s}.{%s}{%s}", namespaceTag, enumName, MessageTranslatorClassUnifiedStandardName);
 
                 SystemType channelClassType = SystemType.GetType(channelClassName);
-                SystemType translatorClassType = SystemType.GetType(translatorClassName);
+                // SystemType translatorClassType = SystemType.GetType(translatorClassName);
 
                 if (null == channelClassType)
                 {
@@ -636,32 +640,143 @@ namespace GameEngine
                     continue;
                 }
 
-                if (null == translatorClassType)
-                {
-                    Debugger.Info(LogGroupTag.Module, "Could not found any message translator class with target name {%s}.", translatorClassName);
-                    continue;
-                }
+                //if (null == translatorClassType)
+                //{
+                //    Debugger.Info(LogGroupTag.Module, "Could not found any message translator class with target name {%s}.", translatorClassName);
+                //    continue;
+                //}
 
-                if (false == typeof(IMessageTranslator).IsAssignableFrom(translatorClassType))
-                {
-                    Debugger.Warn("The message translator class type {%s} must be inherited from 'IMessageTranslator' interface.", translatorClassName);
-                    continue;
-                }
+                //if (false == typeof(IMessageTranslator).IsAssignableFrom(translatorClassType))
+                //{
+                //    Debugger.Warn("The message translator class type {%s} must be inherited from 'IMessageTranslator' interface.", translatorClassName);
+                //    continue;
+                //}
 
-                // 创建实例
-                IMessageTranslator messageTranslator = System.Activator.CreateInstance(translatorClassType) as IMessageTranslator;
-                if (null == messageTranslator)
-                {
-                    Debugger.Error("The message translator class type {%s} created failed.", translatorClassName);
-                    continue;
-                }
+                //// 创建实例
+                //IMessageTranslator messageTranslator = System.Activator.CreateInstance(translatorClassType) as IMessageTranslator;
+                //if (null == messageTranslator)
+                //{
+                //    Debugger.Error("The message translator class type {%s} created failed.", translatorClassName);
+                //    continue;
+                //}
 
-                Debugger.Info(LogGroupTag.Module, "Register new message channel type '{%s}' and translator class '{%s}' to target service type '{%s}'.",
-                        channelClassName, translatorClassName, enumName);
+                Debugger.Info(LogGroupTag.Module, "Register new message channel type '{%s}' to target service type '{%s}'.", channelClassName, enumName);
+                // Debugger.Info(LogGroupTag.Module, "Register new message translator class '{%s}' to target service type '{%s}'.", translatorClassName, enumName);
 
                 _messageChannelTypes.Add((int) enumValue, channelClassType);
-                _messageTranslators.Add((int) enumValue, messageTranslator);
+                // _messageTranslators.Add((int) enumValue, messageTranslator);
             }
+        }
+
+        /// <summary>
+        /// 注册指定服务类型对应的消息解析器对象实例
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="serviceType">服务类型</param>
+        /// <returns>若注册解析器对象实例成功则返回true，否则返回false</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public bool RegMessageTranslator<T>(int serviceType) where T : IMessageTranslator, new()
+        {
+            return RegMessageTranslator(serviceType, typeof(T));
+        }
+
+        /// <summary>
+        /// 注册指定服务类型对应的消息解析器对象实例
+        /// </summary>
+        /// <param name="serviceType">服务类型</param>
+        /// <param name="classType">对象类型</param>
+        /// <returns>若注册解析器对象实例成功则返回true，否则返回false</returns>
+        public bool RegMessageTranslator(int serviceType, SystemType classType)
+        {
+            if (false == _messageChannelTypes.ContainsKey(serviceType))
+            {
+                Debugger.Error(LogGroupTag.Module, "The network service type '{%d}' was invalid value, register matched message translator failed.", serviceType);
+                return false;
+            }
+
+            if (_messageTranslators.ContainsKey(serviceType))
+            {
+                Debugger.Error(LogGroupTag.Module, "The message translator class was already exists by service type '{%d}', you must delete old value before adding new instance.", serviceType);
+                return false;
+            }
+
+            if (false == typeof(IMessageTranslator).IsAssignableFrom(classType))
+            {
+                Debugger.Error(LogGroupTag.Module, "The message translator class type {%t} must be inherited from 'IMessageTranslator' interface.", classType);
+                return false;
+            }
+
+            // 创建实例
+            IMessageTranslator messageTranslator = System.Activator.CreateInstance(classType) as IMessageTranslator;
+            if (null == messageTranslator)
+            {
+                Debugger.Error(LogGroupTag.Module, "The message translator class type {%t} created instance failed.", classType);
+                return false;
+            }
+            _messageTranslators.Add(serviceType, messageTranslator);
+            return true;
+        }
+
+        /// <summary>
+        /// 删除指定服务类型对应的消息解析器对象实例
+        /// </summary>
+        /// <param name="serviceType">服务类型</param>
+        public void UnregMessageTranslator(int serviceType)
+        {
+            if (_messageTranslators.ContainsKey(serviceType))
+            {
+                _messageTranslators.Remove(serviceType);
+            }
+        }
+
+        /// <summary>
+        /// 注册消息对象类型加载器对象实例
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <returns>若注册加载器对象实例成功则返回true，否则返回false</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public bool RegMessageObjectTypeLoader<T>() where T : IMessageObjectTypeLoader, new()
+        {
+            return RegMessageObjectTypeLoader(typeof(T));
+        }
+
+        /// <summary>
+        /// 注册消息对象类型加载器对象实例
+        /// </summary>
+        /// <param name="classType">对象类型</param>
+        /// <returns>若注册加载器对象实例成功则返回true，否则返回false</returns>
+        public bool RegMessageObjectTypeLoader(SystemType classType)
+        {
+            if (null != _messageObjectTypeLoader)
+            {
+                Debugger.Error(LogGroupTag.Module, "The message object type loader class was already assigned from class type '{%t}', you must delete old value before setting new instance.", _messageObjectTypeLoader);
+                return false;
+            }
+
+            if (false == typeof(IMessageObjectTypeLoader).IsAssignableFrom(classType))
+            {
+                Debugger.Error(LogGroupTag.Module, "The message object type loader class type {%t} must be inherited from 'IMessageObjectTypeLoader' interface.", classType);
+                return false;
+            }
+
+            // 创建实例
+            IMessageObjectTypeLoader messageObjectTypeLoader = System.Activator.CreateInstance(classType) as IMessageObjectTypeLoader;
+            if (null == messageObjectTypeLoader)
+            {
+                Debugger.Error(LogGroupTag.Module, "The message object type loader class type {%t} created instance failed.", classType);
+                return false;
+            }
+            _messageObjectTypeLoader = messageObjectTypeLoader;
+            return true;
+        }
+
+        /// <summary>
+        /// 删除消息对象类型加载器对象实例
+        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public void UnregMessageObjectTypeLoader()
+        {
+            _messageObjectTypeLoader = null;
         }
 
         /// <summary>
@@ -669,6 +784,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="serviceType">服务类型</param>
         /// <returns>返回对应类型的消息通道对象，若不存在对应类型的通道对象则返回null</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public SystemType GetMessageChannelTypeByServiceType(int serviceType)
         {
             if (false == _messageChannelTypes.ContainsKey(serviceType))
@@ -684,6 +800,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="serviceType">服务类型</param>
         /// <returns>返回对应类型的消息解析实例，若不存在对应类型的解析接口则返回null</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public IMessageTranslator GetMessageTranslatorByServiceType(int serviceType)
         {
             if (false == _messageTranslators.ContainsKey(serviceType))
@@ -692,6 +809,29 @@ namespace GameEngine
             }
 
             return _messageTranslators[serviceType];
+        }
+
+        /// <summary>
+        /// 获取当前句柄注册的消息对象类型加载器实例
+        /// </summary>
+        /// <returns>返回消息对象类型加载器实例</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public IMessageObjectTypeLoader GetMessageObjectTypeLoader()
+        {
+            return _messageObjectTypeLoader;
+        }
+
+        /// <summary>
+        /// 将指定的消息对象类型解析为内部结构数据对象
+        /// </summary>
+        /// <param name="messageType">消息类型</param>
+        /// <returns>返回解析后的结构数据对象</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        internal IMessageObjectTypeLoader.MessageObjectTypeInfo ParseMessageObjectType(SystemType messageType)
+        {
+            Debugger.Assert(_messageObjectTypeLoader, NovaEngine.ErrorText.NullObjectReference);
+
+            return _messageObjectTypeLoader.Parse(messageType);
         }
 
         /// <summary>
@@ -754,6 +894,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="msgType">消息类型</param>
         /// <returns>返回给定类型对应的消息对象类，若不存在则返回null</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public SystemType GetMessageClassByType(int msgType)
         {
             if (_messageClassTypes.ContainsKey(msgType))

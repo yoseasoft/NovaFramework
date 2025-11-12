@@ -37,7 +37,7 @@ namespace GameEngine
         /// <param name="targetType">对象类型</param>
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
-        [OnNetworkMessageRegisterClassOfTarget(typeof(ProtoBuf.Extension.MessageAttribute))]
+        [OnNetworkMessageRegisterClassOfTarget(typeof(MessageObjectAttribute))]
         private static void LoadMessageBindCodeType(SystemType targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
             if (targetType.IsInterface || targetType.IsAbstract)
@@ -66,7 +66,7 @@ namespace GameEngine
         /// <summary>
         /// 网络消息类型的全部代码的注销回调函数
         /// </summary>
-        [OnNetworkMessageUnregisterClassOfTarget(typeof(ProtoBuf.Extension.MessageAttribute))]
+        [OnNetworkMessageUnregisterClassOfTarget(typeof(MessageObjectAttribute))]
         private static void UnloadAllMessageBindCodeTypes()
         {
             Instance.UnregAllMessageClassTypes();

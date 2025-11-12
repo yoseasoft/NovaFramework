@@ -67,11 +67,11 @@ namespace GameEngine
         /// <summary>
         /// 基础对象的消息通知的监听回调函数<br/>
         /// 该函数针对消息转发接口的标准实现，禁止子类重写该函数<br/>
-        /// 若子类需要根据需要自行处理消息，可以通过重写<see cref="GameEngine.CBase.OnMessage(ProtoBuf.Extension.IMessage)"/>实现消息的自定义处理逻辑
+        /// 若子类需要根据需要自行处理消息，可以通过重写<see cref="GameEngine.CBase.OnMessage(object)"/>实现消息的自定义处理逻辑
         /// </summary>
         /// <param name="opcode">协议操作码</param>
         /// <param name="message">消息对象实例</param>
-        public virtual void OnMessageDispatch(int opcode, ProtoBuf.Extension.IMessage message)
+        public virtual void OnMessageDispatch(int opcode, object message)
         {
             if (_messageListenerCallForType.TryGetValue(opcode, out IDictionary<string, bool> calls))
             {
@@ -89,7 +89,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="opcode">协议操作码</param>
         /// <param name="message">消息对象实例</param>
-        protected abstract void OnMessage(int opcode, ProtoBuf.Extension.IMessage message);
+        protected abstract void OnMessage(int opcode, object message);
 
         /// <summary>
         /// 针对指定消息标识新增消息监听的后处理程序
@@ -181,7 +181,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">消息类型</typeparam>
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
-        public bool AddMessageListener<T>() where T : ProtoBuf.Extension.IMessage
+        public bool AddMessageListener<T>() where T : class
         {
             return AddMessageListener(typeof(T));
         }
@@ -204,7 +204,7 @@ namespace GameEngine
         /// <typeparam name="T">消息类型</typeparam>
         /// <param name="func">监听回调函数</param>
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
-        public bool AddMessageListener<T>(System.Action<T> func) where T : ProtoBuf.Extension.IMessage
+        public bool AddMessageListener<T>(System.Action<T> func) where T : class
         {
             string fullname = NovaEngine.Utility.Text.GetFullName(func.Method);
             return AddMessageListener(fullname, func.Method, typeof(T));

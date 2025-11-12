@@ -184,7 +184,7 @@ namespace GameEngine
         /// <param name="targetType">目标对象类型</param>
         /// <param name="targetObject">对象实例</param>
         /// <param name="message">消息内容</param>
-        internal void InvokeMessageListenerBindingCall(string fullname, SystemType targetType, IBean targetObject, ProtoBuf.Extension.IMessage message)
+        internal void InvokeMessageListenerBindingCall(string fullname, SystemType targetType, IBean targetObject, object message)
         {
             MessageCallMethodInfo messageCallMethodInfo = FindMessageListenerBindingCallByName(fullname, targetType);
             if (null == messageCallMethodInfo)

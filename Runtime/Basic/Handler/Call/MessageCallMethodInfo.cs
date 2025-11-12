@@ -84,7 +84,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="message">消息对象实例</param>
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public void Invoke(ProtoBuf.Extension.IMessage message)
+        public void Invoke(object message)
         {
             if (_isNullParameterType)
             {
@@ -102,7 +102,7 @@ namespace GameEngine
         /// <param name="targetObject">对象实例</param>
         /// <param name="message">消息对象实例</param>
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public void Invoke(IBean targetObject, ProtoBuf.Extension.IMessage message)
+        public void Invoke(IBean targetObject, object message)
         {
             Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
 

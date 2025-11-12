@@ -52,24 +52,13 @@ namespace GameEngine
     }
 
     /// <summary>
-    /// 消息声明属性类型定义
+    /// 消息对象类声明属性类型定义
     /// </summary>
     [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class DeclareMessageClassAttribute : SystemAttribute
+    public class MessageObjectAttribute : SystemAttribute
     {
-        /// <summary>
-        /// 消息操作码标识
-        /// </summary>
-        private readonly ushort _opcode;
-
-        /// <summary>
-        /// 消息操作码获取函数
-        /// </summary>
-        public ushort Opcode => _opcode;
-
-        public DeclareMessageClassAttribute(ushort opcode) : base()
+        public MessageObjectAttribute() : base()
         {
-            _opcode = opcode;
         }
     }
 }

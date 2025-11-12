@@ -109,7 +109,7 @@ namespace GameEngine
         /// 通过模拟的方式接收基于ProtoBuf协议构建的网络消息的接口函数
         /// </summary>
         /// <param name="message">消息对象实例</param>
-        public static void OnSimulationReceiveMessageOfProtoBuf(ProtoBuf.Extension.IMessage message)
+        public static void OnSimulationReceiveMessageOfProtoBuf(object message)
         {
             NetworkHandler.Instance.OnSimulationReceiveMessageOfProtoBuf(message);
         }

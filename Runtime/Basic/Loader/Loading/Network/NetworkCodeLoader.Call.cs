@@ -96,7 +96,7 @@ namespace GameEngine.Loader
                                 else if (callMethodInfo.Opcode > 0)
                                 {
                                     // 协议编码派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, typeof(ProtoBuf.Extension.IMessage));
+                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, typeof(object));
                                 }
                                 else
                                 {
@@ -114,7 +114,7 @@ namespace GameEngine.Loader
                                 else if (callMethodInfo.Opcode > 0)
                                 {
                                     // 协议编码派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType, typeof(ProtoBuf.Extension.IMessage));
+                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType, typeof(object));
                                 }
                                 else
                                 {

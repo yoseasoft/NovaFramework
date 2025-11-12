@@ -26,8 +26,8 @@ using System.Collections.Generic;
 
 using SystemType = System.Type;
 
-using UniTaskForMessage = Cysharp.Threading.Tasks.UniTask<ProtoBuf.Extension.IMessage>;
-using UniTaskCompletionSourceForMessage = Cysharp.Threading.Tasks.UniTaskCompletionSource<ProtoBuf.Extension.IMessage>;
+using UniTaskForMessage = Cysharp.Threading.Tasks.UniTask<object>;
+using UniTaskCompletionSourceForMessage = Cysharp.Threading.Tasks.UniTaskCompletionSource<object>;
 
 namespace GameEngine
 {
@@ -97,7 +97,7 @@ namespace GameEngine
             _messageTranslator = NetworkHandler.Instance.GetMessageTranslatorByServiceType(_channelType);
             if (null == _messageTranslator)
             {
-                Debugger.Warn("Could not found any valid message translator with target service type '{0}', initialized channel instance failed.", _channelType);
+                Debugger.Warn("Could not found any valid message translator with target service type '{%d}', initialized channel instance failed.", _channelType);
             }
         }
 
@@ -154,7 +154,7 @@ namespace GameEngine
         public static MessageChannel Create(int channelID, int channelType, string name, string url)
         {
             SystemType classType = NetworkHandler.Instance.GetMessageChannelTypeByServiceType(channelType);
-            Debugger.Assert(null != classType, "Invalid channel type '{0}'.", channelType);
+            Debugger.Assert(classType, NovaEngine.ErrorText.InvalidArguments);
 
             MessageChannel channel = System.Activator.CreateInstance(classType, new object[] { channelID, name, url }) as MessageChannel;
             channel.Initialize();

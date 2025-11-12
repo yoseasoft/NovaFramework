@@ -41,6 +41,24 @@ namespace GameEngine.Loader.Symboling
     internal static partial class SymClassResolver
     {
         /// <summary>
+        /// 解析流程的初始化函数
+        /// </summary>
+        public static void OnInitialize()
+        {
+            // 自定义对象解析业务初始化
+            OnCustomizeInitialize();
+        }
+
+        /// <summary>
+        /// 解析流程的清理函数
+        /// </summary>
+        public static void OnCleanup()
+        {
+            // 自定义对象解析业务清理
+            OnCustomizeCleanup();
+        }
+
+        /// <summary>
         /// 对象类标记数据解析接口函数
         /// </summary>
         /// <param name="targetType">目标对象类型</param>

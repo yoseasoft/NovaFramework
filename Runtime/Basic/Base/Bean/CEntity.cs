@@ -682,11 +682,11 @@ namespace GameEngine
         /// <summary>
         /// 组件对象的消息通知的监听回调函数<br/>
         /// 该函数针对消息转发接口的标准实现，禁止子类重写该函数<br/>
-        /// 若子类需要根据需要自行处理消息，可以通过重写<see cref="GameEngine.CRef.OnMessage(ProtoBuf.Extension.IMessage)"/>实现消息的自定义处理逻辑
+        /// 若子类需要根据需要自行处理消息，可以通过重写<see cref="GameEngine.CRef.OnMessage(object)"/>实现消息的自定义处理逻辑
         /// </summary>
         /// <param name="opcode">协议操作码</param>
         /// <param name="message">消息对象实例</param>
-        public override sealed void OnMessageDispatch(int opcode, ProtoBuf.Extension.IMessage message)
+        public override sealed void OnMessageDispatch(int opcode, object message)
         {
             base.OnMessageDispatch(opcode, message);
 
@@ -739,7 +739,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">消息类型</typeparam>
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
-        protected internal bool AddMessageListenerFromComponent<T>() where T : ProtoBuf.Extension.IMessage
+        protected internal bool AddMessageListenerFromComponent<T>() where T : class
         {
             return AddMessageListenerFromComponent(typeof(T));
         }

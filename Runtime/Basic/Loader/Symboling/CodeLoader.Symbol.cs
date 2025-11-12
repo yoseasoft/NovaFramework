@@ -54,6 +54,9 @@ namespace GameEngine.Loader
             _symClassMaps = new Symboling.SymClassMap();
             // 初始化Bean数据容器
             _beanClassMaps = new Dictionary<string, Symboling.Bean>();
+
+            // 符号解析器初始化
+            Symboling.SymClassResolver.OnInitialize();
         }
 
         /// <summary>
@@ -62,6 +65,9 @@ namespace GameEngine.Loader
         [OnCodeLoaderSubmoduleCleanupCallback]
         private static void CleanupAllSymClassLoadingCallbacks()
         {
+            // 符号解析器清理
+            Symboling.SymClassResolver.OnCleanup();
+
             // 清理标识数据容器
             UnloadAllSymClasses();
 
@@ -202,6 +208,67 @@ namespace GameEngine.Loader
                 }
             }
         }
+
+        #region 符号对象外部解析器注册绑定相关的接口函数
+
+        /// <summary>
+        /// 注册外部实现的可实例化对象类型的符号解析器
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void RegisterSymbolResolverOfInstantiationClass<T>() where T : Symboling.ISymbolResolverOfInstantiationClass
+        {
+            Symboling.SymClassResolver.AddInstantiationClassResolver<T>();
+        }
+
+        /// <summary>
+        /// 注册外部实现的可实例化对象类型的符号解析器
+        /// </summary>
+        /// <param name="classType">对象类型</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void RegisterSymbolResolverOfInstantiationClass(SystemType classType)
+        {
+            Symboling.SymClassResolver.AddInstantiationClassResolver(classType);
+        }
+
+        /// <summary>
+        /// 注册外部实现的可实例化对象类型的符号解析器
+        /// </summary>
+        /// <param name="resolver">解析对象</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void RegisterSymbolResolverOfInstantiationClass(Symboling.ISymbolResolverOfInstantiationClass resolver)
+        {
+            Symboling.SymClassResolver.AddInstantiationClassResolver(resolver);
+        }
+
+        /// <summary>
+        /// 移除外部实现的可实例化对象类型的符号解析器
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        public static void UnregisterSymbolResolverOfInstantiationClass<T>() where T : Symboling.ISymbolResolverOfInstantiationClass
+        {
+            Symboling.SymClassResolver.RemoveInstantiationClassResolver<T>();
+        }
+
+        /// <summary>
+        /// 移除外部实现的可实例化对象类型的符号解析器
+        /// </summary>
+        /// <param name="classType">对象类型</param>
+        public static void UnregisterSymbolResolverOfInstantiationClass(SystemType classType)
+        {
+            Symboling.SymClassResolver.RemoveInstantiationClassResolver(classType);
+        }
+
+        /// <summary>
+        /// 移除外部实现的可实例化对象类型的符号解析器
+        /// </summary>
+        /// <param name="resolver">解析对象</param>
+        public static void UnregisterSymbolResolverOfInstantiationClass(Symboling.ISymbolResolverOfInstantiationClass resolver)
+        {
+            Symboling.SymClassResolver.RemoveInstantiationClassResolver(resolver);
+        }
+
+        #endregion
 
         /// <summary>
         /// 通过指定名称获取对象类的标记数据

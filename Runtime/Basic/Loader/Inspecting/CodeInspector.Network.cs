@@ -55,8 +55,8 @@ namespace GameEngine.Loader.Inspecting
             }
 
             // 消息监听函数有两种格式:
-            // 1. [static] void OnMessage(ProtoBuf.Extension.IMessage message);
-            // 2. static void OnMessage(IBean obj, ProtoBuf.Extension.IMessage message);
+            // 1. [static] void OnMessage(object message);
+            // 2. static void OnMessage(IBean obj, object message);
             //
             // 2024-04-23:
             // 新增无参类型的事件绑定函数接口，因此事件新增以下格式:
@@ -70,7 +70,7 @@ namespace GameEngine.Loader.Inspecting
                 {
                     return true;
                 }
-                else if (typeof(ProtoBuf.Extension.IMessage).IsAssignableFrom(paramInfos[0].ParameterType))
+                else if (NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(paramInfos[0].ParameterType))
                 {
                     return true;
                 }
@@ -78,7 +78,7 @@ namespace GameEngine.Loader.Inspecting
             else if (paramInfos.Length == 2)
             {
                 if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) && // 第一个参数为Bean对象
-                    typeof(ProtoBuf.Extension.IMessage).IsAssignableFrom(paramInfos[1].ParameterType)) // 第二个参数为消息类型
+                    NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(paramInfos[0].ParameterType)) // 第二个参数为可实例化的消息类型
                 {
                     return true;
                 }
@@ -141,7 +141,7 @@ namespace GameEngine.Loader.Inspecting
             }
 
             // 消息接收函数有两种格式:
-            // 1. static void OnMessage(this IBean self, ProtoBuf.Extension.IMessage message);
+            // 1. static void OnMessage(this IBean self, object message);
             // 2. static void OnMessage(this IBean self);
 
             // 第一个参数必须为原型类的子类，且必须是可实例化的类
@@ -157,8 +157,8 @@ namespace GameEngine.Loader.Inspecting
             }
             else if (paramInfos.Length == 2)
             {
-                // 目前接收的目标对象均为消息对象类型
-                if (typeof(ProtoBuf.Extension.IMessage).IsAssignableFrom(paramInfos[1].ParameterType))
+                // 目前接收的目标对象均为可实例化的消息对象类型
+                if (NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(paramInfos[0].ParameterType))
                 {
                     return true;
                 }

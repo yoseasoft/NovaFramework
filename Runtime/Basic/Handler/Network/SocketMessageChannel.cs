@@ -28,8 +28,8 @@ using Cysharp.Threading.Tasks;
 
 using SystemType = System.Type;
 
-using UniTaskForMessage = Cysharp.Threading.Tasks.UniTask<ProtoBuf.Extension.IMessage>;
-using UniTaskCompletionSourceForMessage = Cysharp.Threading.Tasks.UniTaskCompletionSource<ProtoBuf.Extension.IMessage>;
+using UniTaskForMessage = Cysharp.Threading.Tasks.UniTask<object>;
+using UniTaskCompletionSourceForMessage = Cysharp.Threading.Tasks.UniTaskCompletionSource<object>;
 
 namespace GameEngine
 {
@@ -107,18 +107,18 @@ namespace GameEngine
         /// <param name="message">消息内容</param>
         internal void OnMessageDispatched(int opcode, object message)
         {
-            Debugger.Assert(_waitingForResponseMessages.ContainsKey(opcode), "The waiting for response message was invalid opcode '{0}'.", opcode);
+            Debugger.Assert(_waitingForResponseMessages.ContainsKey(opcode), "The waiting for response message was invalid opcode '{%d}'.", opcode);
 
-            _waitingForResponseMessages[opcode].TrySetResult(message as ProtoBuf.Extension.IMessage);
+            _waitingForResponseMessages[opcode].TrySetResult(message as object);
         }
 
-        public void Send(ProtoBuf.Extension.IMessage message)
+        public void Send(object message)
         {
             byte[] buffer = _messageTranslator.Encode(message);
             Send(buffer);
         }
 
-        public UniTaskForMessage SendAwait(ProtoBuf.Extension.IMessage message)
+        public UniTaskForMessage SendAwait(object message)
         {
             int opcode = NetworkHandler.Instance.GetOpcodeByMessageType(message.GetType());
 
@@ -144,18 +144,18 @@ namespace GameEngine
 
             if (responseCode <= 0)
             {
-                Debugger.Warn("Could not found any response code with target message type '{0}'.", opcode);
+                Debugger.Warn("Could not found any response code with target message type '{%d}'.", opcode);
 
                 // 如果你想在一个异步UniTask方法中取消行为，请手动抛出OperationCanceledException：
                 throw new System.OperationCanceledException();
             }
 
-            var (failed, result) = await SendAwaitOfTargetResponse(responseCode).TimeoutWithoutException<ProtoBuf.Extension.IMessage>(System.TimeSpan.FromMilliseconds(SOCKET_CONNECTION_RECEIVED_TIME_SPAN_OF_TIMEOUT));
+            var (failed, result) = await SendAwaitOfTargetResponse(responseCode).TimeoutWithoutException<object>(System.TimeSpan.FromMilliseconds(SOCKET_CONNECTION_RECEIVED_TIME_SPAN_OF_TIMEOUT));
             if (failed)
             {
-                Debugger.Warn("Send target message opcode '{0}' was timeout, awaited it response failed.", opcode);
+                Debugger.Warn("Send target message opcode '{%d}' was timeout, awaited it response failed.", opcode);
 
-                Debugger.Assert(_waitingForResponseMessages.ContainsKey(responseCode), "The waiting for response message was invalid opcode '{0}'.", opcode);
+                Debugger.Assert(_waitingForResponseMessages.ContainsKey(responseCode), "The waiting for response message was invalid opcode '{%d}'.", opcode);
                 _waitingForResponseMessages.Remove(responseCode);
 
                 return null;
@@ -171,7 +171,7 @@ namespace GameEngine
         /// <returns>返回异步任务对象实例</returns>
         private UniTaskForMessage SendAwaitOfTargetResponse(int responseCode)
         {
-            Debugger.Assert(false == _waitingForResponseMessages.ContainsKey(responseCode), "The channel was waiting for target code '{0}' now.", responseCode);
+            Debugger.Assert(false == _waitingForResponseMessages.ContainsKey(responseCode), "The channel was waiting for target code '{%d}' now.", responseCode);
 
             UniTaskCompletionSourceForMessage completionSource = new UniTaskCompletionSourceForMessage();
             // 注册成功回调
@@ -192,14 +192,14 @@ namespace GameEngine
             SystemType messageType = NetworkHandler.Instance.GetMessageClassByType(opcode);
             if (null == messageType)
             {
-                Debugger.Warn("Could not found any message class with target type '{0}', getting the code info failed.", opcode);
+                Debugger.Warn("Could not found any message class with target type '{%d}', getting the code info failed.", opcode);
                 return null;
             }
 
-            Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(messageType, typeof(ProtoBuf.Extension.MessageAttribute));
+            Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(messageType, typeof(MessageObjectAttribute));
             if (null == codeInfo)
             {
-                Debugger.Warn("Could not found any message code info with target class '{0}', please check the message loader process at first.", messageType.FullName);
+                Debugger.Warn("Could not found any message code info with target class '{%t}', please check the message loader process at first.", messageType);
                 return null;
             }
 

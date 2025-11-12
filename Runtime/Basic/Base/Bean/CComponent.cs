@@ -444,7 +444,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="opcode">协议操作码</param>
         /// <param name="message">消息对象实例</param>
-        protected override void OnMessage(int opcode, ProtoBuf.Extension.IMessage message) { }
+        protected override void OnMessage(int opcode, object message) { }
 
         /// <summary>
         /// 针对指定消息标识新增消息监听的后处理程序

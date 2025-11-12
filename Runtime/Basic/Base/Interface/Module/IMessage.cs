@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,20 +26,9 @@
 namespace GameEngine
 {
     /// <summary>
-    /// TCP类型通道的消息解析器对象类，用于对TCP通道的网络消息数据进行加工
+    /// 网络消息协议对象接口类，用于定义指定类是否为网络消息协议对象
     /// </summary>
-    public class TcpMessageTranslator : SocketMessageTranslator
-    { }
-
-    /// <summary>
-    /// WebSocket类型通道的消息解析器对象类，用于对WebSocket通道的网络消息数据进行加工
-    /// </summary>
-    public class WebSocketMessageTranslator : SocketMessageTranslator
-    { }
-
-    /// <summary>
-    /// Http类型通道的消息解析器对象类，用于对Http通道的网络消息数据进行加工
-    /// </summary>
-    public class HttpMessageParser : WebMessageTranslator
-    { }
+    public interface IMessage
+    {
+    }
 }

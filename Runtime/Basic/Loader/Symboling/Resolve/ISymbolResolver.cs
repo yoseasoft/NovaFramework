@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,31 +22,34 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine
+using SystemType = System.Type;
+using SystemAttribute = System.Attribute;
+
+namespace GameEngine.Loader.Symboling
 {
     /// <summary>
-    /// Web服务类型通道的消息解析器对象类，用于对Web服务通道的网络消息数据进行加工
+    /// 针对特性标签的符号解析接口定义
     /// </summary>
-    public abstract class WebMessageTranslator : IMessageTranslator
+    public interface ISymbolResolverOfFeatureAttribute
+    {
+    }
+
+    /// <summary>
+    /// 针对可实例化对象类的符号解析接口定义
+    /// </summary>
+    public interface ISymbolResolverOfInstantiationClass
     {
         /// <summary>
-        /// 将指定的消息内容编码为可发送的消息字节流
+        /// 检测目标对象类型是否匹配当前解析器
         /// </summary>
-        /// <param name="message">消息内容</param>
-        /// <returns>若编码有效的数据则返回其对应的字节流，否则返回null</returns>
-        public byte[] Encode(object message)
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <param name="targetType">对象类型</param>
+        /// <returns>若目标对象类型匹配则返回true，否则返回false</returns>
+        bool Matches(SystemType targetType);
 
         /// <summary>
-        /// 将指定的消息字节流解码成消息内容
+        /// 指定符号对象类的解析函数
         /// </summary>
-        /// <param name="buffer">消息字节流</param>
-        /// <returns>返回解码后的消息内容，若解码失败则返回null</returns>
-        public object Decode(byte[] buffer)
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <param name="symbol">符号对象实例</param>
+        void Resolve(SymClass symbol);
     }
 }

@@ -6,8 +6,6 @@
         "Nova.Library",
         "Nova.Engine",
         "Nova.UniTask",
-        "Nova.Protobuf",
-        "Nova.Protobuf.Extension",
         "Nova.FairyGUI"
     ],
     "includePlatforms": [],

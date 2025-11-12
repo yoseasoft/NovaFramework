@@ -189,7 +189,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="opcode">协议编码</param>
         /// <param name="message">消息内容</param>
-        private void OnMessageDistributeCallDispatched(int opcode, ProtoBuf.Extension.IMessage message)
+        private void OnMessageDistributeCallDispatched(int opcode, object message)
         {
             IList<MessageCallMethodInfo> list = null;
             if (_messageDistributeCallInfos.TryGetValue(opcode, out list))

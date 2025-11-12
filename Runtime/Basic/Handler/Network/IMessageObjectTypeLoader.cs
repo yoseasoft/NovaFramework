@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,29 +22,35 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using SystemType = System.Type;
+
 namespace GameEngine
 {
     /// <summary>
-    /// 消息监听接口类，用于定义接收监听消息的函数接口
+    /// 消息对象类型加载器抽象类，用于定义消息对象类型属性访问的接口函数
     /// </summary>
-    public interface IMessageDispatch : IListener
+    public interface IMessageObjectTypeLoader
     {
         /// <summary>
-        /// 对象内部消息通知的监听回调接口，通过该类型函数对指定消息进行监听处理
+        /// 消息类型信息数据结构
         /// </summary>
-        // public delegate void MessageDispatchingListenerForNullParameter();
+        public struct MessageObjectTypeInfo
+        {
+            /// <summary>
+            /// 操作码
+            /// </summary>
+            public int opcode;
+            /// <summary>
+            /// 响应码
+            /// </summary>
+            public int responseCode;
+        }
 
         /// <summary>
-        /// 对象内部消息通知的监听回调接口，通过该类型函数对指定类型消息进行监听处理
+        /// 获取指定消息对象类型的数据结构
         /// </summary>
-        /// <param name="message">消息对象实例</param>
-        // public delegate void EventDispatchingListener(object message);
-
-        /// <summary>
-        /// 接收监听指定类型的消息的回调接口函数
-        /// </summary>
-        /// <param name="opcode">协议操作码</param>
-        /// <param name="message">消息对象实例</param>
-        void OnMessageDispatch(int opcode, object message);
+        /// <param name="messageType">消息对象类型</param>
+        /// <returns>返回消息对象类型的数据结构</returns>
+        MessageObjectTypeInfo Parse(SystemType messageType);
     }
 }

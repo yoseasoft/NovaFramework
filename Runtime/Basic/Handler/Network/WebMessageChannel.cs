@@ -26,9 +26,6 @@ using System.Collections.Generic;
 
 using SystemType = System.Type;
 
-using UniTaskForMessage = Cysharp.Threading.Tasks.UniTask<ProtoBuf.Extension.IMessage>;
-using UniTaskCompletionSourceForMessage = Cysharp.Threading.Tasks.UniTaskCompletionSource<ProtoBuf.Extension.IMessage>;
-
 namespace GameEngine
 {
     /// <summary>

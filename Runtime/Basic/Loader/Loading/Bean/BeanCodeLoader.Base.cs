@@ -188,7 +188,7 @@ namespace GameEngine.Loader
                     {
                         verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
                                             false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo),
-                                            symMethod.MethodInfo, typeof(ProtoBuf.Extension.IMessage));
+                                            symMethod.MethodInfo, typeof(object));
                     }
                     else
                     {
