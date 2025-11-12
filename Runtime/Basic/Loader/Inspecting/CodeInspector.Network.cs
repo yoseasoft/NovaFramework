@@ -70,7 +70,7 @@ namespace GameEngine.Loader.Inspecting
                 {
                     return true;
                 }
-                else if (NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(paramInfos[0].ParameterType))
+                else if (NetworkHandler.Instance.GetMessageProtocolType().IsAssignableFrom(paramInfos[0].ParameterType))
                 {
                     return true;
                 }
@@ -78,7 +78,7 @@ namespace GameEngine.Loader.Inspecting
             else if (paramInfos.Length == 2)
             {
                 if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) && // 第一个参数为Bean对象
-                    NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(paramInfos[0].ParameterType)) // 第二个参数为可实例化的消息类型
+                    NetworkHandler.Instance.GetMessageProtocolType().IsAssignableFrom(paramInfos[1].ParameterType)) // 第二个参数为消息协议类型
                 {
                     return true;
                 }
@@ -157,8 +157,8 @@ namespace GameEngine.Loader.Inspecting
             }
             else if (paramInfos.Length == 2)
             {
-                // 目前接收的目标对象均为可实例化的消息对象类型
-                if (NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(paramInfos[0].ParameterType))
+                // 目前接收的目标对象均为消息对象类型
+                if (NetworkHandler.Instance.GetMessageProtocolType().IsAssignableFrom(paramInfos[1].ParameterType))
                 {
                     return true;
                 }

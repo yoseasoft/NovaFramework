@@ -82,7 +82,7 @@ namespace GameEngine.Loader
              * }
              */
 
-            IMessageObjectTypeLoader.MessageObjectTypeInfo messageObjectTypeInfo = NetworkHandler.Instance.ParseMessageObjectType(symClass.ClassType);
+            IMessageProtocolLoader.MessageObjectTypeInfo messageObjectTypeInfo = NetworkHandler.Instance.ParseMessageObjectType(symClass.ClassType);
             info.Opcode = messageObjectTypeInfo.opcode;
             info.ResponseCode = messageObjectTypeInfo.responseCode;
 

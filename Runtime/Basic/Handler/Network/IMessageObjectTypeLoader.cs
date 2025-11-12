@@ -27,12 +27,13 @@ using SystemType = System.Type;
 namespace GameEngine
 {
     /// <summary>
-    /// 消息对象类型加载器抽象类，用于定义消息对象类型属性访问的接口函数
+    /// 消息的协议加载器抽象类，用于定义消息协议属性访问的接口函数
     /// </summary>
-    public interface IMessageObjectTypeLoader
+    public interface IMessageProtocolLoader
     {
         /// <summary>
-        /// 消息类型信息数据结构
+        /// 消息对象类型信息数据结构
+        /// 在每个消息对象定义时，必须包含以下的数据结构，才可以正常使用框架的网络模块调度流程
         /// </summary>
         public struct MessageObjectTypeInfo
         {
@@ -45,6 +46,13 @@ namespace GameEngine
             /// </summary>
             public int responseCode;
         }
+
+        /// <summary>
+        /// 消息协议类型
+        /// 例如使用ProtoBuf协议，则返回ProtoBuf.Extension.IMessage类型，
+        /// 标识所有的消息对象都继承自该类型
+        /// </summary>
+        SystemType MessageProtocolType { get; }
 
         /// <summary>
         /// 获取指定消息对象类型的数据结构

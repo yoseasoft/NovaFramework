@@ -394,8 +394,8 @@ namespace NovaEngine
                     // 函数返回对象的类型必须可以赋予给函数定义返回值的类型
                     if (null == methodInfo.ReturnType || false == methodInfo.ReturnType.IsAssignableFrom(returnType))
                     {
-                        Debugger.Warn("The target method '{0}' declared return type '{1}' cannot matched calc return type '{2}', created it for delegate failed.",
-                                methodInfo.Name, methodInfo.ReturnType.FullName, returnType.FullName);
+                        Debugger.Warn("The target method '{%t}' declared return type '{%s}' cannot matched calc return type '{%s}', created it for delegate failed.",
+                                methodInfo, methodInfo.ReturnType.FullName, returnType.FullName);
                         return false;
                     }
                 }
@@ -425,8 +425,8 @@ namespace NovaEngine
                     // 函数传入参数的类型必须可以赋予给函数定义参数的类型
                     if (false == paramInfoType.IsAssignableFrom(parameterTypes[n]))
                     {
-                        Debugger.Warn("The target method '{0}' parameter info type '{1}' cannot matched assign param type '{2}', created it for delegate failed.",
-                                methodInfo.Name, paramInfoType.FullName, parameterTypes[n].FullName);
+                        Debugger.Warn("The target method '{%t}' parameter info type '{%s}' cannot matched assign param type '{%s}', created it for delegate failed.",
+                                methodInfo, paramInfoType.FullName, parameterTypes[n].FullName);
                         return false;
                     }
                 }
@@ -457,7 +457,7 @@ namespace NovaEngine
                 // 允许普通的成员函数在初始构建时不传入自身实例，而在实际调用时传入
                 // if (null == self && false == methodInfo.IsStatic)
                 // {
-                //     Logger.Error("The target method '{0}' wasn't static function, the 'self' object must be non-null.", methodInfo.Name);
+                //     Logger.Error("The target method '{%t}' wasn't static function, the 'self' object must be non-null.", methodInfo);
                 //     return null;
                 // }
 

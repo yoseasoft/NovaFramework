@@ -222,7 +222,7 @@ namespace GameEngine.Loader
                             {
                                 verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
                                                     false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo),
-                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType, typeof(object));
+                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType, NetworkHandler.Instance.GetMessageProtocolType());
                             }
                             else
                             {
