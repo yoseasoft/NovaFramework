@@ -191,7 +191,8 @@ namespace GameEngine
         /// 通道的消息发送标准接口函数
         /// </summary>
         /// <param name="buffer">消息字符串</param>
-        protected void Send(string buffer)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        protected void InternalSendMessage(string buffer)
         {
             NetworkHandler.Instance.SendMessage(_channelID, buffer);
         }
@@ -200,7 +201,8 @@ namespace GameEngine
         /// 通道的消息发送标准接口函数
         /// </summary>
         /// <param name="buffer">消息字节流</param>
-        protected void Send(byte[] buffer)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        protected void InternalSendMessage(byte[] buffer)
         {
             NetworkHandler.Instance.SendMessage(_channelID, buffer);
         }

@@ -115,7 +115,7 @@ namespace GameEngine
         public void Send(object message)
         {
             byte[] buffer = _messageTranslator.Encode(message);
-            Send(buffer);
+            InternalSendMessage(buffer);
         }
 
         public UniTaskForMessage SendAwait(object message)
