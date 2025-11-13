@@ -261,7 +261,7 @@ namespace NovaEngine
             this._connectionCallback?.Invoke(this);
         }
 
-        private void OnDisconnectionComplete(object sender, System.EventArgs e)
+        private void OnDisconnectionComplete(object sender, WebSocketSharp.CloseEventArgs e)
         {
             this._isConnected = false;
 
@@ -271,7 +271,7 @@ namespace NovaEngine
         /// <summary>
         /// 连接错误的回调通知接口函数
         /// </summary>
-        private void OnConnectionError(object sender, System.EventArgs e)
+        private void OnConnectionError(object sender, WebSocketSharp.ErrorEventArgs e)
         {
             this.OnError(NetworkErrorCode.SocketError);
         }
