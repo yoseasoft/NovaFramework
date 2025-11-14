@@ -197,14 +197,14 @@ namespace NovaEngine
                 case MessageConstant.HeaderSize4:
                     if (packetSize > ushort.MaxValue * 16)
                     {
-                        throw new CFrameworkException("send packet size '{0}' too large.", packetSize);
+                        throw new CFrameworkException("send packet size '{%d}' too large.", packetSize);
                     }
                     this._packetHeaderCached.WriteTo(0, (int) packetSize);
                     break;
                 case MessageConstant.HeaderSize2:
                     if (packetSize > ushort.MaxValue)
                     {
-                        throw new CFrameworkException("send packet size '{0}' too large.", packetSize);
+                        throw new CFrameworkException("send packet size '{%d}' too large.", packetSize);
                     }
                     this._packetHeaderCached.WriteToBig(0, (short) packetSize);
                     break;
