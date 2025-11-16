@@ -97,7 +97,7 @@ namespace GameEngine
             _viewBindingGroupNames = new Dictionary<SystemType, string>();
 
             // 注册默认分组
-            AddViewGroup(_defaultViewGroupName, 0, _defaultViewFormType, ViewGroupStrategyType.None);
+            AddViewGroup(_defaultViewGroupName, 0, ViewGroupStrategyType.None);
         }
 
         /// <summary>
@@ -133,9 +133,8 @@ namespace GameEngine
         /// </summary>
         /// <param name="groupName">分组名称</param>
         /// <param name="level">分组层级</param>
-        /// <param name="formType">视图表单类型</param>
         /// <param name="strategyType">分组策略类型</param>
-        public void AddViewGroup(string groupName, byte level, ViewFormType formType, ViewGroupStrategyType strategyType = ViewGroupStrategyType.None)
+        public void AddViewGroup(string groupName, byte level, ViewGroupStrategyType strategyType = ViewGroupStrategyType.None)
         {
             if (_viewGroups.ContainsKey(groupName))
             {
@@ -155,7 +154,7 @@ namespace GameEngine
             }
 
             // 创建视图分组对象
-            ViewGroup viewGroup = new ViewGroup(groupName, level, formType, strategyType);
+            ViewGroup viewGroup = new ViewGroup(groupName, level, strategyType);
 
             // 添加视图分组对象
             _viewGroups.Add(groupName, viewGroup);
@@ -221,10 +220,6 @@ namespace GameEngine
             /// </summary>
             private readonly byte _level;
             /// <summary>
-            /// 分组对象的默认表单类型
-            /// </summary>
-            private readonly ViewFormType _formType;
-            /// <summary>
             /// 分组对象策略类型
             /// </summary>
             private readonly ViewGroupStrategyType _strategyType;
@@ -236,14 +231,12 @@ namespace GameEngine
 
             public string GroupName => _groupName;
             public byte Level => _level;
-            public ViewFormType FormType => _formType;
             public ViewGroupStrategyType StrategyType => _strategyType;
 
-            public ViewGroup(string groupName, byte level, ViewFormType formType, ViewGroupStrategyType strategyType)
+            public ViewGroup(string groupName, byte level, ViewGroupStrategyType strategyType)
             {
                 _groupName = groupName;
                 _level = level;
-                _formType = formType;
                 _strategyType = strategyType;
                 _groupViews = new List<CView>();
             }
@@ -268,12 +261,6 @@ namespace GameEngine
             [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public void OnViewGroupBinding(CView view)
             {
-                if (view.FormType != _formType)
-                {
-                    Debugger.Error(LogGroupTag.Module, "目标视图对象实例‘{%t}’的窗口类型‘{%i}’与当前绑定的分组管理窗口类型‘{%i}’不匹配，该视图对象绑定分组操作失败！", view, view.FormType, _formType);
-                    return;
-                }
-
                 if (_groupViews.Contains(view))
                 {
                     Debugger.Error(LogGroupTag.Module, "目标视图对象实例‘{%t}’已经被注册到分组管理容器‘{%s}’中，请勿对相同视图对象进行重复添加！", view, _groupName);

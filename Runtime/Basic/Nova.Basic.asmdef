@@ -5,8 +5,7 @@
         "GooAsset",
         "Nova.Library",
         "Nova.Engine",
-        "Nova.UniTask",
-        "Nova.FairyGUI"
+        "Nova.UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

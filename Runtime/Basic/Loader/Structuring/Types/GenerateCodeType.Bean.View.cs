@@ -38,10 +38,6 @@ namespace GameEngine.Loader.Structuring
         /// 视图分组名称
         /// </summary>
         public string GroupName { get; internal set; }
-        /// <summary>
-        /// 视图窗口类型
-        /// </summary>
-        public ViewFormType FormType { get; internal set; }
 
         /// <summary>
         /// 通知接口模块的函数类型集合

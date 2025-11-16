@@ -61,7 +61,6 @@ namespace GameEngine.Loader
                     CViewClassAttribute _attr = (CViewClassAttribute) attr;
                     info.EntityName = _attr.Name;
                     info.Priority = _attr.Priority;
-                    info.FormType = _attr.FormType;
                 }
                 else if (typeof(CViewGroupAttribute) == attrType)
                 {

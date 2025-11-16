@@ -32,38 +32,11 @@ using SystemType = System.Type;
 namespace GameEngine
 {
     /// <summary>
-    /// 视图对象窗口表单类型的枚举定义
-    /// </summary>
-    public enum ViewFormType : byte
-    {
-        /// <summary>
-        /// 无效
-        /// </summary>
-        Unknown = 0,
-
-        UGUI = 1,
-
-        FairyGUI = 2,
-
-        UIToolkit = 3,
-    }
-
-    /// <summary>
     /// 用户界面模块封装的句柄对象类
     /// 模块具体功能接口请参考<see cref="NovaEngine.GuiModule"/>类
     /// </summary>
     public sealed partial class GuiHandler : EntityHandler
     {
-        /// <summary>
-        /// 视图默认窗口表单类型
-        /// </summary>
-        private ViewFormType _defaultViewFormType;
-
-        /// <summary>
-        /// 视图窗口类型映射注册管理容器
-        /// </summary>
-        private IDictionary<SystemType, ViewFormType> _viewFormTypes;
-
         /// <summary>
         /// 当前环境下所有实例化的视图对象
         /// </summary>
@@ -73,11 +46,6 @@ namespace GameEngine
         /// 句柄对象的单例访问获取接口
         /// </summary>
         public static GuiHandler Instance => HandlerManagement.GuiHandler;
-
-        /// <summary>
-        /// 视图默认窗口表单类型的获取接口
-        /// </summary>
-        internal ViewFormType DefaultViewFormType => _defaultViewFormType;
 
         /// <summary>
         /// 句柄对象默认构造函数
@@ -101,18 +69,11 @@ namespace GameEngine
         {
             if (false == base.OnInitialize()) return false;
 
-            // 必须存在一个有效的视图窗口的表单类型
-            _defaultViewFormType = NovaEngine.Utility.Convertion.GetEnumFromValue<ViewFormType>(NovaEngine.Configuration.formSystemType);
-            Debugger.Assert(ViewFormType.Unknown != _defaultViewFormType, "The view form type must be non-null.");
-
-            // 初始化视图窗口类型注册列表
-            _viewFormTypes = new Dictionary<SystemType, ViewFormType>();
-
             // 初始化视图实例容器
             _views = new List<CView>();
 
             // 启动视图辅助工具类
-            FormHelper.Startup();
+            FormMaster.Startup();
 
             return true;
         }
@@ -129,7 +90,7 @@ namespace GameEngine
             UnregisterAllViewClasses();
 
             // 关闭视图辅助工具类
-            FormHelper.Shutdown();
+            FormMaster.Shutdown();
 
             base.OnCleanup();
         }
@@ -166,7 +127,7 @@ namespace GameEngine
             base.OnUpdate();
 
             // 刷新视图辅助工具类
-            FormHelper.Update();
+            FormMaster.Update();
         }
 
         /// <summary>
@@ -194,9 +155,8 @@ namespace GameEngine
         /// <param name="viewName">视图名称</param>
         /// <param name="clsType">视图类型</param>
         /// <param name="priority">视图优先级</param>
-        /// <param name="formType">视图窗口类型</param>
         /// <returns>若视图类型注册成功则返回true，否则返回false</returns>
-        private bool RegisterViewClass(string viewName, SystemType clsType, int priority, ViewFormType formType)
+        private bool RegisterViewClass(string viewName, SystemType clsType, int priority)
         {
             Debugger.Assert(false == string.IsNullOrEmpty(viewName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
 
@@ -212,18 +172,6 @@ namespace GameEngine
                 return false;
             }
 
-            if (_viewFormTypes.ContainsKey(clsType))
-            {
-                Debugger.Warn("The view class '{%t}' binding group '{%i}' was already registed, repeat add will be override old value.", clsType, formType);
-                _viewFormTypes.Remove(clsType);
-            }
-
-            if (ViewFormType.Unknown != formType && _defaultViewFormType != formType)
-            {
-                // Debugger.Info("Add view form type {%i} with target class {%t}", formType, clsType);
-                _viewFormTypes.Add(clsType, formType);
-            }
-
             return true;
         }
 
@@ -233,25 +181,6 @@ namespace GameEngine
         private void UnregisterAllViewClasses()
         {
             UnregisterAllEntityClasses();
-
-            _viewFormTypes.Clear();
-        }
-
-        /// <summary>
-        /// 通过视图类型获取其对应的窗口表单类型，
-        /// 若未配置该视图类型的映射关系，则返回系统默认配置的窗口表单类型
-        /// </summary>
-        /// <param name="viewType">视图类型</param>
-        /// <returns>返回该视图类型对应的窗口表单类型</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        internal ViewFormType GetFormTypeByViewType(SystemType viewType)
-        {
-            if (_viewFormTypes.TryGetValue(viewType, out ViewFormType formType))
-            {
-                return formType;
-            }
-
-            return _defaultViewFormType;
         }
 
         #endregion

@@ -35,38 +35,14 @@ namespace GameEngine
     [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class CViewClassAttribute : DeclareEntityClassAttribute
     {
-        /// <summary>
-        /// 视图窗口类型
-        /// </summary>
-        private readonly ViewFormType _formType;
-
-        /// <summary>
-        /// 视图窗口类型获取函数
-        /// </summary>
-        public ViewFormType FormType => _formType;
-
         public CViewClassAttribute(string viewName) : this(viewName, 0)
         { }
 
-        public CViewClassAttribute(int priority) : this(null, priority)
+        public CViewClassAttribute(int priority) : this(string.Empty, priority)
         { }
 
-        public CViewClassAttribute(ViewFormType formType) : this(null, formType)
+        public CViewClassAttribute(string viewName, int priority) : base(viewName, priority)
         { }
-
-        public CViewClassAttribute(string viewName, int priority) : this(viewName, priority, ViewFormType.Unknown)
-        { }
-
-        public CViewClassAttribute(string viewName, ViewFormType formType) : this(viewName, 0, formType)
-        { }
-
-        public CViewClassAttribute(int priority, ViewFormType formType) : this(null, priority, formType)
-        { }
-
-        public CViewClassAttribute(string viewName, int priority, ViewFormType formType) : base(viewName, priority)
-        {
-            _formType = formType;
-        }
     }
 
     /// <summary>
