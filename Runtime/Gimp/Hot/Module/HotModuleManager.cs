@@ -29,12 +29,12 @@ using SystemType = System.Type;
 namespace GameEngine
 {
     /// <summary>
-    /// 热加载模块的管理器对象类，通过该类对所有热加载模块进行调度管理
+    /// 模块热加载流程的管理器对象类，通过该类对所有热加载模块进行调度管理
     /// </summary>
     internal static class HotModuleManager
     {
         /// <summary>
-        /// 热模块管理器当前是否运行的状态标识
+        /// 热加载模块管理器当前是否运行的状态标识
         /// </summary>
         private static bool _isRunning;
 
@@ -44,7 +44,7 @@ namespace GameEngine
         private static IDictionary<SystemType, IHotModule> _hotModules;
 
         /// <summary>
-        /// 热模块管理器启动函数
+        /// 热加载模块管理器启动函数
         /// </summary>
         public static void Startup()
         {
@@ -55,7 +55,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 热模块管理器停止函数
+        /// 热加载模块管理器停止函数
         /// </summary>
         public static void Shutdown()
         {

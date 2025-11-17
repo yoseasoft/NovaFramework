@@ -70,11 +70,14 @@ namespace GameEngine
         {
             string targetName = GameConfig.GAME_MODULE_EXTERNAL_GATEWAY_NAME;
             // 可能存在开启了教程模式，但是忘记配置具体案例类型的情况
-            if (NovaEngine.Configuration.tutorialMode && null != NovaEngine.Configuration.tutorialSampleType)
-            {
-                // 教程开启
-                targetName = GameConfig.TUTORIAL_MODULE_EXTERNAL_GATEWAY_NAME;
-            }
+            //
+            // 2025-11-17：
+            // 教程案例的跳转，统一放到游戏层中处理，这样可以很好的对热加载模块进行统一管理
+            // if (NovaEngine.Configuration.tutorialMode && null != NovaEngine.Configuration.tutorialSampleType)
+            // {
+            //     // 教程开启
+            //     targetName = GameConfig.TUTORIAL_MODULE_EXTERNAL_GATEWAY_NAME;
+            // }
 
             System.Type type = NovaEngine.Utility.Assembly.GetType(targetName);
             if (type == null)
