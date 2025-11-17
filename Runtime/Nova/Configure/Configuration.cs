@@ -43,32 +43,6 @@ namespace NovaEngine
         public readonly static bool screenNeverSleep = false;
 
         /// <summary>
-        /// 默认选择的网络协议序列化类型
-        /// </summary>
-        public readonly static int protocolSerializationType = 0;
-
-        /// <summary>
-        /// UnityGUI视图窗口表单支持的状态标识
-        /// </summary>
-        public readonly static bool unityFormSupported = false;
-
-        /// <summary>
-        /// FairyGUI视图窗口表单支持的状态标识
-        /// </summary>
-        public readonly static bool fairyFormSupported = false;
-
-        /// <summary>
-        /// UIToolkit视图窗口表单支持的状态标识
-        /// </summary>
-        public readonly static bool toolkitFormSupported = false;
-
-        /// <summary>
-        /// 默认选择的窗口表单系统类型
-        /// 这里只是记录，在实际的业务实现层定义具体的类型值
-        /// </summary>
-        public readonly static int formSystemType = 0;
-
-        /// <summary>
         /// 自动开启的日志通道类型标识
         /// </summary>
         public readonly static int logChannel = 0;

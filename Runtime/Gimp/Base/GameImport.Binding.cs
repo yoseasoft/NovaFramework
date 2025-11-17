@@ -35,6 +35,9 @@ namespace GameEngine
         /// </summary>
         public static void Run()
         {
+            // 启动热模块管理器
+            HotModuleManager.Startup();
+
             Startup();
         }
 
@@ -44,6 +47,9 @@ namespace GameEngine
         public static void Stop()
         {
             Shutdown();
+
+            // 关闭热模块管理器
+            HotModuleManager.Shutdown();
         }
 
         /// <summary>

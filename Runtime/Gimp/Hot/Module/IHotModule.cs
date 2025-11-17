@@ -1,7 +1,6 @@
 /// -------------------------------------------------------------------------------
-/// NovaEngine Framework
+/// GameEngine Framework
 ///
-/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,43 +22,22 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace GameEngine
 {
     /// <summary>
-    /// 通用错误文本定义公共接口类，用于对框架内部的错误文本进行统一定义
+    /// 外部热加载模块的管理接口定义，所有需要通过热加载进行委托管理的模块都需要实现此接口<br/>
+    /// 由<see cref="GameEngine.HotModuleManager"/>管理器进行统一调用
     /// </summary>
-    public static class ErrorText
+    public interface IHotModule
     {
-        public const string Unknown = @"Unknown";
+        /// <summary>
+        /// 热加载模块的启动函数
+        /// </summary>
+        void Startup();
 
         /// <summary>
-        /// 无效参数
+        /// 热加载模块的关闭函数
         /// </summary>
-        public const string InvalidArguments = @"Invalid arguments.";
-
-        /// <summary>
-        /// 无效数据
-        /// </summary>
-        public const string InvalidData = @"Invalid data.";
-
-        /// <summary>
-        /// 无效操作
-        /// </summary>
-        public const string InvalidOperation = @"Invalid operation.";
-
-        /// <summary>
-        /// 空对象引用
-        /// </summary>
-        public const string NullObjectReference = @"Null object reference.";
-
-        /// <summary>
-        /// 参数超出范围
-        /// </summary>
-        public const string ArgumentOutOfRange = @"Argument out of range.";
-
-        /// <summary>
-        /// 索引超出范围
-        /// </summary>
-        public const string IndexOutOfRange = @"Index out of range.";
+        void Shutdown();
     }
 }

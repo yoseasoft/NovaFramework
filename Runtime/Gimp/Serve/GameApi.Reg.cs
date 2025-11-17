@@ -29,7 +29,51 @@ namespace GameEngine
     // API接口管理工具类
     public static partial class GameApi
     {
-        #region 网络模块相关的注册绑定接口
+        #region 热加载模块动态绑定相关的接口函数
+
+        /// <summary>
+        /// 注册指定类型的热加载模块对象到当前管理句柄中
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void RegisterHotModule<T>() where T : IHotModule, new()
+        {
+            HotModuleManager.RegisterHotModule<T>();
+        }
+
+        /// <summary>
+        /// 注册指定类型的热加载模块对象到当前管理句柄中
+        /// </summary>
+        /// <param name="type">对象类型</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void RegisterHotModule(SystemType type)
+        {
+            HotModuleManager.RegisterHotModule(type);
+        }
+
+        /// <summary>
+        /// 从当前管理句柄中注销指定类型的热加载模块对象实例
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void UnregisterHotModule<T>() where T : IHotModule
+        {
+            HotModuleManager.UnregisterHotModule<T>();
+        }
+
+        /// <summary>
+        /// 从当前管理句柄中注销指定类型的热加载模块对象实例
+        /// </summary>
+        /// <param name="type">对象类型</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void UnregisterHotModule(SystemType type)
+        {
+            HotModuleManager.UnregisterHotModule(type);
+        }
+
+        #endregion
+
+        #region 框架层的网络模块相关的注册绑定接口
 
         /// <summary>
         /// 注册指定服务类型对应的消息解析器对象实例
@@ -83,6 +127,49 @@ namespace GameEngine
         public static void SetMessageProtocolType(SystemType classType)
         {
             NetworkHandler.Instance.SetMessageProtocolType(classType);
+        }
+
+        #endregion
+
+        #region 框架层的视图模块相关的注册绑定接口
+
+        /// <summary>
+        /// 注册指定的窗口管理器到当前的主控制器中
+        /// </summary>
+        /// <typeparam name="T">管理器类型</typeparam>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void RegisterFormManager<T>() where T : IFormManager, new()
+        {
+            GuiHandler.Instance.RegisterFormManager<T>();
+        }
+
+        /// <summary>
+        /// 注册指定的窗口管理器到当前的主控制器中
+        /// </summary>
+        /// <param name="classType">管理器类型</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void RegisterFormManager(SystemType classType)
+        {
+            GuiHandler.Instance.RegisterFormManager(classType);
+        }
+
+        /// <summary>
+        /// 注册指定的窗口管理器到当前的主控制器中
+        /// </summary>
+        /// <param name="formManager">管理器对象</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void RegisterFormManager(IFormManager formManager)
+        {
+            GuiHandler.Instance.RegisterFormManager(formManager);
+        }
+
+        /// <summary>
+        /// 从主控制器中移除当前实施的
+        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void UnregisterCurrentFormManager()
+        {
+            GuiHandler.Instance.UnregisterCurrentFormManager();
         }
 
         #endregion
