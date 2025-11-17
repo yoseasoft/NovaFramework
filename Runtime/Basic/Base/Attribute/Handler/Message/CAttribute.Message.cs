@@ -57,8 +57,34 @@ namespace GameEngine
     [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class MessageObjectAttribute : SystemAttribute
     {
-        public MessageObjectAttribute() : base()
+        /// <summary>
+        /// 消息操作码
+        /// </summary>
+        private readonly int _opcode;
+        /// <summary>
+        /// 消息响应码
+        /// </summary>
+        private readonly int _responseCode;
+
+        /// <summary>
+        /// 消息操作码获取函数
+        /// </summary>
+        public int Opcode => _opcode;
+        /// <summary>
+        /// 消息响应码获取函数
+        /// </summary>
+        public int ResponseCode => _responseCode;
+
+        public MessageObjectAttribute() : this(0)
+        { }
+
+        public MessageObjectAttribute(int opcode) : this(opcode, 0)
+        { }
+
+        public MessageObjectAttribute(int opcode, int responseCode) : base()
         {
+            _opcode = opcode;
+            _responseCode = responseCode;
         }
     }
 }

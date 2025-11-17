@@ -25,14 +25,12 @@
 
 using SystemType = System.Type;
 
-using UniTask = Cysharp.Threading.Tasks.UniTask;
-
 namespace GameEngine
 {
     /// <summary>
     /// GUI的窗口对象的主控制器类
     /// </summary>
-    public static class FormMaster
+    internal static class FormMaster
     {
         /// <summary>
         /// 工具类启动状态标识

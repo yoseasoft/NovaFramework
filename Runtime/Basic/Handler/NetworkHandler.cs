@@ -88,9 +88,9 @@ namespace GameEngine
         private IDictionary<int, MessageChannel> _messageChannels;
 
         /// <summary>
-        /// 消息协议加载器的绑定实例
+        /// 消息协议类型
         /// </summary>
-        private IMessageProtocolLoader _messageProtocolLoader;
+        private SystemType _messageProtocolType;
 
         /// <summary>
         /// 消息的调用队列
@@ -155,8 +155,9 @@ namespace GameEngine
             // 移除消息通道数据
             RemoveAllMessageChannelTypes();
 
-            // 清理网络消息协议加载器
-            _messageProtocolLoader = null;
+            // 清理网络消息协议类型
+            _messageProtocolType = null;
+
             // 清理网络消息解析对象管理容器
             _messageTranslators.Clear();
             _messageTranslators = null;
@@ -743,56 +744,6 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 注册消息协议加载器对象实例
-        /// </summary>
-        /// <typeparam name="T">对象类型</typeparam>
-        /// <returns>若注册加载器对象实例成功则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public bool RegMessageProtocolLoader<T>() where T : IMessageProtocolLoader, new()
-        {
-            return RegMessageProtocolLoader(typeof(T));
-        }
-
-        /// <summary>
-        /// 注册消息协议加载器对象实例
-        /// </summary>
-        /// <param name="classType">对象类型</param>
-        /// <returns>若注册加载器对象实例成功则返回true，否则返回false</returns>
-        public bool RegMessageProtocolLoader(SystemType classType)
-        {
-            if (null != _messageProtocolLoader)
-            {
-                Debugger.Error(LogGroupTag.Module, "The message protocol loader class was already assigned from class type '{%t}', you must delete old value before setting new instance.", _messageProtocolLoader);
-                return false;
-            }
-
-            if (false == typeof(IMessageProtocolLoader).IsAssignableFrom(classType))
-            {
-                Debugger.Error(LogGroupTag.Module, "The message protocol loader class type {%t} must be inherited from 'IMessageProtocolLoader' interface.", classType);
-                return false;
-            }
-
-            // 创建实例
-            IMessageProtocolLoader messageProtocolLoader = System.Activator.CreateInstance(classType) as IMessageProtocolLoader;
-            if (null == messageProtocolLoader)
-            {
-                Debugger.Error(LogGroupTag.Module, "The message protocol loader class type {%t} created instance failed.", classType);
-                return false;
-            }
-            _messageProtocolLoader = messageProtocolLoader;
-            return true;
-        }
-
-        /// <summary>
-        /// 删除消息协议加载器对象实例
-        /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public void UnregMessageProtocolLoader()
-        {
-            _messageProtocolLoader = null;
-        }
-
-        /// <summary>
         /// 通过指定的服务类型获取对应的消息通道对象类型
         /// </summary>
         /// <param name="serviceType">服务类型</param>
@@ -825,37 +776,40 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 获取当前句柄注册的消息协议加载器实例
+        /// 设置当前句柄的消息协议类型
         /// </summary>
-        /// <returns>返回消息协议加载器实例</returns>
+        /// <typeparam name="T">对象类型</typeparam>
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public IMessageProtocolLoader GetMessageProtocolLoader()
+        public void SetMessageProtocolType<T>() where T : class
         {
-            return _messageProtocolLoader;
+            SetMessageProtocolType(typeof(T));
+        }
+
+        /// <summary>
+        /// 设置当前句柄的消息协议类型
+        /// </summary>
+        /// <param name="classType">对象类型</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public void SetMessageProtocolType(SystemType classType)
+        {
+            if (null != _messageProtocolType)
+            {
+                Debugger.Warn(LogGroupTag.Module, "网络管理句柄中已绑定消息协议类型‘{%t}’，重复添加新的协议类型‘{%t}’将覆盖旧的类型值。", _messageProtocolType, classType);
+            }
+
+            _messageProtocolType = classType;
         }
 
         /// <summary>
         /// 获取当前句柄注册的消息协议类型
         /// </summary>
         /// <returns>返回当前网络支持的消息协议类型</returns>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public SystemType GetMessageProtocolType()
         {
-            Debugger.Assert(_messageProtocolLoader, NovaEngine.ErrorText.NullObjectReference);
+            Debugger.Assert(_messageProtocolType, NovaEngine.ErrorText.NullObjectReference);
 
-            return _messageProtocolLoader.MessageProtocolType;
-        }
-
-        /// <summary>
-        /// 将指定的消息对象类型解析为内部结构数据对象
-        /// </summary>
-        /// <param name="messageType">消息类型</param>
-        /// <returns>返回解析后的结构数据对象</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        internal IMessageProtocolLoader.MessageObjectTypeInfo ParseMessageObjectType(SystemType messageType)
-        {
-            Debugger.Assert(_messageProtocolLoader, NovaEngine.ErrorText.NullObjectReference);
-
-            return _messageProtocolLoader.Parse(messageType);
+            return _messageProtocolType;
         }
 
         /// <summary>

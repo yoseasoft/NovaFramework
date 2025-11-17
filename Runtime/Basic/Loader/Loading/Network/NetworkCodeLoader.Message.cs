@@ -82,9 +82,14 @@ namespace GameEngine.Loader
              * }
              */
 
-            IMessageProtocolLoader.MessageObjectTypeInfo messageObjectTypeInfo = NetworkHandler.Instance.ParseMessageObjectType(symClass.ClassType);
-            info.Opcode = messageObjectTypeInfo.opcode;
-            info.ResponseCode = messageObjectTypeInfo.responseCode;
+            if (symClass.TryGetFeatureObject<MessageObjectAttribute>(out MessageObjectAttribute messageObjectAttribute))
+            {
+                info.Opcode = messageObjectAttribute.Opcode;
+                info.ResponseCode = messageObjectAttribute.ResponseCode;
+            }
+            //IMessageProtocolLoader.MessageObjectTypeInfo messageObjectTypeInfo = NetworkHandler.Instance.ParseMessageObjectType(symClass.ClassType);
+            //info.Opcode = messageObjectTypeInfo.opcode;
+            //info.ResponseCode = messageObjectTypeInfo.responseCode;
 
             if (info.Opcode <= 0)
             {

@@ -340,7 +340,7 @@ namespace GameEngine
             SystemType viewType;
             if (false == _entityClassTypes.TryGetValue(viewName, out viewType))
             {
-                Debugger.Warn("Could not found any correct view class with target name '{0}', found view failed.", viewName);
+                Debugger.Warn("Could not found any correct view class with target name '{%s}', found view failed.", viewName);
                 return null;
             }
 
@@ -646,5 +646,48 @@ namespace GameEngine
 
             return result;
         }
+
+        #region 表单管理器对象的添加/移除相关操作的接口函数
+
+        /// <summary>
+        /// 注册指定的窗口管理器到当前的主控制器中
+        /// </summary>
+        /// <typeparam name="T">管理器类型</typeparam>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public void RegisterFormManager<T>() where T : IFormManager, new()
+        {
+            FormMaster.RegisterFormManager<T>();
+        }
+
+        /// <summary>
+        /// 注册指定的窗口管理器到当前的主控制器中
+        /// </summary>
+        /// <param name="classType">管理器类型</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public void RegisterFormManager(SystemType classType)
+        {
+            FormMaster.RegisterFormManager(classType);
+        }
+
+        /// <summary>
+        /// 注册指定的窗口管理器到当前的主控制器中
+        /// </summary>
+        /// <param name="formManager">管理器对象</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public void RegisterFormManager(IFormManager formManager)
+        {
+            FormMaster.RegisterFormManager(formManager);
+        }
+
+        /// <summary>
+        /// 从主控制器中移除当前实施的
+        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public void UnregisterCurrentFormManager()
+        {
+            FormMaster.UnregisterCurrentFormManager();
+        }
+
+        #endregion
     }
 }

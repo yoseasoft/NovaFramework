@@ -27,6 +27,7 @@
 using System.Collections.Generic;
 
 using SystemType = System.Type;
+using SystemAttribute = System.Attribute;
 
 namespace GameEngine.Loader.Symboling
 {
@@ -86,6 +87,10 @@ namespace GameEngine.Loader.Symboling
         /// 对象类包含的特性信息
         /// </summary>
         private IList<SystemType> _featureTypes;
+        /// <summary>
+        /// 对象类包含的特性实例
+        /// </summary>
+        private IDictionary<SystemType, SystemAttribute> _featureObjects;
         /// <summary>
         /// 对象类包含的接口信息
         /// </summary>
@@ -161,6 +166,7 @@ namespace GameEngine.Loader.Symboling
         public bool IsExtension => _isExtension;
 
         public IList<SystemType> FeatureTypes => _featureTypes;
+        public IDictionary<SystemType, SystemAttribute> FeatureObjects => _featureObjects;
         public IList<SystemType> InterfaceTypes => _interfaceTypes;
         public IList<AspectBehaviourType> AspectBehaviourTypes => _aspectBehaviourTypes;
 
@@ -173,6 +179,7 @@ namespace GameEngine.Loader.Symboling
         ~SymClass()
         {
             RemoveAllFeatureTypes();
+            RemoveAllFeatureObjects();
             RemoveAllInterfaceTypes();
             RemoveAllAspectBehaviourTypes();
 
@@ -198,7 +205,7 @@ namespace GameEngine.Loader.Symboling
             return false;
         }
 
-        #region 类标记对象的特性列表相关访问接口函数
+        #region 类标记对象的特性标签列表相关访问接口函数
 
         /// <summary>
         /// 新增指定的类特性实例到当前的类标记对象中
@@ -262,6 +269,118 @@ namespace GameEngine.Loader.Symboling
         {
             _featureTypes?.Clear();
             _featureTypes = null;
+        }
+
+        #endregion
+
+        #region 类标记对象的特性实例列表相关访问接口函数
+
+        /// <summary>
+        /// 新增指定的类特性实例到当前的类标记对象中
+        /// </summary>
+        /// <param name="attribute">类特性实例</param>
+        public void AddFeatureObject(SystemAttribute attribute)
+        {
+            if (null == _featureObjects)
+            {
+                _featureObjects = new Dictionary<SystemType, SystemAttribute>();
+            }
+
+            SystemType featureType = attribute.GetType();
+            if (_featureObjects.ContainsKey(featureType))
+            {
+                Debugger.Warn("The symbol class '{%t}' feature object '{%t}' was already exist, repeat added it failed.", _classType, featureType);
+                return;
+            }
+
+            _featureObjects.Add(featureType, attribute);
+
+            // 添加特性实例，将同步添加该实例的类型标签
+            AddFeatureType(featureType);
+        }
+
+        /// <summary>
+        /// 检测当前类标记中是否存在指定类型的特性实例
+        /// </summary>
+        /// <param name="featureType">特性类型</param>
+        /// <returns>若存在目标特性实例则返回true，否则返回false</returns>
+        public bool HasFeatureObject(SystemType featureType)
+        {
+            if (null == _featureObjects)
+            {
+                return false;
+            }
+
+            return _featureObjects.ContainsKey(featureType);
+        }
+
+        /// <summary>
+        /// 尝试从当前类标记中获取指定类型对应的特性实例
+        /// </summary>
+        /// <typeparam name="T">特性类型</typeparam>
+        /// <param name="featureObject">特性对象实例</param>
+        /// <returns>若存在指定类型的特性对象实例则返回true，否则返回false</returns>
+        public bool TryGetFeatureObject<T>(out T featureObject) where T : System.Attribute
+        {
+            if (null != _featureObjects && _featureObjects.TryGetValue(typeof(T), out SystemAttribute attribute))
+            {
+                featureObject = attribute as T;
+                Debugger.Assert(featureObject, NovaEngine.ErrorText.InvalidArguments);
+
+                return true;
+            }
+
+            featureObject = null;
+            return false;
+        }
+
+        /// <summary>
+        /// 尝试从当前类标记中获取指定类型对应的特性实例
+        /// </summary>
+        /// <param name="featureType">特性类型</param>
+        /// <param name="featureObject">特性对象实例</param>
+        /// <returns>若存在指定类型的特性对象实例则返回true，否则返回false</returns>
+        public bool TryGetFeatureObject(SystemType featureType, out SystemAttribute featureObject)
+        {
+            if (null == _featureObjects)
+            {
+                featureObject = null;
+                return false;
+            }
+
+            return _featureObjects.TryGetValue(featureType, out featureObject);
+        }
+
+        /// <summary>
+        /// 从当前的类标记对象中移除指定类型的类特性实例
+        /// </summary>
+        /// <param name="featureType">特性类型</param>
+        public void RemoveFeatureObject(SystemType featureType)
+        {
+            if (null == _featureObjects)
+            {
+                return;
+            }
+
+            if (false == _featureObjects.ContainsKey(featureType))
+            {
+                Debugger.Warn("Could not found any feature object '{%t}' from target symbol class '{%t}', removed it failed.", featureType, _classType);
+                return;
+            }
+
+            _featureObjects.Remove(featureType);
+
+            // 移除特性实例，将同步移除该实例的类型标签
+            RemoveFeatureType(featureType);
+        }
+
+        /// <summary>
+        /// 从当前的类标记对象中移除所有类特性实例
+        /// </summary>
+        private void RemoveAllFeatureObjects()
+        {
+            _featureObjects?.Clear();
+            _featureObjects = null;
         }
 
         #endregion
