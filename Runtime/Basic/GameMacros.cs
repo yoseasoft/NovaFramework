@@ -67,14 +67,6 @@ namespace GameEngine
         /// 业务导入模块的对外关口名称
         /// </summary>
         public const string GAME_IMPORT_MODULE_EXTERNAL_GATEWAY_NAME = @"GameEngine.GameImport";
-        /// <summary>
-        /// 业务管理模块的对外关口名称
-        /// </summary>
-        // public const string GAME_MODULE_EXTERNAL_GATEWAY_NAME = @"Game.GameWorld";
-        /// <summary>
-        /// 测试案例模块的对外关口名称
-        /// </summary>
-        // public const string TUTORIAL_MODULE_EXTERNAL_GATEWAY_NAME = @"GameSample.GameWorld";
 
         /// <summary>
         /// 业务远程服务调用的运行服务接口名称

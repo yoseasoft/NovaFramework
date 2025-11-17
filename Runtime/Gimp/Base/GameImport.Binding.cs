@@ -68,7 +68,9 @@ namespace GameEngine
         /// <param name="args">函数参数列表</param>
         private static void CallGameFunc(string methodName, params object[] args)
         {
-            string targetName = GameConfig.GAME_MODULE_EXTERNAL_GATEWAY_NAME;
+            string targetName = NovaEngine.Configuration.gameEntryName; // GameConfig.GAME_MODULE_EXTERNAL_GATEWAY_NAME;
+            Debugger.Assert(targetName, NovaEngine.ErrorText.NullObjectReference);
+
             // 可能存在开启了教程模式，但是忘记配置具体案例类型的情况
             //
             // 2025-11-17：

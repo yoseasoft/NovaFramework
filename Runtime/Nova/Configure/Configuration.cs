@@ -38,9 +38,19 @@ namespace NovaEngine
     public static partial class Configuration
     {
         /// <summary>
+        /// 游戏业务层访问入口名称
+        /// </summary>
+        public readonly static string gameEntryName = null;
+
+        /// <summary>
         /// 屏幕禁止休眠模式启用开关
         /// </summary>
         public readonly static bool screenNeverSleep = false;
+
+        /// <summary>
+        /// 网络消息包头长度配置
+        /// </summary>
+        public readonly static int networkMessageHeaderSize = 0;
 
         /// <summary>
         /// 自动开启的日志通道类型标识
