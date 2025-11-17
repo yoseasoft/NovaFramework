@@ -1,7 +1,6 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,9 +22,34 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Runtime.CompilerServices;
+using SystemType = System.Type;
 
-// 外部友元
-// [assembly: InternalsVisibleTo("Assembly-CSharp")]
-// [assembly: InternalsVisibleTo("Assembly-CSharp-Editor")]
-[assembly: InternalsVisibleTo("Nova.Import")]
+namespace GameEngine
+{
+    // API接口管理工具类
+    public static partial class GameApi
+    {
+        /// <summary>
+        /// 实体对象通过切面的方式调用指定函数
+        /// </summary>
+        /// <param name="targetObject">目标对象</param>
+        /// <param name="f">函数</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void CallMethod(CBase targetObject, System.Action f)
+        {
+            targetObject.Call(f);
+        }
+
+        /// <summary>
+        /// 实体对象通过切面的方式调用指定函数
+        /// </summary>
+        /// <param name="targetObject">目标对象</param>
+        /// <param name="f">函数</param>
+        /// <param name="lifecycleType">生命周期类型</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void CallMethod(CBase targetObject, System.Action f, AspectBehaviourType lifecycleType)
+        {
+            targetObject.Call(f, lifecycleType);
+        }
+    }
+}
