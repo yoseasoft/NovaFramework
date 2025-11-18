@@ -30,7 +30,7 @@ namespace NovaEngine
     /// <summary>
     /// 网络消息数据流类型定义
     /// </summary>
-    public static class MessageStreamCode
+    internal static class MessageStreamCode
     {
         public const int Unknown = 0;
 

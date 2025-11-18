@@ -101,23 +101,23 @@ namespace NovaEngine
 
                                 switch (this._headerSize)
                                 {
-                                    case MessageConstant.HeaderSize4:
+                                    case MessageConstant.HeaderSize_4:
                                         this._packetSize = SystemBitConverter.ToInt32(this._memoryStream.GetBuffer(), 0);
-                                        if (this._packetSize > ushort.MaxValue * 16 || this._packetSize < 2)
+                                        if (this._packetSize > MessageConstant.MaxPacketSize_4 || this._packetSize < MessageConstant.MinPacketSize_4)
                                         {
-                                            throw new CFrameworkException("receive header size '{0}' out of the range.", this._packetSize);
+                                            throw new CFrameworkException("receive header size '{%d}' out of the range.", this._packetSize);
                                         }
                                         break;
-                                    case MessageConstant.HeaderSize2:
+                                    case MessageConstant.HeaderSize_2:
                                         short messageLength = SystemBitConverter.ToInt16(this._memoryStream.GetBuffer(), 0);
                                         this._packetSize = SystemIPAddress.NetworkToHostOrder(messageLength);
-                                        if (this._packetSize > ushort.MaxValue || this._packetSize < 2)
+                                        if (this._packetSize > MessageConstant.MaxPacketSize_2 || this._packetSize < MessageConstant.MinPacketSize_2)
                                         {
-                                            throw new CFrameworkException("receive header size '{0}' out of the range.", this._packetSize);
+                                            throw new CFrameworkException("receive header size '{%d}' out of the range.", this._packetSize);
                                         }
                                         break;
                                     default:
-                                        throw new CFrameworkException("network packet header size '{0}' error.", this._headerSize);
+                                        throw new CFrameworkException("network packet header size '{%d}' error.", this._headerSize);
                                 }
 
                                 this._stateType = ParseStateType.Body;

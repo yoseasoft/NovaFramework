@@ -2,6 +2,7 @@
 /// NovaEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -90,6 +91,21 @@ namespace NovaEngine
         private readonly Queue<IO.MemoryBuffer> _bufferCached = null;
 
         /// <summary>
+        /// 当前通道的包头长度
+        /// </summary>
+        private readonly int _headerSize = 0;
+
+        /// <summary>
+        /// 数据包的包头缓冲区
+        /// </summary>
+        private readonly byte[] _packetHeaderCached = null;
+
+
+        private readonly SystemMemoryStream _memoryStream = null;
+
+        private readonly MessagePacket _packet = null;
+
+        /// <summary>
         /// 网络通道当前连接状态标识
         /// </summary>
         private bool _isConnected = false;
@@ -128,6 +144,16 @@ namespace NovaEngine
 #endif
             this._writeBuffer = new Queue<IO.MemoryBuffer>();
             this._bufferCached = new Queue<IO.MemoryBuffer>();
+
+            this._headerSize = MessageConstant.HeaderSize_4;
+            this._packetHeaderCached = new byte[this._headerSize];
+
+            this._memoryStream = service.MemoryStreamManager.GetStream(name, ushort.MaxValue);
+
+            this._packet = new MessagePacket(this._headerSize, this._memoryStream, (m) =>
+            {
+                this._readCallback.Invoke(m, MessageStreamCode.Byte);
+            });
 
 #if __USING_SystemNetWebsocket_LIBRARIES_TYPE
             this._webSocket = new SystemClientWebSocket();
@@ -171,6 +197,8 @@ namespace NovaEngine
             this._webSocket.CloseAsync();
             this._webSocket = null;
 #endif
+
+            this._memoryStream.Dispose();
 
             // this._readBuffer.Clear();
             foreach (IO.MemoryBuffer v in this._writeBuffer) { v.Dispose(); }
@@ -336,6 +364,7 @@ namespace NovaEngine
         /// 网络通道数据下行操作接口
         /// </summary>
         /// <param name="message">消息内容</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public override void Send(string message)
         {
             Send(Utility.Convertion.GetBytes(message));
@@ -345,26 +374,60 @@ namespace NovaEngine
         /// 网络通道数据下行操作接口
         /// </summary>
         /// <param name="message">消息内容</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public override void Send(byte[] message)
         {
-            IO.MemoryBuffer buffer = Acquire();
-            buffer.Write(message);
-
-            Send(buffer);
+            Send(message, 0, message.Length);
         }
 
         /// <summary>
         /// 网络通道数据下行操作接口
         /// </summary>
         /// <param name="memoryStream">消息数据流</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public override void Send(SystemMemoryStream memoryStream)
         {
+            Send(memoryStream.GetBuffer(), 0, (int) memoryStream.Length);
+        }
+
+        /// <summary>
+        /// 网络通道数据下行操作接口
+        /// </summary>
+        /// <param name="message">消息内容</param>
+        /// <param name="offset">偏移参数</param>
+        /// <param name="count">字节长度</param>
+        private void Send(byte[] message, int offset, int count)
+        {
+            // 写入包头长度到缓冲区
+            int packetSize = count;
+            switch (this._headerSize)
+            {
+                case MessageConstant.HeaderSize_4:
+                    if (packetSize > MessageConstant.MaxPacketSize_4)
+                    {
+                        throw new CFrameworkException("send packet size '{%d}' too large.", packetSize);
+                    }
+                    this._packetHeaderCached.WriteTo(0, (int) packetSize);
+                    break;
+                case MessageConstant.HeaderSize_2:
+                    if (packetSize > MessageConstant.MaxPacketSize_2)
+                    {
+                        throw new CFrameworkException("send packet size '{%d}' too large.", packetSize);
+                    }
+                    this._packetHeaderCached.WriteToBig(0, (short) packetSize);
+                    break;
+                default:
+                    throw new CFrameworkException("packet size is invalid.");
+            }
+
             IO.MemoryBuffer buffer = Acquire();
-            buffer.Write(memoryStream.GetBuffer(), 0, (int) memoryStream.Length);
+            buffer.Write(this._packetHeaderCached, 0, this._headerSize);
+            buffer.Write(message, 0, count);
 
             Send(buffer);
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         private void Send(IO.MemoryBuffer memoryBuffer)
         {
             this._writeBuffer.Enqueue(memoryBuffer);
@@ -500,7 +563,9 @@ namespace NovaEngine
                 buffer.Write(this._readBuffer, 0, recvSize);
 
                 buffer.Seek(0, SystemSeekOrigin.Begin);
-                this._readCallback.Invoke(buffer, MessageStreamCode.Byte);
+
+                // this._readCallback.Invoke(buffer, MessageStreamCode.Byte);
+                this._packet.OnDispatched(buffer);
 
                 Recycle(buffer);
             }
@@ -527,7 +592,9 @@ namespace NovaEngine
             buffer.Write(e.RawData, 0, e.RawData.Length);
 
             buffer.Seek(0, SystemSeekOrigin.Begin);
-            this._readCallback.Invoke(buffer, MessageStreamCode.Byte);
+
+            // this._readCallback.Invoke(buffer, MessageStreamCode.Byte);
+            this._packet.OnDispatched(buffer);
 
             Recycle(buffer);
 
@@ -562,7 +629,9 @@ namespace NovaEngine
             }
 
             buffer.Seek(0, SystemSeekOrigin.Begin);
-            this._readCallback.Invoke(buffer, MessageStreamCode.Byte);
+
+            // this._readCallback.Invoke(buffer, MessageStreamCode.Byte);
+            this._packet.OnDispatched(buffer);
 
             Recycle(buffer);
 

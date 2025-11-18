@@ -4,6 +4,7 @@
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -27,34 +28,48 @@
 namespace NovaEngine
 {
     /// <summary>
-    /// TCP模式网络通道对象抽象基类
+    /// 网络通道数据包常量定义类
     /// </summary>
-    public sealed partial class TcpChannel
+    internal static class MessageConstant
     {
         /// <summary>
-        /// TCP模式网络通道数据包常量定义类
+        /// 消息索引标号
         /// </summary>
-        internal static class MessageConstant
-        {
-            /// <summary>
-            /// 消息索引标号
-            /// </summary>
-            public const int MessageIndex = 0;
+        public const int MessageIndex = 0;
 
-            /// <summary>
-            /// 2字节包头长度
-            /// </summary>
-            public const int HeaderSize2 = 2;
+        /// <summary>
+        /// 2字节包头长度
+        /// </summary>
+        public const int HeaderSize_2 = 2;
 
-            /// <summary>
-            /// 4字节包头长度
-            /// </summary>
-            public const int HeaderSize4 = 4;
+        /// <summary>
+        /// 4字节包头长度
+        /// </summary>
+        public const int HeaderSize_4 = 4;
 
-            /// <summary>
-            /// 最小包头长度
-            /// </summary>
-            public const int MinHeaderSize = 2;
-        }
+        /// <summary>
+        /// 最小包头长度
+        /// </summary>
+        public const int MinHeaderSize = 2;
+
+        /// <summary>
+        /// 最小数据包长度（2字节长度）
+        /// </summary>
+        public const int MinPacketSize_2 = 2;
+
+        /// <summary>
+        /// 最大数据包长度（2字节长度）
+        /// </summary>
+        public const int MaxPacketSize_2 = ushort.MaxValue;
+
+        /// <summary>
+        /// 最小数据包长度（4字节长度）
+        /// </summary>
+        public const int MinPacketSize_4 = 2;
+
+        /// <summary>
+        /// 最大数据包长度（4字节长度）
+        /// </summary>
+        public const int MaxPacketSize_4 = ushort.MaxValue * 16;
     }
 }

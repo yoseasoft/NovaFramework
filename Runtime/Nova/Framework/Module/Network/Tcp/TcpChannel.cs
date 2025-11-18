@@ -105,7 +105,7 @@ namespace NovaEngine
         /// <param name="service">服务对象实例</param>
         public TcpChannel(string name, string url, TcpService service) : base(name, url, service)
         {
-            this._headerSize = MessageConstant.HeaderSize2;
+            this._headerSize = MessageConstant.HeaderSize_2;
             this._packetHeaderCached = new byte[this._headerSize];
 
             this._readBuffer = new IO.CircularLinkedBuffer();
@@ -187,22 +187,22 @@ namespace NovaEngine
         {
             if (this.IsClosed)
             {
-                throw new CFrameworkException("Channel '{0}' is closed on TCP mode.", this.ChannelID);
+                throw new CFrameworkException("Channel '{%d}' is closed on TCP mode.", this.ChannelID);
             }
 
             // 写入包头长度到缓冲区
             int packetSize = (int) memoryStream.Length;
             switch (this._headerSize)
             {
-                case MessageConstant.HeaderSize4:
-                    if (packetSize > ushort.MaxValue * 16)
+                case MessageConstant.HeaderSize_4:
+                    if (packetSize > MessageConstant.MaxPacketSize_4)
                     {
                         throw new CFrameworkException("send packet size '{%d}' too large.", packetSize);
                     }
                     this._packetHeaderCached.WriteTo(0, (int) packetSize);
                     break;
-                case MessageConstant.HeaderSize2:
-                    if (packetSize > ushort.MaxValue)
+                case MessageConstant.HeaderSize_2:
+                    if (packetSize > MessageConstant.MaxPacketSize_2)
                     {
                         throw new CFrameworkException("send packet size '{%d}' too large.", packetSize);
                     }
@@ -212,7 +212,7 @@ namespace NovaEngine
                     throw new CFrameworkException("packet size is invalid.");
             }
 
-            this._writeBuffer.Write(this._packetHeaderCached, 0, this._packetHeaderCached.Length);
+            this._writeBuffer.Write(this._packetHeaderCached, 0, this._headerSize);
             this._writeBuffer.Write(memoryStream);
 
             // 记录当前通道为待发送状态
