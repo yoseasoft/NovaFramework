@@ -31,13 +31,13 @@ namespace NovaEngine
     /// <summary>
     /// 日志相关函数集合工具类
     /// </summary>
-    public static partial class Logger
+    internal static partial class Logger
     {
         /// <summary>
         /// 日志输出文件模式操作管理类
         /// </summary>
         [LogOutputChannelBinding(LogOutputChannelType.File)]
-        public sealed class LogFile : Singleton<LogFile>, ILogOutput
+        private sealed class LogFile : Singleton<LogFile>, ILogOutput
         {
             private SystemFileInfo _fileHandler = null;
             private SystemStreamWriter _fileWriter = null;

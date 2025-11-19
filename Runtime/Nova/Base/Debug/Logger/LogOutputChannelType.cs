@@ -29,7 +29,7 @@ namespace NovaEngine
     /// 日志处理通道类型定义
     /// </summary>
     [System.Flags]
-    public enum LogOutputChannelType : byte
+    internal enum LogOutputChannelType : byte
     {
         /// <summary>
         /// 空置

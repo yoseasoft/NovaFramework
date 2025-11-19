@@ -28,7 +28,7 @@ namespace NovaEngine
     /// <summary>
     /// 日志相关函数集合工具类
     /// </summary>
-    public static partial class Logger
+    internal static partial class Logger
     {
         /// <summary>
         /// 基于调试模式下的日志标准输出接口，参考<see cref="LogOutputLevelType.Debug"/>类型定义

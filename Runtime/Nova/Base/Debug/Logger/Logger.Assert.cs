@@ -29,7 +29,7 @@ namespace NovaEngine
     /// <summary>
     /// 日志相关函数集合工具类
     /// </summary>
-    public static partial class Logger
+    internal static partial class Logger
     {
         /// <summary>
         /// 系统断言，提供一个标准接口给引擎内部使用<br/>

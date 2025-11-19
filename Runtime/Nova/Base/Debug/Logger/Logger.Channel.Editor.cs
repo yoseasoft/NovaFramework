@@ -34,13 +34,13 @@ namespace NovaEngine
     /// <summary>
     /// 日志相关函数集合工具类
     /// </summary>
-    public static partial class Logger
+    internal static partial class Logger
     {
         /// <summary>
         /// 日志输出编辑器模式操作管理类
         /// </summary>
         [LogOutputChannelBinding(LogOutputChannelType.Editor)]
-        public sealed class LogEditor : Singleton<LogEditor>, ILogOutput
+        private sealed class LogEditor : Singleton<LogEditor>, ILogOutput
         {
             /// <summary>
             /// 日志文本使用自定义颜色

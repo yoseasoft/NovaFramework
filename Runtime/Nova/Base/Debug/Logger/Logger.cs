@@ -28,7 +28,7 @@ namespace NovaEngine
     /// <summary>
     /// 日志相关函数集合工具类
     /// </summary>
-    public static partial class Logger
+    internal static partial class Logger
     {
         /// <summary>
         /// 日志输出规范定义代理句柄接口
