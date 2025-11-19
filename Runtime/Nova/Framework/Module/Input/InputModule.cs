@@ -29,7 +29,6 @@ using System.Collections.Generic;
 
 using SystemEnum = System.Enum;
 using SystemArray = System.Array;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 using UnityInput = UnityEngine.Input;
 using UnityTouch = UnityEngine.Touch;
@@ -265,29 +264,21 @@ namespace NovaEngine
         /// </summary>
         public void PrintStackTrace()
         {
-            SystemStringBuilder sb = new SystemStringBuilder();
+            FormatStringBuilder fsb = FormatStringBuilder.Create();
 
             // 当前帧按下行为通知的编码信息
-            sb.Append("Pressed={");
-            sb.Append(Utility.Text.ToString<UnityKeyCode>(_keycodePressedOnThisFrame));
-            sb.Append("},");
+            fsb.Append("Pressed={{{%s}}},", _keycodePressedOnThisFrame);
 
             // 当前帧长按行为通知的编码信息
-            sb.Append("Moved={");
-            sb.Append(Utility.Text.ToString<UnityKeyCode>(_keycodeMovedOnThisFrame));
-            sb.Append("},");
+            fsb.Append("Moved={{{%s}}},", _keycodeMovedOnThisFrame);
 
             // 当前帧释放行为通知的编码信息
-            sb.Append("Released={");
-            sb.Append(Utility.Text.ToString<UnityKeyCode>(_keycodeReleasedOnThisFrame));
-            sb.Append("},");
+            fsb.Append("Released={{{%s}}},", _keycodeReleasedOnThisFrame);
 
             // 上一帧和当前帧之间的变化行为通知的编码信息
-            sb.Append("Changed={");
-            sb.Append(Utility.Text.ToString<UnityKeyCode>(_keycodeChangedOnPreviousFrame));
-            sb.Append("}");
+            fsb.Append("Changed={{{%s}}},", _keycodeChangedOnPreviousFrame);
 
-            Debugger.Log(sb.ToString());
+            Debugger.Log(fsb.ToString());
         }
     }
 }
