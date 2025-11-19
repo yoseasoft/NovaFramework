@@ -199,7 +199,7 @@ namespace NovaEngine
             {
                 if (false == info.Expired)
                 {
-                    Logger.Warn("The target timer was running with same name '{0}', repeat scheduled it failed.", name);
+                    Logger.Warn("The target timer was running with same name '{%s}', repeat scheduled it failed.", name);
                     return (SCHEDULE_CALL_FAILED, false);
                 }
 

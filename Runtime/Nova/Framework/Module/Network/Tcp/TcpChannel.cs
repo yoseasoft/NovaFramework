@@ -384,7 +384,7 @@ namespace NovaEngine
                 }
                 catch (SystemException ee)
                 {
-                    Logger.Error("receive bytes parse failed '{0}'.", ee.ToString());
+                    Logger.Error("receive bytes parse failed '{%s}'.", ee.ToString());
 
                     this.OnError(NetworkErrorCode.SocketError);
                     return;

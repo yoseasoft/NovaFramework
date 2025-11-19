@@ -160,14 +160,14 @@ namespace NovaEngine
                         }
                         else if (pressed)
                         {
-                            Logger.Assert(!IsKeycodeChanged(code), "Could not found any pressed operation record with keycode '{0}'.", code.ToString());
+                            Logger.Assert(!IsKeycodeChanged(code), "Could not found any pressed operation record with keycode '{%i}'.", code);
 
                             // 记录变化按键
                             this.OnKeycodeChanged(code);
                         }
                         else if (released)
                         {
-                            Logger.Assert(IsKeycodeChanged(code), "Could not found any released operation record with keycode '{0}'.", code.ToString());
+                            Logger.Assert(IsKeycodeChanged(code), "Could not found any released operation record with keycode '{%i}'.", code);
 
                             // 取消变化按键
                             this.OnKeycodeUnchanged(code);
