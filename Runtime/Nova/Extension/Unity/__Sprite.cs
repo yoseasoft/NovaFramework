@@ -23,11 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using UnityGameObject = UnityEngine.GameObject;
-using UnitySprite = UnityEngine.Sprite;
-using UnityTexture2D = UnityEngine.Texture2D;
-
-namespace NovaEngine
+namespace UnityEngine.Customize.Extension
 {
     /// <summary>
     /// 基于Unity库精灵类的扩展接口支持类
@@ -39,9 +35,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">对象实例</param>
         /// <returns>返回转换后的纹理对象</returns>
-        public static UnityTexture2D ConvertToSprite(this UnitySprite self)
+        public static Texture2D ConvertToTexture2D(this Sprite self)
         {
-            var tex = new UnityTexture2D((int) self.rect.width, (int) self.rect.height);
+            var tex = new Texture2D((int) self.rect.width, (int) self.rect.height);
             var pixels = self.texture.GetPixels(
                 (int) self.textureRect.x,
                 (int) self.textureRect.y,

@@ -23,13 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using UnityTransform = UnityEngine.Transform;
-using UnityRectTransform = UnityEngine.RectTransform;
-using UnityVector2 = UnityEngine.Vector2;
-using UnityVector3 = UnityEngine.Vector3;
-using UnityQuaternion = UnityEngine.Quaternion;
-
-namespace NovaEngine
+namespace UnityEngine.Customize.Extension
 {
     /// <summary>
     /// 基于Unity库Transform的扩展接口支持类
@@ -43,9 +37,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <param name="x">位置x坐标值</param>
-        public static void SetPositionX(this UnityTransform self, float x)
+        public static void SetPositionX(this Transform self, float x)
         {
-            UnityVector3 v = self.position;
+            Vector3 v = self.position;
             v.x = x;
             self.position = v;
         }
@@ -55,9 +49,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <returns>返回位置x坐标值</returns>
-        public static float GetPositionX(this UnityTransform self)
+        public static float GetPositionX(this Transform self)
         {
-            UnityVector3 v = self.position;
+            Vector3 v = self.position;
             return v.x;
         }
 
@@ -66,9 +60,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <param name="x">位置x坐标值</param>
-        public static void AddPositionX(this UnityTransform self, float x)
+        public static void AddPositionX(this Transform self, float x)
         {
-            UnityVector3 v = self.position;
+            Vector3 v = self.position;
             v.x += x;
             self.position = v;
         }
@@ -78,9 +72,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <param name="y">位置y坐标值</param>
-        public static void SetPositionY(this UnityTransform self, float y)
+        public static void SetPositionY(this Transform self, float y)
         {
-            UnityVector3 v = self.position;
+            Vector3 v = self.position;
             v.y = y;
             self.position = v;
         }
@@ -90,9 +84,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <returns>返回位置y坐标值</returns>
-        public static float GetPositionY(this UnityTransform self)
+        public static float GetPositionY(this Transform self)
         {
-            UnityVector3 v = self.position;
+            Vector3 v = self.position;
             return v.y;
         }
 
@@ -101,9 +95,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <param name="y">位置y坐标值</param>
-        public static void AddPositionY(this UnityTransform self, float y)
+        public static void AddPositionY(this Transform self, float y)
         {
-            UnityVector3 v = self.position;
+            Vector3 v = self.position;
             v.y += y;
             self.position = v;
         }
@@ -113,9 +107,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <param name="z">位置z坐标值</param>
-        public static void SetPositionZ(this UnityTransform self, float z)
+        public static void SetPositionZ(this Transform self, float z)
         {
-            UnityVector3 v = self.position;
+            Vector3 v = self.position;
             v.z = z;
             self.position = v;
         }
@@ -125,9 +119,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <returns>返回位置z坐标值</returns>
-        public static float GetPositionZ(this UnityTransform self)
+        public static float GetPositionZ(this Transform self)
         {
-            UnityVector3 v = self.position;
+            Vector3 v = self.position;
             return v.z;
         }
 
@@ -136,9 +130,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <param name="z">位置z坐标值</param>
-        public static void AddPositionZ(this UnityTransform self, float z)
+        public static void AddPositionZ(this Transform self, float z)
         {
-            UnityVector3 v = self.position;
+            Vector3 v = self.position;
             v.z += z;
             self.position = v;
         }
@@ -148,9 +142,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <param name="x">位置x坐标值</param>
-        public static void SetLocalPositionX(this UnityTransform self, float x)
+        public static void SetLocalPositionX(this Transform self, float x)
         {
-            UnityVector3 v = self.localPosition;
+            Vector3 v = self.localPosition;
             v.x = x;
             self.localPosition = v;
         }
@@ -160,9 +154,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <returns>返回位置x坐标值</returns>
-        public static float GetLocalPositionX(this UnityTransform self)
+        public static float GetLocalPositionX(this Transform self)
         {
-            UnityVector3 v = self.localPosition;
+            Vector3 v = self.localPosition;
             return v.x;
         }
 
@@ -171,9 +165,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <param name="x">位置x坐标值</param>
-        public static void AddLocalPositionX(this UnityTransform self, float x)
+        public static void AddLocalPositionX(this Transform self, float x)
         {
-            UnityVector3 v = self.localPosition;
+            Vector3 v = self.localPosition;
             v.x += x;
             self.localPosition = v;
         }
@@ -183,9 +177,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <param name="y">位置y坐标值</param>
-        public static void SetLocalPositionY(this UnityTransform self, float y)
+        public static void SetLocalPositionY(this Transform self, float y)
         {
-            UnityVector3 v = self.localPosition;
+            Vector3 v = self.localPosition;
             v.y = y;
             self.localPosition = v;
         }
@@ -195,9 +189,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <returns>返回位置y坐标值</returns>
-        public static float GetLocalPositionY(this UnityTransform self)
+        public static float GetLocalPositionY(this Transform self)
         {
-            UnityVector3 v = self.localPosition;
+            Vector3 v = self.localPosition;
             return v.y;
         }
 
@@ -206,9 +200,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <param name="y">位置y坐标值</param>
-        public static void AddLocalPositionY(this UnityTransform self, float y)
+        public static void AddLocalPositionY(this Transform self, float y)
         {
-            UnityVector3 v = self.localPosition;
+            Vector3 v = self.localPosition;
             v.y += y;
             self.localPosition = v;
         }
@@ -218,9 +212,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <param name="z">位置z坐标值</param>
-        public static void SetLocalPositionZ(this UnityTransform self, float z)
+        public static void SetLocalPositionZ(this Transform self, float z)
         {
-            UnityVector3 v = self.localPosition;
+            Vector3 v = self.localPosition;
             v.z = z;
             self.localPosition = v;
         }
@@ -230,9 +224,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <returns>返回位置z坐标值</returns>
-        public static float GetLocalPositionZ(this UnityTransform self)
+        public static float GetLocalPositionZ(this Transform self)
         {
-            UnityVector3 v = self.localPosition;
+            Vector3 v = self.localPosition;
             return v.z;
         }
 
@@ -241,9 +235,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">位置对象实例</param>
         /// <param name="z">位置z坐标值</param>
-        public static void AddLocalPositionZ(this UnityTransform self, float z)
+        public static void AddLocalPositionZ(this Transform self, float z)
         {
-            UnityVector3 v = self.localPosition;
+            Vector3 v = self.localPosition;
             v.z += z;
             self.localPosition = v;
         }
@@ -253,9 +247,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">尺寸对象实例</param>
         /// <param name="x">尺寸x分量值</param>
-        public static void SetLocalScaleX(this UnityTransform self, float x)
+        public static void SetLocalScaleX(this Transform self, float x)
         {
-            UnityVector3 v = self.localScale;
+            Vector3 v = self.localScale;
             v.x = x;
             self.localScale = v;
         }
@@ -265,9 +259,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">尺寸对象实例</param>
         /// <returns>返回尺寸x分量值</returns>
-        public static float GetLocalScaleX(this UnityTransform self)
+        public static float GetLocalScaleX(this Transform self)
         {
-            UnityVector3 v = self.localScale;
+            Vector3 v = self.localScale;
             return v.x;
         }
 
@@ -276,9 +270,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">尺寸对象实例</param>
         /// <param name="x">尺寸x分量值</param>
-        public static void AddLocalScaleX(this UnityTransform self, float x)
+        public static void AddLocalScaleX(this Transform self, float x)
         {
-            UnityVector3 v = self.localScale;
+            Vector3 v = self.localScale;
             v.x += x;
             self.localScale = v;
         }
@@ -288,9 +282,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">尺寸对象实例</param>
         /// <param name="y">尺寸y分量值</param>
-        public static void SetLocalScaleY(this UnityTransform self, float y)
+        public static void SetLocalScaleY(this Transform self, float y)
         {
-            UnityVector3 v = self.localScale;
+            Vector3 v = self.localScale;
             v.y = y;
             self.localScale = v;
         }
@@ -300,9 +294,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">尺寸对象实例</param>
         /// <returns>返回尺寸y分量值</returns>
-        public static float GetLocalScaleY(this UnityTransform self)
+        public static float GetLocalScaleY(this Transform self)
         {
-            UnityVector3 v = self.localScale;
+            Vector3 v = self.localScale;
             return v.y;
         }
 
@@ -311,9 +305,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">尺寸对象实例</param>
         /// <param name="y">尺寸y分量值</param>
-        public static void AddLocalScaleY(this UnityTransform self, float y)
+        public static void AddLocalScaleY(this Transform self, float y)
         {
-            UnityVector3 v = self.localScale;
+            Vector3 v = self.localScale;
             v.y += y;
             self.localScale = v;
         }
@@ -323,9 +317,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">尺寸对象实例</param>
         /// <param name="z">尺寸z分量值</param>
-        public static void SetLocalScaleZ(this UnityTransform self, float z)
+        public static void SetLocalScaleZ(this Transform self, float z)
         {
-            UnityVector3 v = self.localScale;
+            Vector3 v = self.localScale;
             v.z = z;
             self.localScale = v;
         }
@@ -335,9 +329,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">尺寸对象实例</param>
         /// <returns>返回尺寸z分量值</returns>
-        public static float GetLocalScaleZ(this UnityTransform self)
+        public static float GetLocalScaleZ(this Transform self)
         {
-            UnityVector3 v = self.localScale;
+            Vector3 v = self.localScale;
             return v.z;
         }
 
@@ -346,52 +340,52 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">尺寸对象实例</param>
         /// <param name="z">尺寸z分量值</param>
-        public static void AddLocalScaleZ(this UnityTransform self, float z)
+        public static void AddLocalScaleZ(this Transform self, float z)
         {
-            UnityVector3 v = self.localScale;
+            Vector3 v = self.localScale;
             v.z += z;
             self.localScale = v;
         }
 
         #endregion
 
-        public static void ResetWorldTransform(this UnityTransform self)
+        public static void ResetWorldTransform(this Transform self)
         {
-            self.position = UnityVector3.zero;
-            self.rotation = UnityQuaternion.Euler(UnityVector3.zero);
-            self.localScale = UnityVector3.one;
+            self.position = Vector3.zero;
+            self.rotation = Quaternion.Euler(Vector3.zero);
+            self.localScale = Vector3.one;
         }
 
-        public static void ResetLocalTransform(this UnityTransform self)
+        public static void ResetLocalTransform(this Transform self)
         {
-            self.localPosition = UnityVector3.zero;
-            self.localRotation = UnityQuaternion.Euler(UnityVector3.zero);
-            self.localScale = UnityVector3.one;
+            self.localPosition = Vector3.zero;
+            self.localRotation = Quaternion.Euler(Vector3.zero);
+            self.localScale = Vector3.one;
         }
 
-        public static void ResetRectTransform(this UnityRectTransform self)
+        public static void ResetRectTransform(this RectTransform self)
         {
-            self.localPosition = UnityVector3.zero;
-            self.localRotation = UnityQuaternion.Euler(UnityVector3.zero);
-            self.localScale = UnityVector3.one;
-            self.offsetMax = UnityVector2.zero;
-            self.offsetMin = UnityVector2.zero;
+            self.localPosition = Vector3.zero;
+            self.localRotation = Quaternion.Euler(Vector3.zero);
+            self.localScale = Vector3.one;
+            self.offsetMax = Vector2.zero;
+            self.offsetMin = Vector2.zero;
         }
 
         /// <summary>
-        /// 二维空间下使 <see cref="Transform" /> 指向指向目标点的算法，使用世界坐标
+        /// 二维空间下使 <see cref="UnityEngine.Transform" /> 指向指向目标点的算法，使用世界坐标
         /// </summary>
-        /// <param name="this"><see cref="Transform" /> 对象</param>
+        /// <param name="self"><see cref="UnityEngine.Transform" /> 对象</param>
         /// <param name="lookAtPoint2D">要朝向的二维坐标点</param>
         /// <remarks>假定其 forward 向量为 <see cref="Vector3.up" /></remarks>
-        public static void LookAt2D(this UnityTransform self, UnityVector2 lookAtPoint2D)
+        public static void LookAt2D(this Transform self, Vector2 lookAtPoint2D)
         {
-            UnityVector3 vector = lookAtPoint2D.ToVector3() - self.position;
+            Vector3 vector = lookAtPoint2D.ToVector3() - self.position;
             vector.y = 0f;
 
             if (vector.magnitude > 0f)
             {
-                self.rotation = UnityQuaternion.LookRotation(vector.normalized, UnityVector3.up);
+                self.rotation = Quaternion.LookRotation(vector.normalized, Vector3.up);
             }
         }
     }

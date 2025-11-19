@@ -22,13 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using UnityGameObject = UnityEngine.GameObject;
-using UnityAnimator = UnityEngine.Animator;
-using UnityAnimation = UnityEngine.Animation;
-using UnityAnimationClip = UnityEngine.AnimationClip;
-using UnityRuntimeAnimatorController = UnityEngine.RuntimeAnimatorController;
-
-namespace NovaEngine
+namespace UnityEngine.Customize.Extension
 {
     /// <summary>
     /// 基于Unity库动画类的扩展接口支持类
@@ -41,12 +35,12 @@ namespace NovaEngine
         /// <param name="self">动画组件</param>
         /// <param name="animationName">动画实例名称</param>
         /// <returns>若存在给定名称的动画实例则返回true，否则返回false</returns>
-        public static bool HasAnimatorState(this UnityAnimator self, string animationName)
+        public static bool HasAnimatorState(this Animator self, string animationName)
         {
             if (self && false == string.IsNullOrEmpty(animationName) && self.runtimeAnimatorController != null)
             {
-                UnityRuntimeAnimatorController ac = self.runtimeAnimatorController;
-                UnityAnimationClip[] animationClips = ac.animationClips;
+                RuntimeAnimatorController ac = self.runtimeAnimatorController;
+                AnimationClip[] animationClips = ac.animationClips;
                 if (animationClips != null && animationClips.Length > 0)
                 {
                     for (int n = 0; n < animationClips.Length; ++n)
@@ -68,7 +62,7 @@ namespace NovaEngine
         /// <param name="self">动画组件</param>
         /// <param name="layer">层级</param>
         /// <returns>返回动画切换进度信息</returns>
-        public static float GetCrossFadeProgress(this UnityAnimator self, int layer = 0)
+        public static float GetCrossFadeProgress(this Animator self, int layer = 0)
         {
             if (self.GetNextAnimatorStateInfo(layer).shortNameHash == 0)
             {

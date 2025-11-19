@@ -23,10 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using UnityGameObject = UnityEngine.GameObject;
-using UnityAudioSource = UnityEngine.AudioSource;
-
-namespace NovaEngine
+namespace UnityEngine.Customize.Extension
 {
     /// <summary>
     /// 基于Unity库音频源类的扩展接口支持类
@@ -37,7 +34,7 @@ namespace NovaEngine
         /// 重置当前音频源内部的成员属性
         /// </summary>
         /// <param name="self">音频源组件</param>
-        public static void Reset(this UnityAudioSource self)
+        public static void Reset(this AudioSource self)
         {
             self.clip = null;
             self.mute = false;

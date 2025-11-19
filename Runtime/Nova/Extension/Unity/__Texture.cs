@@ -23,28 +23,17 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using UnityGameObject = UnityEngine.GameObject;
-using UnitySprite = UnityEngine.Sprite;
-using UnityTexture = UnityEngine.Texture;
-using UnityTexture2D = UnityEngine.Texture2D;
-using UnityMathf = UnityEngine.Mathf;
-using UnityRect = UnityEngine.Rect;
-using UnityVector2 = UnityEngine.Vector2;
-using UnityColor = UnityEngine.Color;
-using UnityColor32 = UnityEngine.Color32;
-using UnityTextureFormat = UnityEngine.TextureFormat;
-
-namespace NovaEngine
+namespace UnityEngine.Customize.Extension
 {
     /// <summary>
     /// 基于Unity库纹理类的扩展接口支持类
     /// </summary>
     public static class __Texture
     {
-        public static UnityTexture2D Clone(this UnityTexture2D self)
+        public static Texture2D Clone(this Texture2D self)
         {
-            UnityTexture2D tex = new UnityTexture2D(self.width, self.height);
-            UnityColor[] colors = self.GetPixels(0, 0, self.width, self.height);
+            Texture2D tex = new Texture2D(self.width, self.height);
+            Color[] colors = self.GetPixels(0, 0, self.width, self.height);
             tex.SetPixels(colors);
             tex.Apply();
             return tex;
@@ -56,9 +45,9 @@ namespace NovaEngine
         /// <param name="self">对象实例</param>
         /// <param name="scaleFactor">缩放比例</param>
         /// <returns>返回缩放后的纹理对象</returns>
-        public static UnityTexture2D ScaleTextureBilinear(this UnityTexture2D self, float scaleFactor)
+        public static Texture2D ScaleTextureBilinear(this Texture2D self, float scaleFactor)
         {
-            UnityTexture2D newTexture = new UnityTexture2D(UnityMathf.CeilToInt(self.width * scaleFactor), UnityMathf.CeilToInt(self.height * scaleFactor));
+            Texture2D newTexture = new Texture2D(Mathf.CeilToInt(self.width * scaleFactor), Mathf.CeilToInt(self.height * scaleFactor));
             float scale = 1.0f / scaleFactor;
             int maxX = self.width - 1;
             int maxY = self.height - 1;
@@ -68,10 +57,10 @@ namespace NovaEngine
                 {
                     float targetX = x * scale;
                     float targetY = y * scale;
-                    int x1 = UnityMathf.Min(maxX, UnityMathf.FloorToInt(targetX));
-                    int y1 = UnityMathf.Min(maxY, UnityMathf.FloorToInt(targetY));
-                    int x2 = UnityMathf.Min(maxX, x1 + 1);
-                    int y2 = UnityMathf.Min(maxY, y1 + 1);
+                    int x1 = Mathf.Min(maxX, Mathf.FloorToInt(targetX));
+                    int y1 = Mathf.Min(maxY, Mathf.FloorToInt(targetY));
+                    int x2 = Mathf.Min(maxX, x1 + 1);
+                    int y2 = Mathf.Min(maxY, y1 + 1);
 
                     float u = targetX - x1;
                     float v = targetY - y1;
@@ -79,15 +68,15 @@ namespace NovaEngine
                     float w2 = u * (1 - v);
                     float w3 = (1 - u) * v;
                     float w4 = u * v;
-                    UnityColor color1 = self.GetPixel(x1, y1);
-                    UnityColor color2 = self.GetPixel(x2, y1);
-                    UnityColor color3 = self.GetPixel(x1, y2);
-                    UnityColor color4 = self.GetPixel(x2, y2);
-                    UnityColor color = new UnityColor(
-                        UnityMathf.Clamp01(color1.r * w1 + color2.r * w2 + color3.r * w3 + color4.r * w4),
-                        UnityMathf.Clamp01(color1.g * w1 + color2.g * w2 + color3.g * w3 + color4.g * w4),
-                        UnityMathf.Clamp01(color1.b * w1 + color2.b * w2 + color3.b * w3 + color4.b * w4),
-                        UnityMathf.Clamp01(color1.a * w1 + color2.a * w2 + color3.a * w3 + color4.a * w4)
+                    Color color1 = self.GetPixel(x1, y1);
+                    Color color2 = self.GetPixel(x2, y1);
+                    Color color3 = self.GetPixel(x1, y2);
+                    Color color4 = self.GetPixel(x2, y2);
+                    Color color = new Color(
+                        Mathf.Clamp01(color1.r * w1 + color2.r * w2 + color3.r * w3 + color4.r * w4),
+                        Mathf.Clamp01(color1.g * w1 + color2.g * w2 + color3.g * w3 + color4.g * w4),
+                        Mathf.Clamp01(color1.b * w1 + color2.b * w2 + color3.b * w3 + color4.b * w4),
+                        Mathf.Clamp01(color1.a * w1 + color2.a * w2 + color3.a * w3 + color4.a * w4)
                     );
                     newTexture.SetPixel(x, y, color);
 
@@ -103,9 +92,9 @@ namespace NovaEngine
         /// <param name="self">对象实例</param>
         /// <param name="size">缩放尺寸</param>
         /// <returns>返回缩放后的纹理对象</returns>
-        public static UnityTexture2D SizeTextureBilinear(this UnityTexture2D self, UnityVector2 size)
+        public static Texture2D SizeTextureBilinear(this Texture2D self, Vector2 size)
         {
-            UnityTexture2D newTexture = new UnityTexture2D(UnityMathf.CeilToInt(size.x), UnityMathf.CeilToInt(size.y));
+            Texture2D newTexture = new Texture2D(Mathf.CeilToInt(size.x), Mathf.CeilToInt(size.y));
             float scaleX = self.width / size.x;
             float scaleY = self.height / size.y;
             int maxX = self.width - 1;
@@ -116,10 +105,10 @@ namespace NovaEngine
                 {
                     float targetX = x * scaleX;
                     float targetY = y * scaleY;
-                    int x1 = UnityMathf.Min(maxX, UnityMathf.FloorToInt(targetX));
-                    int y1 = UnityMathf.Min(maxY, UnityMathf.FloorToInt(targetY));
-                    int x2 = UnityMathf.Min(maxX, x1 + 1);
-                    int y2 = UnityMathf.Min(maxY, y1 + 1);
+                    int x1 = Mathf.Min(maxX, Mathf.FloorToInt(targetX));
+                    int y1 = Mathf.Min(maxY, Mathf.FloorToInt(targetY));
+                    int x2 = Mathf.Min(maxX, x1 + 1);
+                    int y2 = Mathf.Min(maxY, y1 + 1);
 
                     float u = targetX - x1;
                     float v = targetY - y1;
@@ -127,15 +116,15 @@ namespace NovaEngine
                     float w2 = u * (1 - v);
                     float w3 = (1 - u) * v;
                     float w4 = u * v;
-                    UnityColor color1 = self.GetPixel(x1, y1);
-                    UnityColor color2 = self.GetPixel(x2, y1);
-                    UnityColor color3 = self.GetPixel(x1, y2);
-                    UnityColor color4 = self.GetPixel(x2, y2);
-                    UnityColor color = new UnityColor(
-                        UnityMathf.Clamp01(color1.r * w1 + color2.r * w2 + color3.r * w3 + color4.r * w4),
-                        UnityMathf.Clamp01(color1.g * w1 + color2.g * w2 + color3.g * w3 + color4.g * w4),
-                        UnityMathf.Clamp01(color1.b * w1 + color2.b * w2 + color3.b * w3 + color4.b * w4),
-                        UnityMathf.Clamp01(color1.a * w1 + color2.a * w2 + color3.a * w3 + color4.a * w4)
+                    Color color1 = self.GetPixel(x1, y1);
+                    Color color2 = self.GetPixel(x2, y1);
+                    Color color3 = self.GetPixel(x1, y2);
+                    Color color4 = self.GetPixel(x2, y2);
+                    Color color = new Color(
+                        Mathf.Clamp01(color1.r * w1 + color2.r * w2 + color3.r * w3 + color4.r * w4),
+                        Mathf.Clamp01(color1.g * w1 + color2.g * w2 + color3.g * w3 + color4.g * w4),
+                        Mathf.Clamp01(color1.b * w1 + color2.b * w2 + color3.b * w3 + color4.b * w4),
+                        Mathf.Clamp01(color1.a * w1 + color2.a * w2 + color3.a * w3 + color4.a * w4)
                     );
                     newTexture.SetPixel(x, y, color);
 
@@ -151,17 +140,17 @@ namespace NovaEngine
         /// <param name="self">对象实例</param>
         /// <param name="eulerAngles">旋转角度</param>
         /// <returns>返回旋转后的纹理对象</returns>
-        public static UnityTexture2D RotateTexture(this UnityTexture2D self, float eulerAngles)
+        public static Texture2D RotateTexture(this Texture2D self, float eulerAngles)
         {
             int x;
             int y;
             int i;
             int j;
-            float phi = eulerAngles / (180 / UnityMathf.PI);
-            float sn = UnityMathf.Sin(phi);
-            float cs = UnityMathf.Cos(phi);
-            UnityColor32[] arr = self.GetPixels32();
-            UnityColor32[] arr2 = new UnityColor32[arr.Length];
+            float phi = eulerAngles / (180 / Mathf.PI);
+            float sn = Mathf.Sin(phi);
+            float cs = Mathf.Cos(phi);
+            Color32[] arr = self.GetPixels32();
+            Color32[] arr2 = new Color32[arr.Length];
             int W = self.width;
             int H = self.height;
             int xc = W / 2;
@@ -171,7 +160,7 @@ namespace NovaEngine
             {
                 for (i = 0; i < W; i++)
                 {
-                    arr2[j * W + i] = new UnityColor32(0, 0, 0, 0);
+                    arr2[j * W + i] = new Color32(0, 0, 0, 0);
 
                     x = (int) (cs * (i - xc) + sn * (j - yc) + xc);
                     y = (int) (-sn * (i - xc) + cs * (j - yc) + yc);
@@ -183,7 +172,7 @@ namespace NovaEngine
                 }
             }
 
-            UnityTexture2D newImg = new UnityTexture2D(W, H);
+            Texture2D newImg = new Texture2D(W, H);
             newImg.SetPixels32(arr2);
             newImg.Apply();
 
@@ -195,9 +184,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">对象实例</param>
         /// <returns>返回转换后的精灵对象</returns>
-        public static UnitySprite ToSprite(this UnityTexture2D self)
+        public static Sprite ToSprite(this Texture2D self)
         {
-            UnitySprite sprite = UnitySprite.Create(self, new UnityRect(0, 0, self.width, self.height), UnityVector2.zero);
+            Sprite sprite = Sprite.Create(self, new Rect(0, 0, self.width, self.height), Vector2.zero);
             return sprite;
         }
 
@@ -206,12 +195,12 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">对象实例</param>
         /// <returns>返回转换后的纹理对象</returns>
-        public static UnityTexture2D ToTexture2D(this UnityTexture self)
+        public static Texture2D ToTexture2D(this Texture self)
         {
-            return UnityTexture2D.CreateExternalTexture(
+            return Texture2D.CreateExternalTexture(
                 self.width,
                 self.height,
-                UnityTextureFormat.RGB24,
+                TextureFormat.RGB24,
                 false, false,
                 self.GetNativeTexturePtr());
         }

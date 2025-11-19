@@ -30,20 +30,7 @@ using SystemType = System.Type;
 using SystemArray = System.Array;
 using SystemStringBuilder = System.Text.StringBuilder;
 
-using UnityObject = UnityEngine.Object;
-using UnityTransform = UnityEngine.Transform;
-using UnityComponent = UnityEngine.Component;
-using UnityGameObject = UnityEngine.GameObject;
-using UnityAnimation = UnityEngine.Animation;
-using UnityAnimationClip = UnityEngine.AnimationClip;
-using UnityAnimator = UnityEngine.Animator;
-using UnityParticleSystem = UnityEngine.ParticleSystem;
-using UnityPlayableDirector = UnityEngine.Playables.PlayableDirector;
-using UnityAnimatorClipInfo = UnityEngine.AnimatorClipInfo;
-using UnityLayerMask = UnityEngine.LayerMask;
-using UnityMathf = UnityEngine.Mathf;
-
-namespace NovaEngine
+namespace UnityEngine.Customize.Extension
 {
     /// <summary>
     /// 基于Unity库游戏对象类的扩展接口支持类
@@ -51,9 +38,9 @@ namespace NovaEngine
     public static class __GameObject
     {
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public static UnityGameObject DontDestroy(this UnityGameObject self)
+        public static GameObject DontDestroy(this GameObject self)
         {
-            UnityGameObject.DontDestroyOnLoad(self);
+            GameObject.DontDestroyOnLoad(self);
             return self;
         }
 
@@ -62,9 +49,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">游戏对象实例</param>
         /// <param name="layer">目标层级编号</param>
-        public static void SetLayerRecursively(this UnityGameObject self, int layer)
+        public static void SetLayerRecursively(this GameObject self, int layer)
         {
-            System.Collections.Generic.List<UnityTransform> children = new System.Collections.Generic.List<UnityTransform>();
+            List<Transform> children = new List<Transform>();
             self.GetComponentsInChildren(true, children);
             for (int n = 0; n < children.Count; ++n)
             {
@@ -80,7 +67,7 @@ namespace NovaEngine
         /// <param name="self">游戏对象实例</param>
         /// <param name="mask">层级标识</param>
         /// <returns>若游戏对象为给定层级返回true，否则返回false</returns>
-        public static bool IsOnLayerMask(this UnityGameObject self, UnityLayerMask mask)
+        public static bool IsOnLayerMask(this GameObject self, LayerMask mask)
         {
             return (mask == (mask | (1 << self.layer)));
         }
@@ -89,51 +76,51 @@ namespace NovaEngine
         /// 获取指定游戏对象当前可播放动画的时长
         /// </summary>
         /// <param name="self">游戏对象实例</param>
-        public static float GetPlayableTime(this UnityGameObject self)
+        public static float GetPlayableTime(this GameObject self)
         {
             float time = 0.0f;
 
-            UnityPlayableDirector[] directors = self.GetComponentsInChildren<UnityPlayableDirector>(true);
+            Playables.PlayableDirector[] directors = self.GetComponentsInChildren<Playables.PlayableDirector>(true);
             if (directors.Length > 0)
             {
                 for (int n = 0; n < directors.Length; ++n)
                 {
-                    UnityPlayableDirector director = directors[n];
+                    Playables.PlayableDirector director = directors[n];
                     if (director.enabled && director.playableAsset != null)
                     {
-                        time = UnityMathf.Max(time, (float) director.playableAsset.duration);
+                        time = Mathf.Max(time, (float) director.playableAsset.duration);
                     }
                 }
             }
 
             // 粒子
-            UnityParticleSystem[] particles = self.GetComponentsInChildren<UnityParticleSystem>(true);
+            ParticleSystem[] particles = self.GetComponentsInChildren<ParticleSystem>(true);
             if (particles.Length > 0)
             {
                 for (int n = 0; n < particles.Length; ++n)
                 {
-                    UnityParticleSystem particle = particles[n];
+                    ParticleSystem particle = particles[n];
                     float duration = particle.main.startLifetime.constantMax + particle.main.duration + particle.main.startDelay.constantMax;
-                    time = UnityMathf.Max(time, duration);
+                    time = Mathf.Max(time, duration);
                 }
             }
 
             // Animator
-            UnityAnimator[] animators = self.GetComponentsInChildren<UnityAnimator>(true);
+            Animator[] animators = self.GetComponentsInChildren<Animator>(true);
             if (animators.Length > 0)
             {
                 for (int n = 0; n < animators.Length; ++n)
                 {
-                    UnityAnimator animator = animators[n];
+                    Animator animator = animators[n];
                     if (animator.runtimeAnimatorController != null)
                     {
-                        UnityAnimatorClipInfo[] clipInfos = animator.GetCurrentAnimatorClipInfo(0);
+                        AnimatorClipInfo[] clipInfos = animator.GetCurrentAnimatorClipInfo(0);
                         if (clipInfos.Length > 0)
                         {
-                            UnityAnimationClip clip = clipInfos[0].clip;
+                            AnimationClip clip = clipInfos[0].clip;
                             if (clip != null)
                             {
-                                time = UnityMathf.Max(time, clip.length);
+                                time = Mathf.Max(time, clip.length);
                             }
                         }
                     }
@@ -141,15 +128,15 @@ namespace NovaEngine
             }
 
             // Animation
-            UnityAnimation[] animations = self.GetComponentsInChildren<UnityAnimation>(true);
+            Animation[] animations = self.GetComponentsInChildren<Animation>(true);
             if (animations.Length > 0)
             {
                 for (int n = 0; n < animations.Length; ++n)
                 {
-                    UnityAnimation animation = animations[n];
+                    Animation animation = animations[n];
                     if (animation != null && animation.clip != null)
                     {
-                        time = UnityMathf.Max(time, animation.clip.length);
+                        time = Mathf.Max(time, animation.clip.length);
                     }
                 }
             }
@@ -162,12 +149,12 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">游戏对象实例</param>
         /// <returns>返回游戏对象当前所在的层级路径</returns>
-        public static string GetHierarchyPath(this UnityGameObject self)
+        public static string GetHierarchyPath(this GameObject self)
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             IList<string> list = new List<string>();
 
-            UnityTransform transform = self.transform;
+            Transform transform = self.transform;
             // 遍历搜索上层节点
             while (true)
             {
@@ -188,7 +175,7 @@ namespace NovaEngine
                 sb.Append(list[n]);
                 if (n > 0)
                 {
-                    sb.Append(Definition.CCharacter.Slash);
+                    sb.Append(NovaEngine.Definition.CCharacter.Slash);
                 }
             }
 
@@ -203,7 +190,7 @@ namespace NovaEngine
         /// <typeparam name="T">组件类型</typeparam>
         /// <param name="self">源节点对象实例</param>
         /// <returns>若存在给定类型的组件实例则返回true，否则返回false</returns>
-        public static bool HasComponent<T>(this UnityGameObject self) where T : UnityComponent
+        public static bool HasComponent<T>(this GameObject self) where T : Component
         {
             return (null != self.GetComponent<T>());
         }
@@ -214,7 +201,7 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="type">组件类型</param>
         /// <returns>若存在给定类型的组件实例则返回true，否则返回false</returns>
-        public static bool HasComponent(this UnityGameObject self, string type)
+        public static bool HasComponent(this GameObject self, string type)
         {
             return (null != self.GetComponent(type));
         }
@@ -225,7 +212,7 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="type">组件类型</param>
         /// <returns>若存在给定类型的组件实例则返回true，否则返回false</returns>
-        public static bool HasComponent(this UnityGameObject self, SystemType type)
+        public static bool HasComponent(this GameObject self, SystemType type)
         {
             return (null != self.GetComponent(type));
         }
@@ -237,7 +224,7 @@ namespace NovaEngine
         /// <typeparam name="T">目标组件类型</typeparam>
         /// <param name="self">源节点对象实例</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static T GetOrAddComponent<T>(this UnityGameObject self) where T : UnityComponent
+        public static T GetOrAddComponent<T>(this GameObject self) where T : Component
         {
             T component = self.GetComponent<T>();
             if (null == component)
@@ -254,9 +241,9 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="type">目标组件类型</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static UnityComponent GetOrAddComponent(this UnityGameObject self, SystemType type)
+        public static Component GetOrAddComponent(this GameObject self, SystemType type)
         {
-            UnityComponent component = self.GetComponent(type);
+            Component component = self.GetComponent(type);
             if (null == component)
             {
                 component = self.AddComponent(type);
@@ -271,11 +258,11 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="name">目标节点名称</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static T GetComponentInParent<T>(this UnityGameObject self, string name) where T : UnityComponent
+        public static T GetComponentInParent<T>(this GameObject self, string name) where T : Component
         {
-            UnityTransform[] parents = self.GetComponentsInParent<UnityTransform>();
+            Transform[] parents = self.GetComponentsInParent<Transform>();
             int length = parents.Length;
-            UnityTransform parentTrans = null;
+            Transform parentTrans = null;
             for (int n = 0; n < length; ++n)
             {
                 if (parents[n].name == name)
@@ -300,11 +287,11 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="name">目标节点名称</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static T GetOrAddComponentInParent<T>(this UnityGameObject self, string name) where T : UnityComponent
+        public static T GetOrAddComponentInParent<T>(this GameObject self, string name) where T : Component
         {
-            UnityTransform[] parents = self.GetComponentsInParent<UnityTransform>();
+            Transform[] parents = self.GetComponentsInParent<Transform>();
             int length = parents.Length;
-            UnityTransform parentTrans = null;
+            Transform parentTrans = null;
             for (int n = 0; n < length; ++n)
             {
                 if (parents[n].name == name)
@@ -333,11 +320,11 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="name">目标节点名称</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static T GetComponentInChildren<T>(this UnityGameObject self, string name) where T : UnityComponent
+        public static T GetComponentInChildren<T>(this GameObject self, string name) where T : Component
         {
-            UnityTransform[] childs = self.GetComponentsInChildren<UnityTransform>();
+            Transform[] childs = self.GetComponentsInChildren<Transform>();
             int length = childs.Length;
-            UnityTransform childTrans = null;
+            Transform childTrans = null;
             for (int n = 0; n < length; ++n)
             {
                 if (childs[n].name == name)
@@ -361,11 +348,11 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="name">目标节点名称</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static T GetOrAddComponentInChildren<T>(this UnityGameObject self, string name) where T : UnityComponent
+        public static T GetOrAddComponentInChildren<T>(this GameObject self, string name) where T : Component
         {
-            UnityTransform[] childs = self.GetComponentsInChildren<UnityTransform>();
+            Transform[] childs = self.GetComponentsInChildren<Transform>();
             int length = childs.Length;
-            UnityTransform childTrans = null;
+            Transform childTrans = null;
             for (int n = 0; n < length; ++n)
             {
                 if (childs[n].name == name)
@@ -392,9 +379,9 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="name">目标节点名称</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static T GetComponentInPeer<T>(this UnityGameObject self, string name) where T : UnityComponent
+        public static T GetComponentInPeer<T>(this GameObject self, string name) where T : Component
         {
-            UnityTransform tran = self.transform.parent.Find(name);
+            Transform tran = self.transform.parent.Find(name);
             if (null != tran)
             {
                 return tran.GetComponent<T>();
@@ -411,9 +398,9 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="name">目标节点名称</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static T GetOrAddComponentInPeer<T>(this UnityGameObject self, string name) where T : UnityComponent
+        public static T GetOrAddComponentInPeer<T>(this GameObject self, string name) where T : Component
         {
-            UnityTransform tran = self.transform.parent.Find(name);
+            Transform tran = self.transform.parent.Find(name);
             if (null != tran)
             {
                 T comp = tran.GetComponent<T>();
@@ -433,17 +420,17 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="includeSrc">是否包含源节点对象</param>
         /// <returns>返回对应类型的组件对象实例的集合</returns>
-        public static T[] GetComponentsInPeer<T>(this UnityGameObject self, bool includeSrc = false) where T : UnityComponent
+        public static T[] GetComponentsInPeer<T>(this GameObject self, bool includeSrc = false) where T : Component
         {
-            UnityTransform parentTrans = self.transform.parent;
-            UnityTransform[] childTrans = parentTrans.GetComponentsInChildren<UnityTransform>();
+            Transform parentTrans = self.transform.parent;
+            Transform[] childTrans = parentTrans.GetComponentsInChildren<Transform>();
             int length = childTrans.Length;
-            UnityTransform[] trans;
+            Transform[] trans;
 
             if (!includeSrc)
-                trans = Utility.Collection.FindAll(childTrans, t => t.parent == parentTrans);
+                trans = NovaEngine.Utility.Collection.FindAll(childTrans, t => t.parent == parentTrans);
             else
-                trans = Utility.Collection.FindAll(childTrans, t => t.parent == parentTrans && t != self);
+                trans = NovaEngine.Utility.Collection.FindAll(childTrans, t => t.parent == parentTrans && t != self);
 
             int transLength = trans.Length;
             T[] src = new T[transLength];
@@ -470,13 +457,13 @@ namespace NovaEngine
         /// <typeparam name="T">目标组件类型</typeparam>
         /// <param name="self">源节点对象实例</param>
         /// <returns>返回源节点对象实例</returns>
-        public static UnityGameObject TryRemoveComponent<T>(this UnityGameObject self) where T : UnityComponent
+        public static GameObject TryRemoveComponent<T>(this GameObject self) where T : Component
         {
             T comp = self.GetComponent<T>();
 
             if (null != comp)
             {
-                UnityObject.Destroy(comp);
+                Object.Destroy(comp);
             }
 
             return self;
@@ -488,13 +475,13 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="type">目标组件类型</param>
         /// <returns>返回源节点对象实例</returns>
-        public static UnityGameObject TryRemoveComponent(this UnityGameObject self, SystemType type)
+        public static GameObject TryRemoveComponent(this GameObject self, SystemType type)
         {
-            UnityComponent comp = self.GetComponent(type);
+            Component comp = self.GetComponent(type);
 
             if (null != comp)
             {
-                UnityObject.Destroy(comp);
+                Object.Destroy(comp);
             }
 
             return self;
@@ -506,13 +493,13 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="type">目标组件类型</param>
         /// <returns>返回源节点对象实例</returns>
-        public static UnityGameObject TryRemoveComponent(this UnityGameObject self, string type)
+        public static GameObject TryRemoveComponent(this GameObject self, string type)
         {
-            UnityComponent comp = self.GetComponent(type);
+            Component comp = self.GetComponent(type);
 
             if (null != comp)
             {
-                UnityObject.Destroy(comp);
+                Object.Destroy(comp);
             }
 
             return self;
@@ -524,13 +511,13 @@ namespace NovaEngine
         /// <typeparam name="T">目标组件类型</typeparam>
         /// <param name="self">源节点对象实例</param>
         /// <returns>返回源节点对象实例</returns>
-        public static UnityGameObject TryRemoveComponents<T>(this UnityGameObject self) where T : UnityComponent
+        public static GameObject TryRemoveComponents<T>(this GameObject self) where T : Component
         {
             T[] comps = self.GetComponents<T>();
 
             for (var n = 0; n < comps.Length; ++n)
             {
-                UnityObject.Destroy(comps[n]);
+                Object.Destroy(comps[n]);
             }
 
             return self;
@@ -542,13 +529,13 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="type">目标组件类型</param>
         /// <returns>返回源节点对象实例</returns>
-        public static UnityGameObject TryRemoveComponents<T>(this UnityGameObject self, SystemType type)
+        public static GameObject TryRemoveComponents<T>(this GameObject self, SystemType type)
         {
-            UnityComponent[] comps = self.GetComponents(type);
+            Component[] comps = self.GetComponents(type);
 
             for (var n = 0; n < comps.Length; ++n)
             {
-                UnityObject.Destroy(comps[n]);
+                Object.Destroy(comps[n]);
             }
 
             return self;
@@ -565,12 +552,12 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="name">节点名称</param>
         /// <returns>返回给定名称的节点对象实例</returns>
-        public static UnityGameObject FindOrCreateGameObject(this UnityGameObject self, string name)
+        public static GameObject FindOrCreateGameObject(this GameObject self, string name)
         {
-            UnityTransform trans = self.transform.Find(name);
+            Transform trans = self.transform.Find(name);
             if (null == trans)
             {
-                UnityGameObject go = new UnityGameObject(name).SetParent(self);
+                GameObject go = new GameObject(name).SetParent(self);
                 return go;
             }
             else
@@ -587,12 +574,12 @@ namespace NovaEngine
         /// <param name="name">节点名称</param>
         /// <param name="componentTypes">组件类型列表</param>
         /// <returns>返回给定名称的节点对象实例</returns>
-        public static UnityGameObject FindOrCreateGameObject(this UnityGameObject self, string name, params SystemType[] componentTypes)
+        public static GameObject FindOrCreateGameObject(this GameObject self, string name, params SystemType[] componentTypes)
         {
-            UnityTransform trans = self.transform.Find(name);
+            Transform trans = self.transform.Find(name);
             if (null == trans)
             {
-                UnityGameObject go = new UnityGameObject(name, componentTypes).SetParent(self);
+                GameObject go = new GameObject(name, componentTypes).SetParent(self);
                 return go;
             }
             else
@@ -607,9 +594,9 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="name">节点名称</param>
         /// <returns>返回新创建的节点对象实例</returns>
-        public static UnityGameObject CreateGameObject(this UnityGameObject self, string name)
+        public static GameObject CreateGameObject(this GameObject self, string name)
         {
-            UnityGameObject go = new UnityGameObject(name).SetParent(self);
+            GameObject go = new GameObject(name).SetParent(self);
             return go;
         }
 
@@ -620,9 +607,9 @@ namespace NovaEngine
         /// <param name="name">节点名称</param>
         /// <param name="componentTypes">组件类型列表</param>
         /// <returns>返回新创建的节点对象实例</returns>
-        public static UnityGameObject CreateGameObject(this UnityGameObject self, string name, params SystemType[] componentTypes)
+        public static GameObject CreateGameObject(this GameObject self, string name, params SystemType[] componentTypes)
         {
-            UnityGameObject go = new UnityGameObject(name, componentTypes).SetParent(self);
+            GameObject go = new GameObject(name, componentTypes).SetParent(self);
             return go;
         }
 
@@ -632,7 +619,7 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="childGameObject">子节点对象实例</param>
         /// <returns>返回源节点对象实例</returns>
-        public static UnityGameObject AddChild(this UnityGameObject self, UnityGameObject childGameObject)
+        public static GameObject AddChild(this GameObject self, GameObject childGameObject)
         {
             childGameObject.SetParent(self);
             return self;
@@ -644,7 +631,7 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="parentGameObject">父节点对象实例</param>
         /// <returns>返回源节点对象实例</returns>
-        public static UnityGameObject SetParent(this UnityGameObject self, UnityGameObject parentGameObject)
+        public static GameObject SetParent(this GameObject self, GameObject parentGameObject)
         {
             self.transform.SetParent(parentGameObject.transform);
             return self;
@@ -656,7 +643,7 @@ namespace NovaEngine
         /// <param name="self">源节点对象实例</param>
         /// <param name="parent">父对象实例</param>
         /// <returns>返回源节点对象实例</returns>
-        public static UnityGameObject SetParent(this UnityGameObject self, UnityTransform parent)
+        public static GameObject SetParent(this GameObject self, Transform parent)
         {
             self.transform.SetParent(parent);
             return self;

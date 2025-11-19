@@ -23,13 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using UnityMathf = UnityEngine.Mathf;
-using UnityVector2 = UnityEngine.Vector2;
-using UnityVector3 = UnityEngine.Vector3;
-using UnityVector4 = UnityEngine.Vector4;
-using UnityQuaternion = UnityEngine.Quaternion;
-
-namespace NovaEngine
+namespace UnityEngine.Customize.Extension
 {
     /// <summary>
     /// 基于Unity库Vector的扩展接口支持类
@@ -41,9 +35,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">目标向量</param>
         /// <returns>返回给定向量的绝对值向量实例</returns>
-        public static UnityVector2 Abs(this UnityVector2 self)
+        public static Vector2 Abs(this Vector2 self)
         {
-            return new UnityVector2(UnityMathf.Abs(self.x), UnityMathf.Abs(self.y));
+            return new Vector2(Mathf.Abs(self.x), Mathf.Abs(self.y));
         }
 
         /// <summary>
@@ -51,9 +45,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">目标向量</param>
         /// <returns>返回给定向量的绝对值向量实例</returns>
-        public static UnityVector3 Abs(this UnityVector3 self)
+        public static Vector3 Abs(this Vector3 self)
         {
-            return new UnityVector3(UnityMathf.Abs(self.x), UnityMathf.Abs(self.y), UnityMathf.Abs(self.z));
+            return new Vector3(Mathf.Abs(self.x), Mathf.Abs(self.y), Mathf.Abs(self.z));
         }
 
         /// <summary>
@@ -61,9 +55,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">目标向量</param>
         /// <returns>返回给定向量的绝对值向量实例</returns>
-        public static UnityVector4 Abs(this UnityVector4 self)
+        public static Vector4 Abs(this Vector4 self)
         {
-            return new UnityVector4(UnityMathf.Abs(self.x), UnityMathf.Abs(self.y), UnityMathf.Abs(self.z), UnityMathf.Abs(self.w));
+            return new Vector4(Mathf.Abs(self.x), Mathf.Abs(self.y), Mathf.Abs(self.z), Mathf.Abs(self.w));
         }
 
         /// <summary>
@@ -71,9 +65,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">目标向量</param>
         /// <returns>返回转换后的二维向量实例</returns>
-        public static UnityVector2 ToVector2(this UnityVector3 self)
+        public static Vector2 ToVector2(this Vector3 self)
         {
-            return new UnityVector2(self.x, self.z);
+            return new Vector2(self.x, self.z);
         }
 
         /// <summary>
@@ -81,9 +75,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">目标向量</param>
         /// <returns>返回转换后的三维向量实例</returns>
-        public static UnityVector3 ToVector3(this UnityVector2 self)
+        public static Vector3 ToVector3(this Vector2 self)
         {
-            return new UnityVector3(self.x, 0f, self.y);
+            return new Vector3(self.x, 0f, self.y);
         }
 
         /// <summary>
@@ -92,9 +86,9 @@ namespace NovaEngine
         /// <param name="self">目标向量</param>
         /// <param name="y">向量Y值</param>
         /// <returns>返回转换后的三维向量实例</returns>
-        public static UnityVector3 ToVector3(this UnityVector2 self, float y)
+        public static Vector3 ToVector3(this Vector2 self, float y)
         {
-            return new UnityVector3(self.x, y, self.y);
+            return new Vector3(self.x, y, self.y);
         }
 
         /// <summary>
@@ -104,9 +98,9 @@ namespace NovaEngine
         /// <param name="angle">旋转角度</param>
         /// <param name="pivot">轴心位置</param>
         /// <returns>返回旋转后的二维向量实例</returns>
-        public static UnityVector2 Rotate(this UnityVector2 self, float angle, UnityVector2 pivot = default(UnityVector2))
+        public static Vector2 Rotate(this Vector2 self, float angle, Vector2 pivot = default(Vector2))
         {
-            UnityVector2 rotated = UnityQuaternion.Euler(new UnityVector3(0f, 0f, angle)) * (self - pivot);
+            Vector2 rotated = Quaternion.Euler(new Vector3(0f, 0f, angle)) * (self - pivot);
             return rotated + pivot;
         }
     }

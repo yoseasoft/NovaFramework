@@ -26,12 +26,7 @@
 using SystemType = System.Type;
 using SystemArray = System.Array;
 
-using UnityObject = UnityEngine.Object;
-using UnityGameObject = UnityEngine.GameObject;
-using UnityComponent = UnityEngine.Component;
-using UnityTransform = UnityEngine.Transform;
-
-namespace NovaEngine
+namespace UnityEngine.Customize.Extension
 {
     /// <summary>
     /// 基于Unity库组件类的扩展接口支持类
@@ -45,7 +40,7 @@ namespace NovaEngine
         /// <typeparam name="T">目标组件类型</typeparam>
         /// <param name="self">源组件对象实例</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static T GetOrAddComponent<T>(this UnityComponent self) where T : UnityComponent
+        public static T GetOrAddComponent<T>(this Component self) where T : Component
         {
             T component = self.GetComponent<T>();
             if (null == component)
@@ -62,9 +57,9 @@ namespace NovaEngine
         /// <param name="self">源组件对象实例</param>
         /// <param name="type">目标组件类型</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static UnityComponent GetOrAddComponent(this UnityComponent self, SystemType type)
+        public static Component GetOrAddComponent(this Component self, SystemType type)
         {
-            UnityComponent component = self.GetComponent(type);
+            Component component = self.GetComponent(type);
             if (null == component)
             {
                 component = self.gameObject.AddComponent(type);
@@ -79,11 +74,11 @@ namespace NovaEngine
         /// <param name="self">源组件对象实例</param>
         /// <param name="name">目标节点名称</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static T GetComponentInParent<T>(this UnityComponent self, string name) where T : UnityComponent
+        public static T GetComponentInParent<T>(this Component self, string name) where T : Component
         {
-            UnityTransform[] parents = self.GetComponentsInParent<UnityTransform>();
+            Transform[] parents = self.GetComponentsInParent<Transform>();
             int length = parents.Length;
-            UnityTransform parentTrans = null;
+            Transform parentTrans = null;
             for (int n = 0; n < length; ++n)
             {
                 if (parents[n].name == name)
@@ -108,11 +103,11 @@ namespace NovaEngine
         /// <param name="self">源组件对象实例</param>
         /// <param name="name">目标节点名称</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static T GetOrAddComponentInParent<T>(this UnityComponent self, string name) where T : UnityComponent
+        public static T GetOrAddComponentInParent<T>(this Component self, string name) where T : Component
         {
-            UnityTransform[] parents = self.GetComponentsInParent<UnityTransform>();
+            Transform[] parents = self.GetComponentsInParent<Transform>();
             int length = parents.Length;
-            UnityTransform parentTrans = null;
+            Transform parentTrans = null;
             for (int n = 0; n < length; ++n)
             {
                 if (parents[n].name == name)
@@ -140,11 +135,11 @@ namespace NovaEngine
         /// <param name="self">源组件对象实例</param>
         /// <param name="name">目标节点名称</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static T GetComponentInChildren<T>(this UnityComponent self, string name) where T : UnityComponent
+        public static T GetComponentInChildren<T>(this Component self, string name) where T : Component
         {
-            UnityTransform[] childs = self.GetComponentsInChildren<UnityTransform>();
+            Transform[] childs = self.GetComponentsInChildren<Transform>();
             int length = childs.Length;
-            UnityTransform childTrans = null;
+            Transform childTrans = null;
             for (int n = 0; n < length; ++n)
             {
                 if (childs[n].name == name)
@@ -168,11 +163,11 @@ namespace NovaEngine
         /// <param name="self">源组件对象实例</param>
         /// <param name="name">目标节点名称</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static T GetOrAddComponentInChildren<T>(this UnityComponent self, string name) where T : UnityComponent
+        public static T GetOrAddComponentInChildren<T>(this Component self, string name) where T : Component
         {
-            UnityTransform[] childs = self.GetComponentsInChildren<UnityTransform>();
+            Transform[] childs = self.GetComponentsInChildren<Transform>();
             int length = childs.Length;
-            UnityTransform childTrans = null;
+            Transform childTrans = null;
             for (int n = 0; n < length; ++n)
             {
                 if (childs[n].name == name)
@@ -198,9 +193,9 @@ namespace NovaEngine
         /// <param name="self">源组件对象实例</param>
         /// <param name="name">目标节点名称</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static T GetComponentInPeer<T>(this UnityComponent self, string name) where T : UnityComponent
+        public static T GetComponentInPeer<T>(this Component self, string name) where T : Component
         {
-            UnityTransform tran = self.transform.parent.Find(name);
+            Transform tran = self.transform.parent.Find(name);
             if (null != tran)
             {
                 return tran.GetComponent<T>();
@@ -217,9 +212,9 @@ namespace NovaEngine
         /// <param name="self">源组件对象实例</param>
         /// <param name="name">目标节点名称</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static T GetOrAddComponentInPeer<T>(this UnityComponent self, string name) where T : UnityComponent
+        public static T GetOrAddComponentInPeer<T>(this Component self, string name) where T : Component
         {
-            UnityTransform tran = self.transform.parent.Find(name);
+            Transform tran = self.transform.parent.Find(name);
             if (null != tran)
             {
                 T comp = tran.GetComponent<T>();
@@ -239,17 +234,17 @@ namespace NovaEngine
         /// <param name="self">源组件对象实例</param>
         /// <param name="includeSrc">是否包含源节点对象</param>
         /// <returns>返回对应类型的组件对象实例的集合</returns>
-        public static T[] GetComponentsInPeer<T>(this UnityComponent self, bool includeSrc = false) where T : UnityComponent
+        public static T[] GetComponentsInPeer<T>(this Component self, bool includeSrc = false) where T : Component
         {
-            UnityTransform parentTrans = self.transform.parent;
-            UnityTransform[] childTrans = parentTrans.GetComponentsInChildren<UnityTransform>();
+            Transform parentTrans = self.transform.parent;
+            Transform[] childTrans = parentTrans.GetComponentsInChildren<Transform>();
             int length = childTrans.Length;
-            UnityTransform[] trans;
+            Transform[] trans;
 
             if (!includeSrc)
-                trans = Utility.Collection.FindAll(childTrans, t => t.parent == parentTrans);
+                trans = NovaEngine.Utility.Collection.FindAll(childTrans, t => t.parent == parentTrans);
             else
-                trans = Utility.Collection.FindAll(childTrans, t => t.parent == parentTrans && t != self);
+                trans = NovaEngine.Utility.Collection.FindAll(childTrans, t => t.parent == parentTrans && t != self);
 
             int transLength = trans.Length;
             T[] src = new T[transLength];
@@ -276,13 +271,13 @@ namespace NovaEngine
         /// <typeparam name="T">目标组件类型</typeparam>
         /// <param name="self">源组件对象实例</param>
         /// <returns>返回源组件对象实例</returns>
-        public static UnityComponent TryRemoveComponent<T>(this UnityComponent self) where T : UnityComponent
+        public static Component TryRemoveComponent<T>(this Component self) where T : Component
         {
             T comp = self.GetComponent<T>();
 
             if (null != comp)
             {
-                UnityObject.Destroy(comp);
+                Object.Destroy(comp);
             }
 
             return self;
@@ -294,13 +289,13 @@ namespace NovaEngine
         /// <param name="self">源组件对象实例</param>
         /// <param name="type">目标组件类型</param>
         /// <returns>返回源组件对象实例</returns>
-        public static UnityComponent TryRemoveComponent(this UnityComponent self, SystemType type)
+        public static Component TryRemoveComponent(this Component self, SystemType type)
         {
-            UnityComponent comp = self.GetComponent(type);
+            Component comp = self.GetComponent(type);
 
             if (null != comp)
             {
-                UnityObject.Destroy(comp);
+                Object.Destroy(comp);
             }
 
             return self;
@@ -312,13 +307,13 @@ namespace NovaEngine
         /// <param name="self">源组件对象实例</param>
         /// <param name="type">目标组件类型</param>
         /// <returns>返回源组件对象实例</returns>
-        public static UnityComponent TryRemoveComponent(this UnityComponent self, string type)
+        public static Component TryRemoveComponent(this Component self, string type)
         {
-            UnityComponent comp = self.GetComponent(type);
+            Component comp = self.GetComponent(type);
 
             if (null != comp)
             {
-                UnityObject.Destroy(comp);
+                Object.Destroy(comp);
             }
 
             return self;
@@ -330,13 +325,13 @@ namespace NovaEngine
         /// <typeparam name="T">目标组件类型</typeparam>
         /// <param name="self">源组件对象实例</param>
         /// <returns>返回源组件对象实例</returns>
-        public static UnityComponent TryRemoveComponents<T>(this UnityComponent self) where T : UnityComponent
+        public static Component TryRemoveComponents<T>(this Component self) where T : Component
         {
             T[] comps = self.GetComponents<T>();
 
             for (var n = 0; n < comps.Length; ++n)
             {
-                UnityObject.Destroy(comps[n]);
+                Object.Destroy(comps[n]);
             }
 
             return self;
@@ -348,13 +343,13 @@ namespace NovaEngine
         /// <param name="self">源组件对象实例</param>
         /// <param name="type">目标组件类型</param>
         /// <returns>返回源组件对象实例</returns>
-        public static UnityComponent TryRemoveComponents(this UnityComponent self, SystemType type)
+        public static Component TryRemoveComponents(this Component self, SystemType type)
         {
-            UnityComponent[] comps = self.GetComponents(type);
+            Component[] comps = self.GetComponents(type);
 
             for (var n = 0; n < comps.Length; ++n)
             {
-                UnityObject.Destroy(comps[n]);
+                Object.Destroy(comps[n]);
             }
 
             return self;

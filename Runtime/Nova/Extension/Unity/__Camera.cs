@@ -23,15 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using UnityCamera = UnityEngine.Camera;
-using UnityTexture2D = UnityEngine.Texture2D;
-using UnityRenderTexture = UnityEngine.RenderTexture;
-using UnitySprite = UnityEngine.Sprite;
-using UnityVector2 = UnityEngine.Vector2;
-using UnityRect = UnityEngine.Rect;
-using UnityTextureFormat = UnityEngine.TextureFormat;
-
-namespace NovaEngine
+namespace UnityEngine.Customize.Extension
 {
     /// <summary>
     /// 基于Unity库相机类的扩展接口支持类
@@ -43,27 +35,27 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">目标相机</param>
         /// <returns>相机抓取的屏幕Texture2D</returns>
-        public static UnityTexture2D ScreenshotAsTextureRGB(this UnityCamera self)
+        public static Texture2D ScreenshotAsTextureRGB(this Camera self)
         {
-            return ScreenshotAsTexture(self, UnityTextureFormat.RGB565);
+            return ScreenshotAsTexture(self, TextureFormat.RGB565);
         }
-        public static UnityTexture2D ScreenshotAsTextureRGBA(this UnityCamera self)
+        public static Texture2D ScreenshotAsTextureRGBA(this Camera self)
         {
-            return ScreenshotAsTexture(self, UnityTextureFormat.RGBA32);
+            return ScreenshotAsTexture(self, TextureFormat.RGBA32);
         }
-        public static UnityTexture2D ScreenshotAsTexture(this UnityCamera self, UnityTextureFormat textureFormat)
+        public static Texture2D ScreenshotAsTexture(this Camera self, TextureFormat textureFormat)
         {
-            UnityRenderTexture oldRenderTexture = self.targetTexture;
+            RenderTexture oldRenderTexture = self.targetTexture;
             int width = self.pixelWidth;
             int height = self.pixelHeight;
-            UnityRenderTexture renderTexture = new UnityRenderTexture(width, height, 24);
+            RenderTexture renderTexture = new RenderTexture(width, height, 24);
             self.targetTexture = renderTexture;
             self.Render();
-            UnityTexture2D texture2D = new UnityTexture2D(width, height, textureFormat, false);
-            UnityRenderTexture.active = renderTexture;
-            texture2D.ReadPixels(new UnityRect(0f, 0f, width, height), 0, 0);
+            Texture2D texture2D = new Texture2D(width, height, textureFormat, false);
+            RenderTexture.active = renderTexture;
+            texture2D.ReadPixels(new Rect(0f, 0f, width, height), 0, 0);
             texture2D.Apply();
-            UnityRenderTexture.active = null;
+            RenderTexture.active = null;
             self.targetTexture = oldRenderTexture;
             return texture2D;
         }
@@ -73,20 +65,20 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">目标相机</param>
         /// <returns>相机抓取的屏幕Texture2D</returns>
-        public static UnitySprite ScreenshotAsSpriteRGBA(this UnityCamera self)
+        public static Sprite ScreenshotAsSpriteRGBA(this Camera self)
         {
-            UnityTexture2D texture2D = ScreenshotAsTextureRGBA(self);
-            return UnitySprite.Create(texture2D, new UnityRect(0f, 0f, texture2D.width, texture2D.height), UnityVector2.zero);
+            Texture2D texture2D = ScreenshotAsTextureRGBA(self);
+            return Sprite.Create(texture2D, new Rect(0f, 0f, texture2D.width, texture2D.height), Vector2.zero);
         }
-        public static UnitySprite ScreenshotAsSpriteRGB(this UnityCamera self)
+        public static Sprite ScreenshotAsSpriteRGB(this Camera self)
         {
-            UnityTexture2D texture2D = ScreenshotAsTextureRGB(self);
-            return UnitySprite.Create(texture2D, new UnityRect(0f, 0f, texture2D.width, texture2D.height), UnityVector2.zero);
+            Texture2D texture2D = ScreenshotAsTextureRGB(self);
+            return Sprite.Create(texture2D, new Rect(0f, 0f, texture2D.width, texture2D.height), Vector2.zero);
         }
-        public static UnitySprite ScreenshotAsSprite(this UnityCamera self, UnityTextureFormat textureFormat)
+        public static Sprite ScreenshotAsSprite(this Camera self, TextureFormat textureFormat)
         {
-            UnityTexture2D texture2D = ScreenshotAsTexture(self, textureFormat);
-            return UnitySprite.Create(texture2D, new UnityRect(0f, 0f, texture2D.width, texture2D.height), UnityVector2.zero);
+            Texture2D texture2D = ScreenshotAsTexture(self, textureFormat);
+            return Sprite.Create(texture2D, new Rect(0f, 0f, texture2D.width, texture2D.height), Vector2.zero);
         }
     }
 }
