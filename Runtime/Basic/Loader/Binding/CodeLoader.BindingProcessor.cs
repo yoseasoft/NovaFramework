@@ -186,7 +186,7 @@ namespace GameEngine.Loader
             _codeBindingProcessorInitCallbacks.Add(targetType, initCallback);
             _codeBindingProcessorCleanupCallbacks.Add(targetType, cleanupCallback);
 
-            Debugger.Log(LogGroupTag.CodeLoader, "Add binding processor implemented class '{0}' to loader list.", targetType.FullName);
+            // Debugger.Log(LogGroupTag.CodeLoader, "Add binding processor implemented class '{0}' to loader list.", targetType.FullName);
         }
 
         /// <summary>

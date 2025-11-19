@@ -36,7 +36,7 @@ namespace NovaEngine
     /// <summary>
     /// 引擎框架模块中控台管理类，对当前程序的所有模块对象实例进行统一管理调度
     /// </summary>
-    public static partial class ModuleController
+    internal static partial class ModuleController
     {
         /// <summary>
         /// 模块实例管理队列

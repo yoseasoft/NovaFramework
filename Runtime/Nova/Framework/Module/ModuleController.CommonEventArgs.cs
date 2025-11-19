@@ -29,7 +29,7 @@ namespace NovaEngine
     /// <summary>
     /// 引擎框架模块中控台管理类
     /// </summary>
-    public static partial class ModuleController
+    internal static partial class ModuleController
     {
         /// <summary>
         /// 模块对象通用事件参数基类定义

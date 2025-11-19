@@ -355,7 +355,7 @@ namespace GameEngine.Loader
             GeneralLoaderClassReflectionHolder holder = new GeneralLoaderClassReflectionHolder(initCallback, cleanupCallback, matchCallback, loadCallback, lookupCallback);
             _generalLoaderList.Add(holder);
 
-            Debugger.Log(LogGroupTag.CodeLoader, "Add general implemented class '{0}' to loader list.", targetType.FullName);
+            // Debugger.Log(LogGroupTag.CodeLoader, "Add general implemented class '{0}' to loader list.", targetType.FullName);
         }
     }
 }
