@@ -28,7 +28,7 @@ namespace NovaEngine
     /// <summary>
     /// 日志处理级别类型定义
     /// </summary>
-    public enum LogOutputLevelType : byte
+    internal enum LogOutputLevelType : byte
     {
         /// <summary>
         /// 空置
