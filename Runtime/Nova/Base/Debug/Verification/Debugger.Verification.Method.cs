@@ -31,7 +31,7 @@ namespace NovaEngine
     /// <summary>
     /// 调试器对象工具类，用于引擎内部调试控制及输出相关接口声明
     /// </summary>
-    public partial class Debugger
+    internal partial class Debugger
     {
         /// <summary>
         /// 验证工具类，对类型，函数等定义进行格式校验
@@ -44,6 +44,7 @@ namespace NovaEngine
             /// <param name="handler">委托回调函数</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若函数格式与给定参数类型匹配则返回true，否则返回false</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static bool CheckGenericDelegateParameterTypeMatched(SystemDelegate handler, params SystemType[] parameterTypes)
             {
                 return CheckGenericDelegateParameterTypeMatched(true, handler, parameterTypes);
@@ -56,21 +57,10 @@ namespace NovaEngine
             /// <param name="handler">委托回调函数</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若函数格式与给定参数类型匹配则返回true，否则返回false</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static bool CheckGenericDelegateParameterTypeMatched(bool condition, SystemDelegate handler, params SystemType[] parameterTypes)
             {
-                if (condition)
-                {
-                    if (Instance._isDebuggingVerificationAssertModeEnabled)
-                    {
-                        Assert(Utility.Reflection.IsGenericDelegateParameterTypeMatched(handler, parameterTypes), "Invalid method format.");
-                    }
-                    else
-                    {
-                        return Utility.Reflection.IsGenericDelegateParameterTypeMatched(handler, parameterTypes);
-                    }
-                }
-
-                return true;
+                return CheckGenericDelegateParameterTypeMatched(condition, handler.Method, parameterTypes);
             }
 
             /// <summary>
@@ -79,6 +69,7 @@ namespace NovaEngine
             /// <param name="methodInfo">函数信息</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若函数格式与给定参数类型匹配则返回true，否则返回false</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static bool CheckGenericDelegateParameterTypeMatched(SystemMethodInfo methodInfo, params SystemType[] parameterTypes)
             {
                 return CheckGenericDelegateParameterTypeMatched(true, methodInfo, parameterTypes);
@@ -91,6 +82,7 @@ namespace NovaEngine
             /// <param name="methodInfo">函数信息</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若函数格式与给定参数类型匹配则返回true，否则返回false</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static bool CheckGenericDelegateParameterTypeMatched(bool condition, SystemMethodInfo methodInfo, params SystemType[] parameterTypes)
             {
                 if (condition)
@@ -115,6 +107,7 @@ namespace NovaEngine
             /// <param name="returnType">函数返回类型</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若函数格式与给定参数类型匹配则返回true，否则返回false</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static bool CheckGenericDelegateParameterAndReturnTypeMatched(SystemDelegate handler, SystemType returnType, params SystemType[] parameterTypes)
             {
                 return CheckGenericDelegateParameterAndReturnTypeMatched(true, handler, returnType, parameterTypes);
@@ -128,21 +121,10 @@ namespace NovaEngine
             /// <param name="returnType">函数返回类型</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若函数格式与给定参数类型匹配则返回true，否则返回false</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static bool CheckGenericDelegateParameterAndReturnTypeMatched(bool condition, SystemDelegate handler, SystemType returnType, params SystemType[] parameterTypes)
             {
-                if (condition)
-                {
-                    if (Instance._isDebuggingVerificationAssertModeEnabled)
-                    {
-                        Assert(Utility.Reflection.IsGenericDelegateParameterAndReturnTypeMatched(handler, returnType, parameterTypes), "Invalid method format.");
-                    }
-                    else
-                    {
-                        return Utility.Reflection.IsGenericDelegateParameterAndReturnTypeMatched(handler, returnType, parameterTypes);
-                    }
-                }
-
-                return true;
+                return CheckGenericDelegateParameterAndReturnTypeMatched(condition, handler.Method, returnType, parameterTypes);
             }
 
             /// <summary>
@@ -152,6 +134,7 @@ namespace NovaEngine
             /// <param name="returnType">函数返回类型</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若函数格式与给定参数类型匹配则返回true，否则返回false</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static bool CheckGenericDelegateParameterAndReturnTypeMatched(SystemMethodInfo methodInfo, SystemType returnType, params SystemType[] parameterTypes)
             {
                 return CheckGenericDelegateParameterAndReturnTypeMatched(true, methodInfo, returnType, parameterTypes);
@@ -165,6 +148,7 @@ namespace NovaEngine
             /// <param name="returnType">函数返回类型</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若函数格式与给定参数类型匹配则返回true，否则返回false</returns>
+            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public static bool CheckGenericDelegateParameterAndReturnTypeMatched(bool condition, SystemMethodInfo methodInfo, SystemType returnType, params SystemType[] parameterTypes)
             {
                 if (condition)

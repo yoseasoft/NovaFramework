@@ -27,7 +27,7 @@ namespace NovaEngine
     /// <summary>
     /// 调试器对象工具类，用于引擎内部调试控制及输出相关接口声明
     /// </summary>
-    public partial class Debugger
+    internal partial class Debugger
     {
         /// <summary>
         /// 验证工具类，对类型，函数等定义进行格式校验
