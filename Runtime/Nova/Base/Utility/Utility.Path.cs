@@ -24,6 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Customize.Extension;
+
 using SystemException = System.Exception;
 using SystemEncoding = System.Text.Encoding;
 using SystemPath = System.IO.Path;

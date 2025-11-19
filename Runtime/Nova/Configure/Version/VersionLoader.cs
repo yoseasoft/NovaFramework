@@ -24,6 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Customize.Extension;
+
 using SystemPath = System.IO.Path;
 using SystemFile = System.IO.File;
 

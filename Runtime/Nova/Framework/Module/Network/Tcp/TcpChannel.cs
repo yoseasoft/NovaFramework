@@ -24,6 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Customize.Extension;
+
 using SystemException = System.Exception;
 using SystemArray = System.Array;
 using SystemMemoryStream = System.IO.MemoryStream;

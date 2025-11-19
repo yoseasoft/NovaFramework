@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Customize.Extension;
+
 using SystemType = System.Type;
 using SystemLayoutKind = System.Runtime.InteropServices.LayoutKind;
 

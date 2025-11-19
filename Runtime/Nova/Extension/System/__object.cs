@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace System.Customize.Extension
 {
     /// <summary>
     /// 为系统默认的基础对象类型提供扩展接口支持
@@ -35,7 +35,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">对象实例</param>
         /// <returns>若对象为空返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static bool IsNull(this object self)
         {
@@ -47,7 +47,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">对象实例</param>
         /// <returns>若对象不为空返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static bool IsNotNull(this object self)
         {
@@ -60,7 +60,7 @@ namespace NovaEngine
         /// <typeparam name="T">目标对象类型</typeparam>
         /// <param name="self">对象实例</param>
         /// <returns>返回转换后的类型实例</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static T As<T>(this object self) where T : class
         {
@@ -73,7 +73,7 @@ namespace NovaEngine
         /// <typeparam name="T">目标对象类型</typeparam>
         /// <param name="self">对象实例</param>
         /// <returns>返回转换后的类型实例</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static T CastTo<T>(this object self) where T : class
         {

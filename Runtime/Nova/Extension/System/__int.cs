@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace System.Customize.Extension
 {
     /// <summary>
     /// 为系统默认的整型数据类型提供扩展接口支持
@@ -57,7 +57,7 @@ namespace NovaEngine
         /// <returns>返回转换后的字节数组</returns>
         public static byte[] GetBytes(this int self)
         {
-            return System.BitConverter.GetBytes(self);
+            return BitConverter.GetBytes(self);
         }
     }
 }

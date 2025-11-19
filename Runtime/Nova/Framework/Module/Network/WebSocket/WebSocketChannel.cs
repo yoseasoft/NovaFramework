@@ -35,6 +35,7 @@
 // #define __USED_WEBSOCKET_LIBRARIES_TYPE
 
 using System.Collections.Generic;
+using System.Customize.Extension;
 
 using SystemArray = System.Array;
 using SystemUri = System.Uri;

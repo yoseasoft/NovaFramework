@@ -23,10 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemStringBuilder = System.Text.StringBuilder;
-using SystemEncoding = System.Text.Encoding;
-
-namespace NovaEngine
+namespace System.Customize.Extension
 {
     /// <summary>
     /// 为系统默认的基础字节数据类型提供扩展接口支持
@@ -40,7 +37,7 @@ namespace NovaEngine
 
         public static string ToHexString(this byte[] self)
         {
-            SystemStringBuilder stringBuilder = new SystemStringBuilder();
+            Text.StringBuilder stringBuilder = new Text.StringBuilder();
             foreach (byte b in self)
             {
                 stringBuilder.Append(b.ToString("X2"));
@@ -50,7 +47,7 @@ namespace NovaEngine
 
         public static string ToHexString(this byte[] self, string format)
         {
-            SystemStringBuilder stringBuilder = new SystemStringBuilder();
+            Text.StringBuilder stringBuilder = new Text.StringBuilder();
             foreach (byte b in self)
             {
                 stringBuilder.Append(b.ToString(format));
@@ -60,7 +57,7 @@ namespace NovaEngine
 
         public static string ToHexString(this byte[] self, int offset, int count)
         {
-            SystemStringBuilder stringBuilder = new SystemStringBuilder();
+            Text.StringBuilder stringBuilder = new Text.StringBuilder();
             for (int n = offset; n < offset + count; ++n)
             {
                 stringBuilder.Append(self[n].ToString("X2"));
@@ -70,22 +67,22 @@ namespace NovaEngine
 
         public static string ToTextString(this byte[] self)
         {
-            return SystemEncoding.Default.GetString(self);
+            return Text.Encoding.Default.GetString(self);
         }
 
         public static string ToTextString(this byte[] self, int index, int count)
         {
-            return SystemEncoding.Default.GetString(self, index, count);
+            return Text.Encoding.Default.GetString(self, index, count);
         }
 
         public static string ToUtf8String(this byte[] self)
         {
-            return SystemEncoding.UTF8.GetString(self);
+            return Text.Encoding.UTF8.GetString(self);
         }
 
         public static string ToUtf8String(this byte[] self, int index, int count)
         {
-            return SystemEncoding.UTF8.GetString(self, index, count);
+            return Text.Encoding.UTF8.GetString(self, index, count);
         }
 
         public static short ReadInt16(this byte[] self, int offset)

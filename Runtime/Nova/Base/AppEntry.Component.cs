@@ -23,6 +23,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Customize.Extension;
 
 using SystemType = System.Type;
 

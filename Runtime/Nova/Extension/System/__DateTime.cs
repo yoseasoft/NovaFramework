@@ -23,13 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemDateTime = System.DateTime;
-using SystemDateTimeOffset = System.DateTimeOffset;
-using SystemDayOfWeek = System.DayOfWeek;
-using SystemGregorianCalendar = System.Globalization.GregorianCalendar;
-using SystemCalendarWeekRule = System.Globalization.CalendarWeekRule;
-
-namespace NovaEngine
+namespace System.Customize.Extension
 {
     /// <summary>
     /// 为系统默认的日期时间类型提供扩展接口支持
@@ -41,10 +35,10 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">日期时间对象实例</param>
         /// <returns>返回年度第几个星期</returns>
-        public static int WeekOfYear(this in SystemDateTime self)
+        public static int WeekOfYear(this in DateTime self)
         {
-            SystemGregorianCalendar gc = new SystemGregorianCalendar();
-            return gc.GetWeekOfYear(self, SystemCalendarWeekRule.FirstDay, SystemDayOfWeek.Sunday);
+            Globalization.GregorianCalendar gc = new Globalization.GregorianCalendar();
+            return gc.GetWeekOfYear(self, Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
         }
 
         /// <summary>
@@ -53,10 +47,10 @@ namespace NovaEngine
         /// <param name="self">日期时间对象实例</param>
         /// <param name="week">星期类型</param>
         /// <returns>返回年度第几个星期</returns>
-        public static int WeekOfYear(this in SystemDateTime self, SystemDayOfWeek week)
+        public static int WeekOfYear(this in DateTime self, DayOfWeek week)
         {
-            SystemGregorianCalendar gc = new SystemGregorianCalendar();
-            return gc.GetWeekOfYear(self, SystemCalendarWeekRule.FirstDay, week);
+            Globalization.GregorianCalendar gc = new Globalization.GregorianCalendar();
+            return gc.GetWeekOfYear(self, Globalization.CalendarWeekRule.FirstDay, week);
         }
 
         /// <summary>
@@ -65,23 +59,23 @@ namespace NovaEngine
         /// <param name="self">日期时间对象实例</param>
         /// <param name="relativeday">叠加天数</param>
         /// <returns>返回时间格式字符串</returns>
-        // public static string GetDateTime(this in SystemDateTime self, int relativeday) { return self.AddDays(relativeday).ToString("yyyy-MM-dd HH:mm:ss"); }
+        // public static string GetDateTime(this in DateTime self, int relativeday) { return self.AddDays(relativeday).ToString("yyyy-MM-dd HH:mm:ss"); }
 
         /// <summary>
         /// 获取标准时间格式字符串信息
         /// </summary>
         /// <param name="self">日期时间对象实例</param>
         /// <returns>返回时间格式字符串</returns>
-        // public static string GetDateTimeF(this in SystemDateTime self) { return self.ToString("yyyy-MM-dd HH:mm:ss:fffffff"); }
+        // public static string GetDateTimeF(this in DateTime self) { return self.ToString("yyyy-MM-dd HH:mm:ss:fffffff"); }
 
         /// <summary>
         /// 获取该时间相对于纪元时间的分钟数
         /// </summary>
         /// <param name="self">日期时间对象实例</param>
         /// <returns>返回时间值</returns>
-        public static double GetTotalMinutes(this in SystemDateTime self)
+        public static double GetTotalMinutes(this in DateTime self)
         {
-            return new SystemDateTimeOffset(self).Offset.TotalMinutes;
+            return new DateTimeOffset(self).Offset.TotalMinutes;
         }
 
         /// <summary>
@@ -89,9 +83,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">日期时间对象实例</param>
         /// <returns>返回时间值</returns>
-        public static double GetTotalHours(this in SystemDateTime self)
+        public static double GetTotalHours(this in DateTime self)
         {
-            return new SystemDateTimeOffset(self).Offset.TotalHours;
+            return new DateTimeOffset(self).Offset.TotalHours;
         }
 
         /// <summary>
@@ -99,9 +93,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">日期时间对象实例</param>
         /// <returns>返回时间值</returns>
-        public static double GetTotalDays(this in SystemDateTime self)
+        public static double GetTotalDays(this in DateTime self)
         {
-            return new SystemDateTimeOffset(self).Offset.TotalDays;
+            return new DateTimeOffset(self).Offset.TotalDays;
         }
     }
 }

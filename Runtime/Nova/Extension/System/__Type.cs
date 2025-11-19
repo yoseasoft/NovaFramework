@@ -28,7 +28,7 @@ using SystemEncoding = System.Text.Encoding;
 using SystemStream = System.IO.Stream;
 using SystemAssembly = System.Reflection.Assembly;
 
-namespace NovaEngine
+namespace System.Customize.Extension
 {
     /// <summary>
     /// 为系统默认的对象类型提供扩展接口支持
@@ -41,7 +41,7 @@ namespace NovaEngine
         /// <param name="self">源对象类型</param>
         /// <param name="type">目标对象类型</param>
         /// <returns>可以赋值给目标对象类型则返回true，否则返回false</returns>
-        public static bool IsAssignableTo(this SystemType self, SystemType type)
+        public static bool IsAssignableTo(this Type self, Type type)
         {
             return type.IsAssignableFrom(self);
         }
@@ -52,7 +52,7 @@ namespace NovaEngine
         /// <param name="self">源对象类型</param>
         /// <param name="type">目标对象类型</param>
         /// <returns>可以赋值给目标对象类型则返回true，否则返回false</returns>
-        public static bool Is(this SystemType self, SystemType type)
+        public static bool Is(this Type self, Type type)
         {
             return self.IsAssignableTo(type);
         }
@@ -63,7 +63,7 @@ namespace NovaEngine
         /// <typeparam name="T">目标对象类型</typeparam>
         /// <param name="self">源对象类型</param>
         /// <returns>可以赋值给目标对象类型则返回true，否则返回false</returns>
-        public static bool Is<T>(this SystemType self)
+        public static bool Is<T>(this Type self)
         {
             return self.IsAssignableTo(typeof(T));
         }
@@ -73,7 +73,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">对象类型</param>
         /// <returns>返回所在程序集的缩略名</returns>
-        public static string GetAssemblyShortName(this SystemType self)
+        public static string GetAssemblyShortName(this Type self)
         {
             return self.Assembly.GetName().Name;
         }
@@ -85,11 +85,11 @@ namespace NovaEngine
         /// <param name="charset">转换文本的字符集</param>
         /// <param name="resourceName">资源名称</param>
         /// <returns>返回资源的文本字符串</returns>
-        public static string GetManifestString(this SystemType self, string charset, string resourceName)
+        public static string GetManifestString(this Type self, string charset, string resourceName)
         {
-            SystemAssembly assembly = SystemAssembly.GetAssembly(self);
-            SystemStream stream = assembly.GetManifestResourceStream(string.Concat(self.Namespace, Definition.CString.Dot,
-                    resourceName.Replace(Definition.CString.Slash, Definition.CString.Dot)));
+            Reflection.Assembly assembly = Reflection.Assembly.GetAssembly(self);
+            IO.Stream stream = assembly.GetManifestResourceStream(string.Concat(self.Namespace, NovaEngine.Definition.CString.Dot,
+                    resourceName.Replace(NovaEngine.Definition.CString.Slash, NovaEngine.Definition.CString.Dot)));
             if (null == stream)
             {
                 return string.Empty;
@@ -99,7 +99,7 @@ namespace NovaEngine
             byte[] bytes = new byte[iLen];
             stream.Read(bytes, 0, iLen);
             stream.Dispose();
-            return SystemEncoding.GetEncoding(charset).GetString(bytes);
+            return Text.Encoding.GetEncoding(charset).GetString(bytes);
         }
     }
 }

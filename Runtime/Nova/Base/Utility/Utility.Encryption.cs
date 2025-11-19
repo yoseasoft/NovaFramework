@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Customize.Extension;
+
 using SystemGuid = System.Guid;
 using SystemArray = System.Array;
 using SystemConvert = System.Convert;

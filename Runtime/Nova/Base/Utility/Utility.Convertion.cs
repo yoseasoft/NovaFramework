@@ -24,6 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Customize.Extension;
+
 using SystemGuid = System.Guid;
 using SystemType = System.Type;
 using SystemObject = System.Object;

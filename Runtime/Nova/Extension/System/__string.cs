@@ -24,14 +24,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemEncoding = System.Text.Encoding;
-using SystemRegex = System.Text.RegularExpressions.Regex;
-using SystemMatch = System.Text.RegularExpressions.Match;
-
-using SystemGuid = System.Guid;
-using SystemDateTime = System.DateTime;
-
-namespace NovaEngine
+namespace System.Customize.Extension
 {
     /// <summary>
     /// 为系统默认的基础字符串数据类型提供扩展接口支持
@@ -44,7 +37,7 @@ namespace NovaEngine
         /// <param name="self">原始字符串</param>
         /// <param name="defaultValue">默认值</param>
         /// <returns>返回转换后的整型数值，若转换失败则返回默认值</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static int ToInt32(this string self, int defaultValue = 0)
         {
             return self.TryConvertTo(defaultValue);
@@ -56,7 +49,7 @@ namespace NovaEngine
         /// <param name="self">原始字符串</param>
         /// <param name="defaultValue">默认值</param>
         /// <returns>返回转换后的长整型数值，若转换失败则返回默认值</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static long ToInt64(this string self, long defaultValue = 0L)
         {
             return self.TryConvertTo(defaultValue);
@@ -68,7 +61,7 @@ namespace NovaEngine
         /// <param name="self">原始字符串</param>
         /// <param name="defaultValue">默认值</param>
         /// <returns>返回转换后的浮点型数值，若转换失败则返回默认值</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static double ToDouble(this string self, double defaultValue = 0)
         {
             return self.TryConvertTo(defaultValue);
@@ -79,10 +72,10 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>返回转换后的日期时间类型对象实例</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public static SystemDateTime ToDateTime(this string self)
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static DateTime ToDateTime(this string self)
         {
-            SystemDateTime.TryParse(self, out var result);
+            DateTime.TryParse(self, out var result);
             return result;
         }
 
@@ -91,10 +84,10 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>返回转换后的GUID类型对象实例</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public static SystemGuid ToGuid(this string self)
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static Guid ToGuid(this string self)
         {
-            return SystemGuid.Parse(self);
+            return Guid.Parse(self);
         }
 
         /// <summary>
@@ -102,10 +95,10 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>返回转换后的字节数组</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static byte[] ToByteArray(this string self)
         {
-            return SystemEncoding.UTF8.GetBytes(self);
+            return Text.Encoding.UTF8.GetBytes(self);
         }
 
         /// <summary>
@@ -113,7 +106,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>若给定字符串为null或空字符串则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static bool IsNullOrEmpty(this string self)
         {
             return string.IsNullOrEmpty(self);
@@ -124,7 +117,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>若给定字符串不为null且非空字符串则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static bool IsNotNullOrEmpty(this string self)
         {
             return !self.IsNullOrEmpty();
@@ -135,10 +128,10 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>若给定字符串为null或空白字符则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static bool IsNullOrWhiteSpace(this string self)
         {
-            return string.IsNullOrWhiteSpace(self) || self.EqualsIgnoreCase(Definition.CString.Null);
+            return string.IsNullOrWhiteSpace(self) || self.EqualsIgnoreCase(NovaEngine.Definition.CString.Null);
         }
 
         /// <summary>
@@ -146,7 +139,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>若给定字符串不为null且非空白字符则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static bool IsNotNullOrWhiteSpace(this string self)
         {
             return !self.IsNullOrWhiteSpace();
@@ -158,7 +151,7 @@ namespace NovaEngine
         /// <param name="self">原始字符串</param>
         /// <param name="other">对比字符串</param>
         /// <returns>若两个字符串相等则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static bool EqualsIgnoreCase(this string self, string other)
         {
             return self.ToLower().Equals(other?.ToLower());
@@ -245,8 +238,8 @@ namespace NovaEngine
             if (string.IsNullOrEmpty(self))
                 return self;
 
-            SystemMatch startUnderscores = SystemRegex.Match(self, @"^_+");
-            return startUnderscores + SystemRegex.Replace(self, @"([a-z0-9])([A-Z])", "$1_$2").ToLower();
+            Text.RegularExpressions.Match startUnderscores = Text.RegularExpressions.Regex.Match(self, @"^_+");
+            return startUnderscores + Text.RegularExpressions.Regex.Replace(self, @"([a-z0-9])([A-Z])", "$1_$2").ToLower();
         }
 
         /// <summary>
@@ -259,8 +252,8 @@ namespace NovaEngine
             if (string.IsNullOrEmpty(self))
                 return self;
 
-            string result = SystemRegex.Replace(self, @"([^\p{L}\p{N}])(\p{L})", m => $"{m.Groups[1]}{char.ToUpper(m.Groups[2].Value[0])}");
-            result = SystemRegex.Replace(result, @"[^A-Za-z0-9]", "");
+            string result = Text.RegularExpressions.Regex.Replace(self, @"([^\p{L}\p{N}])(\p{L})", m => $"{m.Groups[1]}{char.ToUpper(m.Groups[2].Value[0])}");
+            result = Text.RegularExpressions.Regex.Replace(result, @"[^A-Za-z0-9]", "");
             return result;
         }
 

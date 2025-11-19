@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Customize.Extension;
+
 using SystemType = System.Type;
 using SystemIntPtr = System.IntPtr;
 using SystemStringBuilder = System.Text.StringBuilder;

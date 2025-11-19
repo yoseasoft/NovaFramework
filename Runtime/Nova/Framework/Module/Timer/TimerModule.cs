@@ -26,6 +26,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Customize.Extension;
 
 using SystemDateTime = System.DateTime;
 using SystemTimeSpan = System.TimeSpan;

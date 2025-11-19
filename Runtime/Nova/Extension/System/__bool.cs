@@ -22,7 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace System.Customize.Extension
 {
     /// <summary>
     /// 为系统默认的基础布尔数据类型提供扩展接口支持
@@ -69,8 +69,8 @@ namespace NovaEngine
         /// <returns>若两值相同则返回true，否则返回false</returns>
         public static bool Equals(this bool self, char value)
         {
-            if ((self && (value > 0 && value != Definition.CCharacter.N)) ||
-                (!self && (value == 0 || value == Definition.CCharacter.N)))
+            if ((self && (value > 0 && value != NovaEngine.Definition.CCharacter.N)) ||
+                (!self && (value == 0 || value == NovaEngine.Definition.CCharacter.N)))
             {
                 return true;
             }
@@ -91,8 +91,8 @@ namespace NovaEngine
                 return !self;
             }
 
-            if ((self && value.Trim().ToLower().Equals(Definition.CString.True)) ||
-                (!self && value.Trim().ToLower().Equals(Definition.CString.False)))
+            if ((self && value.Trim().ToLower().Equals(NovaEngine.Definition.CString.True)) ||
+                (!self && value.Trim().ToLower().Equals(NovaEngine.Definition.CString.False)))
             {
                 return true;
             }

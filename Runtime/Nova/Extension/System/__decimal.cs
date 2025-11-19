@@ -23,10 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemMath = System.Math;
-using SystemMidpointRounding = System.MidpointRounding;
-
-namespace NovaEngine
+namespace System.Customize.Extension
 {
     /// <summary>
     /// 为系统默认的数字类型提供扩展接口支持
@@ -40,7 +37,7 @@ namespace NovaEngine
         /// <returns>返回整数类型数值</returns>
         public static int ToInt32(this decimal self)
         {
-            return (int) SystemMath.Floor(self);
+            return (int) Math.Floor(self);
         }
 
         /// <summary>
@@ -83,25 +80,25 @@ namespace NovaEngine
         /// <param name="decimals">保留小数位数，默认为0，即保留到整数</param>
         /// <param name="mode">舍入方式</param>
         /// <returns>返回舍入后的数值</returns>
-        public static decimal Round(this decimal self, int decimals = 0, SystemMidpointRounding mode = SystemMidpointRounding.AwayFromZero)
+        public static decimal Round(this decimal self, int decimals = 0, MidpointRounding mode = MidpointRounding.AwayFromZero)
         {
-            self = SystemMath.Round(self, decimals, mode);
+            self = Math.Round(self, decimals, mode);
             return self;
         }
 
         /// <summary>
         /// 对数字进行舍入的函数，<br/>
-        /// 使用规则请参数<see cref="Round(decimal, int, SystemMidpointRounding)"/>
+        /// 使用规则请参数<see cref="Round(decimal, int, MidpointRounding)"/>
         /// </summary>
         /// <param name="self">数字对象实例</param>
         /// <param name="decimals">保留小数位数，默认为0，即保留到整数</param>
         /// <param name="mode">舍入方式</param>
         /// <returns>返回舍入后的数值</returns>
-        public static decimal? Round(this decimal? self, int decimals = 0, SystemMidpointRounding mode = SystemMidpointRounding.AwayFromZero)
+        public static decimal? Round(this decimal? self, int decimals = 0, MidpointRounding mode = MidpointRounding.AwayFromZero)
         {
             if (self.HasValue)
             {
-                self = SystemMath.Round(self.Value, decimals, mode);
+                self = Math.Round(self.Value, decimals, mode);
             }
             return self;
         }

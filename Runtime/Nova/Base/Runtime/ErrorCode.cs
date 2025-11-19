@@ -22,6 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Customize.Extension;
+
 using SystemType = System.Type;
 using SystemBindingFlags = System.Reflection.BindingFlags;
 using SystemFieldInfo = System.Reflection.FieldInfo;

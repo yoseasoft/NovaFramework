@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace System.Customize.Extension
 {
     /// <summary>
     /// 为系统默认的字符数据类型提供扩展接口支持
@@ -51,7 +51,7 @@ namespace NovaEngine
             }
 
             // 下划线字符
-            if (Definition.CCharacter.Underline == self)
+            if (NovaEngine.Definition.CCharacter.Underline == self)
             {
                 return true;
             }

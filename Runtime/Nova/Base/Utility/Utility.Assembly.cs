@@ -26,6 +26,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Customize.Extension;
 
 using SystemType = System.Type;
 using SystemStringComparer = System.StringComparer;

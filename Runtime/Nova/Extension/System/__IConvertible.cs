@@ -23,10 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemIConvertible = System.IConvertible;
-
-namespace NovaEngine
+namespace System.Customize.Extension
 {
     /// <summary>
     /// 为系统默认的数据转换接口提供扩展接口支持
@@ -39,8 +36,8 @@ namespace NovaEngine
         /// <typeparam name="T">目标类型</typeparam>
         /// <param name="self">源对象实例</param>
         /// <returns>返回转换类型后的对象实例</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public static T ConvertTo<T>(this SystemIConvertible self) where T : SystemIConvertible
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static T ConvertTo<T>(this IConvertible self) where T : IConvertible
         {
             return (T) ConvertTo(self, typeof(T));
         }
@@ -52,8 +49,8 @@ namespace NovaEngine
         /// <param name="self">源对象实例</param>
         /// <param name="defaultValue">默认值</param>
         /// <returns>返回转换类型后的对象实例</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public static T TryConvertTo<T>(this SystemIConvertible self, T defaultValue = default) where T : SystemIConvertible
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static T TryConvertTo<T>(this IConvertible self, T defaultValue = default) where T : IConvertible
         {
             try
             {
@@ -72,8 +69,8 @@ namespace NovaEngine
         /// <param name="self">源对象实例</param>
         /// <param name="result">转换的目标对象实例</param>
         /// <returns>若转换成功返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public static bool TryConvertTo<T>(this SystemIConvertible self, out T result) where T : SystemIConvertible
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static bool TryConvertTo<T>(this IConvertible self, out T result) where T : IConvertible
         {
             try
             {
@@ -94,8 +91,8 @@ namespace NovaEngine
         /// <param name="type">目标类型</param>
         /// <param name="result">转换的目标对象实例</param>
         /// <returns>若转换成功返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public static bool TryConvertTo(this SystemIConvertible self, SystemType type, out object result)
+        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static bool TryConvertTo(this IConvertible self, Type type, out object result)
         {
             try
             {
@@ -115,28 +112,28 @@ namespace NovaEngine
         /// <param name="self">源对象实例</param>
         /// <param name="type">目标类型</param>
         /// <returns>返回转换类型后的对象实例</returns>
-        public static object ConvertTo(this SystemIConvertible self, SystemType type)
+        public static object ConvertTo(this IConvertible self, Type type)
         {
             if (null == self)
                 return default;
 
             if (type.IsEnum)
             {
-                return System.Enum.Parse(type, self.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                return Enum.Parse(type, self.ToString(Globalization.CultureInfo.InvariantCulture));
             }
 
-            if (type.IsGenericType && typeof(System.Nullable<>) == type.GetGenericTypeDefinition())
+            if (type.IsGenericType && typeof(Nullable<>) == type.GetGenericTypeDefinition())
             {
-                SystemType underlyingType = System.Nullable.GetUnderlyingType(type);
+                Type underlyingType = Nullable.GetUnderlyingType(type);
                 if (null != underlyingType)
                 {
                     return underlyingType.IsEnum ?
-                            System.Enum.Parse(underlyingType, self.ToString(System.Globalization.CultureInfo.CurrentCulture)) :
-                            System.Convert.ChangeType(self, underlyingType);
+                            Enum.Parse(underlyingType, self.ToString(Globalization.CultureInfo.CurrentCulture)) :
+                            Convert.ChangeType(self, underlyingType);
                 }
             }
 
-            return System.Convert.ChangeType(self, type);
+            return Convert.ChangeType(self, type);
         }
     }
 }

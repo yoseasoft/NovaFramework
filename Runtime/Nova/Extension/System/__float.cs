@@ -23,9 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemMath = System.Math;
-
-namespace NovaEngine
+namespace System.Customize.Extension
 {
     /// <summary>
     /// 为系统默认的单精度浮点数据类型提供扩展接口支持
@@ -39,7 +37,7 @@ namespace NovaEngine
         /// <returns>若给定的浮点数值为零则返回true，否则返回false</returns>
         public static bool IsZero(this float self)
         {
-            return (SystemMath.Abs(self) < float.Epsilon);
+            return (Math.Abs(self) < float.Epsilon);
         }
 
         /// <summary>
@@ -49,7 +47,7 @@ namespace NovaEngine
         /// <returns>返回转换后的整数类型数值</returns>
         public static int ToInt32(this float self)
         {
-            return (int) SystemMath.Floor(self);
+            return (int) Math.Floor(self);
         }
 
         /// <summary>
@@ -70,7 +68,7 @@ namespace NovaEngine
         /// <returns>返回转换后的数字类型数值</returns>
         public static decimal ToDecimal(this float self, int precision)
         {
-            return SystemMath.Round(self.ConvertTo<decimal>(), precision);
+            return Math.Round(self.ConvertTo<decimal>(), precision);
         }
     }
 }
