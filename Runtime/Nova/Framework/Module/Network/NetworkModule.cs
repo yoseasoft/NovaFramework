@@ -35,7 +35,7 @@ namespace NovaEngine
     /// 网络管理模块，处理网络相关的连接/断开，及数据包通信等访问接口
     /// 优化网络操作接口，整合SOCKET，HTTP链接及读写接口
     /// </summary>
-    public sealed partial class NetworkModule : ModuleObject, Network.ISocketCall, Network.IHttpCall
+    internal sealed partial class NetworkModule : ModuleObject, Network.ISocketCall, Network.IHttpCall
     {
         /// <summary>
         /// 处理HTTP模式的应用实例，对基于HTTP协议的网络请求进行封装实现

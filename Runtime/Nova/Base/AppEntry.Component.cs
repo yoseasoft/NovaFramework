@@ -35,7 +35,7 @@ namespace NovaEngine
     /// <summary>
     /// 应用程序的总入口，提供引擎中绑定组件或调度器的统一管理类
     /// </summary>
-    public static partial class AppEntry
+    internal static partial class AppEntry
     {
         /// <summary>
         /// 节点对象的映射容器

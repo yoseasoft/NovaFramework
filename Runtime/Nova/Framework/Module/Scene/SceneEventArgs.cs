@@ -29,7 +29,7 @@ namespace NovaEngine
     /// <summary>
     /// 场景对象事件参数基类定义
     /// </summary>
-    public sealed class SceneEventArgs : ModuleEventArgs
+    internal sealed class SceneEventArgs : ModuleEventArgs
     {
         /// <summary>
         /// 事件参数类型标识

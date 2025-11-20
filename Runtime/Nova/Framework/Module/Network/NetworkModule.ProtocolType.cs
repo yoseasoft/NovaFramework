@@ -30,7 +30,7 @@ namespace NovaEngine
     /// <summary>
     /// 网络管理模块，处理网络相关的连接/断开，及数据包通信等访问接口
     /// </summary>
-    public sealed partial class NetworkModule
+    internal partial class NetworkModule
     {
         /// <summary>
         /// 网络基础指令协议类型

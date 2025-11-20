@@ -132,35 +132,35 @@ namespace GameEngine
         /// <summary>
         /// 获取定时器模块的对象实例
         /// </summary>
-        public NovaEngine.TimerModule TimerModule => _timerModule;
+        internal NovaEngine.TimerModule TimerModule => _timerModule;
         /// <summary>
         /// 获取线程模块的对象实例
         /// </summary>
-        public NovaEngine.ThreadModule ThreadModule => _threadModule;
+        internal NovaEngine.ThreadModule ThreadModule => _threadModule;
         /// <summary>
         /// 获取任务模块的对象实例
         /// </summary>
-        public NovaEngine.TaskModule TaskModule => _taskModule;
+        internal NovaEngine.TaskModule TaskModule => _taskModule;
         /// <summary>
         /// 获取网络模块的对象实例
         /// </summary>
-        public NovaEngine.NetworkModule NetworkModule => _networkModule;
+        internal NovaEngine.NetworkModule NetworkModule => _networkModule;
         /// <summary>
         /// 获取输入模块的对象实例
         /// </summary>
-        public NovaEngine.InputModule InputModule => _inputModule;
+        internal NovaEngine.InputModule InputModule => _inputModule;
         /// <summary>
         /// 获取资源模块的对象实例
         /// </summary>
-        public NovaEngine.ResourceModule ResourceModule => _resourceModule;
+        internal NovaEngine.ResourceModule ResourceModule => _resourceModule;
         /// <summary>
         /// 获取文件模块的对象实例
         /// </summary>
-        public NovaEngine.FileModule FileModule => _fileModule;
+        internal NovaEngine.FileModule FileModule => _fileModule;
         /// <summary>
         /// 获取场景模块的对象实例
         /// </summary>
-        public NovaEngine.SceneModule SceneModule => _sceneModule;
+        internal NovaEngine.SceneModule SceneModule => _sceneModule;
 
         /// <summary>
         /// 句柄对象初始化接口函数

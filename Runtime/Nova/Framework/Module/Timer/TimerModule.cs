@@ -36,7 +36,7 @@ namespace NovaEngine
     /// <summary>
     /// 定时管理模块，通过一个全局唯一队列对所有的定时任务进行统一处理
     /// </summary>
-    public sealed partial class TimerModule : ModuleObject
+    internal sealed partial class TimerModule : ModuleObject
     {
         /// <summary>
         /// 计划任务永久重复执行标识参数

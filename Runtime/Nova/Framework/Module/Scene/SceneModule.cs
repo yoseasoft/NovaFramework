@@ -36,7 +36,7 @@ namespace NovaEngine
     /// <summary>
     /// 场景管理器，处理场景相关的加载/卸载，及同屏场景间切换等访问接口
     /// </summary>
-    public sealed partial class SceneModule : ModuleObject
+    internal sealed partial class SceneModule : ModuleObject
     {
         /// <summary>
         /// 初始主场景实例的名称

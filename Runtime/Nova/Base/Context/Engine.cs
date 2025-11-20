@@ -45,7 +45,7 @@ namespace NovaEngine
     ///     -> OnDestroy
     ///     -> OnApplicationQuit
     /// </summary>
-    public sealed /*partial*/ class Engine : IUpdatable
+    internal sealed /*partial*/ class Engine : IUpdatable
     {
         /// <summary>
         /// 核心引擎对象静态实例

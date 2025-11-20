@@ -32,7 +32,7 @@ namespace NovaEngine
     /// <summary>
     /// 文件管理器，对当前系统存储的文件提供基础的读写访问操作接口
     /// </summary>
-    public sealed partial class FileModule : ModuleObject
+    internal sealed partial class FileModule : ModuleObject
     {
         /// <summary>
         /// 文件模块事件类型

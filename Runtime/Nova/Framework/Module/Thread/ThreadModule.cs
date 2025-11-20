@@ -30,7 +30,7 @@ namespace NovaEngine
     /// <summary>
     /// 线程管理器，对协程及线程进行封装，对外提供统一的调用接口
     /// </summary>
-    public sealed partial class ThreadModule : ModuleObject
+    internal sealed partial class ThreadModule : ModuleObject
     {
         /// <summary>
         /// 线程模块事件类型

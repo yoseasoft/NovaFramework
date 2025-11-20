@@ -39,7 +39,7 @@ namespace NovaEngine
     /// <summary>
     /// 基础管理句柄，统一管理程序内部所有的管理器，指令等信息，同时对外提供全部管理器的统一访问接口
     /// </summary>
-    public partial class Facade
+    internal sealed partial class Facade
     {
         /// <summary>
         /// 表现层对象静态实例
@@ -65,7 +65,7 @@ namespace NovaEngine
         /// 表现层对象构造函数
         /// </summary>
         /// <param name="gameObject">根节点组件实例</param>
-        protected Facade(Engine engine)
+        private Facade(Engine engine)
         {
             // 初始化根节点组件实例
             // 该实例一旦初始化后不可更改
@@ -88,7 +88,7 @@ namespace NovaEngine
         /// 对象初始化回调接口，在实例构建成功时调用，子类中可以不处理该接口
         /// </summary>
         /// <returns>默认返回true，若返回值为false，则实例初始化失败</returns>
-        protected virtual bool Initialize()
+        private bool Initialize()
         {
             // 该初始化接口仅可调用一次，若需再次初始化该接口，需将之前的实例销毁掉
             Logger.Assert(null == _instance);
@@ -107,7 +107,7 @@ namespace NovaEngine
         /// <summary>
         /// 对象清理回调接口，在实例销毁之前调用，子类中可以不处理该接口
         /// </summary>
-        protected virtual void Cleanup()
+        private void Cleanup()
         {
         }
 
@@ -152,7 +152,7 @@ namespace NovaEngine
         /// <summary>
         /// 表现层统一初始启动接口
         /// </summary>
-        public virtual void Startup()
+        public void Startup()
         {
             ModuleController.Startup();
         }
@@ -160,7 +160,7 @@ namespace NovaEngine
         /// <summary>
         /// 表现层统一结束关闭接口
         /// </summary>
-        public virtual void Shutdown()
+        public void Shutdown()
         {
             ModuleController.Shutdown();
         }
@@ -168,7 +168,7 @@ namespace NovaEngine
         /// <summary>
         /// 表现层统一逻辑更新接口
         /// </summary>
-        public virtual void Update()
+        public void Update()
         {
             // 模块刷新
             ModuleController.Update();
@@ -177,7 +177,7 @@ namespace NovaEngine
         /// <summary>
         /// 表现层统一后置更新接口
         /// </summary>
-        public virtual void LateUpdate()
+        public void LateUpdate()
         {
             // 模块后置刷新
             ModuleController.LateUpdate();
@@ -186,7 +186,7 @@ namespace NovaEngine
         /// <summary>
         /// 表现层统一临时资源清理接口
         /// </summary>
-        public virtual void Dump()
+        public void Dump()
         {
         }
 

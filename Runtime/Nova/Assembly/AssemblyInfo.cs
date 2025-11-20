@@ -29,3 +29,4 @@ using System.Runtime.CompilerServices;
 // [assembly: InternalsVisibleTo("Assembly-CSharp")]
 // [assembly: InternalsVisibleTo("Assembly-CSharp-Editor")]
 [assembly: InternalsVisibleTo("Nova.Basic")]
+[assembly: InternalsVisibleTo("Nova.Import")]

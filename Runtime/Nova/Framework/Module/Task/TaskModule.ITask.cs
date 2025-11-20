@@ -31,7 +31,7 @@ namespace NovaEngine
     /// 参考开源项目<code>UnityMainThreadDispatcher</code>的实现方式，以队列的形式逐个完成任务的调度<br/>
     /// 开源项目下载地址：https://github.com/PimDeWitte/UnityMainThreadDispatcher.git
     /// </summary>
-    public sealed partial class TaskModule : ModuleObject
+    internal partial class TaskModule
     {
         /// <summary>
         /// 任务调度的回调执行对象接口，预定义回调操作接口

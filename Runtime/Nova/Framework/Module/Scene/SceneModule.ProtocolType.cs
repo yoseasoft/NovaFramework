@@ -29,7 +29,7 @@ namespace NovaEngine
     /// <summary>
     /// 场景管理器，处理场景相关的加载/卸载，及同屏场景间切换等访问接口
     /// </summary>
-    public sealed partial class SceneModule : ModuleObject
+    internal partial class SceneModule
     {
         /// <summary>
         /// 场景基础指令协议类型

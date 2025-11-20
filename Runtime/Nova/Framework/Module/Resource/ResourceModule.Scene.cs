@@ -32,7 +32,7 @@ namespace NovaEngine
     /// <summary>
     /// 资源管理器，统一处理打包资源的加载读取，缓存释放等功能，为其提供操作接口
     /// </summary>
-    public sealed partial class ResourceModule
+    internal partial class ResourceModule
     {
     }
 }

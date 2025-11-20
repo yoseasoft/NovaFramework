@@ -34,7 +34,7 @@ namespace NovaEngine
     /// 建议所有的GameObject实例化都通过该管理类实现，这样可以使用包装后的接口来访问所有的组件实例<br/>
     /// 同时程序中的管理模块，也可以通过该入口进行统一调度规划
     /// </summary>
-    public static partial class AppEntry
+    internal static partial class AppEntry
     {
         /// <summary>
         /// 程序管理器的实例运行状态标识

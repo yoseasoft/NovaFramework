@@ -39,7 +39,7 @@ namespace NovaEngine
     /// <summary>
     /// 输入管理器，处理通过键盘、鼠标及触屏等方式产生的事件通知访问接口
     /// </summary>
-    public sealed partial class InputModule : ModuleObject
+    internal sealed partial class InputModule : ModuleObject
     {
         /// <summary>
         /// 按键编码列表
