@@ -369,7 +369,11 @@ namespace NovaEngine
         /// </summary>
         private static void UnloadModuleOnShutdown()
         {
-            IList<int> moduleTypes = Config.GetAllRegModuleTypes();
+            // 2025-11-20：
+            // 因为顺序问题导致 SceneRecordInfo.Cleanup() 在调用时， ResourceModule 被提前释放了而抛出的 NullReferenceException 异常；
+            // 所以这里调整为逆序释放，优先释放上层服务接口中的资源，避免空指针问题；
+            // IList<int> moduleTypes = Config.GetAllRegModuleTypes();
+            IEnumerable<int> moduleTypes = Utility.Collection.Reverse(Config.GetAllRegModuleTypes());
             foreach (int moduleType in moduleTypes)
             {
                 if (_moduleCollections.ContainsKey(moduleType))
