@@ -39,7 +39,7 @@ namespace NovaEngine
     /// <summary>
     /// 通用模式下的网络适配组件操作接口类
     /// </summary>
-    public static class NetworkAdapter
+    internal static class NetworkAdapter
     {
         /// <summary>
         /// 网络服务的后缀名称

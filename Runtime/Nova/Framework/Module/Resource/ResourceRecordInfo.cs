@@ -32,7 +32,7 @@ namespace NovaEngine
     /// 资源对象运行时信息数据封装对象类，对资源及相关实例化对象进行统一封装管理
     /// 其数据结构包含名称，资源包，实例化对象等
     /// </summary>
-    public sealed class ResourceRecordInfo
+    internal sealed class ResourceRecordInfo
     {
         /// <summary>
         /// 资源唯一标识

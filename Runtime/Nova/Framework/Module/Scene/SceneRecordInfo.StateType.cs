@@ -28,7 +28,7 @@ namespace NovaEngine
     /// 场景数据结构对象类，对场景资源及相关使用参数进行统一封装管理
     /// 其数据结构包含场景资源，层级，物件，相关烘焙或光照等
     /// </summary>
-    public partial class SceneRecordInfo
+    internal partial class SceneRecordInfo
     {
         /// <summary>
         /// 场景数据状态类型枚举定义

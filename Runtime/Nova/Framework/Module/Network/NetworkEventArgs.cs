@@ -29,7 +29,7 @@ namespace NovaEngine
     /// <summary>
     /// 网络对象事件参数基类定义
     /// </summary>
-    public sealed class NetworkEventArgs : ModuleEventArgs
+    internal sealed class NetworkEventArgs : ModuleEventArgs
     {
         /// <summary>
         /// 事件参数类型标识

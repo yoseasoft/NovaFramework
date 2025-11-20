@@ -29,7 +29,7 @@ namespace NovaEngine
     /// <summary>
     /// 定时对象事件参数基类定义
     /// </summary>
-    public sealed class TimerEventArgs : ModuleEventArgs
+    internal sealed class TimerEventArgs : ModuleEventArgs
     {
         /// <summary>
         /// 事件参数类型标识

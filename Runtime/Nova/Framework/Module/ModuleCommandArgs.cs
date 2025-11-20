@@ -29,7 +29,7 @@ namespace NovaEngine
     /// <summary>
     /// 模块类指令参数基类定义
     /// </summary>
-    public class ModuleCommandArgs : CommandArgs
+    internal class ModuleCommandArgs : CommandArgs
     {
         /// <summary>
         /// 当前指令参数的类型
