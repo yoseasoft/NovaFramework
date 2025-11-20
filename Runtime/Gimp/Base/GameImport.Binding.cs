@@ -55,10 +55,10 @@ namespace GameEngine
         /// <summary>
         /// 世界加载器的重载函数
         /// </summary>
-        /// <param name="type">重载类型</param>
-        public static void Reload(int type)
+        /// <param name="commandType">重载类型</param>
+        public static void Reload(EngineCommandType commandType)
         {
-            OnReload(type);
+            OnReload(commandType);
         }
 
         /// <summary>

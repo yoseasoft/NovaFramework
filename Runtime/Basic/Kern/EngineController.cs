@@ -58,8 +58,15 @@ namespace GameEngine
         /// <param name="type">重载类型</param>
         public static void Reload(int type)
         {
+            EngineCommandType commandType = NovaEngine.Utility.Convertion.GetEnumFromValue<EngineCommandType>(type);
+            if (EngineCommandType.Unknown == commandType)
+            {
+                Debugger.Error(LogGroupTag.Basic, "The EngineCommandType value '{%d}' is invalid.", type);
+                return;
+            }
+
             // 重载引擎
-            EngineLauncher.OnReload(type);
+            EngineLauncher.OnReload(commandType);
         }
 
         /// <summary>

@@ -58,21 +58,21 @@ namespace GameEngine
         /// <summary>
         /// 重载业务层模块
         /// </summary>
-        /// <param name="type">类型标识</param>
-        public static void Reload(int type)
+        /// <param name="commandType">类型标识</param>
+        public static void Reload(EngineCommandType commandType)
         {
-            switch (type)
+            switch (commandType)
             {
-                case (int) GameEngine.EngineCommandType.Hotfix:
+                case EngineCommandType.Hotfix:
                     // 重载修补程序
                     ReloadHotfix();
                     break;
-                case (int) GameEngine.EngineCommandType.Configure:
+                case EngineCommandType.Configure:
                     // 重新配置数据
                     ReloadConfigure();
                     break;
                 default:
-                    Debugger.Throw<System.InvalidOperationException>($"Invalid reload type {type}.");
+                    Debugger.Throw<System.InvalidOperationException>($"Invalid reload type {commandType}.");
                     break;
             }
         }
@@ -96,7 +96,7 @@ namespace GameEngine
             GameLibrary.Restart();
 
             // 业务重载
-            ReloadGame((int) EngineCommandType.Hotfix);
+            ReloadGame(EngineCommandType.Hotfix);
 
             // 业务重载完成后，对其上下文进行刷新操作
             GameLibrary.ReloadContext();
@@ -108,7 +108,7 @@ namespace GameEngine
         static void ReloadConfigure()
         {
             // 业务重新导入
-            ReloadGame((int) EngineCommandType.Configure);
+            ReloadGame(EngineCommandType.Configure);
         }
 
         /// <summary>
@@ -137,11 +137,11 @@ namespace GameEngine
         /// <summary>
         /// 重载游戏业务层模块
         /// </summary>
-        /// <param name="type">类型标识</param>
-        private static void ReloadGame(int type)
+        /// <param name="commandType">类型标识</param>
+        private static void ReloadGame(EngineCommandType commandType)
         {
             // 通知中间层模块重载业务
-            CallRemoteService(GameMacros.GAME_REMOTE_PROCESS_CALL_RELOAD_SERVICE_NAME, type);
+            CallRemoteService(GameMacros.GAME_REMOTE_PROCESS_CALL_RELOAD_SERVICE_NAME, commandType);
         }
 
         /// <summary>

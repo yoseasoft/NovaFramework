@@ -75,11 +75,11 @@ namespace GameEngine
         /// <summary>
         /// 世界对象重载函数
         /// </summary>
-        /// <param name="type">类型标识</param>
-        public static void OnReload(int type)
+        /// <param name="commandType">类型标识</param>
+        public static void OnReload(EngineCommandType commandType)
         {
             // 重载业务层模块
-            GameCall.Reload(type);
+            GameCall.Reload(commandType);
         }
 
         /// <summary>

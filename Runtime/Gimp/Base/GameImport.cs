@@ -60,10 +60,10 @@ namespace GameEngine
         /// <summary>
         /// 世界加载器的重载函数
         /// </summary>
-        /// <param name="type">重载类型</param>
-        public static void OnReload(int type)
+        /// <param name="commandType">重载类型</param>
+        public static void OnReload(EngineCommandType commandType)
         {
-            CallGameFunc(GameMacros.GAME_REMOTE_PROCESS_CALL_RELOAD_SERVICE_NAME, type);
+            CallGameFunc(GameMacros.GAME_REMOTE_PROCESS_CALL_RELOAD_SERVICE_NAME, commandType);
         }
 
         internal static void CheckVersion()
