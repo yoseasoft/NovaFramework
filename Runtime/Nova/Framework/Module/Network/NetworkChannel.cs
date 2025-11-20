@@ -32,7 +32,7 @@ namespace NovaEngine
     /// <summary>
     /// 网络通道对象抽象基类
     /// </summary>
-    public abstract class NetworkChannel
+    internal abstract class NetworkChannel
     {
         /// <summary>
         /// 网络通道唯一标识

@@ -44,7 +44,7 @@ namespace NovaEngine
     /// <summary>
     /// TCP模式网络通道对象抽象基类
     /// </summary>
-    public sealed partial class TcpChannel : NetworkChannel
+    internal sealed partial class TcpChannel : NetworkChannel
     {
         private SystemSocket _socket = null;
 

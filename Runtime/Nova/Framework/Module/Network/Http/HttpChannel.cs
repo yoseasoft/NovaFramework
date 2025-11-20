@@ -41,7 +41,7 @@ namespace NovaEngine
     /// <summary>
     /// HTTP模式网络通道对象抽象基类
     /// </summary>
-    public sealed class HttpChannel : NetworkChannel
+    internal sealed class HttpChannel : NetworkChannel
     {
         private readonly SystemMemoryStream _memoryStream = null;
 

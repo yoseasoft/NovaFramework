@@ -29,7 +29,7 @@ namespace NovaEngine
     /// <summary>
     /// HTTP模式网络服务接口管理基类
     /// </summary>
-    public class HttpService : NetworkService
+    internal class HttpService : NetworkService
     {
         /// <summary>
         /// 获取网络通道的服务类型

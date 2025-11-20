@@ -31,7 +31,7 @@ namespace NovaEngine
     /// <summary>
     /// WebSocket模式网络服务接口管理基类
     /// </summary>
-    public class WebSocketService : NetworkService
+    internal class WebSocketService : NetworkService
     {
         /// <summary>
         /// 等待发送的记录队列

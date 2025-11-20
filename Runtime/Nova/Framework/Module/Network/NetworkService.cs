@@ -31,7 +31,7 @@ namespace NovaEngine
     /// <summary>
     /// 网络服务接口管理基类
     /// </summary>
-    public abstract class NetworkService
+    internal abstract class NetworkService
     {
         /// <summary>
         /// 循环数据流管理对象

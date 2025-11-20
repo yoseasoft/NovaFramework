@@ -59,7 +59,7 @@ namespace NovaEngine
     /// <summary>
     /// WebSocket模式网络通道对象抽象基类
     /// </summary>
-    public sealed partial class WebSocketChannel : NetworkChannel
+    internal sealed partial class WebSocketChannel : NetworkChannel
     {
         /// <summary>
         /// 数据缓冲区的预分配空间大小

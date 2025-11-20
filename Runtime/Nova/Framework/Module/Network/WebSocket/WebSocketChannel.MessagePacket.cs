@@ -32,7 +32,7 @@ namespace NovaEngine
     /// <summary>
     /// WebSocket模式网络通道对象抽象基类
     /// </summary>
-    public sealed partial class WebSocketChannel
+    internal sealed partial class WebSocketChannel
     {
         /// <summary>
         /// WebSocket模式网络通道数据包对象实体类

@@ -34,7 +34,7 @@ namespace NovaEngine
     /// <summary>
     /// TCP模式网络通道对象抽象基类
     /// </summary>
-    public sealed partial class TcpChannel
+    internal sealed partial class TcpChannel
     {
         /// <summary>
         /// TCP模式网络通道数据包对象实体类
