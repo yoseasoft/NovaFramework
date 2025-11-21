@@ -431,7 +431,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <param name="callback">回调句柄实例</param>
-        public static void AddCodeTypeLoadedCallback(SystemType targetType, OnCodeTypeLoadedHandler callback)
+        internal static void AddCodeTypeLoadedCallback(SystemType targetType, OnCodeTypeLoadedHandler callback)
         {
             LinkedList<OnCodeTypeLoadedHandler> handlers = null;
             if (false == _codeTypeLoadedCallbacks.TryGetValue(targetType, out handlers))
@@ -445,7 +445,7 @@ namespace GameEngine.Loader
 
             if (handlers.Contains(callback))
             {
-                Debugger.Warn("The class '{0}' reflect code type loaded callback was already existed, repeat added it failed.", targetType.FullName);
+                Debugger.Warn("The class '{%t}' reflect code type loaded callback was already existed, repeat added it failed.", targetType);
                 return;
             }
 
@@ -457,12 +457,12 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <param name="callback">回调句柄实例</param>
-        public static void RemoveCodeTypeLoadedCallback(SystemType targetType, OnCodeTypeLoadedHandler callback)
+        internal static void RemoveCodeTypeLoadedCallback(SystemType targetType, OnCodeTypeLoadedHandler callback)
         {
             LinkedList<OnCodeTypeLoadedHandler> handlers = null;
             if (false == _codeTypeLoadedCallbacks.TryGetValue(targetType, out handlers))
             {
-                Debugger.Warn("Could not found any load callback from this type '{0}', remove it failed.", targetType.FullName);
+                Debugger.Warn("Could not found any load callback from this type '{%t}', remove it failed.", targetType);
                 return;
             }
 
@@ -492,7 +492,7 @@ namespace GameEngine.Loader
         /// <param name="buffer">数据流</param>
         /// <param name="offset">数据偏移</param>
         /// <param name="length">数据长度</param>
-        public static void LoadConfigureFile(byte[] buffer, int offset, int length)
+        internal static void LoadConfigureFile(byte[] buffer, int offset, int length)
         {
             LoadGeneralConfigure(buffer, offset, length);
         }
@@ -502,7 +502,7 @@ namespace GameEngine.Loader
         /// 需要注意的是，必须在加载程序集之前，加载完成所有的配置数据，否则将导致程序集中的类型解析时，无法抽取到正确配置信息
         /// </summary>
         /// <param name="memoryStream">数据流</param>
-        public static void LoadConfigureFile(SystemMemoryStream memoryStream)
+        internal static void LoadConfigureFile(SystemMemoryStream memoryStream)
         {
             LoadGeneralConfigure(memoryStream);
         }
@@ -512,7 +512,7 @@ namespace GameEngine.Loader
         /// 需要注意的是，必须在加载程序集之前，加载完成所有的配置数据，否则将导致程序集中的类型解析时，无法抽取到正确配置信息
         /// </summary>
         /// <param name="callback">回调句柄</param>
-        public static void LoadConfigureFile(OnConfigureFileStreamLoadHandler callback)
+        internal static void LoadConfigureFile(OnConfigureFileStreamLoadHandler callback)
         {
             // 可以直接复用Bean配置重载接口函数
             ReloadGeneralConfigure(callback);
@@ -523,7 +523,7 @@ namespace GameEngine.Loader
         /// 需要注意的是，必须在加载程序集之前，加载完成所有的配置数据，否则将导致程序集中的类型解析时，无法抽取到正确配置信息
         /// </summary>
         /// <param name="callback">回调句柄</param>
-        public static void LoadConfigureFile(OnConfigureFileTextLoadHandler callback)
+        internal static void LoadConfigureFile(OnConfigureFileTextLoadHandler callback)
         {
             // 可以直接复用Bean配置重载接口函数
             ReloadGeneralConfigure(callback);
@@ -534,7 +534,7 @@ namespace GameEngine.Loader
         /// 该接口主要用于标记类已经加载完成后，需要刷新Bean配置信息时调用
         /// </summary>
         /// <param name="callback">回调句柄</param>
-        public static void ReloadConfigureFile(OnConfigureFileStreamLoadHandler callback)
+        internal static void ReloadConfigureFile(OnConfigureFileStreamLoadHandler callback)
         {
             // 重载全部Bean配置
             ReloadGeneralConfigure(callback);
@@ -548,7 +548,7 @@ namespace GameEngine.Loader
         /// 该接口主要用于标记类已经加载完成后，需要刷新Bean配置信息时调用
         /// </summary>
         /// <param name="callback">回调句柄</param>
-        public static void ReloadConfigureFile(OnConfigureFileTextLoadHandler callback)
+        internal static void ReloadConfigureFile(OnConfigureFileTextLoadHandler callback)
         {
             // 重载全部Bean配置
             ReloadGeneralConfigure(callback);
@@ -562,7 +562,7 @@ namespace GameEngine.Loader
         /// 请注意，该接口不建议由用户自定调用，因为这需要充分了解代码加载的流程<br/>
         /// 并在合适的节点进行调度，否则将导致不可预知的问题
         /// </summary>
-        public static void UnloadAllConfigures()
+        private static void UnloadAllConfigures()
         {
             UnloadAllConfigureContents();
         }
