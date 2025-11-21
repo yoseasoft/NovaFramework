@@ -26,6 +26,7 @@
 
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Customize.Extension;
 
 using SystemType = System.Type;
@@ -56,14 +57,14 @@ namespace GameEngine.Loader
         /// <param name="url">资源路径</param>
         /// <param name="ms">数据流</param>
         /// <returns>加载成功返回true，若加载失败返回false</returns>
-        public delegate bool OnConfigureFileStreamLoadHandler(string url, SystemMemoryStream ms);
+        public delegate bool OnConfigureFileStreamLoadingHandler(string url, SystemMemoryStream ms);
 
         /// <summary>
         /// 配置文件数据加载的函数句柄定义
         /// </summary>
         /// <param name="url">资源路径</param>
         /// <returns>返回加载成功的配置数据内容，若加载失败返回null</returns>
-        public delegate string OnConfigureFileTextLoadHandler(string url);
+        public delegate string OnConfigureFileTextLoadingHandler(string url);
 
         /// <summary>
         /// 配置数据对象加载的函数句柄定义
@@ -199,12 +200,23 @@ namespace GameEngine.Loader
         /// 重载通用类库的配置数据
         /// </summary>
         /// <param name="callback">回调句柄</param>
-        private static void ReloadGeneralConfigure(OnConfigureFileStreamLoadHandler callback)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void ReloadGeneralConfigure(OnConfigureFileStreamLoadingHandler callback)
+        {
+            ReloadGeneralConfigure(null, callback);
+        }
+
+        /// <summary>
+        /// 重载通用类库的配置数据
+        /// </summary>
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">回调句柄</param>
+        private static void ReloadGeneralConfigure(string url, OnConfigureFileStreamLoadingHandler callback)
         {
             // 卸载旧的配置数据
             UnloadAllConfigureContents();
 
-            string path = null;
+            string path = url;
             if (null == callback)
             {
                 Debugger.Error(LogGroupTag.CodeLoader, "The configure file load handler must be non-null, reload general configure failed!");
@@ -238,9 +250,21 @@ namespace GameEngine.Loader
         /// 重载通用类库的配置数据
         /// </summary>
         /// <param name="callback">回调句柄</param>
-        private static void ReloadGeneralConfigure(OnConfigureFileTextLoadHandler callback)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void ReloadGeneralConfigure(OnConfigureFileTextLoadingHandler callback)
         {
-            ReloadGeneralConfigure((url, ms) =>
+            ReloadGeneralConfigure(null, callback);
+        }
+
+        /// <summary>
+        /// 重载通用类库的配置数据
+        /// </summary>
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void ReloadGeneralConfigure(string url, OnConfigureFileTextLoadingHandler callback)
+        {
+            ReloadGeneralConfigure(url, (url, ms) =>
             {
                 string text = callback(url);
                 if (text.IsNullOrEmpty())

@@ -27,9 +27,9 @@
 namespace GameEngine.Loader.Configuring
 {
     /// <summary>
-    /// 配置数据源的节点标签命名
+    /// Bean配置数据源的节点标签命名
     /// </summary>
-    internal static class ConfigureNodeName
+    internal static class BeanConfigureNodeName
     {
         public const string Comment = "#comment";
         public const string File = "file";
@@ -42,9 +42,9 @@ namespace GameEngine.Loader.Configuring
     }
 
     /// <summary>
-    /// 配置数据的语法标签定义
+    /// Bean配置数据的语法标签定义
     /// </summary>
-    internal static class ConfigureNodeAttributeName
+    internal static class BeanConfigureNodeAttributeName
     {
         public const string K_NAME = "name";
         public const string K_PATH = "path";

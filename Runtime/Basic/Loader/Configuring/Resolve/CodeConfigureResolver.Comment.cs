@@ -22,16 +22,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System.Xml;
 
-using SystemXmlNode = System.Xml.XmlNode;
-using SystemXmlNodeType = System.Xml.XmlNodeType;
+using SystemType = System.Type;
 
 namespace GameEngine.Loader.Configuring
 {
-    /// <summary>
-    /// 对象数据的配置解析类，对外部配置数据的结构信息进行解析和构建
-    /// </summary>
+    /// 对象配置数据的解析类
     internal static partial class CodeConfigureResolver
     {
         /// <summary>
@@ -39,8 +36,8 @@ namespace GameEngine.Loader.Configuring
         /// </summary>
         /// <param name="node">节点实例</param>
         /// <remarks>返回配置数据的对象实例</remarks>
-        [CodeLoader.OnConfigureResolvingCallback(SystemXmlNodeType.Comment, ConfigureNodeName.Comment)]
-        private static BaseConfigureInfo LoadGeneralComments(SystemXmlNode node)
+        [CodeLoader.OnConfigureResolvingCallback(XmlNodeType.Comment, BeanConfigureNodeName.Comment)]
+        private static BaseConfigureInfo LoadGeneralComments(XmlNode node)
         {
             Debugger.Info(LogGroupTag.CodeLoader, "Load general configure comment: {0}", node.Value);
             return null;

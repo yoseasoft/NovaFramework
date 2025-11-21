@@ -29,9 +29,7 @@ using SystemType = System.Type;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 应用程序的上下文管理器对象类，对应用通用接口进行封装，对外提供访问函数
-    /// </summary>
+    /// 应用程序的上下文管理器对象类
     public static partial class ApplicationContext
     {
         /// <summary>

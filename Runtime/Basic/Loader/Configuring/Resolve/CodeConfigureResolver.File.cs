@@ -22,19 +22,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System.Xml;
 
-using SystemXmlNode = System.Xml.XmlNode;
-using SystemXmlNodeType = System.Xml.XmlNodeType;
-using SystemXmlAttribute = System.Xml.XmlAttribute;
-using SystemXmlNodeList = System.Xml.XmlNodeList;
-using SystemXmlAttributeCollection = System.Xml.XmlAttributeCollection;
+using SystemType = System.Type;
 
 namespace GameEngine.Loader.Configuring
 {
-    /// <summary>
-    /// 对象数据的配置解析类，对外部配置数据的结构信息进行解析和构建
-    /// </summary>
+    /// 对象配置数据的解析类
     internal static partial class CodeConfigureResolver
     {
         /// <summary>
@@ -42,18 +36,18 @@ namespace GameEngine.Loader.Configuring
         /// </summary>
         /// <param name="node">节点实例</param>
         /// <remarks>返回配置数据的对象实例</remarks>
-        [CodeLoader.OnConfigureResolvingCallback(SystemXmlNodeType.Element, ConfigureNodeName.File)]
-        private static BaseConfigureInfo LoadFileElement(SystemXmlNode node)
+        [CodeLoader.OnConfigureResolvingCallback(XmlNodeType.Element, BeanConfigureNodeName.File)]
+        private static BaseConfigureInfo LoadFileElement(XmlNode node)
         {
             FileConfigureInfo fileInfo = new FileConfigureInfo();
 
-            SystemXmlAttributeCollection attrCollection = node.Attributes;
+            XmlAttributeCollection attrCollection = node.Attributes;
             for (int n = 0; null != attrCollection && n < attrCollection.Count; ++n)
             {
-                SystemXmlAttribute attr = attrCollection[n];
+                XmlAttribute attr = attrCollection[n];
                 switch (attr.Name)
                 {
-                    case ConfigureNodeAttributeName.K_INCLUDE:
+                    case BeanConfigureNodeAttributeName.K_INCLUDE:
                         fileInfo.Include = attr.Value;
                         break;
                 }

@@ -25,7 +25,7 @@
 namespace GameEngine.Loader.Configuring
 {
     /// <summary>
-    /// 对象数据的配置解析类，对外部配置数据的结构信息进行解析和构建
+    /// 对象配置数据的解析类，对外部配置数据的结构信息进行解析和构建
     /// </summary>
     internal static partial class CodeConfigureResolver
     {

@@ -26,10 +26,10 @@
 
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
-using SystemAssembly = System.Reflection.Assembly;
 
 using SystemMemoryStream = System.IO.MemoryStream;
 
@@ -57,7 +57,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 程序集的版本记录容器
         /// </summary>
-        private static readonly IDictionary<string, SystemAssembly> _assemblyLibraryCaches = new Dictionary<string, SystemAssembly>();
+        private static readonly IDictionary<string, Assembly> _assemblyLibraryCaches = new Dictionary<string, Assembly>();
 
         /// <summary>
         /// 程序集的类类型统计列表
@@ -99,7 +99,7 @@ namespace GameEngine.Loader
             RemoveAllAssemblyLibraries();
 
             // 卸载全部实体配置数据信息
-            UnloadAllConfigures();
+            UnloadAllBeanConfigureInfos();
 
             // 移除全部类反射操作回调句柄
             RemoveAllCodeTypeLoadedCallbacks();
@@ -121,11 +121,11 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="assembly">程序集</param>
         /// <param name="reload">重载标识</param>
-        public static void LoadFromAssembly(SystemAssembly assembly, bool reload)
+        public static void LoadFromAssembly(Assembly assembly, bool reload)
         {
             // string assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName().FullName;
             string assemblyName = assembly.FullName;
-            if (_assemblyLibraryCaches.TryGetValue(assemblyName, out SystemAssembly assemblyVersion))
+            if (_assemblyLibraryCaches.TryGetValue(assemblyName, out Assembly assemblyVersion))
             {
                 Debugger.Warn("The target assembly '{%s}' was already loaded, repeat load it failed.", assemblyName);
                 return;
@@ -492,7 +492,8 @@ namespace GameEngine.Loader
         /// <param name="buffer">数据流</param>
         /// <param name="offset">数据偏移</param>
         /// <param name="length">数据长度</param>
-        internal static void LoadConfigureFile(byte[] buffer, int offset, int length)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void LoadBeanConfigureInfo(byte[] buffer, int offset, int length)
         {
             LoadGeneralConfigure(buffer, offset, length);
         }
@@ -502,7 +503,8 @@ namespace GameEngine.Loader
         /// 需要注意的是，必须在加载程序集之前，加载完成所有的配置数据，否则将导致程序集中的类型解析时，无法抽取到正确配置信息
         /// </summary>
         /// <param name="memoryStream">数据流</param>
-        internal static void LoadConfigureFile(SystemMemoryStream memoryStream)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void LoadBeanConfigureInfo(SystemMemoryStream memoryStream)
         {
             LoadGeneralConfigure(memoryStream);
         }
@@ -512,7 +514,8 @@ namespace GameEngine.Loader
         /// 需要注意的是，必须在加载程序集之前，加载完成所有的配置数据，否则将导致程序集中的类型解析时，无法抽取到正确配置信息
         /// </summary>
         /// <param name="callback">回调句柄</param>
-        internal static void LoadConfigureFile(OnConfigureFileStreamLoadHandler callback)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void LoadBeanConfigureInfo(OnConfigureFileStreamLoadingHandler callback)
         {
             // 可以直接复用Bean配置重载接口函数
             ReloadGeneralConfigure(callback);
@@ -522,8 +525,22 @@ namespace GameEngine.Loader
         /// 通过指定的回调句柄加载对象类型配置信息<br/>
         /// 需要注意的是，必须在加载程序集之前，加载完成所有的配置数据，否则将导致程序集中的类型解析时，无法抽取到正确配置信息
         /// </summary>
+        /// <param name="url">资源路径</param>
         /// <param name="callback">回调句柄</param>
-        internal static void LoadConfigureFile(OnConfigureFileTextLoadHandler callback)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void LoadBeanConfigureInfo(string url, OnConfigureFileStreamLoadingHandler callback)
+        {
+            // 可以直接复用Bean配置重载接口函数
+            ReloadGeneralConfigure(url, callback);
+        }
+
+        /// <summary>
+        /// 通过指定的回调句柄加载对象类型配置信息<br/>
+        /// 需要注意的是，必须在加载程序集之前，加载完成所有的配置数据，否则将导致程序集中的类型解析时，无法抽取到正确配置信息
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void LoadBeanConfigureInfo(OnConfigureFileTextLoadingHandler callback)
         {
             // 可以直接复用Bean配置重载接口函数
             ReloadGeneralConfigure(callback);
@@ -531,10 +548,24 @@ namespace GameEngine.Loader
 
         /// <summary>
         /// 通过指定的回调句柄加载对象类型配置信息<br/>
+        /// 需要注意的是，必须在加载程序集之前，加载完成所有的配置数据，否则将导致程序集中的类型解析时，无法抽取到正确配置信息
+        /// </summary>
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void LoadBeanConfigureInfo(string url, OnConfigureFileTextLoadingHandler callback)
+        {
+            // 可以直接复用Bean配置重载接口函数
+            ReloadGeneralConfigure(url, callback);
+        }
+
+        /// <summary>
+        /// 通过指定的回调句柄加载对象类型配置信息<br/>
         /// 该接口主要用于标记类已经加载完成后，需要刷新Bean配置信息时调用
         /// </summary>
         /// <param name="callback">回调句柄</param>
-        internal static void ReloadConfigureFile(OnConfigureFileStreamLoadHandler callback)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void ReloadBeanConfigureInfo(OnConfigureFileStreamLoadingHandler callback)
         {
             // 重载全部Bean配置
             ReloadGeneralConfigure(callback);
@@ -547,11 +578,44 @@ namespace GameEngine.Loader
         /// 通过指定的回调句柄加载对象类型配置信息<br/>
         /// 该接口主要用于标记类已经加载完成后，需要刷新Bean配置信息时调用
         /// </summary>
+        /// <param name="url">资源路径</param>
         /// <param name="callback">回调句柄</param>
-        internal static void ReloadConfigureFile(OnConfigureFileTextLoadHandler callback)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void ReloadBeanConfigureInfo(string url, OnConfigureFileStreamLoadingHandler callback)
+        {
+            // 重载全部Bean配置
+            ReloadGeneralConfigure(url, callback);
+
+            // 重新绑定Bean实例
+            RebindingBeanObjectsOfAllSymClasses();
+        }
+
+        /// <summary>
+        /// 通过指定的回调句柄加载对象类型配置信息<br/>
+        /// 该接口主要用于标记类已经加载完成后，需要刷新Bean配置信息时调用
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void ReloadBeanConfigureInfo(OnConfigureFileTextLoadingHandler callback)
         {
             // 重载全部Bean配置
             ReloadGeneralConfigure(callback);
+
+            // 重新绑定Bean实例
+            RebindingBeanObjectsOfAllSymClasses();
+        }
+
+        /// <summary>
+        /// 通过指定的回调句柄加载对象类型配置信息<br/>
+        /// 该接口主要用于标记类已经加载完成后，需要刷新Bean配置信息时调用
+        /// </summary>
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void ReloadBeanConfigureInfo(string url, OnConfigureFileTextLoadingHandler callback)
+        {
+            // 重载全部Bean配置
+            ReloadGeneralConfigure(url, callback);
 
             // 重新绑定Bean实例
             RebindingBeanObjectsOfAllSymClasses();
@@ -562,7 +626,8 @@ namespace GameEngine.Loader
         /// 请注意，该接口不建议由用户自定调用，因为这需要充分了解代码加载的流程<br/>
         /// 并在合适的节点进行调度，否则将导致不可预知的问题
         /// </summary>
-        private static void UnloadAllConfigures()
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void UnloadAllBeanConfigureInfos()
         {
             UnloadAllConfigureContents();
         }

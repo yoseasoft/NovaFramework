@@ -97,7 +97,7 @@ namespace GameEngine
                 fs.Read(bytes, 0, bytes.Length);
                 fs.Close();
 
-                Loader.CodeLoader.LoadConfigureFile(bytes, 0, bytes.Length);
+                Loader.CodeLoader.LoadBeanConfigureInfo(bytes, 0, bytes.Length);
 
                 bytes = null;
             }
@@ -109,43 +109,43 @@ namespace GameEngine
         /// <param name="mstream">数据流</param>
         public static void LoadBeanConfigure(SystemMemoryStream mstream)
         {
-            Loader.CodeLoader.LoadConfigureFile(mstream);
+            Loader.CodeLoader.LoadBeanConfigureInfo(mstream);
         }
 
         /// <summary>
         /// 游戏运行库通过指定的处理回调加载实体配置
         /// </summary>
         /// <param name="callback">回调句柄</param>
-        public static void LoadBeanConfigure(Loader.CodeLoader.OnConfigureFileTextLoadHandler callback)
+        public static void LoadBeanConfigure(Loader.CodeLoader.OnConfigureFileTextLoadingHandler callback)
         {
-            Loader.CodeLoader.LoadConfigureFile(callback);
+            Loader.CodeLoader.LoadBeanConfigureInfo(callback);
         }
 
         /// <summary>
         /// 游戏运行库通过指定的处理回调加载实体配置
         /// </summary>
         /// <param name="callback">回调句柄</param>
-        public static void LoadBeanConfigure(Loader.CodeLoader.OnConfigureFileStreamLoadHandler callback)
+        public static void LoadBeanConfigure(Loader.CodeLoader.OnConfigureFileStreamLoadingHandler callback)
         {
-            Loader.CodeLoader.LoadConfigureFile(callback);
+            Loader.CodeLoader.LoadBeanConfigureInfo(callback);
         }
 
         /// <summary>
         /// 游戏运行库通过指定的处理回调重载实体配置
         /// </summary>
         /// <param name="callback">回调句柄</param>
-        public static void ReloadBeanConfigure(Loader.CodeLoader.OnConfigureFileTextLoadHandler callback)
+        public static void ReloadBeanConfigure(Loader.CodeLoader.OnConfigureFileTextLoadingHandler callback)
         {
-            Loader.CodeLoader.ReloadConfigureFile(callback);
+            Loader.CodeLoader.ReloadBeanConfigureInfo(callback);
         }
 
         /// <summary>
         /// 游戏运行库通过指定的处理回调重载实体配置
         /// </summary>
         /// <param name="callback">回调句柄</param>
-        public static void ReloadBeanConfigure(Loader.CodeLoader.OnConfigureFileStreamLoadHandler callback)
+        public static void ReloadBeanConfigure(Loader.CodeLoader.OnConfigureFileStreamLoadingHandler callback)
         {
-            Loader.CodeLoader.ReloadConfigureFile(callback);
+            Loader.CodeLoader.ReloadBeanConfigureInfo(callback);
         }
 
         /// <summary>
