@@ -26,6 +26,7 @@
 
 using System.Collections.Generic;
 using System.Reflection;
+using System.Customize.Extension;
 
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
@@ -52,24 +53,24 @@ namespace GameEngine.Loader
         /// <summary>
         /// 配置文件数据加载的函数句柄定义
         /// </summary>
-        /// <param name="path">文件路径</param>
+        /// <param name="url">资源路径</param>
         /// <param name="ms">数据流</param>
         /// <returns>加载成功返回true，若加载失败返回false</returns>
-        public delegate bool OnConfigureFileStreamLoadHandler(string path, SystemMemoryStream ms);
+        public delegate bool OnConfigureFileStreamLoadHandler(string url, SystemMemoryStream ms);
 
         /// <summary>
         /// 配置文件数据加载的函数句柄定义
         /// </summary>
-        /// <param name="path">文件路径</param>
+        /// <param name="url">资源路径</param>
         /// <returns>返回加载成功的配置数据内容，若加载失败返回null</returns>
-        public delegate string OnConfigureFileTextLoadHandler(string path);
+        public delegate string OnConfigureFileTextLoadHandler(string url);
 
         /// <summary>
         /// 配置数据对象加载的函数句柄定义
         /// </summary>
         /// <param name="node">目标对象类型</param>
         /// <returns>返回加载成功的配置数据对象实例，若加载失败返回null</returns>
-        public delegate Configuring.BaseConfigureInfo OnConfigureObjectLoadhHandler(SystemXmlNode node);
+        private delegate Configuring.BaseConfigureInfo OnConfigureObjectLoadinghHandler(SystemXmlNode node);
 
         /// <summary>
         /// 配置解析器回调句柄函数的属性定义
@@ -101,7 +102,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 配置解析回调句柄管理容器
         /// </summary>
-        private static IDictionary<SystemXmlNodeType, IDictionary<string, OnConfigureObjectLoadhHandler>> _codeConfigureResolveCallbacks = null;
+        private static IDictionary<SystemXmlNodeType, IDictionary<string, OnConfigureObjectLoadinghHandler>> _codeConfigureResolveCallbacks = null;
 
         /// <summary>
         /// 配置基础对象类管理容器
@@ -120,7 +121,7 @@ namespace GameEngine.Loader
         private static void InitAllCodeConfigureLoadingCallbacks()
         {
             // 初始化解析容器
-            _codeConfigureResolveCallbacks = new Dictionary<SystemXmlNodeType, IDictionary<string, OnConfigureObjectLoadhHandler>>();
+            _codeConfigureResolveCallbacks = new Dictionary<SystemXmlNodeType, IDictionary<string, OnConfigureObjectLoadinghHandler>>();
             // 初始化实例容器
             _nodeConfigureInfos = new Dictionary<string, Configuring.BaseConfigureInfo>();
 
@@ -134,7 +135,7 @@ namespace GameEngine.Loader
                 {
                     OnConfigureResolvingCallbackAttribute _attr = (OnConfigureResolvingCallbackAttribute) attr;
 
-                    OnConfigureObjectLoadhHandler callback = method.CreateDelegate(typeof(OnConfigureObjectLoadhHandler)) as OnConfigureObjectLoadhHandler;
+                    OnConfigureObjectLoadinghHandler callback = method.CreateDelegate(typeof(OnConfigureObjectLoadinghHandler)) as OnConfigureObjectLoadinghHandler;
                     Debugger.Assert(null != callback, "Invalid configure resolve callback.");
 
                     AddConfigureResolveCallback(_attr.NodeType, _attr.NodeName, callback);
@@ -152,6 +153,7 @@ namespace GameEngine.Loader
             UnloadAllConfigureContents();
             _nodeConfigureInfos = null;
             _nodeConfigureFilePaths = null;
+
             // 清理解析容器
             RemoveAllConfigureResolveCallbacks();
             _codeConfigureResolveCallbacks = null;
@@ -238,34 +240,18 @@ namespace GameEngine.Loader
         /// <param name="callback">回调句柄</param>
         private static void ReloadGeneralConfigure(OnConfigureFileTextLoadHandler callback)
         {
-            string path = null;
-            if (null == callback)
+            ReloadGeneralConfigure((url, ms) =>
             {
-                Debugger.Error(LogGroupTag.CodeLoader, "The configure file load handler must be non-null, reload general configure failed!");
-                return;
-            }
-
-            do
-            {
-                Debugger.Info(LogGroupTag.CodeLoader, "指定的实体配置文件‘{%s}’开始进行进入加载队列中……", path);
-                string text = callback(path);
+                string text = callback(url);
+                if (text.IsNullOrEmpty())
+                    return false;
 
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(text);
-                SystemMemoryStream memoryStream = new SystemMemoryStream();
-                memoryStream.Write(buffer, 0, buffer.Length);
-                memoryStream.Seek(0, SystemSeekOrigin.Begin);
+                ms.Write(buffer, 0, buffer.Length);
+                ms.Seek(0, SystemSeekOrigin.Begin);
 
-                // 加载配置
-                LoadGeneralConfigure(memoryStream);
-
-                memoryStream.Dispose();
-
-                // 标识该路径加载完成
-                OnConfigureFileLoadingCompleted(path);
-
-                // 获取下一个文件路径
-                path = GetNextUnprocessedConfigureFileLoadPath();
-            } while (null != path);
+                return true;
+            });
         }
 
         /// <summary>
@@ -277,13 +263,13 @@ namespace GameEngine.Loader
             SystemXmlNodeType nodeType = node.NodeType;
             string nodeName = node.Name;
 
-            if (false == _codeConfigureResolveCallbacks.TryGetValue(nodeType, out IDictionary<string, OnConfigureObjectLoadhHandler> callbacks))
+            if (false == _codeConfigureResolveCallbacks.TryGetValue(nodeType, out IDictionary<string, OnConfigureObjectLoadinghHandler> callbacks))
             {
                 Debugger.Error("Could not resolve target node type '{0}', loaded content failed.", nodeType);
                 return;
             }
 
-            if (false == callbacks.TryGetValue(nodeName, out OnConfigureObjectLoadhHandler callback))
+            if (false == callbacks.TryGetValue(nodeName, out OnConfigureObjectLoadinghHandler callback))
             {
                 Debugger.Error("Could not found any node name '{0}' from current resolve process, loaded it failed.", nodeName);
                 return;
@@ -349,12 +335,12 @@ namespace GameEngine.Loader
         /// <param name="nodeType">节点类型</param>
         /// <param name="nodeName">节点名称</param>
         /// <param name="callback">解析回调句柄</param>
-        private static void AddConfigureResolveCallback(SystemXmlNodeType nodeType, string nodeName, OnConfigureObjectLoadhHandler callback)
+        private static void AddConfigureResolveCallback(SystemXmlNodeType nodeType, string nodeName, OnConfigureObjectLoadinghHandler callback)
         {
-            IDictionary<string, OnConfigureObjectLoadhHandler> callbacks;
+            IDictionary<string, OnConfigureObjectLoadinghHandler> callbacks;
             if (false == _codeConfigureResolveCallbacks.TryGetValue(nodeType, out callbacks))
             {
-                callbacks = new Dictionary<string, OnConfigureObjectLoadhHandler>();
+                callbacks = new Dictionary<string, OnConfigureObjectLoadinghHandler>();
                 _codeConfigureResolveCallbacks.Add(nodeType, callbacks);
             }
 

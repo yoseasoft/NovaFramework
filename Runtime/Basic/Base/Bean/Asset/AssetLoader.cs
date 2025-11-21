@@ -283,7 +283,7 @@ namespace GameEngine
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         private AssetSource CacheTargetAssetObject(string name, string url, SystemType type, UnityObject obj)
         {
-            Debugger.Assert(_assetSources.ContainsKey(name), NovaEngine.ErrorText.InvalidArguments);
+            Debugger.Assert(false == _assetSources.ContainsKey(name), NovaEngine.ErrorText.InvalidArguments);
 
             AssetSource assetSource = new AssetSource(name, url, type, obj);
             _assetSources.Add(name, assetSource);
