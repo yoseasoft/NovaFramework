@@ -87,48 +87,6 @@ namespace GameEngine
             Loader.CodeLoader.LoadBeanConfigureInfo(url, callback);
         }
 
-        /// <summary>
-        /// 应用程序通过指定的处理回调重载实体配置
-        /// </summary>
-        /// <param name="callback">回调句柄</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ReloadBeanConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
-        {
-            Loader.CodeLoader.ReloadBeanConfigureInfo(callback);
-        }
-
-        /// <summary>
-        /// 应用程序通过指定的处理回调重载实体配置
-        /// </summary>
-        /// <param name="url">资源路径</param>
-        /// <param name="callback">回调句柄</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ReloadBeanConfigure(string url, NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
-        {
-            Loader.CodeLoader.ReloadBeanConfigureInfo(url, callback);
-        }
-
-        /// <summary>
-        /// 应用程序通过指定的处理回调重载实体配置
-        /// </summary>
-        /// <param name="callback">回调句柄</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ReloadBeanConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
-        {
-            Loader.CodeLoader.ReloadBeanConfigureInfo(callback);
-        }
-
-        /// <summary>
-        /// 应用程序通过指定的处理回调重载实体配置
-        /// </summary>
-        /// <param name="url">资源路径</param>
-        /// <param name="callback">回调句柄</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ReloadBeanConfigure(string url, NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
-        {
-            Loader.CodeLoader.ReloadBeanConfigureInfo(url, callback);
-        }
-
         #endregion
     }
 }

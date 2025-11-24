@@ -492,6 +492,7 @@ namespace GameEngine.Loader
         /// <param name="buffer">数据流</param>
         /// <param name="offset">数据偏移</param>
         /// <param name="length">数据长度</param>
+        [System.Obsolete]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void LoadBeanConfigureInfo(byte[] buffer, int offset, int length)
         {
@@ -503,6 +504,7 @@ namespace GameEngine.Loader
         /// 需要注意的是，必须在加载程序集之前，加载完成所有的配置数据，否则将导致程序集中的类型解析时，无法抽取到正确配置信息
         /// </summary>
         /// <param name="memoryStream">数据流</param>
+        [System.Obsolete]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void LoadBeanConfigureInfo(SystemMemoryStream memoryStream)
         {
@@ -518,7 +520,7 @@ namespace GameEngine.Loader
         internal static void LoadBeanConfigureInfo(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
         {
             // 可以直接复用Bean配置重载接口函数
-            ReloadGeneralConfigure(callback);
+            LoadGeneralConfigure(callback);
         }
 
         /// <summary>
@@ -531,7 +533,7 @@ namespace GameEngine.Loader
         internal static void LoadBeanConfigureInfo(string url, NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
         {
             // 可以直接复用Bean配置重载接口函数
-            ReloadGeneralConfigure(url, callback);
+            LoadGeneralConfigure(url, callback);
         }
 
         /// <summary>
@@ -543,7 +545,7 @@ namespace GameEngine.Loader
         internal static void LoadBeanConfigureInfo(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
         {
             // 可以直接复用Bean配置重载接口函数
-            ReloadGeneralConfigure(callback);
+            LoadGeneralConfigure(callback);
         }
 
         /// <summary>
@@ -556,67 +558,15 @@ namespace GameEngine.Loader
         internal static void LoadBeanConfigureInfo(string url, NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
         {
             // 可以直接复用Bean配置重载接口函数
-            ReloadGeneralConfigure(url, callback);
+            LoadGeneralConfigure(url, callback);
         }
 
         /// <summary>
-        /// 通过指定的回调句柄加载对象类型配置信息<br/>
-        /// 该接口主要用于标记类已经加载完成后，需要刷新Bean配置信息时调用
+        /// 重新加载符号对象实例中关于实体数据部分的配置信息
         /// </summary>
-        /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void ReloadBeanConfigureInfo(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
+        internal static void ReloadBeanConfigureOfSymbols()
         {
-            // 重载全部Bean配置
-            ReloadGeneralConfigure(callback);
-
-            // 重新绑定Bean实例
-            RebindingBeanObjectsOfAllSymClasses();
-        }
-
-        /// <summary>
-        /// 通过指定的回调句柄加载对象类型配置信息<br/>
-        /// 该接口主要用于标记类已经加载完成后，需要刷新Bean配置信息时调用
-        /// </summary>
-        /// <param name="url">资源路径</param>
-        /// <param name="callback">回调句柄</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void ReloadBeanConfigureInfo(string url, NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
-        {
-            // 重载全部Bean配置
-            ReloadGeneralConfigure(url, callback);
-
-            // 重新绑定Bean实例
-            RebindingBeanObjectsOfAllSymClasses();
-        }
-
-        /// <summary>
-        /// 通过指定的回调句柄加载对象类型配置信息<br/>
-        /// 该接口主要用于标记类已经加载完成后，需要刷新Bean配置信息时调用
-        /// </summary>
-        /// <param name="callback">回调句柄</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void ReloadBeanConfigureInfo(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
-        {
-            // 重载全部Bean配置
-            ReloadGeneralConfigure(callback);
-
-            // 重新绑定Bean实例
-            RebindingBeanObjectsOfAllSymClasses();
-        }
-
-        /// <summary>
-        /// 通过指定的回调句柄加载对象类型配置信息<br/>
-        /// 该接口主要用于标记类已经加载完成后，需要刷新Bean配置信息时调用
-        /// </summary>
-        /// <param name="url">资源路径</param>
-        /// <param name="callback">回调句柄</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void ReloadBeanConfigureInfo(string url, NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
-        {
-            // 重载全部Bean配置
-            ReloadGeneralConfigure(url, callback);
-
             // 重新绑定Bean实例
             RebindingBeanObjectsOfAllSymClasses();
         }

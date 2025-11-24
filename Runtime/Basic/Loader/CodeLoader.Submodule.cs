@@ -69,6 +69,7 @@ namespace GameEngine.Loader
         private static void OnCodeLoaderSubmoduleActionCallbackOfTargetAttribute(SystemType attrType)
         {
             SystemDelegate callback;
+
             if (TryGetCodeLoaderSubmoduleActionCallback(attrType, out callback))
             {
                 callback.DynamicInvoke();
@@ -84,7 +85,7 @@ namespace GameEngine.Loader
                 return null != callback;
             }
 
-            callback = Utils.CreateSubmoduleBehaviourCallback(null, typeof(CodeLoader), targetType);
+            callback = Utils.CreateSubmoduleBehaviourCallback(typeof(CodeLoader), targetType);
 
             _cachedSubmoduleActionCallbacks.Add(targetType, callback);
 

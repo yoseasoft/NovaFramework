@@ -129,24 +129,6 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 游戏运行库通过指定的处理回调重载实体配置
-        /// </summary>
-        /// <param name="callback">回调句柄</param>
-        public static void ReloadBeanConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
-        {
-            Loader.CodeLoader.ReloadBeanConfigureInfo(callback);
-        }
-
-        /// <summary>
-        /// 游戏运行库通过指定的处理回调重载实体配置
-        /// </summary>
-        /// <param name="callback">回调句柄</param>
-        public static void ReloadBeanConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
-        {
-            Loader.CodeLoader.ReloadBeanConfigureInfo(callback);
-        }
-
-        /// <summary>
         /// 游戏运行库加载指定的程序集
         /// </summary>
         /// <param name="assembly">程序集</param>

@@ -220,7 +220,7 @@ namespace GameEngine
                 return null != callback;
             }
 
-            callback = Utils.CreateSubmoduleBehaviourCallback(this, GetType(), targetType);
+            callback = Utils.CreateSubmoduleBehaviourCallback(this, targetType);
 
             _cachedSubmoduleBehaviourCallbacks.Add(targetType, callback);
 

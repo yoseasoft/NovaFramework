@@ -24,6 +24,7 @@
 
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
@@ -39,14 +40,52 @@ namespace GameEngine
         /// <summary>
         /// 获取目标对象类型下所有指定行为模式的函数信息，合并创建一个回调句柄实例
         /// </summary>
+        /// <param name="classType">目标对象类型</param>
+        /// <param name="attributeType">行为属性类型</param>
+        /// <returns>返回创建的回调句柄实例，若不存在该行为模式的函数信息，则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SystemDelegate CreateSubmoduleBehaviourCallback(SystemType classType, SystemType attributeType)
+        {
+            Debugger.Assert(NovaEngine.Utility.Reflection.IsTypeOfStaticClass(classType), NovaEngine.ErrorText.InvalidArguments);
+
+            return CreateSubmoduleBehaviourCallback(null, classType, attributeType);
+        }
+
+        /// <summary>
+        /// 获取目标对象类型下所有指定行为模式的函数信息，合并创建一个回调句柄实例
+        /// </summary>
+        /// <param name="targetObject">目标对象实例</param>
+        /// <param name="attributeType">行为属性类型</param>
+        /// <returns>返回创建的回调句柄实例，若不存在该行为模式的函数信息，则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SystemDelegate CreateSubmoduleBehaviourCallback(object targetObject, SystemType attributeType)
+        {
+            Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
+
+            return CreateSubmoduleBehaviourCallback(targetObject, targetObject.GetType(), attributeType);
+        }
+
+        /// <summary>
+        /// 获取目标对象类型下所有指定行为模式的函数信息，合并创建一个回调句柄实例
+        /// </summary>
         /// <param name="targetObject">目标对象实例</param>
         /// <param name="classType">目标对象类型</param>
         /// <param name="attributeType">行为属性类型</param>
         /// <returns>返回创建的回调句柄实例，若不存在该行为模式的函数信息，则返回null</returns>
-        public static SystemDelegate CreateSubmoduleBehaviourCallback(object targetObject, SystemType classType, SystemType attributeType)
+        private static SystemDelegate CreateSubmoduleBehaviourCallback(object targetObject, SystemType classType, SystemType attributeType)
         {
             IList<SystemDelegate> list = new List<SystemDelegate>();
-            MethodInfo[] methods = classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo[] methods = null;
+
+            if (null == targetObject)
+            {
+                methods = classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+            }
+            else
+            {
+                methods = classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            }
+    
             for (int n = 0; n < methods.Length; ++n)
             {
                 MethodInfo method = methods[n];
