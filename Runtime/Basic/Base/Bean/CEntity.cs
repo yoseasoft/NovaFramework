@@ -25,6 +25,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using SystemType = System.Type;
 using SystemRandom = System.Random;
@@ -858,7 +859,7 @@ namespace GameEngine
         /// 检测当前实体对象中是否存在待执行的组件实例
         /// </summary>
         /// <returns>若实体对象存在执行组件则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool HasMoreExecuteComponents()
         {
             return _componentExecuteCount > 0;
@@ -868,7 +869,7 @@ namespace GameEngine
         /// 检测当前实体对象是否存在待更新的组件实例
         /// </summary>
         /// <returns>若实体对象存在更新组件则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool HasMoreUpdateComponents()
         {
             return _componentUpdateCount > 0;

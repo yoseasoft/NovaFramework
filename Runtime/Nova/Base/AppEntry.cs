@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 using UnityGameObject = UnityEngine.GameObject;
 using UnityComponent = UnityEngine.Component;
 using UnityMonoBehaviour = UnityEngine.MonoBehaviour;
@@ -196,7 +198,7 @@ namespace NovaEngine
         /// 总控对象帧调度激活接口函数，检测当前是否有子任务激活
         /// </summary>
         /// <returns>若有子任务激活返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool OnFrameDispatchActivation()
         {
             _engine.SyncTimestamp();
@@ -207,7 +209,7 @@ namespace NovaEngine
         /// <summary>
         /// 总控对象帧调度结束接口函数，对子任务进行收尾处理
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void OnFrameDispatchFinished()
         {
             Workbench.OnWorkTimingCompleted();
@@ -216,7 +218,7 @@ namespace NovaEngine
         /// <summary>
         /// 总控对象帧调度开始接口函数
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void OnFrameDispatchStart()
         {
             Workbench.OnWorkTimingStart();
@@ -225,7 +227,7 @@ namespace NovaEngine
         /// <summary>
         /// 总控对象帧调度停止接口函数
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void OnFrameDispatchStop()
         {
             Workbench.OnWorkTimingStop();

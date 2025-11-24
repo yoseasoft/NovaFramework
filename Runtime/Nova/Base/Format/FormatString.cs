@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace NovaEngine
 {
@@ -37,161 +38,161 @@ namespace NovaEngine
     {
         #region 格式化字符串内容相关的接口函数
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format(object value) { return ObjectFormatter.ToString(value); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format(string format, params object[] args)
         { return Utility.Text.Format(format, args); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format(System.Array array, System.Func<object, string> callback)
         { return Utility.Text.ToString(array, callback); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format(System.Array array, System.Func<int, object, string> callback = null)
         { return Utility.Text.ToString(array, callback); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format(string format, System.Array array, System.Func<object, string> callback)
         { return Utility.Text.Format(format, Utility.Text.ToString(array, callback)); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format(string format, System.Array array, System.Func<int, object, string> callback = null)
         { return Utility.Text.Format(format, Utility.Text.ToString(array, callback)); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format<T>(T[] array, System.Func<T, string> callback)
         { return Utility.Text.ToString<T>(array, callback); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format<T>(T[] array, System.Func<int, T, string> callback = null)
         { return Utility.Text.ToString<T>(array, callback); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format<T>(string format, T[] array, System.Func<T, string> callback)
         { return Utility.Text.Format(format, Utility.Text.ToString<T>(array, callback)); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format<T>(string format, T[] array, System.Func<int, T, string> callback = null)
         { return Utility.Text.Format(format, Utility.Text.ToString<T>(array, callback)); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format(System.Collections.ICollection collection, System.Func<object, string> callback)
         { return Utility.Text.ToString(collection, callback); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format(System.Collections.ICollection collection, System.Func<int, object, string> callback = null)
         { return Utility.Text.ToString(collection, callback); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format(string format, System.Collections.ICollection collection, System.Func<object, string> callback)
         { return Utility.Text.Format(format, Utility.Text.ToString(collection, callback)); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format(string format, System.Collections.ICollection collection, System.Func<int, object, string> callback = null)
         { return Utility.Text.Format(format, Utility.Text.ToString(collection, callback)); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format<T>(ICollection<T> collection, System.Func<T, string> callback)
         { return Utility.Text.ToString<T>(collection, callback); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format<T>(ICollection<T> collection, System.Func<int, T, string> callback = null)
         { return Utility.Text.ToString<T>(collection, callback); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format<T>(string format, ICollection<T> collection, System.Func<T, string> callback)
         { return Utility.Text.Format(format, Utility.Text.ToString<T>(collection, callback)); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format<T>(string format, ICollection<T> collection, System.Func<int, T, string> callback = null)
         { return Utility.Text.Format(format, Utility.Text.ToString<T>(collection, callback)); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format<K, V>(ICollection<KeyValuePair<K, V>> collection, System.Func<K, V, string> callback = null)
         { return Utility.Text.ToString<K, V>(collection, callback); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format<K, V>(string format, ICollection<KeyValuePair<K, V>> collection, System.Func<K, V, string> callback = null)
         { return Utility.Text.Format(format, Utility.Text.ToString<K, V>(collection, callback)); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format(System.Collections.IList list, System.Func<object, string> callback)
         { return Utility.Text.ToString(list, callback); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format(System.Collections.IList list, System.Func<int, object, string> callback = null)
         { return Utility.Text.ToString(list, callback); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format(string format, System.Collections.IList list, System.Func<object, string> callback)
         { return Utility.Text.Format(format, Utility.Text.ToString(list, callback)); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format(string format, System.Collections.IList list, System.Func<int, object, string> callback = null)
         { return Utility.Text.Format(format, Utility.Text.ToString(list, callback)); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format<T>(IList<T> list, System.Func<T, string> callback)
         { return Utility.Text.ToString<T>(list, callback); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format<T>(IList<T> list, System.Func<int, T, string> callback = null)
         { return Utility.Text.ToString<T>(list, callback); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format<T>(string format, IList<T> list, System.Func<T, string> callback)
         { return Utility.Text.Format(format, Utility.Text.ToString<T>(list, callback)); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format<T>(string format, IList<T> list, System.Func<int, T, string> callback = null)
         { return Utility.Text.Format(format, Utility.Text.ToString<T>(list, callback)); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format(System.Collections.IDictionary dictionary, System.Func<object, object, string> callback = null)
         { return Utility.Text.ToString(dictionary, callback); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format(string format, System.Collections.IDictionary dictionary, System.Func<object, object, string> callback = null)
         { return Utility.Text.Format(format, Utility.Text.ToString(dictionary, callback)); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format<K, V>(IDictionary<K, V> dictionary, System.Func<K, V, string> callback = null)
         { return Utility.Text.ToString<K, V>(dictionary, callback); }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [UnityEngine.Scripting.Preserve]
         public static string Format<K, V>(string format, IDictionary<K, V> dictionary, System.Func<K, V, string> callback = null)
         { return Utility.Text.Format(format, Utility.Text.ToString<K, V>(dictionary, callback)); }

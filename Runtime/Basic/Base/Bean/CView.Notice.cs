@@ -24,9 +24,10 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
@@ -43,7 +44,7 @@ namespace GameEngine
         /// <summary>
         /// 视图对象的通知处理初始化函数接口
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnNoticeProcessingInitialize()
         {
             // 通知回调映射容器初始化
@@ -53,7 +54,7 @@ namespace GameEngine
         /// <summary>
         /// 视图对象的通知处理清理函数接口
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnNoticeProcessingCleanup()
         {
             // 移除所有通知接口
@@ -65,7 +66,7 @@ namespace GameEngine
         /// <summary>
         /// 视图对象的通知处理重载函数接口
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnNoticeProcessingReload()
         {
             // 移除所有通知接口
@@ -77,7 +78,7 @@ namespace GameEngine
         /// <summary>
         /// 视图对象窗口恢复通知的接口函数
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal void OnResume()
         {
             if (_isResumed) return;
@@ -89,7 +90,7 @@ namespace GameEngine
         /// <summary>
         /// 视图对象窗口暂停通知的接口函数
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal void OnPause()
         {
             if (!_isResumed) return;
@@ -101,7 +102,7 @@ namespace GameEngine
         /// <summary>
         /// 视图对象窗口置顶通知的接口函数
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal void OnReveal()
         {
             if (_isRevealed) return;
@@ -113,7 +114,7 @@ namespace GameEngine
         /// <summary>
         /// 视图对象窗口遮挡通知的接口函数
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal void OnCover()
         {
             if (!_isRevealed) return;
@@ -144,7 +145,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="noticeType">通知类型</param>
         /// <returns>若通知接口添加成功则返回true，否则返回false</returns>
-        protected internal bool AddNoticeProcess(string fullname, SystemMethodInfo methodInfo, ViewNoticeType noticeType)
+        protected internal bool AddNoticeProcess(string fullname, MethodInfo methodInfo, ViewNoticeType noticeType)
         {
             GuiHandler.Instance.AddViewNoticeBindingCallInfo(fullname, BeanType, methodInfo, noticeType, true);
 

@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using SystemType = System.Type;
 using SystemDelegate = System.Delegate;
@@ -146,7 +147,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器对象子模块初始化回调处理接口函数
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnSubmoduleInitCallback()
         {
             OnSubmoduleActionCallbackOfTargetAttribute(typeof(OnControllerSubmoduleInitCallbackAttribute));
@@ -155,7 +156,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器对象子模块清理回调处理接口函数
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnSubmoduleCleanupCallback()
         {
             OnSubmoduleActionCallbackOfTargetAttribute(typeof(OnControllerSubmoduleCleanupCallbackAttribute));
@@ -164,7 +165,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器对象子模块刷新回调处理接口函数
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnSubmoduleUpdateCallback()
         {
             OnSubmoduleActionCallbackOfTargetAttribute(typeof(OnControllerSubmoduleUpdateCallbackAttribute));
@@ -173,7 +174,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器对象子模块后置刷新回调处理接口函数
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnSubmoduleLateUpdateCallback()
         {
             OnSubmoduleActionCallbackOfTargetAttribute(typeof(OnControllerSubmoduleLateUpdateCallbackAttribute));
@@ -182,7 +183,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器对象子模块重载回调处理接口函数
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnSubmoduleReloadCallback()
         {
             OnSubmoduleActionCallbackOfTargetAttribute(typeof(OnControllerSubmoduleReloadCallbackAttribute));
@@ -191,7 +192,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器对象子模块倾泻回调处理接口函数
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnSubmoduleDumpCallback()
         {
             OnSubmoduleActionCallbackOfTargetAttribute(typeof(OnControllerSubmoduleDumpCallbackAttribute));
@@ -201,7 +202,7 @@ namespace GameEngine
         /// 控制器对象子模块指定类型的回调函数触发处理接口
         /// </summary>
         /// <param name="attrType">属性类型</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnSubmoduleActionCallbackOfTargetAttribute(SystemType attrType)
         {
             SystemDelegate callback;

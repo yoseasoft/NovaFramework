@@ -25,6 +25,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using SystemType = System.Type;
 using SystemArray = System.Array;
@@ -37,10 +38,10 @@ namespace UnityEngine.Customize.Extension
     /// </summary>
     public static class __GameObject
     {
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GameObject DontDestroy(this GameObject self)
         {
-            GameObject.DontDestroyOnLoad(self);
+            Object.DontDestroyOnLoad(self);
             return self;
         }
 

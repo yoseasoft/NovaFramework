@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Customize.Extension;
 
 namespace NovaEngine
@@ -194,7 +195,7 @@ namespace NovaEngine
         /// <summary>
         /// 工作台任务开始接口函数
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void OnWorkTimingStart()
         {
             _isSubworkExecuting = true;
@@ -203,7 +204,7 @@ namespace NovaEngine
         /// <summary>
         /// 工作台任务停止接口函数
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void OnWorkTimingStop()
         {
             _isSubworkExecuting = false;

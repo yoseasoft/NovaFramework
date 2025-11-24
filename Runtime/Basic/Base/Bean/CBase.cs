@@ -24,6 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 using SystemType = System.Type;
 
 namespace GameEngine
@@ -104,7 +106,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="lifecycleType">生命周期类型</param>
         /// <returns>若对象处于给定生命周期类型的状态中则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal bool IsOnTargetLifecycle(AspectBehaviourType lifecycleType)
         {
             Debugger.Assert(AspectBehaviourType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
@@ -122,7 +124,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="lifecycleType">生命周期类型</param>
         /// <returns>若对象处于给定生命周期类型的调度中则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal bool IsOnProcessingForTargetLifecycle(AspectBehaviourType lifecycleType)
         {
             Debugger.Assert(AspectBehaviourType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
@@ -142,7 +144,7 @@ namespace GameEngine
         /// <param name="began">开始范围类型</param>
         /// <param name="ended">结束范围类型</param>
         /// <returns>若对象处于给定生命周期范围内则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool IsTheLifecycleTypeBetweenOfTargetRanges(AspectBehaviourType began, AspectBehaviourType ended)
         {
             Debugger.Assert(AspectBehaviourType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
@@ -159,7 +161,7 @@ namespace GameEngine
         /// 检测当前对象的生命周期是否处于唤醒激活状态
         /// </summary>
         /// <returns>若对象处于给定生命周期状态则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal bool IsOnAwakingStatus()
         {
             return IsTheLifecycleTypeBetweenOfTargetRanges(AspectBehaviourType.Awake, AspectBehaviourType.Destroy);
@@ -169,7 +171,7 @@ namespace GameEngine
         /// 检测当前对象的生命周期是否处于开始激活状态
         /// </summary>
         /// <returns>若对象处于给定生命周期状态则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal bool IsOnStartingStatus()
         {
             return IsTheLifecycleTypeBetweenOfTargetRanges(AspectBehaviourType.Start, AspectBehaviourType.Destroy);
@@ -179,7 +181,7 @@ namespace GameEngine
         /// 检测当前对象的生命周期是否处于开始激活状态
         /// </summary>
         /// <returns>若对象处于给定生命周期状态则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal bool IsOnDestroyingStatus()
         {
             return IsTheLifecycleTypeBetweenOfTargetRanges(AspectBehaviourType.Destroy, AspectBehaviourType.Free);
@@ -189,7 +191,7 @@ namespace GameEngine
         /// 检测当前对象的生命周期是否处于刷新激活状态
         /// </summary>
         /// <returns>若对象处于给定生命周期状态则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal bool IsOnWorkingStatus()
         {
             // return IsOnTargetLifecycle(AspectBehaviourType.Execute) ||
@@ -204,7 +206,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodName">函数名称</param>
         /// <returns>返回生命周期步骤类型，若不存在对应步骤则返回unknown状态</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static AspectBehaviourType GetLifecycleTypeByMethodName(string methodName)
         {
             return NovaEngine.Utility.Convertion.GetEnumFromName<AspectBehaviourType>(methodName);

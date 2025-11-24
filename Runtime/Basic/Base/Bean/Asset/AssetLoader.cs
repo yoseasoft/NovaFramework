@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Cysharp.Threading.Tasks;
 
 using SystemType = System.Type;
@@ -142,7 +143,7 @@ namespace GameEngine
         /// <param name="position">位置</param>
         /// <param name="rotation">旋转</param>
         /// <returns>返回实例化的对象实例</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Instantiate<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
         {
             AssetSource assetSource = LoadAsset(name, url, typeof(T));
@@ -159,7 +160,7 @@ namespace GameEngine
         /// <param name="rotation">旋转</param>
         /// <param name="parent">父对象实例</param>
         /// <returns>返回实例化的对象实例</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Instantiate<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
         {
             AssetSource assetSource = LoadAsset(name, url, typeof(T));
@@ -174,7 +175,7 @@ namespace GameEngine
         /// <param name="url">资源地址</param>
         /// <param name="parent">父对象实例</param>
         /// <returns>返回实例化的对象实例</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Instantiate<T>(string name, string url, UnityTransform parent) where T : UnityObject
         {
             AssetSource assetSource = LoadAsset(name, url, typeof(T));
@@ -190,7 +191,7 @@ namespace GameEngine
         /// <param name="position">位置</param>
         /// <param name="rotation">旋转</param>
         /// <returns>返回实例化的对象实例</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
         {
             AssetSource assetSource = await LoadAssetAsync<T>(name, url);
@@ -207,7 +208,7 @@ namespace GameEngine
         /// <param name="rotation">旋转</param>
         /// <param name="parent">父对象实例</param>
         /// <returns>返回实例化的对象实例</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
         {
             AssetSource assetSource = await LoadAssetAsync<T>(name, url);
@@ -222,7 +223,7 @@ namespace GameEngine
         /// <param name="url">资源地址</param>
         /// <param name="parent">父对象实例</param>
         /// <returns>返回实例化的对象实例</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityTransform parent) where T : UnityObject
         {
             AssetSource assetSource = await LoadAssetAsync<T>(name, url);
@@ -280,7 +281,7 @@ namespace GameEngine
         /// <param name="type">资源类型</param>
         /// <param name="obj">Unity资源对象</param>
         /// <returns>返回缓存的目标资源对象实例</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private AssetSource CacheTargetAssetObject(string name, string url, SystemType type, UnityObject obj)
         {
             Debugger.Assert(false == _assetSources.ContainsKey(name), NovaEngine.ErrorText.InvalidArguments);

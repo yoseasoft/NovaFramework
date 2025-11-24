@@ -26,6 +26,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace NovaEngine
 {
     /// <summary>
@@ -209,7 +211,7 @@ namespace NovaEngine
         /// <summary>
         /// 时间戳同步接口，用于刷新时间戳
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SyncTimestamp()
         {
             // 刷新时间戳

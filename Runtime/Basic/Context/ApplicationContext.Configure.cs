@@ -95,9 +95,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void ReloadGeneralConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
+        private static void LoadGeneralConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
         {
-            ReloadGeneralConfigure(null, callback);
+            LoadGeneralConfigure(null, callback);
         }
 
         /// <summary>
@@ -105,11 +105,8 @@ namespace GameEngine
         /// </summary>
         /// <param name="url">资源路径</param>
         /// <param name="callback">回调句柄</param>
-        private static void ReloadGeneralConfigure(string url, NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
+        private static void LoadGeneralConfigure(string url, NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
         {
-            // 卸载旧的配置数据
-            UnloadAllConfigureContents();
-
             string path = url;
             if (null == callback)
             {
@@ -142,9 +139,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void ReloadGeneralConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
+        private static void LoadGeneralConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
         {
-            ReloadGeneralConfigure(null, callback);
+            LoadGeneralConfigure(null, callback);
         }
 
         /// <summary>
@@ -153,9 +150,9 @@ namespace GameEngine
         /// <param name="url">资源路径</param>
         /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void ReloadGeneralConfigure(string url, NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
+        private static void LoadGeneralConfigure(string url, NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
         {
-            ReloadGeneralConfigure(url, (url, ms) =>
+            LoadGeneralConfigure(url, (url, ms) =>
             {
                 string text = callback(url);
                 if (text.IsNullOrEmpty())

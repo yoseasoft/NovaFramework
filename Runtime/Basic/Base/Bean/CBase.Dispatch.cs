@@ -25,6 +25,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using SystemType = System.Type;
 
@@ -38,7 +39,7 @@ namespace GameEngine
         /// <summary>
         /// 基础对象的转发回调初始化函数接口
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnDispatchCallInitialize()
         {
             OnInputResponseCallInitialize();
@@ -49,7 +50,7 @@ namespace GameEngine
         /// <summary>
         /// 基础对象的转发回调清理函数接口
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnDispatchCallCleanup()
         {
             OnInputResponseCallCleanup();
@@ -60,7 +61,7 @@ namespace GameEngine
         /// <summary>
         /// 基础对象的转发回调重载函数接口
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnDispatchCallReload()
         {
             // 卸载自动绑定的扩展通知接口

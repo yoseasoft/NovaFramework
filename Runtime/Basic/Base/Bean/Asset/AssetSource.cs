@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using SystemType = System.Type;
 using UnityObject = UnityEngine.Object;
@@ -109,7 +110,7 @@ namespace GameEngine
         /// <param name="position">位置</param>
         /// <param name="rotation">旋转</param>
         /// <returns>返回创建的场景对象实例</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Instantiate<T>(UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
         {
             Debugger.Assert(typeof(T) == _type, NovaEngine.ErrorText.InvalidArguments);
@@ -127,7 +128,7 @@ namespace GameEngine
         /// <param name="rotation">旋转</param>
         /// <param name="parent">父对象实例</param>
         /// <returns>返回创建的场景对象实例</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Instantiate<T>(UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
         {
             Debugger.Assert(typeof(T) == _type, NovaEngine.ErrorText.InvalidArguments);
@@ -143,7 +144,7 @@ namespace GameEngine
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="parent">父对象实例</param>
         /// <returns>返回创建的场景对象实例</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Instantiate<T>(UnityTransform parent) where T : UnityObject
         {
             Debugger.Assert(typeof(T) == _type, NovaEngine.ErrorText.InvalidArguments);
@@ -158,7 +159,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="obj">场景对象实例</param>
         /// <returns>若容器包含目标场景对象实例则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ContainsObject(UnityObject obj)
         {
             return _objects.Contains(obj);
@@ -168,7 +169,7 @@ namespace GameEngine
         /// 销毁场景对象实例
         /// </summary>
         /// <param name="obj">场景对象实例</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DestroyObject(UnityObject obj)
         {
             Debugger.Assert(_objects.Contains(obj), NovaEngine.ErrorText.InvalidArguments);

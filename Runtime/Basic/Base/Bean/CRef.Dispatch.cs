@@ -24,6 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace GameEngine
 {
     /// <summary>
@@ -34,7 +36,7 @@ namespace GameEngine
         /// <summary>
         /// 引用对象的转发处理初始化函数接口
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnDispatchProcessingInitialize()
         {
             OnInputResponseProcessingInitialize();
@@ -45,7 +47,7 @@ namespace GameEngine
         /// <summary>
         /// 引用对象的转发处理清理函数接口
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnDispatchProcessingCleanup()
         {
             OnInputResponseProcessingCleanup();

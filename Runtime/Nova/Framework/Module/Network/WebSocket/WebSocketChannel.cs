@@ -35,6 +35,7 @@
 // #define __USED_WEBSOCKET_LIBRARIES_TYPE
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Customize.Extension;
 
 using SystemArray = System.Array;
@@ -365,7 +366,7 @@ namespace NovaEngine
         /// 网络通道数据下行操作接口
         /// </summary>
         /// <param name="message">消息内容</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void Send(string message)
         {
             Send(Utility.Convertion.GetBytes(message));
@@ -375,7 +376,7 @@ namespace NovaEngine
         /// 网络通道数据下行操作接口
         /// </summary>
         /// <param name="message">消息内容</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void Send(byte[] message)
         {
             Send(message, 0, message.Length);
@@ -385,7 +386,7 @@ namespace NovaEngine
         /// 网络通道数据下行操作接口
         /// </summary>
         /// <param name="memoryStream">消息数据流</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void Send(SystemMemoryStream memoryStream)
         {
             Send(memoryStream.GetBuffer(), 0, (int) memoryStream.Length);
@@ -428,7 +429,7 @@ namespace NovaEngine
             Send(buffer);
         }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void Send(IO.MemoryBuffer memoryBuffer)
         {
             this._writeBuffer.Enqueue(memoryBuffer);
