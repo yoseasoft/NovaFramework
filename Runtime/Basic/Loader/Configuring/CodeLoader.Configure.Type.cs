@@ -45,9 +45,10 @@ namespace GameEngine.Loader
                 return null;
             }
 
-            if (_nodeConfigureInfos.TryGetValue(beanName, out Configuring.BaseConfigureInfo configureBaseInfo))
+            Configuring.BaseConfigureInfo baseConfigureInfo = GetConfigureInfoByName(beanName);
+            if (null != baseConfigureInfo)
             {
-                return configureBaseInfo as Configuring.BeanConfigureInfo;
+                return baseConfigureInfo as Configuring.BeanConfigureInfo;
             }
 
             return null;
@@ -66,12 +67,13 @@ namespace GameEngine.Loader
             }
 
             IList<Configuring.BeanConfigureInfo> result = null;
-            IEnumerator<Configuring.BaseConfigureInfo> e = _nodeConfigureInfos.Values.GetEnumerator();
-            while (e.MoveNext())
+            IList<Configuring.BaseConfigureInfo> list = GetAllConfigureInfos();
+            for (int n = 0; null != list && n < list.Count; ++n)
             {
-                if (Configuring.ConfigureInfoType.Bean == e.Current.Type)
+                Configuring.BaseConfigureInfo baseConfigureInfo = list[n];
+                if (Configuring.ConfigureInfoType.Bean == baseConfigureInfo.Type)
                 {
-                    Configuring.BeanConfigureInfo info = (Configuring.BeanConfigureInfo) e.Current;
+                    Configuring.BeanConfigureInfo info = (Configuring.BeanConfigureInfo) baseConfigureInfo;
                     if (info.ClassType == targetType)
                     {
                         if (null == result)

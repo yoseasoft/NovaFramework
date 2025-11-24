@@ -23,6 +23,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Xml;
+using UnityEngine.Scripting;
 
 using SystemType = System.Type;
 
@@ -36,10 +37,11 @@ namespace GameEngine.Loader.Configuring
         /// </summary>
         /// <param name="node">节点实例</param>
         /// <remarks>返回配置数据的对象实例</remarks>
-        [CodeLoader.OnConfigureResolvingCallback(XmlNodeType.Element, BeanConfigureNodeName.File)]
-        private static BaseConfigureInfo LoadFileElement(XmlNode node)
+        [Preserve]
+        [OnXmlConfigureResolvingCallback(XmlNodeType.Element, BeanConfigureNodeName.File)]
+        private static void LoadFileElement(XmlNode node)
         {
-            FileConfigureInfo fileInfo = new FileConfigureInfo();
+            string filePath = null;
 
             XmlAttributeCollection attrCollection = node.Attributes;
             for (int n = 0; null != attrCollection && n < attrCollection.Count; ++n)
@@ -47,20 +49,20 @@ namespace GameEngine.Loader.Configuring
                 XmlAttribute attr = attrCollection[n];
                 switch (attr.Name)
                 {
-                    case BeanConfigureNodeAttributeName.K_INCLUDE:
-                        fileInfo.Include = attr.Value;
+                    case BeanConfigureNodeAttributeName.Include:
+                        filePath = attr.Value;
                         break;
                 }
             }
 
-            if (string.IsNullOrEmpty(fileInfo.Include))
+            if (string.IsNullOrEmpty(filePath))
             {
                 Debugger.Warn(LogGroupTag.CodeLoader, "实体配置文件的‘{%s}’节点导入信息不能为空，该节点解析处理异常！", node.Name);
-                return null;
+                return;
             }
 
-            Debugger.Info(LogGroupTag.CodeLoader, "Load file configure '{%s}' succeed.", CodeLoaderObject.ToString(fileInfo));
-            return fileInfo;
+            Debugger.Info(LogGroupTag.CodeLoader, "Load file configure path '{%s}' succeed.", filePath);
+            AddConfigureFilePath(filePath);
         }
     }
 }

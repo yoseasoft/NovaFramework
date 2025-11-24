@@ -135,7 +135,7 @@ namespace GameEngine.Loader
             }
 
             _aspectCallCodeInfos.Add(symClass.ClassType, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load aspect call code info '{%s}' succeed from target class type '{%s}'.", CodeLoaderObject.ToString(info), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load aspect call code info '{%s}' succeed from target class type '{%s}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
 
             return true;
         }

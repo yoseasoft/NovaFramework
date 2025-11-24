@@ -161,7 +161,7 @@ namespace GameEngine.Loader
             }
 
             _inputCallCodeInfos.Add(symClass.ClassType, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load input call code info '{0}' succeed from target class type '{1}'.", CodeLoaderObject.ToString(info), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load input call code info '{0}' succeed from target class type '{1}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
 
             return true;
         }

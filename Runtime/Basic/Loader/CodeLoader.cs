@@ -515,7 +515,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void LoadBeanConfigureInfo(OnConfigureFileStreamLoadingHandler callback)
+        internal static void LoadBeanConfigureInfo(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
         {
             // 可以直接复用Bean配置重载接口函数
             ReloadGeneralConfigure(callback);
@@ -528,7 +528,7 @@ namespace GameEngine.Loader
         /// <param name="url">资源路径</param>
         /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void LoadBeanConfigureInfo(string url, OnConfigureFileStreamLoadingHandler callback)
+        internal static void LoadBeanConfigureInfo(string url, NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
         {
             // 可以直接复用Bean配置重载接口函数
             ReloadGeneralConfigure(url, callback);
@@ -540,7 +540,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void LoadBeanConfigureInfo(OnConfigureFileTextLoadingHandler callback)
+        internal static void LoadBeanConfigureInfo(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
         {
             // 可以直接复用Bean配置重载接口函数
             ReloadGeneralConfigure(callback);
@@ -553,7 +553,7 @@ namespace GameEngine.Loader
         /// <param name="url">资源路径</param>
         /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void LoadBeanConfigureInfo(string url, OnConfigureFileTextLoadingHandler callback)
+        internal static void LoadBeanConfigureInfo(string url, NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
         {
             // 可以直接复用Bean配置重载接口函数
             ReloadGeneralConfigure(url, callback);
@@ -565,7 +565,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void ReloadBeanConfigureInfo(OnConfigureFileStreamLoadingHandler callback)
+        internal static void ReloadBeanConfigureInfo(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
         {
             // 重载全部Bean配置
             ReloadGeneralConfigure(callback);
@@ -581,7 +581,7 @@ namespace GameEngine.Loader
         /// <param name="url">资源路径</param>
         /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void ReloadBeanConfigureInfo(string url, OnConfigureFileStreamLoadingHandler callback)
+        internal static void ReloadBeanConfigureInfo(string url, NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
         {
             // 重载全部Bean配置
             ReloadGeneralConfigure(url, callback);
@@ -596,7 +596,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void ReloadBeanConfigureInfo(OnConfigureFileTextLoadingHandler callback)
+        internal static void ReloadBeanConfigureInfo(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
         {
             // 重载全部Bean配置
             ReloadGeneralConfigure(callback);
@@ -612,7 +612,7 @@ namespace GameEngine.Loader
         /// <param name="url">资源路径</param>
         /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void ReloadBeanConfigureInfo(string url, OnConfigureFileTextLoadingHandler callback)
+        internal static void ReloadBeanConfigureInfo(string url, NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
         {
             // 重载全部Bean配置
             ReloadGeneralConfigure(url, callback);

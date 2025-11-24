@@ -1,8 +1,6 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,42 +22,26 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Loader.Configuring
+namespace GameEngine.Context.Configuring
 {
     /// <summary>
-    /// Bean配置数据源的节点标签命名
+    /// 应用配置数据的节点标签命名
     /// </summary>
-    internal static class BeanConfigureNodeName
+    internal static class ApplicationConfigureNodeName
     {
         public const string Comment = "#comment";
         public const string File = "file";
-        public const string Constant = "constant";
-        public const string Bean = "bean";
-        public const string Field = "field";
-        public const string Property = "property";
-        public const string Method = "method";
-        public const string Component = "component";
+        public const string HotModule = "hot-module";
+        public const string BeanImport = "bean-import";
     }
 
     /// <summary>
-    /// Bean配置数据的语法标签定义
+    /// 应用配置数据的语法标签定义
     /// </summary>
-    internal static class BeanConfigureNodeAttributeName
+    internal static class ApplicationConfigureAttributeName
     {
-        public const string K_NAME = "name";
-        public const string K_PATH = "path";
-        public const string K_INCLUDE = "include";
-        public const string K_CLASS_TYPE = "class_type";
-        public const string K_PARENT_NAME = "parent_name";
-        public const string K_SINGLETON = "singleton";
-        public const string K_INHERITED = "inherited";
-        public const string K_REFERENCE_NAME = "reference_name";
-        public const string K_REFERENCE_TYPE = "reference_type";
-        public const string K_REFERENCE_VALUE = "reference_value";
-        //public const string K_REFERENCE_BEAN = "reference_bean";
-        //public const string K_REFERENCE_FIELD = "reference_field";
-        //public const string K_REFERENCE_PROPERTY = "reference_property";
-        public const string K_PRIORITY = "priority";
-        public const string K_ACTIVATION_ON = "activation_on";
+        public const string Url = "url";
+        public const string Include = "include";
+        public const string ClassType = "class_type";
     }
 }

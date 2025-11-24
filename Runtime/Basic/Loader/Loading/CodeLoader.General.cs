@@ -31,8 +31,6 @@ using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
 using SystemAttributeTargets = System.AttributeTargets;
 using SystemEnum = System.Enum;
 using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace GameEngine.Loader
 {
@@ -174,7 +172,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 初始化针对所有标准核心类声明的全部绑定回调接口
         /// </summary>
-        [OnCodeLoaderSubmoduleInitCallback]
+        [OnClassSubmoduleInitializeCallback]
         private static void InitAllGeneralClassLoadingCallbacks()
         {
             string namespaceTag = typeof(CodeLoader).Namespace;
@@ -193,17 +191,17 @@ namespace GameEngine.Loader
                 SystemType loaderType = SystemType.GetType(loaderName);
                 if (null == loaderType)
                 {
-                    Debugger.Info("Could not found any code loader class with target name {0}.", loaderName);
+                    Debugger.Info("Could not found any code loader class with target name {%s}.", loaderName);
                     continue;
                 }
 
                 if (false == loaderType.IsAbstract || false == loaderType.IsSealed)
                 {
-                    Debugger.Warn("The code loader type {0} must be static class.", loaderName);
+                    Debugger.Warn("The code loader type {%s} must be static class.", loaderName);
                     continue;
                 }
 
-                // Debugger.Info("Register new code loader {0} with target type {1}.", loaderName, enumName);
+                // Debugger.Info("Register new code loader {%s} with target type {%s}.", loaderName, enumName);
 
                 AddGeneralTypeImplementedClass(loaderType);
             }
@@ -217,7 +215,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 清理针对所有标准核心类声明的全部绑定回调接口
         /// </summary>
-        [OnCodeLoaderSubmoduleCleanupCallback]
+        [OnClassSubmoduleCleanupCallback]
         private static void CleanupAllGeneralClassLoadingCallbacks()
         {
             foreach (GeneralLoaderClassReflectionHolder v in _generalLoaderList)
@@ -310,10 +308,10 @@ namespace GameEngine.Loader
             OnGeneralCodeLoaderLoadHandler loadCallback = null;
             OnGeneralCodeLoaderLookupHandler lookupCallback = null;
 
-            SystemMethodInfo[] methods = targetType.GetMethods(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
+            MethodInfo[] methods = targetType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             for (int n = 0; n < methods.Length; ++n)
             {
-                SystemMethodInfo method = methods[n];
+                MethodInfo method = methods[n];
                 IEnumerable<SystemAttribute> e = method.GetCustomAttributes();
                 foreach (SystemAttribute attr in e)
                 {
@@ -348,14 +346,14 @@ namespace GameEngine.Loader
                 null == loadCallback ||
                 null == lookupCallback)
             {
-                Debugger.Warn("Could not found all callbacks from the incompleted class type '{0}', added it to loader list failed.", targetType.FullName);
+                Debugger.Warn("Could not found all callbacks from the incompleted class type '{%t}', added it to loader list failed.", targetType);
                 return;
             }
 
             GeneralLoaderClassReflectionHolder holder = new GeneralLoaderClassReflectionHolder(initCallback, cleanupCallback, matchCallback, loadCallback, lookupCallback);
             _generalLoaderList.Add(holder);
 
-            // Debugger.Log(LogGroupTag.CodeLoader, "Add general implemented class '{0}' to loader list.", targetType.FullName);
+            // Debugger.Log(LogGroupTag.CodeLoader, "Add general implemented class '{%t}' to loader list.", targetType);
         }
     }
 }

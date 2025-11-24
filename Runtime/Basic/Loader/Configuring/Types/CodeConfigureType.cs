@@ -35,4 +35,40 @@ namespace GameEngine.Loader.Configuring
         Constant = 11,
         Bean = 12,
     }
+
+    /// <summary>
+    /// Bean配置数据的节点标签命名
+    /// </summary>
+    internal static class BeanConfigureNodeName
+    {
+        public const string Comment = "#comment";
+        public const string File = "file";
+        public const string Constant = "constant";
+        public const string Bean = "bean";
+        public const string Field = "field";
+        public const string Property = "property";
+        public const string Method = "method";
+        public const string Component = "component";
+    }
+
+    /// <summary>
+    /// Bean配置数据的语法标签定义
+    /// </summary>
+    internal static class BeanConfigureNodeAttributeName
+    {
+        public const string Name = "name";
+        public const string Include = "include";
+        public const string ClassType = "class_type";
+        public const string ParentName = "parent_name";
+        public const string Singleton = "singleton";
+        public const string Inherited = "inherited";
+        public const string ReferenceName = "reference_name";
+        public const string ReferenceType = "reference_type";
+        public const string ReferenceValue = "reference_value";
+        //public const string ReferenceBean = "reference_bean";
+        //public const string ReferenceField = "reference_field";
+        //public const string ReferenceProperty = "reference_property";
+        public const string Priority = "priority";
+        public const string ActivationOn = "activation_on";
+    }
 }

@@ -22,12 +22,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.IO;
+using System.Reflection;
+
 using SystemType = System.Type;
-using SystemAssembly = System.Reflection.Assembly;
-using SystemMemoryStream = System.IO.MemoryStream;
-using SystemFileStream = System.IO.FileStream;
-using SystemFileMode = System.IO.FileMode;
-using SystemFileAccess = System.IO.FileAccess;
 
 namespace GameEngine
 {
@@ -91,7 +89,7 @@ namespace GameEngine
         /// <param name="path">文件路径</param>
         public static void LoadBeanConfigure(string path)
         {
-            using (SystemFileStream fs = new SystemFileStream(path, SystemFileMode.Open, SystemFileAccess.Read))
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
                 byte[] bytes = new byte[fs.Length];
                 fs.Read(bytes, 0, bytes.Length);
@@ -107,7 +105,7 @@ namespace GameEngine
         /// 游戏运行库加载指定的实体配置
         /// </summary>
         /// <param name="mstream">数据流</param>
-        public static void LoadBeanConfigure(SystemMemoryStream mstream)
+        public static void LoadBeanConfigure(MemoryStream mstream)
         {
             Loader.CodeLoader.LoadBeanConfigureInfo(mstream);
         }
@@ -116,7 +114,7 @@ namespace GameEngine
         /// 游戏运行库通过指定的处理回调加载实体配置
         /// </summary>
         /// <param name="callback">回调句柄</param>
-        public static void LoadBeanConfigure(Loader.CodeLoader.OnConfigureFileTextLoadingHandler callback)
+        public static void LoadBeanConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
         {
             Loader.CodeLoader.LoadBeanConfigureInfo(callback);
         }
@@ -125,7 +123,7 @@ namespace GameEngine
         /// 游戏运行库通过指定的处理回调加载实体配置
         /// </summary>
         /// <param name="callback">回调句柄</param>
-        public static void LoadBeanConfigure(Loader.CodeLoader.OnConfigureFileStreamLoadingHandler callback)
+        public static void LoadBeanConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
         {
             Loader.CodeLoader.LoadBeanConfigureInfo(callback);
         }
@@ -134,7 +132,7 @@ namespace GameEngine
         /// 游戏运行库通过指定的处理回调重载实体配置
         /// </summary>
         /// <param name="callback">回调句柄</param>
-        public static void ReloadBeanConfigure(Loader.CodeLoader.OnConfigureFileTextLoadingHandler callback)
+        public static void ReloadBeanConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
         {
             Loader.CodeLoader.ReloadBeanConfigureInfo(callback);
         }
@@ -143,7 +141,7 @@ namespace GameEngine
         /// 游戏运行库通过指定的处理回调重载实体配置
         /// </summary>
         /// <param name="callback">回调句柄</param>
-        public static void ReloadBeanConfigure(Loader.CodeLoader.OnConfigureFileStreamLoadingHandler callback)
+        public static void ReloadBeanConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
         {
             Loader.CodeLoader.ReloadBeanConfigureInfo(callback);
         }
@@ -152,7 +150,7 @@ namespace GameEngine
         /// 游戏运行库加载指定的程序集
         /// </summary>
         /// <param name="assembly">程序集</param>
-        public static void LoadFromAssembly(SystemAssembly assembly)
+        public static void LoadFromAssembly(Assembly assembly)
         {
             LoadFromAssembly(assembly, false);
         }
@@ -162,7 +160,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="assembly">程序集</param>
         /// <param name="reload">重载状态标识</param>
-        public static void LoadFromAssembly(SystemAssembly assembly, bool reload)
+        public static void LoadFromAssembly(Assembly assembly, bool reload)
         {
             try
             {

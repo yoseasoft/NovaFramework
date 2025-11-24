@@ -91,7 +91,7 @@ namespace GameEngine.Loader
             }
 
             _componentCodeInfos.Add(info.ComponentName, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CComponent' code info '{0}' succeed from target class type '{1}'.", CodeLoaderObject.ToString(info), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CComponent' code info '{0}' succeed from target class type '{1}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
 
             return true;
         }

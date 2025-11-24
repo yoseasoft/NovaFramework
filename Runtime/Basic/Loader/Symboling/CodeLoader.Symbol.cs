@@ -47,7 +47,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 初始化针对所有标记对象类声明的全部绑定回调接口
         /// </summary>
-        [OnCodeLoaderSubmoduleInitCallback]
+        [OnClassSubmoduleInitializeCallback]
         private static void InitAllSymClassLoadingCallbacks()
         {
             // 初始化标记数据容器
@@ -62,7 +62,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 清理针对所有标记对象类声明的全部绑定回调接口
         /// </summary>
-        [OnCodeLoaderSubmoduleCleanupCallback]
+        [OnClassSubmoduleCleanupCallback]
         private static void CleanupAllSymClassLoadingCallbacks()
         {
             // 符号解析器清理
@@ -102,14 +102,14 @@ namespace GameEngine.Loader
                 else
                 {
                     // 在重载前已经卸载掉所有的类标记对象，所以此处必定查找不到目标对象
-                    // Debugger.Warn("Could not found any class symbol with target name '{0}' and type '{1}', removed it failed.", symbol.TargetName, NovaEngine.Utility.Text.ToString(targetType));
+                    // Debugger.Warn("Could not found any class symbol with target name '{%s}' and type '{%t}', removed it failed.", symbol.TargetName, targetType);
                 }
             }
 
             // 安全检查
             Debugger.Assert(false == _symClassMaps.ContainsKey(symbol.ClassName), $"Load class symbol {symbol.ClassName} error.");
 
-            Debugger.Log(LogGroupTag.CodeLoader, "Load class symbol '{%s}' succeed from target class type '{%t}'.", CodeLoaderObject.ToString(symbol), targetType);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load class symbol '{%s}' succeed from target class type '{%t}'.", CodeLoaderUtils.ToString(symbol), targetType);
 
             // 添加标记信息
             _symClassMaps.Add(symbol);
@@ -177,11 +177,11 @@ namespace GameEngine.Loader
             string beanName = bean.BeanName;
             if (_beanClassMaps.ContainsKey(beanName))
             {
-                Debugger.Warn("The bean object '{0}' was already exist within class map, repeat added it failed.", beanName);
+                Debugger.Warn("The bean object '{%s}' was already exist within class map, repeat added it failed.", beanName);
                 return;
             }
 
-            Debugger.Info(LogGroupTag.CodeLoader, "Register new bean object '{0}' to target symbol class '{1}'.", beanName, bean.TargetClass.FullName);
+            Debugger.Info(LogGroupTag.CodeLoader, "Register new bean object '{%s}' to target symbol class '{%t}'.", beanName, bean.TargetClass);
 
             _beanClassMaps.Add(beanName, bean);
         }

@@ -24,9 +24,7 @@
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 游戏层接口调用封装类，用于对远程游戏业务提供的函数访问接口进行方法封装
-    /// </summary>
+    /// 游戏层接口调用封装类
     internal static partial class GameCall
     {
         /// <summary>

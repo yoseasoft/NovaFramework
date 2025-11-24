@@ -25,10 +25,8 @@
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 针对编码信息结构类型对象的格式化辅助工具类，通过该类定义一些用于编码信息结构对象的格式化接口函数
-    /// </summary>
-    public static partial class CodeLoaderObject
+    /// 代码加载器的辅助工具类
+    public static partial class CodeLoaderUtils
     {
         private static string ToString(Structuring.MethodTypeCodeInfo targetObject)
         {

@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +23,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Xml;
-using UnityEngine.Scripting;
-
-namespace GameEngine.Loader.Configuring
+namespace GameEngine.Loader
 {
-    /// 对象配置数据的解析类
-    internal static partial class CodeConfigureResolver
+    /// <summary>
+    /// 针对分析处理对象的格式化辅助工具类。
+    /// 您可以通过该类提供的方式，查看加载对象内部具体的数据信息。
+    /// </summary>
+    public static partial class CodeLoaderUtils
     {
-        /// <summary>
-        /// 加载基础Bean节点的配置数据
-        /// </summary>
-        /// <param name="node">节点实例</param>
-        /// <remarks>返回配置数据的对象实例</remarks>
-        [Preserve]
-        [OnXmlConfigureResolvingCallback(XmlNodeType.Comment, BeanConfigureNodeName.Comment)]
-        private static void LoadGeneralComments(XmlNode node)
-        {
-            Debugger.Info(LogGroupTag.CodeLoader, "Load general configure comment: {0}", node.Value);
-        }
     }
 }

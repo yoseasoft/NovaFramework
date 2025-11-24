@@ -30,10 +30,7 @@ using SystemType = System.Type;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 游戏运行库的静态管理类，对业务层载入的所有运行对象类进行统一加载管理<br/>
-    /// 该管理类主要通过反射实现运行对象类的初始化及清理流程中的一些模版配置管理
-    /// </summary>
+    /// 游戏运行库的静态管理类
     public static partial class GameLibrary
     {
         /// <summary>

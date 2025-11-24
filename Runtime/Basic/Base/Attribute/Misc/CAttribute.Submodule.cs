@@ -23,19 +23,28 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Loader.Configuring
+using SystemType = System.Type;
+using SystemAttribute = System.Attribute;
+using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
+using SystemAttributeTargets = System.AttributeTargets;
+
+namespace GameEngine
 {
     /// <summary>
-    /// 导入文件配置类型的结构信息
+    /// 对象类的子模块初始化回调接口的声明属性类型定义
     /// </summary>
-    public sealed class FileConfigureInfo : BaseConfigureInfo
+    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnClassSubmoduleInitializeCallbackAttribute : SystemAttribute
     {
-        /// <summary>
-        /// 导入文件名称
-        /// </summary>
-        private string _include;
+        public OnClassSubmoduleInitializeCallbackAttribute() : base() { }
+    }
 
-        public override ConfigureInfoType Type => ConfigureInfoType.File;
-        public string Include { get { return _include; } internal set { _include = value; } }
+    /// <summary>
+    /// 对象类的子模块清理回调接口的声明属性类型定义
+    /// </summary>
+    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnClassSubmoduleCleanupCallbackAttribute : SystemAttribute
+    {
+        public OnClassSubmoduleCleanupCallbackAttribute() : base() { }
     }
 }

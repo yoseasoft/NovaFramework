@@ -23,15 +23,9 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Reflection;
 
 using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
 using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace GameEngine.Loader
 {
@@ -40,24 +34,6 @@ namespace GameEngine.Loader
     /// </summary>
     public static partial class CodeLoader
     {
-        /// <summary>
-        /// 代码加载类的子模块初始化回调句柄的声明属性类型定义
-        /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        private sealed class OnCodeLoaderSubmoduleInitCallbackAttribute : SystemAttribute
-        {
-            public OnCodeLoaderSubmoduleInitCallbackAttribute() : base() { }
-        }
-
-        /// <summary>
-        /// 代码加载类的子模块清理回调句柄的声明属性类型定义
-        /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        private sealed class OnCodeLoaderSubmoduleCleanupCallbackAttribute : SystemAttribute
-        {
-            public OnCodeLoaderSubmoduleCleanupCallbackAttribute() : base() { }
-        }
-
         /// <summary>
         /// 加载对象类的子模块行为流程回调的缓存队列
         /// </summary>
@@ -72,7 +48,7 @@ namespace GameEngine.Loader
         {
             _cachedSubmoduleActionCallbacks = new Dictionary<SystemType, SystemDelegate>();
 
-            OnCodeLoaderSubmoduleActionCallbackOfTargetAttribute(typeof(OnCodeLoaderSubmoduleInitCallbackAttribute));
+            OnCodeLoaderSubmoduleActionCallbackOfTargetAttribute(typeof(OnClassSubmoduleInitializeCallbackAttribute));
         }
 
         /// <summary>
@@ -80,7 +56,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static void OnCodeLoaderSubmoduleCleanupCallback()
         {
-            OnCodeLoaderSubmoduleActionCallbackOfTargetAttribute(typeof(OnCodeLoaderSubmoduleCleanupCallbackAttribute));
+            OnCodeLoaderSubmoduleActionCallbackOfTargetAttribute(typeof(OnClassSubmoduleCleanupCallbackAttribute));
 
             _cachedSubmoduleActionCallbacks.Clear();
             _cachedSubmoduleActionCallbacks = null;
@@ -105,47 +81,14 @@ namespace GameEngine.Loader
             if (_cachedSubmoduleActionCallbacks.TryGetValue(targetType, out handler))
             {
                 callback = handler;
-                return null == callback ? false : true;
+                return null != callback;
             }
 
-            IList<SystemDelegate> list = new List<SystemDelegate>();
-            SystemType classType = typeof(CodeLoader);
-            SystemMethodInfo[] methods = classType.GetMethods(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
-            for (int n = 0; n < methods.Length; ++n)
-            {
-                SystemMethodInfo method = methods[n];
-                IEnumerable<SystemAttribute> e = method.GetCustomAttributes();
-                SystemAttribute attr = method.GetCustomAttribute(targetType);
-                if (null != attr)
-                {
-                    SystemDelegate c = method.CreateDelegate(typeof(NovaEngine.Definition.Delegate.EmptyFunctionHandler));
-                    list.Add(c);
-                }
-            }
-
-            // 先重置回调
-            callback = null;
-
-            if (list.Count > 0)
-            {
-                for (int n = 0; n < list.Count; ++n)
-                {
-                    if (null == callback)
-                    {
-                        callback = list[n];
-                    }
-                    else
-                    {
-                        callback = SystemDelegate.Combine(list[n], callback);
-                    }
-                }
-
-                _cachedSubmoduleActionCallbacks.Add(targetType, callback);
-                return true;
-            }
+            callback = Utils.CreateSubmoduleBehaviourCallback(null, typeof(CodeLoader), targetType);
 
             _cachedSubmoduleActionCallbacks.Add(targetType, callback);
-            return false;
+
+            return null != callback;
         }
 
         #endregion

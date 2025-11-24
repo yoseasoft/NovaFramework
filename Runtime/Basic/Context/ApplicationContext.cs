@@ -22,7 +22,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 using SystemType = System.Type;
+using SystemDelegate = System.Delegate;
 
 namespace GameEngine
 {
@@ -32,10 +35,17 @@ namespace GameEngine
     public static partial class ApplicationContext
     {
         /// <summary>
+        /// 应用的子模块行为流程回调的缓存队列
+        /// </summary>
+        private static IDictionary<SystemType, SystemDelegate> _cachedSubmoduleActionCallbacks = null;
+
+        /// <summary>
         /// 应用程序上下文的启动函数
         /// </summary>
         internal static void Startup()
         {
+            // 子模块初始化
+            OnApplicationSubmoduleInitCallback();
         }
 
         /// <summary>
@@ -43,6 +53,8 @@ namespace GameEngine
         /// </summary>
         internal static void Shutdown()
         {
+            // 子模块清理
+            OnApplicationSubmoduleCleanupCallback();
         }
 
         /// <summary>
@@ -51,5 +63,59 @@ namespace GameEngine
         internal static void Restart()
         {
         }
+
+        #region 加载对象的子模块调度管理接口函数
+
+        /// <summary>
+        /// 应用子模块初始化回调处理接口函数
+        /// </summary>
+        private static void OnApplicationSubmoduleInitCallback()
+        {
+            _cachedSubmoduleActionCallbacks = new Dictionary<SystemType, SystemDelegate>();
+
+            OnApplicationSubmoduleActionCallbackOfTargetAttribute(typeof(OnClassSubmoduleInitializeCallbackAttribute));
+        }
+
+        /// <summary>
+        /// 应用子模块清理回调处理接口函数
+        /// </summary>
+        private static void OnApplicationSubmoduleCleanupCallback()
+        {
+            OnApplicationSubmoduleActionCallbackOfTargetAttribute(typeof(OnClassSubmoduleCleanupCallbackAttribute));
+
+            _cachedSubmoduleActionCallbacks.Clear();
+            _cachedSubmoduleActionCallbacks = null;
+        }
+
+        /// <summary>
+        /// 应用子模块指定类型的回调函数触发处理接口
+        /// </summary>
+        /// <param name="attrType">属性类型</param>
+        private static void OnApplicationSubmoduleActionCallbackOfTargetAttribute(SystemType attrType)
+        {
+            SystemDelegate callback;
+            if (TryGetApplicationSubmoduleActionCallback(attrType, out callback))
+            {
+                callback.DynamicInvoke();
+            }
+        }
+
+        private static bool TryGetApplicationSubmoduleActionCallback(SystemType targetType, out SystemDelegate callback)
+        {
+            SystemDelegate handler;
+            if (_cachedSubmoduleActionCallbacks.TryGetValue(targetType, out handler))
+            {
+                callback = handler;
+                return null != callback;
+            }
+
+            callback = Utils.CreateSubmoduleBehaviourCallback(null, typeof(ApplicationContext), targetType);
+
+            _cachedSubmoduleActionCallbacks.Add(targetType, callback);
+
+            return null != callback;
+        }
+
+        #endregion
     }
 }

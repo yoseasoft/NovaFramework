@@ -23,13 +23,39 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine.Loader
+using System.Xml;
+
+using SystemType = System.Type;
+using SystemAttribute = System.Attribute;
+using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
+using SystemAttributeTargets = System.AttributeTargets;
+
+namespace GameEngine
 {
     /// <summary>
-    /// 针对分析处理对象的格式化辅助工具类。
-    /// 您可以通过该类提供的方式，查看加载对象内部具体的数据信息。
+    /// 基于XML文件的配置解析器回调句柄函数的属性定义
     /// </summary>
-    public static partial class CodeLoaderObject
+    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnXmlConfigureResolvingCallbackAttribute : SystemAttribute
     {
+        /// <summary>
+        /// 解析的目标节点类型
+        /// </summary>
+        private XmlNodeType _nodeType;
+        /// <summary>
+        /// 解析的目标节点名称
+        /// </summary>
+        private string _nodeName;
+
+        public XmlNodeType NodeType => _nodeType;
+        public string NodeName => _nodeName;
+
+        public OnXmlConfigureResolvingCallbackAttribute(string nodeName) : this(XmlNodeType.Element, nodeName) { }
+
+        public OnXmlConfigureResolvingCallbackAttribute(XmlNodeType nodeType, string nodeName) : base()
+        {
+            _nodeType = nodeType;
+            _nodeName = nodeName;
+        }
     }
 }

@@ -25,26 +25,14 @@
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 针对Bean配置对象的格式化辅助工具类，通过该类定义一些用于Bean配置对象的格式化接口函数
-    /// </summary>
-    public static partial class CodeLoaderObject
+    /// 代码加载器的辅助工具类
+    public static partial class CodeLoaderUtils
     {
         private static string ToString(Configuring.BaseConfigureInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Type={%i},", targetObject.Type);
             fsb.Append("Name={%s},", targetObject.Name);
-            return fsb.ToString();
-        }
-
-        internal static string ToString(Configuring.FileConfigureInfo targetObject)
-        {
-            NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
-            fsb.Append("File={");
-            fsb.Append(ToString((Configuring.BaseConfigureInfo) targetObject));
-            fsb.Append("Include={%s},", targetObject.Include);
-            fsb.Append("}");
             return fsb.ToString();
         }
 

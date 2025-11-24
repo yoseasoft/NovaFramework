@@ -31,8 +31,6 @@ using SystemAttribute = System.Attribute;
 using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
 using SystemAttributeTargets = System.AttributeTargets;
 using SystemEnum = System.Enum;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace GameEngine.Loader
 {
@@ -85,8 +83,8 @@ namespace GameEngine.Loader
         /// <summary>
         /// 初始化针对所有绑定处理类声明的全部绑定回调接口
         /// </summary>
-        [OnCodeLoaderSubmoduleInitCallback]
-        private static void InitAllBingdingProcessorClassLoadingCallbacks()
+        [OnClassSubmoduleInitializeCallback]
+        private static void InitAllBindingProcessorClassLoadingCallbacks()
         {
             string namespaceTag = typeof(CodeLoader).Namespace;
 
@@ -104,17 +102,17 @@ namespace GameEngine.Loader
                 SystemType processorType = SystemType.GetType(processorName);
                 if (null == processorType)
                 {
-                    Debugger.Info("Could not found any code binding processor class with target name {0}.", processorName);
+                    Debugger.Info("Could not found any code binding processor class with target name {%s}.", processorName);
                     continue;
                 }
 
                 if (false == processorType.IsAbstract || false == processorType.IsSealed)
                 {
-                    Debugger.Warn("The code binding processor type {0} must be static class.", processorName);
+                    Debugger.Warn("The code binding processor type {%s} must be static class.", processorName);
                     continue;
                 }
 
-                // Debugger.Info("Register new code binding processor {0} with target type {1}.", processorName, enumName);
+                // Debugger.Info("Register new code binding processor {%s} with target type {%s}.", processorName, enumName);
 
                 AddBindingProcessorTypeImplementedClass(processorType);
             }
@@ -123,7 +121,7 @@ namespace GameEngine.Loader
             while (e.MoveNext())
             {
                 OnInitAllBindingProcessorClassesHandler handler = e.Current.Value as OnInitAllBindingProcessorClassesHandler;
-                Debugger.Assert(null != handler, "Invalid code bingding processor class init handler.");
+                Debugger.Assert(null != handler, "Invalid code binding processor class init handler.");
 
                 handler.Invoke();
             }
@@ -132,14 +130,14 @@ namespace GameEngine.Loader
         /// <summary>
         /// 清理针对所有绑定处理类声明的全部绑定回调接口
         /// </summary>
-        [OnCodeLoaderSubmoduleCleanupCallback]
+        [OnClassSubmoduleCleanupCallback]
         private static void CleanupAllBindingProcessorClassLoadingCallbacks()
         {
             IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _codeBindingProcessorCleanupCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 OnCleanupAllBindingProcessorClassesHandler handler = e.Current.Value as OnCleanupAllBindingProcessorClassesHandler;
-                Debugger.Assert(null != handler, "Invalid code bingding processor class cleanup handler.");
+                Debugger.Assert(null != handler, "Invalid code binding processor class cleanup handler.");
 
                 handler.Invoke();
             }
@@ -157,10 +155,10 @@ namespace GameEngine.Loader
             OnInitAllBindingProcessorClassesHandler initCallback = null;
             OnCleanupAllBindingProcessorClassesHandler cleanupCallback = null;
 
-            SystemMethodInfo[] methods = targetType.GetMethods(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
+            MethodInfo[] methods = targetType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             for (int n = 0; n < methods.Length; ++n)
             {
-                SystemMethodInfo method = methods[n];
+                MethodInfo method = methods[n];
                 IEnumerable<SystemAttribute> e = method.GetCustomAttributes();
                 foreach (SystemAttribute attr in e)
                 {
@@ -179,14 +177,14 @@ namespace GameEngine.Loader
             // 所有回调接口必须全部实现，该加载器才能正常使用
             if (null == initCallback || null == cleanupCallback)
             {
-                Debugger.Warn("Could not found all callbacks from the incompleted class type '{0}', added it to loader list failed.", targetType.FullName);
+                Debugger.Warn("Could not found all callbacks from the incompleted class type '{%t}', added it to loader list failed.", targetType);
                 return;
             }
 
             _codeBindingProcessorInitCallbacks.Add(targetType, initCallback);
             _codeBindingProcessorCleanupCallbacks.Add(targetType, cleanupCallback);
 
-            // Debugger.Log(LogGroupTag.CodeLoader, "Add binding processor implemented class '{0}' to loader list.", targetType.FullName);
+            // Debugger.Log(LogGroupTag.CodeLoader, "Add binding processor implemented class '{%t}' to loader list.", targetType);
         }
 
         /// <summary>

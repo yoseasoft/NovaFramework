@@ -24,13 +24,9 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Reflection;
 
 using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
 using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace GameEngine
 {
@@ -221,46 +217,14 @@ namespace GameEngine
             if (_cachedSubmoduleBehaviourCallbacks.TryGetValue(targetType, out handler))
             {
                 callback = handler;
-                return null == callback ? false : true;
+                return null != callback;
             }
 
-            IList<SystemDelegate> list = new List<SystemDelegate>();
-            SystemType classType = GetType();
-            SystemMethodInfo[] methods = classType.GetMethods(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Instance);
-            for (int n = 0; n < methods.Length; ++n)
-            {
-                SystemMethodInfo method = methods[n];
-                SystemAttribute attr = method.GetCustomAttribute(targetType);
-                if (null != attr)
-                {
-                    SystemDelegate c = method.CreateDelegate(typeof(NovaEngine.Definition.Delegate.EmptyFunctionHandler), this);
-                    list.Add(c);
-                }
-            }
-
-            // 先重置回调
-            callback = null;
-
-            if (list.Count > 0)
-            {
-                for (int n = 0; n < list.Count; ++n)
-                {
-                    if (null == callback)
-                    {
-                        callback = list[n];
-                    }
-                    else
-                    {
-                        callback = SystemDelegate.Combine(list[n], callback);
-                    }
-                }
-
-                _cachedSubmoduleBehaviourCallbacks.Add(targetType, callback);
-                return true;
-            }
+            callback = Utils.CreateSubmoduleBehaviourCallback(this, GetType(), targetType);
 
             _cachedSubmoduleBehaviourCallbacks.Add(targetType, callback);
-            return false;
+
+            return null != callback;
         }
     }
 }

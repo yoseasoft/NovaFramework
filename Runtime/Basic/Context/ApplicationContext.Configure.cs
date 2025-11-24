@@ -1,8 +1,6 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,19 +22,17 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Customize.Extension;
-using GameEngine.Loader.Configuring;
 
-namespace GameEngine.Loader
+using SystemType = System.Type;
+
+namespace GameEngine
 {
-    /// <summary>
-    /// 程序集的分析处理类，对业务层载入的所有对象类进行统一加载及分析处理
-    /// </summary>
-    public static partial class CodeLoader
+    /// 应用程序的上下文管理器对象类
+    public static partial class ApplicationContext
     {
         /// <summary>
         /// 初始化针对所有配置解析类声明的全部绑定回调接口
@@ -45,7 +41,7 @@ namespace GameEngine.Loader
         private static void InitAllCodeConfigureLoadingCallbacks()
         {
             // 配置解析器初始化
-            Configuring.CodeConfigureResolver.Initialize();
+            Context.Configuring.ApplicationConfigureResolver.Initialize();
         }
 
         /// <summary>
@@ -55,7 +51,7 @@ namespace GameEngine.Loader
         private static void CleanupAllCodeConfigureLoadingCallbacks()
         {
             // 配置解析器清理
-            Configuring.CodeConfigureResolver.Cleanup();
+            Context.Configuring.ApplicationConfigureResolver.Cleanup();
         }
 
         /// <summary>
@@ -90,7 +86,7 @@ namespace GameEngine.Loader
             {
                 XmlNode node = nodeList[n];
 
-                Configuring.CodeConfigureResolver.LoadConfigureContent(node);
+                Context.Configuring.ApplicationConfigureResolver.LoadConfigureContent(node);
             }
         }
 
@@ -137,7 +133,7 @@ namespace GameEngine.Loader
                 ms.Dispose();
 
                 // 获取下一个文件路径
-                path = Configuring.CodeConfigureResolver.PopNextConfigureFileLoadPath();
+                path = Context.Configuring.ApplicationConfigureResolver.MoveNextConfigureFile();
             } while (null != path);
         }
 
@@ -174,31 +170,12 @@ namespace GameEngine.Loader
         }
 
         /// <summary>
-        /// 通过指定的配置名称，获取对应的配置数据结构信息
-        /// </summary>
-        /// <param name="name">配置名称</param>
-        /// <returns>返回配置数据实例，若查找失败返回null</returns>
-        private static BaseConfigureInfo GetConfigureInfoByName(string name)
-        {
-            return Configuring.CodeConfigureResolver.GetNodeConfigureInfoByName(name);
-        }
-
-        /// <summary>
-        /// 获取当前注册的所有配置数据结构信息对象实例
-        /// </summary>
-        /// <returns>返回当前所有配置数据实例</returns>
-        private static IList<BaseConfigureInfo> GetAllConfigureInfos()
-        {
-            return Configuring.CodeConfigureResolver.GetAllNodeConfigureInfos();
-        }
-
-        /// <summary>
         /// 卸载当前所有解析登记的配置数据对象实例
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void UnloadAllConfigureContents()
         {
-            Configuring.CodeConfigureResolver.UnloadAllConfigureContents();
+            Context.Configuring.ApplicationConfigureResolver.UnloadAllConfigureContents();
         }
     }
 }

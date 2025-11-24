@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,21 +25,40 @@
 using System.Xml;
 using UnityEngine.Scripting;
 
-namespace GameEngine.Loader.Configuring
+namespace GameEngine.Context.Configuring
 {
-    /// 对象配置数据的解析类
-    internal static partial class CodeConfigureResolver
+    /// 程序配置数据的解析类
+    internal static partial class ApplicationConfigureResolver
     {
         /// <summary>
-        /// 加载基础Bean节点的配置数据
+        /// 热加载模块导入节点的配置数据
         /// </summary>
         /// <param name="node">节点实例</param>
-        /// <remarks>返回配置数据的对象实例</remarks>
         [Preserve]
-        [OnXmlConfigureResolvingCallback(XmlNodeType.Comment, BeanConfigureNodeName.Comment)]
-        private static void LoadGeneralComments(XmlNode node)
+        [OnXmlConfigureResolvingCallback(XmlNodeType.Element, ApplicationConfigureNodeName.HotModule)]
+        private static void LoadHotModuleElement(XmlNode node)
         {
-            Debugger.Info(LogGroupTag.CodeLoader, "Load general configure comment: {0}", node.Value);
+            string classType = null;
+            XmlAttributeCollection attrCollection = node.Attributes;
+            for (int n = 0; null != attrCollection && n < attrCollection.Count; ++n)
+            {
+                XmlAttribute attr = attrCollection[n];
+                switch (attr.Name)
+                {
+                    case ApplicationConfigureAttributeName.ClassType:
+                        classType = attr.Value;
+                        break;
+                }
+            }
+
+            if (string.IsNullOrEmpty(classType))
+            {
+                Debugger.Warn(LogGroupTag.Basic, "应用配置文件的‘{%s}’节点导入信息不能为空，该节点解析处理异常！", node.Name);
+                return;
+            }
+
+            Debugger.Info(LogGroupTag.CodeLoader, "Load hot-module configure class_type={%s} succeed.", classType);
+            ApplicationConfigureInfo.AddHotModuleType(classType);
         }
     }
 }

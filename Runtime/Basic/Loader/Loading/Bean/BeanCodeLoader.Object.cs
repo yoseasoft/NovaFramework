@@ -97,7 +97,7 @@ namespace GameEngine.Loader
             }
 
             _objectCodeInfos.Add(info.ObjectName, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CObject' code info '{0}' succeed from target class type '{1}'.", CodeLoaderObject.ToString(info), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CObject' code info '{0}' succeed from target class type '{1}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
 
             return true;
         }

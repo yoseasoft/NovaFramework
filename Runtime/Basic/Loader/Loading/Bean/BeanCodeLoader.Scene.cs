@@ -101,7 +101,7 @@ namespace GameEngine.Loader
             }
 
             _sceneCodeInfos.Add(info.EntityName, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CScene' code info '{%s}' succeed from target class type '{%s}'.", CodeLoaderObject.ToString(info), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CScene' code info '{%s}' succeed from target class type '{%s}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
 
             return true;
         }

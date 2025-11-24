@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Xml;
+using UnityEngine.Scripting;
 
 using SystemType = System.Type;
 
@@ -37,8 +38,9 @@ namespace GameEngine.Loader.Configuring
         /// </summary>
         /// <param name="node">节点实例</param>
         /// <remarks>返回配置数据的对象实例</remarks>
-        [CodeLoader.OnConfigureResolvingCallback(XmlNodeType.Element, BeanConfigureNodeName.Bean)]
-        private static BaseConfigureInfo LoadBeanElement(XmlNode node)
+        [Preserve]
+        [OnXmlConfigureResolvingCallback(XmlNodeType.Element, BeanConfigureNodeName.Bean)]
+        private static void LoadBeanElement(XmlNode node)
         {
             BeanConfigureInfo beanInfo = new BeanConfigureInfo();
 
@@ -48,20 +50,20 @@ namespace GameEngine.Loader.Configuring
                 XmlAttribute attr = attrCollection[n];
                 switch (attr.Name)
                 {
-                    case BeanConfigureNodeAttributeName.K_NAME:
+                    case BeanConfigureNodeAttributeName.Name:
                         beanInfo.Name = attr.Value;
                         break;
-                    case BeanConfigureNodeAttributeName.K_CLASS_TYPE:
+                    case BeanConfigureNodeAttributeName.ClassType:
                         beanInfo.ClassType = NovaEngine.Utility.Assembly.GetType(attr.Value);
                         Debugger.Assert(beanInfo.ClassType, "Invalid bean class type.");
                         break;
-                    case BeanConfigureNodeAttributeName.K_PARENT_NAME:
+                    case BeanConfigureNodeAttributeName.ParentName:
                         beanInfo.ParentName = attr.Value;
                         break;
-                    case BeanConfigureNodeAttributeName.K_SINGLETON:
+                    case BeanConfigureNodeAttributeName.Singleton:
                         beanInfo.Singleton = bool.Parse(attr.Value);
                         break;
-                    case BeanConfigureNodeAttributeName.K_INHERITED:
+                    case BeanConfigureNodeAttributeName.Inherited:
                         beanInfo.Inherited = bool.Parse(attr.Value);
                         break;
                 }
@@ -88,7 +90,7 @@ namespace GameEngine.Loader.Configuring
                 }
                 else
                 {
-                    Debugger.Warn("Cannot resolve target configure node '{0}' from bean info '{1}', loaded bean configure failed.", child.Name, beanInfo.Name);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "Cannot resolve target configure node '{%s}' from bean info '{%s}', loaded bean configure failed.", child.Name, beanInfo.Name);
                 }
             }
 
@@ -97,14 +99,13 @@ namespace GameEngine.Loader.Configuring
             {
                 if (false == beanInfo.ClassType.IsSubclassOf(typeof(CEntity)))
                 {
-                    Debugger.Warn("Could not add component to target bean class '{0}', loaded bean '{1}' failed.",
-                            NovaEngine.Utility.Text.ToString(beanInfo.ClassType), beanInfo.Name);
-                    return null;
+                    Debugger.Warn(LogGroupTag.CodeLoader, "Could not add component to target bean class '{%t}', loaded bean '{%s}' failed.", beanInfo.ClassType, beanInfo.Name);
+                    return;
                 }
             }
 
-            Debugger.Info(LogGroupTag.CodeLoader, "Load bean configure '{%s}' succeed.", CodeLoaderObject.ToString(beanInfo));
-            return beanInfo;
+            Debugger.Info(LogGroupTag.CodeLoader, "Load bean configure '{%s}' succeed.", CodeLoaderUtils.ToString(beanInfo));
+            AddNodeConfigureInfo(beanInfo);
         }
 
         private static BeanFieldConfigureInfo LoadBeanFieldElement(XmlNode node)
@@ -117,17 +118,17 @@ namespace GameEngine.Loader.Configuring
                 XmlAttribute attr = attrCollection[n];
                 switch (attr.Name)
                 {
-                    case BeanConfigureNodeAttributeName.K_NAME:
+                    case BeanConfigureNodeAttributeName.Name:
                         fieldInfo.FieldName = attr.Value;
                         break;
-                    case BeanConfigureNodeAttributeName.K_REFERENCE_NAME:
+                    case BeanConfigureNodeAttributeName.ReferenceName:
                         fieldInfo.ReferenceName = attr.Value;
                         break;
-                    case BeanConfigureNodeAttributeName.K_REFERENCE_TYPE:
+                    case BeanConfigureNodeAttributeName.ReferenceType:
                         fieldInfo.ReferenceType = NovaEngine.Utility.Assembly.GetType(attr.Value);
                         Debugger.Assert(fieldInfo.ReferenceType, "Invalid bean field class type.");
                         break;
-                    case BeanConfigureNodeAttributeName.K_REFERENCE_VALUE:
+                    case BeanConfigureNodeAttributeName.ReferenceValue:
                         fieldInfo.ReferenceValue = attr.Value;
                         break;
                 }
@@ -146,17 +147,17 @@ namespace GameEngine.Loader.Configuring
                 XmlAttribute attr = attrCollection[n];
                 switch (attr.Name)
                 {
-                    case BeanConfigureNodeAttributeName.K_NAME:
+                    case BeanConfigureNodeAttributeName.Name:
                         propertyInfo.PropertyName = attr.Value;
                         break;
-                    case BeanConfigureNodeAttributeName.K_REFERENCE_NAME:
+                    case BeanConfigureNodeAttributeName.ReferenceName:
                         propertyInfo.ReferenceName = attr.Value;
                         break;
-                    case BeanConfigureNodeAttributeName.K_REFERENCE_TYPE:
+                    case BeanConfigureNodeAttributeName.ReferenceType:
                         propertyInfo.ReferenceType = NovaEngine.Utility.Assembly.GetType(attr.Value);
                         Debugger.Assert(propertyInfo.ReferenceType, "Invalid bean property class type.");
                         break;
-                    case BeanConfigureNodeAttributeName.K_REFERENCE_VALUE:
+                    case BeanConfigureNodeAttributeName.ReferenceValue:
                         propertyInfo.ReferenceValue = attr.Value;
                         break;
                 }
@@ -175,17 +176,17 @@ namespace GameEngine.Loader.Configuring
                 XmlAttribute attr = attrCollection[n];
                 switch (attr.Name)
                 {
-                    case BeanConfigureNodeAttributeName.K_REFERENCE_NAME:
+                    case BeanConfigureNodeAttributeName.ReferenceName:
                         componentInfo.ReferenceName = attr.Value;
                         break;
-                    case BeanConfigureNodeAttributeName.K_REFERENCE_TYPE:
+                    case BeanConfigureNodeAttributeName.ReferenceType:
                         componentInfo.ReferenceType = NovaEngine.Utility.Assembly.GetType(attr.Value);
                         Debugger.Assert(componentInfo.ReferenceType, "Invalid bean component class type.");
                         break;
-                    case BeanConfigureNodeAttributeName.K_PRIORITY:
+                    case BeanConfigureNodeAttributeName.Priority:
                         componentInfo.Priority = int.Parse(attr.Value);
                         break;
-                    case BeanConfigureNodeAttributeName.K_ACTIVATION_ON:
+                    case BeanConfigureNodeAttributeName.ActivationOn:
                         componentInfo.ActivationBehaviourType = NovaEngine.Utility.Convertion.GetEnumFromName<AspectBehaviourType>(attr.Value);
                         break;
                 }
