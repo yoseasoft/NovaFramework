@@ -22,6 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace GameEngine
 {
     /// <summary>
@@ -34,6 +36,49 @@ namespace GameEngine
         public virtual void Initialize()
         {
             Debugger.Log("更新程序初始化成功！");
+
+            IList<string> list = new List<string>()
+            {
+                "mscorlib",
+                "netstandard",
+                "log4net",
+                "dnlib",
+                "LZ4",
+                "nunit.framework",
+                "unityplastic",
+                "Anonymously Hosted DynamicMethods Assembly",
+                "PlayerBuildProgramLibrary.Data"
+            };
+            System.Reflection.Assembly[] assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
+            System.Text.StringBuilder sb1 = new System.Text.StringBuilder();
+            System.Text.StringBuilder sb2 = new System.Text.StringBuilder();
+            int engineLibraryCount = 0, userLibraryCount = 0;
+            for (int n = 0; n < assemblies.Length; n++)
+            {
+                System.Reflection.Assembly assembly = assemblies[n];
+                string name = assembly.GetName().Name;
+                if (name.StartsWith("System") ||
+                    name.StartsWith("Unity") ||
+                    name.StartsWith("Mono") ||
+                    name.StartsWith("Assembly-") ||
+                    name.StartsWith("Bee") ||
+                    name.StartsWith("JetBrains") ||
+                    name.StartsWith("Sirenix") ||
+                    name.StartsWith("HybridCLR") ||
+                    list.Contains(name))
+                {
+                    sb1.AppendFormat("[{0}]={1},", engineLibraryCount, name);
+                    engineLibraryCount++;
+                }
+                else
+                {
+                    sb2.AppendFormat("[{0}]={1},", userLibraryCount, name);
+                    userLibraryCount++;
+                }
+            }
+            Debugger.Log("引擎库有{%d}个，用户库有{%d}个。", engineLibraryCount, userLibraryCount);
+            Debugger.Log("引擎库有：{%s}", sb1.ToString());
+            Debugger.Log("用户库有：{%s}", sb2.ToString());
         }
 
         public virtual void Cleanup()

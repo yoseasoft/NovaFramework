@@ -39,7 +39,7 @@ namespace GameEngine.Loader.Configuring
         [OnXmlConfigureResolvingCallback(XmlNodeType.Comment, BeanConfigureNodeName.Comment)]
         private static void LoadGeneralComments(XmlNode node)
         {
-            Debugger.Info(LogGroupTag.CodeLoader, "Load general configure comment: {0}", node.Value);
+            Debugger.Info(LogGroupTag.CodeLoader, "Load general configure comment: {%s}", node.Value);
         }
     }
 }
