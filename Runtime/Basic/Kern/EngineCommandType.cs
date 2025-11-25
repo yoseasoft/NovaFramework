@@ -38,17 +38,10 @@ namespace GameEngine
         /// 热修复代码
         /// </summary>
         Hotfix,
+
         /// <summary>
         /// 配置
         /// </summary>
         Configure,
-        /// <summary>
-        /// 协议
-        /// </summary>
-        Protocol,
-        /// <summary>
-        /// 资源
-        /// </summary>
-        Asset,
     }
 }
