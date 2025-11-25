@@ -4,13 +4,18 @@
 格式基于[保持更改日志](https://keepachangelog.com/en/1.0.0/)  
 该项目遵循[语义版本控制](https://semver.org/spec/v2.0.0.html)  
 
+# 1.0.7
+增加`applicationContext`配置入口，通过该配置管理整个应用的上下文信息；  
+当前支持在该模块中对`HotModule`及`Bean`对象进行配置管理；  
+同时梳理业务启动流程，拆分了`ContextLoader`、`AssemblyLoader`和`ConfigLoader`三个步骤；
+
 # 1.0.5
-新增`StreamBuf`模块，用于支持流式协议加载及解析；
+新增`StreamBuf`模块，用于支持流式协议加载及解析；  
 目前部分项目采用数据流自定义接口解析的方式进行网络消息同步，因此通过动态模块进行支持；
 
 # 1.0.4
-新增`HotModule`机制，通过配置动态加载模块；
-同时将`Protobuf`，`FairyGui`，`UGui`剥离为独立模块，具备动态加载的能力；
+新增`HotModule`机制，通过配置动态加载模块；  
+同时将`Protobuf`，`FairyGui`，`UGui`剥离为独立模块，具备动态加载的能力；  
 调整`GameWorld`的初始化流程，确保在模块被正确加载后，再进行类符号解析操作；
 
 # 1.0.3
@@ -21,7 +26,7 @@
 # 1.0.2
 将`IExecutable`循环机制补充到调度分发流程中；  
 新增视图对象的分组规则，通过分组设计来管理视图的层级关系；  
-新增`Notice`机制，并增加对应的特性管理及加载流程；
+新增`Notice`机制，并增加对应的特性管理及加载流程；  
 新增视图对象的`Resume/Reveal`及`Pause/Cover`配置接口；
 
 # 1.0.1
