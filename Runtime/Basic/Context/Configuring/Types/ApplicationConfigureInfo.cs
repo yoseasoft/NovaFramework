@@ -46,6 +46,9 @@ namespace GameEngine.Context.Configuring
         /// </summary>
         private static IList<string> _configureFilePaths;
 
+        public static IList<string> HotModuleTypes => _hotModuleTypes;
+        public static IList<string> BeanUrlPaths => _beanUrlPaths;
+
         /// <summary>
         /// 配置信息初始化函数
         /// </summary>

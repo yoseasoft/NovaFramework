@@ -99,6 +99,25 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 自动注册应用上下文配置的所有热加载模块对象
+        /// </summary>
+        public static void AutoRegisterAllHotModulesOfContextConfigure()
+        {
+            IList<string> types = Context.Configuring.ApplicationConfigureInfo.HotModuleTypes;
+            for (int n = 0; n < types.Count; ++n)
+            {
+                SystemType type = NovaEngine.Utility.Assembly.GetType(types[n]);
+                if (type == null)
+                {
+                    Debugger.Error("Could not found '{%s}' class type with current assemblies list, register that hot module failed.", types[n]);
+                    continue;
+                }
+
+                RegisterHotModule(type);
+            }
+        }
+
+        /// <summary>
         /// 从当前管理句柄中注销指定类型的热加载模块对象实例
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
@@ -125,6 +144,25 @@ namespace GameEngine
             module.Shutdown();
 
             _hotModules.Remove(type);
+        }
+
+        /// <summary>
+        /// 自动注销应用上下文配置的所有热加载模块对象
+        /// </summary>
+        public static void AutoUnregisterAllHotModulesOfContextConfigure()
+        {
+            IList<string> types = Context.Configuring.ApplicationConfigureInfo.HotModuleTypes;
+            for (int n = 0; n < types.Count; ++n)
+            {
+                SystemType type = NovaEngine.Utility.Assembly.GetType(types[n]);
+                if (type == null)
+                {
+                    Debugger.Error("Could not found '{%s}' class type with current assemblies list, unregister that hot module failed.", types[n]);
+                    continue;
+                }
+
+                UnregisterHotModule(type);
+            }
         }
 
         /// <summary>

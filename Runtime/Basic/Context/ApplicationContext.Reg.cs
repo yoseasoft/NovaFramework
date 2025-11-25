@@ -22,16 +22,83 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.IO;
 using System.Runtime.CompilerServices;
-
-using SystemType = System.Type;
-using SystemMemoryStream = System.IO.MemoryStream;
 
 namespace GameEngine
 {
     /// 应用程序的上下文管理器对象类
     public static partial class ApplicationContext
     {
+        #region 应用配置信息的加载管理接口函数
+
+        /// <summary>
+        /// 应用程序加载指定的应用配置
+        /// </summary>
+        /// <param name="mstream">数据流</param>
+        [System.Obsolete()]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void LoadApplicationConfigure(MemoryStream mstream)
+        {
+            LoadGeneralConfigure(mstream);
+        }
+
+        /// <summary>
+        /// 应用程序通过指定的处理回调加载应用配置
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void LoadApplicationConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
+        {
+            LoadGeneralConfigure(callback);
+
+            // 应用配置导入完成后，自动开启Bean配置加载流程
+            AutoLoadBeanImportConfigure(callback);
+        }
+
+        /// <summary>
+        /// 应用程序通过指定的处理回调加载应用配置
+        /// </summary>
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void LoadApplicationConfigure(string url, NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
+        {
+            LoadGeneralConfigure(url, callback);
+
+            // 应用配置导入完成后，自动开启Bean配置加载流程
+            AutoLoadBeanImportConfigure(callback);
+        }
+
+        /// <summary>
+        /// 应用程序通过指定的处理回调加载应用配置
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void LoadApplicationConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
+        {
+            LoadGeneralConfigure(callback);
+
+            // 应用配置导入完成后，自动开启Bean配置加载流程
+            AutoLoadBeanImportConfigure(callback);
+        }
+
+        /// <summary>
+        /// 应用程序通过指定的处理回调加载应用配置
+        /// </summary>
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void LoadApplicationConfigure(string url, NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
+        {
+            LoadGeneralConfigure(url, callback);
+
+            // 应用配置导入完成后，自动开启Bean配置加载流程
+            AutoLoadBeanImportConfigure(callback);
+        }
+
+        #endregion
+
         #region Bean配置信息的加载管理接口函数
 
         /// <summary>
@@ -40,7 +107,7 @@ namespace GameEngine
         /// <param name="mstream">数据流</param>
         [System.Obsolete()]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void LoadBeanConfigure(SystemMemoryStream mstream)
+        public static void LoadBeanConfigure(MemoryStream mstream)
         {
             Loader.CodeLoader.LoadBeanConfigureInfo(mstream);
         }
@@ -85,6 +152,28 @@ namespace GameEngine
         public static void LoadBeanConfigure(string url, NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
         {
             Loader.CodeLoader.LoadBeanConfigureInfo(url, callback);
+        }
+
+        /// <summary>
+        /// 重新绑定符号对象实例中关于实体数据部分的配置信息
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void RebindingBeanConfigureOfSymbols()
+        {
+            // 重新绑定Bean实例
+            Loader.CodeLoader.RebindingBeanConfigureOfSymbols();
+        }
+
+        /// <summary>
+        /// 卸载当前所有解析登记的配置数据对象实例<br/>
+        /// 请注意，该接口不建议由用户自定调用，因为这需要充分了解代码加载的流程<br/>
+        /// 并在合适的节点进行调度，否则将导致不可预知的问题
+        /// </summary>
+        [System.Obsolete]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void UnloadAllBeanConfigureInfos()
+        {
+            Loader.CodeLoader.UnloadAllBeanConfigureInfos();
         }
 
         #endregion

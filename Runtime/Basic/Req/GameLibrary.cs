@@ -84,51 +84,6 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 游戏运行库加载指定的实体配置
-        /// </summary>
-        /// <param name="path">文件路径</param>
-        public static void LoadBeanConfigure(string path)
-        {
-            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
-            {
-                byte[] bytes = new byte[fs.Length];
-                fs.Read(bytes, 0, bytes.Length);
-                fs.Close();
-
-                Loader.CodeLoader.LoadBeanConfigureInfo(bytes, 0, bytes.Length);
-
-                bytes = null;
-            }
-        }
-
-        /// <summary>
-        /// 游戏运行库加载指定的实体配置
-        /// </summary>
-        /// <param name="mstream">数据流</param>
-        public static void LoadBeanConfigure(MemoryStream mstream)
-        {
-            Loader.CodeLoader.LoadBeanConfigureInfo(mstream);
-        }
-
-        /// <summary>
-        /// 游戏运行库通过指定的处理回调加载实体配置
-        /// </summary>
-        /// <param name="callback">回调句柄</param>
-        public static void LoadBeanConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
-        {
-            Loader.CodeLoader.LoadBeanConfigureInfo(callback);
-        }
-
-        /// <summary>
-        /// 游戏运行库通过指定的处理回调加载实体配置
-        /// </summary>
-        /// <param name="callback">回调句柄</param>
-        public static void LoadBeanConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
-        {
-            Loader.CodeLoader.LoadBeanConfigureInfo(callback);
-        }
-
-        /// <summary>
         /// 游戏运行库加载指定的程序集
         /// </summary>
         /// <param name="assembly">程序集</param>

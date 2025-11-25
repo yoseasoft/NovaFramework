@@ -22,12 +22,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Customize.Extension;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -164,6 +163,36 @@ namespace GameEngine
 
                 return true;
             });
+        }
+
+        /// <summary>
+        /// 自动加载Bean的导入配置数据<br/>
+        /// 该函数会将当前已记录的所有Bean文件路径，通过<see cref="LoadBeanConfigure(string, NovaEngine.Definition.File.OnFileStreamLoadingHandler)"/>全部重新加载一次<br/>
+        /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="Loader.CodeLoader.UnloadAllBeanConfigureInfos()"/>方法进行全部配置数据卸载
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        private static void AutoLoadBeanImportConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
+        {
+            IList<string> list = Context.Configuring.ApplicationConfigureInfo.BeanUrlPaths;
+            for (int n = 0; n < list.Count; ++n)
+            {
+                LoadBeanConfigure(list[n], callback);
+            }
+        }
+
+        /// <summary>
+        /// 自动加载Bean的导入配置数据<br/>
+        /// 该函数会将当前已记录的所有Bean导入文件路径，通过<see cref="LoadBeanConfigure(string, NovaEngine.Definition.File.OnFileTextLoadingHandler)"/>全部重新加载一次<br/>
+        /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="Loader.CodeLoader.UnloadAllBeanConfigureInfos()"/>方法进行全部配置数据卸载
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        private static void AutoLoadBeanImportConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
+        {
+            IList<string> list = Context.Configuring.ApplicationConfigureInfo.BeanUrlPaths;
+            for (int n = 0; n < list.Count; ++n)
+            {
+                LoadBeanConfigure(list[n], callback);
+            }
         }
 
         /// <summary>

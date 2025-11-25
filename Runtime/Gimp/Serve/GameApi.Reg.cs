@@ -22,6 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 using SystemType = System.Type;
 
 namespace GameEngine
@@ -35,7 +37,8 @@ namespace GameEngine
         /// 注册指定类型的热加载模块对象到当前管理句柄中
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [System.Obsolete]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RegisterHotModule<T>() where T : IHotModule, new()
         {
             HotModuleManager.RegisterHotModule<T>();
@@ -45,17 +48,28 @@ namespace GameEngine
         /// 注册指定类型的热加载模块对象到当前管理句柄中
         /// </summary>
         /// <param name="type">对象类型</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [System.Obsolete]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RegisterHotModule(SystemType type)
         {
             HotModuleManager.RegisterHotModule(type);
         }
 
         /// <summary>
+        /// 自动注册应用上下文配置的所有热加载模块对象
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void AutoRegisterAllHotModulesOfContextConfigure()
+        {
+            HotModuleManager.AutoRegisterAllHotModulesOfContextConfigure();
+        }
+
+        /// <summary>
         /// 从当前管理句柄中注销指定类型的热加载模块对象实例
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [System.Obsolete]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnregisterHotModule<T>() where T : IHotModule
         {
             HotModuleManager.UnregisterHotModule<T>();
@@ -65,10 +79,20 @@ namespace GameEngine
         /// 从当前管理句柄中注销指定类型的热加载模块对象实例
         /// </summary>
         /// <param name="type">对象类型</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [System.Obsolete]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnregisterHotModule(SystemType type)
         {
             HotModuleManager.UnregisterHotModule(type);
+        }
+
+        /// <summary>
+        /// 自动注销应用上下文配置的所有热加载模块对象
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void AutoUnregisterAllHotModulesOfContextConfigure()
+        {
+            HotModuleManager.AutoUnregisterAllHotModulesOfContextConfigure();
         }
 
         #endregion
@@ -81,7 +105,7 @@ namespace GameEngine
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="serviceType">服务类型</param>
         /// <returns>若注册解析器对象实例成功则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool RegisterMessageTranslator<T>(int serviceType) where T : IMessageTranslator, new()
         {
             return NetworkHandler.Instance.RegMessageTranslator<T>(serviceType);
@@ -93,7 +117,7 @@ namespace GameEngine
         /// <param name="serviceType">服务类型</param>
         /// <param name="classType">对象类型</param>
         /// <returns>若注册解析器对象实例成功则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool RegisterMessageTranslator(int serviceType, SystemType classType)
         {
             return NetworkHandler.Instance.RegMessageTranslator(serviceType, classType);
@@ -103,7 +127,7 @@ namespace GameEngine
         /// 删除指定服务类型对应的消息解析器对象实例
         /// </summary>
         /// <param name="serviceType">服务类型</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnregisterMessageTranslator(int serviceType)
         {
             NetworkHandler.Instance.UnregMessageTranslator(serviceType);
@@ -113,7 +137,7 @@ namespace GameEngine
         /// 设置网络消息的协议对象类型
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SetMessageProtocolType<T>() where T : class
         {
             NetworkHandler.Instance.SetMessageProtocolType<T>();
@@ -123,7 +147,7 @@ namespace GameEngine
         /// 设置网络消息的协议对象类型
         /// </summary>
         /// <param name="classType">对象类型</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SetMessageProtocolType(SystemType classType)
         {
             NetworkHandler.Instance.SetMessageProtocolType(classType);
@@ -137,7 +161,7 @@ namespace GameEngine
         /// 注册指定的窗口管理器到当前的主控制器中
         /// </summary>
         /// <typeparam name="T">管理器类型</typeparam>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RegisterFormManager<T>() where T : IFormManager, new()
         {
             GuiHandler.Instance.RegisterFormManager<T>();
@@ -147,7 +171,7 @@ namespace GameEngine
         /// 注册指定的窗口管理器到当前的主控制器中
         /// </summary>
         /// <param name="classType">管理器类型</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RegisterFormManager(SystemType classType)
         {
             GuiHandler.Instance.RegisterFormManager(classType);
@@ -157,7 +181,7 @@ namespace GameEngine
         /// 注册指定的窗口管理器到当前的主控制器中
         /// </summary>
         /// <param name="formManager">管理器对象</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RegisterFormManager(IFormManager formManager)
         {
             GuiHandler.Instance.RegisterFormManager(formManager);
@@ -166,7 +190,7 @@ namespace GameEngine
         /// <summary>
         /// 从主控制器中移除当前实施的
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnregisterCurrentFormManager()
         {
             GuiHandler.Instance.UnregisterCurrentFormManager();

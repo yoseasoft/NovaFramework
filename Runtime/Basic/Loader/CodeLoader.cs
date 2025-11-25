@@ -562,22 +562,20 @@ namespace GameEngine.Loader
         }
 
         /// <summary>
-        /// 重新加载符号对象实例中关于实体数据部分的配置信息
+        /// 重新绑定符号对象实例中关于实体数据部分的配置信息
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void ReloadBeanConfigureOfSymbols()
+        internal static void RebindingBeanConfigureOfSymbols()
         {
             // 重新绑定Bean实例
             RebindingBeanObjectsOfAllSymClasses();
         }
 
         /// <summary>
-        /// 卸载当前所有解析登记的配置数据对象实例<br/>
-        /// 请注意，该接口不建议由用户自定调用，因为这需要充分了解代码加载的流程<br/>
-        /// 并在合适的节点进行调度，否则将导致不可预知的问题
+        /// 卸载当前所有解析登记的配置数据对象实例
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void UnloadAllBeanConfigureInfos()
+        internal static void UnloadAllBeanConfigureInfos()
         {
             UnloadAllConfigureContents();
         }
