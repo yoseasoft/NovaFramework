@@ -24,12 +24,9 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.IO;
 
 using SystemArray = System.Array;
-using SystemStream = System.IO.Stream;
-using SystemBinaryReader = System.IO.BinaryReader;
-using SystemBinaryWriter = System.IO.BinaryWriter;
-using SystemMemoryStream = System.IO.MemoryStream;
 
 namespace NovaEngine.IO
 {
@@ -130,7 +127,7 @@ namespace NovaEngine.IO
         }
 
         // 从CircularBuffer读到stream
-        public void Read(SystemStream stream, int count)
+        public void Read(Stream stream, int count)
         {
             if (count > this.Length)
             {
@@ -158,7 +155,7 @@ namespace NovaEngine.IO
         }
 
         // 从stream写入CircularBuffer
-        public void Write(SystemStream stream)
+        public void Write(Stream stream)
         {
             int count = (int) (stream.Length - stream.Position);
 

@@ -22,15 +22,16 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.InteropServices;
+
 using SystemType = System.Type;
-using SystemLayoutKind = System.Runtime.InteropServices.LayoutKind;
 
 namespace NovaEngine
 {
     /// <summary>
     /// 引用对象缓冲池信息数据结构定义
     /// </summary>
-    [System.Runtime.InteropServices.StructLayout(SystemLayoutKind.Auto)]
+    [StructLayout(LayoutKind.Auto)]
     public struct ReferencePoolInfo
     {
         private readonly SystemType _type;

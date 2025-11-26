@@ -23,15 +23,16 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.InteropServices;
+
 using SystemDateTime = System.DateTime;
-using SystemLayoutKind = System.Runtime.InteropServices.LayoutKind;
 
 namespace NovaEngine.ObjectPool
 {
     /// <summary>
     /// 应用于对象池管理的对象基础信息结构类，它定义了一个标准的池化对象的描述信息所需的一些属性及访问接口
     /// </summary>
-    [System.Runtime.InteropServices.StructLayout(SystemLayoutKind.Auto)]
+    [StructLayout(LayoutKind.Auto)]
     public struct ObjectInfo
     {
         /// <summary>

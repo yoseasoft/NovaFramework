@@ -24,17 +24,10 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 
 using SystemStringComparer = System.StringComparer;
-using SystemStream = System.IO.Stream;
-using SystemFile = System.IO.File;
-using SystemPath = System.IO.Path;
-using SystemDirectory = System.IO.Directory;
-using SystemFileStream = System.IO.FileStream;
-using SystemFileMode = System.IO.FileMode;
-using SystemFileAccess = System.IO.FileAccess;
-using SystemFileShare = System.IO.FileShare;
 
 namespace NovaEngine.IO.FileSystem
 {
@@ -441,7 +434,7 @@ namespace NovaEngine.IO.FileSystem
         /// <param name="name">要读取的文件名称</param>
         /// <param name="stream">存储读取文件内容的二进制流</param>
         /// <returns>返回实际读取的文件字节数</returns>
-        public int ReadFile(string name, SystemStream stream)
+        public int ReadFile(string name, Stream stream)
         {
             if (_accessType != FileSystemAccessType.ReadOnly && _accessType != FileSystemAccessType.ReadWrite)
             {
@@ -686,7 +679,7 @@ namespace NovaEngine.IO.FileSystem
         /// <param name="stream">存储读取文件片段内容的二进制流</param>
         /// <param name="length">要读取片段的长度</param>
         /// <returns>返回实际读取的文件片段字节数</returns>
-        public int ReadFileSegment(string name, SystemStream stream, int length)
+        public int ReadFileSegment(string name, Stream stream, int length)
         {
             return ReadFileSegment(name, 0, stream, length);
         }
@@ -699,7 +692,7 @@ namespace NovaEngine.IO.FileSystem
         /// <param name="stream">存储读取文件片段内容的二进制流</param>
         /// <param name="length">要读取片段的长度</param>
         /// <returns>返回实际读取的文件片段字节数</returns>
-        public int ReadFileSegment(string name, int offset, SystemStream stream, int length)
+        public int ReadFileSegment(string name, int offset, Stream stream, int length)
         {
             if (_accessType != FileSystemAccessType.ReadOnly && _accessType != FileSystemAccessType.ReadWrite)
             {
@@ -860,7 +853,7 @@ namespace NovaEngine.IO.FileSystem
         /// <param name="name">要写入的文件名称</param>
         /// <param name="stream">存储写入文件内容的二进制流</param>
         /// <returns>返回写入指定文件是否成功</returns>
-        public bool WriteFile(string name, SystemStream stream)
+        public bool WriteFile(string name, Stream stream)
         {
             if (_accessType != FileSystemAccessType.WriteOnly && _accessType != FileSystemAccessType.ReadWrite)
             {
@@ -930,12 +923,12 @@ namespace NovaEngine.IO.FileSystem
                 throw new CFrameworkException("File path is invalid");
             }
 
-            if (false == SystemFile.Exists(filePath))
+            if (false == File.Exists(filePath))
             {
                 return false;
             }
 
-            using (SystemFileStream fileStream = new SystemFileStream(filePath, SystemFileMode.Open, SystemFileAccess.Read, SystemFileShare.Read))
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 return WriteFile(name, fileStream);
             }
@@ -972,18 +965,18 @@ namespace NovaEngine.IO.FileSystem
 
             try
             {
-                if (SystemFile.Exists(filePath))
+                if (File.Exists(filePath))
                 {
-                    SystemFile.Delete(filePath);
+                    File.Delete(filePath);
                 }
 
-                string directory = SystemPath.GetDirectoryName(filePath);
-                if (false == SystemDirectory.Exists(directory))
+                string directory = Path.GetDirectoryName(filePath);
+                if (false == Directory.Exists(directory))
                 {
-                    SystemDirectory.CreateDirectory(directory);
+                    Directory.CreateDirectory(directory);
                 }
 
-                using (SystemFileStream fileStream = new SystemFileStream(filePath, SystemFileMode.Create, SystemFileAccess.Write, SystemFileShare.None))
+                using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
                     int length = fileInfo.Length;
                     if (length > 0)

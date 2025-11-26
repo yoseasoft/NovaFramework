@@ -23,9 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.IO;
+
 using SystemArray = System.Array;
-using SystemStream = System.IO.Stream;
-using SystemSeekOrigin = System.IO.SeekOrigin;
 
 namespace NovaEngine.IO.FileSystem
 {
@@ -72,7 +72,7 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         /// <param name="offset">要定位的文件系统流位置的偏移</param>
         /// <param name="origin">要定位的文件系统流位置的方式</param>
-        protected internal abstract void Seek(long offset, SystemSeekOrigin origin);
+        protected internal abstract void Seek(long offset, SeekOrigin origin);
 
         /// <summary>
         /// 从文件系统数据流中读取一个字节
@@ -95,7 +95,7 @@ namespace NovaEngine.IO.FileSystem
         /// <param name="stream">存储读取文件内容的二进制流</param>
         /// <param name="length">存储读取文件内容的二进制流的长度</param>
         /// <returns>返回实际读取的字节数</returns>
-        protected internal int Read(SystemStream stream, int length)
+        protected internal int Read(Stream stream, int length)
         {
             int bytesRead = 0;
             int bytesLeft = length;
@@ -128,7 +128,7 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         /// <param name="stream">存储写入文件内容的二进制流</param>
         /// <param name="length">存储写入文件内容的二进制流的长度</param>
-        protected internal void Write(SystemStream stream, int length)
+        protected internal void Write(Stream stream, int length)
         {
             int bytesRead = 0;
             int bytesLeft = length;

@@ -24,9 +24,9 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.IO;
 
 using SystemStringComparer = System.StringComparer;
-using SystemFile = System.IO.File;
 
 namespace NovaEngine.IO.FileSystem
 {
@@ -234,9 +234,9 @@ namespace NovaEngine.IO.FileSystem
             ((FileSystem) fileSystem).Shutdown();
             _fileSystems.Remove(fullPath);
 
-            if (deletePhysicalFile && SystemFile.Exists(fullPath))
+            if (deletePhysicalFile && File.Exists(fullPath))
             {
-                SystemFile.Delete(fullPath);
+                File.Delete(fullPath);
             }
         }
 

@@ -24,7 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using SystemStream = System.IO.Stream;
+using System.IO;
 
 namespace NovaEngine.IO.FileSystem
 {
@@ -131,7 +131,7 @@ namespace NovaEngine.IO.FileSystem
         /// <param name="name">要读取的文件名称</param>
         /// <param name="stream">存储读取文件内容的二进制流</param>
         /// <returns>返回实际读取的文件字节数</returns>
-        int ReadFile(string name, SystemStream stream);
+        int ReadFile(string name, Stream stream);
 
         /// <summary>
         /// 读取指定文件的指定片段
@@ -214,7 +214,7 @@ namespace NovaEngine.IO.FileSystem
         /// <param name="stream">存储读取文件片段内容的二进制流</param>
         /// <param name="length">要读取片段的长度</param>
         /// <returns>返回实际读取的文件片段字节数</returns>
-        int ReadFileSegment(string name, SystemStream stream, int length);
+        int ReadFileSegment(string name, Stream stream, int length);
 
         /// <summary>
         /// 读取指定文件的指定片段
@@ -224,7 +224,7 @@ namespace NovaEngine.IO.FileSystem
         /// <param name="stream">存储读取文件片段内容的二进制流</param>
         /// <param name="length">要读取片段的长度</param>
         /// <returns>返回实际读取的文件片段字节数</returns>
-        int ReadFileSegment(string name, int offset, SystemStream stream, int length);
+        int ReadFileSegment(string name, int offset, Stream stream, int length);
 
         /// <summary>
         /// 写入指定文件
@@ -259,7 +259,7 @@ namespace NovaEngine.IO.FileSystem
         /// <param name="name">要写入的文件名称</param>
         /// <param name="stream">存储写入文件内容的二进制流</param>
         /// <returns>返回写入指定文件是否成功</returns>
-        bool WriteFile(string name, SystemStream stream);
+        bool WriteFile(string name, Stream stream);
 
         /// <summary>
         /// 写入指定文件

@@ -23,9 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemBinaryReader = System.IO.BinaryReader;
-using SystemBinaryWriter = System.IO.BinaryWriter;
-using SystemMemoryStream = System.IO.MemoryStream;
+using System.IO;
 
 namespace NovaEngine.IO
 {
@@ -34,17 +32,17 @@ namespace NovaEngine.IO
     /// </summary>
     public sealed class ByteStreamBuffer
     {
-        private SystemMemoryStream _stream = null;
-        private SystemBinaryReader _reader = null;
-        private SystemBinaryWriter _writer = null;
+        private MemoryStream _stream = null;
+        private BinaryReader _reader = null;
+        private BinaryWriter _writer = null;
 
         /// <summary>
         /// 字节流缓冲区的新实例构建接口
         /// </summary>
         public ByteStreamBuffer()
         {
-            _stream = new SystemMemoryStream();
-            _writer = new SystemBinaryWriter(_stream);
+            _stream = new MemoryStream();
+            _writer = new BinaryWriter(_stream);
         }
 
         /// <summary>
@@ -55,8 +53,8 @@ namespace NovaEngine.IO
         {
             Logger.Assert(null != data);
 
-            _stream = new SystemMemoryStream(data);
-            _reader = new SystemBinaryReader(_stream);
+            _stream = new MemoryStream(data);
+            _reader = new BinaryReader(_stream);
         }
 
         ~ByteStreamBuffer()

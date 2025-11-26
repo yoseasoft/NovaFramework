@@ -25,13 +25,14 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.IO;
 
 namespace NovaEngine.IO
 {
     /// <summary>
     /// 基于内存字节流封装的缓冲区对象类，用于提供字节流数据的转译操作
     /// </summary>
-    public sealed class MemoryBuffer : System.IO.MemoryStream, System.Buffers.IBufferWriter<byte>
+    public sealed class MemoryBuffer : MemoryStream, System.Buffers.IBufferWriter<byte>
     {
         private int _origin;
 

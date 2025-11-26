@@ -30,7 +30,6 @@ using System.Customize.Extension;
 
 using SystemType = System.Type;
 using SystemStringComparer = System.StringComparer;
-using SystemAssembly = System.Reflection.Assembly;
 
 namespace NovaEngine
 {
@@ -44,14 +43,14 @@ namespace NovaEngine
         /// </summary>
         public static class Assembly
         {
-            // private static readonly SystemAssembly[] _assemblies = null;
-            private static readonly IDictionary<string, SystemAssembly> _cachedAssemblies = null;
+            // private static readonly System.Reflection.Assembly[] _assemblies = null;
+            private static readonly IDictionary<string, System.Reflection.Assembly> _cachedAssemblies = null;
             private static readonly IDictionary<string, SystemType> _cachedTypes = null;
 
             static Assembly()
             {
                 // _assemblies = SystemAppDomain.CurrentDomain.GetAssemblies();
-                _cachedAssemblies = new Dictionary<string, SystemAssembly>();
+                _cachedAssemblies = new Dictionary<string, System.Reflection.Assembly>();
                 _cachedTypes = new Dictionary<string, SystemType>(SystemStringComparer.Ordinal);
             }
 
@@ -59,9 +58,9 @@ namespace NovaEngine
             /// 将指定的程序集注册到当前域程序集缓存容器中
             /// </summary>
             /// <param name="assembly">程序集实例</param>
-            public static void RegisterCurrentDomainAssembly(SystemAssembly assembly)
+            public static void RegisterCurrentDomainAssembly(System.Reflection.Assembly assembly)
             {
-                Dictionary<string, SystemAssembly> dictionary = new Dictionary<string, SystemAssembly>();
+                Dictionary<string, System.Reflection.Assembly> dictionary = new Dictionary<string, System.Reflection.Assembly>();
                 dictionary.Add(assembly.GetName().Name, assembly);
 
                 RegisterCurrentDomainAssemblies(dictionary, true);
@@ -73,7 +72,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="assemblies">目标程序集</param>
             /// <param name="reload">重载标识</param>
-            public static void RegisterCurrentDomainAssemblies(IReadOnlyDictionary<string, SystemAssembly> assemblies, bool reload)
+            public static void RegisterCurrentDomainAssemblies(IReadOnlyDictionary<string, System.Reflection.Assembly> assemblies, bool reload)
             {
                 if (reload)
                 {
@@ -81,7 +80,7 @@ namespace NovaEngine
                     UnregisterCurrentDomainAssemblies(Collection.ToListForKeys(assemblies));
                 }
 
-                foreach (KeyValuePair<string, SystemAssembly> kvp in assemblies)
+                foreach (KeyValuePair<string, System.Reflection.Assembly> kvp in assemblies)
                 {
                     // 在非重载模式下，重复加载将移除旧包
                     if (_cachedAssemblies.ContainsKey(kvp.Key))
@@ -132,9 +131,9 @@ namespace NovaEngine
             /// </summary>
             /// <param name="assemblyName">程序集名称</param>
             /// <returns>返回该名称对应的程序集实例，若不存在则返回null</returns>
-            public static SystemAssembly GetAssembly(string assemblyName)
+            public static System.Reflection.Assembly GetAssembly(string assemblyName)
             {
-                if (_cachedAssemblies.TryGetValue(assemblyName, out SystemAssembly assembly))
+                if (_cachedAssemblies.TryGetValue(assemblyName, out System.Reflection.Assembly assembly))
                 {
                     return assembly;
                 }
@@ -146,7 +145,7 @@ namespace NovaEngine
             /// 获取已加载的程序集
             /// </summary>
             /// <returns>返回当前加载的程序集列表</returns>
-            public static IList<SystemAssembly> GetAllAssemblies()
+            public static IList<System.Reflection.Assembly> GetAllAssemblies()
             {
                 return Collection.ToListForValues(_cachedAssemblies);
             }
@@ -158,7 +157,7 @@ namespace NovaEngine
             public static SystemType[] GetTypes()
             {
                 List<SystemType> results = new List<SystemType>();
-                foreach (KeyValuePair<string, SystemAssembly> kvp in _cachedAssemblies)
+                foreach (KeyValuePair<string, System.Reflection.Assembly> kvp in _cachedAssemblies)
                 {
                     results.AddRange(kvp.Value.GetTypes());
                 }
@@ -178,7 +177,7 @@ namespace NovaEngine
                 }
 
                 results.Clear();
-                foreach (KeyValuePair<string, SystemAssembly> kvp in _cachedAssemblies)
+                foreach (KeyValuePair<string, System.Reflection.Assembly> kvp in _cachedAssemblies)
                 {
                     results.AddRange(kvp.Value.GetTypes());
                 }
@@ -209,7 +208,7 @@ namespace NovaEngine
                     return type;
                 }
 
-                foreach (KeyValuePair<string, SystemAssembly> kvp in _cachedAssemblies)
+                foreach (KeyValuePair<string, System.Reflection.Assembly> kvp in _cachedAssemblies)
                 {
                     type = SystemType.GetType(Text.Format("{%s}, {%s}", typeName, kvp.Value.FullName));
                     if (null != type)
@@ -230,8 +229,8 @@ namespace NovaEngine
             /// <returns>返回所有子类类型的列表，若查找失败则返回null</returns>
             public static IList<SystemType> GetTypes(string assemblyName, SystemType parentType)
             {
-                SystemAssembly targetAssembly = null;
-                foreach (KeyValuePair<string, SystemAssembly> kvp in _cachedAssemblies)
+                System.Reflection.Assembly targetAssembly = null;
+                foreach (KeyValuePair<string, System.Reflection.Assembly> kvp in _cachedAssemblies)
                 {
                     if (kvp.Key == assemblyName)
                     {

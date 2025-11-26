@@ -24,9 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Reflection;
+
 using SystemType = System.Type;
-using SystemBindingFlags = System.Reflection.BindingFlags;
-using SystemFieldInfo = System.Reflection.FieldInfo;
 
 namespace NovaEngine
 {
@@ -146,7 +146,7 @@ namespace NovaEngine
         internal static void SetProperty(string fieldName, object fieldValue)
         {
             SystemType type = typeof(Version);
-            SystemFieldInfo field = type.GetField(fieldName, SystemBindingFlags.Static | SystemBindingFlags.Public);
+            FieldInfo field = type.GetField(fieldName, BindingFlags.Static | BindingFlags.Public);
             field.SetValue(null, fieldValue);
         }
 

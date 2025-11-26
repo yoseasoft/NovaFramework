@@ -23,8 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemBinaryWriter = System.IO.BinaryWriter;
-using SystemMemoryStream = System.IO.MemoryStream;
+using System.IO;
 
 namespace NovaEngine.IO
 {
@@ -33,16 +32,16 @@ namespace NovaEngine.IO
     /// </summary>
     public sealed class ByteStreamWriter
     {
-        private SystemMemoryStream _stream = null;
-        private SystemBinaryWriter _writer = null;
+        private MemoryStream _stream = null;
+        private BinaryWriter _writer = null;
 
         /// <summary>
         /// 字节流缓冲区的新实例构建接口
         /// </summary>
         public ByteStreamWriter()
         {
-            _stream = new SystemMemoryStream();
-            _writer = new SystemBinaryWriter(_stream);
+            _stream = new MemoryStream();
+            _writer = new BinaryWriter(_stream);
         }
 
         /// <summary>

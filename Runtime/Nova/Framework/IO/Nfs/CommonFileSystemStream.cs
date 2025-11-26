@@ -23,12 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.IO;
+
 using SystemIDisposable = System.IDisposable;
-using SystemFileStream = System.IO.FileStream;
-using SystemFileMode = System.IO.FileMode;
-using SystemFileAccess = System.IO.FileAccess;
-using SystemFileShare = System.IO.FileShare;
-using SystemSeekOrigin = System.IO.SeekOrigin;
 
 namespace NovaEngine.IO.FileSystem
 {
@@ -37,7 +34,7 @@ namespace NovaEngine.IO.FileSystem
     /// </summary>
     public sealed class CommonFileSystemStream : FileSystemStream, SystemIDisposable
     {
-        private readonly SystemFileStream _fileStream;
+        private readonly FileStream _fileStream;
 
         /// <summary>
         /// 初始化通用文件系统数据流的新实例
@@ -55,15 +52,15 @@ namespace NovaEngine.IO.FileSystem
             switch (accessType)
             {
                 case FileSystemAccessType.ReadOnly:
-                    _fileStream = new SystemFileStream(fullPath, SystemFileMode.Open, SystemFileAccess.Read, SystemFileShare.Read);
+                    _fileStream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
                     break;
 
                 case FileSystemAccessType.WriteOnly:
-                    _fileStream = new SystemFileStream(fullPath, createNew ? SystemFileMode.Create : SystemFileMode.Open, SystemFileAccess.Write, SystemFileShare.Read);
+                    _fileStream = new FileStream(fullPath, createNew ? FileMode.Create : FileMode.Open, FileAccess.Write, FileShare.Read);
                     break;
 
                 case FileSystemAccessType.ReadWrite:
-                    _fileStream = new SystemFileStream(fullPath, createNew ? SystemFileMode.Create : SystemFileMode.Open, SystemFileAccess.ReadWrite, SystemFileShare.Read);
+                    _fileStream = new FileStream(fullPath, createNew ? FileMode.Create : FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
                     break;
 
                 default:
@@ -111,7 +108,7 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         /// <param name="offset">要定位的文件系统流位置的偏移</param>
         /// <param name="origin">要定位的文件系统流位置的方式</param>
-        protected internal override void Seek(long offset, SystemSeekOrigin origin)
+        protected internal override void Seek(long offset, SeekOrigin origin)
         {
             _fileStream.Seek(offset, origin);
         }
