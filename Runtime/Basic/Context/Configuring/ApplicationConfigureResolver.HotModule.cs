@@ -38,27 +38,27 @@ namespace GameEngine.Context.Configuring
         [OnXmlConfigureResolvingCallback(XmlNodeType.Element, ApplicationConfigureNodeName.HotModule)]
         private static void LoadHotModuleElement(XmlNode node)
         {
-            string classType = null;
+            string packName = null;
             XmlAttributeCollection attrCollection = node.Attributes;
             for (int n = 0; null != attrCollection && n < attrCollection.Count; ++n)
             {
                 XmlAttribute attr = attrCollection[n];
                 switch (attr.Name)
                 {
-                    case ApplicationConfigureAttributeName.ClassType:
-                        classType = attr.Value;
+                    case ApplicationConfigureAttributeName.Name:
+                        packName = attr.Value;
                         break;
                 }
             }
 
-            if (string.IsNullOrEmpty(classType))
+            if (string.IsNullOrEmpty(packName))
             {
                 Debugger.Warn(LogGroupTag.Basic, "应用配置文件的‘{%s}’节点导入信息不能为空，该节点解析处理异常！", node.Name);
                 return;
             }
 
-            Debugger.Info(LogGroupTag.CodeLoader, "Load hot-module configure class_type={%s} succeed.", classType);
-            ApplicationConfigureInfo.AddHotModuleType(classType);
+            Debugger.Info(LogGroupTag.CodeLoader, "Load hot-module configure name={%s} succeed.", packName);
+            ApplicationConfigureInfo.AddHotModulePack(packName);
         }
     }
 }

@@ -78,7 +78,7 @@ namespace NovaEngine
                 if (reload)
                 {
                     // 从添加列表中注销已注册过的程序集
-                    UnregisterCurrentDomainAssemblies(Collection.ToListForKeys<string, SystemAssembly>(assemblies));
+                    UnregisterCurrentDomainAssemblies(Collection.ToListForKeys(assemblies));
                 }
 
                 foreach (KeyValuePair<string, SystemAssembly> kvp in assemblies)
@@ -148,7 +148,7 @@ namespace NovaEngine
             /// <returns>返回当前加载的程序集列表</returns>
             public static IList<SystemAssembly> GetAllAssemblies()
             {
-                return Collection.ToListForValues<string, SystemAssembly>(_cachedAssemblies);
+                return Collection.ToListForValues(_cachedAssemblies);
             }
 
             /// <summary>
@@ -211,7 +211,7 @@ namespace NovaEngine
 
                 foreach (KeyValuePair<string, SystemAssembly> kvp in _cachedAssemblies)
                 {
-                    type = SystemType.GetType(Utility.Text.Format("{%s}, {%s}", typeName, kvp.Value.FullName));
+                    type = SystemType.GetType(Text.Format("{%s}, {%s}", typeName, kvp.Value.FullName));
                     if (null != type)
                     {
                         _cachedTypes.Add(typeName, type);
@@ -220,6 +220,44 @@ namespace NovaEngine
                 }
 
                 return null;
+            }
+
+            /// <summary>
+            /// 从指定的程序集中获取指定父类类型的所有子类类型
+            /// </summary>
+            /// <param name="assemblyName">程序集名称</param>
+            /// <param name="parentType">父类类型</param>
+            /// <returns>返回所有子类类型的列表，若查找失败则返回null</returns>
+            public static IList<SystemType> GetTypes(string assemblyName, SystemType parentType)
+            {
+                SystemAssembly targetAssembly = null;
+                foreach (KeyValuePair<string, SystemAssembly> kvp in _cachedAssemblies)
+                {
+                    if (kvp.Key == assemblyName)
+                    {
+                        targetAssembly = kvp.Value;
+                        break;
+                    }
+                }
+
+                if (null == targetAssembly)
+                {
+                    return null;
+                }
+
+                IList<SystemType> result = new List<SystemType>();
+                SystemType[] allTypes = targetAssembly.GetTypes();
+                for (int n = 0; n < allTypes.Length; ++n)
+                {
+                    SystemType targetType = allTypes[n];
+                    // 开放类 & 继承自指定父类 & 可实例化类
+                    if (targetType.IsPublic && parentType.IsAssignableFrom(targetType) && Reflection.IsTypeOfInstantiableClass(targetType))
+                    {
+                        result.Add(targetType);
+                    }
+                }
+
+                return result;
             }
         }
     }

@@ -42,6 +42,6 @@ namespace GameEngine.Context.Configuring
     {
         public const string Url = "url";
         public const string Include = "include";
-        public const string ClassType = "class_type";
+        public const string Name = "name";
     }
 }

@@ -33,9 +33,9 @@ namespace GameEngine.Context.Configuring
     internal static class ApplicationConfigureInfo
     {
         /// <summary>
-        /// 热加载模块类型列表
+        /// 热加载模块包列表
         /// </summary>
-        private static IList<string> _hotModuleTypes;
+        private static IList<string> _hotModulePacks;
         /// <summary>
         /// 实体配置路径列表
         /// </summary>
@@ -46,7 +46,7 @@ namespace GameEngine.Context.Configuring
         /// </summary>
         private static IList<string> _configureFilePaths;
 
-        public static IList<string> HotModuleTypes => _hotModuleTypes;
+        public static IList<string> HotModulePacks => _hotModulePacks;
         public static IList<string> BeanUrlPaths => _beanUrlPaths;
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace GameEngine.Context.Configuring
         public static void Initialize()
         {
             // 初始化容器
-            _hotModuleTypes = new List<string>();
+            _hotModulePacks = new List<string>();
             _beanUrlPaths = new List<string>();
         }
 
@@ -67,7 +67,7 @@ namespace GameEngine.Context.Configuring
             // 清理容器
             RemoveAllConfigureInfos();
 
-            _hotModuleTypes = null;
+            _hotModulePacks = null;
             _beanUrlPaths = null;
 
             _configureFilePaths = null;
@@ -79,33 +79,33 @@ namespace GameEngine.Context.Configuring
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RemoveAllConfigureInfos()
         {
-            RemoveAllHotModuleTypes();
+            RemoveAllHotModulePacks();
             RemoveAllBeanUrlPaths();
         }
 
         /// <summary>
-        /// 新增热加载模块的对象类型
+        /// 新增热加载模块的包名称
         /// </summary>
-        /// <param name="hotModuleType">对象类型</param>
+        /// <param name="packName">包名称</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AddHotModuleType(string hotModuleType)
+        public static void AddHotModulePack(string packName)
         {
-            if (_hotModuleTypes.Contains(hotModuleType))
+            if (_hotModulePacks.Contains(packName))
             {
-                Debugger.Warn(LogGroupTag.Basic, "The hot module type '{%s}' was already exists, repeat added it failed.", hotModuleType);
+                Debugger.Warn(LogGroupTag.Basic, "The hot module pack '{%s}' was already exists, repeat added it failed.", packName);
                 return;
             }
 
-            _hotModuleTypes.Add(hotModuleType);
+            _hotModulePacks.Add(packName);
         }
 
         /// <summary>
-        /// 移除当前记录的所有热加载模块对象类型
+        /// 移除当前记录的所有热加载模块包名称
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void RemoveAllHotModuleTypes()
+        public static void RemoveAllHotModulePacks()
         {
-            _hotModuleTypes.Clear();
+            _hotModulePacks.Clear();
         }
 
         /// <summary>
