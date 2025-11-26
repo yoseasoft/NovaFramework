@@ -25,10 +25,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+
 using SystemType = System.Type;
 using SystemException = System.Exception;
-using SystemSerializationInfo = System.Runtime.Serialization.SerializationInfo;
-using SystemStreamingContext = System.Runtime.Serialization.StreamingContext;
 
 namespace NovaEngine
 {
@@ -154,7 +154,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="info">存有有关所引发异常的序列化的对象数据</param>
         /// <param name="context">包含有关源或目标的上下文信息</param>
-        protected CFrameworkException(SystemSerializationInfo info, SystemStreamingContext context) : base(info, context)
+        protected CFrameworkException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
             _targetCode = ErrorCode.UNKNOWN;
         }

@@ -24,15 +24,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Globalization;
+
 using SystemMath = System.Math;
 using SystemConvert = System.Convert;
-using SystemGregorianCalendar = System.Globalization.GregorianCalendar;
 using SystemTimeSpan = System.TimeSpan;
 using SystemDateTime = System.DateTime;
 using SystemDateTimeKind = System.DateTimeKind;
 using SystemDateTimeOffset = System.DateTimeOffset;
 using SystemDayOfWeek = System.DayOfWeek;
-using SystemCalendarWeekRule = System.Globalization.CalendarWeekRule;
 
 namespace NovaEngine
 {
@@ -196,8 +196,8 @@ namespace NovaEngine
             public static int GetWeekAmount(int year)
             {
                 SystemDateTime end = new SystemDateTime(year, 12, 31); // 该年最后一天
-                SystemGregorianCalendar gc = new SystemGregorianCalendar();
-                return gc.GetWeekOfYear(end, SystemCalendarWeekRule.FirstDay, SystemDayOfWeek.Monday); // 该年星期数
+                GregorianCalendar gc = new GregorianCalendar();
+                return gc.GetWeekOfYear(end, CalendarWeekRule.FirstDay, SystemDayOfWeek.Monday); // 该年星期数
             }
 
             /// <summary>
@@ -239,7 +239,7 @@ namespace NovaEngine
             /// <returns>返回指定日期</returns>
             public static int GetMonthLastDate(int year, int month)
             {
-                SystemDateTime lastDay = new SystemDateTime(year, month, new SystemGregorianCalendar().GetDaysInMonth(year, month));
+                SystemDateTime lastDay = new SystemDateTime(year, month, new GregorianCalendar().GetDaysInMonth(year, month));
                 int day = lastDay.Day;
                 return day;
             }

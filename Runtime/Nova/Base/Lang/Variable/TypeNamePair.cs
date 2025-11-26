@@ -23,10 +23,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.InteropServices;
 using System.Customize.Extension;
 
 using SystemType = System.Type;
-using SystemLayoutKind = System.Runtime.InteropServices.LayoutKind;
 
 namespace NovaEngine.ObjectPool
 {
@@ -34,7 +34,7 @@ namespace NovaEngine.ObjectPool
     /// 类型和名称组合的数据结构类，定义了一个捆绑类型和名称对应关系的数据结构<br/>
     /// 您可以在反射或查找等逻辑中使用该数据结构来做查询索引
     /// </summary>
-    [System.Runtime.InteropServices.StructLayout(SystemLayoutKind.Auto)]
+    [StructLayout(LayoutKind.Auto)]
     internal struct TypeNamePair : System.IEquatable<TypeNamePair>
     {
         /// <summary>

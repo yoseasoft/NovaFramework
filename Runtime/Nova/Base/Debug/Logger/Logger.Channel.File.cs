@@ -22,9 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemFile = System.IO.File;
-using SystemFileInfo = System.IO.FileInfo;
-using SystemStreamWriter = System.IO.StreamWriter;
+using System.IO;
+using System.Text;
 
 namespace NovaEngine
 {
@@ -39,8 +38,8 @@ namespace NovaEngine
         [LogOutputChannelBinding(LogOutputChannelType.File)]
         private sealed class LogFile : Singleton<LogFile>, ILogOutput
         {
-            private SystemFileInfo _fileHandler = null;
-            private SystemStreamWriter _fileWriter = null;
+            private FileInfo _fileHandler = null;
+            private StreamWriter _fileWriter = null;
 
             /// <summary>
             /// 启动日志输出文件模式
@@ -100,7 +99,7 @@ namespace NovaEngine
 
                 filename = Utility.Resource.PersistentDataPath + "/" + filename;
 
-                _fileHandler = new SystemFileInfo(filename);
+                _fileHandler = new FileInfo(filename);
                 if (_fileHandler.Exists)
                 {
                     if (null != backup)
@@ -117,7 +116,7 @@ namespace NovaEngine
                 else
                 {
                     // 创建新的日志文件
-                    _fileWriter = new SystemStreamWriter(filename, true, System.Text.Encoding.Default);
+                    _fileWriter = new StreamWriter(filename, true, Encoding.Default);
                 }
 
                 return true;

@@ -23,13 +23,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Reflection;
+
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
 using SystemDelegate = System.Delegate;
-using SystemFieldInfo = System.Reflection.FieldInfo;
-using SystemPropertyInfo = System.Reflection.PropertyInfo;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemParameterInfo = System.Reflection.ParameterInfo;
 
 namespace NovaEngine
 {
@@ -68,28 +66,28 @@ namespace NovaEngine
             }
 
             // 处理字段对象的情况
-            if (obj is SystemFieldInfo __field)
+            if (obj is FieldInfo __field)
             {
                 text = Utility.Text.GetFullName(__field);
                 return true;
             }
 
             // 处理属性对象的情况
-            if (obj is SystemPropertyInfo __property)
+            if (obj is PropertyInfo __property)
             {
                 text = Utility.Text.GetFullName(__property);
                 return true;
             }
 
             // 处理方法对象的情况
-            if (obj is SystemMethodInfo __method)
+            if (obj is MethodInfo __method)
             {
                 text = Utility.Text.GetFullName(__method);
                 return true;
             }
 
             // 处理参数对象的情况
-            if (obj is SystemParameterInfo __parameter)
+            if (obj is ParameterInfo __parameter)
             {
                 text = Utility.Text.GetFullName(__parameter);
                 return true;

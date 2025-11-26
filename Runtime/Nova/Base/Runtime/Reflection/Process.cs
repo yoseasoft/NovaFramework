@@ -22,15 +22,14 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Diagnostics;
+using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-using SystemPath = System.IO.Path;
-using SystemProcess = System.Diagnostics.Process;
-using SystemProcessStartInfo = System.Diagnostics.ProcessStartInfo;
-using SystemRuntimeInformation = System.Runtime.InteropServices.RuntimeInformation;
-using SystemOSPlatform = System.Runtime.InteropServices.OSPlatform;
+using Cysharp.Threading.Tasks;
 
-using UniTaskVoid = Cysharp.Threading.Tasks.UniTaskVoid;
+using SystemProcess = System.Diagnostics.Process;
 
 namespace NovaEngine
 {
@@ -55,7 +54,7 @@ namespace NovaEngine
                 bool redirectStandardOutput = true;
                 bool redirectStandardError = true;
                 bool useShellExecute = false;
-                if (SystemRuntimeInformation.IsOSPlatform(SystemOSPlatform.Windows))
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
                     redirectStandardOutput = false;
                     redirectStandardError = false;
@@ -69,7 +68,7 @@ namespace NovaEngine
                     useShellExecute = false;
                 }
 
-                SystemProcessStartInfo info = new SystemProcessStartInfo
+                ProcessStartInfo info = new ProcessStartInfo
                 {
                     FileName = exe,
                     Arguments = arguments,
@@ -90,7 +89,7 @@ namespace NovaEngine
             }
             catch (System.Exception e)
             {
-                throw new CFrameworkException($"dir: {SystemPath.GetFullPath(workingDirectory)}, command: {exe} {arguments}.", e);
+                throw new CFrameworkException($"dir: {Path.GetFullPath(workingDirectory)}, command: {exe} {arguments}.", e);
             }
         }
 

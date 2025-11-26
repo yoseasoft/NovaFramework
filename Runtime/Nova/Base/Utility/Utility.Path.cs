@@ -24,16 +24,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.IO;
+using System.Text;
+using System.Runtime.CompilerServices;
 using System.Customize.Extension;
-
-using SystemException = System.Exception;
-using SystemEncoding = System.Text.Encoding;
-using SystemPath = System.IO.Path;
-using SystemDirectory = System.IO.Directory;
-using SystemDirectoryInfo = System.IO.DirectoryInfo;
-using SystemFile = System.IO.File;
-using SystemFileInfo = System.IO.FileInfo;
-using SystemFileAttributes = System.IO.FileAttributes;
 
 using UnityTextAsset = UnityEngine.TextAsset;
 using UnityResources = UnityEngine.Resources;
@@ -111,7 +105,7 @@ namespace NovaEngine
                     return false;
                 }
 
-                return SystemDirectory.Exists(path);
+                return Directory.Exists(path);
             }
 
             /// <summary>
@@ -120,9 +114,9 @@ namespace NovaEngine
             /// <param name="path">目标目录名称</param>
             public static void CreateDirectory(string path)
             {
-                if (false == SystemDirectory.Exists(path))
+                if (false == Directory.Exists(path))
                 {
-                    SystemDirectory.CreateDirectory(path);
+                    Directory.CreateDirectory(path);
                 }
             }
 
@@ -137,11 +131,11 @@ namespace NovaEngine
                     return;
                 }
 
-                SystemFileInfo f = new SystemFileInfo(path);
-                SystemDirectoryInfo dir = f.Directory;
+                FileInfo f = new FileInfo(path);
+                DirectoryInfo dir = f.Directory;
                 if (false == dir.Exists)
                 {
-                    SystemDirectory.CreateDirectory(dir.FullName);
+                    Directory.CreateDirectory(dir.FullName);
                 }
             }
 
@@ -156,13 +150,13 @@ namespace NovaEngine
                     return;
                 }
 
-                string[] files = SystemDirectory.GetFiles(path);
-                string[] dirs = SystemDirectory.GetDirectories(path);
+                string[] files = Directory.GetFiles(path);
+                string[] dirs = Directory.GetDirectories(path);
 
                 foreach (string file in files)
                 {
-                    SystemFile.SetAttributes(file, SystemFileAttributes.Normal);
-                    SystemFile.Delete(file);
+                    File.SetAttributes(file, FileAttributes.Normal);
+                    File.Delete(file);
                 }
 
                 foreach (string dir in dirs)
@@ -170,7 +164,7 @@ namespace NovaEngine
                     DeleteDirectory(dir);
                 }
 
-                SystemDirectory.Delete(path, false);
+                Directory.Delete(path, false);
             }
 
             /// <summary>
@@ -185,7 +179,7 @@ namespace NovaEngine
                     return false;
                 }
 
-                return SystemFile.Exists(path);
+                return File.Exists(path);
             }
 
             /// <summary>
@@ -198,7 +192,7 @@ namespace NovaEngine
                 {
                     CreateDirectory(path);
 
-                    SystemFile.Create(path);
+                    File.Create(path);
                 }
             }
 
@@ -210,7 +204,7 @@ namespace NovaEngine
             {
                 if (IsFileExists(path))
                 {
-                    SystemFile.Delete(path);
+                    File.Delete(path);
                 }
             }
 
@@ -222,7 +216,7 @@ namespace NovaEngine
             public static void CopyFile(string src, string dest)
             {
                 CreateDirectoryOnFilePath(dest);
-                SystemFile.Copy(src, dest, true);
+                File.Copy(src, dest, true);
             }
 
             /// <summary>
@@ -237,8 +231,8 @@ namespace NovaEngine
                     return null;
                 }
 
-                SystemFile.SetAttributes(file, SystemFileAttributes.Normal);
-                return SystemFile.ReadAllBytes(file);
+                File.SetAttributes(file, FileAttributes.Normal);
+                return File.ReadAllBytes(file);
             }
 
             /// <summary>
@@ -248,7 +242,7 @@ namespace NovaEngine
             /// <returns>若打开文件成功则返回对应文件文本行内容，否则返回null</returns>
             public static string[] ReadAllLines(string file)
             {
-                return ReadAllLines(file, SystemEncoding.UTF8);
+                return ReadAllLines(file, Encoding.UTF8);
             }
 
             /// <summary>
@@ -257,15 +251,15 @@ namespace NovaEngine
             /// <param name="file">目标文件名称</param>
             /// <param name="encoding">文件编码</param>
             /// <returns>若打开文件成功则返回对应文件文本行内容，否则返回null</returns>
-            public static string[] ReadAllLines(string file, SystemEncoding encoding)
+            public static string[] ReadAllLines(string file, Encoding encoding)
             {
                 if (false == IsFileExists(file))
                 {
                     return null;
                 }
 
-                SystemFile.SetAttributes(file, SystemFileAttributes.Normal);
-                return SystemFile.ReadAllLines(file, encoding);
+                File.SetAttributes(file, FileAttributes.Normal);
+                return File.ReadAllLines(file, encoding);
             }
 
             /// <summary>
@@ -275,7 +269,7 @@ namespace NovaEngine
             /// <returns>若打开文件成功则返回对应文件文本串内容，否则返回null</returns>
             public static string ReadAllText(string file)
             {
-                return SystemFile.ReadAllText(file, SystemEncoding.UTF8);
+                return File.ReadAllText(file, Encoding.UTF8);
             }
 
             /// <summary>
@@ -284,15 +278,15 @@ namespace NovaEngine
             /// <param name="file">目标文件名称</param>
             /// <param name="encoding">文件编码</param>
             /// <returns>若打开文件成功则返回对应文件文本串内容，否则返回null</returns>
-            public static string ReadAllText(string file, SystemEncoding encoding)
+            public static string ReadAllText(string file, Encoding encoding)
             {
                 if (false == IsFileExists(file))
                 {
                     return null;
                 }
 
-                SystemFile.SetAttributes(file, SystemFileAttributes.Normal);
-                return SystemFile.ReadAllText(file, encoding);
+                File.SetAttributes(file, FileAttributes.Normal);
+                return File.ReadAllText(file, encoding);
             }
 
             /// <summary>
@@ -309,11 +303,11 @@ namespace NovaEngine
                 }
 
                 CreateDirectoryOnFilePath(file);
-                if (SystemFile.Exists(file))
+                if (File.Exists(file))
                 {
-                    SystemFile.SetAttributes(file, SystemFileAttributes.Normal);
+                    File.SetAttributes(file, FileAttributes.Normal);
                 }
-                SystemFile.WriteAllBytes(file, bytes);
+                File.WriteAllBytes(file, bytes);
                 return true;
             }
 
@@ -325,7 +319,7 @@ namespace NovaEngine
             /// <returns>若目标文件写入成功则返回true，否则返回false</returns>
             public static bool WriteAllLines(string file, string[] lines)
             {
-                return WriteAllLines(file, lines, SystemEncoding.UTF8);
+                return WriteAllLines(file, lines, Encoding.UTF8);
             }
 
             /// <summary>
@@ -335,7 +329,7 @@ namespace NovaEngine
             /// <param name="lines">文本行数据</param>
             /// <param name="encoding">文件编码</param>
             /// <returns>若目标文件写入成功则返回true，否则返回false</returns>
-            public static bool WriteAllLines(string file, string[] lines, SystemEncoding encoding)
+            public static bool WriteAllLines(string file, string[] lines, Encoding encoding)
             {
                 if (file.IsNullOrEmpty())
                 {
@@ -343,11 +337,11 @@ namespace NovaEngine
                 }
 
                 CreateDirectoryOnFilePath(file);
-                if (SystemFile.Exists(file))
+                if (File.Exists(file))
                 {
-                    SystemFile.SetAttributes(file, SystemFileAttributes.Normal);
+                    File.SetAttributes(file, FileAttributes.Normal);
                 }
-                SystemFile.WriteAllLines(file, lines, encoding);
+                File.WriteAllLines(file, lines, encoding);
                 return true;
             }
 
@@ -359,7 +353,7 @@ namespace NovaEngine
             /// <returns>若目标文件写入成功则返回true，否则返回false</returns>
             public static bool WriteAllText(string file, string text)
             {
-                return WriteAllText(file, text, SystemEncoding.UTF8);
+                return WriteAllText(file, text, Encoding.UTF8);
             }
 
             /// <summary>
@@ -369,7 +363,7 @@ namespace NovaEngine
             /// <param name="text">文本串数据</param>
             /// <param name="encoding">文件编码</param>
             /// <returns>若目标文件写入成功则返回true，否则返回false</returns>
-            public static bool WriteAllText(string file, string text, SystemEncoding encoding)
+            public static bool WriteAllText(string file, string text, Encoding encoding)
             {
                 if (file.IsNullOrEmpty())
                 {
@@ -377,11 +371,11 @@ namespace NovaEngine
                 }
 
                 CreateDirectoryOnFilePath(file);
-                if (SystemFile.Exists(file))
+                if (File.Exists(file))
                 {
-                    SystemFile.SetAttributes(file, SystemFileAttributes.Normal);
+                    File.SetAttributes(file, FileAttributes.Normal);
                 }
-                SystemFile.WriteAllText(file, text, encoding);
+                File.WriteAllText(file, text, encoding);
                 return true;
             }
 
@@ -394,7 +388,7 @@ namespace NovaEngine
             {
                 if (IsFileExists(path))
                 {
-                    return new SystemFileInfo(path).Length;
+                    return new FileInfo(path).Length;
                 }
 
                 return 0;
@@ -407,7 +401,7 @@ namespace NovaEngine
             /// <returns>返回目标路径经过移除文件后缀名之后的路径信息</returns>
             public static string RemoveFileSuffixName(string path)
             {
-                string extension = SystemPath.GetExtension(path);
+                string extension = System.IO.Path.GetExtension(path);
                 if (extension.Length > 0)
                 {
                     path = path.Remove(path.IndexOf(extension), extension.Length);
@@ -422,11 +416,11 @@ namespace NovaEngine
             /// <param name="path">目标文件目录的路径</param>
             public static void CleanupDirectory(string path)
             {
-                if (SystemDirectory.Exists(path))
+                if (Directory.Exists(path))
                 {
-                    SystemDirectory.Delete(path, true);
+                    Directory.Delete(path, true);
                 }
-                SystemDirectory.CreateDirectory(path);
+                Directory.CreateDirectory(path);
             }
 
             /// <summary>
@@ -436,24 +430,24 @@ namespace NovaEngine
             /// <param name="destination">目标目录路径</param>
             public static void MoveDirectory(string source, string destination)
             {
-                if (false == SystemDirectory.Exists(destination))
+                if (false == Directory.Exists(destination))
                 {
-                    SystemDirectory.CreateDirectory(destination);
+                    Directory.CreateDirectory(destination);
                 }
 
-                SystemDirectoryInfo directoryInfo = new SystemDirectoryInfo(source);
-                SystemFileInfo[] files = directoryInfo.GetFiles();
+                DirectoryInfo directoryInfo = new DirectoryInfo(source);
+                FileInfo[] files = directoryInfo.GetFiles();
                 for (int n = 0; n < files.Length; ++n)
                 {
-                    SystemFileInfo file = files[n];
-                    file.MoveTo(SystemPath.Combine(destination, file.Name));
+                    FileInfo file = files[n];
+                    file.MoveTo(System.IO.Path.Combine(destination, file.Name));
                 }
 
-                SystemDirectoryInfo[] dirs = directoryInfo.GetDirectories();
+                DirectoryInfo[] dirs = directoryInfo.GetDirectories();
                 for (int n = 0; n < dirs.Length; ++n)
                 {
-                    SystemDirectoryInfo dir = dirs[n];
-                    MoveDirectory(SystemPath.Combine(source, dir.Name), SystemPath.Combine(destination, dir.Name));
+                    DirectoryInfo dir = dirs[n];
+                    MoveDirectory(System.IO.Path.Combine(source, dir.Name), System.IO.Path.Combine(destination, dir.Name));
                 }
             }
 
@@ -464,24 +458,24 @@ namespace NovaEngine
             /// <param name="destination">目标目录路径</param>
             public static void CopyDirectory(string source, string destination)
             {
-                if (false == SystemDirectory.Exists(destination))
+                if (false == Directory.Exists(destination))
                 {
-                    SystemDirectory.CreateDirectory(destination);
+                    Directory.CreateDirectory(destination);
                 }
 
-                SystemDirectoryInfo directoryInfo = new SystemDirectoryInfo(source);
-                SystemFileInfo[] files = directoryInfo.GetFiles();
+                DirectoryInfo directoryInfo = new DirectoryInfo(source);
+                FileInfo[] files = directoryInfo.GetFiles();
                 for (int n = 0; n < files.Length; ++n)
                 {
-                    SystemFileInfo file = files[n];
-                    file.CopyTo(SystemPath.Combine(destination, file.Name));
+                    FileInfo file = files[n];
+                    file.CopyTo(System.IO.Path.Combine(destination, file.Name));
                 }
 
-                SystemDirectoryInfo[] dirs = directoryInfo.GetDirectories();
+                DirectoryInfo[] dirs = directoryInfo.GetDirectories();
                 for (int n = 0; n < dirs.Length; ++n)
                 {
-                    SystemDirectoryInfo dir = dirs[n];
-                    CopyDirectory(SystemPath.Combine(source, dir.Name), SystemPath.Combine(destination, dir.Name));
+                    DirectoryInfo dir = dirs[n];
+                    CopyDirectory(System.IO.Path.Combine(source, dir.Name), System.IO.Path.Combine(destination, dir.Name));
                 }
             }
 
@@ -491,7 +485,7 @@ namespace NovaEngine
             /// <param name="absolutePath">完整路径</param>
             /// <param name="filePath">文件路径</param>
             /// <returns>返回文件的完整路径</returns>
-            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private static string __GetFullPath(string absolutePath, string filePath)
             {
                 if (filePath.IsNullOrEmpty())
@@ -499,7 +493,7 @@ namespace NovaEngine
                     return absolutePath;
                 }
 
-                return SystemPath.Combine(absolutePath, filePath);
+                return System.IO.Path.Combine(absolutePath, filePath);
             }
 
             /// <summary>
@@ -561,10 +555,10 @@ namespace NovaEngine
             {
                 try
                 {
-                    string url = SystemPath.Combine(Resource.PersistentDataPath + "/", path);
+                    string url = System.IO.Path.Combine(Resource.PersistentDataPath + "/", path);
                     if (IsFileExists(url))
                     {
-                        return SystemFile.ReadAllText(url);
+                        return File.ReadAllText(url);
                     }
                     else
                     {
@@ -580,7 +574,7 @@ namespace NovaEngine
                         return textAsset.text;
                     }
                 }
-                catch (SystemException e)
+                catch (System.Exception e)
                 {
                     throw new CFrameworkException(e.ToString());
                 }
@@ -595,14 +589,14 @@ namespace NovaEngine
             {
                 try
                 {
-                    string url = SystemPath.Combine(Resource.PersistentDataPath + "/", path);
+                    string url = System.IO.Path.Combine(Resource.PersistentDataPath + "/", path);
                     if (false == IsFileExists(url))
                     {
                         // 创建相关目录及文件
                     }
-                    SystemFile.WriteAllText(url, text);
+                    File.WriteAllText(url, text);
                 }
-                catch (SystemException e)
+                catch (System.Exception e)
                 {
                     throw new CFrameworkException("Save text asset to file '{0}' failed, reason {1}", path, e);
                 }

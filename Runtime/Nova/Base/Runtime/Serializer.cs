@@ -22,12 +22,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.IO;
+using System.Text;
 using System.Collections.Generic;
-
-using SystemStream = System.IO.Stream;
-using SystemBinaryWriter = System.IO.BinaryWriter;
-using SystemBinaryReader = System.IO.BinaryReader;
-using SystemEncoding = System.Text.Encoding;
 
 namespace NovaEngine
 {
@@ -43,14 +40,14 @@ namespace NovaEngine
         /// <param name="binaryWriter">目标流</param>
         /// <param name="data">要序列化的数据</param>
         /// <returns>若序列化数据成功则返回true，否则返回false</returns>
-        public delegate bool SerializeCallback(SystemBinaryWriter binaryWriter, T data);
+        public delegate bool SerializeCallback(BinaryWriter binaryWriter, T data);
 
         /// <summary>
         /// 反序列化回调函数
         /// </summary>
         /// <param name="binaryReader">指定流</param>
         /// <returns>反序列化的数据</returns>
-        public delegate T DeserializeCallback(SystemBinaryReader binaryReader);
+        public delegate T DeserializeCallback(BinaryReader binaryReader);
 
         /// <summary>
         /// 尝试从指定流获取指定键的值回调函数
@@ -59,7 +56,7 @@ namespace NovaEngine
         /// <param name="key">指定键</param>
         /// <param name="value">指定键的值</param>
         /// <returns>若从指定流获取指定键的值成功则返回true，否则返回false</returns>
-        public delegate bool TryGetValueCallback(SystemBinaryReader binaryReader, string key, out object value);
+        public delegate bool TryGetValueCallback(BinaryReader binaryReader, string key, out object value);
 
         private readonly Dictionary<byte, SerializeCallback> _serializeCallbacks;
         private readonly Dictionary<byte, DeserializeCallback> _deserializeCallbacks;
@@ -132,7 +129,7 @@ namespace NovaEngine
         /// <param name="stream">目标流</param>
         /// <param name="data">要序列化的数据</param>
         /// <returns>是否序列化数据成功</returns>
-        public bool Serialize(SystemStream stream, T data)
+        public bool Serialize(Stream stream, T data)
         {
             if (_serializeCallbacks.Count <= 0)
             {
@@ -149,9 +146,9 @@ namespace NovaEngine
         /// <param name="data">要序列化的数据</param>
         /// <param name="version">序列化回调函数的版本</param>
         /// <returns>是否序列化数据成功</returns>
-        public bool Serialize(SystemStream stream, T data, byte version)
+        public bool Serialize(Stream stream, T data, byte version)
         {
-            using (SystemBinaryWriter binaryWriter = new SystemBinaryWriter(stream, SystemEncoding.UTF8))
+            using (BinaryWriter binaryWriter = new BinaryWriter(stream, Encoding.UTF8))
             {
                 byte[] header = GetHeader();
                 binaryWriter.Write(header[0]);
@@ -173,9 +170,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="stream">指定流</param>
         /// <returns>反序列化的数据</returns>
-        public T Deserialize(SystemStream stream)
+        public T Deserialize(Stream stream)
         {
-            using (SystemBinaryReader binaryReader = new SystemBinaryReader(stream, SystemEncoding.UTF8))
+            using (BinaryReader binaryReader = new BinaryReader(stream, Encoding.UTF8))
             {
                 byte[] header = GetHeader();
                 byte header0 = binaryReader.ReadByte();
@@ -206,10 +203,10 @@ namespace NovaEngine
         /// <param name="key">指定键</param>
         /// <param name="value">指定键的值</param>
         /// <returns>是否从指定流获取指定键的值成功</returns>
-        public bool TryGetValue(SystemStream stream, string key, out object value)
+        public bool TryGetValue(Stream stream, string key, out object value)
         {
             value = null;
-            using (SystemBinaryReader binaryReader = new SystemBinaryReader(stream, SystemEncoding.UTF8))
+            using (BinaryReader binaryReader = new BinaryReader(stream, Encoding.UTF8))
             {
                 byte[] header = GetHeader();
                 byte header0 = binaryReader.ReadByte();

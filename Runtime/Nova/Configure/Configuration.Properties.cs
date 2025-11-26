@@ -24,10 +24,9 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Reflection;
 
 using SystemType = System.Type;
-using SystemFieldInfo = System.Reflection.FieldInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace NovaEngine
 {
@@ -39,7 +38,7 @@ namespace NovaEngine
         /// <summary>
         /// 配置类的所有字段映射集合
         /// </summary>
-        private static IDictionary<string, SystemFieldInfo> _configureFields;
+        private static IDictionary<string, FieldInfo> _configureFields;
         /// <summary>
         /// 配置类的参数存储容器
         /// </summary>
@@ -74,7 +73,7 @@ namespace NovaEngine
             InitConfigureFieldCollection();
 
             // 基础属性类型
-            if (_configureFields.TryGetValue(key, out SystemFieldInfo field))
+            if (_configureFields.TryGetValue(key, out FieldInfo field))
             {
                 field.SetValue(null, Utility.Convertion.StringToTargetType(value, field.FieldType));
 
@@ -139,15 +138,15 @@ namespace NovaEngine
             if (null == _configureFields)
             {
                 // 初始化字段容器
-                _configureFields = new Dictionary<string, SystemFieldInfo>();
+                _configureFields = new Dictionary<string, FieldInfo>();
                 // 初始化参数容器
                 _variables = new Dictionary<string, string>();
 
                 SystemType classType = typeof(Configuration);
-                SystemFieldInfo[] fields = classType.GetFields(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static | SystemBindingFlags.FlattenHierarchy);
+                FieldInfo[] fields = classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.FlattenHierarchy);
                 for (int n = 0; n < fields.Length; ++n)
                 {
-                    SystemFieldInfo field = fields[n];
+                    FieldInfo field = fields[n];
 
                     if (field.IsStatic && field.IsInitOnly)
                     {

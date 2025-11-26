@@ -23,16 +23,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
 using System.Customize.Extension;
 
 using SystemType = System.Type;
 using SystemIntPtr = System.IntPtr;
-using SystemStringBuilder = System.Text.StringBuilder;
-using SystemRegex = System.Text.RegularExpressions.Regex;
-using SystemMatch = System.Text.RegularExpressions.Match;
-using SystemMatchCollection = System.Text.RegularExpressions.MatchCollection;
-using SystemGCHandle = System.Runtime.InteropServices.GCHandle;
-using SystemGCHandleType = System.Runtime.InteropServices.GCHandleType;
 
 namespace NovaEngine
 {
@@ -81,7 +78,7 @@ namespace NovaEngine
         private delegate string TextFormatParameterConvertionCallback(object obj);
 
         [System.ThreadStatic]
-        private static SystemStringBuilder _cachedStringBuilder = new SystemStringBuilder(4096);
+        private static StringBuilder _cachedStringBuilder = new StringBuilder(4096);
 
         #region 文本格式的参数类型解析及转换处理接口函数定义
 
@@ -135,7 +132,7 @@ namespace NovaEngine
             const string format_pattern = @"\{([^\{\}]+)\}";
             // const string digit_pattern = @"(\d+)";
 
-            SystemMatchCollection matches = SystemRegex.Matches(text, format_pattern);
+            MatchCollection matches = Regex.Matches(text, format_pattern);
 
             // 若没有需要转换的格式化参数，则直接返回文本内容
             if (matches.Count <= 0)
@@ -151,12 +148,12 @@ namespace NovaEngine
 
             object[] parameters = new object[args.Length];
 
-            SystemStringBuilder sb = new SystemStringBuilder();
+            StringBuilder sb = new StringBuilder();
             int pos = 0;
             int index = 0;
             for (index = 0; index < matches.Count; ++index)
             {
-                SystemMatch match = matches[index];
+                Match match = matches[index];
 
                 sb.Append(text.Substring(pos, match.Index - pos));
                 pos = match.Index + match.Value.Length;
@@ -168,7 +165,7 @@ namespace NovaEngine
                 }
 
                 string substr = match.Value.Substring(1, match.Value.Length - 2);
-                // bool is_digit = SystemRegex.IsMatch(substr, digit_pattern);
+                // bool is_digit = Regex.IsMatch(substr, digit_pattern);
                 // 数字类型
                 if (int.TryParse(substr, out int num_value))
                 {
@@ -375,8 +372,8 @@ namespace NovaEngine
         {
             // unsafe { fixed (object *p = &obj) { Console.WriteLine((long) p); } } // 输出对象的内存地址指针值
 
-            SystemGCHandle handle = SystemGCHandle.Alloc(obj); // SystemGCHandle.Alloc(obj, SystemGCHandleType.Pinned);
-            SystemIntPtr address = SystemGCHandle.ToIntPtr(handle);
+            GCHandle handle = GCHandle.Alloc(obj); // GCHandle.Alloc(obj, GCHandleType.Pinned);
+            SystemIntPtr address = GCHandle.ToIntPtr(handle);
             handle.Free();
 
             // 将内存地址转换为十六进制整型数值的表示方式再返回

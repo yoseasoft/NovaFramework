@@ -22,8 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemAssembly = System.Reflection.Assembly;
-using SystemMethodInfo = System.Reflection.MethodInfo;
+using System.Reflection;
 
 namespace NovaEngine
 {
@@ -35,7 +34,7 @@ namespace NovaEngine
         /// <summary>
         /// 当前绑定的目标函数实例信息
         /// </summary>
-        private readonly SystemMethodInfo _methodInfo;
+        private readonly MethodInfo _methodInfo;
 
         /// <summary>
         /// 当前绑定函数的参数数量
@@ -53,7 +52,7 @@ namespace NovaEngine
         /// <param name="assembly">程序集</param>
         /// <param name="typeName">对象类型名称</param>
         /// <param name="methodName">函数名称</param>
-        public StaticMethod(SystemAssembly assembly, string typeName, string methodName)
+        public StaticMethod(Assembly assembly, string typeName, string methodName)
         {
             _methodInfo = assembly.GetType(typeName).GetMethod(methodName);
             _paramCount = _methodInfo.GetParameters().Length;

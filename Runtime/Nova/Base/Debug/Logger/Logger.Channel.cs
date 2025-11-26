@@ -28,13 +28,9 @@ using System.Collections.Generic;
 using System.Reflection;
 
 using SystemType = System.Type;
-using SystemEnum = System.Enum;
 using SystemAttribute = System.Attribute;
 using SystemAttributeTargets = System.AttributeTargets;
 using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemDelegate = System.Delegate;
-using SystemBindingFlags = System.Reflection.BindingFlags;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace NovaEngine
 {
@@ -57,7 +53,7 @@ namespace NovaEngine
             _logOutputChannelBindingInfos = new List<LogOutputChannelBindingInfo>();
 
             SystemType classType = typeof(Logger);
-            SystemType[] innerClassTypes = classType.GetNestedTypes(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Instance);
+            SystemType[] innerClassTypes = classType.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             for (int n = 0; null != innerClassTypes && n < innerClassTypes.Length; ++n)
             {
                 SystemType innerClassType = innerClassTypes[n];
@@ -67,8 +63,8 @@ namespace NovaEngine
                     continue;
                 }
 
-                SystemMethodInfo startupMethodInfo = innerClassType.GetMethod("Startup");
-                SystemMethodInfo shutdownMethodInfo = innerClassType.GetMethod("Shutdown");
+                MethodInfo startupMethodInfo = innerClassType.GetMethod("Startup");
+                MethodInfo shutdownMethodInfo = innerClassType.GetMethod("Shutdown");
                 Assert(null != startupMethodInfo && null != shutdownMethodInfo);
 
                 Definition.Delegate.EmptyFunctionHandler startupAction = (Definition.Delegate.EmptyFunctionHandler) startupMethodInfo.CreateDelegate(typeof(Definition.Delegate.EmptyFunctionHandler));

@@ -23,6 +23,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+
 using SystemArray = System.Array;
 
 namespace NovaEngine

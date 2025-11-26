@@ -22,11 +22,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Reflection;
 using System.Customize.Extension;
 
 using SystemType = System.Type;
-using SystemBindingFlags = System.Reflection.BindingFlags;
-using SystemFieldInfo = System.Reflection.FieldInfo;
 
 namespace NovaEngine
 {
@@ -216,7 +215,7 @@ namespace NovaEngine
 
             SystemType errorCodeType = typeof(ErrorCode);
             // 注意，“const”被隐式的认为是静态属性，因此在反射时需要设置“static”标识
-            SystemFieldInfo field = errorCodeType.GetField(exceptionName, SystemBindingFlags.Public | SystemBindingFlags.Static);
+            FieldInfo field = errorCodeType.GetField(exceptionName, BindingFlags.Public | BindingFlags.Static);
             if (null == field)
             {
                 Logger.Error("Could not found ErrorCode field name '{0}', get target property value failed.", exceptionName);

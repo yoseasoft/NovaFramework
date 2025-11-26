@@ -23,11 +23,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Text;
+using System.Reflection;
+
 using SystemType = System.Type;
-using SystemStringBuilder = System.Text.StringBuilder;
-using SystemFieldInfo = System.Reflection.FieldInfo;
-using SystemPropertyInfo = System.Reflection.PropertyInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace NovaEngine
 {
@@ -44,7 +43,7 @@ namespace NovaEngine
         /// <returns>返回对象实例的字符串信息</returns>
         private static string GetCoreSystemObjectInfo(object obj)
         {
-            SystemStringBuilder sb = new SystemStringBuilder();
+            StringBuilder sb = new StringBuilder();
 
             sb.Append(obj.ToString());
 
@@ -72,7 +71,7 @@ namespace NovaEngine
                 // 获取数组元素类型
                 // SystemType elementType = classType.GetElementType();
                 // 获取泛型方法
-                // SystemMethodInfo methodInfo = typeof(Formatter).GetMethod("ToString_Array").MakeGenericMethod(elementType);
+                // MethodInfo methodInfo = typeof(Formatter).GetMethod("ToString_Array").MakeGenericMethod(elementType);
                 // 调用方法
                 // return methodInfo.Invoke(null, new object[] { obj }) as string;
 
@@ -119,12 +118,12 @@ namespace NovaEngine
         /// <returns>返回自定义对象的字符串信息</returns>
         private static string GetCustomObjectInfo(object obj, FormatToStringCallback callback)
         {
-            SystemStringBuilder sb = new SystemStringBuilder();
+            StringBuilder sb = new StringBuilder();
 
             SystemType targetType = obj.GetType();
             sb.AppendFormat("Class={0},", NovaEngine.Utility.Text.GetFullName(targetType));
 
-            SystemFieldInfo[] fields = targetType.GetFields(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Instance | SystemBindingFlags.Static);
+            FieldInfo[] fields = targetType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
             if (null != fields && fields.Length > 0)
             {
                 sb.Append("Field={");
@@ -132,13 +131,13 @@ namespace NovaEngine
                 {
                     if (n > 0) sb.Append(Definition.CCharacter.Comma);
 
-                    SystemFieldInfo fieldInfo = fields[n];
+                    FieldInfo fieldInfo = fields[n];
                     sb.AppendFormat("[{0}]=\"{1}\"", fieldInfo.Name, callback(fieldInfo.GetValue(obj)));
                 }
                 sb.Append("},");
             }
 
-            SystemPropertyInfo[] properties = targetType.GetProperties(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Instance | SystemBindingFlags.Static);
+            PropertyInfo[] properties = targetType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
             if (null != properties && properties.Length > 0)
             {
                 sb.Append("Property={");
@@ -151,7 +150,7 @@ namespace NovaEngine
 
                     if (n > 0) sb.Append(Definition.CCharacter.Comma);
 
-                    SystemPropertyInfo propertyInfo = properties[n];
+                    PropertyInfo propertyInfo = properties[n];
                     sb.AppendFormat("[{0}]=\"{1}\"", propertyInfo.Name, callback(propertyInfo.GetValue(obj)));
                 }
                 sb.Append("},");

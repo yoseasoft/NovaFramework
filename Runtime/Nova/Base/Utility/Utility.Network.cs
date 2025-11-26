@@ -23,10 +23,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Net;
+using System.Net.NetworkInformation;
+
 using SystemStringBuilder = System.Text.StringBuilder;
-using SystemIPAddress = System.Net.IPAddress;
-using SystemIPEndPoint = System.Net.IPEndPoint;
-using SystemNetworkInterface = System.Net.NetworkInformation.NetworkInterface;
 
 namespace NovaEngine
 {
@@ -73,9 +73,9 @@ namespace NovaEngine
             /// <param name="host">主机地址</param>
             /// <param name="port">主机端口</param>
             /// <returns>返回主机结构对象</returns>
-            public static SystemIPEndPoint ToIPEndPoint(string host, int port)
+            public static IPEndPoint ToIPEndPoint(string host, int port)
             {
-                return new SystemIPEndPoint(SystemIPAddress.Parse(host), port);
+                return new IPEndPoint(IPAddress.Parse(host), port);
             }
 
             /// <summary>
@@ -83,7 +83,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="address">主机地址信息</param>
             /// <returns>返回主机结构对象</returns>
-            public static SystemIPEndPoint ToIPEndPoint(string address)
+            public static IPEndPoint ToIPEndPoint(string address)
             {
                 int index = address.LastIndexOf(Definition.CCharacter.Colon);
                 string host = address.Substring(0, index);
@@ -99,12 +99,12 @@ namespace NovaEngine
             public static string GetMacAddress()
             {
                 string physicalAddress = "";
-                SystemNetworkInterface[] interfaces = SystemNetworkInterface.GetAllNetworkInterfaces();
+                NetworkInterface[] interfaces = NetworkInterface.GetAllNetworkInterfaces();
                 if (null != interfaces)
                 {
                     for (int n = 0; n < interfaces.Length; ++n)
                     {
-                        SystemNetworkInterface adaper = interfaces[n];
+                        NetworkInterface adaper = interfaces[n];
                         if (adaper.Description == "en0")
                         {
                             physicalAddress = adaper.GetPhysicalAddress().ToString();

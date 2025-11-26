@@ -28,11 +28,10 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Reflection;
 
 using SystemType = System.Type;
 using SystemStringBuilder = System.Text.StringBuilder;
-using SystemFieldInfo = System.Reflection.FieldInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace NovaEngine
 {
@@ -133,7 +132,7 @@ namespace NovaEngine
         public static void SetProperty(string fieldName, object fieldValue)
         {
             SystemType type = typeof(Environment);
-            SystemFieldInfo field = type.GetField(fieldName, SystemBindingFlags.Static | SystemBindingFlags.Public | SystemBindingFlags.NonPublic);
+            FieldInfo field = type.GetField(fieldName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             if (null == field)
             {
                 Logger.Error("Could not found Environment field name '{%s}', set target property value failed.", fieldName);
@@ -151,7 +150,7 @@ namespace NovaEngine
         public static object GetProperty(string fieldName)
         {
             SystemType type = typeof(Environment);
-            SystemFieldInfo field = type.GetField(fieldName, SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
+            FieldInfo field = type.GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             if (null == field)
             {
                 Logger.Error("Could not found Environment field name '{%s}', get target property value failed.", fieldName);
@@ -169,7 +168,7 @@ namespace NovaEngine
         public static bool IsPropertyExists(string fieldName)
         {
             SystemType type = typeof(Environment);
-            SystemFieldInfo field = type.GetField(fieldName, SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
+            FieldInfo field = type.GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             return (null != field);
         }
 
@@ -304,7 +303,7 @@ namespace NovaEngine
             SystemType type = typeof(Environment);
             foreach (KeyValuePair<string, string> pair in conf)
             {
-                SystemFieldInfo field = type.GetField(pair.Key, SystemBindingFlags.Static | SystemBindingFlags.Public | SystemBindingFlags.NonPublic);
+                FieldInfo field = type.GetField(pair.Key, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
                 if (null == field)
                 {
                     // 非预定义属性直接放入全局配置参数表中
@@ -359,10 +358,10 @@ namespace NovaEngine
         {
             SystemStringBuilder sb = new SystemStringBuilder();
             sb.Append("PROPERTIES={");
-            SystemFieldInfo[] fields = typeof(Environment).GetFields(SystemBindingFlags.Static | SystemBindingFlags.Public | SystemBindingFlags.NonPublic);
+            FieldInfo[] fields = typeof(Environment).GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             for (int n = 0; n < fields.Length; ++n)
             {
-                SystemFieldInfo field = fields[n];
+                FieldInfo field = fields[n];
                 sb.AppendFormat("{0}={1},", field.Name, field.GetValue(null));
             }
 
