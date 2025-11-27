@@ -23,21 +23,14 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemException = System.Exception;
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
+
 using SystemArray = System.Array;
 using SystemBitConverter = System.BitConverter;
 using SystemAsyncCallback = System.AsyncCallback;
 using SystemIAsyncResult = System.IAsyncResult;
-using SystemSeekOrigin = System.IO.SeekOrigin;
-using SystemBinaryReader = System.IO.BinaryReader;
-using SystemBinaryWriter = System.IO.BinaryWriter;
-using SystemMemoryStream = System.IO.MemoryStream;
-using SystemDns = System.Net.Dns;
-using SystemIPAddress = System.Net.IPAddress;
-using SystemAddressFamily = System.Net.Sockets.AddressFamily;
-using SystemNetworkStream = System.Net.Sockets.NetworkStream;
-using SystemTcpClient = System.Net.Sockets.TcpClient;
-using SystemUdpClient = System.Net.Sockets.UdpClient;
 
 namespace NovaEngine.Network
 {
@@ -58,15 +51,15 @@ namespace NovaEngine.Network
         private const float CONNECT_TIMEOUT = 5f;
 
         // 当前SOCKET连接互斥锁
-        private static object _locked = new object();
+        // private static object _locked = new object();
 
         private ISocketCall _notification = null;
 
-        private SystemTcpClient _tcpClient = null;
-        private SystemNetworkStream _outStream = null;
+        private TcpClient _tcpClient = null;
+        private NetworkStream _outStream = null;
 
-        private SystemMemoryStream _memStream = null;
-        private SystemBinaryReader _reader = null;
+        private MemoryStream _memStream = null;
+        private BinaryReader _reader = null;
         private SystemAsyncCallback _readCallback = null;
         private SystemAsyncCallback _writeCallback = null;
 
@@ -105,8 +98,8 @@ namespace NovaEngine.Network
             _notification = handler;
             _sequenceId = id;
 
-            _memStream = new SystemMemoryStream();
-            _reader = new SystemBinaryReader(_memStream);
+            _memStream = new MemoryStream();
+            _reader = new BinaryReader(_memStream);
             _readCallback = new SystemAsyncCallback(OnRead);
             _writeCallback = new SystemAsyncCallback(OnWrite);
 
@@ -142,8 +135,8 @@ namespace NovaEngine.Network
                 _memStream = null;
             }
 
-            _memStream = new SystemMemoryStream();
-            _reader = new SystemBinaryReader(_memStream);
+            _memStream = new MemoryStream();
+            _reader = new BinaryReader(_memStream);
         }
 
         /// <summary>
@@ -159,20 +152,20 @@ namespace NovaEngine.Network
             {
                 this.ResetStream();
 
-                SystemIPAddress[] address = SystemDns.GetHostAddresses(host);
+                IPAddress[] address = Dns.GetHostAddresses(host);
                 if (address.Length == 0)
                 {
                     Logger.Error("请求网络连接的主机地址{0}格式错误！", host);
                     return 0;
                 }
 
-                if (address[0].AddressFamily == SystemAddressFamily.InterNetworkV6) // IPv6的连接模式
+                if (address[0].AddressFamily == AddressFamily.InterNetworkV6) // IPv6的连接模式
                 {
-                    _tcpClient = new SystemTcpClient(SystemAddressFamily.InterNetworkV6);
+                    _tcpClient = new TcpClient(AddressFamily.InterNetworkV6);
                 }
                 else // IPv4的连接模式
                 {
-                    _tcpClient = new SystemTcpClient(SystemAddressFamily.InterNetwork);
+                    _tcpClient = new TcpClient(AddressFamily.InterNetwork);
                 }
 
                 _tcpClient.SendTimeout = 1000;
@@ -187,7 +180,7 @@ namespace NovaEngine.Network
                     }
                 }, CONNECT_TIMEOUT);
                 return _sequenceId;
-            } catch (SystemException e)
+            } catch (System.Exception e)
             {
                 Logger.Error(e.Message);
 
@@ -206,7 +199,7 @@ namespace NovaEngine.Network
             try
             {
                 this.Disconnect();
-            } catch (SystemException e)
+            } catch (System.Exception e)
             {
                 Logger.Error(e.Message);
             }
@@ -262,12 +255,12 @@ namespace NovaEngine.Network
                 return;
             }
 
-            SystemMemoryStream ms = null;
-            using (ms = new SystemMemoryStream())
+            MemoryStream ms = null;
+            using (ms = new MemoryStream())
             {
                 ms.Position = 0;
-                SystemBinaryWriter writer = new SystemBinaryWriter(ms);
-                short len = SystemIPAddress.HostToNetworkOrder((short) message.Length);
+                BinaryWriter writer = new BinaryWriter(ms);
+                short len = IPAddress.HostToNetworkOrder((short) message.Length);
                 writer.Write(len);
                 writer.Write(message);
                 writer.Flush();
@@ -363,7 +356,7 @@ namespace NovaEngine.Network
                     SystemArray.Clear(_buffer, 0, _buffer.Length);
                     _tcpClient.GetStream().BeginRead(_buffer, 0, MAX_READBUFFER_SIZE, _readCallback, null);
                 }
-            } catch (SystemException e)
+            } catch (System.Exception e)
             {
                 Logger.Error(e.Message);
 
@@ -376,7 +369,7 @@ namespace NovaEngine.Network
             try
             {
                 _outStream.EndWrite(ar);
-            } catch (SystemException e)
+            } catch (System.Exception e)
             {
                 Logger.Error(e.Message);
 
@@ -386,20 +379,20 @@ namespace NovaEngine.Network
 
         private void OnReceived(byte[] buffer, int size)
         {
-            _memStream.Seek(0, SystemSeekOrigin.End);
+            _memStream.Seek(0, SeekOrigin.End);
             _memStream.Write(buffer, 0, size);
             // Reset to beginning
-            _memStream.Seek(0, SystemSeekOrigin.Begin);
+            _memStream.Seek(0, SeekOrigin.Begin);
             while (this.RemainingBytes() > 2)
             {
                 short messageLength = SystemBitConverter.ToInt16(_reader.ReadBytes(2), 0);
-                messageLength = SystemIPAddress.NetworkToHostOrder(messageLength);
+                messageLength = IPAddress.NetworkToHostOrder(messageLength);
                 if (this.RemainingBytes() >= messageLength)
                 {
-                    SystemMemoryStream ms = new SystemMemoryStream();
-                    SystemBinaryWriter writer = new SystemBinaryWriter(ms);
+                    MemoryStream ms = new MemoryStream();
+                    BinaryWriter writer = new BinaryWriter(ms);
                     writer.Write(_reader.ReadBytes(messageLength));
-                    ms.Seek(0, SystemSeekOrigin.Begin);
+                    ms.Seek(0, SeekOrigin.Begin);
                     this.OnReceivedMessage(ms);
                 }
                 else
@@ -429,9 +422,9 @@ namespace NovaEngine.Network
         /// 接收下行数据流并打包输出到外部回调接口
         /// </summary>
         /// <param name="ms">下行数据流</param>
-        private void OnReceivedMessage(SystemMemoryStream ms)
+        private void OnReceivedMessage(MemoryStream ms)
         {
-            SystemBinaryReader r = new SystemBinaryReader(ms);
+            BinaryReader r = new BinaryReader(ms);
             byte[] message = r.ReadBytes((int) (ms.Length - ms.Position));
             // int msglen = message.Length;
 

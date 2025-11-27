@@ -24,16 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemException = System.Exception;
-using SystemIEnumerator = System.Collections.IEnumerator;
-using SystemFileMode = System.IO.FileMode;
-using SystemFileAccess = System.IO.FileAccess;
-using SystemSeekOrigin = System.IO.SeekOrigin;
-using SystemStream = System.IO.Stream;
-using SystemFileStream = System.IO.FileStream;
-using SystemHttpWebRequest = System.Net.HttpWebRequest;
-using SystemHttpWebResponse = System.Net.HttpWebResponse;
-using SystemThread = System.Threading.Thread;
+using System.IO;
+using System.Net;
+using System.Threading;
 
 namespace NovaEngine.Network
 {
@@ -107,10 +100,10 @@ namespace NovaEngine.Network
             // 默认启动下载运行状态
             _isDownloadRunning = true;
 
-            SystemFileStream fstream = null;
-            SystemStream respStream = null;
-            SystemHttpWebRequest request = null;
-            SystemHttpWebResponse response = null;
+            FileStream fstream = null;
+            Stream respStream = null;
+            HttpWebRequest request = null;
+            HttpWebResponse response = null;
 
             // 获取文件现在的长度
             long fileLength = 0;
@@ -120,18 +113,18 @@ namespace NovaEngine.Network
                 Utility.Path.CreateDirectory(path);
                 Utility.Path.DeleteFile(path); // 断点续传
 
-                fstream = new SystemFileStream(path, SystemFileMode.OpenOrCreate, SystemFileAccess.Write);
+                fstream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
                 // 断点续传核心，设置本地文件流的起始位置
-                fstream.Seek(fileLength, SystemSeekOrigin.Begin);
-                request = SystemHttpWebRequest.Create(url) as SystemHttpWebRequest;
+                fstream.Seek(fileLength, SeekOrigin.Begin);
+                request = HttpWebRequest.Create(url) as HttpWebRequest;
 
                 request.KeepAlive = false;
-                request.Proxy = SystemHttpWebRequest.DefaultWebProxy;
+                request.Proxy = HttpWebRequest.DefaultWebProxy;
 
                 // 断点续传核心，设置远程访问文件流的起始位置
                 request.AddRange((int) fileLength);
 
-                response = (SystemHttpWebResponse) request.GetResponse();
+                response = (HttpWebResponse) request.GetResponse();
                 respStream = response.GetResponseStream();
 
                 int bufferLength = HTTP_DOWNLOAD_MAX_BUFFER_SIZE;
@@ -148,7 +141,7 @@ namespace NovaEngine.Network
 
                     if (msTime > 0)
                     {
-                        SystemThread.Sleep(msTime);
+                        Thread.Sleep(msTime);
                     }
 
                     length = respStream.Read(buffer, 0, bufferLength);
@@ -159,7 +152,7 @@ namespace NovaEngine.Network
                     isDone = true;
                 }
             }
-            catch (SystemException e)
+            catch (System.Exception e)
             {
                 Logger.Error("An error occurred for download file to target url {0}: {1}.", url, e.ToString());
                 isDone = false;
@@ -175,7 +168,7 @@ namespace NovaEngine.Network
                         fstream = null;
                     }
                 }
-                catch (SystemException e) { Logger.Error(e.ToString()); }
+                catch (System.Exception e) { Logger.Error(e.ToString()); }
 
                 try
                 {
@@ -186,7 +179,7 @@ namespace NovaEngine.Network
                         respStream = null;
                     }
                 }
-                catch (SystemException e) { Logger.Error(e.ToString()); }
+                catch (System.Exception e) { Logger.Error(e.ToString()); }
 
                 try
                 {
@@ -196,7 +189,7 @@ namespace NovaEngine.Network
                         request = null;
                     }
                 }
-                catch (SystemException e) { Logger.Error(e.ToString()); }
+                catch (System.Exception e) { Logger.Error(e.ToString()); }
 
                 try
                 {
@@ -206,7 +199,7 @@ namespace NovaEngine.Network
                         response = null;
                     }
                 }
-                catch (SystemException e) { Logger.Error(e.ToString()); }
+                catch (System.Exception e) { Logger.Error(e.ToString()); }
             }
 
             // if (false == _isDownloadRunning) { return; }

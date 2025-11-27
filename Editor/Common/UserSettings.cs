@@ -22,7 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NoveEngine.Editor
+namespace NovaEngine.Editor
 {
     /// <summary>
     /// 编辑环境下的参数配置管理类，默认使用<see cref="CoreEngine.Editor.UserSettings"/>接口实现

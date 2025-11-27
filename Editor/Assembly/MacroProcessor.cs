@@ -35,7 +35,7 @@ using SystemXmlNode = System.Xml.XmlNode;
 using SystemXmlWriter = System.Xml.XmlWriter;
 using SystemXmlWriterSettings = System.Xml.XmlWriterSettings;
 
-namespace NoveEngine.Editor
+namespace NovaEngine.Editor
 {
     /// <summary>
     /// 引擎框架的宏处理接口类

@@ -24,9 +24,7 @@
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 应用层提供的调试对象类，它是基于对<see cref="NovaEngine.Debugger"/>的便捷性接口封装
-    /// </summary>
+    /// 应用层提供的调试对象类
     public static partial class Debugger
     {
         /// <summary>

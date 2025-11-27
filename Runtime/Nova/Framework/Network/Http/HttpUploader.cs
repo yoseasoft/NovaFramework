@@ -24,19 +24,12 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.IO;
+using System.Net;
+
 using SystemDateTime = System.DateTime;
-using SystemException = System.Exception;
 using SystemEncoding = System.Text.Encoding;
 using SystemStringBuilder = System.Text.StringBuilder;
-using SystemFileMode = System.IO.FileMode;
-using SystemFileAccess = System.IO.FileAccess;
-using SystemSeekOrigin = System.IO.SeekOrigin;
-using SystemStream = System.IO.Stream;
-using SystemFileStream = System.IO.FileStream;
-using SystemBinaryReader = System.IO.BinaryReader;
-using SystemStreamReader = System.IO.StreamReader;
-using SystemWebResponse = System.Net.WebResponse;
-using SystemHttpWebRequest = System.Net.HttpWebRequest;
 
 namespace NovaEngine.Network
 {
@@ -110,9 +103,9 @@ namespace NovaEngine.Network
             // 默认启动上传运行状态
             _isUploadRunning = true;
 
-            SystemFileStream fstream = new SystemFileStream(path, SystemFileMode.Open, SystemFileAccess.Read);
+            FileStream fstream = new FileStream(path, FileMode.Open, FileAccess.Read);
 
-            SystemBinaryReader reader = new SystemBinaryReader(fstream);
+            BinaryReader reader = new BinaryReader(fstream);
 
             string boundary = "----------" + SystemDateTime.Now.Ticks.ToString("x");
 
@@ -136,7 +129,7 @@ namespace NovaEngine.Network
             string header = sb.ToString();
             byte[] headerBytes = SystemEncoding.UTF8.GetBytes(header);
 
-            SystemHttpWebRequest httpReq = SystemHttpWebRequest.Create(url) as SystemHttpWebRequest;
+            HttpWebRequest httpReq = HttpWebRequest.Create(url) as HttpWebRequest;
             httpReq.Method = "POST";
             httpReq.AllowWriteStreamBuffering = false;
 
@@ -148,7 +141,7 @@ namespace NovaEngine.Network
 
             try
             {
-                SystemStream postStream = null;
+                Stream postStream = null;
 
                 // 写入附带的参数
                 string stringKeyHeader = "\r\n--" + boundary +
@@ -203,7 +196,7 @@ namespace NovaEngine.Network
                 {
                     if (false == _isUploadRunning)
                     {
-                        throw new SystemException("The upload process was stopped!");
+                        throw new CFrameworkException("The upload process was stopped!");
                     }
 
                     postStream.Write(buffer, 0, size);
@@ -213,7 +206,7 @@ namespace NovaEngine.Network
 
                     offset += size;
 
-                    // SystemThread.Sleep(1);
+                    // Thread.Sleep(1);
 
                     size = reader.Read(buffer, 0, bufferLength);
                 }
@@ -223,9 +216,9 @@ namespace NovaEngine.Network
                 postStream.Close();
 
                 // 获取服务器端的响应
-                SystemWebResponse webRespon = httpReq.GetResponse();
-                SystemStream s = webRespon.GetResponseStream();
-                SystemStreamReader sr = new SystemStreamReader(s);
+                WebResponse webRespon = httpReq.GetResponse();
+                Stream s = webRespon.GetResponseStream();
+                StreamReader sr = new StreamReader(s);
 
                 // 读取服务器端返回的消息
                 var sReturnString = sr.ReadToEnd();
@@ -234,7 +227,7 @@ namespace NovaEngine.Network
 
                 succeed(sReturnString);
             }
-            catch (SystemException e)
+            catch (System.Exception e)
             {
                 Logger.Error("An error occurred for upload file to target url {0}: {1}.", url, e.ToString());
 

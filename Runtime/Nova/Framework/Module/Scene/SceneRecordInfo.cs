@@ -23,10 +23,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-
-using UnityObject = UnityEngine.Object;
-using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
-using UnityScene = UnityEngine.SceneManagement.Scene;
+using UnityEngine.SceneManagement;
 
 namespace NovaEngine
 {
@@ -59,7 +56,7 @@ namespace NovaEngine
         /// <summary>
         /// 场景元素对象实例
         /// </summary>
-        private UnityScene _scene;
+        private Scene _scene;
 
         /// <summary>
         /// 场景资源信息对象实例
@@ -169,7 +166,7 @@ namespace NovaEngine
         /// <summary>
         /// 场景元素对象属性访问Getter/Setter接口
         /// </summary>
-        public UnityScene Scene
+        public Scene Scene
         {
             set { _scene = value; }
             get { return _scene; }

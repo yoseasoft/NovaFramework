@@ -27,9 +27,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-
-using UnityScene = UnityEngine.SceneManagement.Scene;
-using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
+using UnityEngine.SceneManagement;
 
 namespace NovaEngine
 {
@@ -58,8 +56,8 @@ namespace NovaEngine
         /// </summary>
         protected override void OnInitialize()
         {
-            Logger.Assert(UnitySceneManager.sceneCount > 0, "程序启动初始环境中必须存在至少一个有效的场景实例，当前环境获取场景数据失败！");
-            if (UnitySceneManager.sceneCount > 1)
+            Logger.Assert(SceneManager.sceneCount > 0, "程序启动初始环境中必须存在至少一个有效的场景实例，当前环境获取场景数据失败！");
+            if (SceneManager.sceneCount > 1)
             {
                 Logger.Warn("当前程序启动的初始环境中存在多个场景实例，系统将随机选取一个作为主场景，其它场景实例可能在后期运行过程中被随机移除掉！");
             }
@@ -70,7 +68,7 @@ namespace NovaEngine
             // 若当前已启动了多个场景，则默认选择第一个场景作为主场景
             // 需要注意的是，我们选择的主场景可能不是挂载了程序调度脚本所在的场景
             // 所以可能在后续的运行过程中意外关闭了调度脚本所在的场景，从而导致整个程序崩溃
-            UnityScene scene = UnitySceneManager.GetSceneAt(0); // UnitySceneManager.GetActiveScene()
+            Scene scene = SceneManager.GetSceneAt(0); // UnitySceneManager.GetActiveScene()
             Logger.Assert(scene.IsValid(), "程序运行时自动加载的主场景当前处于无效状态，调度该场景对象实例失败！");
             _mainSceneName = scene.name;
 
@@ -176,7 +174,7 @@ namespace NovaEngine
 
             assetScene.completed += scene =>
             {
-                UnityScene unityScene = UnitySceneManager.GetSceneByName(sceneName);
+                Scene unityScene = SceneManager.GetSceneByName(sceneName);
                 Logger.Assert(unityScene.IsValid(), $"检测到当前世界容器中不存在指定名称为‘{sceneName}’的场景实例，异步加载场景成功后的回调查询操作失败！");
 
                 //if (false == unityScene.IsValid())
@@ -223,7 +221,7 @@ namespace NovaEngine
                 // 2025-06-20:
                 // 为什么新的资源库此处不能使用该代码，是因为在资源管理的场景操作句柄中重复使用了该代码
                 // 因为异步卸载资源可能导致场景中材质的丢失，所以也把该操作和资源异步清理统一处理了
-                // UnitySceneManager.UnloadSceneAsync(sceneName);
+                // SceneManager.UnloadSceneAsync(sceneName);
             }
 
             _sceneRecordInfos.Remove(sceneName);
@@ -257,7 +255,7 @@ namespace NovaEngine
         /// <returns>返回当前激活的场景名称</returns>
         public string GetActiveSceneName()
         {
-            UnityScene scene = UnitySceneManager.GetActiveScene();
+            Scene scene = SceneManager.GetActiveScene();
 
             return scene.name;
         }
@@ -281,8 +279,8 @@ namespace NovaEngine
                 return;
             }
 
-            UnityScene scene = info.Scene;
-            UnitySceneManager.SetActiveScene(scene);
+            Scene scene = info.Scene;
+            SceneManager.SetActiveScene(scene);
         }
 
         /// <summary>

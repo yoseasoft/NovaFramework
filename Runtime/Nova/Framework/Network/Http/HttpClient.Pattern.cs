@@ -23,12 +23,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using UnityEngine.Networking;
+
 using SystemIEnumerator = System.Collections.IEnumerator;
 using SystemEncoding = System.Text.Encoding;
-
-using UnityWebRequest = UnityEngine.Networking.UnityWebRequest;
-using UnityUploadHandlerRaw = UnityEngine.Networking.UploadHandlerRaw;
-using UnityDownloadHandlerBuffer = UnityEngine.Networking.DownloadHandlerBuffer;
 
 namespace NovaEngine.Network
 {
@@ -62,8 +60,8 @@ namespace NovaEngine.Network
         {
             UnityWebRequest request = new UnityWebRequest(url, "POST");
             byte[] postBytes = SystemEncoding.UTF8.GetBytes(data);
-            request.uploadHandler = new UnityUploadHandlerRaw(postBytes);
-            request.downloadHandler = new UnityDownloadHandlerBuffer();
+            request.uploadHandler = new UploadHandlerRaw(postBytes);
+            request.downloadHandler = new DownloadHandlerBuffer();
             request.certificateHandler = new AcceptAllCertificatesHandler();// 必须验证, 具体原因可进入AcceptAllCertificatesHandler查看
             request.SetRequestHeader("Content-Type", "application/json;charset=utf-8");
             yield return request.SendWebRequest();

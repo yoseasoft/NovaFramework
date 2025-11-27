@@ -24,7 +24,7 @@
 
 using System.Collections.Generic;
 
-namespace NoveEngine.Editor
+namespace NovaEngine.Editor
 {
     /// <summary>
     /// 引擎框架的宏定义类
