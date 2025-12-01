@@ -24,8 +24,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
 using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
@@ -48,23 +50,23 @@ namespace GameEngine
 
         #region 为静态回调函数构建委托句柄的构造函数
 
-        public MessageCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int opcode)
+        public MessageCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int opcode)
             : this(fullname, targetType, methodInfo, opcode, false)
         { }
 
-        public MessageCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int opcode, bool automatically)
+        public MessageCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int opcode, bool automatically)
             : this(fullname, targetType, methodInfo, opcode, null, automatically)
         { }
 
-        public MessageCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType messageType)
+        public MessageCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType messageType)
             : this(fullname, targetType, methodInfo, messageType, false)
         { }
 
-        public MessageCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType messageType, bool automatically)
+        public MessageCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType messageType, bool automatically)
             : this(fullname, targetType, methodInfo, 0, messageType, automatically)
         { }
 
-        private MessageCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int opcode, SystemType messageType, bool automatically)
+        private MessageCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int opcode, SystemType messageType, bool automatically)
             : base(fullname, targetType, methodInfo, automatically)
         {
             _opcode = opcode;
@@ -75,23 +77,23 @@ namespace GameEngine
 
         #region 为普通回调函数构建委托句柄的构造函数
 
-        public MessageCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, SystemMethodInfo methodInfo, int opcode)
+        public MessageCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int opcode)
             : this(targetObject, fullname, targetType, methodInfo, opcode, false)
         { }
 
-        public MessageCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, SystemMethodInfo methodInfo, int opcode, bool automatically)
+        public MessageCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int opcode, bool automatically)
             : this(targetObject, fullname, targetType, methodInfo, opcode, null, automatically)
         { }
 
-        public MessageCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType messageType)
+        public MessageCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, SystemType messageType)
             : this(targetObject, fullname, targetType, methodInfo, messageType, false)
         { }
 
-        public MessageCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType messageType, bool automatically)
+        public MessageCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, SystemType messageType, bool automatically)
             : this(targetObject, fullname, targetType, methodInfo, 0, messageType, automatically)
         { }
 
-        private MessageCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, SystemMethodInfo methodInfo, int opcode, SystemType messageType, bool automatically)
+        private MessageCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int opcode, SystemType messageType, bool automatically)
             : base(targetObject, fullname, targetType, methodInfo, automatically)
         {
             _opcode = opcode;
@@ -105,7 +107,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">函数对象</param>
         /// <returns>若为无效格式类型则返回true，否则返回false</returns>
-        protected override sealed bool CheckFunctionFormatWasInvalidType(SystemMethodInfo methodInfo)
+        protected override sealed bool CheckFunctionFormatWasInvalidType(MethodInfo methodInfo)
         {
             // 函数格式校验
             if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
@@ -136,7 +138,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">函数对象</param>
         /// <returns>若符合无参格式则返回true，否则返回false</returns>
-        protected override sealed bool CheckFunctionFormatWasNullParameterType(SystemMethodInfo methodInfo)
+        protected override sealed bool CheckFunctionFormatWasNullParameterType(MethodInfo methodInfo)
         {
             return Loader.Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(methodInfo);
         }
@@ -145,7 +147,7 @@ namespace GameEngine
         /// 消息回调的调度函数
         /// </summary>
         /// <param name="message">消息对象实例</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke(object message)
         {
             if (_isNullParameterType)
@@ -163,7 +165,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="targetObject">对象实例</param>
         /// <param name="message">消息对象实例</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke(IBean targetObject, object message)
         {
             Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);

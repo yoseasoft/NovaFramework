@@ -311,6 +311,29 @@ namespace GameEngine.Loader
         }
 
         /// <summary>
+        /// 通过指定的基础类型获取继承该类型的对象类的标记数据清单
+        /// </summary>
+        /// <param name="baseType"></param>
+        /// <returns></returns>
+        public static IList<Symboling.SymClass> FindAllSymClassesInheritedFrom(SystemType baseType)
+        {
+            IList<Symboling.SymClass> results = null;
+
+            IEnumerator<Symboling.SymClass> e = _symClassMaps.GetEnumerator();
+            while (e.MoveNext())
+            {
+                if (e.Current.IsInheritedFrom(baseType))
+                {
+                    if (null == results) results = new List<Symboling.SymClass>();
+
+                    results.Add(e.Current);
+                }
+            }
+
+            return results;
+        }
+
+        /// <summary>
         /// 通过指定的特性类型获取具备该特性的对象类的标记数据清单
         /// </summary>
         /// <param name="featureType">特性类型</param>

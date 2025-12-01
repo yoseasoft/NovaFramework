@@ -150,6 +150,7 @@ namespace NovaEngine
                     return memberName;
                 }
 
+                FormatStringBuilder fsb = FormatStringBuilder.Create();
                 SystemStringBuilder sb = new SystemStringBuilder();
                 int start = 0;
                 int pos = 1;

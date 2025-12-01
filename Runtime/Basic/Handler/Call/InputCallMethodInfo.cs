@@ -24,8 +24,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
 using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
@@ -53,23 +55,23 @@ namespace GameEngine
 
         #region 为静态回调函数构建委托句柄的构造函数
 
-        public InputCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int inputCode, int operationType)
+        public InputCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int inputCode, int operationType)
             : this(fullname, targetType, methodInfo, inputCode, operationType, false)
         { }
 
-        public InputCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int inputCode, int operationType, bool automatically)
+        public InputCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int inputCode, int operationType, bool automatically)
             : this(fullname, targetType, methodInfo, inputCode, operationType, null, automatically)
         { }
 
-        public InputCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType inputDataType)
+        public InputCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType inputDataType)
             : this(fullname, targetType, methodInfo, inputDataType, false)
         { }
 
-        public InputCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType inputDataType, bool automatically)
+        public InputCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType inputDataType, bool automatically)
             : this(fullname, targetType, methodInfo, 0, 0, inputDataType, automatically)
         { }
 
-        private InputCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int inputCode, int operationType, SystemType inputDataType, bool automatically)
+        private InputCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int inputCode, int operationType, SystemType inputDataType, bool automatically)
             : base(fullname, targetType, methodInfo, automatically)
         {
             _inputCode = inputCode;
@@ -81,23 +83,23 @@ namespace GameEngine
 
         #region 为普通回调函数构建委托句柄的构造函数
 
-        public InputCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, SystemMethodInfo methodInfo, int inputCode, int operationType)
+        public InputCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int inputCode, int operationType)
             : this(targetObject, fullname, targetType, methodInfo, inputCode, operationType, false)
         { }
 
-        public InputCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, SystemMethodInfo methodInfo, int inputCode, int operationType, bool automatically)
+        public InputCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int inputCode, int operationType, bool automatically)
             : this(targetObject, fullname, targetType, methodInfo, inputCode, operationType, null, automatically)
         { }
 
-        public InputCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType inputDataType)
+        public InputCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, SystemType inputDataType)
             : this(targetObject, fullname, targetType, methodInfo, inputDataType, false)
         { }
 
-        public InputCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType inputDataType, bool automatically)
+        public InputCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, SystemType inputDataType, bool automatically)
             : this(targetObject, fullname, targetType, methodInfo, 0, 0, inputDataType, automatically)
         { }
 
-        private InputCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, SystemMethodInfo methodInfo, int inputCode, int operationType, SystemType inputDataType, bool automatically)
+        private InputCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int inputCode, int operationType, SystemType inputDataType, bool automatically)
             : base(targetObject, fullname, targetType, methodInfo, automatically)
         {
             _inputCode = inputCode;
@@ -112,7 +114,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">函数对象</param>
         /// <returns>若为无效格式类型则返回true，否则返回false</returns>
-        protected override sealed bool CheckFunctionFormatWasInvalidType(SystemMethodInfo methodInfo)
+        protected override sealed bool CheckFunctionFormatWasInvalidType(MethodInfo methodInfo)
         {
             // 函数格式校验
             if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
@@ -143,7 +145,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">函数对象</param>
         /// <returns>若符合无参格式则返回true，否则返回false</returns>
-        protected override sealed bool CheckFunctionFormatWasNullParameterType(SystemMethodInfo methodInfo)
+        protected override sealed bool CheckFunctionFormatWasNullParameterType(MethodInfo methodInfo)
         {
             return Loader.Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(methodInfo);
         }
@@ -153,7 +155,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="inputCode">输入编码</param>
         /// <param name="operationType">输入操作类型</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke(int inputCode, int operationType)
         {
             if (/*_operationType == 0 ||*/ (_operationType & operationType) == 0)
@@ -178,7 +180,7 @@ namespace GameEngine
         /// <param name="targetObject">对象实例</param>
         /// <param name="inputCode">输入编码</param>
         /// <param name="operationType">输入操作类型</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke(IBean targetObject, int inputCode, int operationType)
         {
             Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
@@ -203,7 +205,7 @@ namespace GameEngine
         /// 输入回调的调度函数
         /// </summary>
         /// <param name="inputData">输入数据</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke(object inputData)
         {
             if (_isNullParameterType)
@@ -221,7 +223,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="targetObject">对象实例</param>
         /// <param name="inputData">输入数据</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke(IBean targetObject, object inputData)
         {
             Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);

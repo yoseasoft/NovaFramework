@@ -24,8 +24,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
 using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
@@ -48,23 +50,23 @@ namespace GameEngine
 
         #region 为静态回调函数构建委托句柄的构造函数
 
-        public EventCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int eventID)
+        public EventCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int eventID)
             : this(fullname, targetType, methodInfo, eventID, false)
         { }
 
-        public EventCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int eventID, bool automatically)
+        public EventCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int eventID, bool automatically)
             : this(fullname, targetType, methodInfo, eventID, null, automatically)
         { }
 
-        public EventCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType eventDataType)
+        public EventCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType eventDataType)
             : this(fullname, targetType, methodInfo, eventDataType, false)
         { }
 
-        public EventCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType eventDataType, bool automatically)
+        public EventCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType eventDataType, bool automatically)
             : this(fullname, targetType, methodInfo, 0, eventDataType, automatically)
         { }
 
-        private EventCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int eventID, SystemType eventDataType, bool automatically)
+        private EventCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int eventID, SystemType eventDataType, bool automatically)
             : base(fullname, targetType, methodInfo, automatically)
         {
             _eventID = eventID;
@@ -75,23 +77,23 @@ namespace GameEngine
 
         #region 为普通回调函数构建委托句柄的构造函数
 
-        public EventCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, SystemMethodInfo methodInfo, int eventID)
+        public EventCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int eventID)
             : this(targetObject, fullname, targetType, methodInfo, eventID, false)
         { }
 
-        public EventCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, SystemMethodInfo methodInfo, int eventID, bool automatically)
+        public EventCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int eventID, bool automatically)
             : this(targetObject, fullname, targetType, methodInfo, eventID, null, automatically)
         { }
 
-        public EventCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType eventDataType)
+        public EventCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, SystemType eventDataType)
             : this(targetObject, fullname, targetType, methodInfo, eventDataType, false)
         { }
 
-        public EventCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType eventDataType, bool automatically)
+        public EventCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, SystemType eventDataType, bool automatically)
             : this(targetObject, fullname, targetType, methodInfo, 0, eventDataType, automatically)
         { }
 
-        private EventCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, SystemMethodInfo methodInfo, int eventID, SystemType eventDataType, bool automatically)
+        private EventCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int eventID, SystemType eventDataType, bool automatically)
             : base(targetObject, fullname, targetType, methodInfo, automatically)
         {
             _eventID = eventID;
@@ -105,7 +107,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">函数对象</param>
         /// <returns>若为无效格式类型则返回true，否则返回false</returns>
-        protected override sealed bool CheckFunctionFormatWasInvalidType(SystemMethodInfo methodInfo)
+        protected override sealed bool CheckFunctionFormatWasInvalidType(MethodInfo methodInfo)
         {
             // 函数格式校验
             if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
@@ -136,7 +138,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">函数对象</param>
         /// <returns>若符合无参格式则返回true，否则返回false</returns>
-        protected override sealed bool CheckFunctionFormatWasNullParameterType(SystemMethodInfo methodInfo)
+        protected override sealed bool CheckFunctionFormatWasNullParameterType(MethodInfo methodInfo)
         {
             return Loader.Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(methodInfo);
         }
@@ -146,7 +148,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="eventID">事件标识</param>
         /// <param name="args">事件数据参数</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke(int eventID, params object[] args)
         {
             if (_isNullParameterType)
@@ -165,7 +167,7 @@ namespace GameEngine
         /// <param name="targetObject">对象实例</param>
         /// <param name="eventID">事件标识</param>
         /// <param name="args">事件数据参数</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke(IBean targetObject, int eventID, params object[] args)
         {
             Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
@@ -184,7 +186,7 @@ namespace GameEngine
         /// 事件回调的调度函数
         /// </summary>
         /// <param name="eventData">事件数据</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke(object eventData)
         {
             if (_isNullParameterType)
@@ -202,7 +204,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="targetObject">对象实例</param>
         /// <param name="eventData">事件数据</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke(IBean targetObject, object eventData)
         {
             Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
