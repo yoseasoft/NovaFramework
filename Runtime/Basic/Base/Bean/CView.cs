@@ -166,7 +166,7 @@ namespace GameEngine
         /// <summary>
         /// 视图对象重载通知接口函数
         /// </summary>
-        internal override sealed void Reload()
+        public override sealed void Reload()
         {
             base.Reload();
 

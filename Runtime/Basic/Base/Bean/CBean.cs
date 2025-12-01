@@ -31,7 +31,7 @@ namespace GameEngine
     /// <summary>
     /// Bean对象抽象类，对需要进行Bean对象定义的场景提供一个通用的基类
     /// </summary>
-    public abstract partial class CBean : IBean, NovaEngine.IInitializable
+    public abstract partial class CBean : IBean, NovaEngine.IInitializable, NovaEngine.IReloadable
     {
         /// <summary>
         /// 实体对象的标识
@@ -120,7 +120,7 @@ namespace GameEngine
         /// <summary>
         /// 对象重载函数接口
         /// </summary>
-        internal virtual void Reload()
+        public virtual void Reload()
         {
             // 重载时会卸载掉旧的符号对象，重载解析新的符号对象
             // 所以这里需要重新进行符号对象的加载
@@ -148,7 +148,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="featureType">特性类型</param>
         /// <returns>若当前对象实例具备给定特性类型则返回true，否则返回false</returns>
-        public bool HasFeatureType(SystemType featureType)
+        protected internal bool HasFeatureType(SystemType featureType)
         {
             return this.Symbol.HasFeatureType(featureType);
         }
@@ -158,7 +158,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="interfaceType">接口类型</param>
         /// <returns>若当前对象实例具备给定的接口类型则返回true，否则返回false</returns>
-        public bool HasInterfaceType(SystemType interfaceType)
+        protected internal bool HasInterfaceType(SystemType interfaceType)
         {
             return this.Symbol.HasInterfaceType(interfaceType);
         }
@@ -168,7 +168,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="aspectBehaviourType">切面行为类型</param>
         /// <returns>若当前对象实例具备给定切面行为类型则返回true，否则返回false</returns>
-        public bool HasAspectBehaviourType(AspectBehaviourType aspectBehaviourType)
+        protected internal bool HasAspectBehaviourType(AspectBehaviourType aspectBehaviourType)
         {
             return this.Symbol.HasAspectBehaviourType(aspectBehaviourType);
         }

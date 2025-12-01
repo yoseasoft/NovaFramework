@@ -81,7 +81,7 @@ namespace GameEngine
         /// <summary>
         /// 对象重载函数接口
         /// </summary>
-        internal override void Reload()
+        public override void Reload()
         {
             base.Reload();
 
