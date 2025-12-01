@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>我的文档</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  
+  <!-- 使用更可靠的主题 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css">
+  
+  <!-- Docsify 核心CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <nav class="app-nav">
+    <a href="/">首页</a>
+    <a href="/guide/quick-start.html">快速开始</a>
+    <a href="/api/">API参考</a>
+    <a href="/samples/">示例</a>
+  </nav>
+
+  <style>
+    /* 导航栏样式 */
+    .app-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #24292e;
+      padding: 10px 20px;
+      z-index: 100;
+    }
+    .app-nav a {
+      color: white;
+      margin-right: 20px;
+      text-decoration: none;
+    }
+    .app-nav a:hover {
+      color: #58a6ff;
+    }
+    /* 调整主内容区位置 */
+    #app {
+      padding-top: 50px;
+    }
+  </style>
+  
+  <div id="app"></div>
+  
+  <!-- Docsify 核心JS -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+  
+  <!-- Prism.js 高亮库 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-csharp.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
+  
+  <!-- 搜索插件 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+  
+  <!-- Docsify 配置 -->
+  <script>
+    // 初始化配置
+    window.$docsify = {
+      name: '我的文档',
+      repo: '',
+      loadSidebar: true,
+      subMaxLevel: 3,
+      maxLevel: 4,
+      search: 'auto',
+      // 关键：启用代码高亮插件
+      highlight: false, // 禁用内置高亮
+      plugins: [
+        function(hook, vm) {
+          // 在每次内容更新后执行高亮
+          hook.doneEach(function() {
+            // 使用 Prism 高亮所有代码块
+            document.querySelectorAll('pre code').forEach((block) => {
+              Prism.highlightElement(block);
+            });
+          });
+        }
+      ]
+    };
+  </script>
+  
+  <!-- 手动初始化 Prism -->
+  <script>
+    // 确保 Prism 已加载
+    document.addEventListener('DOMContentLoaded', function() {
+      // 初始高亮
+      if (typeof Prism !== 'undefined') {
+        Prism.highlightAll();
+      }
+      
+      // 监听 Docsify 的渲染完成事件
+      document.addEventListener('docsify:afterinit', function() {
+        if (typeof Prism !== 'undefined') {
+          Prism.highlightAll();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
