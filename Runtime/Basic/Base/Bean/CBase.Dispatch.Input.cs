@@ -27,7 +27,6 @@
 using System.Collections.Generic;
 
 using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
 using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
@@ -45,6 +44,11 @@ namespace GameEngine
         /// 基础对象内部输入类型的响应回调映射列表
         /// </summary>
         private IDictionary<SystemType, IDictionary<string, bool>> _inputResponseCallsForType;
+
+        /// <summary>
+        /// 输入响应回调函数的绑定接口缓存容器
+        /// </summary>
+        private IDictionary<string, InputCallMethodInfo> _inputCallBindingCaches;
 
         /// <summary>
         /// 基础对象的输入响应回调初始化函数接口
@@ -66,6 +70,10 @@ namespace GameEngine
 
             _inputResponseCallsForCode = null;
             _inputResponseCallsForType = null;
+
+            // 移除输入响应的委托句柄缓存实例
+            RemoveAllInputCallDelegateHandlers();
+            _inputCallBindingCaches = null;
         }
 
         #region 基础对象输入响应相关回调函数的操作接口定义
@@ -83,7 +91,8 @@ namespace GameEngine
             {
                 foreach (KeyValuePair<string, bool> kvp in calls)
                 {
-                    InputHandler.Instance.InvokeInputResponseBindingCall(kvp.Key, BeanType, this, inputCode, operationType);
+                    // InputHandler.Instance.InvokeInputResponseBindingCall(this, kvp.Key, BeanType, inputCode, operationType);
+                    InvokeInputCall(kvp.Key, inputCode, operationType);
                 }
             }
 
@@ -102,7 +111,8 @@ namespace GameEngine
             {
                 foreach (KeyValuePair<string, bool> kvp in calls)
                 {
-                    InputHandler.Instance.InvokeInputResponseBindingCall(kvp.Key, BeanType, this, inputData);
+                    // InputHandler.Instance.InvokeInputResponseBindingCall(this, kvp.Key, BeanType, inputData);
+                    InvokeInputCall(kvp.Key, inputData);
                 }
             }
 
@@ -213,7 +223,10 @@ namespace GameEngine
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
         protected internal bool AddInputResponse(string fullname, SystemMethodInfo methodInfo, int inputCode, int operationType, bool automatically)
         {
-            InputHandler.Instance.AddInputResponseBindingCallInfo(fullname, BeanType, methodInfo, inputCode, operationType, automatically);
+            // 2025-11-30：
+            // 针对普通函数采用对象自身构建的方式
+            // InputHandler.Instance.AddInputResponseBindingCallInfo(fullname, BeanType, methodInfo, inputCode, operationType, automatically);
+            AddInputCallDelegateHandler(fullname, methodInfo, inputCode, operationType, automatically);
 
             if (false == _inputResponseCallsForCode.TryGetValue(inputCode, out IDictionary<string, bool> calls))
             {
@@ -293,7 +306,10 @@ namespace GameEngine
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
         protected internal bool AddInputResponse(string fullname, SystemMethodInfo methodInfo, SystemType inputType, bool automatically)
         {
-            InputHandler.Instance.AddInputResponseBindingCallInfo(fullname, BeanType, methodInfo, inputType, automatically);
+            // 2025-11-30：
+            // 针对普通函数采用对象自身构建的方式
+            // InputHandler.Instance.AddInputResponseBindingCallInfo(fullname, BeanType, methodInfo, inputType, automatically);
+            AddInputCallDelegateHandler(fullname, methodInfo, inputType, automatically);
 
             if (false == _inputResponseCallsForType.TryGetValue(inputType, out IDictionary<string, bool> calls))
             {
@@ -368,6 +384,8 @@ namespace GameEngine
                 if (calls.ContainsKey(fullname))
                 {
                     calls.Remove(fullname);
+                    // 移除构建的委托句柄
+                    RemoveInputCallDelegateHandler(fullname);
                 }
             }
 
@@ -447,6 +465,8 @@ namespace GameEngine
                 if (calls.ContainsKey(fullname))
                 {
                     calls.Remove(fullname);
+                    // 移除构建的委托句柄
+                    RemoveInputCallDelegateHandler(fullname);
                 }
             }
 
@@ -487,6 +507,135 @@ namespace GameEngine
 
             _inputResponseCallsForCode.Clear();
             _inputResponseCallsForType.Clear();
+        }
+
+        #endregion
+
+        #region 基础对象输入响应相关回调函数的构建委托接口定义
+
+        /// <summary>
+        /// 构建一个目标输入回调函数的委托句柄，并添加到调度容器中
+        /// </summary>
+        /// <param name="fullname">完整名称</param>
+        /// <param name="methodInfo">函数对象</param>
+        /// <param name="inputCode">按键编码</param>
+        /// <param name="operationType">操作类型</param>
+        /// <param name="automatically">自动装载状态标识</param>
+        private void AddInputCallDelegateHandler(string fullname, SystemMethodInfo methodInfo, int inputCode, int operationType, bool automatically)
+        {
+            // 静态函数（包括扩展类型）
+            if (methodInfo.IsStatic)
+            {
+                InputHandler.Instance.AddInputResponseBindingCallInfo(fullname, BeanType, methodInfo, inputCode, operationType, automatically);
+                return;
+            }
+
+            if (null == _inputCallBindingCaches)
+            {
+                _inputCallBindingCaches = new Dictionary<string, InputCallMethodInfo>();
+            }
+
+            if (_inputCallBindingCaches.ContainsKey(fullname))
+            {
+                return;
+            }
+
+            Debugger.Info(LogGroupTag.Module, "新增指定的按键编码‘{%d}’及操作类型‘{%d}’对应的输入响应绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
+                    inputCode, operationType, BeanType, fullname);
+
+            InputCallMethodInfo inputCallMethodInfo = new InputCallMethodInfo(this, fullname, BeanType, methodInfo, inputCode, operationType, automatically);
+            _inputCallBindingCaches.Add(fullname, inputCallMethodInfo);
+        }
+
+        /// <summary>
+        /// 构建一个目标输入回调函数的委托句柄，并添加到调度容器中
+        /// </summary>
+        /// <param name="fullname">完整名称</param>
+        /// <param name="methodInfo">函数对象</param>
+        /// <param name="inputDataType">输入数据类型</param>
+        /// <param name="automatically">自动装载状态标识</param>
+        private void AddInputCallDelegateHandler(string fullname, SystemMethodInfo methodInfo, SystemType inputDataType, bool automatically)
+        {
+            // 静态函数（包括扩展类型）
+            if (methodInfo.IsStatic)
+            {
+                InputHandler.Instance.AddInputResponseBindingCallInfo(fullname, BeanType, methodInfo, inputDataType, automatically);
+                return;
+            }
+
+            if (null == _inputCallBindingCaches)
+            {
+                _inputCallBindingCaches = new Dictionary<string, InputCallMethodInfo>();
+            }
+
+            if (_inputCallBindingCaches.ContainsKey(fullname))
+            {
+                return;
+            }
+
+            Debugger.Info(LogGroupTag.Module, "新增指定的按键编码的数据类型‘{%t}’对应的输入响应绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
+                    inputDataType, BeanType, fullname);
+
+            InputCallMethodInfo inputCallMethodInfo = new InputCallMethodInfo(this, fullname, BeanType, methodInfo, inputDataType, automatically);
+            _inputCallBindingCaches.Add(fullname, inputCallMethodInfo);
+        }
+
+        /// <summary>
+        /// 从调度容器中移除指定名称对应的输入回调函数的委托句柄
+        /// </summary>
+        /// <param name="fullname">函数名称</param>
+        private void RemoveInputCallDelegateHandler(string fullname)
+        {
+            if (null == _inputCallBindingCaches)
+            {
+                return;
+            }
+
+            if (_inputCallBindingCaches.ContainsKey(fullname))
+            {
+                _inputCallBindingCaches.Remove(fullname);
+            }
+        }
+
+        /// <summary>
+        /// 移除当前输入响应回调函数构建的全部委托句柄实例
+        /// </summary>
+        private void RemoveAllInputCallDelegateHandlers()
+        {
+            _inputCallBindingCaches?.Clear();
+        }
+
+        /// <summary>
+        /// 针对消息事件调用指定的回调绑定函数
+        /// </summary>
+        /// <param name="fullname">完整名称</param>
+        /// <param name="inputCode">按键编码</param>
+        /// <param name="operationType">按键操作类型</param>
+        private void InvokeInputCall(string fullname, int inputCode, int operationType)
+        {
+            if (null != _inputCallBindingCaches && _inputCallBindingCaches.TryGetValue(fullname, out InputCallMethodInfo inputCallMethodInfo))
+            {
+                inputCallMethodInfo.Invoke(inputCode, operationType);
+                return;
+            }
+
+            InputHandler.Instance.InvokeInputResponseBindingCall(this, fullname, BeanType, inputCode, operationType);
+        }
+
+        /// <summary>
+        /// 针对输入数据调用指定的回调绑定函数
+        /// </summary>
+        /// <param name="fullname">完整名称</param>
+        /// <param name="inputData">输入数据</param>
+        private void InvokeInputCall(string fullname, object inputData)
+        {
+            if (null != _inputCallBindingCaches && _inputCallBindingCaches.TryGetValue(fullname, out InputCallMethodInfo inputCallMethodInfo))
+            {
+                inputCallMethodInfo.Invoke(inputData);
+                return;
+            }
+
+            InputHandler.Instance.InvokeInputResponseBindingCall(this, fullname, BeanType, inputData);
         }
 
         #endregion

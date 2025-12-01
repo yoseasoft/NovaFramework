@@ -92,36 +92,15 @@ namespace GameEngine
                 _eventSubscribeBindingCaches.Add(targetType, eventCallMethodInfos);
             }
 
-            if (eventCallMethodInfos.TryGetValue(fullname, out EventCallMethodInfo eventCallMethodInfo))
+            if (eventCallMethodInfos.ContainsKey(fullname))
             {
                 return;
-            }
-
-            // 函数格式校验
-            if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
-            {
-                bool verificated = false;
-                if (NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
-                {
-                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithBeanExtensionType(methodInfo);
-                }
-                else
-                {
-                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfEventCall(methodInfo);
-                }
-
-                // 校验失败
-                if (false == verificated)
-                {
-                    Debugger.Error(LogGroupTag.Controller, "目标对象类型‘{%t}’的‘{%s}’函数判定为非法格式的事件订阅绑定回调函数，添加回调绑定操作失败！", targetType, fullname);
-                    return;
-                }
             }
 
             Debugger.Info(LogGroupTag.Controller, "新增指定的消息事件‘{%d}’对应的事件订阅绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     eventID, targetType, fullname);
 
-            eventCallMethodInfo = new EventCallMethodInfo(fullname, targetType, methodInfo, eventID, automatically);
+            EventCallMethodInfo eventCallMethodInfo = new EventCallMethodInfo(fullname, targetType, methodInfo, eventID, automatically);
             eventCallMethodInfos.Add(fullname, eventCallMethodInfo);
         }
 
@@ -141,36 +120,15 @@ namespace GameEngine
                 _eventSubscribeBindingCaches.Add(targetType, eventCallMethodInfos);
             }
 
-            if (eventCallMethodInfos.TryGetValue(fullname, out EventCallMethodInfo eventCallMethodInfo))
+            if (eventCallMethodInfos.ContainsKey(fullname))
             {
                 return;
-            }
-
-            // 函数格式校验
-            if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
-            {
-                bool verificated = false;
-                if (NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
-                {
-                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithBeanExtensionType(methodInfo);
-                }
-                else
-                {
-                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfEventCall(methodInfo);
-                }
-
-                // 校验失败
-                if (false == verificated)
-                {
-                    Debugger.Error(LogGroupTag.Controller, "目标对象类型‘{%t}’的‘{%s}’函数判定为非法格式的事件订阅绑定回调函数，添加回调绑定操作失败！", targetType, fullname);
-                    return;
-                }
             }
 
             Debugger.Info(LogGroupTag.Controller, "新增指定的事件类型‘{%t}’对应的事件订阅绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     eventDataType, targetType, fullname);
 
-            eventCallMethodInfo = new EventCallMethodInfo(fullname, targetType, methodInfo, eventDataType, automatically);
+            EventCallMethodInfo eventCallMethodInfo = new EventCallMethodInfo(fullname, targetType, methodInfo, eventDataType, automatically);
             eventCallMethodInfos.Add(fullname, eventCallMethodInfo);
         }
 
@@ -208,12 +166,12 @@ namespace GameEngine
         /// <summary>
         /// 针对消息事件调用指定的回调绑定函数
         /// </summary>
+        /// <param name="targetObject">对象实例</param>
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
-        /// <param name="targetObject">对象实例</param>
         /// <param name="eventID">事件标识</param>
         /// <param name="args">事件参数</param>
-        internal void InvokeEventSubscribeBindingCall(string fullname, SystemType targetType, IBean targetObject, int eventID, params object[] args)
+        internal void InvokeEventSubscribeBindingCall(IBean targetObject, string fullname, SystemType targetType, int eventID, params object[] args)
         {
             EventCallMethodInfo eventCallMethodInfo = FindEventSubscribeBindingCallByName(fullname, targetType);
             if (null == eventCallMethodInfo)
@@ -228,11 +186,11 @@ namespace GameEngine
         /// <summary>
         /// 针对输入数据调用指定的回调绑定函数
         /// </summary>
+        /// <param name="targetObject">对象实例</param>
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
-        /// <param name="targetObject">对象实例</param>
         /// <param name="eventData">事件数据</param>
-        internal void InvokeEventSubscribeBindingCall(string fullname, SystemType targetType, IBean targetObject, object eventData)
+        internal void InvokeEventSubscribeBindingCall(IBean targetObject, string fullname, SystemType targetType, object eventData)
         {
             EventCallMethodInfo eventCallMethodInfo = FindEventSubscribeBindingCallByName(fullname, targetType);
             if (null == eventCallMethodInfo)

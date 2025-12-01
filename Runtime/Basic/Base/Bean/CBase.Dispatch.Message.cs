@@ -27,7 +27,6 @@
 using System.Collections.Generic;
 
 using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
 using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
@@ -41,6 +40,11 @@ namespace GameEngine
         /// 基础对象内部网络消息的监听回调映射列表
         /// </summary>
         private IDictionary<int, IDictionary<string, bool>> _messageListenerCallForType;
+
+        /// <summary>
+        /// 消息监听回调函数的绑定接口缓存容器
+        /// </summary>
+        private IDictionary<string, MessageCallMethodInfo> _messageCallBindingCaches;
 
         /// <summary>
         /// 基础对象的消息监听回调初始化函数接口
@@ -60,6 +64,10 @@ namespace GameEngine
             RemoveAllMessageListeners();
 
             _messageListenerCallForType = null;
+
+            // 移除消息监听的委托句柄缓存实例
+            RemoveAllMessageCallDelegateHandlers();
+            _messageCallBindingCaches = null;
         }
 
         #region 基础对象消息监听相关回调函数的操作接口定义
@@ -77,7 +85,8 @@ namespace GameEngine
             {
                 foreach (KeyValuePair<string, bool> kvp in calls)
                 {
-                    NetworkHandler.Instance.InvokeMessageListenerBindingCall(kvp.Key, BeanType, this, message);
+                    // NetworkHandler.Instance.InvokeMessageListenerBindingCall(this, kvp.Key, BeanType, message);
+                    InvokeMessageCall(kvp.Key, message);
                 }
             }
 
@@ -150,7 +159,10 @@ namespace GameEngine
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
         protected internal bool AddMessageListener(string fullname, SystemMethodInfo methodInfo, int opcode, bool automatically)
         {
-            NetworkHandler.Instance.AddMessageListenerBindingCallInfo(fullname, BeanType, methodInfo, opcode, automatically);
+            // 2025-11-30：
+            // 针对普通函数采用对象自身构建的方式
+            // NetworkHandler.Instance.AddMessageListenerBindingCallInfo(fullname, BeanType, methodInfo, opcode, automatically);
+            AddMessageCallDelegateHandler(fullname, methodInfo, opcode, automatically);
 
             if (false == _messageListenerCallForType.TryGetValue(opcode, out IDictionary<string, bool> calls))
             {
@@ -279,6 +291,8 @@ namespace GameEngine
                 if (calls.ContainsKey(fullname))
                 {
                     calls.Remove(fullname);
+                    // 移除构建的委托句柄
+                    RemoveMessageCallDelegateHandler(fullname);
                 }
             }
 
@@ -374,6 +388,84 @@ namespace GameEngine
             }
 
             _messageListenerCallForType.Clear();
+        }
+
+        #endregion
+
+        #region 基础对象消息监听相关回调函数的构建委托接口定义
+
+        /// <summary>
+        /// 构建一个目标消息回调函数的委托句柄，并添加到调度容器中
+        /// </summary>
+        /// <param name="fullname">完整名称</param>
+        /// <param name="methodInfo">函数对象</param>
+        /// <param name="opcode">协议编码</param>
+        /// <param name="automatically">自动装载状态标识</param>
+        private void AddMessageCallDelegateHandler(string fullname, SystemMethodInfo methodInfo, int opcode, bool automatically)
+        {
+            // 静态函数（包括扩展类型）
+            if (methodInfo.IsStatic)
+            {
+                NetworkHandler.Instance.AddMessageListenerBindingCallInfo(fullname, BeanType, methodInfo, opcode, automatically);
+                return;
+            }
+
+            if (null == _messageCallBindingCaches)
+            {
+                _messageCallBindingCaches = new Dictionary<string, MessageCallMethodInfo>();
+            }
+
+            if (_messageCallBindingCaches.ContainsKey(fullname))
+            {
+                return;
+            }
+
+            Debugger.Info(LogGroupTag.Module, "新增指定的协议编码‘{%d}’对应的消息监听绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
+                    opcode, BeanType, fullname);
+
+            MessageCallMethodInfo messageCallMethodInfo = new MessageCallMethodInfo(this, fullname, BeanType, methodInfo, opcode, automatically);
+            _messageCallBindingCaches.Add(fullname, messageCallMethodInfo);
+        }
+
+        /// <summary>
+        /// 从调度容器中移除指定名称对应的消息回调函数的委托句柄
+        /// </summary>
+        /// <param name="fullname">函数名称</param>
+        private void RemoveMessageCallDelegateHandler(string fullname)
+        {
+            if (null == _messageCallBindingCaches)
+            {
+                return;
+            }
+
+            if (_messageCallBindingCaches.ContainsKey(fullname))
+            {
+                _messageCallBindingCaches.Remove(fullname);
+            }
+        }
+
+        /// <summary>
+        /// 移除当前消息监听回调函数构建的全部委托句柄实例
+        /// </summary>
+        private void RemoveAllMessageCallDelegateHandlers()
+        {
+            _messageCallBindingCaches?.Clear();
+        }
+
+        /// <summary>
+        /// 针对网络消息调用指定的回调绑定函数
+        /// </summary>
+        /// <param name="fullname">完整名称</param>
+        /// <param name="message">消息内容</param>
+        private void InvokeMessageCall(string fullname, object message)
+        {
+            if (null != _messageCallBindingCaches && _messageCallBindingCaches.TryGetValue(fullname, out MessageCallMethodInfo messageCallMethodInfo))
+            {
+                messageCallMethodInfo.Invoke(message);
+                return;
+            }
+
+            NetworkHandler.Instance.InvokeMessageListenerBindingCall(this, fullname, BeanType, message);
         }
 
         #endregion

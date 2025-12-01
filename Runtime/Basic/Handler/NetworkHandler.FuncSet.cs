@@ -98,36 +98,15 @@ namespace GameEngine
                 _messageListenerBindingCaches.Add(targetType, messageCallMethodInfos);
             }
 
-            if (messageCallMethodInfos.TryGetValue(fullname, out MessageCallMethodInfo messageCallMethodInfo))
+            if (messageCallMethodInfos.ContainsKey(fullname))
             {
                 return;
-            }
-
-            // 函数格式校验
-            if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
-            {
-                bool verificated = false;
-                if (NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
-                {
-                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithBeanExtensionType(methodInfo);
-                }
-                else
-                {
-                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfMessageCall(methodInfo);
-                }
-
-                // 校验失败
-                if (false == verificated)
-                {
-                    Debugger.Error(LogGroupTag.Module, "目标对象类型‘{%t}’的‘{%s}’函数判定为非法格式的消息监听绑定回调函数，添加回调绑定操作失败！", targetType, fullname);
-                    return;
-                }
             }
 
             Debugger.Info(LogGroupTag.Module, "新增指定的协议编码‘{%d}’对应的消息监听绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     opcode, targetType, fullname);
 
-            messageCallMethodInfo = new MessageCallMethodInfo(fullname, targetType, methodInfo, opcode, automatically);
+            MessageCallMethodInfo messageCallMethodInfo = new MessageCallMethodInfo(fullname, targetType, methodInfo, opcode, automatically);
             messageCallMethodInfos.Add(fullname, messageCallMethodInfo);
         }
 
@@ -180,11 +159,11 @@ namespace GameEngine
         /// <summary>
         /// 针对网络消息调用指定的回调绑定函数
         /// </summary>
+        /// <param name="targetObject">对象实例</param>
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
-        /// <param name="targetObject">对象实例</param>
         /// <param name="message">消息内容</param>
-        internal void InvokeMessageListenerBindingCall(string fullname, SystemType targetType, IBean targetObject, object message)
+        internal void InvokeMessageListenerBindingCall(IBean targetObject, string fullname, SystemType targetType, object message)
         {
             MessageCallMethodInfo messageCallMethodInfo = FindMessageListenerBindingCallByName(fullname, targetType);
             if (null == messageCallMethodInfo)

@@ -4,6 +4,17 @@
 格式基于[保持更改日志](https://keepachangelog.com/en/1.0.0/)  
 该项目遵循[语义版本控制](https://semver.org/spec/v2.0.0.html)  
 
+# 1.0.8
+修复事件、消息和输入的转发时对回调函数的封装流程；  
+针对普通函数在构筑委托代理是不指定目标对象实例，而在动态调用时传入的封装方式，在执行时，会触发异常：  
+`ArgumentException: Delegate to an instance method cannot have null 'this'.`  
+这个问题的核心原因是‌运行时环境差异导致的委托调用机制变化‌。  
+在Unity编辑器环境下，委托的调用验证相对宽松，允许在DynamicInvoke时动态指定this对象。  
+但打包成Windows可执行文件后，运行在.NET Framework或.NET Core的严格模式下，  
+系统会强制检查委托创建时的_target字段，确保实例方法的委托在创建时就绑定了正确的对象引用。  
+因此，针对普通函数，`Bean`对象会在每个实例的内部都构筑一个委托句柄的实例，  
+只有静态函数（包括扩展类型）才会使用全局通用委托句柄来进行调度。
+
 # 1.0.7
 增加`applicationContext`配置入口，通过该配置管理整个应用的上下文信息；  
 当前支持在该模块中对`HotModule`及`Bean`对象进行配置管理；  

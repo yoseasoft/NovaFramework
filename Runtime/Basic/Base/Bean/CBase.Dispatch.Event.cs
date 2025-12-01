@@ -27,7 +27,6 @@
 using System.Collections.Generic;
 
 using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
 using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
@@ -45,6 +44,11 @@ namespace GameEngine
         /// 基础对象内部事件类型的订阅回调映射列表
         /// </summary>
         private IDictionary<SystemType, IDictionary<string, bool>> _eventSubscribeCallForType;
+
+        /// <summary>
+        /// 事件订阅回调函数的绑定接口缓存容器
+        /// </summary>
+        private IDictionary<string, EventCallMethodInfo> _eventCallBindingCaches;
 
         /// <summary>
         /// 基础对象的事件订阅回调初始化函数接口
@@ -66,6 +70,10 @@ namespace GameEngine
 
             _eventSubscribeCallForId = null;
             _eventSubscribeCallForType = null;
+
+            // 移除事件订阅的委托句柄缓存实例
+            RemoveAllEventCallDelegateHandlers();
+            _eventCallBindingCaches = null;
         }
 
         #region 基础对象事件分发提供的服务接口函数
@@ -125,7 +133,8 @@ namespace GameEngine
             {
                 foreach (KeyValuePair<string, bool> kvp in calls)
                 {
-                    EventController.Instance.InvokeEventSubscribeBindingCall(kvp.Key, BeanType, this, eventID, args);
+                    // EventController.Instance.InvokeEventSubscribeBindingCall(this, kvp.Key, BeanType, eventID, args);
+                    InvokeEventCall(kvp.Key, eventID, args);
                 }
             }
 
@@ -144,7 +153,8 @@ namespace GameEngine
             {
                 foreach (KeyValuePair<string, bool> kvp in calls)
                 {
-                    EventController.Instance.InvokeEventSubscribeBindingCall(kvp.Key, BeanType, this, eventData);
+                    // EventController.Instance.InvokeEventSubscribeBindingCall(this, kvp.Key, BeanType, eventData);
+                    InvokeEventCall(kvp.Key, eventData);
                 }
             }
 
@@ -249,7 +259,10 @@ namespace GameEngine
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
         protected internal bool Subscribe(string fullname, SystemMethodInfo methodInfo, int eventID, bool automatically)
         {
-            EventController.Instance.AddEventSubscribeBindingCallInfo(fullname, BeanType, methodInfo, eventID, automatically);
+            // 2025-11-30：
+            // 针对普通函数采用对象自身构建的方式
+            // EventController.Instance.AddEventSubscribeBindingCallInfo(fullname, BeanType, methodInfo, eventID, automatically);
+            AddEventCallDelegateHandler(fullname, methodInfo, eventID, automatically);
 
             if (false == _eventSubscribeCallForId.TryGetValue(eventID, out IDictionary<string, bool> calls))
             {
@@ -329,7 +342,10 @@ namespace GameEngine
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
         protected internal bool Subscribe(string fullname, SystemMethodInfo methodInfo, SystemType eventType, bool automatically)
         {
-            EventController.Instance.AddEventSubscribeBindingCallInfo(fullname, BeanType, methodInfo, eventType, automatically);
+            // 2025-11-30：
+            // 针对普通函数采用对象自身构建的方式
+            // EventController.Instance.AddEventSubscribeBindingCallInfo(fullname, BeanType, methodInfo, eventType, automatically);
+            AddEventCallDelegateHandler(fullname, methodInfo, eventType, automatically);
 
             if (false == _eventSubscribeCallForType.TryGetValue(eventType, out IDictionary<string, bool> calls))
             {
@@ -395,6 +411,8 @@ namespace GameEngine
                 if (calls.ContainsKey(fullname))
                 {
                     calls.Remove(fullname);
+                    // 移除构建的委托句柄
+                    RemoveEventCallDelegateHandler(fullname);
                 }
             }
 
@@ -474,6 +492,8 @@ namespace GameEngine
                 if (calls.ContainsKey(fullname))
                 {
                     calls.Remove(fullname);
+                    // 移除构建的委托句柄
+                    RemoveEventCallDelegateHandler(fullname);
                 }
             }
 
@@ -514,6 +534,134 @@ namespace GameEngine
 
             _eventSubscribeCallForId.Clear();
             _eventSubscribeCallForType.Clear();
+        }
+
+        #endregion
+
+        #region 基础对象事件订阅相关回调函数的构建委托接口定义
+
+        /// <summary>
+        /// 构建一个目标事件回调函数的委托句柄，并添加到调度容器中
+        /// </summary>
+        /// <param name="fullname">函数名称</param>
+        /// <param name="methodInfo">监听回调函数</param>
+        /// <param name="eventID">事件标识</param>
+        /// <param name="automatically">自动装载状态标识</param>
+        private void AddEventCallDelegateHandler(string fullname, SystemMethodInfo methodInfo, int eventID, bool automatically)
+        {
+            // 静态函数（包括扩展类型）
+            if (methodInfo.IsStatic)
+            {
+                EventController.Instance.AddEventSubscribeBindingCallInfo(fullname, BeanType, methodInfo, eventID, automatically);
+                return;
+            }
+
+            if (null == _eventCallBindingCaches)
+            {
+                _eventCallBindingCaches = new Dictionary<string, EventCallMethodInfo>();
+            }
+
+            if (_eventCallBindingCaches.ContainsKey(fullname))
+            {
+                return;
+            }
+
+            Debugger.Info(LogGroupTag.Controller, "新增指定的消息事件‘{%d}’对应的事件订阅绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
+                    eventID, BeanType, fullname);
+
+            EventCallMethodInfo eventCallMethodInfo = new EventCallMethodInfo(this, fullname, BeanType, methodInfo, eventID, automatically);
+            _eventCallBindingCaches.Add(fullname, eventCallMethodInfo);
+        }
+
+        /// <summary>
+        /// 构建一个目标事件回调函数的委托句柄，并添加到调度容器中
+        /// </summary>
+        /// <param name="fullname">函数名称</param>
+        /// <param name="methodInfo">监听回调函数</param>
+        /// <param name="eventType">事件类型</param>
+        /// <param name="automatically">自动装载状态标识</param>
+        private void AddEventCallDelegateHandler(string fullname, SystemMethodInfo methodInfo, SystemType eventType, bool automatically)
+        {
+            // 静态函数（包括扩展类型）
+            if (methodInfo.IsStatic)
+            {
+                EventController.Instance.AddEventSubscribeBindingCallInfo(fullname, BeanType, methodInfo, eventType, automatically);
+                return;
+            }
+
+            if (null == _eventCallBindingCaches)
+            {
+                _eventCallBindingCaches = new Dictionary<string, EventCallMethodInfo>();
+            }
+
+            if (_eventCallBindingCaches.ContainsKey(fullname))
+            {
+                return;
+            }
+
+            Debugger.Info(LogGroupTag.Controller, "新增指定的事件类型‘{%t}’对应的事件订阅绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
+                    eventType, BeanType, fullname);
+
+            EventCallMethodInfo eventCallMethodInfo = new EventCallMethodInfo(this, fullname, BeanType, methodInfo, eventType, automatically);
+            _eventCallBindingCaches.Add(fullname, eventCallMethodInfo);
+        }
+
+        /// <summary>
+        /// 从调度容器中移除指定名称对应的事件回调函数的委托句柄
+        /// </summary>
+        /// <param name="fullname">函数名称</param>
+        private void RemoveEventCallDelegateHandler(string fullname)
+        {
+            if (null == _eventCallBindingCaches)
+            {
+                return;
+            }
+
+            if (_eventCallBindingCaches.ContainsKey(fullname))
+            {
+                _eventCallBindingCaches.Remove(fullname);
+            }
+        }
+
+        /// <summary>
+        /// 移除当前事件订阅回调函数构建的全部委托句柄实例
+        /// </summary>
+        private void RemoveAllEventCallDelegateHandlers()
+        {
+            _eventCallBindingCaches?.Clear();
+        }
+
+        /// <summary>
+        /// 针对消息事件调用指定的回调绑定函数
+        /// </summary>
+        /// <param name="fullname">完整名称</param>
+        /// <param name="eventID">事件标识</param>
+        /// <param name="args">事件参数</param>
+        private void InvokeEventCall(string fullname, int eventID, params object[] args)
+        {
+            if (null != _eventCallBindingCaches && _eventCallBindingCaches.TryGetValue(fullname, out EventCallMethodInfo eventCallMethodInfo))
+            {
+                eventCallMethodInfo.Invoke(eventID, args);
+                return;
+            }
+
+            EventController.Instance.InvokeEventSubscribeBindingCall(this, fullname, BeanType, eventID, args);
+        }
+
+        /// <summary>
+        /// 针对输入数据调用指定的回调绑定函数
+        /// </summary>
+        /// <param name="fullname">完整名称</param>
+        /// <param name="eventData">事件数据</param>
+        private void InvokeEventCall(string fullname, object eventData)
+        {
+            if (null != _eventCallBindingCaches && _eventCallBindingCaches.TryGetValue(fullname, out EventCallMethodInfo eventCallMethodInfo))
+            {
+                eventCallMethodInfo.Invoke(eventData);
+                return;
+            }
+
+            EventController.Instance.InvokeEventSubscribeBindingCall(this, fullname, BeanType, eventData);
         }
 
         #endregion

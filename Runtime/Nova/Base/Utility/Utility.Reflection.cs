@@ -388,8 +388,8 @@ namespace NovaEngine
                     // 函数返回对象的类型必须可以赋予给函数定义返回值的类型
                     if (null == methodInfo.ReturnType || false == methodInfo.ReturnType.IsAssignableFrom(returnType))
                     {
-                        Debugger.Warn("The target method '{%t}' declared return type '{%s}' cannot matched calc return type '{%s}', created it for delegate failed.",
-                                methodInfo, methodInfo.ReturnType.FullName, returnType.FullName);
+                        Debugger.Warn("The target method '{%t}' declared return type '{%t}' cannot matched calc return type '{%t}', created it for delegate failed.",
+                                methodInfo, methodInfo.ReturnType, returnType);
                         return false;
                     }
                 }
@@ -419,8 +419,8 @@ namespace NovaEngine
                     // 函数传入参数的类型必须可以赋予给函数定义参数的类型
                     if (false == paramInfoType.IsAssignableFrom(parameterTypes[n]))
                     {
-                        Debugger.Warn("The target method '{%t}' parameter info type '{%s}' cannot matched assign param type '{%s}', created it for delegate failed.",
-                                methodInfo, paramInfoType.FullName, parameterTypes[n].FullName);
+                        Debugger.Warn("The target method '{%t}' parameter info type '{%t}' cannot matched assign param type '{%t}', created it for delegate failed.",
+                                methodInfo, paramInfoType, parameterTypes[n]);
                         return false;
                     }
                 }
@@ -449,11 +449,17 @@ namespace NovaEngine
             {
                 // 2025-09-28：
                 // 允许普通的成员函数在初始构建时不传入自身实例，而在实际调用时传入
-                // if (null == self && false == methodInfo.IsStatic)
-                // {
-                //     Logger.Error("The target method '{%t}' wasn't static function, the 'self' object must be non-null.", methodInfo);
-                //     return null;
-                // }
+                // 2025-11-29：
+                // 通过测试后发现，通过普通函数创建的委托代理句柄，在创建时不指明对象实例，
+                // 而在`DynamicInvoke`调用时再传入自身对象实例，
+                // 虽然在编辑器环境下可以正常执行，但打包后执行会弹出异常：
+                // ArgumentException: Delegate to an instance method cannot have null 'this'.
+                // 所以此处的检测需要重新打开
+                if (null == self && false == methodInfo.IsStatic)
+                {
+                    Logger.Error("The target method '{%t}' wasn't static function, the 'self' object must be non-null.", methodInfo);
+                    return null;
+                }
 
                 ParameterInfo[] paramInfos = methodInfo.GetParameters();
                 if (null == paramInfos || paramInfos.Length <= 0)
@@ -479,7 +485,7 @@ namespace NovaEngine
                 SystemType genericActionType = CreateGenericActionType(paramInfos.Length);
                 if (null == genericActionType)
                 {
-                    Debugger.Warn("No supported generic action type with parameters length '{0}' for target method '{1}', created action delegate failed.", paramInfos.Length, methodInfo.Name);
+                    Debugger.Warn("No supported generic action type with parameters length '{%d}' for target method '{%t}', created action delegate failed.", paramInfos.Length, methodInfo);
                     return null;
                 }
 
@@ -543,16 +549,22 @@ namespace NovaEngine
             {
                 // 2025-09-28：
                 // 允许普通的成员函数在初始构建时不传入自身实例，而在实际调用时传入
-                // if (null == self && false == methodInfo.IsStatic)
-                // {
-                //     Logger.Error("The target method '{0}' wasn't static function, the 'self' object must be non-null.", methodInfo.Name);
-                //     return null;
-                // }
+                // 2025-11-29：
+                // 通过测试后发现，通过普通函数创建的委托代理句柄，在创建时不指明对象实例，
+                // 而在`DynamicInvoke`调用时再传入自身对象实例，
+                // 虽然在编辑器环境下可以正常执行，但打包后执行会弹出异常：
+                // ArgumentException: Delegate to an instance method cannot have null 'this'.
+                // 所以此处的检测需要重新打开
+                if (null == self && false == methodInfo.IsStatic)
+                {
+                    Logger.Error("The target method '{%t}' wasn't static function, the 'self' object must be non-null.", methodInfo);
+                    return null;
+                }
 
                 SystemType returnType = methodInfo.ReturnType;
                 if (null == returnType)
                 {
-                    Logger.Error("The target method '{0}' must be has return value, created delegate failed.", methodInfo.Name);
+                    Logger.Error("The target method '{%t}' must be has return value, created delegate failed.", methodInfo);
                     return null;
                 }
 
@@ -584,7 +596,7 @@ namespace NovaEngine
                 SystemType genericFuncType = CreateGenericFuncType(paramInfos.Length);
                 if (null == genericFuncType)
                 {
-                    Debugger.Warn("No supported generic func type with parameters length '{%d}' for target method '{%s}', created func delegate failed.", paramInfos.Length, methodInfo.Name);
+                    Debugger.Warn("No supported generic func type with parameters length '{%d}' for target method '{%t}', created func delegate failed.", paramInfos.Length, methodInfo);
                     return null;
                 }
 
@@ -696,21 +708,21 @@ namespace NovaEngine
             {
                 //if (null == self && false == methodInfo.IsStatic)
                 //{
-                //    Logger.Error("The target method '{0}' wasn't static function, the 'self' object must be non-null.", methodInfo.Name);
+                //    Logger.Error("The target method '{%t}' wasn't static function, the 'self' object must be non-null.", methodInfo);
                 //    return null;
                 //}
 
                 //ParameterInfo[] paramInfos = methodInfo.GetParameters();
                 //if (null == paramInfos || paramInfos.Length != 1)
                 //{
-                //    Logger.Error("The target method '{0}' parameter size must be only one, method arguments was invalid.", methodInfo.Name);
+                //    Logger.Error("The target method '{%t}' parameter size must be only one, method arguments was invalid.", methodInfo);
                 //    return null;
                 //}
 
                 //if (false == typeof(T).IsAssignableFrom(paramInfos[0].ParameterType))
                 //{
-                //    Logger.Error("The target method '{0}' parameter type '{1}' must be assignable from '{2}', generated action failed.",
-                //            methodInfo.Name, Text.ToString(paramInfos[0].ParameterType), Text.ToString(typeof(T)));
+                //    Logger.Error("The target method '{%t}' parameter type '{%t}' must be assignable from '{%t}', generated action failed.",
+                //            methodInfo, paramInfos[0].ParameterType, typeof(T));
                 //    return null;
                 //}
 
@@ -833,7 +845,7 @@ namespace NovaEngine
             {
                 if (null == self && false == methodInfo.IsStatic)
                 {
-                    Logger.Error("The target method '{0}' wasn't static function, the 'self' object must be non-null.", methodInfo.Name);
+                    Logger.Error("The target method '{%t}' wasn't static function, the 'self' object must be non-null.", methodInfo);
                     return null;
                 }
 
@@ -844,13 +856,13 @@ namespace NovaEngine
                     ParameterInfo[] paramInfos = methodInfo.GetParameters();
                     if (null == paramInfos || paramInfos.Length != length)
                     {
-                        Logger.Error("The target method '{0}' parameter size must be equal to '{1}', method arguments was invalid.", methodInfo.Name, length);
+                        Logger.Error("The target method '{%t}' parameter size must be equal to '{%d}', method arguments was invalid.", methodInfo, length);
                         return null;
                     }
 
                     if (null == paramTypes || paramTypes.Length != length)
                     {
-                        Logger.Error("The target method '{0}' adapter parameter type size must be equal to '{1}', method arguments was invalid.", methodInfo.Name, length);
+                        Logger.Error("The target method '{%t}' adapter parameter type size must be equal to '{%d}', method arguments was invalid.", methodInfo, length);
                         return null;
                     }
 
@@ -859,16 +871,16 @@ namespace NovaEngine
                         // 函数参数校验
                         if (false == genericTypes[n].IsAssignableFrom(paramInfos[n].ParameterType))
                         {
-                            Logger.Error("The target method '{0}' parameter type '{1}' must be assignable from '{2}', generated action failed.",
-                                    methodInfo.Name, Text.ToString(paramInfos[n].ParameterType), Text.ToString(genericTypes[n]));
+                            Logger.Error("The target method '{%t}' parameter type '{%t}' must be assignable from '{%t}', generated action failed.",
+                                    methodInfo, paramInfos[n].ParameterType, genericTypes[n]);
                             return null;
                         }
 
                         // 传递参数类型校验
                         if (false == genericTypes[n].IsAssignableFrom(paramTypes[n]))
                         {
-                            Logger.Error("The target method '{0}' adapter parameter type '{1}' must be assignable from '{2}', generated action failed.",
-                                    methodInfo.Name, Text.ToString(paramTypes[n]), Text.ToString(genericTypes[n]));
+                            Logger.Error("The target method '{%t}' adapter parameter type '{%t}' must be assignable from '{%t}', generated action failed.",
+                                    methodInfo, paramTypes[n], genericTypes[n]);
                             return null;
                         }
                     }

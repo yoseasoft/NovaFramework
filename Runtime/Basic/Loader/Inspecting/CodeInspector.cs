@@ -38,7 +38,7 @@ namespace GameEngine.Loader.Inspecting
         /// </summary>
         /// <param name="methodInfo">函数类型</param>
         /// <returns>若格式正确则返回true，否则返回false</returns>
-        private static bool CheckFunctionFormatOfTarget(SystemMethodInfo methodInfo)
+        public static bool CheckFunctionFormatOfTarget(SystemMethodInfo methodInfo)
         {
             return false;
         }

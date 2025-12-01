@@ -97,36 +97,15 @@ namespace GameEngine
                 _inputResponseBindingCaches.Add(targetType, inputCallMethodInfos);
             }
 
-            if (inputCallMethodInfos.TryGetValue(fullname, out InputCallMethodInfo inputCallMethodInfo))
+            if (inputCallMethodInfos.ContainsKey(fullname))
             {
                 return;
-            }
-
-            // 函数格式校验
-            if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
-            {
-                bool verificated = false;
-                if (NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
-                {
-                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithBeanExtensionType(methodInfo);
-                }
-                else
-                {
-                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfInputCall(methodInfo);
-                }
-
-                // 校验失败
-                if (false == verificated)
-                {
-                    Debugger.Error(LogGroupTag.Module, "目标对象类型‘{%t}’的‘{%s}’函数判定为非法格式的输入响应绑定回调函数，添加回调绑定操作失败！", targetType, fullname);
-                    return;
-                }
             }
 
             Debugger.Info(LogGroupTag.Module, "新增指定的按键编码‘{%d}’及操作类型‘{%d}’对应的输入响应绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     inputCode, operationType, targetType, fullname);
 
-            inputCallMethodInfo = new InputCallMethodInfo(fullname, targetType, methodInfo, inputCode, operationType, automatically);
+            InputCallMethodInfo inputCallMethodInfo = new InputCallMethodInfo(fullname, targetType, methodInfo, inputCode, operationType, automatically);
             inputCallMethodInfos.Add(fullname, inputCallMethodInfo);
         }
 
@@ -146,36 +125,15 @@ namespace GameEngine
                 _inputResponseBindingCaches.Add(targetType, inputCallMethodInfos);
             }
 
-            if (inputCallMethodInfos.TryGetValue(fullname, out InputCallMethodInfo inputCallMethodInfo))
+            if (inputCallMethodInfos.ContainsKey(fullname))
             {
                 return;
-            }
-
-            // 函数格式校验
-            if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
-            {
-                bool verificated = false;
-                if (NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
-                {
-                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithBeanExtensionType(methodInfo);
-                }
-                else
-                {
-                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfInputCall(methodInfo);
-                }
-
-                // 校验失败
-                if (false == verificated)
-                {
-                    Debugger.Error(LogGroupTag.Module, "目标对象类型‘{%t}’的‘{%s}’函数判定为非法格式的输入响应绑定回调函数，添加回调绑定操作失败！", targetType, fullname);
-                    return;
-                }
             }
 
             Debugger.Info(LogGroupTag.Module, "新增指定的按键编码的数据类型‘{%t}’对应的输入响应绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     inputDataType, targetType, fullname);
 
-            inputCallMethodInfo = new InputCallMethodInfo(fullname, targetType, methodInfo, inputDataType, automatically);
+            InputCallMethodInfo inputCallMethodInfo = new InputCallMethodInfo(fullname, targetType, methodInfo, inputDataType, automatically);
             inputCallMethodInfos.Add(fullname, inputCallMethodInfo);
         }
 
@@ -213,12 +171,12 @@ namespace GameEngine
         /// <summary>
         /// 针对按键编码调用指定的回调绑定函数
         /// </summary>
+        /// <param name="targetObject">对象实例</param>
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
-        /// <param name="targetObject">对象实例</param>
         /// <param name="inputCode">按键编码</param>
         /// <param name="operationType">按键操作类型</param>
-        internal void InvokeInputResponseBindingCall(string fullname, SystemType targetType, IBean targetObject, int inputCode, int operationType)
+        internal void InvokeInputResponseBindingCall(IBean targetObject, string fullname, SystemType targetType, int inputCode, int operationType)
         {
             InputCallMethodInfo inputCallMethodInfo = FindInputResponseBindingCallByName(fullname, targetType);
             if (null == inputCallMethodInfo)
@@ -233,11 +191,11 @@ namespace GameEngine
         /// <summary>
         /// 针对输入数据调用指定的回调绑定函数
         /// </summary>
+        /// <param name="targetObject">对象实例</param>
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
-        /// <param name="targetObject">对象实例</param>
         /// <param name="inputData">输入数据</param>
-        internal void InvokeInputResponseBindingCall(string fullname, SystemType targetType, IBean targetObject, object inputData)
+        internal void InvokeInputResponseBindingCall(IBean targetObject, string fullname, SystemType targetType, object inputData)
         {
             InputCallMethodInfo inputCallMethodInfo = FindInputResponseBindingCallByName(fullname, targetType);
             if (null == inputCallMethodInfo)
