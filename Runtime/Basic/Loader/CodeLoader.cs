@@ -27,6 +27,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Cysharp.Threading.Tasks;
 
 using SystemType = System.Type;
 using SystemAttribute = System.Attribute;
@@ -542,6 +543,31 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static async UniTask LoadBeanConfigureInfo(NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
+        {
+            // 可以直接复用Bean配置重载接口函数
+            await LoadGeneralConfigure(callback);
+        }
+
+        /// <summary>
+        /// 通过指定的回调句柄加载对象类型配置信息<br/>
+        /// 需要注意的是，必须在加载程序集之前，加载完成所有的配置数据，否则将导致程序集中的类型解析时，无法抽取到正确配置信息
+        /// </summary>
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static async UniTask LoadBeanConfigureInfo(string url, NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
+        {
+            // 可以直接复用Bean配置重载接口函数
+            await LoadGeneralConfigure(url, callback);
+        }
+
+        /// <summary>
+        /// 通过指定的回调句柄加载对象类型配置信息<br/>
+        /// 需要注意的是，必须在加载程序集之前，加载完成所有的配置数据，否则将导致程序集中的类型解析时，无法抽取到正确配置信息
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void LoadBeanConfigureInfo(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
         {
             // 可以直接复用Bean配置重载接口函数
@@ -559,6 +585,31 @@ namespace GameEngine.Loader
         {
             // 可以直接复用Bean配置重载接口函数
             LoadGeneralConfigure(url, callback);
+        }
+
+        /// <summary>
+        /// 通过指定的回调句柄加载对象类型配置信息<br/>
+        /// 需要注意的是，必须在加载程序集之前，加载完成所有的配置数据，否则将导致程序集中的类型解析时，无法抽取到正确配置信息
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static async UniTask LoadBeanConfigureInfo(NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
+        {
+            // 可以直接复用Bean配置重载接口函数
+            await LoadGeneralConfigure(callback);
+        }
+
+        /// <summary>
+        /// 通过指定的回调句柄加载对象类型配置信息<br/>
+        /// 需要注意的是，必须在加载程序集之前，加载完成所有的配置数据，否则将导致程序集中的类型解析时，无法抽取到正确配置信息
+        /// </summary>
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static async UniTask LoadBeanConfigureInfo(string url, NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
+        {
+            // 可以直接复用Bean配置重载接口函数
+            await LoadGeneralConfigure(url, callback);
         }
 
         /// <summary>

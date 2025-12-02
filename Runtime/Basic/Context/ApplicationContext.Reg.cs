@@ -24,6 +24,7 @@
 
 using System.IO;
 using System.Runtime.CompilerServices;
+using Cysharp.Threading.Tasks;
 
 namespace GameEngine
 {
@@ -75,6 +76,33 @@ namespace GameEngine
         /// </summary>
         /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static async UniTask LoadApplicationConfigure(NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
+        {
+            await LoadGeneralConfigure(callback);
+
+            // 应用配置导入完成后，自动开启Bean配置加载流程
+            await AutoLoadBeanImportConfigure(callback);
+        }
+
+        /// <summary>
+        /// 应用程序通过指定的处理回调加载应用配置
+        /// </summary>
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static async UniTask LoadApplicationConfigure(string url, NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
+        {
+            await LoadGeneralConfigure(url, callback);
+
+            // 应用配置导入完成后，自动开启Bean配置加载流程
+            await AutoLoadBeanImportConfigure(callback);
+        }
+
+        /// <summary>
+        /// 应用程序通过指定的处理回调加载应用配置
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void LoadApplicationConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
         {
             LoadGeneralConfigure(callback);
@@ -95,6 +123,33 @@ namespace GameEngine
 
             // 应用配置导入完成后，自动开启Bean配置加载流程
             AutoLoadBeanImportConfigure(callback);
+        }
+
+        /// <summary>
+        /// 应用程序通过指定的处理回调加载应用配置
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static async UniTask LoadApplicationConfigure(NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
+        {
+            await LoadGeneralConfigure(callback);
+
+            // 应用配置导入完成后，自动开启Bean配置加载流程
+            await AutoLoadBeanImportConfigure(callback);
+        }
+
+        /// <summary>
+        /// 应用程序通过指定的处理回调加载应用配置
+        /// </summary>
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static async UniTask LoadApplicationConfigure(string url, NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
+        {
+            await LoadGeneralConfigure(url, callback);
+
+            // 应用配置导入完成后，自动开启Bean配置加载流程
+            await AutoLoadBeanImportConfigure(callback);
         }
 
         #endregion
@@ -138,6 +193,27 @@ namespace GameEngine
         /// </summary>
         /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static async UniTask LoadBeanConfigure(NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
+        {
+            await Loader.CodeLoader.LoadBeanConfigureInfo(callback);
+        }
+
+        /// <summary>
+        /// 应用程序通过指定的处理回调加载实体配置
+        /// </summary>
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static async UniTask LoadBeanConfigure(string url, NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
+        {
+            await Loader.CodeLoader.LoadBeanConfigureInfo(url, callback);
+        }
+
+        /// <summary>
+        /// 应用程序通过指定的处理回调加载实体配置
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void LoadBeanConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
         {
             Loader.CodeLoader.LoadBeanConfigureInfo(callback);
@@ -152,6 +228,27 @@ namespace GameEngine
         public static void LoadBeanConfigure(string url, NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
         {
             Loader.CodeLoader.LoadBeanConfigureInfo(url, callback);
+        }
+
+        /// <summary>
+        /// 应用程序通过指定的处理回调加载实体配置
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static async UniTask LoadBeanConfigure(NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
+        {
+            await Loader.CodeLoader.LoadBeanConfigureInfo(callback);
+        }
+
+        /// <summary>
+        /// 应用程序通过指定的处理回调加载实体配置
+        /// </summary>
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static async UniTask LoadBeanConfigure(string url, NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
+        {
+            await Loader.CodeLoader.LoadBeanConfigureInfo(url, callback);
         }
 
         /// <summary>

@@ -29,7 +29,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Customize.Extension;
-using GameEngine.Loader.Configuring;
+using Cysharp.Threading.Tasks;
 
 namespace GameEngine.Loader
 {
@@ -143,6 +143,50 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static async UniTask LoadGeneralConfigure(NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
+        {
+            await LoadGeneralConfigure(null, callback);
+        }
+
+        /// <summary>
+        /// 重载通用类库的配置数据
+        /// </summary>
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">回调句柄</param>
+        private static async UniTask LoadGeneralConfigure(string url, NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
+        {
+            string path = url;
+            if (null == callback)
+            {
+                Debugger.Error(LogGroupTag.CodeLoader, "The configure file load handler must be non-null, reload general configure failed!");
+                return;
+            }
+
+            do
+            {
+                MemoryStream ms = new MemoryStream();
+                Debugger.Info(LogGroupTag.CodeLoader, "指定的实体配置文件‘{%s}’开始进行进入加载队列中……", path);
+                if (false == await callback(path, ms))
+                {
+                    Debugger.Error(LogGroupTag.CodeLoader, "重载Bean配置数据失败：指定路径‘{%s}’下的配置文件加载回调接口执行异常！", path);
+                    return;
+                }
+
+                // 加载配置
+                LoadGeneralConfigure(ms);
+
+                ms.Dispose();
+
+                // 获取下一个文件路径
+                path = Configuring.CodeConfigureResolver.PopNextConfigureFileLoadPath();
+            } while (null != path);
+        }
+
+        /// <summary>
+        /// 重载通用类库的配置数据
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void LoadGeneralConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
         {
             LoadGeneralConfigure(null, callback);
@@ -171,11 +215,43 @@ namespace GameEngine.Loader
         }
 
         /// <summary>
+        /// 重载通用类库的配置数据
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static async UniTask LoadGeneralConfigure(NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
+        {
+            await LoadGeneralConfigure(null, callback);
+        }
+
+        /// <summary>
+        /// 重载通用类库的配置数据
+        /// </summary>
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static async UniTask LoadGeneralConfigure(string url, NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
+        {
+            await LoadGeneralConfigure(url, async (url, ms) =>
+            {
+                string text = await callback(url);
+                if (text.IsNullOrEmpty())
+                    return false;
+
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(text);
+                ms.Write(buffer, 0, buffer.Length);
+                ms.Seek(0, SeekOrigin.Begin);
+
+                return true;
+            });
+        }
+
+        /// <summary>
         /// 通过指定的配置名称，获取对应的配置数据结构信息
         /// </summary>
         /// <param name="name">配置名称</param>
         /// <returns>返回配置数据实例，若查找失败返回null</returns>
-        private static BaseConfigureInfo GetConfigureInfoByName(string name)
+        private static Configuring.BaseConfigureInfo GetConfigureInfoByName(string name)
         {
             return Configuring.CodeConfigureResolver.GetNodeConfigureInfoByName(name);
         }
@@ -184,7 +260,7 @@ namespace GameEngine.Loader
         /// 获取当前注册的所有配置数据结构信息对象实例
         /// </summary>
         /// <returns>返回当前所有配置数据实例</returns>
-        private static IList<BaseConfigureInfo> GetAllConfigureInfos()
+        private static IList<Configuring.BaseConfigureInfo> GetAllConfigureInfos()
         {
             return Configuring.CodeConfigureResolver.GetAllNodeConfigureInfos();
         }

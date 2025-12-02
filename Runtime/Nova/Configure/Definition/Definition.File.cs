@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.IO;
+using Cysharp.Threading.Tasks;
 
 namespace NovaEngine
 {
@@ -51,6 +52,21 @@ namespace NovaEngine
             /// <param name="url">资源路径</param>
             /// <returns>返回加载成功的配置数据内容，若加载失败返回null</returns>
             public delegate string OnFileTextLoadingHandler(string url);
+
+            /// <summary>
+            /// 文件流数据异步加载的函数句柄定义
+            /// </summary>
+            /// <param name="url">资源路径</param>
+            /// <param name="ms">数据流</param>
+            /// <returns>加载成功返回true，若加载失败返回false</returns>
+            public delegate UniTask<bool> OnFileStreamLoadingAsyncHandler(string url, MemoryStream ms);
+
+            /// <summary>
+            /// 文件字符数据异步加载的函数句柄定义
+            /// </summary>
+            /// <param name="url">资源路径</param>
+            /// <returns>返回加载成功的配置数据内容，若加载失败返回null</returns>
+            public delegate UniTask<string> OnFileTextLoadingAsyncHandler(string url);
 
             // 资源文件
             public const string JPG         = ".jpg";

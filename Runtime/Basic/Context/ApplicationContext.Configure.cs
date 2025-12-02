@@ -27,6 +27,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Customize.Extension;
+using Cysharp.Threading.Tasks;
 
 namespace GameEngine
 {
@@ -138,6 +139,50 @@ namespace GameEngine
         /// </summary>
         /// <param name="callback">回调句柄</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static async UniTask LoadGeneralConfigure(NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
+        {
+            await LoadGeneralConfigure(null, callback);
+        }
+
+        /// <summary>
+        /// 重载通用类库的配置数据
+        /// </summary>
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">回调句柄</param>
+        private static async UniTask LoadGeneralConfigure(string url, NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
+        {
+            string path = url;
+            if (null == callback)
+            {
+                Debugger.Error(LogGroupTag.CodeLoader, "The configure file load handler must be non-null, reload general configure failed!");
+                return;
+            }
+
+            do
+            {
+                MemoryStream ms = new MemoryStream();
+                Debugger.Info(LogGroupTag.CodeLoader, "指定的实体配置文件‘{%s}’开始进行进入加载队列中……", path);
+                if (false == await callback(path, ms))
+                {
+                    Debugger.Error(LogGroupTag.CodeLoader, "重载Bean配置数据失败：指定路径‘{%s}’下的配置文件加载回调接口执行异常！", path);
+                    return;
+                }
+
+                // 加载配置
+                LoadGeneralConfigure(ms);
+
+                ms.Dispose();
+
+                // 获取下一个文件路径
+                path = Context.Configuring.ApplicationConfigureResolver.MoveNextConfigureFile();
+            } while (null != path);
+        }
+
+        /// <summary>
+        /// 重载通用类库的配置数据
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void LoadGeneralConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
         {
             LoadGeneralConfigure(null, callback);
@@ -166,6 +211,38 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 重载通用类库的配置数据
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static async UniTask LoadGeneralConfigure(NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
+        {
+            await LoadGeneralConfigure(null, callback);
+        }
+
+        /// <summary>
+        /// 重载通用类库的配置数据
+        /// </summary>
+        /// <param name="url">资源路径</param>
+        /// <param name="callback">回调句柄</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static async UniTask LoadGeneralConfigure(string url, NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
+        {
+            await LoadGeneralConfigure(url, async (url, ms) =>
+            {
+                string text = await callback(url);
+                if (text.IsNullOrEmpty())
+                    return false;
+
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(text);
+                ms.Write(buffer, 0, buffer.Length);
+                ms.Seek(0, SeekOrigin.Begin);
+
+                return true;
+            });
+        }
+
+        /// <summary>
         /// 自动加载Bean的导入配置数据<br/>
         /// 该函数会将当前已记录的所有Bean文件路径，通过<see cref="LoadBeanConfigure(string, NovaEngine.Definition.File.OnFileStreamLoadingHandler)"/>全部重新加载一次<br/>
         /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="Loader.CodeLoader.UnloadAllBeanConfigureInfos()"/>方法进行全部配置数据卸载
@@ -182,6 +259,21 @@ namespace GameEngine
 
         /// <summary>
         /// 自动加载Bean的导入配置数据<br/>
+        /// 该函数会将当前已记录的所有Bean文件路径，通过<see cref="LoadBeanConfigure(string, NovaEngine.Definition.File.OnFileStreamLoadingHandler)"/>全部重新加载一次<br/>
+        /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="Loader.CodeLoader.UnloadAllBeanConfigureInfos()"/>方法进行全部配置数据卸载
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        private static async UniTask AutoLoadBeanImportConfigure(NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
+        {
+            IList<string> list = Context.Configuring.ApplicationConfigureInfo.BeanUrlPaths;
+            for (int n = 0; n < list.Count; ++n)
+            {
+                await LoadBeanConfigure(list[n], callback);
+            }
+        }
+
+        /// <summary>
+        /// 自动加载Bean的导入配置数据<br/>
         /// 该函数会将当前已记录的所有Bean导入文件路径，通过<see cref="LoadBeanConfigure(string, NovaEngine.Definition.File.OnFileTextLoadingHandler)"/>全部重新加载一次<br/>
         /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="Loader.CodeLoader.UnloadAllBeanConfigureInfos()"/>方法进行全部配置数据卸载
         /// </summary>
@@ -192,6 +284,21 @@ namespace GameEngine
             for (int n = 0; n < list.Count; ++n)
             {
                 LoadBeanConfigure(list[n], callback);
+            }
+        }
+
+        /// <summary>
+        /// 自动加载Bean的导入配置数据<br/>
+        /// 该函数会将当前已记录的所有Bean导入文件路径，通过<see cref="LoadBeanConfigure(string, NovaEngine.Definition.File.OnFileTextLoadingHandler)"/>全部重新加载一次<br/>
+        /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="Loader.CodeLoader.UnloadAllBeanConfigureInfos()"/>方法进行全部配置数据卸载
+        /// </summary>
+        /// <param name="callback">回调句柄</param>
+        private static async UniTask AutoLoadBeanImportConfigure(NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
+        {
+            IList<string> list = Context.Configuring.ApplicationConfigureInfo.BeanUrlPaths;
+            for (int n = 0; n < list.Count; ++n)
+            {
+                await LoadBeanConfigure(list[n], callback);
             }
         }
 
