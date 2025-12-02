@@ -25,7 +25,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using UniTask = Cysharp.Threading.Tasks.UniTask;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 
 namespace GameEngine
 {
@@ -104,7 +105,7 @@ namespace GameEngine
         /// <summary>
         /// 取消异步任务
         /// </summary>
-        public System.Threading.CancellationTokenSource CancellationTokenSource { get; } = new();
+        public CancellationTokenSource CancellationTokenSource { get; } = new();
 
         /// <summary>
         /// 是否准备好显示界面

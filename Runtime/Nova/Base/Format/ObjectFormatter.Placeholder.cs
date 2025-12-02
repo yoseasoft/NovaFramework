@@ -33,9 +33,7 @@ using SystemIntPtr = System.IntPtr;
 
 namespace NovaEngine
 {
-    /// <summary>
     /// 格式化接口集合工具类
-    /// </summary>
     internal static partial class ObjectFormatter
     {
         private const char Placeholder_B = 'b'; // 用于输出布尔值

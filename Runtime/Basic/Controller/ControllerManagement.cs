@@ -24,11 +24,10 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Reflection;
 
 using SystemEnum = System.Enum;
 using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace GameEngine
 {
@@ -100,8 +99,8 @@ namespace GameEngine
                 SystemType singletonType = typeof(NovaEngine.Singleton<>);
                 SystemType controllerGenericType = singletonType.MakeGenericType(new SystemType[] { controllerType });
 
-                SystemMethodInfo controllerCreateMethod = controllerGenericType.GetMethod("Create", SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
-                SystemMethodInfo controllerDestroyMethod = controllerGenericType.GetMethod("Destroy", SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
+                MethodInfo controllerCreateMethod = controllerGenericType.GetMethod("Create", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+                MethodInfo controllerDestroyMethod = controllerGenericType.GetMethod("Destroy", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
                 Debugger.Assert(null != controllerCreateMethod && null != controllerDestroyMethod, "Invalid controller type.");
 
                 NovaEngine.ISingleton.SingletonCreateHandler controllerCreateCallback = controllerCreateMethod.CreateDelegate(typeof(NovaEngine.ISingleton.SingletonCreateHandler)) as NovaEngine.ISingleton.SingletonCreateHandler;

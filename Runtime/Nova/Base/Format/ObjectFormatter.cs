@@ -30,7 +30,7 @@ using SystemType = System.Type;
 namespace NovaEngine
 {
     /// <summary>
-    /// 格式化接口集合工具类
+    /// 格式化接口集合工具类，采用自定义占位符规则，来进行字符串的格式化输出
     /// </summary>
     internal static partial class ObjectFormatter
     {

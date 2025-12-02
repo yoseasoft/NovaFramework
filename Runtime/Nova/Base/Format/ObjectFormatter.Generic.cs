@@ -30,9 +30,7 @@ using SystemType = System.Type;
 
 namespace NovaEngine
 {
-    /// <summary>
     /// 格式化接口集合工具类
-    /// </summary>
     internal static partial class ObjectFormatter
     {
         /// <summary>

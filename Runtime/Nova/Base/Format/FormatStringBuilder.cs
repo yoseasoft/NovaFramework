@@ -26,6 +26,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.CompilerServices;
+using UnityEngine.Scripting;
 
 namespace NovaEngine
 {
@@ -80,202 +81,202 @@ namespace NovaEngine
 
         #region 格式化可变字符串内容添加接口函数
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(char value, int repeatCount) { _sb.Append(value, repeatCount); return this; }
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(byte value) { _sb.Append(value); return this; }
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(bool value) { _sb.Append(value); return this; }
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(char value) { _sb.Append(value); return this; }
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(long value) { _sb.Append(value); return this; }
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(int value) { _sb.Append(value); return this; }
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(short value) { _sb.Append(value); return this; }
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(double value) { _sb.Append(value); return this; }
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(char[] value) { _sb.Append(value); return this; }
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(char[] value, int startIndex, int charCount) { _sb.Append(value, startIndex, charCount); return this; }
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(float value) { _sb.Append(value); return this; }
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(decimal value) { _sb.Append(value); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(object value) { _sb.Append(value); return this; }
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(string value) { _sb.Append(value); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(string format, params object[] args)
         { _sb.Append(Utility.Text.Format(format, args)); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(System.Array array, System.Func<object, string> callback)
         { _sb.Append(Utility.Text.ToString(array, callback)); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(System.Array array, System.Func<int, object, string> callback = null)
         { _sb.Append(Utility.Text.ToString(array, callback)); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(string format, System.Array array, System.Func<object, string> callback)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(array, callback))); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(string format, System.Array array, System.Func<int, object, string> callback = null)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(array, callback))); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append<T>(T[] array, System.Func<T, string> callback)
         { _sb.Append(Utility.Text.ToString<T>(array, callback)); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append<T>(T[] array, System.Func<int, T, string> callback = null)
         { _sb.Append(Utility.Text.ToString<T>(array, callback)); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append<T>(string format, T[] array, System.Func<T, string> callback)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString<T>(array, callback))); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append<T>(string format, T[] array, System.Func<int, T, string> callback = null)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString<T>(array, callback))); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(System.Collections.ICollection collection, System.Func<object, string> callback)
         { _sb.Append(Utility.Text.ToString(collection, callback)); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(System.Collections.ICollection collection, System.Func<int, object, string> callback = null)
         { _sb.Append(Utility.Text.ToString(collection, callback)); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(string format, System.Collections.ICollection collection, System.Func<object, string> callback)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(collection, callback))); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(string format, System.Collections.ICollection collection, System.Func<int, object, string> callback = null)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(collection, callback))); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append<T>(ICollection<T> collection, System.Func<T, string> callback)
         { _sb.Append(Utility.Text.ToString<T>(collection, callback)); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append<T>(ICollection<T> collection, System.Func<int, T, string> callback = null)
         { _sb.Append(Utility.Text.ToString<T>(collection, callback)); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append<T>(string format, ICollection<T> collection, System.Func<T, string> callback)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString<T>(collection, callback))); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append<T>(string format, ICollection<T> collection, System.Func<int, T, string> callback = null)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString<T>(collection, callback))); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append<K, V>(ICollection<KeyValuePair<K, V>> collection, System.Func<K, V, string> callback = null)
         { _sb.Append(Utility.Text.ToString<K, V>(collection, callback)); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append<K, V>(string format, ICollection<KeyValuePair<K, V>> collection, System.Func<K, V, string> callback = null)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString<K, V>(collection, callback))); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(System.Collections.IList list, System.Func<object, string> callback)
         { _sb.Append(Utility.Text.ToString(list, callback)); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(System.Collections.IList list, System.Func<int, object, string> callback = null)
         { _sb.Append(Utility.Text.ToString(list, callback)); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(string format, System.Collections.IList list, System.Func<object, string> callback)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(list, callback))); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(string format, System.Collections.IList list, System.Func<int, object, string> callback = null)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(list, callback))); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append<T>(IList<T> list, System.Func<T, string> callback)
         { _sb.Append(Utility.Text.ToString<T>(list, callback)); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append<T>(IList<T> list, System.Func<int, T, string> callback = null)
         { _sb.Append(Utility.Text.ToString<T>(list, callback)); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append<T>(string format, IList<T> list, System.Func<T, string> callback)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString<T>(list, callback))); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append<T>(string format, IList<T> list, System.Func<int, T, string> callback = null)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString<T>(list, callback))); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(System.Collections.IDictionary dictionary, System.Func<object, object, string> callback = null)
         { _sb.Append(Utility.Text.ToString(dictionary, callback)); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append(string format, System.Collections.IDictionary dictionary, System.Func<object, object, string> callback = null)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(dictionary, callback))); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append<K, V>(IDictionary<K, V> dictionary, System.Func<K, V, string> callback = null)
         { _sb.Append(Utility.Text.ToString<K, V>(dictionary, callback)); return this; }
 
+        [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnityEngine.Scripting.Preserve]
         public FormatStringBuilder Append<K, V>(string format, IDictionary<K, V> dictionary, System.Func<K, V, string> callback = null)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString<K, V>(dictionary, callback))); return this; }
 
@@ -287,17 +288,6 @@ namespace NovaEngine
         private void Clear()
         {
             _sb.Clear();
-        }
-
-        public override string ToString()
-        {
-            Logger.Assert(_isActive);
-
-            _isActive = false;
-            if (_caches.Count < MaxCacheSize)
-                _caches.Add(this);
-
-            return _sb.ToString();
         }
 
         /// <summary>
@@ -324,6 +314,17 @@ namespace NovaEngine
             fsb._isActive = true;
 
             return fsb;
+        }
+
+        public override string ToString()
+        {
+            Logger.Assert(_isActive);
+
+            _isActive = false;
+            if (_caches.Count < MaxCacheSize)
+                _caches.Add(this);
+
+            return _sb.ToString();
         }
     }
 }

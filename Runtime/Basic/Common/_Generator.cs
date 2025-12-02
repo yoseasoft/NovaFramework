@@ -23,10 +23,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Text;
+using System.Reflection;
+using System.Security.Cryptography;
+
 using SystemType = System.Type;
-using SystemEncoding = System.Text.Encoding;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemSHA256 = System.Security.Cryptography.SHA256;
 
 namespace GameEngine
 {
@@ -63,7 +64,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">函数对象信息</param>
         /// <returns>返回通过函数信息生成的名字标签</returns>
-        public static string GenUniqueName(SystemMethodInfo methodInfo)
+        public static string GenUniqueName(MethodInfo methodInfo)
         {
             return NovaEngine.Utility.Text.GetFullName(methodInfo);
         }
@@ -75,8 +76,8 @@ namespace GameEngine
         /// <returns>返回通过字符串信息生成的数字序列</returns>
         private static long StringToUniqueLong(string text)
         {
-            SystemSHA256 hash = SystemSHA256.Create();
-            byte[] buffer = hash.ComputeHash(SystemEncoding.UTF8.GetBytes(text));
+            SHA256 hash = SHA256.Create();
+            byte[] buffer = hash.ComputeHash(Encoding.UTF8.GetBytes(text));
             long v = System.BitConverter.ToInt64(buffer, 0);
             hash.Dispose();
 
