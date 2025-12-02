@@ -26,8 +26,6 @@
 
 using System.Runtime.CompilerServices;
 
-using SystemType = System.Type;
-
 namespace GameEngine
 {
     /// <summary>

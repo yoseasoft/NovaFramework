@@ -25,9 +25,7 @@
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 句柄对象的封装管理类，对已定义的所有句柄类进行统一的调度派发操作
-    /// </summary>
+    /// 句柄对象的封装管理类
     internal static partial class HandlerManagement
     {
         /// <summary>
@@ -111,7 +109,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="type">句柄类型标识</param>
         /// <returns>返回类型对应句柄的优先级</returns>
-        public static int GetHandlerPriorityWithClassType(HandlerClassType type)
+        private static int GetHandlerPriorityWithClassType(HandlerClassType type)
         {
             return (int) type;
         }
@@ -121,7 +119,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="type">句柄类型标识</param>
         /// <returns>返回类型对应句柄的优先级</returns>
-        public static int GetHandlerPriorityWithClassType(int type)
+        private static int GetHandlerPriorityWithClassType(int type)
         {
             return type;
         }

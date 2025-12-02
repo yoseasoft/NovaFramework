@@ -25,9 +25,7 @@
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 句柄对象的封装管理类，对已定义的所有句柄类进行统一的调度派发操作
-    /// </summary>
+    /// 句柄对象的封装管理类
     internal static partial class HandlerManagement
     {
         /// <summary>

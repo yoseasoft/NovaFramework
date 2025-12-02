@@ -25,15 +25,13 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Reflection;
 
 using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 基础对象抽象类，对需要进行对象定义的场景提供一个通用的基类
-    /// </summary>
+    /// 基础对象抽象类
     public abstract partial class CBase
     {
         /// <summary>
@@ -207,7 +205,7 @@ namespace GameEngine
         /// <param name="inputCode">输入编码</param>
         /// <param name="operationType">输入操作类型</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        public bool AddInputResponse(string fullname, SystemMethodInfo methodInfo, int inputCode, int operationType)
+        public bool AddInputResponse(string fullname, MethodInfo methodInfo, int inputCode, int operationType)
         {
             return AddInputResponse(fullname, methodInfo, inputCode, operationType, false);
         }
@@ -221,7 +219,7 @@ namespace GameEngine
         /// <param name="operationType">输入操作类型</param>
         /// <param name="automatically">自动装载状态标识</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        protected internal bool AddInputResponse(string fullname, SystemMethodInfo methodInfo, int inputCode, int operationType, bool automatically)
+        protected internal bool AddInputResponse(string fullname, MethodInfo methodInfo, int inputCode, int operationType, bool automatically)
         {
             // 2025-11-30：
             // 针对普通函数采用对象自身构建的方式
@@ -291,7 +289,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="inputType">输入类型</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        public bool AddInputResponse(string fullname, SystemMethodInfo methodInfo, SystemType inputType)
+        public bool AddInputResponse(string fullname, MethodInfo methodInfo, SystemType inputType)
         {
             return AddInputResponse(fullname, methodInfo, inputType, false);
         }
@@ -304,7 +302,7 @@ namespace GameEngine
         /// <param name="inputType">输入类型</param>
         /// <param name="automatically">自动装载状态标识</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        protected internal bool AddInputResponse(string fullname, SystemMethodInfo methodInfo, SystemType inputType, bool automatically)
+        protected internal bool AddInputResponse(string fullname, MethodInfo methodInfo, SystemType inputType, bool automatically)
         {
             // 2025-11-30：
             // 针对普通函数采用对象自身构建的方式
@@ -426,7 +424,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">输入类型</typeparam>
         /// <param name="methodInfo">监听回调函数</param>
-        public void RemoveInputResponse<T>(SystemMethodInfo methodInfo)
+        public void RemoveInputResponse<T>(MethodInfo methodInfo)
         {
             RemoveInputResponse(methodInfo, typeof(T));
         }
@@ -436,7 +434,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="inputType">输入类型</param>
-        public void RemoveInputResponse(SystemMethodInfo methodInfo, SystemType inputType)
+        public void RemoveInputResponse(MethodInfo methodInfo, SystemType inputType)
         {
             string fullname = _Generator.GenUniqueName(methodInfo);
 
@@ -521,7 +519,7 @@ namespace GameEngine
         /// <param name="inputCode">按键编码</param>
         /// <param name="operationType">操作类型</param>
         /// <param name="automatically">自动装载状态标识</param>
-        private void AddInputCallDelegateHandler(string fullname, SystemMethodInfo methodInfo, int inputCode, int operationType, bool automatically)
+        private void AddInputCallDelegateHandler(string fullname, MethodInfo methodInfo, int inputCode, int operationType, bool automatically)
         {
             // 静态函数（包括扩展类型）
             if (methodInfo.IsStatic)
@@ -554,7 +552,7 @@ namespace GameEngine
         /// <param name="methodInfo">函数对象</param>
         /// <param name="inputDataType">输入数据类型</param>
         /// <param name="automatically">自动装载状态标识</param>
-        private void AddInputCallDelegateHandler(string fullname, SystemMethodInfo methodInfo, SystemType inputDataType, bool automatically)
+        private void AddInputCallDelegateHandler(string fullname, MethodInfo methodInfo, SystemType inputDataType, bool automatically)
         {
             // 静态函数（包括扩展类型）
             if (methodInfo.IsStatic)

@@ -25,15 +25,13 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Reflection;
 
 using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 基础对象抽象类，对需要进行对象定义的场景提供一个通用的基类
-    /// </summary>
+    /// 基础对象抽象类
     public abstract partial class CBase
     {
         /// <summary>
@@ -244,7 +242,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="eventID">事件标识</param>
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
-        public bool Subscribe(string fullname, SystemMethodInfo methodInfo, int eventID)
+        public bool Subscribe(string fullname, MethodInfo methodInfo, int eventID)
         {
             return Subscribe(fullname, methodInfo, eventID, false);
         }
@@ -257,7 +255,7 @@ namespace GameEngine
         /// <param name="eventID">事件标识</param>
         /// <param name="automatically">自动装载状态标识</param>
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
-        protected internal bool Subscribe(string fullname, SystemMethodInfo methodInfo, int eventID, bool automatically)
+        protected internal bool Subscribe(string fullname, MethodInfo methodInfo, int eventID, bool automatically)
         {
             // 2025-11-30：
             // 针对普通函数采用对象自身构建的方式
@@ -327,7 +325,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="eventType">事件类型</param>
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
-        public bool Subscribe(string fullname, SystemMethodInfo methodInfo, SystemType eventType)
+        public bool Subscribe(string fullname, MethodInfo methodInfo, SystemType eventType)
         {
             return Subscribe(fullname, methodInfo, eventType, false);
         }
@@ -340,7 +338,7 @@ namespace GameEngine
         /// <param name="eventType">事件类型</param>
         /// <param name="automatically">自动装载状态标识</param>
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
-        protected internal bool Subscribe(string fullname, SystemMethodInfo methodInfo, SystemType eventType, bool automatically)
+        protected internal bool Subscribe(string fullname, MethodInfo methodInfo, SystemType eventType, bool automatically)
         {
             // 2025-11-30：
             // 针对普通函数采用对象自身构建的方式
@@ -392,7 +390,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="eventID">事件标识</param>
-        public void Unsubscribe(SystemMethodInfo methodInfo, int eventID)
+        public void Unsubscribe(MethodInfo methodInfo, int eventID)
         {
             string fullname = _Generator.GenUniqueName(methodInfo);
 
@@ -453,7 +451,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">事件类型</typeparam>
         /// <param name="methodInfo">监听回调函数</param>
-        public void Unsubscribe<T>(SystemMethodInfo methodInfo)
+        public void Unsubscribe<T>(MethodInfo methodInfo)
         {
             Unsubscribe(methodInfo, typeof(T));
         }
@@ -463,7 +461,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="eventType">事件类型</param>
-        public void Unsubscribe(SystemMethodInfo methodInfo, SystemType eventType)
+        public void Unsubscribe(MethodInfo methodInfo, SystemType eventType)
         {
             string fullname = _Generator.GenUniqueName(methodInfo);
 
@@ -547,7 +545,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="eventID">事件标识</param>
         /// <param name="automatically">自动装载状态标识</param>
-        private void AddEventCallDelegateHandler(string fullname, SystemMethodInfo methodInfo, int eventID, bool automatically)
+        private void AddEventCallDelegateHandler(string fullname, MethodInfo methodInfo, int eventID, bool automatically)
         {
             // 静态函数（包括扩展类型）
             if (methodInfo.IsStatic)
@@ -580,7 +578,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="eventType">事件类型</param>
         /// <param name="automatically">自动装载状态标识</param>
-        private void AddEventCallDelegateHandler(string fullname, SystemMethodInfo methodInfo, SystemType eventType, bool automatically)
+        private void AddEventCallDelegateHandler(string fullname, MethodInfo methodInfo, SystemType eventType, bool automatically)
         {
             // 静态函数（包括扩展类型）
             if (methodInfo.IsStatic)

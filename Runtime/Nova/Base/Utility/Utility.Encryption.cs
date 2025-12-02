@@ -23,22 +23,17 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.IO;
+using System.Security.Cryptography;
 using System.Customize.Extension;
 
 using SystemGuid = System.Guid;
 using SystemArray = System.Array;
 using SystemConvert = System.Convert;
-using SystemEncoding = System.Text.Encoding;
-using SystemMemoryStream = System.IO.MemoryStream;
-using SystemAes = System.Security.Cryptography.Aes;
-using SystemCryptoStream = System.Security.Cryptography.CryptoStream;
-using SystemCryptoStreamMode = System.Security.Cryptography.CryptoStreamMode;
 
 namespace NovaEngine
 {
-    /// <summary>
     /// 实用函数集合工具类
-    /// </summary>
     public static partial class Utility
     {
         /// <summary>
@@ -252,11 +247,11 @@ namespace NovaEngine
                 SystemArray.Copy(Convertion.GetBytes(vector.PadRight(vectorBytes.Length)), vectorBytes, vectorBytes.Length);
 
                 byte[] encryptData = null; // encrypted data
-                using SystemAes aes = SystemAes.Create();
+                using Aes aes = Aes.Create();
                 try
                 {
-                    using SystemMemoryStream memoryStream = new SystemMemoryStream();
-                    using SystemCryptoStream cryptoStream = new SystemCryptoStream(memoryStream, aes.CreateEncryptor(keyBytes, vectorBytes), SystemCryptoStreamMode.Write);
+                    using MemoryStream memoryStream = new MemoryStream();
+                    using CryptoStream cryptoStream = new CryptoStream(memoryStream, aes.CreateEncryptor(keyBytes, vectorBytes), CryptoStreamMode.Write);
                     cryptoStream.Write(plainBytes, 0, plainBytes.Length);
                     cryptoStream.FlushFinalBlock();
                     encryptData = memoryStream.ToArray();
@@ -328,12 +323,12 @@ namespace NovaEngine
                 SystemArray.Copy(Convertion.GetBytes(vector.PadRight(vectorBytes.Length)), vectorBytes, vectorBytes.Length);
 
                 byte[] decryptData = null; // decrypted data
-                using SystemAes aes = SystemAes.Create();
+                using Aes aes = Aes.Create();
                 try
                 {
-                    using SystemMemoryStream memoryStream = new SystemMemoryStream(encryptBytes);
-                    using SystemCryptoStream cryptoStream = new SystemCryptoStream(memoryStream, aes.CreateDecryptor(keyBytes, vectorBytes), SystemCryptoStreamMode.Read);
-                    using SystemMemoryStream tempStream = new SystemMemoryStream();
+                    using MemoryStream memoryStream = new MemoryStream(encryptBytes);
+                    using CryptoStream cryptoStream = new CryptoStream(memoryStream, aes.CreateDecryptor(keyBytes, vectorBytes), CryptoStreamMode.Read);
+                    using MemoryStream tempStream = new MemoryStream();
 
                     byte[] buffer = new byte[1024];
                     int readBytes = 0;

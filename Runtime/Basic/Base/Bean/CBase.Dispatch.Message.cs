@@ -25,9 +25,9 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Reflection;
 
 using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
@@ -144,7 +144,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="opcode">协议操作码</param>
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
-        protected internal bool AddMessageListener(string fullname, SystemMethodInfo methodInfo, int opcode)
+        protected internal bool AddMessageListener(string fullname, MethodInfo methodInfo, int opcode)
         {
             return AddMessageListener(fullname, methodInfo, opcode, false);
         }
@@ -157,7 +157,7 @@ namespace GameEngine
         /// <param name="opcode">协议操作码</param>
         /// <param name="automatically">自动装载状态标识</param>
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
-        protected internal bool AddMessageListener(string fullname, SystemMethodInfo methodInfo, int opcode, bool automatically)
+        protected internal bool AddMessageListener(string fullname, MethodInfo methodInfo, int opcode, bool automatically)
         {
             // 2025-11-30：
             // 针对普通函数采用对象自身构建的方式
@@ -229,7 +229,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="messageType">消息类型</param>
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
-        public bool AddMessageListener(string fullname, SystemMethodInfo methodInfo, SystemType messageType)
+        public bool AddMessageListener(string fullname, MethodInfo methodInfo, SystemType messageType)
         {
             int opcode = NetworkHandler.Instance.GetOpcodeByMessageType(messageType);
 
@@ -244,7 +244,7 @@ namespace GameEngine
         /// <param name="messageType">消息类型</param>
         /// <param name="automatically">自动装载状态标识</param>
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
-        protected internal bool AddMessageListener(string fullname, SystemMethodInfo methodInfo, SystemType messageType, bool automatically)
+        protected internal bool AddMessageListener(string fullname, MethodInfo methodInfo, SystemType messageType, bool automatically)
         {
             int opcode = NetworkHandler.Instance.GetOpcodeByMessageType(messageType);
 
@@ -272,7 +272,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="opcode">协议操作码</param>
-        protected internal void RemoveMessageListener(SystemMethodInfo methodInfo, int opcode)
+        protected internal void RemoveMessageListener(MethodInfo methodInfo, int opcode)
         {
             string fullname = _Generator.GenUniqueName(methodInfo);
 
@@ -328,7 +328,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">消息类型</typeparam>
         /// <param name="methodInfo">监听回调函数</param>
-        public void RemoveMessageListener<T>(SystemMethodInfo methodInfo)
+        public void RemoveMessageListener<T>(MethodInfo methodInfo)
         {
             RemoveMessageListener(methodInfo, typeof(T));
         }
@@ -338,7 +338,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="messageType">消息类型</param>
-        public void RemoveMessageListener(SystemMethodInfo methodInfo, SystemType messageType)
+        public void RemoveMessageListener(MethodInfo methodInfo, SystemType messageType)
         {
             int opcode = NetworkHandler.Instance.GetOpcodeByMessageType(messageType);
 
@@ -401,7 +401,7 @@ namespace GameEngine
         /// <param name="methodInfo">函数对象</param>
         /// <param name="opcode">协议编码</param>
         /// <param name="automatically">自动装载状态标识</param>
-        private void AddMessageCallDelegateHandler(string fullname, SystemMethodInfo methodInfo, int opcode, bool automatically)
+        private void AddMessageCallDelegateHandler(string fullname, MethodInfo methodInfo, int opcode, bool automatically)
         {
             // 静态函数（包括扩展类型）
             if (methodInfo.IsStatic)

@@ -99,7 +99,7 @@ namespace GameEngine
                 {
                     if (System.Convert.ToInt32(enumValue) != System.Convert.ToInt32(eventType))
                     {
-                        Debugger.Error("The handler class type '{0}' was not matched module event type '{1}', registed it failed.", enumName, eventType.ToString());
+                        Debugger.Error(LogGroupTag.Module, "The handler class type '{%s}' was not matched module event type '{%i}', registed it failed.", enumName, eventType);
                         continue;
                     }
                 }
@@ -110,13 +110,13 @@ namespace GameEngine
                 SystemType handlerType = SystemType.GetType(handlerName);
                 if (null == handlerType)
                 {
-                    Debugger.Info(LogGroupTag.Module, "Could not found any handler class with target name {0}.", handlerName);
+                    Debugger.Info(LogGroupTag.Module, "Could not found any handler class with target name {%s}.", handlerName);
                     continue;
                 }
 
                 if (false == typeof(IHandler).IsAssignableFrom(handlerType))
                 {
-                    Debugger.Warn("The handler type {0} must be inherited from 'IHandler' interface.", handlerName);
+                    Debugger.Warn(LogGroupTag.Module, "The handler type {%s} must be inherited from 'IHandler' interface.", handlerName);
                     continue;
                 }
 
@@ -124,13 +124,13 @@ namespace GameEngine
                 IHandler handler = System.Activator.CreateInstance(handlerType) as IHandler;
                 if (null == handler || false == handler.Initialize())
                 {
-                    Debugger.Error("The handler type {0} create or init failed.", handlerName);
+                    Debugger.Error("The handler type {%s} create or init failed.", handlerName);
                     continue;
                 }
 
                 (handler as BaseHandler).HandlerType = System.Convert.ToInt32(enumValue);
 
-                // Debugger.Info("Register new handler {0} to target class type {1}.", handlerName, handler.HandlerType);
+                // Debugger.Info("Register new handler {%s} to target class type {%i}.", handlerName, handler.HandlerType);
 
                 // 添加的管理容器
                 _handlerDeclaringTypes.Add(handlerType);

@@ -22,17 +22,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Threading;
+
 using SystemAction = System.Action;
-using SystemThread = System.Threading.Thread;
-using SystemInterlocked = System.Threading.Interlocked;
-using SystemThreadPool = System.Threading.ThreadPool;
-using SystemException = System.Exception;
 
 namespace NovaEngine
 {
-    /// <summary>
     /// 实用函数集合工具类
-    /// </summary>
     public static partial class Utility
     {
         /// <summary>
@@ -52,7 +48,7 @@ namespace NovaEngine
             /// <param name="milliseconds">毫秒值</param>
             public static void Sleep(int milliseconds)
             {
-                SystemThread.Sleep(milliseconds);
+                Thread.Sleep(milliseconds);
             }
 
             /// <summary>
@@ -108,11 +104,11 @@ namespace NovaEngine
             {
                 while (_runningThreads >= MAX_RUNNING_THREAD_COUNTS)
                 {
-                    SystemThread.Sleep(100);
+                    Thread.Sleep(100);
                 }
 
-                SystemInterlocked.Increment(ref _runningThreads);
-                SystemThreadPool.QueueUserWorkItem(RunAction, action);
+                Interlocked.Increment(ref _runningThreads);
+                ThreadPool.QueueUserWorkItem(RunAction, action);
             }
 
             /// <summary>
@@ -125,13 +121,13 @@ namespace NovaEngine
                 {
                     ((SystemAction) action)();
                 }
-                catch (SystemException e)
+                catch (System.Exception e)
                 {
                     Logger.Error(e.ToString());
                 }
                 finally
                 {
-                    SystemInterlocked.Decrement(ref _runningThreads);
+                    Interlocked.Decrement(ref _runningThreads);
                 }
             }
         }

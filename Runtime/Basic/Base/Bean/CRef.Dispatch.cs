@@ -28,9 +28,7 @@ using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 引用对象抽象类，对场景中的引用对象上下文进行封装及调度管理
-    /// </summary>
+    /// 引用对象抽象类
     public abstract partial class CRef
     {
         /// <summary>

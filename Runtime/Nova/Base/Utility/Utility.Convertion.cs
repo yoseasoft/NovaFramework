@@ -24,6 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Text;
+using System.Security.Cryptography;
 using System.Customize.Extension;
 
 using SystemGuid = System.Guid;
@@ -31,14 +33,10 @@ using SystemType = System.Type;
 using SystemObject = System.Object;
 using SystemArray = System.Array;
 using SystemEnum = System.Enum;
-using SystemEncoding = System.Text.Encoding;
-using SystemMD5 = System.Security.Cryptography.MD5;
 
 namespace NovaEngine
 {
-    /// <summary>
     /// 实用函数集合工具类
-    /// </summary>
     public static partial class Utility
     {
         /// <summary>
@@ -406,7 +404,7 @@ namespace NovaEngine
             /// <returns>返回用于存放结果的字节数组</returns>
             public static byte[] GetBytes(string value)
             {
-                return GetBytes(value, SystemEncoding.UTF8);
+                return GetBytes(value, Encoding.UTF8);
             }
 
             /// <summary>
@@ -417,7 +415,7 @@ namespace NovaEngine
             /// <returns>返回实际填充的字节数</returns>
             public static int GetBytes(string value, byte[] buffer)
             {
-                return GetBytes(value, SystemEncoding.UTF8, buffer, 0);
+                return GetBytes(value, Encoding.UTF8, buffer, 0);
             }
 
             /// <summary>
@@ -429,7 +427,7 @@ namespace NovaEngine
             /// <returns>返回实际填充的字节数</returns>
             public static int GetBytes(string value, byte[] buffer, int startIndex)
             {
-                return GetBytes(value, SystemEncoding.UTF8, buffer, startIndex);
+                return GetBytes(value, Encoding.UTF8, buffer, startIndex);
             }
 
             /// <summary>
@@ -438,7 +436,7 @@ namespace NovaEngine
             /// <param name="value">转换的字符串</param>
             /// <param name="encoding">转换使用的编码</param>
             /// <returns>返回用于存放结果的字节数组</returns>
-            public static byte[] GetBytes(string value, SystemEncoding encoding)
+            public static byte[] GetBytes(string value, Encoding encoding)
             {
                 if (null == value)
                 {
@@ -460,7 +458,7 @@ namespace NovaEngine
             /// <param name="encoding">转换使用的编码</param>
             /// <param name="buffer">用于存放结果的字节数组</param>
             /// <returns>返回实际填充的字节数</returns>
-            public static int GetBytes(string value, SystemEncoding encoding, byte[] buffer)
+            public static int GetBytes(string value, Encoding encoding, byte[] buffer)
             {
                 return GetBytes(value, encoding, buffer, 0);
             }
@@ -473,7 +471,7 @@ namespace NovaEngine
             /// <param name="buffer">用于存放结果的字节数组</param>
             /// <param name="startIndex">数组的起始位置</param>
             /// <returns>返回实际填充的字节数</returns>
-            public static int GetBytes(string value, SystemEncoding encoding, byte[] buffer, int startIndex)
+            public static int GetBytes(string value, Encoding encoding, byte[] buffer, int startIndex)
             {
                 if (null == value)
                 {
@@ -495,7 +493,7 @@ namespace NovaEngine
             /// <returns>返回转换后的字符串</returns>
             public static string GetString(byte[] value)
             {
-                return GetString(value, SystemEncoding.UTF8);
+                return GetString(value, Encoding.UTF8);
             }
 
             /// <summary>
@@ -504,7 +502,7 @@ namespace NovaEngine
             /// <param name="value">字节数组</param>
             /// <param name="encoding">转换使用的编码</param>
             /// <returns>返回转换后的字符串</returns>
-            public static string GetString(byte[] value, SystemEncoding encoding)
+            public static string GetString(byte[] value, Encoding encoding)
             {
                 if (null == value)
                 {
@@ -528,7 +526,7 @@ namespace NovaEngine
             /// <returns>返回转换后的字符串</returns>
             public static string GetString(byte[] value, int startIndex, int length)
             {
-                return GetString(value, startIndex, length, SystemEncoding.UTF8);
+                return GetString(value, startIndex, length, Encoding.UTF8);
             }
 
             /// <summary>
@@ -539,7 +537,7 @@ namespace NovaEngine
             /// <param name="length">数据长度</param>
             /// <param name="encoding">转换使用的编码</param>
             /// <returns>返回转换后的字符串</returns>
-            public static string GetString(byte[] value, int startIndex, int length, SystemEncoding encoding)
+            public static string GetString(byte[] value, int startIndex, int length, Encoding encoding)
             {
                 if (null == value)
                 {
@@ -642,7 +640,7 @@ namespace NovaEngine
             /// <returns>返回给定字符串的哈希值结果</returns>
             public static string GetMD5HashString(string content)
             {
-                return SystemMD5.Create().ComputeHash(GetBytes(content)).ToHexString();
+                return MD5.Create().ComputeHash(GetBytes(content)).ToHexString();
             }
 
             /// <summary>

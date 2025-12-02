@@ -26,8 +26,6 @@
 
 using System.Collections.Generic;
 
-using SystemType = System.Type;
-
 namespace GameEngine
 {
     /// <summary>

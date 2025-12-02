@@ -31,9 +31,7 @@ using SystemType = System.Type;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 基础对象抽象类，对需要进行对象定义的场景提供一个通用的基类
-    /// </summary>
+    /// 基础对象抽象类
     public abstract partial class CBase
     {
         /// <summary>

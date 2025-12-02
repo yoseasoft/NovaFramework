@@ -33,9 +33,7 @@ using SystemStringComparer = System.StringComparer;
 
 namespace NovaEngine
 {
-    /// <summary>
     /// 实用函数集合工具类
-    /// </summary>
     public static partial class Utility
     {
         /// <summary>
