@@ -26,6 +26,8 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Cysharp.Threading.Tasks;
 
 using SystemType = System.Type;
 
@@ -190,7 +192,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewName">视图名称</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public async Cysharp.Threading.Tasks.UniTask<CView> OpenUI(string viewName)
+        public async UniTask<CView> OpenUI(string viewName)
         {
             SystemType viewType;
             if (false == _entityClassTypes.TryGetValue(viewName, out viewType))
@@ -208,7 +210,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public async Cysharp.Threading.Tasks.UniTask<T> OpenUI<T>() where T : CView
+        public async UniTask<T> OpenUI<T>() where T : CView
         {
             SystemType viewType = typeof(T);
             if (false == _entityClassTypes.Values.Contains(viewType))
@@ -226,7 +228,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public async Cysharp.Threading.Tasks.UniTask<CView> OpenUI(SystemType viewType)
+        public async UniTask<CView> OpenUI(SystemType viewType)
         {
             Debugger.Assert(viewType, NovaEngine.ErrorText.InvalidArguments);
             if (false == _entityClassTypes.Values.Contains(viewType))
@@ -276,7 +278,7 @@ namespace GameEngine
             // 唤醒视图对象
             CallEntityAwakeProcess(view);
 
-            await Cysharp.Threading.Tasks.UniTask.WaitUntil(() => view.IsReady, cancellationToken : view.CancellationTokenSource.Token);
+            await UniTask.WaitUntil(() => view.IsReady, cancellationToken : view.CancellationTokenSource.Token);
 
             view.ShowWindow();
 
@@ -393,7 +395,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
-        public async Cysharp.Threading.Tasks.UniTask<T> FindUIAsync<T>() where T : CView
+        public async UniTask<T> FindUIAsync<T>() where T : CView
         {
             SystemType viewType = typeof(T);
             if (false == _entityClassTypes.Values.Contains(viewType))
@@ -410,7 +412,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
-        public async Cysharp.Threading.Tasks.UniTask<CView> FindUIAsync(SystemType viewType)
+        public async UniTask<CView> FindUIAsync(SystemType viewType)
         {
             foreach (CView view in _views)
             {
@@ -421,7 +423,7 @@ namespace GameEngine
                         return view;
                     }
 
-                    await Cysharp.Threading.Tasks.UniTask.WaitUntil(() => view.IsReady, cancellationToken: view.CancellationTokenSource.Token);
+                    await UniTask.WaitUntil(() => view.IsReady, cancellationToken: view.CancellationTokenSource.Token);
                     return view;
                 }
             }
@@ -558,7 +560,7 @@ namespace GameEngine
         /// 新增视图对象实例到管理容器中
         /// </summary>
         /// <param name="view">视图对象实例</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void _AddView(CView view)
         {
             _views.Add(view);
@@ -571,7 +573,7 @@ namespace GameEngine
         /// 从管理容器中移除指定的视图对象实例
         /// </summary>
         /// <param name="view">视图对象实例</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void _RemoveView(CView view)
         {
             ViewGroup viewGroup = FindGroupByViewType(view.BeanType);
@@ -653,7 +655,7 @@ namespace GameEngine
         /// 注册指定的窗口管理器到当前的主控制器中
         /// </summary>
         /// <typeparam name="T">管理器类型</typeparam>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void RegisterFormManager<T>() where T : IFormManager, new()
         {
             FormMaster.RegisterFormManager<T>();
@@ -663,7 +665,7 @@ namespace GameEngine
         /// 注册指定的窗口管理器到当前的主控制器中
         /// </summary>
         /// <param name="classType">管理器类型</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void RegisterFormManager(SystemType classType)
         {
             FormMaster.RegisterFormManager(classType);
@@ -673,7 +675,7 @@ namespace GameEngine
         /// 注册指定的窗口管理器到当前的主控制器中
         /// </summary>
         /// <param name="formManager">管理器对象</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void RegisterFormManager(IFormManager formManager)
         {
             FormMaster.RegisterFormManager(formManager);
@@ -682,7 +684,7 @@ namespace GameEngine
         /// <summary>
         /// 从主控制器中移除当前实施的
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void UnregisterCurrentFormManager()
         {
             FormMaster.UnregisterCurrentFormManager();

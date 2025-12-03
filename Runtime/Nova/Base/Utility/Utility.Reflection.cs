@@ -203,7 +203,7 @@ namespace NovaEngine
             /// <returns>若给定类型是一个中间类则返回true，否则返回false</returns>
             public static bool IsTypeOfCompilerGeneratedClass(SystemType targetType)
             {
-                SystemType compilerGeneratedAttribute = typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute);
+                SystemType compilerGeneratedAttribute = typeof(CompilerGeneratedAttribute);
                 return Collection.Any(targetType.GetCustomAttributes(compilerGeneratedAttribute, true));
             }
 
@@ -292,7 +292,7 @@ namespace NovaEngine
                 // 扩展类首先必须得是静态类
                 if (IsTypeOfStaticClass(targetType))
                 {
-                    return targetType.IsDefined(typeof(System.Runtime.CompilerServices.ExtensionAttribute), inherit: false);
+                    return targetType.IsDefined(typeof(ExtensionAttribute), inherit: false);
                 }
 
                 return false;
@@ -320,7 +320,7 @@ namespace NovaEngine
                 SystemType declaringType = method.DeclaringType;
                 if (declaringType.IsSealed && !declaringType.IsGenericType && !declaringType.IsNested)
                 {
-                    return method.IsDefined(typeof(System.Runtime.CompilerServices.ExtensionAttribute), inherit: false);
+                    return method.IsDefined(typeof(ExtensionAttribute), inherit: false);
                 }
 
                 return false;

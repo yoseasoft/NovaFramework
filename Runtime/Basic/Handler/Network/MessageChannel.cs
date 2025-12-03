@@ -23,11 +23,9 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using SystemType = System.Type;
-
-using UniTaskForMessage = Cysharp.Threading.Tasks.UniTask<object>;
-using UniTaskCompletionSourceForMessage = Cysharp.Threading.Tasks.UniTaskCompletionSource<object>;
 
 namespace GameEngine
 {
@@ -191,7 +189,7 @@ namespace GameEngine
         /// 通道的消息发送标准接口函数
         /// </summary>
         /// <param name="buffer">消息字符串</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void InternalSendMessage(string buffer)
         {
             NetworkHandler.Instance.SendMessage(_channelID, buffer);
@@ -201,7 +199,7 @@ namespace GameEngine
         /// 通道的消息发送标准接口函数
         /// </summary>
         /// <param name="buffer">消息字节流</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void InternalSendMessage(byte[] buffer)
         {
             NetworkHandler.Instance.SendMessage(_channelID, buffer);

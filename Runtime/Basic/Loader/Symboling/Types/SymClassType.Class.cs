@@ -472,6 +472,8 @@ namespace GameEngine.Loader.Symboling
                 return;
             }
 
+            // Debugger.Log("新增切面行为类型‘{%i}’到目标对象实例‘{%s}’", aspectBehaviourType, _className);
+
             _aspectBehaviourTypes.Add(aspectBehaviourType);
         }
 
@@ -506,6 +508,8 @@ namespace GameEngine.Loader.Symboling
                 Debugger.Warn("Could not found any aspect behaviour type '{%s}' from target symbol class '{%t}', removed it failed.", aspectBehaviourType.ToString(), _classType);
                 return;
             }
+
+            // Debugger.Log("从目标对象实例‘{%s}’中移除切面行为类型‘{%i}’", _className, aspectBehaviourType);
 
             _aspectBehaviourTypes.Remove(aspectBehaviourType);
         }

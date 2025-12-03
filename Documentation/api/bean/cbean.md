@@ -120,3 +120,10 @@ private static void OnBattleSceneInputed(int keycode, int operationType)
 - Shutdown：关闭通知回调函数
 - Cleanup：清理通知回调函数
 
+在以上的整个生命周期调度流程中，`Initialize`和`Cleanup`两个阶段，主要服务于引擎内，
+通常是对实体对象的基础属性成员和管理容器进行初始化和清理操作，以及对由引擎调度的回调句柄进行注册与注销操作。
+`Startup`和`Shutdown`两个阶段，主要服务于模组内，用于在业务逻辑执行前，进行一些服务组件的绑定与解绑操作。
+而`Awake`、`Start`和`Destroy`这三个阶段，是提供给业务层使用的，
+您可以在这里进行具体的业务逻辑的初始化和清理，生命周期的执行流程保证了业务逻辑调度前，
+所有的底层接口及服务组件都已经被正确初始化，并且已经进入到工作流程中。
+

@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using SystemType = System.Type;
 
@@ -80,7 +81,7 @@ namespace GameEngine.Loader.Symboling
         /// 增加可实例化对象类型解析流程
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AddInstantiationClassResolver<T>() where T : ISymbolResolverOfInstantiationClass
         {
             AddInstantiationClassResolver(typeof(T));
@@ -90,7 +91,7 @@ namespace GameEngine.Loader.Symboling
         /// 增加可实例化对象类型解析流程
         /// </summary>
         /// <param name="classType">对象类型</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AddInstantiationClassResolver(SystemType classType)
         {
             if (false == typeof(ISymbolResolverOfInstantiationClass).IsAssignableFrom(classType))
@@ -123,7 +124,7 @@ namespace GameEngine.Loader.Symboling
         /// 移除可实例化对象类型解析流程
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RemoveInstantiationClassResolver<T>() where T : ISymbolResolverOfInstantiationClass
         {
             RemoveInstantiationClassResolver(typeof(T));

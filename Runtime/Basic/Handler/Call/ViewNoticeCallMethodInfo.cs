@@ -23,8 +23,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
 using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
@@ -40,11 +42,11 @@ namespace GameEngine
 
         public ViewNoticeType NoticeType => _noticeType;
 
-        public ViewNoticeCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, ViewNoticeType noticeType)
+        public ViewNoticeCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, ViewNoticeType noticeType)
             : this(fullname, targetType, methodInfo, noticeType, false)
         { }
 
-        public ViewNoticeCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, ViewNoticeType noticeType, bool automatically)
+        public ViewNoticeCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, ViewNoticeType noticeType, bool automatically)
             : base(fullname, targetType, methodInfo, automatically)
         {
             _noticeType = noticeType;
@@ -53,7 +55,7 @@ namespace GameEngine
         /// <summary>
         /// 通知回调的调度函数
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke()
         {
             // _callback.DynamicInvoke();
@@ -65,7 +67,7 @@ namespace GameEngine
         /// 通知回调的调度函数
         /// </summary>
         /// <param name="targetObject">对象实例</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke(IBean targetObject)
         {
             Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);

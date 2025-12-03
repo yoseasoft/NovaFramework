@@ -23,6 +23,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using SystemType = System.Type;
 
@@ -78,7 +79,7 @@ namespace GameEngine
         /// 注册指定类型的热加载模块对象到当前管理句柄中
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RegisterHotModule<T>() where T : IHotModule, new()
         {
             RegisterHotModule(typeof(T));
@@ -142,7 +143,7 @@ namespace GameEngine
         /// 从当前管理句柄中注销指定类型的热加载模块对象实例
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnregisterHotModule<T>() where T : IHotModule
         {
             UnregisterHotModule(typeof(T));

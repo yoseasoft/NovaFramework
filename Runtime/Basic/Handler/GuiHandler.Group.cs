@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using SystemType = System.Type;
 
@@ -200,7 +201,7 @@ namespace GameEngine
         /// <summary>
         /// 对当前句柄容器中注册的所有视图分组对象实例进行排序
         /// </summary>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void SortingViewGroups()
         {
             ((List<ViewGroup>) _sortingGroupList).Sort();
@@ -258,7 +259,7 @@ namespace GameEngine
             /// 视图对象分组绑定操作的管理接口函数
             /// </summary>
             /// <param name="view">视图对象实例</param>
-            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void OnViewGroupBinding(CView view)
             {
                 if (_groupViews.Contains(view))
@@ -279,7 +280,7 @@ namespace GameEngine
             /// 视图对象分组解绑操作的管理接口函数
             /// </summary>
             /// <param name="view">视图对象实例</param>
-            [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void OnViewGroupUnbinding(CView view)
             {
                 if (false == _groupViews.Contains(view))

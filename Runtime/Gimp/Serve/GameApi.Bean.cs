@@ -22,7 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
@@ -34,7 +34,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="targetObject">目标对象</param>
         /// <param name="f">函数</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void CallMethod(CBase targetObject, System.Action f)
         {
             targetObject.Call(f);
@@ -46,7 +46,7 @@ namespace GameEngine
         /// <param name="targetObject">目标对象</param>
         /// <param name="f">函数</param>
         /// <param name="lifecycleType">生命周期类型</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void CallMethod(CBase targetObject, System.Action f, AspectBehaviourType lifecycleType)
         {
             targetObject.Call(f, lifecycleType);

@@ -26,11 +26,11 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using SystemEnum = System.Enum;
 using SystemType = System.Type;
 using SystemAction = System.Action;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
@@ -266,7 +266,7 @@ namespace GameEngine
         /// <param name="name">网络名称</param>
         /// <param name="url">网络地址</param>
         /// <returns>若网络连接请求发送成功返回对应的通道实例，否则返回null</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public MessageChannel Connect(NovaEngine.NetworkServiceType serviceType, string name, string url)
         {
             return Connect((int) serviceType, name, url);
@@ -688,7 +688,7 @@ namespace GameEngine
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="serviceType">服务类型</param>
         /// <returns>若注册解析器对象实例成功则返回true，否则返回false</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool RegMessageTranslator<T>(int serviceType) where T : IMessageTranslator, new()
         {
             return RegMessageTranslator(serviceType, typeof(T));
@@ -748,7 +748,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="serviceType">服务类型</param>
         /// <returns>返回对应类型的消息通道对象，若不存在对应类型的通道对象则返回null</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public SystemType GetMessageChannelTypeByServiceType(int serviceType)
         {
             if (false == _messageChannelTypes.ContainsKey(serviceType))
@@ -764,7 +764,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="serviceType">服务类型</param>
         /// <returns>返回对应类型的消息解析实例，若不存在对应类型的解析接口则返回null</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IMessageTranslator GetMessageTranslatorByServiceType(int serviceType)
         {
             if (false == _messageTranslators.ContainsKey(serviceType))
@@ -779,7 +779,7 @@ namespace GameEngine
         /// 设置当前句柄的消息协议类型
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetMessageProtocolType<T>() where T : class
         {
             SetMessageProtocolType(typeof(T));
@@ -789,7 +789,7 @@ namespace GameEngine
         /// 设置当前句柄的消息协议类型
         /// </summary>
         /// <param name="classType">对象类型</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetMessageProtocolType(SystemType classType)
         {
             if (null != _messageProtocolType)
@@ -804,7 +804,7 @@ namespace GameEngine
         /// 获取当前句柄注册的消息协议类型
         /// </summary>
         /// <returns>返回当前网络支持的消息协议类型</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public SystemType GetMessageProtocolType()
         {
             Debugger.Assert(_messageProtocolType, NovaEngine.ErrorText.NullObjectReference);
@@ -872,7 +872,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="msgType">消息类型</param>
         /// <returns>返回给定类型对应的消息对象类，若不存在则返回null</returns>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public SystemType GetMessageClassByType(int msgType)
         {
             if (_messageClassTypes.ContainsKey(msgType))

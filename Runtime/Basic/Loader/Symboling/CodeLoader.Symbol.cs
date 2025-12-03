@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using SystemType = System.Type;
 
@@ -215,7 +216,7 @@ namespace GameEngine.Loader
         /// 注册外部实现的可实例化对象类型的符号解析器
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RegisterSymbolResolverOfInstantiationClass<T>() where T : Symboling.ISymbolResolverOfInstantiationClass
         {
             Symboling.SymClassResolver.AddInstantiationClassResolver<T>();
@@ -225,7 +226,7 @@ namespace GameEngine.Loader
         /// 注册外部实现的可实例化对象类型的符号解析器
         /// </summary>
         /// <param name="classType">对象类型</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RegisterSymbolResolverOfInstantiationClass(SystemType classType)
         {
             Symboling.SymClassResolver.AddInstantiationClassResolver(classType);
@@ -235,7 +236,7 @@ namespace GameEngine.Loader
         /// 注册外部实现的可实例化对象类型的符号解析器
         /// </summary>
         /// <param name="resolver">解析对象</param>
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RegisterSymbolResolverOfInstantiationClass(Symboling.ISymbolResolverOfInstantiationClass resolver)
         {
             Symboling.SymClassResolver.AddInstantiationClassResolver(resolver);
