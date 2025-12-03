@@ -27,7 +27,7 @@ namespace NovaEngine.Editor
     /// <summary>
     /// 编辑环境下的参数配置管理类，默认使用<see cref="CoreEngine.Editor.UserSettings"/>接口实现
     /// </summary>
-    internal static class UserSettings
+    public static class UserSettings
     {
         /// <summary>
         /// 设置一个字符串值的记录信息
