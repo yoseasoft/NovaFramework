@@ -26,9 +26,7 @@ using SystemType = System.Type;
 
 namespace GameEngine
 {
-    /// <summary>
     /// 网络模块封装的句柄对象类
-    /// </summary>
     public sealed partial class NetworkHandler
     {
         /// <summary>

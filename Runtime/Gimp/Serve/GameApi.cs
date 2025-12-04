@@ -107,12 +107,12 @@ namespace GameEngine
         #region 网络通知相关的服务接口函数
 
         /// <summary>
-        /// 通过模拟的方式接收基于ProtoBuf协议构建的网络消息的接口函数
+        /// 通过模拟的方式接收特定格式协议构建的网络消息的接口函数
         /// </summary>
         /// <param name="message">消息对象实例</param>
-        public static void OnSimulationReceiveMessageOfProtoBuf(object message)
+        public static void OnSimulationReceiveMessage(object message)
         {
-            NetworkHandler.Instance.OnSimulationReceiveMessageOfProtoBuf(message);
+            NetworkHandler.Instance.OnSimulationReceiveMessage(message);
         }
 
         #endregion

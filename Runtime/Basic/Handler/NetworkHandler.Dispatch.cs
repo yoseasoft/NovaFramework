@@ -26,16 +26,14 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Reflection;
+using UnityEngine.Scripting;
 
 using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
-    /// <summary>
     /// 网络模块封装的句柄对象类
-    /// 模块具体功能接口请参考<see cref="NovaEngine.NetworkModule"/>类
-    /// </summary>
     public sealed partial class NetworkHandler
     {
         /// <summary>
@@ -51,7 +49,7 @@ namespace GameEngine
         /// <summary>
         /// 消息回调转发接口初始化回调函数
         /// </summary>
-        [UnityEngine.Scripting.Preserve]
+        [Preserve]
         [OnSubmoduleInitCallback]
         private void OnMessageCallDispatchingInitialize()
         {
@@ -64,7 +62,7 @@ namespace GameEngine
         /// <summary>
         /// 消息回调转发接口清理回调函数
         /// </summary>
-        [UnityEngine.Scripting.Preserve]
+        [Preserve]
         [OnSubmoduleCleanupCallback]
         private void OnMessageCallDispatchingCleanup()
         {
@@ -83,7 +81,7 @@ namespace GameEngine
         /// <summary>
         /// 消息回调转发接口重载回调函数
         /// </summary>
-        [UnityEngine.Scripting.Preserve]
+        [Preserve]
         [OnSubmoduleReloadCallback]
         private void OnMessageCallDispatchingReload()
         {
@@ -226,7 +224,7 @@ namespace GameEngine
         /// <param name="targetType">目标对象类型</param>
         /// <param name="methodInfo">函数对象</param>
         /// <param name="opcode">协议编码</param>
-        private void AddMessageDistributeCallInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int opcode)
+        private void AddMessageDistributeCallInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int opcode)
         {
             MessageCallMethodInfo info = new MessageCallMethodInfo(fullname, targetType, methodInfo, opcode);
 
@@ -252,7 +250,7 @@ namespace GameEngine
         /// <param name="targetType">目标对象类型</param>
         /// <param name="methodInfo">函数对象</param>
         /// <param name="messageType">消息对象类型</param>
-        private void AddMessageDistributeCallInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType messageType)
+        private void AddMessageDistributeCallInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType messageType)
         {
             int opcode = GetOpcodeByMessageType(messageType);
 

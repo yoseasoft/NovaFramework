@@ -26,16 +26,14 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Reflection;
+using UnityEngine.Scripting;
 
 using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
-    /// <summary>
     /// 网络模块封装的句柄对象类
-    /// 模块具体功能接口请参考<see cref="NovaEngine.NetworkModule"/>类
-    /// </summary>
     public sealed partial class NetworkHandler
     {
         /// <summary>
@@ -46,7 +44,7 @@ namespace GameEngine
         /// <summary>
         /// 消息监听绑定接口初始化回调函数
         /// </summary>
-        [UnityEngine.Scripting.Preserve]
+        [Preserve]
         [OnSubmoduleInitCallback]
         private void OnMessageListenerBindingInitialize()
         {
@@ -57,7 +55,7 @@ namespace GameEngine
         /// <summary>
         /// 消息监听绑定接口清理回调函数
         /// </summary>
-        [UnityEngine.Scripting.Preserve]
+        [Preserve]
         [OnSubmoduleCleanupCallback]
         private void OnMessageListenerBindingCleanup()
         {
@@ -72,7 +70,7 @@ namespace GameEngine
         /// <summary>
         /// 消息监听绑定接口重载回调函数
         /// </summary>
-        [UnityEngine.Scripting.Preserve]
+        [Preserve]
         [OnSubmoduleReloadCallback]
         private void OnMessageListenerBindingReload()
         {
@@ -90,7 +88,7 @@ namespace GameEngine
         /// <param name="methodInfo">函数对象</param>
         /// <param name="opcode">协议编码</param>
         /// <param name="automatically">自动装载状态标识</param>
-        internal void AddMessageListenerBindingCallInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int opcode, bool automatically)
+        internal void AddMessageListenerBindingCallInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int opcode, bool automatically)
         {
             if (false == _messageListenerBindingCaches.TryGetValue(targetType, out IDictionary<string, MessageCallMethodInfo> messageCallMethodInfos))
             {
@@ -118,7 +116,7 @@ namespace GameEngine
         /// <param name="methodInfo">函数对象</param>
         /// <param name="messageType">消息对象类型</param>
         /// <param name="automatically">自动装载状态标识</param>
-        internal void AddMessageListenerBindingCallInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType messageType, bool automatically)
+        internal void AddMessageListenerBindingCallInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType messageType, bool automatically)
         {
             int opcode = GetOpcodeByMessageType(messageType);
 

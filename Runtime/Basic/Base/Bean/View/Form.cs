@@ -23,9 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using Cysharp.Threading.Tasks;
 
-using UniTask = Cysharp.Threading.Tasks.UniTask;
+using SystemType = System.Type;
 
 namespace GameEngine
 {
