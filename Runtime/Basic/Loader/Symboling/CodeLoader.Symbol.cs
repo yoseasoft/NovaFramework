@@ -182,7 +182,7 @@ namespace GameEngine.Loader
                 return;
             }
 
-            Debugger.Info(LogGroupTag.CodeLoader, "Register new bean object '{%s}' to target symbol class '{%t}'.", beanName, bean.TargetClass);
+            Debugger.Info(LogGroupTag.CodeLoader, "Register new bean object '{%s}' to target symbol class '{%s}'.", beanName, bean.Symbol.FullName);
 
             _beanClassMaps.Add(beanName, bean);
         }
@@ -202,7 +202,7 @@ namespace GameEngine.Loader
                     continue;
                 }
 
-                if (bean.TargetClass == symbol)
+                if (bean.Symbol == symbol)
                 {
                     // 移除指定标记对应的所有Bean实例
                     _beanClassMaps.Remove(k);

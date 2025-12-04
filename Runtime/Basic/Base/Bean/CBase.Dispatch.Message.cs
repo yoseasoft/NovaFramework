@@ -159,6 +159,8 @@ namespace GameEngine
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
         protected internal bool AddMessageListener(string fullname, MethodInfo methodInfo, int opcode, bool automatically)
         {
+            Debugger.Assert(opcode > 0, NovaEngine.ErrorText.InvalidArguments);
+
             // 2025-11-30：
             // 针对普通函数采用对象自身构建的方式
             // NetworkHandler.Instance.AddMessageListenerBindingCallInfo(fullname, BeanType, methodInfo, opcode, automatically);

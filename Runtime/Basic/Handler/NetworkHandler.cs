@@ -842,13 +842,15 @@ namespace GameEngine
         /// <param name="classType">对象类</param>
         private void RegMessageClassTypes(int msgType, SystemType classType)
         {
+            Debugger.Assert(msgType > 0, NovaEngine.ErrorText.InvalidArguments);
+
             if (_messageClassTypes.ContainsKey(msgType))
             {
-                Debugger.Warn("The message proto object code '{0}' was already exist, repeat add will be override old handler.", msgType);
+                Debugger.Warn("The message proto object code '{%d}' was already exist, repeat add will be override old handler.", msgType);
                 _messageClassTypes.Remove(msgType);
             }
 
-            // Debugger.Info("Register new message class type '{0}' with target opcode '{1}'.", classType.FullName, msgType);
+            // Debugger.Info("Register new message class type '{%t}' with target opcode '{%d}'.", classType, msgType);
             _messageClassTypes.Add(msgType, classType);
         }
 
@@ -860,11 +862,11 @@ namespace GameEngine
         {
             if (false == _messageClassTypes.ContainsKey(msgType))
             {
-                Debugger.Warn("Could not found any message class type with target opcode '{0}', unregisted it failed.", msgType);
+                Debugger.Warn("Could not found any message class type with target opcode '{%d}', unregisted it failed.", msgType);
                 return;
             }
 
-            // Debugger.Info("Unregister message class type with target opcode '{0}'.", msgType);
+            // Debugger.Info("Unregister message class type with target opcode '{%d}'.", msgType);
             _messageClassTypes.Remove(msgType);
         }
 
@@ -889,7 +891,7 @@ namespace GameEngine
                 return _messageClassTypes[msgType];
             }
 
-            Debugger.Info("Could not found any message class with target type '{0}'!", msgType);
+            Debugger.Info("Could not found any message class with target type '{%d}'!", msgType);
             return null;
         }
 

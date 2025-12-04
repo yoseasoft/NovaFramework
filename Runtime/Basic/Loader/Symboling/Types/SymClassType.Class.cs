@@ -931,7 +931,7 @@ namespace GameEngine.Loader.Symboling
 
             if (_beans.ContainsKey(bean.BeanName))
             {
-                Debugger.Warn("The bean object '{0}' was already exist in symbol class '{1}', repeat added it will be override old value.", bean.BeanName, _className);
+                Debugger.Warn("The bean object '{%s}' was already exist in symbol class '{%s}', repeat added it will be override old value.", bean.BeanName, _className);
                 _beans.Remove(bean.BeanName);
             }
 

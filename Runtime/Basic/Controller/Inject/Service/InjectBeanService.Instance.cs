@@ -128,7 +128,7 @@ namespace GameEngine
         /// <returns>返回新创建的实体对象实例，若创建失败返回null</returns>
         internal static CBean CreateBeanInstance(Loader.Symboling.Bean bean)
         {
-            SystemType classType = bean.TargetClass.ClassType;
+            SystemType classType = bean.Symbol.ClassType;
             string beanName = bean.BeanName;
 
             Debugger.Assert(classType.IsClass && false == string.IsNullOrEmpty(beanName), NovaEngine.ErrorText.InvalidArguments);

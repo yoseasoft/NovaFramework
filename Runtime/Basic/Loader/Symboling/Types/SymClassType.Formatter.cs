@@ -97,7 +97,7 @@ namespace GameEngine.Loader
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Bean={");
-            fsb.Append("ClassName={%s},", targetObject.TargetClass.ClassName);
+            fsb.Append("ClassName={%s},", targetObject.Symbol.ClassName);
             fsb.Append("BeanName={%s},", targetObject.BeanName);
             fsb.Append("Singleton={%b},", targetObject.Singleton);
             fsb.Append("Inherited={%b},", targetObject.Inherited);

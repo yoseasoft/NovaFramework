@@ -62,9 +62,9 @@ namespace GameEngine.Loader.Symboling
         {
             get
             {
-                Debugger.Assert(null != this.BeanObject && null != this.BeanObject.TargetClass, "The bean object instance must be non-null.");
+                Debugger.Assert(null != this.BeanObject && null != this.BeanObject.Symbol, "The bean object instance must be non-null.");
 
-                return this.BeanObject.TargetClass.GetPropertyByName(_propertyName);
+                return this.BeanObject.Symbol.GetPropertyByName(_propertyName);
             }
         }
 

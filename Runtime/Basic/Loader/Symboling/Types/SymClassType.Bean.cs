@@ -39,7 +39,7 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// Bean对象的宿主标记对象
         /// </summary>
-        private SymClass _targetClass;
+        private SymClass _symbol;
         /// <summary>
         /// Bean对象的目标名称
         /// </summary>
@@ -66,7 +66,7 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         private IList<BeanComponent> _components;
 
-        public SymClass TargetClass => _targetClass;
+        public SymClass Symbol => _symbol;
 
         public string BeanName { get { return _beanName; } internal set { _beanName = value; } }
         public bool Singleton { get { return _singleton; } internal set { _singleton = value; } }
@@ -76,14 +76,14 @@ namespace GameEngine.Loader.Symboling
         public IDictionary<string, BeanProperty> Properties => _properties;
         public IList<BeanComponent> Components => _components;
 
-        public Bean(SymClass targetClass)
+        public Bean(SymClass symClass)
         {
-            _targetClass = targetClass;
+            _symbol = symClass;
         }
 
         ~Bean()
         {
-            _targetClass = null;
+            _symbol = null;
 
             RemoveAllFields();
             RemoveAllProperties();
