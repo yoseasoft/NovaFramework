@@ -24,13 +24,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using Cysharp.Threading.Tasks;
+
 using SystemType = System.Type;
 
 using UnityObject = UnityEngine.Object;
-
-using Asset = GooAsset.Asset;
-using Scene = GooAsset.Scene;
-using RawFile = GooAsset.RawFile;
 
 namespace GameEngine
 {
@@ -121,7 +119,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="completed">加载完成回调</param>
-        public Asset LoadAssetAsync<T>(string url, System.Action<UnityObject> completed) where T : UnityObject
+        public GooAsset.Asset LoadAssetAsync<T>(string url, System.Action<UnityObject> completed) where T : UnityObject
         {
             return ResourceModule.LoadAssetAsync(url, typeof(T), completed);
         }
@@ -130,9 +128,9 @@ namespace GameEngine
         /// 异步加载资源
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
-        public async Cysharp.Threading.Tasks.UniTask<T> LoadAssetAsync<T>(string url) where T : UnityObject
+        public async UniTask<T> LoadAssetAsync<T>(string url) where T : UnityObject
         {
-            Asset asset = ResourceModule.LoadAssetAsync(url, typeof(T));
+            GooAsset.Asset asset = ResourceModule.LoadAssetAsync(url, typeof(T));
             if (asset is null)
                 return null;
 
@@ -144,7 +142,7 @@ namespace GameEngine
         /// 释放资源(加载完成或加载中都可以使用此接口释放资源)
         /// </summary>
         /// <param name="asset">资源对象</param>
-        public void UnloadAsset(Asset asset)
+        public void UnloadAsset(GooAsset.Asset asset)
         {
             ResourceModule.UnloadAsset(asset);
         }
@@ -175,7 +173,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="isAdditive">是否使用叠加方式加载</param>
-        public Scene LoadScene(string url, bool isAdditive = false)
+        public GooAsset.Scene LoadScene(string url, bool isAdditive = false)
         {
             return ResourceModule.LoadScene(url, isAdditive);
         }
@@ -186,7 +184,7 @@ namespace GameEngine
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="isAdditive">是否使用叠加方式加载</param>
         /// <param name="completed">加载完成回调</param>
-        public Scene LoadSceneAsync(string url, bool isAdditive, System.Action<Scene> completed)
+        public GooAsset.Scene LoadSceneAsync(string url, bool isAdditive, System.Action<GooAsset.Scene> completed)
         {
             return ResourceModule.LoadSceneAsync(url, isAdditive, completed);
         }
@@ -196,9 +194,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="isAdditive">是否使用叠加方式加载</param>
-        public async Cysharp.Threading.Tasks.UniTask<Scene> LoadSceneAsync(string url, bool isAdditive = false)
+        public async UniTask<GooAsset.Scene> LoadSceneAsync(string url, bool isAdditive = false)
         {
-            Scene scene = ResourceModule.LoadSceneAsync(url, isAdditive);
+            GooAsset.Scene scene = ResourceModule.LoadSceneAsync(url, isAdditive);
             await scene.Task;
             return scene;
         }
@@ -207,7 +205,7 @@ namespace GameEngine
         /// 卸载场景
         /// </summary>
         /// <param name="scene">场景对象</param>
-        public void UnloadScene(Scene scene)
+        public void UnloadScene(GooAsset.Scene scene)
         {
             ResourceModule.UnloadScene(scene);
         }
@@ -218,29 +216,29 @@ namespace GameEngine
 
         /// <summary>
         /// 同步加载原始流式文件(直接读取persistentDataPath中的文件, 然后可根据文件保存路径(RawFile.savePath)读取文件, 使用同步加载前需已保证文件更新)
-        /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
         /// </summary>
-        public RawFile LoadRawFile(string url)
+        /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
+        public GooAsset.RawFile LoadRawFile(string url)
         {
             return ResourceModule.LoadRawFile(url);
         }
 
         /// <summary>
         /// 异步加载原始流式文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
-        /// /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
         /// </summary>
-        public RawFile LoadRawFileAsync(string url, System.Action<RawFile> completed)
+        /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
+        public GooAsset.RawFile LoadRawFileAsync(string url, System.Action<GooAsset.RawFile> completed)
         {
             return ResourceModule.LoadRawFileAsync(url, completed);
         }
 
         /// <summary>
         /// 异步加载原始流式文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
-        /// /// <param name="address">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
         /// </summary>
-        public async Cysharp.Threading.Tasks.UniTask<RawFile> LoadRawFileAsync(string address)
+        /// <param name="address">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
+        public async UniTask<GooAsset.RawFile> LoadRawFileAsync(string address)
         {
-            RawFile rawFile = ResourceModule.LoadRawFileAsync(address);
+            GooAsset.RawFile rawFile = ResourceModule.LoadRawFileAsync(address);
             await rawFile.Task;
             return rawFile;
         }

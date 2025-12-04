@@ -152,7 +152,7 @@ namespace GameEngine.Context.Configuring
 
             if (callbacks.ContainsKey(nodeName))
             {
-                Debugger.Warn("The configure node name '{0}' was already exist, repeat added it will be override old value.", nodeName);
+                Debugger.Warn("The configure node name '{%s}' was already exist, repeat added it will be override old value.", nodeName);
                 callbacks.Remove(nodeName);
             }
 

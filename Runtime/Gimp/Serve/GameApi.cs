@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 using SystemType = System.Type;
 
@@ -460,7 +461,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewName">视图名称</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public static async Cysharp.Threading.Tasks.UniTask<CView> OpenUI(string viewName)
+        public static async UniTask<CView> OpenUI(string viewName)
         {
             return await GuiHandler.Instance.OpenUI(viewName);
         }
@@ -470,7 +471,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public static async Cysharp.Threading.Tasks.UniTask<T> OpenUI<T>() where T : CView
+        public static async UniTask<T> OpenUI<T>() where T : CView
         {
             return await GuiHandler.Instance.OpenUI<T>();
         }
@@ -480,7 +481,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public static async Cysharp.Threading.Tasks.UniTask<CView> OpenUI(SystemType viewType)
+        public static async UniTask<CView> OpenUI(SystemType viewType)
         {
             return await GuiHandler.Instance.OpenUI(viewType);
         }
@@ -548,7 +549,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
-        public static async Cysharp.Threading.Tasks.UniTask<T> FindUIAsync<T>() where T : CView
+        public static async UniTask<T> FindUIAsync<T>() where T : CView
         {
             return await GuiHandler.Instance.FindUIAsync<T>();
         }
@@ -558,7 +559,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
-        public static async Cysharp.Threading.Tasks.UniTask<CView> FindUIAsync(SystemType viewType)
+        public static async UniTask<CView> FindUIAsync(SystemType viewType)
         {
             return await GuiHandler.Instance.FindUIAsync(viewType);
         }

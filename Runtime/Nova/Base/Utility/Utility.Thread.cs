@@ -23,6 +23,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Threading;
+using Cysharp.Threading.Tasks;
 
 using SystemAction = System.Action;
 
@@ -79,10 +80,10 @@ namespace NovaEngine
             /// 异步方式执行目标行为函数
             /// </summary>
             /// <param name="action">行为函数</param>
-            private static async Cysharp.Threading.Tasks.UniTask WorkAction(SystemAction action)
+            private static async UniTask WorkAction(SystemAction action)
             {
                 action();
-                await Cysharp.Threading.Tasks.UniTask.CompletedTask;
+                await UniTask.CompletedTask;
             }
 
             /// <summary>
