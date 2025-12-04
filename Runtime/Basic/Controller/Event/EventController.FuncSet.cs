@@ -24,9 +24,9 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Reflection;
 
 using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
@@ -84,7 +84,7 @@ namespace GameEngine
         /// <param name="methodInfo">函数对象</param>
         /// <param name="eventID">事件标识</param>
         /// <param name="automatically">自动装载状态标识</param>
-        internal void AddEventSubscribeBindingCallInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int eventID, bool automatically)
+        internal void AddEventSubscribeBindingCallInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int eventID, bool automatically)
         {
             if (false == _eventSubscribeBindingCaches.TryGetValue(targetType, out IDictionary<string, EventCallMethodInfo> eventCallMethodInfos))
             {
@@ -112,7 +112,7 @@ namespace GameEngine
         /// <param name="methodInfo">函数对象</param>
         /// <param name="eventDataType">事件数据类型</param>
         /// <param name="automatically">自动装载状态标识</param>
-        internal void AddEventSubscribeBindingCallInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType eventDataType, bool automatically)
+        internal void AddEventSubscribeBindingCallInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType eventDataType, bool automatically)
         {
             if (false == _eventSubscribeBindingCaches.TryGetValue(targetType, out IDictionary<string, EventCallMethodInfo> eventCallMethodInfos))
             {

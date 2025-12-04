@@ -23,9 +23,9 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Reflection;
 
 using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
@@ -158,7 +158,7 @@ namespace GameEngine
         /// <param name="targetType">目标对象类型</param>
         /// <param name="methodInfo">函数对象</param>
         /// <param name="eventID">事件标识</param>
-        private void AddEventDistributeCallInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int eventID)
+        private void AddEventDistributeCallInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int eventID)
         {
             EventCallMethodInfo info = new EventCallMethodInfo(fullname, targetType, methodInfo, eventID);
 
@@ -184,7 +184,7 @@ namespace GameEngine
         /// <param name="targetType">目标对象类型</param>
         /// <param name="methodInfo">函数对象</param>
         /// <param name="eventDataType">事件数据类型</param>
-        private void AddEventDistributeCallInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType eventDataType)
+        private void AddEventDistributeCallInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType eventDataType)
         {
             EventCallMethodInfo info = new EventCallMethodInfo(fullname, targetType, methodInfo, eventDataType);
 

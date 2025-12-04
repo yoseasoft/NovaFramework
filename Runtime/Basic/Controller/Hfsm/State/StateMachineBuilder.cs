@@ -24,9 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-
-using SystemFieldInfo = System.Reflection.FieldInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
+using System.Reflection;
 
 namespace GameEngine.HFSM
 {
@@ -54,11 +52,11 @@ namespace GameEngine.HFSM
             if (null == state) return;
             if (!visited.Add(state)) return; // State is already wired
 
-            SystemBindingFlags flags = SystemBindingFlags.Instance | SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.FlattenHierarchy;
-            SystemFieldInfo machineField = typeof(State).GetField(State.NameOfStateMachineField, flags);
+            BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy;
+            FieldInfo machineField = typeof(State).GetField(State.NameOfStateMachineField, flags);
             if (null != machineField) machineField.SetValue(state, machine);
 
-            foreach (SystemFieldInfo field in state.GetType().GetFields(flags))
+            foreach (FieldInfo field in state.GetType().GetFields(flags))
             {
                 if (false == typeof(State).IsAssignableFrom(field.FieldType)) continue; // Only consider fields that are State
                 if (State.NameOfParentStateField == field.Name) continue; // Skip back-edge to parent

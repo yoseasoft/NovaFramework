@@ -24,9 +24,8 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-
-using SystemTask = System.Threading.Tasks.Task;
-using SystemCancellationToken = System.Threading.CancellationToken;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GameEngine.HFSM
 {
@@ -37,12 +36,12 @@ namespace GameEngine.HFSM
     public class ParallelStatePhase : IStateSequence
     {
         private readonly IList<StatePhaseStep> _steps;
-        private readonly SystemCancellationToken _cancellationToken;
-        private IList<SystemTask> _tasks;
+        private readonly CancellationToken _cancellationToken;
+        private IList<Task> _tasks;
 
         public bool IsDone { get; private set; }
 
-        public ParallelStatePhase(IList<StatePhaseStep> steps, SystemCancellationToken cancellationToken)
+        public ParallelStatePhase(IList<StatePhaseStep> steps, CancellationToken cancellationToken)
         {
             _steps = steps;
             _cancellationToken = cancellationToken;
@@ -57,7 +56,7 @@ namespace GameEngine.HFSM
                 return;
             }
 
-            _tasks = new List<SystemTask>(_steps.Count);
+            _tasks = new List<Task>(_steps.Count);
             for (int n = 0; n < _steps.Count; ++n)
             {
                 _tasks.Add(_steps[n](_cancellationToken));
@@ -69,7 +68,7 @@ namespace GameEngine.HFSM
             // 步骤结束直接返回true
             if (IsDone) return true;
 
-            IsDone = null == _tasks || ((List<SystemTask>) _tasks).TrueForAll(t => t.IsCompleted);
+            IsDone = null == _tasks || ((List<Task>) _tasks).TrueForAll(t => t.IsCompleted);
 
             return IsDone;
         }

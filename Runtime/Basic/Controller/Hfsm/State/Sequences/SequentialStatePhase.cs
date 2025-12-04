@@ -24,9 +24,8 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-
-using SystemTask = System.Threading.Tasks.Task;
-using SystemCancellationToken = System.Threading.CancellationToken;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GameEngine.HFSM
 {
@@ -37,13 +36,13 @@ namespace GameEngine.HFSM
     public class SequentialStatePhase : IStateSequence
     {
         private readonly IList<StatePhaseStep> _steps;
-        private readonly SystemCancellationToken _cancellationToken;
+        private readonly CancellationToken _cancellationToken;
         private int _index = -1;
-        private SystemTask _current;
+        private Task _current;
 
         public bool IsDone { get; private set; }
 
-        public SequentialStatePhase(IList<StatePhaseStep> steps, SystemCancellationToken cancellationToken)
+        public SequentialStatePhase(IList<StatePhaseStep> steps, CancellationToken cancellationToken)
         {
             _steps = steps;
             _cancellationToken = cancellationToken;

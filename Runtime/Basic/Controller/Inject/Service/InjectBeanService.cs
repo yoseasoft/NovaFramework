@@ -30,8 +30,6 @@ using SystemDelegate = System.Delegate;
 using SystemAttribute = System.Attribute;
 using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
 using SystemAttributeTargets = System.AttributeTargets;
-using SystemBindingFlags = System.Reflection.BindingFlags;
-using SystemMethodInfo = System.Reflection.MethodInfo;
 
 namespace GameEngine
 {
@@ -76,10 +74,10 @@ namespace GameEngine
             _serviceProcessCleanupCallbacks = new List<SystemDelegate>();
 
             SystemType classType = typeof(InjectBeanService);
-            SystemMethodInfo[] methods = classType.GetMethods(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
+            MethodInfo[] methods = classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             for (int n = 0; n < methods.Length; ++n)
             {
-                SystemMethodInfo method = methods[n];
+                MethodInfo method = methods[n];
                 IEnumerable<SystemAttribute> e = method.GetCustomAttributes();
                 foreach (SystemAttribute attr in e)
                 {

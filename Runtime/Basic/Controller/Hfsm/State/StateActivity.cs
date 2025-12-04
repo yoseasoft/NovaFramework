@@ -23,8 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemTask = System.Threading.Tasks.Task;
-using SystemCancellationToken = System.Threading.CancellationToken;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GameEngine.HFSM
 {
@@ -53,12 +53,12 @@ namespace GameEngine.HFSM
         /// <summary>
         /// 状态异步激活操作函数
         /// </summary>
-        SystemTask ActivateAsync(SystemCancellationToken cancellationToken);
+        Task ActivateAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// 状态异步退出激活操作函数
         /// </summary>
-        SystemTask DeactivateAsync(SystemCancellationToken cancellationToken);
+        Task DeactivateAsync(CancellationToken cancellationToken);
     }
 
     /// <summary>
@@ -75,7 +75,7 @@ namespace GameEngine.HFSM
         /// <summary>
         /// 状态异步激活操作函数
         /// </summary>
-        public virtual async SystemTask ActivateAsync(SystemCancellationToken cancellationToken)
+        public virtual async Task ActivateAsync(CancellationToken cancellationToken)
         {
             // 若已激活或处于过渡状态，则跳过激活操作
             if (StateActivityMode.Inactive != ActivityMode) return;
@@ -83,7 +83,7 @@ namespace GameEngine.HFSM
             // 将该活动标记为正在激活
             ActivityMode = StateActivityMode.Activating;
             // 只需要等待已完成的任务即可
-            await SystemTask.CompletedTask;
+            await Task.CompletedTask;
             // 然后将活动模式设为激活
             ActivityMode = StateActivityMode.Active;
         }
@@ -91,7 +91,7 @@ namespace GameEngine.HFSM
         /// <summary>
         /// 状态异步退出激活操作函数
         /// </summary>
-        public virtual async SystemTask DeactivateAsync(SystemCancellationToken cancellationToken)
+        public virtual async Task DeactivateAsync(CancellationToken cancellationToken)
         {
             // 仅在其初始为激活状态时才可以停用
             if (StateActivityMode.Active != ActivityMode) return;
@@ -99,7 +99,7 @@ namespace GameEngine.HFSM
             // 将该活动标记为停用
             ActivityMode = StateActivityMode.Deactivating;
             // 等待任务完成
-            await SystemTask.CompletedTask;
+            await Task.CompletedTask;
             // 最后将模式设为非激活状态
             ActivityMode = StateActivityMode.Inactive;
         }

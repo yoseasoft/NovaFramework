@@ -28,8 +28,6 @@ using System.Reflection;
 using SystemType = System.Type;
 using SystemAction = System.Action;
 using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemParameterInfo = System.Reflection.ParameterInfo;
 
 namespace GameEngine
 {
@@ -99,7 +97,7 @@ namespace GameEngine
         /// <param name="methodName">函数名称</param>
         public void Call(object obj, string methodName)
         {
-            SystemMethodInfo methodInfo = obj.GetType().GetMethod(methodName);
+            MethodInfo methodInfo = obj.GetType().GetMethod(methodName);
             if (null == methodInfo)
             {
                 CallExtend(obj, methodName);
@@ -108,7 +106,7 @@ namespace GameEngine
             {
                 if (typeof(void) == methodInfo.ReturnType)
                 {
-                    SystemParameterInfo[] parameters = methodInfo.GetParameters();
+                    ParameterInfo[] parameters = methodInfo.GetParameters();
                     if (null != parameters && parameters.Length > 0)
                     {
                         Debugger.Warn("The method '{%t}.{%s}' has multiple params '{%d}', cannot invoke with current process.",

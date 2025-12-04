@@ -22,9 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -64,7 +63,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="classType">对象类型</param>
         /// <returns>若对象类型在核心作用域的命名空间中则返回true，否则返回false</returns>
-        public static bool IsCoreScopeClassType(SystemType classType)
+        public static bool IsCoreScopeClassType(Type classType)
         {
             string ns = classType.Namespace;
             for (int n = 0; n < CoreScopeNamespaces.Count; ++n)

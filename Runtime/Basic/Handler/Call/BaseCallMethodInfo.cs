@@ -24,9 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
+using System;
+using System.Reflection;
 
 namespace GameEngine
 {
@@ -46,15 +45,15 @@ namespace GameEngine
         /// <summary>
         /// 回调函数的目标对象类型
         /// </summary>
-        protected readonly SystemType _targetType;
+        protected readonly Type _targetType;
         /// <summary>
         /// 回调函数的函数信息实例
         /// </summary>
-        protected readonly SystemMethodInfo _methodInfo;
+        protected readonly MethodInfo _methodInfo;
         /// <summary>
         /// 回调函数的动态构建回调句柄
         /// </summary>
-        protected readonly SystemDelegate _callback;
+        protected readonly Delegate _callback;
         /// <summary>
         /// 回调函数的自动注册状态标识
         /// </summary>
@@ -74,9 +73,9 @@ namespace GameEngine
 
         public IBean TargetObject => _targetObject;
         public string Fullname => _fullname;
-        public SystemType TargetType => _targetType;
-        public SystemMethodInfo MethodInfo => _methodInfo;
-        public SystemDelegate Callback => _callback;
+        public Type TargetType => _targetType;
+        public MethodInfo MethodInfo => _methodInfo;
+        public Delegate Callback => _callback;
         public bool Automatically => _automatically;
         public bool IsExtensionType => _isExtensionType;
         public bool IsNullParameterType => _isNullParameterType;
@@ -84,14 +83,14 @@ namespace GameEngine
         /// <summary>
         /// 构建的目标函数为静态函数时，提供的构造函数
         /// </summary>
-        protected BaseCallMethodInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, bool automatically)
+        protected BaseCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, bool automatically)
             : this (null, fullname, targetType, methodInfo, automatically)
         { }
 
         /// <summary>
         /// 构建的目标函数为普通函数时，提供的构造函数
         /// </summary>
-        protected BaseCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, SystemMethodInfo methodInfo, bool automatically)
+        protected BaseCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, bool automatically)
         {
             Debugger.Assert(null != targetType || !automatically, NovaEngine.ErrorText.InvalidArguments);
 
@@ -114,7 +113,7 @@ namespace GameEngine
             _isExtensionType = NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo);
             _isNullParameterType = CheckFunctionFormatWasNullParameterType(methodInfo);
 
-            SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodInfo);
+            Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodInfo);
             Debugger.Assert(callback, NovaEngine.ErrorText.InvalidArguments);
             _callback = callback;
         }
@@ -124,7 +123,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">函数对象</param>
         /// <returns>若为无效格式类型则返回true，否则返回false</returns>
-        protected virtual bool CheckFunctionFormatWasInvalidType(SystemMethodInfo methodInfo)
+        protected virtual bool CheckFunctionFormatWasInvalidType(MethodInfo methodInfo)
         {
             return Loader.Inspecting.CodeInspector.CheckFunctionFormatOfTarget(methodInfo);
         }
@@ -134,7 +133,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">函数对象</param>
         /// <returns>若符合无参格式则返回true，否则返回false</returns>
-        protected virtual bool CheckFunctionFormatWasNullParameterType(SystemMethodInfo methodInfo)
+        protected virtual bool CheckFunctionFormatWasNullParameterType(MethodInfo methodInfo)
         {
             return Loader.Inspecting.CodeInspector.CheckFunctionFormatOfTargetWithNullParameterType(methodInfo);
         }

@@ -23,8 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemTask = System.Threading.Tasks.Task;
-using SystemCancellationToken = System.Threading.CancellationToken;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GameEngine.HFSM
 {
@@ -51,7 +51,7 @@ namespace GameEngine.HFSM
     }
 
     // One activity operation (activate OR deactivate) to run for this phase.
-    public delegate SystemTask StatePhaseStep(SystemCancellationToken cancellationToken);
+    public delegate Task StatePhaseStep(CancellationToken cancellationToken);
 
     /// <summary>
     /// 空白状态序列对象类

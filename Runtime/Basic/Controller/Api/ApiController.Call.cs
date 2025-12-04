@@ -24,11 +24,10 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Reflection;
 
 using SystemType = System.Type;
 using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemParameterInfo = System.Reflection.ParameterInfo;
 
 namespace GameEngine
 {
@@ -177,7 +176,7 @@ namespace GameEngine
             info.IsExtension = NovaEngine.Utility.Reflection.IsTypeOfExtension(callback.Method);
 
             int pos = 0;
-            SystemParameterInfo[] parameters = callback.Method.GetParameters();
+            ParameterInfo[] parameters = callback.Method.GetParameters();
             if (info.IsExtension)
             {
                 // 如果是扩展类型函数，则记录一下扩展的目标对象类型

@@ -24,11 +24,9 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Threading;
 
 using SystemAction = System.Action;
-using SystemTask = System.Threading.Tasks.Task;
-using SystemCancellationToken = System.Threading.CancellationToken;
-using SystemCancellationTokenSource = System.Threading.CancellationTokenSource;
 
 namespace GameEngine.HFSM
 {
@@ -50,7 +48,7 @@ namespace GameEngine.HFSM
         /// </summary>
         private State _lastFrom, _lastTo;
 
-        private SystemCancellationTokenSource _cancellationTokenSource;
+        private CancellationTokenSource _cancellationTokenSource;
 
         private readonly bool _useSequential = true; // set false to use parallel
 
@@ -88,7 +86,7 @@ namespace GameEngine.HFSM
         void BeginTransition(State from, State to)
         {
             _cancellationTokenSource?.Cancel();
-            _cancellationTokenSource = new SystemCancellationTokenSource();
+            _cancellationTokenSource = new CancellationTokenSource();
 
             State lca = Lca(from, to);
             IList<State> exitChain = StatesToExit(from, lca);
