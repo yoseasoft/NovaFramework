@@ -23,13 +23,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using System.Customize.Extension;
-
-using SystemType = System.Type;
-using SystemIntPtr = System.IntPtr;
 
 namespace NovaEngine
 {
@@ -75,7 +73,7 @@ namespace NovaEngine
         /// <returns>返回转换后的参数对象实例</returns>
         private delegate string TextFormatParameterConvertionCallback(object obj);
 
-        [System.ThreadStatic]
+        [ThreadStatic]
         private static StringBuilder _cachedStringBuilder = new StringBuilder(4096);
 
         #region 文本格式的参数类型解析及转换处理接口函数定义
@@ -309,36 +307,36 @@ namespace NovaEngine
 
         private static string _TextFormatParameterConvertionCallback_Boolean(object obj)
         {
-            bool b = System.Convert.ToBoolean(obj);
+            bool b = Convert.ToBoolean(obj);
             return b ? Definition.CString.True : Definition.CString.False;
         }
 
         private static string _TextFormatParameterConvertionCallback_DecimalInteger(object obj)
         {
-            long n = System.Convert.ToInt64(obj);
+            long n = Convert.ToInt64(obj);
             return n.ToString();
         }
 
         private static string _TextFormatParameterConvertionCallback_OctalInteger(object obj)
         {
-            return System.Convert.ToString(System.Convert.ToInt64(obj), 8);
+            return Convert.ToString(Convert.ToInt64(obj), 8);
         }
 
         private static string _TextFormatParameterConvertionCallback_HexadecimalInteger(object obj)
         {
-            // return System.Convert.ToString(System.Convert.ToInt64(obj), 16);
+            // return Convert.ToString(Convert.ToInt64(obj), 16);
             return string.Format("{0:X8}", obj);
         }
 
         private static string _TextFormatParameterConvertionCallback_CommonFloat(object obj)
         {
-            double d = System.Convert.ToDouble(obj);
+            double d = Convert.ToDouble(obj);
             return d.ToString();
         }
 
         private static string _TextFormatParameterConvertionCallback_ScientificNotationFloat(object obj)
         {
-            double d = System.Convert.ToDouble(obj);
+            double d = Convert.ToDouble(obj);
             return d.ToString("E");
         }
 
@@ -346,7 +344,7 @@ namespace NovaEngine
         {
             if (obj is char)
             {
-                return System.Convert.ToChar(obj).ToString();
+                return Convert.ToChar(obj).ToString();
             }
 
             string str = obj.ToString();
@@ -371,7 +369,7 @@ namespace NovaEngine
             // unsafe { fixed (object *p = &obj) { Console.WriteLine((long) p); } } // 输出对象的内存地址指针值
 
             GCHandle handle = GCHandle.Alloc(obj); // GCHandle.Alloc(obj, GCHandleType.Pinned);
-            SystemIntPtr address = GCHandle.ToIntPtr(handle);
+            IntPtr address = GCHandle.ToIntPtr(handle);
             handle.Free();
 
             // 将内存地址转换为十六进制整型数值的表示方式再返回

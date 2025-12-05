@@ -23,9 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace NovaEngine
 {
@@ -58,7 +58,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
         /// <returns>若目标对象类型为基础数据类型则返回true，否则返回false</returns>
-        private static bool IsBasicDataType(SystemType targetType)
+        private static bool IsBasicDataType(Type targetType)
         {
             // 值类型
             if (targetType.IsValueType)
@@ -82,7 +82,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
         /// <returns>若目标对象类型为系统库定义对象类型则返回true，否则返回false</returns>
-        private static bool IsCoreSystemObjectType(SystemType targetType)
+        private static bool IsCoreSystemObjectType(Type targetType)
         {
             string ns = targetType.Namespace;
 
@@ -100,7 +100,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
         /// <returns>若目标对象类型为容器类型则返回true，否则返回false</returns>
-        private static bool IsContainerObjectType(SystemType targetType)
+        private static bool IsContainerObjectType(Type targetType)
         {
             // 数组类型
             if (targetType.IsArray)
@@ -121,9 +121,9 @@ namespace NovaEngine
                 }
             }
 
-            if (typeof(System.Collections.ICollection).IsAssignableFrom(targetType) ||
-                typeof(System.Collections.IList).IsAssignableFrom(targetType) ||
-                typeof(System.Collections.IDictionary).IsAssignableFrom(targetType))
+            if (typeof(ICollection).IsAssignableFrom(targetType) ||
+                typeof(IList).IsAssignableFrom(targetType) ||
+                typeof(IDictionary).IsAssignableFrom(targetType))
             {
                 return true;
             }

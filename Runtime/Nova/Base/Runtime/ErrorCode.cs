@@ -22,10 +22,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Reflection;
 using System.Customize.Extension;
-
-using SystemType = System.Type;
 
 namespace NovaEngine
 {
@@ -196,7 +195,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="exceptionType">异常类型</param>
         /// <returns>返回异常类型对应的错误码值，若类型解析失败，则返回0</returns>
-        public static int GetErrorCodeByExceptionType(SystemType exceptionType)
+        public static int GetErrorCodeByExceptionType(Type exceptionType)
         {
             return GetErrorCodeByExceptionName(CFrameworkException.GetExceptionDescriptorName(exceptionType));
         }
@@ -213,7 +212,7 @@ namespace NovaEngine
                 return UNKNOWN;
             }
 
-            SystemType errorCodeType = typeof(ErrorCode);
+            Type errorCodeType = typeof(ErrorCode);
             // 注意，“const”被隐式的认为是静态属性，因此在反射时需要设置“static”标识
             FieldInfo field = errorCodeType.GetField(exceptionName, BindingFlags.Public | BindingFlags.Static);
             if (null == field)

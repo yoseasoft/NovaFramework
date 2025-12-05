@@ -23,11 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Reflection;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemDelegate = System.Delegate;
 
 namespace NovaEngine
 {
@@ -43,21 +40,21 @@ namespace NovaEngine
         private static bool TryGetSystemReflectionObjectInfo(object obj, out string text)
         {
             // 处理类型对象的情况
-            if (obj is SystemType __type)
+            if (obj is Type __type)
             {
                 text = Utility.Text.GetFullName(__type);
                 return true;
             }
 
             // 处理特性对象的情况
-            if (obj is SystemAttribute __attribute)
+            if (obj is Attribute __attribute)
             {
                 text = Utility.Text.GetFullName(__attribute);
                 return true;
             }
 
             // 处理委托对象的情况
-            if (obj is SystemDelegate __delegate)
+            if (obj is Delegate __delegate)
             {
                 text = Utility.Text.GetFullName(__delegate);
                 return true;

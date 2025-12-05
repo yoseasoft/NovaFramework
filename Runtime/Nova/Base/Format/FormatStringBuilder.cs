@@ -44,6 +44,10 @@ namespace NovaEngine
     /// 请考虑在这些条件下使用该 <b>FormatStringBuilder</b> 类：
     /// 当你期望代码在设计时对字符串进行未知数量的更改（例如，使用循环连接包含用户输入的随机字符串时）。
     /// 当你期望代码对字符串进行大量更改时。
+    /// <br/>
+    /// 【须知】
+    /// 该对象类的性能相较于原生 <b>StringBuilder</b> 对象类，相差非常多。
+    /// 该对象类的优势仅仅在于，当您需要测试复杂数据结构，例如：对象实例，字典、列表等容器，或多样化的数字表现形式时，使用该类的格式化方式会更方便。
     /// </summary>
     public sealed class FormatStringBuilder
     {
@@ -54,7 +58,7 @@ namespace NovaEngine
         /// <summary>
         /// 构建器缓存列表最大容量
         /// </summary>
-        private const int MaxCacheSize = 16;
+        private const int MaxCacheSize = 8;
 
         /// <summary>
         /// 内置默认系统提供的可变字符串构建器对象实例

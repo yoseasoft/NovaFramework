@@ -24,17 +24,16 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
+using System.Reflection;
 
 namespace NovaEngine
 {
     /// <summary>
     /// 非混淆类型标识的属性类，用于声明给定的类，接口或函数不可参与混淆工作
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class | SystemAttributeTargets.Interface | SystemAttributeTargets.Struct | SystemAttributeTargets.Method | SystemAttributeTargets.Enum)]
-    public class NoConfusedAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct | AttributeTargets.Method | AttributeTargets.Enum)]
+    public class NoConfusedAttribute : Attribute
     {
         public NoConfusedAttribute() : base()
         {
@@ -44,8 +43,8 @@ namespace NovaEngine
     /// <summary>
     /// 非支持类型标识的属性类，用于声明当前版本中的指定函数不被支持
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method)]
-    public class NoSupportedAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method)]
+    public class NoSupportedAttribute : Attribute
     {
         public NoSupportedAttribute() : base()
         {
@@ -55,8 +54,8 @@ namespace NovaEngine
     /// <summary>
     /// 废弃类型标识的属性类，用于声明一个对象类，接口或方法在当前版本中被废弃，不推荐使用
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class | SystemAttributeTargets.Interface | SystemAttributeTargets.Struct | SystemAttributeTargets.Method)]
-    public class DeprecatedAttribute : SystemAttribute // System.ObsoleteAttribute
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct | AttributeTargets.Method)]
+    public class DeprecatedAttribute : Attribute // ObsoleteAttribute
     {
         public DeprecatedAttribute(string message) : base() // base(message, true)
         {
@@ -66,7 +65,7 @@ namespace NovaEngine
     /// <summary>
     /// 枚举描述类型标识的属性类，用于声明枚举属性的字符串描述文本
     /// </summary>
-    public sealed class EnumDescriptionAttribute : SystemAttribute
+    public sealed class EnumDescriptionAttribute : Attribute
     {
         /// <summary>
         /// 枚举描述内容
@@ -91,7 +90,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="value">枚举类型实例</param>
         /// <returns>返回描述内容，若未定义该属性则返回枚举名</returns>
-        public static string GetDescription(System.Enum value)
+        public static string GetDescription(Enum value)
         {
             if (null == value)
             {
@@ -99,7 +98,7 @@ namespace NovaEngine
             }
 
             string description = value.ToString();
-            System.Reflection.FieldInfo fieldInfo = value.GetType().GetField(description);
+            FieldInfo fieldInfo = value.GetType().GetField(description);
             EnumDescriptionAttribute[] attributes = (EnumDescriptionAttribute[]) fieldInfo.GetCustomAttributes(typeof(EnumDescriptionAttribute), false);
             if (null != attributes && attributes.Length > 0)
             {

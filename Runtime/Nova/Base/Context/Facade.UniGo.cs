@@ -22,8 +22,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-
 using UnityObject = UnityEngine.Object;
 using UnityGameObject = UnityEngine.GameObject;
 using UnityComponent = UnityEngine.Component;

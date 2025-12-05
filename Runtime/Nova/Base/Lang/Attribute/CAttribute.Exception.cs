@@ -22,17 +22,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace NovaEngine
 {
     /// <summary>
     /// 错误码描述属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Field)]
-    public class ErrorCodeDescriptionAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Field)]
+    public class ErrorCodeDescriptionAttribute : Attribute
     {
         /// <summary>
         /// 错误码描述内容

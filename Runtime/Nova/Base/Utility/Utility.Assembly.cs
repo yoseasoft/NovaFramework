@@ -25,11 +25,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Customize.Extension;
 
-using SystemType = System.Type;
-using SystemStringComparer = System.StringComparer;
+using SystemAssembly = System.Reflection.Assembly;
 
 namespace NovaEngine
 {
@@ -41,24 +41,24 @@ namespace NovaEngine
         /// </summary>
         public static class Assembly
         {
-            // private static readonly System.Reflection.Assembly[] _assemblies = null;
-            private static readonly IDictionary<string, System.Reflection.Assembly> _cachedAssemblies = null;
-            private static readonly IDictionary<string, SystemType> _cachedTypes = null;
+            // private static readonly SystemAssembly[] _assemblies = null;
+            private static readonly IDictionary<string, SystemAssembly> _cachedAssemblies = null;
+            private static readonly IDictionary<string, Type> _cachedTypes = null;
 
             static Assembly()
             {
-                // _assemblies = SystemAppDomain.CurrentDomain.GetAssemblies();
-                _cachedAssemblies = new Dictionary<string, System.Reflection.Assembly>();
-                _cachedTypes = new Dictionary<string, SystemType>(SystemStringComparer.Ordinal);
+                // _assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                _cachedAssemblies = new Dictionary<string, SystemAssembly>();
+                _cachedTypes = new Dictionary<string, Type>(StringComparer.Ordinal);
             }
 
             /// <summary>
             /// 将指定的程序集注册到当前域程序集缓存容器中
             /// </summary>
             /// <param name="assembly">程序集实例</param>
-            public static void RegisterCurrentDomainAssembly(System.Reflection.Assembly assembly)
+            public static void RegisterCurrentDomainAssembly(SystemAssembly assembly)
             {
-                Dictionary<string, System.Reflection.Assembly> dictionary = new Dictionary<string, System.Reflection.Assembly>();
+                Dictionary<string, SystemAssembly> dictionary = new Dictionary<string, SystemAssembly>();
                 dictionary.Add(assembly.GetName().Name, assembly);
 
                 RegisterCurrentDomainAssemblies(dictionary, true);
@@ -70,7 +70,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="assemblies">目标程序集</param>
             /// <param name="reload">重载标识</param>
-            public static void RegisterCurrentDomainAssemblies(IReadOnlyDictionary<string, System.Reflection.Assembly> assemblies, bool reload)
+            public static void RegisterCurrentDomainAssemblies(IReadOnlyDictionary<string, SystemAssembly> assemblies, bool reload)
             {
                 if (reload)
                 {
@@ -78,7 +78,7 @@ namespace NovaEngine
                     UnregisterCurrentDomainAssemblies(Collection.ToListForKeys(assemblies));
                 }
 
-                foreach (KeyValuePair<string, System.Reflection.Assembly> kvp in assemblies)
+                foreach (KeyValuePair<string, SystemAssembly> kvp in assemblies)
                 {
                     // 在非重载模式下，重复加载将移除旧包
                     if (_cachedAssemblies.ContainsKey(kvp.Key))
@@ -129,9 +129,9 @@ namespace NovaEngine
             /// </summary>
             /// <param name="assemblyName">程序集名称</param>
             /// <returns>返回该名称对应的程序集实例，若不存在则返回null</returns>
-            public static System.Reflection.Assembly GetAssembly(string assemblyName)
+            public static SystemAssembly GetAssembly(string assemblyName)
             {
-                if (_cachedAssemblies.TryGetValue(assemblyName, out System.Reflection.Assembly assembly))
+                if (_cachedAssemblies.TryGetValue(assemblyName, out SystemAssembly assembly))
                 {
                     return assembly;
                 }
@@ -143,7 +143,7 @@ namespace NovaEngine
             /// 获取已加载的程序集
             /// </summary>
             /// <returns>返回当前加载的程序集列表</returns>
-            public static IList<System.Reflection.Assembly> GetAllAssemblies()
+            public static IList<SystemAssembly> GetAllAssemblies()
             {
                 return Collection.ToListForValues(_cachedAssemblies);
             }
@@ -152,10 +152,10 @@ namespace NovaEngine
             /// 获取已加载的程序集的全部类型
             /// </summary>
             /// <returns>返回当前加载的程序集全部类型集合</returns>
-            public static SystemType[] GetTypes()
+            public static Type[] GetTypes()
             {
-                List<SystemType> results = new List<SystemType>();
-                foreach (KeyValuePair<string, System.Reflection.Assembly> kvp in _cachedAssemblies)
+                List<Type> results = new List<Type>();
+                foreach (KeyValuePair<string, SystemAssembly> kvp in _cachedAssemblies)
                 {
                     results.AddRange(kvp.Value.GetTypes());
                 }
@@ -167,7 +167,7 @@ namespace NovaEngine
             /// 获取已加载的程序集的全部类型
             /// </summary>
             /// <param name="results">类型集合输出实例</param>
-            public static void GetTypes(List<SystemType> results)
+            public static void GetTypes(List<Type> results)
             {
                 if (null == results)
                 {
@@ -175,7 +175,7 @@ namespace NovaEngine
                 }
 
                 results.Clear();
-                foreach (KeyValuePair<string, System.Reflection.Assembly> kvp in _cachedAssemblies)
+                foreach (KeyValuePair<string, SystemAssembly> kvp in _cachedAssemblies)
                 {
                     results.AddRange(kvp.Value.GetTypes());
                 }
@@ -186,29 +186,29 @@ namespace NovaEngine
             /// </summary>
             /// <param name="typeName">类型名称</param>
             /// <returns>返回程序集中指定类型名称的对应定义类型</returns>
-            public static SystemType GetType(string typeName)
+            public static Type GetType(string typeName)
             {
                 if (typeName.IsNullOrEmpty())
                 {
                     throw new CFrameworkException("Type name is invalid.");
                 }
 
-                SystemType type = null;
+                Type type = null;
                 if (_cachedTypes.TryGetValue(typeName, out type))
                 {
                     return type;
                 }
 
-                type = SystemType.GetType(typeName);
+                type = Type.GetType(typeName);
                 if (null != type)
                 {
                     _cachedTypes.Add(typeName, type);
                     return type;
                 }
 
-                foreach (KeyValuePair<string, System.Reflection.Assembly> kvp in _cachedAssemblies)
+                foreach (KeyValuePair<string, SystemAssembly> kvp in _cachedAssemblies)
                 {
-                    type = SystemType.GetType(Text.Format("{%s}, {%s}", typeName, kvp.Value.FullName));
+                    type = Type.GetType(Text.Format("{%s}, {%s}", typeName, kvp.Value.FullName));
                     if (null != type)
                     {
                         _cachedTypes.Add(typeName, type);
@@ -225,10 +225,10 @@ namespace NovaEngine
             /// <param name="assemblyName">程序集名称</param>
             /// <param name="parentType">父类类型</param>
             /// <returns>返回所有子类类型的列表，若查找失败则返回null</returns>
-            public static IList<SystemType> GetTypes(string assemblyName, SystemType parentType)
+            public static IList<Type> GetTypes(string assemblyName, Type parentType)
             {
-                System.Reflection.Assembly targetAssembly = null;
-                foreach (KeyValuePair<string, System.Reflection.Assembly> kvp in _cachedAssemblies)
+                SystemAssembly targetAssembly = null;
+                foreach (KeyValuePair<string, SystemAssembly> kvp in _cachedAssemblies)
                 {
                     if (kvp.Key == assemblyName)
                     {
@@ -242,11 +242,11 @@ namespace NovaEngine
                     return null;
                 }
 
-                IList<SystemType> result = new List<SystemType>();
-                SystemType[] allTypes = targetAssembly.GetTypes();
+                IList<Type> result = new List<Type>();
+                Type[] allTypes = targetAssembly.GetTypes();
                 for (int n = 0; n < allTypes.Length; ++n)
                 {
-                    SystemType targetType = allTypes[n];
+                    Type targetType = allTypes[n];
                     // 开放类 & 继承自指定父类 & 可实例化类
                     if (targetType.IsPublic && parentType.IsAssignableFrom(targetType) && Reflection.IsTypeOfInstantiableClass(targetType))
                     {

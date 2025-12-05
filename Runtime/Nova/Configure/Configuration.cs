@@ -27,8 +27,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-
-using SystemStringBuilder = System.Text.StringBuilder;
+using System.Text;
 
 namespace NovaEngine
 {
@@ -87,7 +86,7 @@ namespace NovaEngine
         /// <returns>返回字符串信息</returns>
         public static string ToCString()
         {
-            SystemStringBuilder sb = new SystemStringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.Append("PROPERTIES={");
             System.Reflection.FieldInfo[] fields = typeof(Configuration).GetFields();
             for (int n = 0; n < fields.Length; ++n)

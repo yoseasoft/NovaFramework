@@ -24,10 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
-
-using SystemArray = System.Array;
 
 namespace NovaEngine
 {
@@ -257,7 +256,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="array">一维数组，它是从链表复制的元素的目标，数组必须具有从零开始的索引</param>
         /// <param name="index">数组中从零开始的索引，从此处开始复制</param>
-        public void CopyTo(SystemArray array, int index)
+        public void CopyTo(Array array, int index)
         {
             ((ICollection) _linkedList).CopyTo(array, index);
         }

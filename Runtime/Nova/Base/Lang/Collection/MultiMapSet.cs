@@ -22,9 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemArray = System.Array;
 
 namespace NovaEngine
 {
@@ -128,7 +127,7 @@ namespace NovaEngine
             HashSet<TValue> set;
             if (false == TryGetValue(key, out set))
             {
-                return SystemArray.Empty<TValue>();
+                return Array.Empty<TValue>();
             }
 
             return Utility.Collection.ToArray<TValue>(set);

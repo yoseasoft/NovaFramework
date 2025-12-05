@@ -23,15 +23,12 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+using System.Text;
 using System.Reflection;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Customize.Extension;
-
-using SystemType = System.Type;
-using SystemAction = System.Action;
-using SystemDelegate = System.Delegate;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace NovaEngine
 {
@@ -85,7 +82,7 @@ namespace NovaEngine
             /// <param name="methodName">函数名称</param>
             /// <param name="args">函数参数列表</param>
             /// <returns>返回函数的调用返回值，若函数调用失败返回null</returns>
-            public static object CallMethod(SystemType classType, string methodName, params object[] args)
+            public static object CallMethod(Type classType, string methodName, params object[] args)
             {
                 // using Unity.VisualScripting.FullSerializer.Internal;
                 // MethodInfo methodInfo = classType.GetDeclaredMethod(methodName);
@@ -109,7 +106,7 @@ namespace NovaEngine
             /// <returns>返回函数的调用返回值，若函数调用失败返回null</returns>
             public static object CallMethod(string className, string methodName, params object[] args)
             {
-                SystemType type = Assembly.GetType(className);
+                Type type = Assembly.GetType(className);
                 if (null == type)
                 {
                     Logger.Error("Could not found {%s} class type with current assemblies list, call that function {%s} failed.", className, methodName);
@@ -129,7 +126,7 @@ namespace NovaEngine
             /// <returns>返回函数的调用返回值，若函数调用失败返回null</returns>
             public static object CallAssemblyMethod(System.Reflection.Assembly assembly, string className, string methodName, params object[] args)
             {
-                SystemType type = assembly.GetType(className);
+                Type type = assembly.GetType(className);
                 MethodInfo methodInfo = type.GetMethod(methodName);
 
                 return CallMethod(null, methodInfo, args);
@@ -148,8 +145,7 @@ namespace NovaEngine
                     return memberName;
                 }
 
-                FormatStringBuilder fsb = FormatStringBuilder.Create();
-                SystemStringBuilder sb = new SystemStringBuilder();
+                StringBuilder sb = new StringBuilder();
                 int start = 0;
                 int pos = 1;
 
@@ -159,7 +155,7 @@ namespace NovaEngine
                     // 每个大写字符判定为一个新的单词的开始
                     // 从这里截取出上一个完整的单词
                     // 单词之间用‘_’进行连接
-                    if (System.Char.IsUpper(memberName[pos]))
+                    if (Char.IsUpper(memberName[pos]))
                     {
                         sub_name = memberName.Substring(start, pos - start);
                         if (sb.Length > 0) sb.Append(Definition.CCharacter.Underline);
@@ -186,7 +182,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="targetType">目标类型</param>
             /// <returns>若给定类型是一个结构体则返回true，否则返回false</returns>
-            public static bool IsTypeOfStruct(SystemType targetType)
+            public static bool IsTypeOfStruct(Type targetType)
             {
                 if (null == targetType) return false;
 
@@ -201,9 +197,9 @@ namespace NovaEngine
             /// </summary>
             /// <param name="targetType">目标类型</param>
             /// <returns>若给定类型是一个中间类则返回true，否则返回false</returns>
-            public static bool IsTypeOfCompilerGeneratedClass(SystemType targetType)
+            public static bool IsTypeOfCompilerGeneratedClass(Type targetType)
             {
-                SystemType compilerGeneratedAttribute = typeof(CompilerGeneratedAttribute);
+                Type compilerGeneratedAttribute = typeof(CompilerGeneratedAttribute);
                 return Collection.Any(targetType.GetCustomAttributes(compilerGeneratedAttribute, true));
             }
 
@@ -212,7 +208,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="targetType">目标类型</param>
             /// <returns>若给定类型是一个内部类则返回true，否则返回false</returns>
-            public static bool IsTypeOfInternalClass(SystemType targetType)
+            public static bool IsTypeOfInternalClass(Type targetType)
             {
                 if (null == targetType) return false;
 
@@ -231,7 +227,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="targetType">目标类型</param>
             /// <returns>若给定类型是一个可以实例化的类则返回true，否则返回false</returns>
-            public static bool IsTypeOfInstantiableClass(SystemType targetType)
+            public static bool IsTypeOfInstantiableClass(Type targetType)
             {
                 if (null == targetType) return false;
 
@@ -239,7 +235,7 @@ namespace NovaEngine
                     false == targetType.IsAbstract &&
                     // false == targetType.IsInterface && // 因为已经检查了是否为类类型，所以不用再次检查是否为接口类型
                     // targetType.IsPublic && // 允许实体对象被定义成保护类型
-                    null != targetType.GetConstructor(SystemType.EmptyTypes) // 要求必须有一个空参构造函数
+                    null != targetType.GetConstructor(Type.EmptyTypes) // 要求必须有一个空参构造函数
                    )
                 {
                     return true;
@@ -253,7 +249,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="targetType">目标类型</param>
             /// <returns>若给定类型是一个静态类则返回true，否则返回false</returns>
-            public static bool IsTypeOfStaticClass(SystemType targetType)
+            public static bool IsTypeOfStaticClass(Type targetType)
             {
                 if (null == targetType) return false;
 
@@ -268,15 +264,15 @@ namespace NovaEngine
             /// </summary>
             /// <param name="targetType">目标类型</param>
             /// <returns>若给定类型是一个Action类型则返回true，否则返回false</returns>
-            public static bool IsTypeOfAction(SystemType targetType)
+            public static bool IsTypeOfAction(Type targetType)
             {
-                if (typeof(SystemAction) == targetType)
+                if (typeof(Action) == targetType)
                 { return true; }
 
                 if (false == targetType.IsGenericType)
                 { return false; }
 
-                if (typeof(System.Action<>) == targetType.GetGenericTypeDefinition())
+                if (typeof(Action<>) == targetType.GetGenericTypeDefinition())
                 { return true; }
 
                 return false;
@@ -287,7 +283,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="targetType">对象类型</param>
             /// <returns>若给定类型是一个扩展类型则返回true，否则返回false</returns>
-            public static bool IsTypeOfExtension(SystemType targetType)
+            public static bool IsTypeOfExtension(Type targetType)
             {
                 // 扩展类首先必须得是静态类
                 if (IsTypeOfStaticClass(targetType))
@@ -303,7 +299,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="handler">委托句柄</param>
             /// <returns>若给定委托句柄是一个扩展类型则返回true，否则返回false</returns>
-            public static bool IsTypeOfExtension(SystemDelegate handler)
+            public static bool IsTypeOfExtension(Delegate handler)
             {
                 if (null == handler) return false;
 
@@ -317,7 +313,7 @@ namespace NovaEngine
             /// <returns>若给定函数是一个扩展类型则返回true，否则返回false</returns>
             public static bool IsTypeOfExtension(MethodBase method)
             {
-                SystemType declaringType = method.DeclaringType;
+                Type declaringType = method.DeclaringType;
                 if (declaringType.IsSealed && !declaringType.IsGenericType && !declaringType.IsNested)
                 {
                     return method.IsDefined(typeof(ExtensionAttribute), inherit: false);
@@ -337,7 +333,7 @@ namespace NovaEngine
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若目标函数的参数类型匹配则返回true，否则返回false</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static bool IsGenericDelegateParameterTypeMatched(SystemDelegate handler, params SystemType[] parameterTypes)
+            public static bool IsGenericDelegateParameterTypeMatched(Delegate handler, params Type[] parameterTypes)
             {
                 if (null == handler) return false;
 
@@ -351,7 +347,7 @@ namespace NovaEngine
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若目标函数的参数类型匹配则返回true，否则返回false</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static bool IsGenericDelegateParameterTypeMatched(MethodInfo methodInfo, params SystemType[] parameterTypes)
+            public static bool IsGenericDelegateParameterTypeMatched(MethodInfo methodInfo, params Type[] parameterTypes)
             {
                 return IsGenericDelegateParameterAndReturnTypeMatched(methodInfo, null, parameterTypes);
             }
@@ -364,7 +360,7 @@ namespace NovaEngine
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若目标函数的参数类型匹配则返回true，否则返回false</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static bool IsGenericDelegateParameterAndReturnTypeMatched(SystemDelegate handler, SystemType returnType, params SystemType[] parameterTypes)
+            public static bool IsGenericDelegateParameterAndReturnTypeMatched(Delegate handler, Type returnType, params Type[] parameterTypes)
             {
                 if (null == handler) return false;
 
@@ -378,7 +374,7 @@ namespace NovaEngine
             /// <param name="returnType">函数返回类型</param>
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若目标函数的参数类型匹配则返回true，否则返回false</returns>
-            public static bool IsGenericDelegateParameterAndReturnTypeMatched(MethodInfo methodInfo, SystemType returnType, params SystemType[] parameterTypes)
+            public static bool IsGenericDelegateParameterAndReturnTypeMatched(MethodInfo methodInfo, Type returnType, params Type[] parameterTypes)
             {
                 ParameterInfo[] paramInfos = methodInfo.GetParameters();
 
@@ -413,7 +409,7 @@ namespace NovaEngine
 
                 for (int n = 0; n < parameterTypes.Length; ++n)
                 {
-                    SystemType paramInfoType = paramInfos[n].ParameterType;
+                    Type paramInfoType = paramInfos[n].ParameterType;
 
                     // 函数传入参数的类型必须可以赋予给函数定义参数的类型
                     if (false == paramInfoType.IsAssignableFrom(parameterTypes[n]))
@@ -433,7 +429,7 @@ namespace NovaEngine
             /// <param name="methodInfo">函数信息</param>
             /// <returns>返回包装后的代理函数</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static SystemDelegate CreateGenericActionDelegate(MethodInfo methodInfo)
+            public static Delegate CreateGenericActionDelegate(MethodInfo methodInfo)
             {
                 return CreateGenericActionDelegate(null, methodInfo);
             }
@@ -444,7 +440,7 @@ namespace NovaEngine
             /// <param name="self">函数调用的目标对象实例</param>
             /// <param name="methodInfo">函数信息</param>
             /// <returns>返回包装后的代理函数</returns>
-            public static SystemDelegate CreateGenericActionDelegate(object self, MethodInfo methodInfo)
+            public static Delegate CreateGenericActionDelegate(object self, MethodInfo methodInfo)
             {
                 // 2025-09-28：
                 // 允许普通的成员函数在初始构建时不传入自身实例，而在实际调用时传入
@@ -464,24 +460,24 @@ namespace NovaEngine
                 if (null == paramInfos || paramInfos.Length <= 0)
                 {
                     // 创建一个空参的Action对象
-                    SystemType emptyActionType = CreateGenericActionType(0);
+                    Type emptyActionType = CreateGenericActionType(0);
 
-                    return SystemDelegate.CreateDelegate(emptyActionType, self, methodInfo);
+                    return Delegate.CreateDelegate(emptyActionType, self, methodInfo);
                 }
 
-                SystemType[] genericTypes = new SystemType[paramInfos.Length];
+                Type[] genericTypes = new Type[paramInfos.Length];
                 for (int n = 0; n < paramInfos.Length; ++n)
                 {
                     // 提取方法的参数
                     ParameterInfo paramInfo = paramInfos[n];
                     // 获取方法参数的类型
-                    SystemType paramInfoType = paramInfo.ParameterType;
+                    Type paramInfoType = paramInfo.ParameterType;
 
                     genericTypes[n] = paramInfoType;
                 }
 
                 // 创建一个通用的Action泛型对象
-                SystemType genericActionType = CreateGenericActionType(paramInfos.Length);
+                Type genericActionType = CreateGenericActionType(paramInfos.Length);
                 if (null == genericActionType)
                 {
                     Debugger.Warn("No supported generic action type with parameters length '{%d}' for target method '{%t}', created action delegate failed.", paramInfos.Length, methodInfo);
@@ -489,10 +485,10 @@ namespace NovaEngine
                 }
 
                 // 指定泛型的类型
-                SystemType actionType = genericActionType.MakeGenericType(genericTypes);
+                Type actionType = genericActionType.MakeGenericType(genericTypes);
                 // 为Action指定具体的实现
                 // 需要注意的是，如果是非静态方法，此处的第二个参数需要传方法所在的实例（就是this指针），只有为静态方法第二个参数才传递null
-                return SystemDelegate.CreateDelegate(actionType, self, methodInfo);
+                return Delegate.CreateDelegate(actionType, self, methodInfo);
             }
 
             /// <summary>
@@ -502,7 +498,7 @@ namespace NovaEngine
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若创建委托成功并符合指定参数类型则返回新创建的函数，否则返回null</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static SystemDelegate CreateGenericActionDelegateAndCheckParameterType(MethodInfo methodInfo, params SystemType[] parameterTypes)
+            public static Delegate CreateGenericActionDelegateAndCheckParameterType(MethodInfo methodInfo, params Type[] parameterTypes)
             {
                 return CreateGenericActionDelegateAndCheckParameterType(null ,methodInfo, parameterTypes);
             }
@@ -515,7 +511,7 @@ namespace NovaEngine
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若创建委托成功并符合指定参数类型则返回新创建的函数，否则返回null</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static SystemDelegate CreateGenericActionDelegateAndCheckParameterType(object self, MethodInfo methodInfo, params SystemType[] parameterTypes)
+            public static Delegate CreateGenericActionDelegateAndCheckParameterType(object self, MethodInfo methodInfo, params Type[] parameterTypes)
             {
                 Debugger.Verification.CheckGenericDelegateParameterTypeMatched(methodInfo, parameterTypes);
 
@@ -531,7 +527,7 @@ namespace NovaEngine
             /// <param name="paramTypes">参数类型</param>
             /// <returns>返回包装后的代理函数</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static SystemDelegate CreateGenericFuncDelegate(MethodInfo methodInfo)
+            public static Delegate CreateGenericFuncDelegate(MethodInfo methodInfo)
             {
                 return CreateGenericFuncDelegate(null, methodInfo);
             }
@@ -544,7 +540,7 @@ namespace NovaEngine
             /// <param name="outType">返回值类型</param>
             /// <param name="paramTypes">参数类型</param>
             /// <returns>返回包装后的代理函数</returns>
-            public static SystemDelegate CreateGenericFuncDelegate(object self, MethodInfo methodInfo)
+            public static Delegate CreateGenericFuncDelegate(object self, MethodInfo methodInfo)
             {
                 // 2025-09-28：
                 // 允许普通的成员函数在初始构建时不传入自身实例，而在实际调用时传入
@@ -560,7 +556,7 @@ namespace NovaEngine
                     return null;
                 }
 
-                SystemType returnType = methodInfo.ReturnType;
+                Type returnType = methodInfo.ReturnType;
                 if (null == returnType)
                 {
                     Logger.Error("The target method '{%t}' must be has return value, created delegate failed.", methodInfo);
@@ -571,20 +567,20 @@ namespace NovaEngine
                 if (null == paramInfos || paramInfos.Length <= 0)
                 {
                     // 创建一个空参的Func对象
-                    SystemType emptyGenericFuncType = CreateGenericFuncType(0);
+                    Type emptyGenericFuncType = CreateGenericFuncType(0);
                     // 指定泛型的类型
-                    SystemType emptyFuncType = emptyGenericFuncType.MakeGenericType(returnType);
+                    Type emptyFuncType = emptyGenericFuncType.MakeGenericType(returnType);
 
-                    return SystemDelegate.CreateDelegate(emptyFuncType, self, methodInfo);
+                    return Delegate.CreateDelegate(emptyFuncType, self, methodInfo);
                 }
 
-                SystemType[] genericTypes = new SystemType[paramInfos.Length + 1];
+                Type[] genericTypes = new Type[paramInfos.Length + 1];
                 for (int n = 0; n < paramInfos.Length; ++n)
                 {
                     // 提取方法的参数
                     ParameterInfo paramInfo = paramInfos[n];
                     // 获取方法参数的类型
-                    SystemType paramInfoType = paramInfo.ParameterType;
+                    Type paramInfoType = paramInfo.ParameterType;
 
                     genericTypes[n] = paramInfoType;
                 }
@@ -592,7 +588,7 @@ namespace NovaEngine
                 genericTypes[paramInfos.Length] = returnType;
 
                 // 创建一个通用的Action泛型对象
-                SystemType genericFuncType = CreateGenericFuncType(paramInfos.Length);
+                Type genericFuncType = CreateGenericFuncType(paramInfos.Length);
                 if (null == genericFuncType)
                 {
                     Debugger.Warn("No supported generic func type with parameters length '{%d}' for target method '{%t}', created func delegate failed.", paramInfos.Length, methodInfo);
@@ -600,10 +596,10 @@ namespace NovaEngine
                 }
 
                 // 指定泛型的类型
-                SystemType funcType = genericFuncType.MakeGenericType(genericTypes);
+                Type funcType = genericFuncType.MakeGenericType(genericTypes);
                 // 为Func指定具体的实现
                 // 需要注意的是，如果是非静态方法，此处的第二个参数需要传方法所在的实例（就是this指针），只有为静态方法第二个参数才传递null
-                return SystemDelegate.CreateDelegate(funcType, self, methodInfo);
+                return Delegate.CreateDelegate(funcType, self, methodInfo);
             }
 
             /// <summary>
@@ -613,7 +609,7 @@ namespace NovaEngine
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若创建委托成功并符合指定参数类型则返回新创建的函数，否则返回null</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static SystemDelegate CreateGenericFuncDelegateAndCheckParameterAndReturnType(MethodInfo methodInfo, SystemType returnType, params SystemType[] parameterTypes)
+            public static Delegate CreateGenericFuncDelegateAndCheckParameterAndReturnType(MethodInfo methodInfo, Type returnType, params Type[] parameterTypes)
             {
                 return CreateGenericFuncDelegateAndCheckParameterAndReturnType(null, methodInfo, returnType, parameterTypes);
             }
@@ -626,7 +622,7 @@ namespace NovaEngine
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若创建委托成功并符合指定参数类型则返回新创建的函数，否则返回null</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static SystemDelegate CreateGenericFuncDelegateAndCheckParameterAndReturnType(object self, MethodInfo methodInfo, SystemType returnType, params SystemType[] parameterTypes)
+            public static Delegate CreateGenericFuncDelegateAndCheckParameterAndReturnType(object self, MethodInfo methodInfo, Type returnType, params Type[] parameterTypes)
             {
                 Debugger.Verification.CheckGenericDelegateParameterAndReturnTypeMatched(methodInfo, returnType, parameterTypes);
 
@@ -640,7 +636,7 @@ namespace NovaEngine
             /// <param name="paramCount">参数数量</param>
             /// <returns>返回Action泛型类型</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            private static SystemType CreateGenericActionType(int paramCount)
+            private static Type CreateGenericActionType(int paramCount)
             {
                 return paramCount switch
                 {
@@ -664,7 +660,7 @@ namespace NovaEngine
             /// <param name="paramCount">参数数量</param>
             /// <returns>返回Func泛型类型</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            private static SystemType CreateGenericFuncType(int paramCount)
+            private static Type CreateGenericFuncType(int paramCount)
             {
                 return paramCount switch
                 {
@@ -690,7 +686,7 @@ namespace NovaEngine
             /// <param name="paramType">参数对象类型</param>
             /// <returns>返回包装后的代理函数</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static System.Action<T> CreateGenericAction<T>(MethodInfo methodInfo, SystemType paramType)
+            public static Action<T> CreateGenericAction<T>(MethodInfo methodInfo, Type paramType)
             {
                 return CreateGenericAction<T>(null, methodInfo, paramType);
             }
@@ -703,7 +699,7 @@ namespace NovaEngine
             /// <param name="methodInfo">函数信息</param>
             /// <param name="paramType">参数对象类型</param>
             /// <returns>返回包装后的代理函数，若创建失败返回null</returns>
-            public static System.Action<T> CreateGenericAction<T>(object self, MethodInfo methodInfo, SystemType paramType)
+            public static Action<T> CreateGenericAction<T>(object self, MethodInfo methodInfo, Type paramType)
             {
                 //if (null == self && false == methodInfo.IsStatic)
                 //{
@@ -740,11 +736,11 @@ namespace NovaEngine
                 //    expressionMethodCall = Expression.Call(Expression.Constant(self), methodInfo, expressionParamUnary);
                 //}
 
-                //Expression<System.Action<T>> expressionActionCall = Expression.Lambda<System.Action<T>>(expressionMethodCall, expressionParam);
+                //Expression<Action<T>> expressionActionCall = Expression.Lambda<Action<T>>(expressionMethodCall, expressionParam);
                 // 编译为Action的具体实现
                 //return expressionActionCall.Compile();
 
-                return (System.Action<T>) CreateGenericAction(self, methodInfo, new SystemType[] { typeof(T) }, new SystemType[] { paramType });
+                return (Action<T>) CreateGenericAction(self, methodInfo, new Type[] { typeof(T) }, new Type[] { paramType });
             }
 
             /// <summary>
@@ -754,7 +750,7 @@ namespace NovaEngine
             /// <param name="parameterType">参数类型</param>
             /// <returns>若创建委托成功并符合指定参数类型则返回新创建的函数，否则返回null</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static System.Action<T> CreateGenericActionAndCheckParameterType<T>(MethodInfo methodInfo, SystemType parameterType)
+            public static Action<T> CreateGenericActionAndCheckParameterType<T>(MethodInfo methodInfo, Type parameterType)
             {
                 return CreateGenericActionAndCheckParameterType<T>(null, methodInfo, parameterType);
             }
@@ -767,7 +763,7 @@ namespace NovaEngine
             /// <param name="parameterType">参数类型</param>
             /// <returns>若创建委托成功并符合指定参数类型则返回新创建的函数，否则返回null</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static System.Action<T> CreateGenericActionAndCheckParameterType<T>(object self, MethodInfo methodInfo, SystemType parameterType)
+            public static Action<T> CreateGenericActionAndCheckParameterType<T>(object self, MethodInfo methodInfo, Type parameterType)
             {
                 Debugger.Verification.CheckGenericDelegateParameterTypeMatched(methodInfo, parameterType);
 
@@ -784,7 +780,7 @@ namespace NovaEngine
             /// <param name="paramTypes">参数类型列表</param>
             /// <returns>返回包装后的代理函数，若创建失败返回null</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static System.Action<T1, T2> CreateGenericAction<T1, T2>(MethodInfo methodInfo, params SystemType[] paramTypes)
+            public static Action<T1, T2> CreateGenericAction<T1, T2>(MethodInfo methodInfo, params Type[] paramTypes)
             {
                 return CreateGenericAction<T1, T2>(null, methodInfo, paramTypes);
             }
@@ -799,9 +795,9 @@ namespace NovaEngine
             /// <param name="paramTypes">参数类型列表</param>
             /// <returns>返回包装后的代理函数，若创建失败返回null</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static System.Action<T1, T2> CreateGenericAction<T1, T2>(object self, MethodInfo methodInfo, params SystemType[] paramTypes)
+            public static Action<T1, T2> CreateGenericAction<T1, T2>(object self, MethodInfo methodInfo, params Type[] paramTypes)
             {
-                return (System.Action<T1, T2>) CreateGenericAction(self, methodInfo, new SystemType[] { typeof(T1), typeof(T2) }, paramTypes);
+                return (Action<T1, T2>) CreateGenericAction(self, methodInfo, new Type[] { typeof(T1), typeof(T2) }, paramTypes);
             }
 
             /// <summary>
@@ -811,7 +807,7 @@ namespace NovaEngine
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若创建委托成功并符合指定参数类型则返回新创建的函数，否则返回null</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static System.Action<T1, T2> CreateGenericActionAndCheckParameterType<T1, T2>(MethodInfo methodInfo, params SystemType[] parameterTypes)
+            public static Action<T1, T2> CreateGenericActionAndCheckParameterType<T1, T2>(MethodInfo methodInfo, params Type[] parameterTypes)
             {
                 return CreateGenericActionAndCheckParameterType<T1, T2>(null, methodInfo, parameterTypes);
             }
@@ -824,7 +820,7 @@ namespace NovaEngine
             /// <param name="parameterTypes">参数类型</param>
             /// <returns>若创建委托成功并符合指定参数类型则返回新创建的函数，否则返回null</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static System.Action<T1, T2> CreateGenericActionAndCheckParameterType<T1, T2>(object self, MethodInfo methodInfo, params SystemType[] parameterTypes)
+            public static Action<T1, T2> CreateGenericActionAndCheckParameterType<T1, T2>(object self, MethodInfo methodInfo, params Type[] parameterTypes)
             {
                 Debugger.Verification.CheckGenericDelegateParameterTypeMatched(methodInfo, parameterTypes);
 
@@ -840,7 +836,7 @@ namespace NovaEngine
             /// <param name="genericTypes">泛型类型列表</param>
             /// <param name="paramTypes">参数类型列表</param>
             /// <returns>返回包装后的代理函数，若创建失败返回null</returns>
-            private static SystemDelegate CreateGenericAction(object self, MethodInfo methodInfo, SystemType[] genericTypes, SystemType[] paramTypes)
+            private static Delegate CreateGenericAction(object self, MethodInfo methodInfo, Type[] genericTypes, Type[] paramTypes)
             {
                 if (null == self && false == methodInfo.IsStatic)
                 {
@@ -905,8 +901,8 @@ namespace NovaEngine
                     expressionMethodCall = Expression.Call(Expression.Constant(self), methodInfo, expressionUnarys);
                 }
 
-                SystemType actionType = CreateGenericActionType(length);
-                SystemType genericActionType = actionType.MakeGenericType(genericTypes);
+                Type actionType = CreateGenericActionType(length);
+                Type genericActionType = actionType.MakeGenericType(genericTypes);
                 LambdaExpression expressionActionCall = Expression.Lambda(genericActionType, expressionMethodCall, expressionParams);
 
                 // 编译为Action的具体实现

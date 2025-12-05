@@ -22,21 +22,20 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace NovaEngine
 {
     /// <summary>
     /// 引擎框架异常定义基础类
     /// </summary>
-    public partial class CFrameworkException : System.Exception
+    public partial class CFrameworkException : Exception
     {
         /// <summary>
         /// 异常类型对应错误编码的字典容器
         /// </summary>
-        private static readonly IDictionary<int, SystemType> _ExceptionCode = new Dictionary<int, SystemType>();
+        private static readonly IDictionary<int, Type> _ExceptionCode = new Dictionary<int, Type>();
 
         [UnityEngine.RuntimeInitializeOnLoadMethod]
         static void InitializeOnLoad()
@@ -87,7 +86,7 @@ namespace NovaEngine
         /// 为目标异常类型注册其相应关联的错误码值
         /// </summary>
         /// <param name="exceptionType">异常类型</param>
-        private static void RegErrorCodeForTargetException(SystemType exceptionType)
+        private static void RegErrorCodeForTargetException(Type exceptionType)
         {
             int errorCode = ErrorCode.GetErrorCodeByExceptionType(exceptionType);
             Logger.Assert(errorCode > 0, ErrorText.InvalidArguments);
@@ -111,7 +110,7 @@ namespace NovaEngine
         /// <param name="type">异常对象类型</param>
         /// <returns>返回异常对象类型的描述字符串名称，若传入类型非法，则返回null</returns>
         /// <exception cref="System.ArgumentException"></exception>
-        public static string GetExceptionDescriptorName(SystemType type)
+        public static string GetExceptionDescriptorName(Type type)
         {
             string name = type.Name;
             const string exception_tag = "Exception";
@@ -137,7 +136,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="errorCode">错误码</param>
         /// <returns>返回错误码注册的异常类型，若未注册则返回null</returns>
-        public static SystemType GetExceptionType(int errorCode)
+        public static Type GetExceptionType(int errorCode)
         {
             if (_ExceptionCode.ContainsKey(errorCode))
                 return _ExceptionCode[errorCode];

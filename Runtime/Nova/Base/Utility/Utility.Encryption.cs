@@ -23,13 +23,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Customize.Extension;
-
-using SystemGuid = System.Guid;
-using SystemArray = System.Array;
-using SystemConvert = System.Convert;
 
 namespace NovaEngine
 {
@@ -53,7 +50,7 @@ namespace NovaEngine
             /// <returns>返回格式化后的GUID</returns>
             public static string GUID(string format = "D")
             {
-                return SystemGuid.NewGuid().ToString(format);
+                return Guid.NewGuid().ToString(format);
             }
 
             #region 异或加密方式提供的功能函数接口
@@ -132,7 +129,7 @@ namespace NovaEngine
 
                 int bytesLength = bytes.Length;
                 byte[] results = new byte[bytesLength];
-                System.Array.Copy(bytes, 0, results, 0, bytesLength);
+                Array.Copy(bytes, 0, results, 0, bytesLength);
                 GetXorBytesOnSelf(results, index, length, code);
                 return results;
             }
@@ -208,7 +205,7 @@ namespace NovaEngine
                 if (null == encryptBytes)
                     return null;
 
-                return SystemConvert.ToBase64String(encryptBytes);
+                return Convert.ToBase64String(encryptBytes);
             }
 
             /// <summary>
@@ -241,10 +238,10 @@ namespace NovaEngine
                 byte[] plainBytes = data;
 
                 byte[] keyBytes = new byte[AES_CRYPTO_KEY_LENGTH];
-                SystemArray.Copy(Convertion.GetBytes(key.PadRight(keyBytes.Length)), keyBytes, keyBytes.Length);
+                Array.Copy(Convertion.GetBytes(key.PadRight(keyBytes.Length)), keyBytes, keyBytes.Length);
 
                 byte[] vectorBytes = new byte[AES_CRYPTO_VEC_LENGTH];
-                SystemArray.Copy(Convertion.GetBytes(vector.PadRight(vectorBytes.Length)), vectorBytes, vectorBytes.Length);
+                Array.Copy(Convertion.GetBytes(vector.PadRight(vectorBytes.Length)), vectorBytes, vectorBytes.Length);
 
                 byte[] encryptData = null; // encrypted data
                 using Aes aes = Aes.Create();
@@ -279,7 +276,7 @@ namespace NovaEngine
                     return null;
                 }
 
-                byte[] encryptBytes = SystemConvert.FromBase64String(data);
+                byte[] encryptBytes = Convert.FromBase64String(data);
                 byte[] decryptBytes = GetAesDecryptBytes(encryptBytes, key, vector);
                 if (null == decryptBytes)
                     return null;
@@ -317,10 +314,10 @@ namespace NovaEngine
                 byte[] encryptBytes = data;
 
                 byte[] keyBytes = new byte[AES_CRYPTO_KEY_LENGTH];
-                SystemArray.Copy(Convertion.GetBytes(key.PadRight(keyBytes.Length)), keyBytes, keyBytes.Length);
+                Array.Copy(Convertion.GetBytes(key.PadRight(keyBytes.Length)), keyBytes, keyBytes.Length);
 
                 byte[] vectorBytes = new byte[AES_CRYPTO_VEC_LENGTH];
-                SystemArray.Copy(Convertion.GetBytes(vector.PadRight(vectorBytes.Length)), vectorBytes, vectorBytes.Length);
+                Array.Copy(Convertion.GetBytes(vector.PadRight(vectorBytes.Length)), vectorBytes, vectorBytes.Length);
 
                 byte[] decryptData = null; // decrypted data
                 using Aes aes = Aes.Create();

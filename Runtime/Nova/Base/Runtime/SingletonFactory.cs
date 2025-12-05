@@ -24,9 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace NovaEngine
 {
@@ -73,7 +72,7 @@ namespace NovaEngine
         /// <summary>
         /// 单例对象的实例管理容器
         /// </summary>
-        private static IDictionary<SystemType, ISingleton> _instances = new Dictionary<SystemType, ISingleton>();
+        private static IDictionary<Type, ISingleton> _instances = new Dictionary<Type, ISingleton>();
 
         /// <summary>
         /// 获取指定类型的对象实例<br/>
@@ -83,7 +82,7 @@ namespace NovaEngine
         /// <returns>返回类型对应的对象实例</returns>
         public static T GetInstance<T>() where T : class, ISingleton, new()
         {
-            SystemType classType = typeof(T);
+            Type classType = typeof(T);
 
             if (Environment.IsDevelopmentState())
             {
@@ -108,7 +107,7 @@ namespace NovaEngine
         /// <returns>返回给定类型新创建的对象实例</returns>
         private static T CreateInstance<T>() where T : class, ISingleton, new()
         {
-            T instance = System.Activator.CreateInstance<T>();
+            T instance = Activator.CreateInstance<T>();
 
             if (typeof(IInitializable).IsAssignableFrom(instance.GetType()))
             {
@@ -125,7 +124,7 @@ namespace NovaEngine
         /// <typeparam name="T">对象类型</typeparam>
         internal static void ReleaseInstance<T>() where T : class
         {
-            SystemType classType = typeof(T);
+            Type classType = typeof(T);
 
             ReleaseInstance(classType);
         }
@@ -135,7 +134,7 @@ namespace NovaEngine
         /// 此处将检查类型是否继承了<see cref="NovaEngine.IInitializable"/>接口，如果继承自该接口，将自动调用清理回调函数
         /// </summary>
         /// <param name="classType">对象类型</param>
-        private static void ReleaseInstance(SystemType classType)
+        private static void ReleaseInstance(Type classType)
         {
             if (false == _instances.ContainsKey(classType))
             {
@@ -157,7 +156,7 @@ namespace NovaEngine
         /// </summary>
         internal static void ReleaseAllInstances()
         {
-            IList<SystemType> keys = Utility.Collection.ToList<SystemType>(_instances.Keys);
+            IList<Type> keys = Utility.Collection.ToList<Type>(_instances.Keys);
             for (int n = 0; n < keys.Count; ++n)
             {
                 ReleaseInstance(keys[n]);

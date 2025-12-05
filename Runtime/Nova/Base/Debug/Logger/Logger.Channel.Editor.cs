@@ -24,10 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemDateTime = System.DateTime;
-using SystemStringBuilder = System.Text.StringBuilder;
-using SystemStackTrace = System.Diagnostics.StackTrace;
-using SystemStackFrame = System.Diagnostics.StackFrame;
+using System;
+using System.Diagnostics;
+using System.Text;
 
 namespace NovaEngine
 {
@@ -59,8 +58,8 @@ namespace NovaEngine
             private const string LOG_COLOR_ORINGE       = "FF9400";
             private const string LOG_COLOR_EXCEPTION    = "FF00BD";
 
-            [System.ThreadStatic]
-            private static SystemStringBuilder _cachedStringBuilder = new SystemStringBuilder(8192);
+            [ThreadStatic]
+            private static StringBuilder _cachedStringBuilder = new StringBuilder(8192);
 
             /// <summary>
             /// 启动日志输出编辑器模式
@@ -106,17 +105,17 @@ namespace NovaEngine
             /// <param name="message">日志内容</param>
             public void Output(LogOutputLevelType level, object message)
             {
-                SystemStringBuilder sb = GetHighlightedLogText(level, message.ToString());
+                StringBuilder sb = GetHighlightedLogText(level, message.ToString());
 
                 // 获取C#堆栈,Warning以上级别日志才获取堆栈
                 if (level >= LogOutputLevelType.Warning)
                 {
                     sb.Append("\n");
 
-                    SystemStackFrame[] stackFrames = new SystemStackTrace(true).GetFrames();
+                    StackFrame[] stackFrames = new StackTrace(true).GetFrames();
                     for (int i = 0; i < stackFrames.Length; i++)
                     {
-                        SystemStackFrame frame = stackFrames[i];
+                        StackFrame frame = stackFrames[i];
                         string declaringTypeName = frame.GetMethod().DeclaringType.FullName;
                         string methodName = frame.GetMethod().Name;
 
@@ -159,7 +158,7 @@ namespace NovaEngine
             /// <returns></returns>
             private string GetCurrentTimeString()
             {
-                return SystemDateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                return DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
             }
 
             /// <summary>
@@ -183,7 +182,7 @@ namespace NovaEngine
                 return string.Format("PlayerLoop:{0}", Timestamp.FrameCount);
             }
 
-            private SystemStringBuilder GetHighlightedLogText(LogOutputLevelType level, string message)
+            private StringBuilder GetHighlightedLogText(LogOutputLevelType level, string message)
             {
                 _cachedStringBuilder.Clear();
 

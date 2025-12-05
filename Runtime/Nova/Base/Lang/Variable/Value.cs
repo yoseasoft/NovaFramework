@@ -22,7 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemIConvertible = System.IConvertible;
+using System;
 
 namespace NovaEngine
 {
@@ -75,7 +75,7 @@ namespace NovaEngine
 
         public Value(string value) { }
 
-        private SystemIConvertible _field;
+        private IConvertible _field;
 
 
     }

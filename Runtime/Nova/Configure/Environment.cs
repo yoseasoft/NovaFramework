@@ -27,11 +27,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
-using SystemStringBuilder = System.Text.StringBuilder;
+using System.Text;
 
 namespace NovaEngine
 {
@@ -131,7 +130,7 @@ namespace NovaEngine
         /// <param name="fieldValue">属性值</param>
         public static void SetProperty(string fieldName, object fieldValue)
         {
-            SystemType type = typeof(Environment);
+            Type type = typeof(Environment);
             FieldInfo field = type.GetField(fieldName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             if (null == field)
             {
@@ -149,7 +148,7 @@ namespace NovaEngine
         /// <returns>获取属性名称的对应值</returns>
         public static object GetProperty(string fieldName)
         {
-            SystemType type = typeof(Environment);
+            Type type = typeof(Environment);
             FieldInfo field = type.GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             if (null == field)
             {
@@ -167,7 +166,7 @@ namespace NovaEngine
         /// <returns>若存在目标字段名称则返回true，否则返回false</returns>
         public static bool IsPropertyExists(string fieldName)
         {
-            SystemType type = typeof(Environment);
+            Type type = typeof(Environment);
             FieldInfo field = type.GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             return (null != field);
         }
@@ -300,7 +299,7 @@ namespace NovaEngine
         /// <returns>从指定字典数据中加载配置参数成功返回true，否则返回false</returns>
         public static bool Load(IReadOnlyDictionary<string, string> conf)
         {
-            SystemType type = typeof(Environment);
+            Type type = typeof(Environment);
             foreach (KeyValuePair<string, string> pair in conf)
             {
                 FieldInfo field = type.GetField(pair.Key, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
@@ -356,7 +355,7 @@ namespace NovaEngine
         /// <returns>返回字符串信息</returns>
         public static string ToCString()
         {
-            SystemStringBuilder sb = new SystemStringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.Append("PROPERTIES={");
             FieldInfo[] fields = typeof(Environment).GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             for (int n = 0; n < fields.Length; ++n)

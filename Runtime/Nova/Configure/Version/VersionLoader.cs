@@ -24,10 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.IO;
 using System.Customize.Extension;
-
-using SystemPath = System.IO.Path;
-using SystemFile = System.IO.File;
 
 using UnityResources = UnityEngine.Resources;
 using UnityTextAsset = UnityEngine.TextAsset;
@@ -118,8 +116,8 @@ namespace NovaEngine
         /// <returns>若获取版本信息成功则返回对应数据内容，否则返回null</returns>
         public static string[] CheckFromDataPath(string filename)
         {
-            string url = SystemPath.Combine(Utility.Resource.PersistentDataPath, filename);
-            string text = SystemFile.ReadAllText(url);
+            string url = Path.Combine(Utility.Resource.PersistentDataPath, filename);
+            string text = File.ReadAllText(url);
 
             return ResolveVersionContent(text);
         }

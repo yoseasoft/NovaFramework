@@ -24,15 +24,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Globalization;
 
-using SystemMath = System.Math;
-using SystemConvert = System.Convert;
-using SystemTimeSpan = System.TimeSpan;
 using SystemDateTime = System.DateTime;
-using SystemDateTimeKind = System.DateTimeKind;
-using SystemDateTimeOffset = System.DateTimeOffset;
-using SystemDayOfWeek = System.DayOfWeek;
 
 namespace NovaEngine
 {
@@ -49,10 +44,10 @@ namespace NovaEngine
              * 1ms = 1000us
              */
 
-            private readonly static SystemDateTime Epoch = new SystemDateTime(1970, 1, 1, 0, 0, 0, 0, SystemDateTimeKind.Utc);
-            private readonly static long EpochTicks = new SystemDateTime(1970, 1, 1, 0, 0, 0, 0, SystemDateTimeKind.Utc).Ticks;
-            private readonly static long SecDivisor = (long) SystemMath.Pow(10, 7);
-            private readonly static long MsecDivisor = (long) SystemMath.Pow(10, 4);
+            private readonly static SystemDateTime Epoch = new SystemDateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            private readonly static long EpochTicks = new SystemDateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).Ticks;
+            private readonly static long SecDivisor = (long) Math.Pow(10, 7);
+            private readonly static long MsecDivisor = (long) Math.Pow(10, 4);
 
             /// <summary>
             /// 获取秒级别的UTC时间戳
@@ -115,8 +110,8 @@ namespace NovaEngine
             /// <returns>返回UTC时间对象实例</returns>
             public static SystemDateTime TimestampToDateTime(long timestamp)
             {
-                int length = (int) SystemMath.Floor(SystemMath.Log10(timestamp));
-                SystemDateTime dateTime = new SystemDateTime(1970, 1, 1, 0, 0, 0, 0, SystemDateTimeKind.Utc);
+                int length = (int) Math.Floor(Math.Log10(timestamp));
+                SystemDateTime dateTime = new SystemDateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
                 if (length == 9)
                     return dateTime.AddSeconds(timestamp);
                 if (length == 12)
@@ -132,8 +127,8 @@ namespace NovaEngine
             /// <returns>返回时间秒数</returns>
             public static long GetTotalSeconds()
             {
-                SystemTimeSpan ts = SystemDateTime.UtcNow - Epoch;
-                return SystemConvert.ToInt64(ts.TotalSeconds);
+                TimeSpan ts = SystemDateTime.UtcNow - Epoch;
+                return Convert.ToInt64(ts.TotalSeconds);
             }
 
             /// <summary>
@@ -142,8 +137,8 @@ namespace NovaEngine
             /// <returns>返回时间毫秒数</returns>
             public static long GetTotalMilliseconds()
             {
-                SystemTimeSpan ts = SystemDateTime.UtcNow - Epoch;
-                return SystemConvert.ToInt64(ts.TotalMilliseconds);
+                TimeSpan ts = SystemDateTime.UtcNow - Epoch;
+                return Convert.ToInt64(ts.TotalMilliseconds);
             }
 
             /// <summary>
@@ -152,8 +147,8 @@ namespace NovaEngine
             /// <returns>返回时间微秒数</returns>
             public static long GetTotalMicroseconds()
             {
-                SystemTimeSpan ts = SystemDateTime.UtcNow - Epoch;
-                return SystemConvert.ToInt64(ts.TotalMilliseconds) / 10;
+                TimeSpan ts = SystemDateTime.UtcNow - Epoch;
+                return Convert.ToInt64(ts.TotalMilliseconds) / 10;
             }
 
             /// <summary>
@@ -162,8 +157,8 @@ namespace NovaEngine
             /// <returns>返回时间分钟数</returns>
             public static double GetTotalMinutes()
             {
-                SystemTimeSpan ts = SystemDateTime.UtcNow - Epoch;
-                return SystemConvert.ToInt64(ts.TotalMinutes);
+                TimeSpan ts = SystemDateTime.UtcNow - Epoch;
+                return Convert.ToInt64(ts.TotalMinutes);
             }
 
             /// <summary>
@@ -172,8 +167,8 @@ namespace NovaEngine
             /// <returns>返回时间小时数</returns>
             public static double GetTotalHours()
             {
-                SystemTimeSpan ts = SystemDateTime.UtcNow - Epoch;
-                return SystemConvert.ToInt64(ts.TotalHours);
+                TimeSpan ts = SystemDateTime.UtcNow - Epoch;
+                return Convert.ToInt64(ts.TotalHours);
             }
 
             /// <summary>
@@ -182,8 +177,8 @@ namespace NovaEngine
             /// <returns>返回时间天数</returns>
             public static double GetTotalDays()
             {
-                SystemTimeSpan ts = SystemDateTime.UtcNow - Epoch;
-                return SystemConvert.ToInt64(ts.TotalDays);
+                TimeSpan ts = SystemDateTime.UtcNow - Epoch;
+                return Convert.ToInt64(ts.TotalDays);
             }
 
             /// <summary>
@@ -195,7 +190,7 @@ namespace NovaEngine
             {
                 SystemDateTime end = new SystemDateTime(year, 12, 31); // 该年最后一天
                 GregorianCalendar gc = new GregorianCalendar();
-                return gc.GetWeekOfYear(end, CalendarWeekRule.FirstDay, SystemDayOfWeek.Monday); // 该年星期数
+                return gc.GetWeekOfYear(end, CalendarWeekRule.FirstDay, DayOfWeek.Monday); // 该年星期数
             }
 
             /// <summary>
@@ -208,9 +203,9 @@ namespace NovaEngine
             public static void GetWeekTime(int year, int numWeek, out SystemDateTime dtWeekStart, out SystemDateTime dtWeekeEnd)
             {
                 SystemDateTime dt = new SystemDateTime(year, 1, 1);
-                dt += new SystemTimeSpan((numWeek - 1) * 7, 0, 0, 0);
-                dtWeekStart = dt.AddDays((int) SystemDayOfWeek.Monday - (int) dt.DayOfWeek);
-                dtWeekeEnd = dt.AddDays((int) SystemDayOfWeek.Saturday - (int) dt.DayOfWeek + 1);
+                dt += new TimeSpan((numWeek - 1) * 7, 0, 0, 0);
+                dtWeekStart = dt.AddDays((int) DayOfWeek.Monday - (int) dt.DayOfWeek);
+                dtWeekeEnd = dt.AddDays((int) DayOfWeek.Saturday - (int) dt.DayOfWeek + 1);
             }
 
             /// <summary>
@@ -224,9 +219,9 @@ namespace NovaEngine
             public static void GetWeekWorkTime(int year, int numWeek, out SystemDateTime dtWeekStart, out SystemDateTime dtWeekeEnd)
             {
                 SystemDateTime dt = new SystemDateTime(year, 1, 1);
-                dt += new SystemTimeSpan((numWeek - 1) * 7, 0, 0, 0);
-                dtWeekStart = dt.AddDays((int) SystemDayOfWeek.Monday - (int) dt.DayOfWeek);
-                dtWeekeEnd = dt.AddDays((int) SystemDayOfWeek.Saturday - (int) dt.DayOfWeek + 1).AddDays(-2);
+                dt += new TimeSpan((numWeek - 1) * 7, 0, 0, 0);
+                dtWeekStart = dt.AddDays((int) DayOfWeek.Monday - (int) dt.DayOfWeek);
+                dtWeekeEnd = dt.AddDays((int) DayOfWeek.Saturday - (int) dt.DayOfWeek + 1).AddDays(-2);
             }
 
             /// <summary>
@@ -323,10 +318,10 @@ namespace NovaEngine
             /// <para>转换时间戳可使用方法：<see cref="DateTimeOffset.ToUnixTimeSeconds"/> </para>
             /// </summary>
             /// <returns>返回日期偏移量</returns>
-            public static SystemDateTimeOffset GetTomorrowMidnightDateTimeOffset()
+            public static DateTimeOffset GetTomorrowMidnightDateTimeOffset()
             {
                 SystemDateTime tomorrowDateTime = GetTomorrowMidnightDateTime();
-                return new SystemDateTimeOffset(tomorrowDateTime);
+                return new DateTimeOffset(tomorrowDateTime);
             }
 
             /// <summary>

@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemIntPtr = System.IntPtr;
+using System;
 
 namespace NovaEngine
 {
@@ -37,13 +37,13 @@ namespace NovaEngine
         {
             private const int CACHED_BLOCK_SIZE = 1024 * 4;
 
-            private static SystemIntPtr _cachedHGlobalPtr = SystemIntPtr.Zero;
+            private static IntPtr _cachedHGlobalPtr = IntPtr.Zero;
             private static int _cachedHGlobalSize = 0;
 
             /// <summary>
             /// 获取缓存的指向从进程的非托管内存中分配的内存的指针
             /// </summary>
-            internal static SystemIntPtr CachedHGlobalPtr
+            internal static IntPtr CachedHGlobalPtr
             {
                 get { return _cachedHGlobalPtr; }
             }
@@ -67,7 +67,7 @@ namespace NovaEngine
                     throw new CFrameworkException("Ensure size is invalid.");
                 }
 
-                if (_cachedHGlobalPtr == SystemIntPtr.Zero || _cachedHGlobalSize < ensureSize)
+                if (_cachedHGlobalPtr == IntPtr.Zero || _cachedHGlobalSize < ensureSize)
                 {
                     FreeCachedHGlobal();
                     int size = (ensureSize - 1 + CACHED_BLOCK_SIZE) / CACHED_BLOCK_SIZE * CACHED_BLOCK_SIZE;
@@ -81,10 +81,10 @@ namespace NovaEngine
             /// </summary>
             public static void FreeCachedHGlobal()
             {
-                if (_cachedHGlobalPtr != SystemIntPtr.Zero)
+                if (_cachedHGlobalPtr != IntPtr.Zero)
                 {
                     System.Runtime.InteropServices.Marshal.FreeHGlobal(_cachedHGlobalPtr);
-                    _cachedHGlobalPtr = SystemIntPtr.Zero;
+                    _cachedHGlobalPtr = IntPtr.Zero;
                     _cachedHGlobalSize = 0;
                 }
             }

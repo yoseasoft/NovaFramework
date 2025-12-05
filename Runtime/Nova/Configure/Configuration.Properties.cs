@@ -23,10 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
 
 namespace NovaEngine
 {
@@ -142,7 +141,7 @@ namespace NovaEngine
                 // 初始化参数容器
                 _variables = new Dictionary<string, string>();
 
-                SystemType classType = typeof(Configuration);
+                Type classType = typeof(Configuration);
                 FieldInfo[] fields = classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.FlattenHierarchy);
                 for (int n = 0; n < fields.Length; ++n)
                 {

@@ -24,7 +24,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace NovaEngine
 {
@@ -43,7 +43,7 @@ namespace NovaEngine
         /// <summary>
         /// 获取变量类型
         /// </summary>
-        public abstract SystemType Type
+        public abstract Type Type
         {
             get;
         }
@@ -98,7 +98,7 @@ namespace NovaEngine
         /// 获取变量类型
         /// </summary>
         [UnityEngine.Scripting.Preserve]
-        public override System.Type Type
+        public override Type Type
         {
             get
             {

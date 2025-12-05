@@ -24,9 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Reflection;
-
-using SystemType = System.Type;
 
 namespace NovaEngine
 {
@@ -145,7 +144,7 @@ namespace NovaEngine
         /// <param name="fieldValue">属性值</param>
         internal static void SetProperty(string fieldName, object fieldValue)
         {
-            SystemType type = typeof(Version);
+            Type type = typeof(Version);
             FieldInfo field = type.GetField(fieldName, BindingFlags.Static | BindingFlags.Public);
             field.SetValue(null, fieldValue);
         }

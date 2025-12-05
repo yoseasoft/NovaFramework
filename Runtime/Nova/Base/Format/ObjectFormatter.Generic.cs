@@ -23,10 +23,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
 using System.Text;
 using System.Reflection;
-
-using SystemType = System.Type;
 
 namespace NovaEngine
 {
@@ -45,7 +45,7 @@ namespace NovaEngine
 
             sb.Append(obj.ToString());
 
-            SystemType classType = obj.GetType();
+            Type classType = obj.GetType();
             sb.Append(Definition.CCharacter.LeftParen);
             sb.Append(Utility.Text.GetFullName(classType));
             sb.Append(Definition.CCharacter.RightParen);
@@ -61,25 +61,25 @@ namespace NovaEngine
         /// <returns>返回容器对象的字符串信息</returns>
         private static string GetContainerObjectInfo(object obj, FormatToStringCallback callback)
         {
-            SystemType targetType = obj.GetType();
+            Type targetType = obj.GetType();
 
             // 数组类型
             if (targetType.IsArray)
             {
                 // 获取数组元素类型
-                // SystemType elementType = classType.GetElementType();
+                // Type elementType = classType.GetElementType();
                 // 获取泛型方法
                 // MethodInfo methodInfo = typeof(Formatter).GetMethod("ToString_Array").MakeGenericMethod(elementType);
                 // 调用方法
                 // return methodInfo.Invoke(null, new object[] { obj }) as string;
 
-                return Utility.Text.ToString(obj as System.Array, (n, element) =>
+                return Utility.Text.ToString(obj as Array, (n, element) =>
                 {
                     return $"[{n}]={callback(element)}";
                 });
             }
 
-            if (obj is System.Collections.IList __list)
+            if (obj is IList __list)
             {
                 return Utility.Text.ToString(__list, (n, element) =>
                 {
@@ -87,7 +87,7 @@ namespace NovaEngine
                 });
             }
 
-            if (obj is System.Collections.IDictionary __dictionary)
+            if (obj is IDictionary __dictionary)
             {
                 return Utility.Text.ToString(__dictionary, (key, value) =>
                 {
@@ -95,7 +95,7 @@ namespace NovaEngine
                 });
             }
 
-            if (obj is System.Collections.ICollection __collection)
+            if (obj is ICollection __collection)
             {
                 return Utility.Text.ToString(__collection, (n, element) =>
                 {
@@ -118,7 +118,7 @@ namespace NovaEngine
         {
             StringBuilder sb = new StringBuilder();
 
-            SystemType targetType = obj.GetType();
+            Type targetType = obj.GetType();
             sb.AppendFormat("Class={0},", NovaEngine.Utility.Text.GetFullName(targetType));
 
             FieldInfo[] fields = targetType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);

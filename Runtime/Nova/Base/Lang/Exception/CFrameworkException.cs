@@ -25,18 +25,16 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Runtime.Serialization;
-
-using SystemType = System.Type;
-using SystemException = System.Exception;
 
 namespace NovaEngine
 {
     /// <summary>
     /// 引擎框架异常定义基础类
     /// </summary>
-    [System.Serializable]
-    public partial class CFrameworkException : SystemException
+    [Serializable]
+    public partial class CFrameworkException : Exception
     {
         /// <summary>
         /// 自定义异常类型的错误编码参数
@@ -106,7 +104,7 @@ namespace NovaEngine
         /// 使用对作为此异常原因的内部异常的引用来构建引擎框架异常类的新实例
         /// </summary>
         /// <param name="innerException">导致当前异常的异常，如果 innerException 参数不为空引用，则在处理内部异常的 catch 块中引发当前异常</param>
-        public CFrameworkException(SystemException innerException) : this(innerException.Message, innerException)
+        public CFrameworkException(Exception innerException) : this(innerException.Message, innerException)
         {
         }
 
@@ -115,9 +113,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="message">解释异常原因的错误消息</param>
         /// <param name="innerException">导致当前异常的异常，如果 innerException 参数不为空引用，则在处理内部异常的 catch 块中引发当前异常</param>
-        public CFrameworkException(string message, SystemException innerException) : base(message, innerException)
+        public CFrameworkException(string message, Exception innerException) : base(message, innerException)
         {
-            SystemType targetType = innerException.GetType();
+            Type targetType = innerException.GetType();
 
             _targetCode = ErrorCode.GetErrorCodeByExceptionType(targetType);
         }
@@ -126,7 +124,7 @@ namespace NovaEngine
         /// 使用指定异常类型来构建引擎框架异常类的新实例
         /// </summary>
         /// <param name="exceptionType">导致当前异常的异常类型，此类型必须来自于 System.Exception 的子类</param>
-        public CFrameworkException(SystemType exceptionType) : this(ErrorCode.GetErrorCodeByExceptionType(exceptionType))
+        public CFrameworkException(Type exceptionType) : this(ErrorCode.GetErrorCodeByExceptionType(exceptionType))
         {
         }
 
@@ -135,7 +133,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="exceptionType">导致当前异常的异常类型，此类型必须来自于 System.Exception 的子类</param>
         /// <param name="message">解释异常原因的错误消息</param>
-        public CFrameworkException(SystemType exceptionType, string message) : this(ErrorCode.GetErrorCodeByExceptionType(exceptionType), message)
+        public CFrameworkException(Type exceptionType, string message) : this(ErrorCode.GetErrorCodeByExceptionType(exceptionType), message)
         {
         }
 
@@ -145,7 +143,7 @@ namespace NovaEngine
         /// <param name="exceptionType">导致当前异常的异常类型，此类型必须来自于 System.Exception 的子类</param>
         /// <param name="format">错误消息的格式化内容</param>
         /// <param name="args">错误消息的格式化参数</param>
-        public CFrameworkException(SystemType exceptionType, string format, params object[] args) : this(ErrorCode.GetErrorCodeByExceptionType(exceptionType), Utility.Text.Format(format, args))
+        public CFrameworkException(Type exceptionType, string format, params object[] args) : this(ErrorCode.GetErrorCodeByExceptionType(exceptionType), Utility.Text.Format(format, args))
         {
         }
 

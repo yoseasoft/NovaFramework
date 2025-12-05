@@ -23,14 +23,14 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemDateTime = System.DateTime;
+using System;
 
 namespace NovaEngine
 {
     /// <summary>
     /// 日期时间变量对象实体类
     /// </summary>
-    public sealed class CDateTime : Variable<SystemDateTime>
+    public sealed class CDateTime : Variable<DateTime>
     {
         /// <summary>
         /// 日期时间变量对象实体类的新实例构建接口
@@ -43,7 +43,7 @@ namespace NovaEngine
         /// 日期时间变量对象实体类的新实例构建接口
         /// </summary>
         /// <param name="value">变量值</param>
-        public CDateTime(SystemDateTime value) : base(value)
+        public CDateTime(DateTime value) : base(value)
         {
         }
 
@@ -51,7 +51,7 @@ namespace NovaEngine
         /// 从日期时间值到变量对象实体类的隐式转换
         /// </summary>
         /// <param name="value">变量值</param>
-        public static implicit operator CDateTime(SystemDateTime value)
+        public static implicit operator CDateTime(DateTime value)
         {
             return new CDateTime(value);
         }
@@ -60,7 +60,7 @@ namespace NovaEngine
         /// 从日期时间变量对象实体类到值的隐式转换
         /// </summary>
         /// <param name="value">变量类实例</param>
-        public static implicit operator SystemDateTime(CDateTime value)
+        public static implicit operator DateTime(CDateTime value)
         {
             return value.Value;
         }

@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace NovaEngine
 {
@@ -42,7 +42,7 @@ namespace NovaEngine
                 return Definition.CString.Null;
             }
 
-            SystemType classType = obj.GetType();
+            Type classType = obj.GetType();
 
             if (IsBasicDataType(classType))
             {

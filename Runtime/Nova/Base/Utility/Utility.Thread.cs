@@ -22,10 +22,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Threading;
-using Cysharp.Threading.Tasks;
 
-using SystemAction = System.Action;
+using Cysharp.Threading.Tasks;
 
 namespace NovaEngine
 {
@@ -58,7 +58,7 @@ namespace NovaEngine
             /// <param name="behaviour">mono组件</param>
             /// <param name="routine">协程对象实例</param>
             /// <returns>协程调度返回信息</returns>
-            // public static UnityCoroutine StartCoroutine(UnityBehaviour behaviour, SystemIEnumerator routine)
+            // public static UnityCoroutine StartCoroutine(UnityBehaviour behaviour, IEnumerator routine)
             public static void DoWork(ICoroutinable coroutine)
             {
                 Logger.Assert(null != coroutine);
@@ -71,7 +71,7 @@ namespace NovaEngine
             /// 异步方式执行目标任务逻辑
             /// </summary>
             /// <param name="action">目标任务项</param>
-            public static async void WorkAsync(SystemAction action)
+            public static async void WorkAsync(Action action)
             {
                 await WorkAction(action);
             }
@@ -80,7 +80,7 @@ namespace NovaEngine
             /// 异步方式执行目标行为函数
             /// </summary>
             /// <param name="action">行为函数</param>
-            private static async UniTask WorkAction(SystemAction action)
+            private static async UniTask WorkAction(Action action)
             {
                 action();
                 await UniTask.CompletedTask;
@@ -101,7 +101,7 @@ namespace NovaEngine
             /// 异步方式执行目标任务逻辑
             /// </summary>
             /// <param name="action">目标任务项</param>
-            public static void RunAsync(SystemAction action)
+            public static void RunAsync(Action action)
             {
                 while (_runningThreads >= MAX_RUNNING_THREAD_COUNTS)
                 {
@@ -120,9 +120,9 @@ namespace NovaEngine
             {
                 try
                 {
-                    ((SystemAction) action)();
+                    ((Action) action)();
                 }
-                catch (System.Exception e)
+                catch (Exception e)
                 {
                     Logger.Error(e.ToString());
                 }

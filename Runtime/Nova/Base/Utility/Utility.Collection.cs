@@ -25,10 +25,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using SystemArray = System.Array;
 
 namespace NovaEngine
 {
@@ -215,7 +214,7 @@ namespace NovaEngine
             /// <param name="array">列表容器</param>
             /// <param name="handler">回调句柄</param>
             /// <returns>返回列表中的最小值</returns>
-            public static T Min<T, K>(IList<T> array, System.Func<T, K> handler) where K : System.IComparable<K>
+            public static T Min<T, K>(IList<T> array, Func<T, K> handler) where K : IComparable<K>
             {
                 T temp = default(T);
                 temp = array[0];
@@ -238,7 +237,7 @@ namespace NovaEngine
             /// <param name="array">列表容器</param>
             /// <param name="handler">回调句柄</param>
             /// <returns>返回列表中的最大值</returns>
-            public static T Max<T, K>(IList<T> array, System.Func<T, K> handler) where K : System.IComparable<K>
+            public static T Max<T, K>(IList<T> array, Func<T, K> handler) where K : IComparable<K>
             {
                 T temp = default(T);
                 temp = array[0];
@@ -260,7 +259,7 @@ namespace NovaEngine
             /// <param name="array">列表容器</param>
             /// <param name="comparison">比较函数的回调句柄</param>
             /// <returns>返回列表中的最小值</returns>
-            public static T Min<T>(IList<T> array, System.Comparison<T> comparison)
+            public static T Min<T>(IList<T> array, Comparison<T> comparison)
             {
                 T temp = default(T);
                 temp = array[0];
@@ -282,7 +281,7 @@ namespace NovaEngine
             /// <param name="array">列表容器</param>
             /// <param name="comparison">比较函数的回调句柄</param>
             /// <returns>返回列表中的最大值</returns>
-            public static T Max<T>(IList<T> array, System.Comparison<T> comparison)
+            public static T Max<T>(IList<T> array, Comparison<T> comparison)
             {
                 T temp = default(T);
                 temp = array[0];
@@ -316,7 +315,7 @@ namespace NovaEngine
             /// <param name="array">列表容器</param>
             /// <param name="handler">条件函数的回调句柄</param>
             /// <returns>返回符合条件的目标对象实例</returns>
-            public static T Find<T>(IList<T> array, System.Predicate<T> handler)
+            public static T Find<T>(IList<T> array, Predicate<T> handler)
             {
                 T temp = default(T);
                 for (int n = 0; n < array.Count; ++n)
@@ -337,7 +336,7 @@ namespace NovaEngine
             /// <param name="array">列表容器</param>
             /// <param name="handler">条件函数的回调句柄</param>
             /// <returns>返回符合条件的对象实例集合</returns>
-            public static T[] FindAll<T>(IList<T> array, System.Predicate<T> handler)
+            public static T[] FindAll<T>(IList<T> array, Predicate<T> handler)
             {
                 var dstArray = new T[array.Count];
                 int idx = 0;
@@ -350,7 +349,7 @@ namespace NovaEngine
                     }
                 }
 
-                SystemArray.Resize(ref dstArray, idx);
+                Array.Resize(ref dstArray, idx);
                 return dstArray;
             }
 

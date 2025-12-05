@@ -24,13 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeTargets = System.AttributeTargets;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
 
 namespace NovaEngine
 {
@@ -52,11 +48,11 @@ namespace NovaEngine
         {
             _logOutputChannelBindingInfos = new List<LogOutputChannelBindingInfo>();
 
-            SystemType classType = typeof(Logger);
-            SystemType[] innerClassTypes = classType.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            Type classType = typeof(Logger);
+            Type[] innerClassTypes = classType.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             for (int n = 0; null != innerClassTypes && n < innerClassTypes.Length; ++n)
             {
-                SystemType innerClassType = innerClassTypes[n];
+                Type innerClassType = innerClassTypes[n];
                 LogOutputChannelBindingAttribute channelBindingAttribute = innerClassType.GetCustomAttribute<LogOutputChannelBindingAttribute>();
                 if (null == channelBindingAttribute)
                 {
@@ -102,8 +98,8 @@ namespace NovaEngine
         /// <summary>
         /// 日志输出通道的绑定属性类型定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-        private class LogOutputChannelBindingAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+        private class LogOutputChannelBindingAttribute : Attribute
         {
             /// <summary>
             /// 日志通道类型标识

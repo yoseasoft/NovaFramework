@@ -22,17 +22,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace NovaEngine
 {
     /// <summary>
     /// 测试用例函数属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method)]
-    public class TestingCaseAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method)]
+    public class TestingCaseAttribute : Attribute
     {
         public TestingCaseAttribute() : base()
         {
@@ -42,8 +40,8 @@ namespace NovaEngine
     /// <summary>
     /// 测试用例静态函数属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method)]
-    public class StaticTestingCaseAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method)]
+    public class StaticTestingCaseAttribute : Attribute
     {
         public StaticTestingCaseAttribute() : base()
         {
@@ -53,8 +51,8 @@ namespace NovaEngine
     /// <summary>
     /// 测试用例类属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class)]
-    public class TestingClassAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Class)]
+    public class TestingClassAttribute : Attribute
     {
         /// <summary>
         /// 测试用例类级别标识

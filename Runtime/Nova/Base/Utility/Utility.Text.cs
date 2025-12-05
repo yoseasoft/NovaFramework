@@ -24,15 +24,14 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using UnityEngine.Scripting;
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemDelegate = System.Delegate;
-using SystemStringBuilder = System.Text.StringBuilder;
+using UnityEngine.Scripting;
 
 namespace NovaEngine
 {
@@ -47,8 +46,8 @@ namespace NovaEngine
             /// <summary>
             /// 字符串构建器缓存对象实例，用于内部提供字符串文本组装
             /// </summary>
-            [System.ThreadStatic] // 每个静态类型字段对于每一个线程都是唯一的
-            private static SystemStringBuilder _stringBuilderCache = new SystemStringBuilder(4096);
+            [ThreadStatic] // 每个静态类型字段对于每一个线程都是唯一的
+            private static StringBuilder _stringBuilderCache = new StringBuilder(4096);
 
             /// <summary>
             /// 将指定内存尺寸转换为字符串形式，且使用最大单位值
@@ -105,7 +104,7 @@ namespace NovaEngine
             public static string Append(params object[] args)
             {
                 if (null == args)
-                    Logger.Throw<System.ArgumentNullException>("Append is invalid.");
+                    Logger.Throw<ArgumentNullException>("Append is invalid.");
 
                 _stringBuilderCache.Clear();
                 int length = args.Length;
@@ -125,7 +124,7 @@ namespace NovaEngine
             public static string Combine(params string[] strings)
             {
                 if (null == strings)
-                    Logger.Throw<System.ArgumentNullException>("Combine is invalid.");
+                    Logger.Throw<ArgumentNullException>("Combine is invalid.");
 
                 _stringBuilderCache.Length = 0;
                 int length = strings.Length;
@@ -156,7 +155,7 @@ namespace NovaEngine
             /// <param name="format">字符串格式</param>
             /// <param name="args">字符串参数</param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static void FormatToBuffer(SystemStringBuilder buff, string format, params object[] args)
+            public static void FormatToBuffer(StringBuilder buff, string format, params object[] args)
             {
                 if (buff == null)
                 {
@@ -174,7 +173,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="classType">对象类型</param>
             /// <returns>返回对象类型对应的字符串输出结果</returns>
-            public static string ToString(SystemType classType)
+            public static string ToString(Type classType)
             {
                 return null == classType ? Definition.CString.Null : GetFullName(classType);
             }
@@ -184,7 +183,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="attribute">特性对象</param>
             /// <returns>返回特性对象对应的字符串输出结果</returns>
-            public static string ToString(SystemAttribute attribute)
+            public static string ToString(Attribute attribute)
             {
                 return null == attribute ? Definition.CString.Null : GetFullName(attribute);
             }
@@ -214,7 +213,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="callback">委托回调</param>
             /// <returns>返回委托回调对应的字符串输出结果</returns>
-            public static string ToString(SystemDelegate callback)
+            public static string ToString(Delegate callback)
             {
                 return null == callback ? Definition.CString.Null : GetFullName(callback);
             }
@@ -244,7 +243,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="targetType">对象类型</param>
             /// <returns>返回字符串信息</returns>
-            public static string GetFullName(SystemType targetType)
+            public static string GetFullName(Type targetType)
             {
                 return targetType.FullName;
             }
@@ -254,7 +253,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="attribute">特性对象</param>
             /// <returns>返回字符串信息</returns>
-            public static string GetFullName(SystemAttribute attribute)
+            public static string GetFullName(Attribute attribute)
             {
                 return attribute.GetType().FullName;
             }
@@ -266,7 +265,7 @@ namespace NovaEngine
             /// <returns>返回字符串信息</returns>
             public static string GetFullName(FieldInfo field)
             {
-                SystemStringBuilder stringBuilder = new SystemStringBuilder();
+                StringBuilder stringBuilder = new StringBuilder();
 
                 stringBuilder.Append(GetFullName(field.FieldType));
                 stringBuilder.Append(Definition.CCharacter.Space);
@@ -285,7 +284,7 @@ namespace NovaEngine
             /// <returns>返回字符串信息</returns>
             public static string GetFullName(PropertyInfo property)
             {
-                SystemStringBuilder stringBuilder = new SystemStringBuilder();
+                StringBuilder stringBuilder = new StringBuilder();
 
                 stringBuilder.Append(GetFullName(property.PropertyType));
                 stringBuilder.Append(Definition.CCharacter.Space);
@@ -323,9 +322,9 @@ namespace NovaEngine
             /// </summary>
             /// <param name="callback">委托对象</param>
             /// <returns>返回字符串信息</returns>
-            public static string GetFullName(SystemDelegate callback)
+            public static string GetFullName(Delegate callback)
             {
-                SystemStringBuilder stringBuilder = new SystemStringBuilder();
+                StringBuilder stringBuilder = new StringBuilder();
 
                 if (null != callback.Target)
                 {
@@ -351,7 +350,7 @@ namespace NovaEngine
             /// <returns>返回字符串信息</returns>
             public static string GetFullName(MethodBase method)
             {
-                SystemStringBuilder stringBuilder = new SystemStringBuilder();
+                StringBuilder stringBuilder = new StringBuilder();
 
                 stringBuilder.Append(method.DeclaringType.FullName);
                 stringBuilder.Append(Definition.CCharacter.Dot);
@@ -366,12 +365,12 @@ namespace NovaEngine
             /// <returns>返回字符串信息</returns>
             private static string __GetFullName(MethodBase method)
             {
-                SystemStringBuilder stringBuilder = new SystemStringBuilder();
+                StringBuilder stringBuilder = new StringBuilder();
 
                 stringBuilder.Append(method.Name);
                 if (method.IsGenericMethod)
                 {
-                    SystemType[] genericArguments = method.GetGenericArguments();
+                    Type[] genericArguments = method.GetGenericArguments();
                     stringBuilder.Append("<");
                     for (int n = 0; n < genericArguments.Length; n++)
                     {
@@ -400,7 +399,7 @@ namespace NovaEngine
             private static string __GetMethodParamsNames(MethodBase method)
             {
                 ParameterInfo[] array = (Reflection.IsTypeOfExtension(method) ? Collection.SkipAndToArray<ParameterInfo>(method.GetParameters(), 1) : method.GetParameters());
-                SystemStringBuilder stringBuilder = new SystemStringBuilder();
+                StringBuilder stringBuilder = new StringBuilder();
                 for (int n = 0, num = array.Length; n < num; ++n)
                 {
                     if (n > 0)
@@ -433,7 +432,7 @@ namespace NovaEngine
             /// <returns>返回字符串信息</returns>
             private static string __GetFullName(ParameterInfo parameter)
             {
-                SystemStringBuilder stringBuilder = new SystemStringBuilder();
+                StringBuilder stringBuilder = new StringBuilder();
 
                 string niceName = parameter.ParameterType.FullName;
 
@@ -469,7 +468,7 @@ namespace NovaEngine
             /// <returns>返回数组容器对应的字符串输出结果</returns>
             [Preserve]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static string ToString(System.Array array, System.Func<object, string> callback)
+            public static string ToString(Array array, Func<object, string> callback)
             {
                 return ToString(array, (n, obj) =>
                 {
@@ -484,14 +483,14 @@ namespace NovaEngine
             /// <param name="callback">输出回调句柄</param>
             /// <returns>返回数组容器对应的字符串输出结果</returns>
             [Preserve]
-            public static string ToString(System.Array array, System.Func<int, object, string> callback = null)
+            public static string ToString(Array array, Func<int, object, string> callback = null)
             {
                 if (null == array)
                 {
                     return Definition.CString.Null;
                 }
 
-                SystemStringBuilder sb = new SystemStringBuilder();
+                StringBuilder sb = new StringBuilder();
 
                 int n = 0;
                 foreach (object item in array)
@@ -521,7 +520,7 @@ namespace NovaEngine
             /// <returns>返回数组容器对应的字符串输出结果</returns>
             [Preserve]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static string ToString<T>(T[] array, System.Func<T, string> callback)
+            public static string ToString<T>(T[] array, Func<T, string> callback)
             {
                 return ToString<T>(array, (n, obj) =>
                 {
@@ -537,7 +536,7 @@ namespace NovaEngine
             /// <param name="callback">输出回调句柄</param>
             /// <returns>返回数组容器对应的字符串输出结果</returns>
             [Preserve]
-            public static string ToString<T>(T[] array, System.Func<int, T, string> callback = null)
+            public static string ToString<T>(T[] array, Func<int, T, string> callback = null)
             {
                 if (null == array)
                 {
@@ -545,7 +544,7 @@ namespace NovaEngine
                 }
 
                 // return "[" + string.Join(',', array) + "]";
-                SystemStringBuilder sb = new SystemStringBuilder();
+                StringBuilder sb = new StringBuilder();
 
                 for (int n = 0; n < array.Length; ++n)
                 {
@@ -572,7 +571,7 @@ namespace NovaEngine
             /// <returns>返回集合容器对应的字符串输出结果</returns>
             [Preserve]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static string ToString(System.Collections.ICollection collection, System.Func<object, string> callback)
+            public static string ToString(ICollection collection, Func<object, string> callback)
             {
                 return ToString(collection, (n, obj) =>
                 {
@@ -587,24 +586,24 @@ namespace NovaEngine
             /// <param name="callback">输出回调句柄</param>
             /// <returns>返回集合容器对应的字符串输出结果</returns>
             [Preserve]
-            public static string ToString(System.Collections.ICollection collection, System.Func<int, object, string> callback = null)
+            public static string ToString(ICollection collection, Func<int, object, string> callback = null)
             {
                 if (null == collection)
                 {
                     return Definition.CString.Null;
                 }
 
-                SystemStringBuilder sb = new SystemStringBuilder();
+                StringBuilder sb = new StringBuilder();
 
                 int n = 0;
-                System.Collections.IEnumerator e = collection.GetEnumerator();
+                IEnumerator e = collection.GetEnumerator();
                 while (e.MoveNext())
                 {
                     if (n > 0) sb.Append(Definition.CCharacter.Comma);
 
                     if (null == callback)
                     {
-                        if (e.Current is System.Collections.DictionaryEntry entry)
+                        if (e.Current is DictionaryEntry entry)
                         {
                             sb.AppendFormat("{0}={1}", entry.Key.ToString(), entry.Value.ToString());
                         }
@@ -632,7 +631,7 @@ namespace NovaEngine
             /// <returns>返回集合容器对应的字符串输出结果</returns>
             [Preserve]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static string ToString<T>(ICollection<T> collection, System.Func<T, string> callback)
+            public static string ToString<T>(ICollection<T> collection, Func<T, string> callback)
             {
                 return ToString<T>(collection, (n, obj) =>
                 {
@@ -648,14 +647,14 @@ namespace NovaEngine
             /// <param name="callback">回调句柄</param>
             /// <returns>返回集合容器对应的字符串输出结果</returns>
             [Preserve]
-            public static string ToString<T>(ICollection<T> collection, System.Func<int, T, string> callback = null)
+            public static string ToString<T>(ICollection<T> collection, Func<int, T, string> callback = null)
             {
                 if (null == collection)
                 {
                     return Definition.CString.Null;
                 }
 
-                SystemStringBuilder sb = new SystemStringBuilder();
+                StringBuilder sb = new StringBuilder();
 
                 int n = 0;
                 IEnumerator<T> e = collection.GetEnumerator();
@@ -687,14 +686,14 @@ namespace NovaEngine
             /// <param name="callback">回调句柄</param>
             /// <returns>返回集合容器对应的字符串输出结果</returns>
             [Preserve]
-            public static string ToString<K, V>(ICollection<KeyValuePair<K, V>> collection, System.Func<K, V, string> callback = null)
+            public static string ToString<K, V>(ICollection<KeyValuePair<K, V>> collection, Func<K, V, string> callback = null)
             {
                 if (null == collection)
                 {
                     return Definition.CString.Null;
                 }
 
-                SystemStringBuilder sb = new SystemStringBuilder();
+                StringBuilder sb = new StringBuilder();
 
                 int n = 0;
                 IEnumerator<KeyValuePair<K, V>> e = collection.GetEnumerator();
@@ -725,9 +724,9 @@ namespace NovaEngine
             /// <returns>返回列表容器对应的字符串输出结果</returns>
             [Preserve]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static string ToString(System.Collections.IList list, System.Func<object, string> callback)
+            public static string ToString(IList list, Func<object, string> callback)
             {
-                return ToString(list as System.Collections.ICollection, callback);
+                return ToString(list as ICollection, callback);
             }
 
             /// <summary>
@@ -738,9 +737,9 @@ namespace NovaEngine
             /// <returns>返回列表容器对应的字符串输出结果</returns>
             [Preserve]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static string ToString(System.Collections.IList list, System.Func<int, object, string> callback = null)
+            public static string ToString(IList list, Func<int, object, string> callback = null)
             {
-                return ToString(list as System.Collections.ICollection, callback);
+                return ToString(list as ICollection, callback);
             }
 
             /// <summary>
@@ -752,7 +751,7 @@ namespace NovaEngine
             /// <returns>返回列表容器对应的字符串输出结果</returns>
             [Preserve]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static string ToString<T>(IList<T> list, System.Func<T, string> callback)
+            public static string ToString<T>(IList<T> list, Func<T, string> callback)
             {
                 return ToString(list as ICollection<T>, callback);
             }
@@ -766,7 +765,7 @@ namespace NovaEngine
             /// <returns>返回列表容器对应的字符串输出结果</returns>
             [Preserve]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static string ToString<T>(IList<T> list, System.Func<int, T, string> callback = null)
+            public static string ToString<T>(IList<T> list, Func<int, T, string> callback = null)
             {
                 return ToString(list as ICollection<T>, callback);
             }
@@ -779,7 +778,7 @@ namespace NovaEngine
             /// <returns>返回列表容器对应的字符串输出结果</returns>
             [Preserve]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static string ToString(IList<int> list, System.Func<int, string> callback)
+            public static string ToString(IList<int> list, Func<int, string> callback)
             {
                 return ToString<int>(list, callback);
             }
@@ -792,7 +791,7 @@ namespace NovaEngine
             /// <returns>返回列表容器对应的字符串输出结果</returns>
             [Preserve]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static string ToString(IList<int> list, System.Func<int, int, string> callback = null)
+            public static string ToString(IList<int> list, Func<int, int, string> callback = null)
             {
                 return ToString<int>(list, callback);
             }
@@ -805,7 +804,7 @@ namespace NovaEngine
             /// <returns>返回列表容器对应的字符串输出结果</returns>
             [Preserve]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static string ToString(IList<string> list, System.Func<string, string> callback)
+            public static string ToString(IList<string> list, Func<string, string> callback)
             {
                 return ToString<string>(list, callback);
             }
@@ -818,7 +817,7 @@ namespace NovaEngine
             /// <returns>返回列表容器对应的字符串输出结果</returns>
             [Preserve]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static string ToString(IList<string> list, System.Func<int, string, string> callback = null)
+            public static string ToString(IList<string> list, Func<int, string, string> callback = null)
             {
                 return ToString<string>(list, callback);
             }
@@ -830,21 +829,21 @@ namespace NovaEngine
             /// <param name="callback">输出回调句柄</param>
             /// <returns>返回字典容器对应的字符串输出结果</returns>
             [Preserve]
-            public static string ToString(System.Collections.IDictionary dictionary, System.Func<object, object, string> callback = null)
+            public static string ToString(IDictionary dictionary, Func<object, object, string> callback = null)
             {
                 if (null == callback)
                 {
-                    return ToString(dictionary as System.Collections.ICollection);
+                    return ToString(dictionary as ICollection);
                 }
 
-                return ToString(dictionary as System.Collections.ICollection, (n, obj) =>
+                return ToString(dictionary as ICollection, (n, obj) =>
                 {
-                    if (obj is System.Collections.DictionaryEntry entry)
+                    if (obj is DictionaryEntry entry)
                     {
                         return callback(entry.Key, entry.Value);
                     }
 
-                    SystemType targetType = obj.GetType();
+                    Type targetType = obj.GetType();
 
                     if (targetType.IsGenericType && typeof(KeyValuePair<,>) == targetType.GetGenericTypeDefinition())
                     {
@@ -870,7 +869,7 @@ namespace NovaEngine
             /// <returns>返回字典容器对应的字符串输出结果</returns>
             [Preserve]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static string ToString<K, V>(IDictionary<K, V> dictionary, System.Func<K, V, string> callback = null)
+            public static string ToString<K, V>(IDictionary<K, V> dictionary, Func<K, V, string> callback = null)
             {
                 return ToString(dictionary as ICollection<KeyValuePair<K, V>>, callback);
             }

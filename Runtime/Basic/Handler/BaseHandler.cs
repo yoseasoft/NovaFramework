@@ -25,16 +25,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
-using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace GameEngine
 {
@@ -47,8 +40,8 @@ namespace GameEngine
         /// <summary>
         /// 句柄对象类的子模块初始化回调句柄的声明属性类型定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        protected sealed class OnSubmoduleInitCallbackAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        protected sealed class OnSubmoduleInitCallbackAttribute : Attribute
         {
             public OnSubmoduleInitCallbackAttribute() : base() { }
         }
@@ -56,8 +49,8 @@ namespace GameEngine
         /// <summary>
         /// 句柄对象类的子模块清理回调句柄的声明属性类型定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        protected sealed class OnSubmoduleCleanupCallbackAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        protected sealed class OnSubmoduleCleanupCallbackAttribute : Attribute
         {
             public OnSubmoduleCleanupCallbackAttribute() : base() { }
         }
@@ -65,8 +58,8 @@ namespace GameEngine
         /// <summary>
         /// 句柄对象类的子模块清理回调句柄的声明属性类型定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        protected sealed class OnSubmoduleReloadCallbackAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        protected sealed class OnSubmoduleReloadCallbackAttribute : Attribute
         {
             public OnSubmoduleReloadCallbackAttribute() : base() { }
         }
@@ -117,7 +110,7 @@ namespace GameEngine
         /// <summary>
         /// 句柄子模块行为流程回调的缓存队列
         /// </summary>
-        private IDictionary<SystemType, SystemDelegate> _cachedSubmoduleBehaviourCallbacks = null;
+        private IDictionary<Type, Delegate> _cachedSubmoduleBehaviourCallbacks = null;
 
         /// <summary>
         /// 设置句柄的类型标识
@@ -179,7 +172,7 @@ namespace GameEngine
             _sceneModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.Module.SceneModule>();
 
             // 初始化子模块行为流程缓存队列
-            _cachedSubmoduleBehaviourCallbacks = new Dictionary<SystemType, SystemDelegate>();
+            _cachedSubmoduleBehaviourCallbacks = new Dictionary<Type, Delegate>();
 
             if (false == OnInitialize()) { return false; }
 
@@ -345,35 +338,35 @@ namespace GameEngine
         /// 句柄对象子模块指定类型的回调函数触发处理接口
         /// </summary>
         /// <param name="attrType">属性类型</param>
-        private void OnSubmoduleActionCallbackOfTargetAttribute(SystemType attrType)
+        private void OnSubmoduleActionCallbackOfTargetAttribute(Type attrType)
         {
-            SystemDelegate callback;
+            Delegate callback;
             if (TryGetSubmoduleBehaviourCallback(attrType, out callback))
             {
                 callback.DynamicInvoke();
             }
         }
 
-        private bool TryGetSubmoduleBehaviourCallback(SystemType targetType, out SystemDelegate callback)
+        private bool TryGetSubmoduleBehaviourCallback(Type targetType, out Delegate callback)
         {
-            SystemDelegate handler;
+            Delegate handler;
             if (_cachedSubmoduleBehaviourCallbacks.TryGetValue(targetType, out handler))
             {
                 callback = handler;
                 return null == callback ? false : true;
             }
 
-            IList<SystemDelegate> list = new List<SystemDelegate>();
-            SystemType classType = GetType();
-            SystemMethodInfo[] methods = classType.GetMethods(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Instance);
+            IList<Delegate> list = new List<Delegate>();
+            Type classType = GetType();
+            MethodInfo[] methods = classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             for (int n = 0; n < methods.Length; ++n)
             {
-                SystemMethodInfo method = methods[n];
-                IEnumerable<SystemAttribute> e = method.GetCustomAttributes();
-                SystemAttribute attr = method.GetCustomAttribute(targetType);
+                MethodInfo method = methods[n];
+                IEnumerable<Attribute> e = method.GetCustomAttributes();
+                Attribute attr = method.GetCustomAttribute(targetType);
                 if (null != attr)
                 {
-                    SystemDelegate c = method.CreateDelegate(typeof(NovaEngine.Definition.Delegate.EmptyFunctionHandler), this);
+                    Delegate c = method.CreateDelegate(typeof(NovaEngine.Definition.Delegate.EmptyFunctionHandler), this);
                     list.Add(c);
                 }
             }
@@ -391,7 +384,7 @@ namespace GameEngine
                     }
                     else
                     {
-                        callback = SystemDelegate.Combine(list[n], callback);
+                        callback = Delegate.Combine(list[n], callback);
                     }
                 }
 
@@ -412,7 +405,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="obj">目标对象</param>
         /// <param name="f">目标函数</param>
-        protected void Call(CBase obj, System.Action f)
+        protected void Call(CBase obj, Action f)
         {
             Debugger.Assert(null != obj && obj == f.Target, NovaEngine.ErrorText.InvalidArguments);
 
@@ -425,7 +418,7 @@ namespace GameEngine
         /// <param name="obj">目标对象</param>
         /// <param name="f">目标函数</param>
         /// <param name="lifecycleType">生命周期类型</param>
-        protected void Call(CBase obj, System.Action f, AspectBehaviourType lifecycleType)
+        protected void Call(CBase obj, Action f, AspectBehaviourType lifecycleType)
         {
             Debugger.Assert(null != obj && obj == f.Target, NovaEngine.ErrorText.InvalidArguments);
 
@@ -436,7 +429,7 @@ namespace GameEngine
         /// 支持切面控制的函数调用接口
         /// </summary>
         /// <param name="f">目标函数</param>
-        protected void Call(System.Action f)
+        protected void Call(Action f)
         {
             if (null != f.Target && typeof(CBase).IsAssignableFrom(f.Target.GetType()))
             {
@@ -454,7 +447,7 @@ namespace GameEngine
         /// <typeparam name="T">参数类型</typeparam>
         /// <param name="func">目标函数</param>
         /// <param name="arg0">参数值</param>
-        protected void Call<T>(System.Action<T> func, T arg0)
+        protected void Call<T>(Action<T> func, T arg0)
         {
             if (null != func.Target && typeof(CBase).IsAssignableFrom(func.Target.GetType()))
             {
@@ -472,7 +465,7 @@ namespace GameEngine
         /// <typeparam name="V">返回值类型</typeparam>
         /// <param name="func">目标函数</param>
         /// <returns>返回目标函数调用后的返回结果</returns>
-        protected V Call<V>(System.Func<V> func)
+        protected V Call<V>(Func<V> func)
         {
             if (null != func.Target && typeof(CBase).IsAssignableFrom(func.Target.GetType()))
             {
@@ -492,7 +485,7 @@ namespace GameEngine
         /// <param name="func">目标函数</param>
         /// <param name="arg0">参数值</param>
         /// <returns>返回目标函数调用后的返回结果</returns>
-        protected V Call<T, V>(System.Func<T, V> func, T arg0)
+        protected V Call<T, V>(Func<T, V> func, T arg0)
         {
             if (null != func.Target && typeof(CBase).IsAssignableFrom(func.Target.GetType()))
             {
@@ -513,7 +506,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="classType">对象类型</param>
         /// <returns>返回给定类型生成的对象实例，若实例生成失败则返回null</returns>
-        protected internal static object CreateInstance(SystemType classType)
+        protected internal static object CreateInstance(Type classType)
         {
             return PoolController.Instance.CreateObject(classType);
         }

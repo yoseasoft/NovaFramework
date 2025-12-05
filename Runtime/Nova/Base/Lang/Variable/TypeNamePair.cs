@@ -23,10 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Runtime.InteropServices;
 using System.Customize.Extension;
-
-using SystemType = System.Type;
 
 namespace NovaEngine.ObjectPool
 {
@@ -35,12 +34,12 @@ namespace NovaEngine.ObjectPool
     /// 您可以在反射或查找等逻辑中使用该数据结构来做查询索引
     /// </summary>
     [StructLayout(LayoutKind.Auto)]
-    internal struct TypeNamePair : System.IEquatable<TypeNamePair>
+    internal struct TypeNamePair : IEquatable<TypeNamePair>
     {
         /// <summary>
         /// 关联的映射类型
         /// </summary>
-        private readonly SystemType _type;
+        private readonly Type _type;
         /// <summary>
         /// 关联的映射名称
         /// </summary>
@@ -49,7 +48,7 @@ namespace NovaEngine.ObjectPool
         /// <summary>
         /// 获取映射类型
         /// </summary>
-        public SystemType Type { get { return _type; } }
+        public Type Type { get { return _type; } }
 
         /// <summary>
         /// 获取映射名称
@@ -60,7 +59,7 @@ namespace NovaEngine.ObjectPool
         /// 类型名称映射结构的初始构造函数
         /// </summary>
         /// <param name="type">映射类型</param>
-        public TypeNamePair(SystemType type) : this(type, null)
+        public TypeNamePair(Type type) : this(type, null)
         {
         }
 
@@ -70,7 +69,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="type">映射类型</param>
         /// <param name="name">映射名称</param>
         /// <exception cref="CFrameworkException"></exception>
-        public TypeNamePair(SystemType type, string name)
+        public TypeNamePair(Type type, string name)
         {
             if (null == type)
             {

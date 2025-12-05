@@ -22,17 +22,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace NovaEngine
 {
     /// <summary>
     /// 模块对象的内部功能初始化回调函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnModuleInternalFunctionInitializeCallbackAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    public class OnModuleInternalFunctionInitializeCallbackAttribute : Attribute
     {
         public OnModuleInternalFunctionInitializeCallbackAttribute() : base()
         { }
@@ -41,8 +39,8 @@ namespace NovaEngine
     /// <summary>
     /// 模块对象的内部功能清理回调函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnModuleInternalFunctionCleanupCallbackAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    public class OnModuleInternalFunctionCleanupCallbackAttribute : Attribute
     {
         public OnModuleInternalFunctionCleanupCallbackAttribute() : base()
         { }

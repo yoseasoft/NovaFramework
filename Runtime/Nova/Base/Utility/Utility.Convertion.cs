@@ -24,15 +24,12 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Text;
 using System.Security.Cryptography;
 using System.Customize.Extension;
 
-using SystemGuid = System.Guid;
-using SystemType = System.Type;
-using SystemObject = System.Object;
-using SystemArray = System.Array;
-using SystemEnum = System.Enum;
+using SystemDateTime = System.DateTime;
 
 namespace NovaEngine
 {
@@ -77,14 +74,14 @@ namespace NovaEngine
             /// <typeparam name="T">目标基础数据类型</typeparam>
             /// <param name="obj">待转换数据</param>
             /// <returns>转换后的数据，类型为T</returns>
-            public static T ConvertTo<T>(SystemObject obj)
+            public static T ConvertTo<T>(Object obj)
             {
                 try
                 {
                     // 如果传入对象是null或DBNull，并且目标类型是string，返回空字符串
-                    if ((null == obj || System.DBNull.Value == obj) && (typeof(string) == typeof(T)))
+                    if ((null == obj || DBNull.Value == obj) && (typeof(string) == typeof(T)))
                     {
-                        return (T) System.Convert.ChangeType("", typeof(T));
+                        return (T) Convert.ChangeType("", typeof(T));
                     }
 
                     // 如果传入对象已经是目标类型，直接返回
@@ -93,27 +90,27 @@ namespace NovaEngine
                         return (T) obj;
                     }
 
-                    SystemType targetType = typeof(T);
+                    Type targetType = typeof(T);
 
                     // 处理Nullable<T>类型
                     if (targetType.IsGenericType)
                     {
-                        SystemType genericTypeDefinition = targetType.GetGenericTypeDefinition();
-                        if (typeof(System.Nullable<>) == genericTypeDefinition)
+                        Type genericTypeDefinition = targetType.GetGenericTypeDefinition();
+                        if (typeof(Nullable<>) == genericTypeDefinition)
                         {
-                            return (T) System.Convert.ChangeType(obj, System.Nullable.GetUnderlyingType(targetType));
+                            return (T) Convert.ChangeType(obj, Nullable.GetUnderlyingType(targetType));
                         }
                     }
 
                     // 进行类型转换
-                    return (T) System.Convert.ChangeType(obj, typeof(T));
+                    return (T) Convert.ChangeType(obj, typeof(T));
                 }
-                catch (System.InvalidCastException) // e)
+                catch (InvalidCastException) // e)
                 {
                     // 如果发生转换异常，尝试返回原对象的强制转换
                     return (T) obj;
                 }
-                catch (System.Exception e)
+                catch (Exception e)
                 {
                     // 其它异常直接抛出
                     throw e;
@@ -137,7 +134,7 @@ namespace NovaEngine
             {
                 if (false == bool.TryParse(text, out bool result))
                 {
-                    Logger.Warn("Convert string '{0}' to bool failed.", text);
+                    Logger.Warn("Convert string '{%s}' to bool failed.", text);
 
                     result = defaultValue;
                 }
@@ -155,7 +152,7 @@ namespace NovaEngine
             {
                 if (false == int.TryParse(text, out int result))
                 {
-                    Logger.Warn("Convert string '{0}' to int failed.", text);
+                    Logger.Warn("Convert string '{%s}' to int failed.", text);
 
                     result = defaultValue;
                 }
@@ -173,7 +170,7 @@ namespace NovaEngine
             {
                 if (false == long.TryParse(text, out long result))
                 {
-                    Logger.Warn("Convert string '{0}' to int failed.", text);
+                    Logger.Warn("Convert string '{%s}' to int failed.", text);
 
                     result = defaultValue;
                 }
@@ -191,7 +188,7 @@ namespace NovaEngine
             {
                 if (false == float.TryParse(text, out float result))
                 {
-                    Logger.Warn("Convert string '{0}' to float failed.", text);
+                    Logger.Warn("Convert string '{%s}' to float failed.", text);
 
                     result = defaultValue;
                 }
@@ -209,7 +206,7 @@ namespace NovaEngine
             {
                 if (false == double.TryParse(text, out double result))
                 {
-                    Logger.Warn("Convert string '{0}' to double failed.", text);
+                    Logger.Warn("Convert string '{%s}' to double failed.", text);
 
                     result = defaultValue;
                 }
@@ -223,11 +220,11 @@ namespace NovaEngine
             /// <param name="text">字符串内容</param>
             /// <param name="defaultValue">默认日期时间数据</param>
             /// <returns>返回转换结果，若转换失败则返回默认值</returns>
-            public static System.DateTime StringToDateTime(string text, System.DateTime defaultValue = default(System.DateTime))
+            public static SystemDateTime StringToDateTime(string text, SystemDateTime defaultValue = default(SystemDateTime))
             {
-                if (false == System.DateTime.TryParse(text, out System.DateTime result))
+                if (false == SystemDateTime.TryParse(text, out SystemDateTime result))
                 {
-                    Logger.Warn("Convert string '{0}' to DateTime failed.", text);
+                    Logger.Warn("Convert string '{%s}' to DateTime failed.", text);
 
                     result = defaultValue;
                 }
@@ -241,7 +238,7 @@ namespace NovaEngine
             /// <param name="text">字符串内容</param>
             /// <param name="targetType">目标数据类型</param>
             /// <returns>返回转换结果，若转换失败则返回null</returns>
-            public static object StringToTargetType(string text, SystemType targetType)
+            public static object StringToTargetType(string text, Type targetType)
             {
                 if (targetType == typeof(bool))
                 {
@@ -272,7 +269,7 @@ namespace NovaEngine
                 {
                     return text;
                 }
-                else if (targetType == typeof(System.DateTime))
+                else if (targetType == typeof(DateTime))
                 {
                     // 日期时间类型
                     return StringToDateTime(text);
@@ -291,10 +288,10 @@ namespace NovaEngine
             /// </summary>
             /// <param name="guid">GUID数据</param>
             /// <returns>返回转换结果，若转换失败则返回默认值</returns>
-            public static long GuidToLong(SystemGuid guid)
+            public static long GuidToLong(Guid guid)
             {
                 byte[] buffer = guid.ToByteArray();
-                return System.BitConverter.ToInt64(buffer, 0);
+                return BitConverter.ToInt64(buffer, 0);
             }
 
             #endregion
@@ -307,11 +304,11 @@ namespace NovaEngine
             /// <typeparam name="T">枚举类型</typeparam>
             /// <param name="value">枚举值</param>
             /// <returns>若给定值合法则返回true，否则返回false</returns>
-            public static bool IsCorrectedEnumValue<T>(int value) where T : SystemEnum
+            public static bool IsCorrectedEnumValue<T>(int value) where T : Enum
             {
-                foreach (object v in SystemEnum.GetValues(typeof(T)))
+                foreach (object v in Enum.GetValues(typeof(T)))
                 {
-                    if (System.Convert.ToInt32(v) == value)
+                    if (Convert.ToInt32(v) == value)
                     {
                         return true;
                     }
@@ -326,12 +323,12 @@ namespace NovaEngine
             /// <typeparam name="T">枚举类型</typeparam>
             /// <param name="value">枚举值</param>
             /// <returns>返回枚举值对应的索引序号，若该枚举值为无效值，则返回-1</returns>
-            public static int GetEnumIndex<T>(int value) where T : SystemEnum
+            public static int GetEnumIndex<T>(int value) where T : Enum
             {
                 int n = 0;
-                foreach (object v in SystemEnum.GetValues(typeof(T)))
+                foreach (object v in Enum.GetValues(typeof(T)))
                 {
-                    if (System.Convert.ToInt32(v) == value)
+                    if (Convert.ToInt32(v) == value)
                     {
                         return n;
                     }
@@ -349,12 +346,12 @@ namespace NovaEngine
             /// <param name="value">枚举索引序号</param>
             /// <returns>返回索引序号对应的枚举值</returns>
             /// <exception cref="ArgumentOutOfRangeException"></exception>
-            public static T GetEnumFromIndex<T>(int value) where T : SystemEnum
+            public static T GetEnumFromIndex<T>(int value) where T : Enum
             {
-                SystemArray array = SystemEnum.GetValues(typeof(T));
+                Array array = Enum.GetValues(typeof(T));
                 if (array.Length <= value)
                 {
-                    throw new System.ArgumentOutOfRangeException($"The enum {typeof(T).Name} index {value} out of the bounds.");
+                    throw new ArgumentOutOfRangeException($"The enum {typeof(T).Name} index {value} out of the bounds.");
                 }
 
                 return (T) array.GetValue(value);
@@ -366,14 +363,14 @@ namespace NovaEngine
             /// <typeparam name="T">枚举类型</typeparam>
             /// <param name="value">字符串名称</param>
             /// <returns>返回字符串名称对应的枚举值，若名称为无效参数，则返回枚举的默认值</returns>
-            public static T GetEnumFromName<T>(string value) where T : SystemEnum
+            public static T GetEnumFromName<T>(string value) where T : Enum
             {
-                if (false == SystemEnum.IsDefined(typeof(T), value))
+                if (false == Enum.IsDefined(typeof(T), value))
                 {
                     return default(T);
                 }
 
-                return (T) SystemEnum.Parse(typeof(T), value);
+                return (T) Enum.Parse(typeof(T), value);
             }
 
             /// <summary>
@@ -382,15 +379,15 @@ namespace NovaEngine
             /// <typeparam name="T">枚举类型</typeparam>
             /// <param name="value">数值</param>
             /// <returns>返回数值对应的枚举值，若数值为无效参数，则返回枚举的默认值</returns>
-            public static T GetEnumFromValue<T>(int value) where T : SystemEnum
+            public static T GetEnumFromValue<T>(int value) where T : Enum
             {
-                object obj = System.Convert.ChangeType(value, SystemEnum.GetUnderlyingType(typeof(T)));
-                if (false == SystemEnum.IsDefined(typeof(T), obj))
+                object obj = Convert.ChangeType(value, Enum.GetUnderlyingType(typeof(T)));
+                if (false == Enum.IsDefined(typeof(T), obj))
                 {
                     return default(T);
                 }
 
-                return (T) SystemEnum.ToObject(typeof(T), obj);
+                return (T) Enum.ToObject(typeof(T), obj);
             }
 
             #endregion

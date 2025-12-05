@@ -22,9 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemArray = System.Array;
 
 namespace NovaEngine
 {
@@ -197,7 +196,7 @@ namespace NovaEngine
             List<TValue> list;
             if (false == TryGetValue(key, out list))
             {
-                return SystemArray.Empty<TValue>();
+                return Array.Empty<TValue>();
             }
 
             return list.ToArray();
