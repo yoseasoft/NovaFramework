@@ -23,9 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.IO;
-
-using SystemArray = System.Array;
 
 namespace NovaEngine.IO.FileSystem
 {
@@ -105,7 +104,7 @@ namespace NovaEngine.IO.FileSystem
                 stream.Write(_cachedBytes, 0, bytesRead);
             }
 
-            SystemArray.Clear(_cachedBytes, 0, CACHED_BYTES_LENGTH);
+            Array.Clear(_cachedBytes, 0, CACHED_BYTES_LENGTH);
             return length - bytesLeft;
         }
 
@@ -138,7 +137,7 @@ namespace NovaEngine.IO.FileSystem
                 Write(_cachedBytes, 0, bytesRead);
             }
 
-            SystemArray.Clear(_cachedBytes, 0, CACHED_BYTES_LENGTH);
+            Array.Clear(_cachedBytes, 0, CACHED_BYTES_LENGTH);
         }
 
         /// <summary>

@@ -23,16 +23,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.IO;
-
-using SystemIDisposable = System.IDisposable;
 
 namespace NovaEngine.IO.FileSystem
 {
     /// <summary>
     /// 通用模式文件系统数据流定义类
     /// </summary>
-    public sealed class CommonFileSystemStream : FileSystemStream, SystemIDisposable
+    public sealed class CommonFileSystemStream : FileSystemStream, IDisposable
     {
         private readonly FileStream _fileStream;
 

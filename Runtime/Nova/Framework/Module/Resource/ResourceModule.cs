@@ -25,9 +25,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 using UnityObject = UnityEngine.Object;
 
@@ -46,7 +45,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// Unity对象和资源对象的对照表
         /// </summary>
-        private IDictionary<UnityObject, GooAsset.Asset> _objectAssets = new Dictionary<UnityObject, GooAsset.Asset>();
+        private readonly IDictionary<UnityObject, GooAsset.Asset> _objectAssets = new Dictionary<UnityObject, GooAsset.Asset>();
 
         /// <summary>
         /// 管理器对象初始化接口函数
@@ -105,7 +104,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="type">资源类型</param>
-        public UnityObject LoadAsset(string url, SystemType type)
+        public UnityObject LoadAsset(string url, Type type)
         {
             GooAsset.Asset asset = GooAsset.AssetManagement.LoadAsset(url, type);
             UnityObject obj = asset?.result;
@@ -120,7 +119,7 @@ namespace NovaEngine.Module
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="type">资源类型</param>
         /// <param name="completed">加载完成回调</param>
-        public GooAsset.Asset LoadAssetAsync(string url, SystemType type, System.Action<UnityObject> completed = null)
+        public GooAsset.Asset LoadAssetAsync(string url, Type type, Action<UnityObject> completed = null)
         {
             GooAsset.Asset asset = GooAsset.AssetManagement.LoadAssetAsync(url, type, a =>
             {
@@ -191,7 +190,7 @@ namespace NovaEngine.Module
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="isAdditive">是否使用叠加方式加载</param>
         /// <param name="completed">加载完成回调</param>
-        public GooAsset.Scene LoadSceneAsync(string url, bool isAdditive = false, System.Action<GooAsset.Scene> completed = null)
+        public GooAsset.Scene LoadSceneAsync(string url, bool isAdditive = false, Action<GooAsset.Scene> completed = null)
         {
             return GooAsset.AssetManagement.LoadSceneAsync(url, isAdditive, completed);
         }
@@ -222,7 +221,7 @@ namespace NovaEngine.Module
         /// 异步加载原始流式文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
         /// </summary>
         /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
-        public GooAsset.RawFile LoadRawFileAsync(string url, System.Action<GooAsset.RawFile> completed = null)
+        public GooAsset.RawFile LoadRawFileAsync(string url, Action<GooAsset.RawFile> completed = null)
         {
             return GooAsset.AssetManagement.LoadRawFileAsync(url, completed);
         }

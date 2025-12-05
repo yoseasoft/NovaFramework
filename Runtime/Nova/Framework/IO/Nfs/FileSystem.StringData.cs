@@ -23,9 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Runtime.InteropServices;
-
-using SystemArray = System.Array;
 
 namespace NovaEngine.IO.FileSystem
 {
@@ -59,7 +58,7 @@ namespace NovaEngine.IO.FileSystem
                     return null;
                 }
 
-                SystemArray.Copy(this._bytes, 0, _cachedBytes, 0, this._length);
+                Array.Copy(this._bytes, 0, _cachedBytes, 0, this._length);
                 Utility.Encryption.GetXorBytesOnSelf(_cachedBytes, 0, this._length, encryptBytes);
                 return Utility.Convertion.GetString(_cachedBytes, 0, this._length);
             }
@@ -78,7 +77,7 @@ namespace NovaEngine.IO.FileSystem
                 }
 
                 Utility.Encryption.GetXorBytesOnSelf(_cachedBytes, encryptBytes);
-                SystemArray.Copy(_cachedBytes, 0, this._bytes, 0, length);
+                Array.Copy(_cachedBytes, 0, this._bytes, 0, length);
                 return new StringData((byte) length, this._bytes);
             }
 

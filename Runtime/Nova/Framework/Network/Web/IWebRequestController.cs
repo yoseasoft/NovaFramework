@@ -23,8 +23,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemEventHandler = System.EventHandler;
-
 namespace NovaEngine.Network
 {
     /// <summary>

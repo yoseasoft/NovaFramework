@@ -23,10 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.IO;
-
-using SystemArray = System.Array;
 
 namespace NovaEngine.IO
 {
@@ -204,13 +203,13 @@ namespace NovaEngine.IO
                 int n = count - alreadyCopyCount;
                 if (BUFFER_CHUNK_SIZE - this.FirstIndex > n)
                 {
-                    SystemArray.Copy(this.First, this.FirstIndex, buffer, alreadyCopyCount + offset, n);
+                    Array.Copy(this.First, this.FirstIndex, buffer, alreadyCopyCount + offset, n);
                     this.FirstIndex += n;
                     alreadyCopyCount += n;
                 }
                 else
                 {
-                    SystemArray.Copy(this.First, this.FirstIndex, buffer, alreadyCopyCount + offset, BUFFER_CHUNK_SIZE - this.FirstIndex);
+                    Array.Copy(this.First, this.FirstIndex, buffer, alreadyCopyCount + offset, BUFFER_CHUNK_SIZE - this.FirstIndex);
                     alreadyCopyCount += BUFFER_CHUNK_SIZE - this.FirstIndex;
                     this.FirstIndex = 0;
                     this.RemoveFirst();
@@ -235,13 +234,13 @@ namespace NovaEngine.IO
                 int n = count - alreadyCopyCount;
                 if (BUFFER_CHUNK_SIZE - this.LastIndex > n)
                 {
-                    SystemArray.Copy(buffer, alreadyCopyCount + offset, this._lastBuffer, this.LastIndex, n);
+                    Array.Copy(buffer, alreadyCopyCount + offset, this._lastBuffer, this.LastIndex, n);
                     this.LastIndex += count - alreadyCopyCount;
                     alreadyCopyCount += n;
                 }
                 else
                 {
-                    SystemArray.Copy(buffer, alreadyCopyCount + offset, this._lastBuffer, this.LastIndex, BUFFER_CHUNK_SIZE - this.LastIndex);
+                    Array.Copy(buffer, alreadyCopyCount + offset, this._lastBuffer, this.LastIndex, BUFFER_CHUNK_SIZE - this.LastIndex);
                     alreadyCopyCount += BUFFER_CHUNK_SIZE - this.LastIndex;
                     this.LastIndex = BUFFER_CHUNK_SIZE;
                 }

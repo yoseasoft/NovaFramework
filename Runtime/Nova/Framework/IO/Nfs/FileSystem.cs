@@ -23,11 +23,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-
-using SystemStringComparer = System.StringComparer;
 
 namespace NovaEngine.IO.FileSystem
 {
@@ -86,7 +85,7 @@ namespace NovaEngine.IO.FileSystem
             this._fullPath = fullPath;
             this._accessType = accessType;
             this._stream = stream;
-            this._fileDatas = new Dictionary<string, int>(SystemStringComparer.Ordinal);
+            this._fileDatas = new Dictionary<string, int>(StringComparer.Ordinal);
             this._blockDatas = new List<BlockData>();
             this._freeBlockIndexes = new MultiDictionary<int, int>();
             this._stringDatas = new SortedDictionary<int, StringData>();
@@ -253,7 +252,7 @@ namespace NovaEngine.IO.FileSystem
 
             if (false == _fileDatas.TryGetValue(name, out int blockIndex))
             {
-                return default(FileInfo);
+                return default;
             }
 
             BlockData blockData = _blockDatas[blockIndex];

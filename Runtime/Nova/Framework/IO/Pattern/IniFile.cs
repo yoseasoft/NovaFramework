@@ -23,6 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 
 namespace NovaEngine.IO
@@ -130,7 +131,7 @@ namespace NovaEngine.IO
                 return false;
             }
 
-            string[] contents = this._content.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+            string[] contents = this._content.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             string sectionName = "default";
             IDictionary<string, string> dict = null;

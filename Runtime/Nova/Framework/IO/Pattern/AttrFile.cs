@@ -22,9 +22,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemStringBuilder = System.Text.StringBuilder;
+using System.Text;
 
 namespace NovaEngine.IO
 {
@@ -137,7 +137,7 @@ namespace NovaEngine.IO
                 return false;
             }
 
-            string[] contents = this._content.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+            string[] contents = this._content.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             for (int n = 0; n < contents.GetLength(0); ++n)
             {
@@ -197,7 +197,7 @@ namespace NovaEngine.IO
                 return null;
             }
 
-            SystemStringBuilder sb = new SystemStringBuilder();
+            StringBuilder sb = new StringBuilder();
 
             foreach (KeyValuePair<string, string> pair in data)
             {
@@ -216,7 +216,7 @@ namespace NovaEngine.IO
         {
             IDictionary<string, string> result = new Dictionary<string, string>();
 
-            string[] contents = data.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+            string[] contents = data.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             for (int n = 0; n < contents.GetLength(0); ++n)
             {

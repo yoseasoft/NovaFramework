@@ -23,10 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.IO;
-
-using SystemStringComparer = System.StringComparer;
 
 namespace NovaEngine.IO.FileSystem
 {
@@ -44,7 +43,7 @@ namespace NovaEngine.IO.FileSystem
         /// </summary>
         public FileSystemController()
         {
-            _fileSystems = new Dictionary<string, FileSystem>(SystemStringComparer.Ordinal);
+            _fileSystems = new Dictionary<string, FileSystem>(StringComparer.Ordinal);
             _fileSystemHelper = null;
         }
 

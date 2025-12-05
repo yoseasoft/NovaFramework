@@ -53,9 +53,9 @@ namespace NovaEngine.IO
             this._origin = index;
         }
 
-        public System.ReadOnlyMemory<byte> WrittenMemory => this.GetBuffer().AsMemory(this._origin, (int) this.Position);
+        public ReadOnlyMemory<byte> WrittenMemory => this.GetBuffer().AsMemory(this._origin, (int) this.Position);
 
-        public System.ReadOnlySpan<byte> WrittenSpan => this.GetBuffer().AsSpan(this._origin, (int) this.Position);
+        public ReadOnlySpan<byte> WrittenSpan => this.GetBuffer().AsSpan(this._origin, (int) this.Position);
 
         public void Advance(int count)
         {
@@ -67,7 +67,7 @@ namespace NovaEngine.IO
             this.Position = newLength;
         }
 
-        public System.Memory<byte> GetMemory(int sizeHint = 0)
+        public Memory<byte> GetMemory(int sizeHint = 0)
         {
             if (this.Length - this.Position < sizeHint)
             {
@@ -77,7 +77,7 @@ namespace NovaEngine.IO
             return memory;
         }
 
-        public System.Span<byte> GetSpan(int sizeHint = 0)
+        public Span<byte> GetSpan(int sizeHint = 0)
         {
             if (this.Length - this.Position < sizeHint)
             {
