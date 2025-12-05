@@ -22,18 +22,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 池化管理类的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class PoolSupportedAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class PoolSupportedAttribute : Attribute
     {
         public PoolSupportedAttribute()
         {

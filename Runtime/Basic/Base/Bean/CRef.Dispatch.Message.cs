@@ -26,8 +26,6 @@
 
 using System.Collections.Generic;
 
-using SystemType = System.Type;
-
 namespace GameEngine
 {
     /// 引用对象抽象类
@@ -92,13 +90,13 @@ namespace GameEngine
         {
             if (_messageTypes.Contains(opcode))
             {
-                // Debugger.Warn("The 'CRef' instance's message type '{0}' was already exist, repeat added it failed.", opcode);
+                // Debugger.Warn("The 'CRef' instance's message type '{%d}' was already exist, repeat added it failed.", opcode);
                 return true;
             }
 
             if (false == NetworkHandler.Instance.AddMessageDispatchListener(opcode, this))
             {
-                Debugger.Warn("The 'CRef' instance add message listener '{0}' failed.", opcode);
+                Debugger.Warn("The 'CRef' instance add message listener '{%d}' failed.", opcode);
                 return false;
             }
 
@@ -115,7 +113,7 @@ namespace GameEngine
         {
             if (false == _messageTypes.Contains(opcode))
             {
-                // Debugger.Warn("Could not found any message type '{0}' for target 'CRef' instance with on listened, do removed it failed.", opcode);
+                // Debugger.Warn("Could not found any message type '{%d}' for target 'CRef' instance with on listened, do removed it failed.", opcode);
                 return;
             }
 

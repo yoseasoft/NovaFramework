@@ -23,11 +23,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Cysharp.Threading.Tasks;
 
-using SystemType = System.Type;
 using UnityObject = UnityEngine.Object;
 using UnityTransform = UnityEngine.Transform;
 using UnityVector3 = UnityEngine.Vector3;
@@ -35,9 +35,7 @@ using UnityQuaternion = UnityEngine.Quaternion;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 基于ECS模式的组件对象封装类，该类定义组件对象的常用接口及基础调度逻辑
-    /// </summary>
+    /// 基于ECS模式的组件对象封装类
     public abstract partial class CComponent
     {
         /// <summary>
@@ -93,7 +91,7 @@ namespace GameEngine
         /// <param name="url">资源地址</param>
         /// <param name="type">资源类型</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public UnityObject LoadAsset(string name, string url, SystemType type)
+        public UnityObject LoadAsset(string name, string url, Type type)
         {
             Debugger.Assert(Entity, NovaEngine.ErrorText.NullObjectReference);
 

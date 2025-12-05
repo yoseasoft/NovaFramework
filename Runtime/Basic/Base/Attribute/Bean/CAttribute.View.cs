@@ -23,16 +23,14 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 视图实现类声明属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class CViewClassAttribute : DeclareEntityClassAttribute
     {
         public CViewClassAttribute(string viewName) : this(viewName, 0)
@@ -48,8 +46,8 @@ namespace GameEngine
     /// <summary>
     /// 视图分组策略声明属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class CViewGroupAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class CViewGroupAttribute : Attribute
     {
         /// <summary>
         /// 视图分组名称
@@ -70,8 +68,8 @@ namespace GameEngine
     /// <summary>
     /// 视图通知函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class CViewNoticeCallAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+    public class CViewNoticeCallAttribute : Attribute
     {
         /// <summary>
         /// 视图通知类型
@@ -99,8 +97,8 @@ namespace GameEngine
     /// <summary>
     /// 视图共生关系组的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = true, Inherited = false)]
-    public class ViewGroupOfSymbioticRelationshipsAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
+    public class ViewGroupOfSymbioticRelationshipsAttribute : Attribute
     {
         /// <summary>
         /// 视图名称标识

@@ -23,34 +23,31 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 对象注入管理的对象链接标记的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Field | SystemAttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class OnBeanAutowiredAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public class OnBeanAutowiredAttribute : Attribute
     {
         /// <summary>
         /// 对象实例的引用类型
         /// </summary>
-        private readonly SystemType _referenceType;
+        private readonly Type _referenceType;
 
         /// <summary>
         /// 对象引用类型获取函数
         /// </summary>
-        public SystemType ReferenceType => _referenceType;
+        public Type ReferenceType => _referenceType;
 
         public OnBeanAutowiredAttribute() : this(null)
         {
         }
 
-        public OnBeanAutowiredAttribute(SystemType referenceType) : base()
+        public OnBeanAutowiredAttribute(Type referenceType) : base()
         {
             _referenceType = referenceType;
         }

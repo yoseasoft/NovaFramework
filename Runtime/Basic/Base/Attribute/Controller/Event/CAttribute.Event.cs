@@ -24,18 +24,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 输入系统基于对象分发的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    internal class EventActivationAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    internal class EventActivationAttribute : Attribute
     {
         public EventActivationAttribute() { }
     }
@@ -43,8 +40,8 @@ namespace GameEngine
     /// <summary>
     /// 输入系统基于全局分发的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class EventSystemAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class EventSystemAttribute : Attribute
     {
         public EventSystemAttribute() { }
     }

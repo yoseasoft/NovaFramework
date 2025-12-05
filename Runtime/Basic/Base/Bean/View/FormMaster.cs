@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine
 {
@@ -89,7 +89,7 @@ namespace GameEngine
         /// <param name="formType">窗口类型标识</param>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回窗口对象实例</returns>
-        internal static Form CreateForm(SystemType viewType)
+        internal static Form CreateForm(Type viewType)
         {
             Debugger.Assert(_formManager, NovaEngine.ErrorText.NullObjectReference);
 
@@ -111,7 +111,7 @@ namespace GameEngine
         /// 注册指定的窗口管理器到当前的主控制器中
         /// </summary>
         /// <param name="classType">管理器类型</param>
-        public static void RegisterFormManager(SystemType classType)
+        public static void RegisterFormManager(Type classType)
         {
             if (false == typeof(IFormManager).IsAssignableFrom(classType))
             {
@@ -119,7 +119,7 @@ namespace GameEngine
                 return;
             }
 
-            IFormManager formManager = System.Activator.CreateInstance(classType) as IFormManager;
+            IFormManager formManager = Activator.CreateInstance(classType) as IFormManager;
             RegisterFormManager(formManager);
         }
 

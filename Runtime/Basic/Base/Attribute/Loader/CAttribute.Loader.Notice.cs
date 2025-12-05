@@ -22,28 +22,25 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 通知定义类型注册函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     internal class OnNoticeDefinitionRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
     {
-        public OnNoticeDefinitionRegisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
+        public OnNoticeDefinitionRegisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }
 
     /// <summary>
     /// 通知定义类型注销函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     internal class OnNoticeDefinitionUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
     {
-        public OnNoticeDefinitionUnregisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
+        public OnNoticeDefinitionUnregisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }
 }

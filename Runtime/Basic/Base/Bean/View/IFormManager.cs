@@ -22,7 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine
 {
@@ -52,6 +52,6 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回创建的窗口对象实例</returns>
-        Form CreateForm(SystemType viewType);
+        Form CreateForm(Type viewType);
     }
 }

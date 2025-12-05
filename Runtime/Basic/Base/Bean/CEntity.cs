@@ -24,11 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-
-using SystemType = System.Type;
-using SystemRandom = System.Random;
 
 namespace GameEngine
 {
@@ -89,7 +87,7 @@ namespace GameEngine
         /// <summary>
         /// 实体对象内部随机因子管理容器
         /// </summary>
-        protected IDictionary<string, SystemRandom> _randoms = null;
+        protected IDictionary<string, Random> _randoms = null;
 
         /// <summary>
         /// 获取实体对象当前过期状态
@@ -122,7 +120,7 @@ namespace GameEngine
             _componentMessageDispatchList = new List<CComponent>();
 
             // 随机因子管理容器初始化
-            _randoms = new Dictionary<string, SystemRandom>();
+            _randoms = new Dictionary<string, Random>();
 
             // 资源加载器模块初始化
             OnAssetLoaderInitialize();
@@ -424,7 +422,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="inputType">输入类型</param>
         /// <returns>若响应了给定输入类型则返回true，否则返回false</returns>
-        protected internal override sealed bool IsInputResponsedOfTargetType(SystemType inputType)
+        protected internal override sealed bool IsInputResponsedOfTargetType(Type inputType)
         {
             if (base.IsInputResponsedOfTargetType(inputType))
             {
@@ -469,7 +467,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="inputType">输入类型</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        protected internal bool AddInputResponseFromComponent(SystemType inputType)
+        protected internal bool AddInputResponseFromComponent(Type inputType)
         {
             return AddInputResponse(inputType);
         }
@@ -503,7 +501,7 @@ namespace GameEngine
         /// 当前实体对象的组件实例进行的取消输入响应行为通知
         /// </summary>
         /// <param name="inputType">输入类型</param>
-        protected internal void RemoveInputResponseFromComponent(SystemType inputType)
+        protected internal void RemoveInputResponseFromComponent(Type inputType)
         {
             if (IsInputResponsedOfTargetType(inputType))
             {
@@ -588,7 +586,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="eventType">事件类型</param>
         /// <returns>若订阅了给定事件类型则返回true，否则返回false</returns>
-        protected internal override sealed bool IsSubscribedOfTargetType(SystemType eventType)
+        protected internal override sealed bool IsSubscribedOfTargetType(Type eventType)
         {
             if (base.IsSubscribedOfTargetType(eventType))
             {
@@ -632,7 +630,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="eventType">事件类型</param>
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
-        protected internal bool SubscribeFromComponent(SystemType eventType)
+        protected internal bool SubscribeFromComponent(Type eventType)
         {
             return Subscribe(eventType);
         }
@@ -665,7 +663,7 @@ namespace GameEngine
         /// 当前实体对象的组件实例进行的取消事件订阅行为通知
         /// </summary>
         /// <param name="eventType">事件类型</param>
-        protected internal void UnsubscribeFromComponent(SystemType eventType)
+        protected internal void UnsubscribeFromComponent(Type eventType)
         {
             if (IsSubscribedOfTargetType(eventType))
             {
@@ -750,7 +748,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="messageType">消息类型</param>
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
-        protected internal bool AddMessageListenerFromComponent(SystemType messageType)
+        protected internal bool AddMessageListenerFromComponent(Type messageType)
         {
             int opcode = NetworkHandler.Instance.GetOpcodeByMessageType(messageType);
 
@@ -784,7 +782,7 @@ namespace GameEngine
         /// 取消当前实体对象组件实例对指定消息类型的监听回调
         /// </summary>
         /// <param name="messageType">消息类型</param>
-        protected internal void RemoveMessageListenerFromComponent(SystemType messageType)
+        protected internal void RemoveMessageListenerFromComponent(Type messageType)
         {
             int opcode = NetworkHandler.Instance.GetOpcodeByMessageType(messageType);
 
@@ -812,7 +810,7 @@ namespace GameEngine
         /// <returns>若当前实体已经添加给定类型的组件则返回true，否则返回false</returns>
         public bool HasComponent<T>() where T : CComponent
         {
-            SystemType componentType = typeof(T);
+            Type componentType = typeof(T);
 
             return HasComponent(componentType);
         }
@@ -822,7 +820,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="componentType">组件类型</param>
         /// <returns>若当前实体已经添加给定类型的组件则返回true，否则返回false</returns>
-        public bool HasComponent(SystemType componentType)
+        public bool HasComponent(Type componentType)
         {
             string componentName = GetComponentNameByType(componentType);
 
@@ -883,7 +881,7 @@ namespace GameEngine
         /// <returns>返回新添加的组件实例，失败则返回null</returns>
         public CComponent AddComponent(string name)
         {
-            SystemType componentType = BeanController.Instance.FindComponentTypeByName(name);
+            Type componentType = BeanController.Instance.FindComponentTypeByName(name);
             if (null != componentType)
             {
                 return AddComponent(componentType);
@@ -900,7 +898,7 @@ namespace GameEngine
         /// <returns>返回新添加的组件实例，失败则返回null</returns>
         public T AddComponent<T>() where T : CComponent
         {
-            SystemType componentType = typeof(T);
+            Type componentType = typeof(T);
             return AddComponent(componentType) as T;
         }
 
@@ -910,7 +908,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="componentType">组件类型</param>
         /// <returns>返回新添加的组件实例，失败则返回null</returns>
-        public CComponent AddComponent(SystemType componentType)
+        public CComponent AddComponent(Type componentType)
         {
             CComponent component = EntityHandler.CreateInstance(componentType) as CComponent;
             return AddComponent(component);
@@ -1045,7 +1043,7 @@ namespace GameEngine
         /// <returns>若查找组件实例成功则返回对应实例的引用，否则返回null</returns>
         public T GetComponent<T>() where T : CComponent
         {
-            SystemType componentType = typeof(T);
+            Type componentType = typeof(T);
 
             return GetComponent(componentType) as T;
         }
@@ -1055,7 +1053,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="componentType">组件类型</param>
         /// <returns>若查找组件实例成功则返回对应实例的引用，否则返回null</returns>
-        public CComponent GetComponent(SystemType componentType)
+        public CComponent GetComponent(Type componentType)
         {
             string componentName = GetComponentNameByType(componentType);
 
@@ -1069,7 +1067,7 @@ namespace GameEngine
         /// <returns>若查找组件实例成功则返回对应实例的列表，否则返回null</returns>
         public IList<T> GetInheritedComponents<T>() where T : CComponent
         {
-            SystemType componentType = typeof(T);
+            Type componentType = typeof(T);
 
             return NovaEngine.Utility.Collection.CastAndToList<CComponent, T>(GetInheritedComponents(componentType));
         }
@@ -1079,7 +1077,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="componentType">组件类型</param>
         /// <returns>若查找组件实例成功则返回对应实例的列表，否则返回null</returns>
-        public IList<CComponent> GetInheritedComponents(SystemType componentType)
+        public IList<CComponent> GetInheritedComponents(Type componentType)
         {
             IList<CComponent> list = null;
             foreach (KeyValuePair<string, CComponent> kvp in _components)
@@ -1111,7 +1109,7 @@ namespace GameEngine
         /// <returns>返回给定组件实例对应的名称</returns>
         private string GetComponentName(CComponent component)
         {
-            SystemType componentType = component.BeanType;
+            Type componentType = component.BeanType;
 
             return GetComponentNameByType(componentType);
         }
@@ -1121,7 +1119,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="componentType">组件类型</param>
         /// <returns>返回给定组件类型对应的名称</returns>
-        private string GetComponentNameByType(SystemType componentType)
+        private string GetComponentNameByType(Type componentType)
         {
             return BeanController.Instance.GetComponentNameByType(componentType);
         }
@@ -1187,7 +1185,7 @@ namespace GameEngine
         /// <typeparam name="T">组件类型</typeparam>
         public void RemoveComponent<T>() where T : CComponent
         {
-            SystemType componentType = typeof(T);
+            Type componentType = typeof(T);
 
             RemoveComponent(componentType);
         }
@@ -1197,7 +1195,7 @@ namespace GameEngine
         /// 我们在进行移除时，会同时对该组件实例进行清理操作
         /// </summary>
         /// <param name="componentType">组件类型</param>
-        public void RemoveComponent(SystemType componentType)
+        public void RemoveComponent(Type componentType)
         {
             string componentName = GetComponentNameByType(componentType);
 
@@ -1350,7 +1348,7 @@ namespace GameEngine
                 _randoms.Remove(name);
             }
 
-            SystemRandom random = new SystemRandom(seed);
+            Random random = new Random(seed);
             _randoms.Add(name, random);
 
             return true;
@@ -1372,7 +1370,7 @@ namespace GameEngine
         /// <returns>返回随机值</returns>
         public int RandomNext(string name)
         {
-            if (false == _randoms.TryGetValue(name, out SystemRandom random))
+            if (false == _randoms.TryGetValue(name, out Random random))
             {
                 Debugger.Warn("Could not found target random '{%s}' from entity instance '{%t}', getted next value failed.", name, this);
                 return 0;
@@ -1399,7 +1397,7 @@ namespace GameEngine
         /// <returns>返回随机值</returns>
         public int RandomNext(string name, int maxValue)
         {
-            if (false == _randoms.TryGetValue(name, out SystemRandom random))
+            if (false == _randoms.TryGetValue(name, out Random random))
             {
                 Debugger.Warn("Could not found target random '{%s}' from entity instance '{%t}', getted next value failed.", name, this);
                 return 0;
@@ -1428,7 +1426,7 @@ namespace GameEngine
         /// <returns>返回随机值</returns>
         public int RandomNext(string name, int minValue, int maxValue)
         {
-            if (false == _randoms.TryGetValue(name, out SystemRandom random))
+            if (false == _randoms.TryGetValue(name, out Random random))
             {
                 Debugger.Warn("Could not found target random '{%s}' from entity instance '{%t}', getted next value failed.", name, this);
                 return 0;

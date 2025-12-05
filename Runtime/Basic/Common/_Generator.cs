@@ -23,11 +23,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Text;
 using System.Reflection;
 using System.Security.Cryptography;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -44,7 +43,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="typeInfo">对象类型信息</param>
         /// <returns>返回通过对象类型信息生成的数字序列</returns>
-        public static long GenUniqueId(SystemType typeInfo)
+        public static long GenUniqueId(Type typeInfo)
         {
             return NovaEngine.Utility.Convertion.GuidToLong(typeInfo.GUID);
         }
@@ -54,7 +53,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="typeInfo">对象类型信息</param>
         /// <returns>返回通过对象类型信息生成的名字标签</returns>
-        public static string GenUniqueName(SystemType typeInfo)
+        public static string GenUniqueName(Type typeInfo)
         {
             return NovaEngine.Utility.Text.GetFullName(typeInfo);
         }
@@ -78,7 +77,7 @@ namespace GameEngine
         {
             SHA256 hash = SHA256.Create();
             byte[] buffer = hash.ComputeHash(Encoding.UTF8.GetBytes(text));
-            long v = System.BitConverter.ToInt64(buffer, 0);
+            long v = BitConverter.ToInt64(buffer, 0);
             hash.Dispose();
 
             return v;

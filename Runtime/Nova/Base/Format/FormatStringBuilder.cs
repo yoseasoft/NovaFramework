@@ -73,7 +73,7 @@ namespace NovaEngine
         /// <summary>
         /// 可变字符串构建器的缓存列表
         /// </summary>
-        private static IList<FormatStringBuilder> _caches = new List<FormatStringBuilder>();
+        private readonly static IList<FormatStringBuilder> _caches = new List<FormatStringBuilder>();
 
         private FormatStringBuilder() : this(DefaultCapacity)
         { }
@@ -301,7 +301,7 @@ namespace NovaEngine
         /// <returns>返回可变字符串构建器实例</returns>
         public static FormatStringBuilder Create()
         {
-            FormatStringBuilder fsb = null;
+            FormatStringBuilder fsb;
 
             if (_caches.Count > 0)
             {

@@ -22,18 +22,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 消息系统基于对象分发的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    internal class MessageActivationAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    internal class MessageActivationAttribute : Attribute
     {
         public MessageActivationAttribute()
         {
@@ -43,8 +40,8 @@ namespace GameEngine
     /// <summary>
     /// 消息系统基于全局分发的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class MessageSystemAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class MessageSystemAttribute : Attribute
     {
         public MessageSystemAttribute()
         {
@@ -54,8 +51,8 @@ namespace GameEngine
     /// <summary>
     /// 消息对象类声明属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class MessageObjectAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class MessageObjectAttribute : Attribute
     {
         /// <summary>
         /// 消息操作码

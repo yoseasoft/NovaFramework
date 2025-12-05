@@ -23,17 +23,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 对象实现类声明属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class CObjectClassAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class CObjectClassAttribute : Attribute
     {
         /// <summary>
         /// 对象名称

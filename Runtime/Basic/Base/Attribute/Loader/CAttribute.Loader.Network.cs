@@ -22,28 +22,25 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 网络消息类型注册函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     internal class OnNetworkMessageRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
     {
-        public OnNetworkMessageRegisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
+        public OnNetworkMessageRegisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }
 
     /// <summary>
     /// 网络消息类型注销函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     internal class OnNetworkMessageUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
     {
-        public OnNetworkMessageUnregisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
+        public OnNetworkMessageUnregisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }
 }

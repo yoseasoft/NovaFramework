@@ -22,18 +22,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 在发布模式下启用的状态标识的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class | SystemAttributeTargets.Field | SystemAttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    internal class EnableOnReleaseModeAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+    internal class EnableOnReleaseModeAttribute : Attribute
     {
         public EnableOnReleaseModeAttribute() : base() { }
     }
@@ -41,8 +38,8 @@ namespace GameEngine
     /// <summary>
     /// 在发布模式下禁用的状态标识的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class | SystemAttributeTargets.Field | SystemAttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    internal class DisableOnReleaseModeAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+    internal class DisableOnReleaseModeAttribute : Attribute
     {
         public DisableOnReleaseModeAttribute() : base() { }
     }
@@ -50,13 +47,13 @@ namespace GameEngine
     /// <summary>
     /// 在发布模式下进行指定参数设置的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class | SystemAttributeTargets.Field | SystemAttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    internal class AssignableOnReleaseModeAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+    internal class AssignableOnReleaseModeAttribute : Attribute
     {
         /// <summary>
         /// 参数值
         /// </summary>
-        private object _value;
+        private readonly object _value;
 
         public object Value => _value;
 

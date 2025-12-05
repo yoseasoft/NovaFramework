@@ -23,11 +23,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Cysharp.Threading.Tasks;
 
-using SystemType = System.Type;
 using UnityObject = UnityEngine.Object;
 using UnityTransform = UnityEngine.Transform;
 using UnityVector3 = UnityEngine.Vector3;
@@ -91,7 +91,7 @@ namespace GameEngine
         /// <param name="name">资源名称</param>
         /// <param name="url">资源地址</param>
         /// <param name="type">资源类型</param>
-        public AssetSource LoadAsset(string name, string url, SystemType type)
+        public AssetSource LoadAsset(string name, string url, Type type)
         {
             if (TryGetAssetSource(name, out AssetSource assetSource))
             {
@@ -282,7 +282,7 @@ namespace GameEngine
         /// <param name="obj">Unity资源对象</param>
         /// <returns>返回缓存的目标资源对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private AssetSource CacheTargetAssetObject(string name, string url, SystemType type, UnityObject obj)
+        private AssetSource CacheTargetAssetObject(string name, string url, Type type, UnityObject obj)
         {
             Debugger.Assert(false == _assetSources.ContainsKey(name), NovaEngine.ErrorText.InvalidArguments);
 

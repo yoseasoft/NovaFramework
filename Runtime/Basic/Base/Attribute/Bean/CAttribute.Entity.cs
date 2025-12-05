@@ -22,18 +22,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 实体类声明属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public abstract class DeclareEntityClassAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public abstract class DeclareEntityClassAttribute : Attribute
     {
         /// <summary>
         /// 实体名称
@@ -64,13 +61,13 @@ namespace GameEngine
     /// <summary>
     /// 实体自动挂载的目标组件的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = true, Inherited = true)]
-    public class CEntityAutomaticActivationComponentAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
+    public class CEntityAutomaticActivationComponentAttribute : Attribute
     {
         /// <summary>
         /// 组件引用对象类型
         /// </summary>
-        private readonly SystemType _referenceType;
+        private readonly Type _referenceType;
         /// <summary>
         /// 组件优先级
         /// </summary>
@@ -83,7 +80,7 @@ namespace GameEngine
         /// <summary>
         /// 组件引用类型获取函数
         /// </summary>
-        public SystemType ReferenceType => _referenceType;
+        public Type ReferenceType => _referenceType;
         /// <summary>
         /// 组件优先级获取函数
         /// </summary>
@@ -93,15 +90,15 @@ namespace GameEngine
         /// </summary>
         public AspectBehaviourType ActivationBehaviourType => _activationBehaviourType;
 
-        public CEntityAutomaticActivationComponentAttribute(SystemType referenceType) : this(referenceType, 0, AspectBehaviourType.Initialize)
+        public CEntityAutomaticActivationComponentAttribute(Type referenceType) : this(referenceType, 0, AspectBehaviourType.Initialize)
         {
         }
 
-        public CEntityAutomaticActivationComponentAttribute(SystemType referenceType, int priority) : this(referenceType, priority, AspectBehaviourType.Initialize)
+        public CEntityAutomaticActivationComponentAttribute(Type referenceType, int priority) : this(referenceType, priority, AspectBehaviourType.Initialize)
         {
         }
 
-        public CEntityAutomaticActivationComponentAttribute(SystemType referenceType, int priority, AspectBehaviourType activationBehaviourType) : base()
+        public CEntityAutomaticActivationComponentAttribute(Type referenceType, int priority, AspectBehaviourType activationBehaviourType) : base()
         {
             _referenceType = referenceType;
             _priority = priority;

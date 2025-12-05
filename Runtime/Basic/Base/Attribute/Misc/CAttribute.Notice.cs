@@ -23,18 +23,25 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
+    /// 实体对象通知定义类的属性类型定义
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class NoticeSupportedAttribute : Attribute
+    {
+        public NoticeSupportedAttribute() : base()
+        { }
+    }
+
+    /// <summary>
     /// 角色对象通知定义类的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class NoticeSupportedOnActorAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class NoticeSupportedOnActorAttribute : NoticeSupportedAttribute
     {
         public NoticeSupportedOnActorAttribute() : base()
         { }
@@ -43,8 +50,8 @@ namespace GameEngine
     /// <summary>
     /// 场景对象通知定义类的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class NoticeSupportedOnSceneAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class NoticeSupportedOnSceneAttribute : NoticeSupportedAttribute
     {
         public NoticeSupportedOnSceneAttribute() : base()
         { }
@@ -53,8 +60,8 @@ namespace GameEngine
     /// <summary>
     /// 视图对象通知定义类的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Interface | SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class NoticeSupportedOnViewAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class NoticeSupportedOnViewAttribute : NoticeSupportedAttribute
     {
         public NoticeSupportedOnViewAttribute() : base()
         { }

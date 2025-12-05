@@ -23,10 +23,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-using SystemType = System.Type;
 using UnityObject = UnityEngine.Object;
 using UnityTransform = UnityEngine.Transform;
 using UnityVector3 = UnityEngine.Vector3;
@@ -50,7 +50,7 @@ namespace GameEngine
         /// <summary>
         /// 资产类型
         /// </summary>
-        private readonly SystemType _type;
+        private readonly Type _type;
         /// <summary>
         /// 原始资产对象（Unity对象）
         /// </summary>
@@ -62,10 +62,10 @@ namespace GameEngine
 
         public string Name => _name;
         public string Url => _url;
-        public SystemType Type => _type;
+        public Type Type => _type;
         public UnityObject Original => _original;
 
-        public AssetSource(string name, string url, SystemType type, UnityObject obj)
+        public AssetSource(string name, string url, Type type, UnityObject obj)
         {
             Debugger.Assert(false == string.IsNullOrEmpty(name), NovaEngine.ErrorText.InvalidArguments);
 

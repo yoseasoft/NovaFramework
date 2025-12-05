@@ -23,23 +23,20 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 编程接口分发类型注册函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnApiDispatchCallAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    public class OnApiDispatchCallAttribute : Attribute
     {
         /// <summary>
         /// 编程接口通知的目标对象类型
         /// </summary>
-        private readonly SystemType _classType;
+        private readonly Type _classType;
         /// <summary>
         /// 编程接口通知的功能名称
         /// </summary>
@@ -48,7 +45,7 @@ namespace GameEngine
         /// <summary>
         /// 目标对象类型获取函数
         /// </summary>
-        public SystemType ClassType => _classType;
+        public Type ClassType => _classType;
         /// <summary>
         /// 功能名称获取函数
         /// </summary>
@@ -57,7 +54,7 @@ namespace GameEngine
         public OnApiDispatchCallAttribute(string functionName) : this(null, functionName)
         { }
 
-        public OnApiDispatchCallAttribute(SystemType classType, string functionName)
+        public OnApiDispatchCallAttribute(Type classType, string functionName)
         {
             _classType = classType;
             _functionName = functionName;
@@ -67,8 +64,8 @@ namespace GameEngine
     /// <summary>
     /// 编程接口功能绑定函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class ApiFunctionBindingOfTargetAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    public class ApiFunctionBindingOfTargetAttribute : Attribute
     {
         /// <summary>
         /// 编程接口通知的功能名称

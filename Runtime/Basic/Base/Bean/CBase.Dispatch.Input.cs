@@ -24,10 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -41,7 +40,7 @@ namespace GameEngine
         /// <summary>
         /// 基础对象内部输入类型的响应回调映射列表
         /// </summary>
-        private IDictionary<SystemType, IDictionary<string, bool>> _inputResponseCallsForType;
+        private IDictionary<Type, IDictionary<string, bool>> _inputResponseCallsForType;
 
         /// <summary>
         /// 输入响应回调函数的绑定接口缓存容器
@@ -55,7 +54,7 @@ namespace GameEngine
         {
             // 输入响应回调映射容器初始化
             _inputResponseCallsForCode = new Dictionary<int, IDictionary<string, bool>>();
-            _inputResponseCallsForType = new Dictionary<SystemType, IDictionary<string, bool>>();
+            _inputResponseCallsForType = new Dictionary<Type, IDictionary<string, bool>>();
         }
 
         /// <summary>
@@ -142,7 +141,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="inputType">输入类型</param>
         /// <returns>返回后处理的操作结果</returns>
-        protected abstract bool OnInputResponseAddedActionPostProcess(SystemType inputType);
+        protected abstract bool OnInputResponseAddedActionPostProcess(Type inputType);
         /// <summary>
         /// 针对指定编码标识移除输入监听的后处理程序
         /// </summary>
@@ -153,7 +152,7 @@ namespace GameEngine
         /// 针对指定编码类型移除输入监听的后处理程序
         /// </summary>
         /// <param name="inputType">输入类型</param>
-        protected abstract void OnInputResponseRemovedActionPostProcess(SystemType inputType);
+        protected abstract void OnInputResponseRemovedActionPostProcess(Type inputType);
 
         /// <summary>
         /// 检测当前基础对象是否响应了目标输入标识
@@ -176,7 +175,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="inputType">输入类型</param>
         /// <returns>若响应了给定输入类型则返回true，否则返回false</returns>
-        protected internal virtual bool IsInputResponsedOfTargetType(SystemType inputType)
+        protected internal virtual bool IsInputResponsedOfTargetType(Type inputType)
         {
             if (_inputResponseCallsForType.ContainsKey(inputType) && _inputResponseCallsForType[inputType].Count > 0)
             {
@@ -194,7 +193,7 @@ namespace GameEngine
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
         protected internal virtual bool AddInputResponse(int inputCode, int operationType)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -265,9 +264,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="inputType">输入类型</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        protected internal virtual bool AddInputResponse(SystemType inputType)
+        protected internal virtual bool AddInputResponse(Type inputType)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -276,7 +275,7 @@ namespace GameEngine
         /// <typeparam name="T">输入类型</typeparam>
         /// <param name="func">监听回调函数</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        public bool AddInputResponse<T>(System.Action<T> func) where T : struct
+        public bool AddInputResponse<T>(Action<T> func) where T : struct
         {
             string fullname = NovaEngine.Utility.Text.GetFullName(func.Method);
             return AddInputResponse(fullname, func.Method, typeof(T));
@@ -289,7 +288,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="inputType">输入类型</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        public bool AddInputResponse(string fullname, MethodInfo methodInfo, SystemType inputType)
+        public bool AddInputResponse(string fullname, MethodInfo methodInfo, Type inputType)
         {
             return AddInputResponse(fullname, methodInfo, inputType, false);
         }
@@ -302,7 +301,7 @@ namespace GameEngine
         /// <param name="inputType">输入类型</param>
         /// <param name="automatically">自动装载状态标识</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        protected internal bool AddInputResponse(string fullname, MethodInfo methodInfo, SystemType inputType, bool automatically)
+        protected internal bool AddInputResponse(string fullname, MethodInfo methodInfo, Type inputType, bool automatically)
         {
             // 2025-11-30：
             // 针对普通函数采用对象自身构建的方式
@@ -407,7 +406,7 @@ namespace GameEngine
         /// 取消当前基础对象对指定输入类型的响应
         /// </summary>
         /// <param name="inputType">输入类型</param>
-        protected internal virtual void RemoveInputResponse(SystemType inputType)
+        protected internal virtual void RemoveInputResponse(Type inputType)
         {
             // 若针对特定输入绑定了监听回调，则移除相应的回调句柄
             if (_inputResponseCallsForType.ContainsKey(inputType))
@@ -434,7 +433,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="inputType">输入类型</param>
-        public void RemoveInputResponse(MethodInfo methodInfo, SystemType inputType)
+        public void RemoveInputResponse(MethodInfo methodInfo, Type inputType)
         {
             string fullname = _Generator.GenUniqueName(methodInfo);
 
@@ -456,7 +455,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="fullname">函数名称</param>
         /// <param name="inputType">输入类型</param>
-        protected internal void RemoveInputResponse(string fullname, SystemType inputType)
+        protected internal void RemoveInputResponse(string fullname, Type inputType)
         {
             if (_inputResponseCallsForType.TryGetValue(inputType, out IDictionary<string, bool> calls))
             {
@@ -481,7 +480,7 @@ namespace GameEngine
         protected internal void RemoveAllAutomaticallyInputResponses()
         {
             OnAutomaticallyCallSyntaxInfoProcessHandler<int>(_inputResponseCallsForCode, RemoveInputResponse);
-            OnAutomaticallyCallSyntaxInfoProcessHandler<SystemType>(_inputResponseCallsForType, RemoveInputResponse);
+            OnAutomaticallyCallSyntaxInfoProcessHandler<Type>(_inputResponseCallsForType, RemoveInputResponse);
         }
 
         /// <summary>
@@ -496,7 +495,7 @@ namespace GameEngine
                 for (int n = 0; n < c; ++n) { RemoveInputResponse(id_keys[n]); }
             }
 
-            IList<SystemType> type_keys = NovaEngine.Utility.Collection.ToListForKeys<SystemType, IDictionary<string, bool>>(_inputResponseCallsForType);
+            IList<Type> type_keys = NovaEngine.Utility.Collection.ToListForKeys<Type, IDictionary<string, bool>>(_inputResponseCallsForType);
             if (null != type_keys)
             {
                 int c = type_keys.Count;
@@ -552,7 +551,7 @@ namespace GameEngine
         /// <param name="methodInfo">函数对象</param>
         /// <param name="inputDataType">输入数据类型</param>
         /// <param name="automatically">自动装载状态标识</param>
-        private void AddInputCallDelegateHandler(string fullname, MethodInfo methodInfo, SystemType inputDataType, bool automatically)
+        private void AddInputCallDelegateHandler(string fullname, MethodInfo methodInfo, Type inputDataType, bool automatically)
         {
             // 静态函数（包括扩展类型）
             if (methodInfo.IsStatic)

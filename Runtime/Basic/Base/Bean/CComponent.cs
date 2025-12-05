@@ -24,9 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -303,7 +302,7 @@ namespace GameEngine
         /// 从当前组件所挂载的实体对象中移除指定类型的组件对象实例
         /// </summary>
         /// <param name="componentType">组件类型</param>
-        public void RemoveComponent(SystemType componentType)
+        public void RemoveComponent(Type componentType)
         {
             Entity?.RemoveComponent(componentType);
         }
@@ -350,7 +349,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="inputType">输入类型</param>
         /// <returns>返回后处理的操作结果</returns>
-        protected override bool OnInputResponseAddedActionPostProcess(SystemType inputType)
+        protected override bool OnInputResponseAddedActionPostProcess(Type inputType)
         {
             return Entity.AddInputResponseFromComponent(inputType);
         }
@@ -370,7 +369,7 @@ namespace GameEngine
         /// 针对指定输入类型移除输入响应的后处理程序
         /// </summary>
         /// <param name="inputType">输入类型类型</param>
-        protected override void OnInputResponseRemovedActionPostProcess(SystemType inputType)
+        protected override void OnInputResponseRemovedActionPostProcess(Type inputType)
         {
             // 移除实体中对应的输入响应
             Entity?.RemoveInputResponseFromComponent(inputType);
@@ -408,7 +407,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="eventType">事件类型</param>
         /// <returns>返回后处理的操作结果</returns>
-        protected override bool OnSubscribeActionPostProcess(SystemType eventType)
+        protected override bool OnSubscribeActionPostProcess(Type eventType)
         {
             return Entity.SubscribeFromComponent(eventType);
         }
@@ -427,7 +426,7 @@ namespace GameEngine
         /// 针对指定事件类型移除事件订阅的后处理程序
         /// </summary>
         /// <param name="eventType">事件类型</param>
-        protected override void OnUnsubscribeActionPostProcess(SystemType eventType)
+        protected override void OnUnsubscribeActionPostProcess(Type eventType)
         {
             // 移除实体中对应的事件订阅
             Entity?.UnsubscribeFromComponent(eventType);

@@ -22,16 +22,14 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 场景实现类声明属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class CSceneClassAttribute : DeclareEntityClassAttribute
     {
         public CSceneClassAttribute(string sceneName) : this(sceneName, 0)
@@ -48,8 +46,8 @@ namespace GameEngine
     /// <summary>
     /// 场景中自动打开的目标视图的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = true, Inherited = false)]
-    public class SceneAutoDisplayOnTargetViewAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
+    public class SceneAutoDisplayOnTargetViewAttribute : Attribute
     {
         /// <summary>
         /// 场景名称标识

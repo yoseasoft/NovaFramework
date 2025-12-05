@@ -24,9 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -40,7 +39,7 @@ namespace GameEngine
         /// <summary>
         /// 对象内部订阅事件的类型管理容器
         /// </summary>
-        private IList<SystemType> _eventTypes;
+        private IList<Type> _eventTypes;
 
         /// <summary>
         /// 引用对象的事件订阅处理初始化函数接口
@@ -50,7 +49,7 @@ namespace GameEngine
             // 事件标识容器初始化
             _eventIds = new List<int>();
             // 事件类型容器初始化
-            _eventTypes = new List<SystemType>();
+            _eventTypes = new List<Type>();
         }
 
         /// <summary>
@@ -113,7 +112,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="eventType">事件类型</param>
         /// <returns>返回后处理的操作结果</returns>
-        protected override bool OnSubscribeActionPostProcess(SystemType eventType)
+        protected override bool OnSubscribeActionPostProcess(Type eventType)
         {
             return Subscribe(eventType);
         }
@@ -129,7 +128,7 @@ namespace GameEngine
         /// 针对指定事件类型移除事件订阅的后处理程序
         /// </summary>
         /// <param name="eventType">事件类型</param>
-        protected override void OnUnsubscribeActionPostProcess(SystemType eventType)
+        protected override void OnUnsubscribeActionPostProcess(Type eventType)
         { }
 
         /// <summary>
@@ -141,13 +140,13 @@ namespace GameEngine
         {
             if (_eventIds.Contains(eventID))
             {
-                // Debugger.Warn("The 'CRef' instance event '{0}' was already subscribed, repeat do it failed.", eventID);
+                // Debugger.Warn("The 'CRef' instance event '{%d}' was already subscribed, repeat do it failed.", eventID);
                 return true;
             }
 
             if (false == EventController.Instance.Subscribe(eventID, this))
             {
-                Debugger.Warn("The 'CRef' instance subscribe event '{0}' failed.", eventID);
+                Debugger.Warn("The 'CRef' instance subscribe event '{%d}' failed.", eventID);
                 return false;
             }
 
@@ -161,17 +160,17 @@ namespace GameEngine
         /// </summary>
         /// <param name="eventType">事件类型</param>
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
-        public override sealed bool Subscribe(SystemType eventType)
+        public override sealed bool Subscribe(Type eventType)
         {
             if (_eventTypes.Contains(eventType))
             {
-                // Debugger.Warn("The 'CRef' instance's event '{0}' was already subscribed, repeat do it failed.", eventType.FullName);
+                // Debugger.Warn("The 'CRef' instance's event '{%t}' was already subscribed, repeat do it failed.", eventType);
                 return true;
             }
 
             if (false == EventController.Instance.Subscribe(eventType, this))
             {
-                Debugger.Warn("The 'CRef' instance subscribe event '{0}' failed.", eventType.FullName);
+                Debugger.Warn("The 'CRef' instance subscribe event '{%t}' failed.", eventType);
                 return false;
             }
 
@@ -188,7 +187,7 @@ namespace GameEngine
         {
             if (false == _eventIds.Contains(eventID))
             {
-                // Debugger.Warn("Could not found any event '{0}' for target 'CRef' instance with on subscribed, do unsubscribe failed.", eventID);
+                // Debugger.Warn("Could not found any event '{%d}' for target 'CRef' instance with on subscribed, do unsubscribe failed.", eventID);
                 return;
             }
 
@@ -202,11 +201,11 @@ namespace GameEngine
         /// 取消当前引用对象对指定事件的订阅
         /// </summary>
         /// <param name="eventType">事件类型</param>
-        public override sealed void Unsubscribe(SystemType eventType)
+        public override sealed void Unsubscribe(Type eventType)
         {
             if (false == _eventTypes.Contains(eventType))
             {
-                // Debugger.Warn("Could not found any event '{0}' for target 'CRef' instance with on subscribed, do unsubscribe failed.", eventType.FullName);
+                // Debugger.Warn("Could not found any event '{%t}' for target 'CRef' instance with on subscribed, do unsubscribe failed.", eventType);
                 return;
             }
 

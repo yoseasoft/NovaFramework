@@ -22,13 +22,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemDelegate = System.Delegate;
 
 namespace GameEngine
 {
@@ -44,7 +41,7 @@ namespace GameEngine
         /// <param name="attributeType">行为属性类型</param>
         /// <returns>返回创建的回调句柄实例，若不存在该行为模式的函数信息，则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static SystemDelegate CreateSubmoduleBehaviourCallback(SystemType classType, SystemType attributeType)
+        public static Delegate CreateSubmoduleBehaviourCallback(Type classType, Type attributeType)
         {
             Debugger.Assert(NovaEngine.Utility.Reflection.IsTypeOfStaticClass(classType), NovaEngine.ErrorText.InvalidArguments);
 
@@ -58,7 +55,7 @@ namespace GameEngine
         /// <param name="attributeType">行为属性类型</param>
         /// <returns>返回创建的回调句柄实例，若不存在该行为模式的函数信息，则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static SystemDelegate CreateSubmoduleBehaviourCallback(object targetObject, SystemType attributeType)
+        public static Delegate CreateSubmoduleBehaviourCallback(object targetObject, Type attributeType)
         {
             Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
 
@@ -72,10 +69,10 @@ namespace GameEngine
         /// <param name="classType">目标对象类型</param>
         /// <param name="attributeType">行为属性类型</param>
         /// <returns>返回创建的回调句柄实例，若不存在该行为模式的函数信息，则返回null</returns>
-        private static SystemDelegate CreateSubmoduleBehaviourCallback(object targetObject, SystemType classType, SystemType attributeType)
+        private static Delegate CreateSubmoduleBehaviourCallback(object targetObject, Type classType, Type attributeType)
         {
-            IList<SystemDelegate> list = new List<SystemDelegate>();
-            MethodInfo[] methods = null;
+            IList<Delegate> list = new List<Delegate>();
+            MethodInfo[] methods;
 
             if (null == targetObject)
             {
@@ -89,10 +86,10 @@ namespace GameEngine
             for (int n = 0; n < methods.Length; ++n)
             {
                 MethodInfo method = methods[n];
-                SystemAttribute attr = method.GetCustomAttribute(attributeType);
+                Attribute attr = method.GetCustomAttribute(attributeType);
                 if (null != attr)
                 {
-                    SystemDelegate c;
+                    Delegate c;
                     if (null == targetObject)
                     {
                         // 这里可以做一个检查，要求函数必须为静态函数
@@ -108,7 +105,7 @@ namespace GameEngine
             }
 
             // 先重置回调
-            SystemDelegate callback = null;
+            Delegate callback = null;
 
             if (list.Count > 0)
             {
@@ -120,7 +117,7 @@ namespace GameEngine
                     }
                     else
                     {
-                        callback = SystemDelegate.Combine(list[n], callback);
+                        callback = Delegate.Combine(list[n], callback);
                     }
                 }
             }

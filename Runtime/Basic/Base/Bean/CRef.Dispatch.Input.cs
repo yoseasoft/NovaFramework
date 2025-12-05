@@ -24,9 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -40,7 +39,7 @@ namespace GameEngine
         /// <summary>
         /// 对象内部输入响应的类型管理容器
         /// </summary>
-        private IList<SystemType> _inputTypes;
+        private IList<Type> _inputTypes;
 
         /// <summary>
         /// 引用对象的输入响应处理初始化函数接口
@@ -50,7 +49,7 @@ namespace GameEngine
             // 输入编码容器初始化
             _inputCodes = new List<int>();
             // 输入类型容器初始化
-            _inputTypes = new List<SystemType>();
+            _inputTypes = new List<Type>();
         }
 
         /// <summary>
@@ -114,7 +113,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="inputType">输入类型</param>
         /// <returns>返回后处理的操作结果</returns>
-        protected override bool OnInputResponseAddedActionPostProcess(SystemType inputType)
+        protected override bool OnInputResponseAddedActionPostProcess(Type inputType)
         {
             return AddInputResponse(inputType);
         }
@@ -131,7 +130,7 @@ namespace GameEngine
         /// 针对指定输入类型移除输入响应的后处理程序
         /// </summary>
         /// <param name="inputType">输入类型</param>
-        protected override void OnInputResponseRemovedActionPostProcess(SystemType inputType)
+        protected override void OnInputResponseRemovedActionPostProcess(Type inputType)
         { }
 
         /// <summary>
@@ -144,13 +143,13 @@ namespace GameEngine
         {
             if (_inputCodes.Contains(inputCode))
             {
-                Debugger.Warn("The 'CRef' instance input '{0}' was already added, repeat do it failed.", inputCode);
+                Debugger.Warn("The 'CRef' instance input '{%d}' was already added, repeat do it failed.", inputCode);
                 return true;
             }
 
             if (false == InputHandler.Instance.AddInputResponse(inputCode, this))
             {
-                Debugger.Warn("The 'CRef' instance add input response '{0}' failed.", inputCode);
+                Debugger.Warn("The 'CRef' instance add input response '{%d}' failed.", inputCode);
                 return false;
             }
 
@@ -164,17 +163,17 @@ namespace GameEngine
         /// </summary>
         /// <param name="inputType">输入类型</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        protected internal override sealed bool AddInputResponse(SystemType inputType)
+        protected internal override sealed bool AddInputResponse(Type inputType)
         {
             if (_inputTypes.Contains(inputType))
             {
-                // Debugger.Warn("The 'CRef' instance's input '{0}' was already added, repeat do it failed.", inputType.FullName);
+                // Debugger.Warn("The 'CRef' instance's input '{%t}' was already added, repeat do it failed.", inputType);
                 return true;
             }
 
             if (false == InputHandler.Instance.AddInputResponse(inputType, this))
             {
-                Debugger.Warn("The 'CRef' instance add input response '{0}' failed.", inputType.FullName);
+                Debugger.Warn("The 'CRef' instance add input response '{%t}' failed.", inputType);
                 return false;
             }
 
@@ -192,7 +191,7 @@ namespace GameEngine
         {
             if (false == _inputCodes.Contains(inputCode))
             {
-                // Debugger.Warn("Could not found any input '{0}' for target 'CRef' instance with on added, do removed it failed.", inputCode);
+                // Debugger.Warn("Could not found any input '{%d}' for target 'CRef' instance with on added, do removed it failed.", inputCode);
                 return;
             }
 
@@ -206,11 +205,11 @@ namespace GameEngine
         /// 取消当前引用对象对指定输入的响应
         /// </summary>
         /// <param name="inputType">输入类型</param>
-        protected internal override sealed void RemoveInputResponse(SystemType inputType)
+        protected internal override sealed void RemoveInputResponse(Type inputType)
         {
             if (false == _inputTypes.Contains(inputType))
             {
-                // Debugger.Warn("Could not found any input '{0}' for target 'CRef' instance with on added, do removed it failed.", inputType.FullName);
+                // Debugger.Warn("Could not found any input '{%t}' for target 'CRef' instance with on added, do removed it failed.", inputType);
                 return;
             }
 

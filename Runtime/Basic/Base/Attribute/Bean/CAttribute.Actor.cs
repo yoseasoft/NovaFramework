@@ -22,16 +22,14 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 角色实现类声明属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class CActorClassAttribute : DeclareEntityClassAttribute
     {
         public CActorClassAttribute(string actorName) : this(actorName, 0)

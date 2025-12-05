@@ -155,8 +155,8 @@ namespace NovaEngine
                 binaryWriter.Write(header[1]);
                 binaryWriter.Write(header[2]);
                 binaryWriter.Write(version);
-                SerializeCallback callback = null;
-                if (!_serializeCallbacks.TryGetValue(version, out callback))
+
+                if (!_serializeCallbacks.TryGetValue(version, out SerializeCallback callback))
                 {
                     throw new CFrameworkException("Serialize callback '{%d}' is not exist.", version);
                 }
@@ -186,8 +186,8 @@ namespace NovaEngine
                 }
 
                 byte version = binaryReader.ReadByte();
-                DeserializeCallback callback = null;
-                if (!_deserializeCallbacks.TryGetValue(version, out callback))
+
+                if (!_deserializeCallbacks.TryGetValue(version, out DeserializeCallback callback))
                 {
                     throw new CFrameworkException("Deserialize callback '{%d}' is not exist.", version);
                 }
@@ -218,8 +218,8 @@ namespace NovaEngine
                 }
 
                 byte version = binaryReader.ReadByte();
-                TryGetValueCallback callback = null;
-                if (!_tryGetValueCallbacks.TryGetValue(version, out callback))
+
+                if (!_tryGetValueCallbacks.TryGetValue(version, out TryGetValueCallback callback))
                 {
                     return false;
                 }

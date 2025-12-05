@@ -22,28 +22,25 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 事件分发类型注册函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     internal class OnEventCallRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
     {
-        public OnEventCallRegisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
+        public OnEventCallRegisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }
 
     /// <summary>
     /// 事件分发类型注销函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     internal class OnEventCallUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
     {
-        public OnEventCallUnregisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
+        public OnEventCallUnregisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }
 }

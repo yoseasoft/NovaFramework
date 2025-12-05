@@ -24,6 +24,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Runtime.CompilerServices;
 
 namespace GameEngine
@@ -239,7 +240,7 @@ namespace GameEngine
         /// <returns>正常调用结束返回true，发生异常返回false</returns>
         public bool Pcall(string methodName)
         {
-            try { Call(methodName); } catch (System.Exception e) { Debugger.Error(e); return false; }
+            try { Call(methodName); } catch (Exception e) { Debugger.Error(e); return false; }
 
             return true;
         }
@@ -248,7 +249,7 @@ namespace GameEngine
         /// 支持切面控制的函数调用接口
         /// </summary>
         /// <param name="f">目标函数</param>
-        protected internal void Call(System.Action f)
+        protected internal void Call(Action f)
         {
             AspectBehaviourType lifecycleType = GetLifecycleTypeByMethodName(f.Method.Name);
 
@@ -271,7 +272,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="f">目标函数</param>
         /// <param name="lifecycleType">生命周期类型</param>
-        protected internal void Call(System.Action f, AspectBehaviourType lifecycleType)
+        protected internal void Call(Action f, AspectBehaviourType lifecycleType)
         {
             Debugger.Assert(AspectBehaviourType.Unknown != lifecycleType, NovaEngine.ErrorText.InvalidArguments);
 
@@ -291,9 +292,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="f">目标函数</param>
         /// <returns>正常调用结束返回true，发生异常返回false</returns>
-        protected internal bool Pcall(System.Action f)
+        protected internal bool Pcall(Action f)
         {
-            try { Call(f); } catch (System.Exception e) { Debugger.Error(e); return false; }
+            try { Call(f); } catch (Exception e) { Debugger.Error(e); return false; }
 
             return true;
         }
@@ -304,7 +305,7 @@ namespace GameEngine
         /// <typeparam name="T">参数类型</typeparam>
         /// <param name="func">目标函数</param>
         /// <param name="arg0">参数值</param>
-        protected internal void Call<T>(System.Action<T> func, T arg0)
+        protected internal void Call<T>(Action<T> func, T arg0)
         {
             AspectController.Instance.Call<T>(func, arg0);
         }
@@ -316,9 +317,9 @@ namespace GameEngine
         /// <param name="func">目标函数</param>
         /// <param name="arg0">参数值</param>
         /// <returns>正常调用结束返回true，发生异常返回false</returns>
-        protected internal bool Pcall<T>(System.Action<T> func, T arg0)
+        protected internal bool Pcall<T>(Action<T> func, T arg0)
         {
-            try { Call<T>(func, arg0); } catch (System.Exception e) { Debugger.Error(e); return false; }
+            try { Call<T>(func, arg0); } catch (Exception e) { Debugger.Error(e); return false; }
 
             return true;
         }
@@ -329,7 +330,7 @@ namespace GameEngine
         /// <typeparam name="V">返回值类型</typeparam>
         /// <param name="func">目标函数</param>
         /// <returns>返回目标函数调用后的返回结果</returns>
-        protected internal V Call<V>(System.Func<V> func)
+        protected internal V Call<V>(Func<V> func)
         {
             return AspectController.Instance.Call<V>(func);
         }
@@ -341,9 +342,9 @@ namespace GameEngine
         /// <param name="func">目标函数</param>
         /// <param name="value">目标函数返回值</param>
         /// <returns>正常调用结束返回true，发生异常返回false</returns>
-        protected internal bool Pcall<V>(System.Func<V> func, out V value)
+        protected internal bool Pcall<V>(Func<V> func, out V value)
         {
-            try { value = Call<V>(func); } catch (System.Exception e) { Debugger.Error(e); value = default(V); return false; }
+            try { value = Call<V>(func); } catch (Exception e) { Debugger.Error(e); value = default(V); return false; }
 
             return true;
         }
@@ -356,7 +357,7 @@ namespace GameEngine
         /// <param name="func">目标函数</param>
         /// <param name="arg0">参数值</param>
         /// <returns>返回目标函数调用后的返回结果</returns>
-        protected internal V Call<T, V>(System.Func<T, V> func, T arg0)
+        protected internal V Call<T, V>(Func<T, V> func, T arg0)
         {
             return AspectController.Instance.Call<T, V>(func, arg0);
         }
@@ -370,9 +371,9 @@ namespace GameEngine
         /// <param name="arg0">参数值</param>
         /// <param name="value">目标函数返回值</param>
         /// <returns>正常调用结束返回true，发生异常返回false</returns>
-        protected internal bool Pcall<T, V>(System.Func<T, V> func, T arg0, out V value)
+        protected internal bool Pcall<T, V>(Func<T, V> func, T arg0, out V value)
         {
-            try { value = Call<T, V>(func, arg0); } catch (System.Exception e) { Debugger.Error(e); value = default(V); return false; }
+            try { value = Call<T, V>(func, arg0); } catch (Exception e) { Debugger.Error(e); value = default(V); return false; }
 
             return true;
         }

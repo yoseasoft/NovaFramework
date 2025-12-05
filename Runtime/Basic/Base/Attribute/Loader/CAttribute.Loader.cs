@@ -22,24 +22,21 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 代码加载类的加载函数的属性定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnCodeLoaderClassLoadOfTargetAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnCodeLoaderClassLoadOfTargetAttribute : Attribute
     {
-        private readonly SystemType _classType;
+        private readonly Type _classType;
 
-        public SystemType ClassType => _classType;
+        public Type ClassType => _classType;
 
-        public OnCodeLoaderClassLoadOfTargetAttribute(SystemType classType)
+        public OnCodeLoaderClassLoadOfTargetAttribute(Type classType)
         {
             _classType = classType;
         }
@@ -48,14 +45,14 @@ namespace GameEngine
     /// <summary>
     /// 代码加载类的清理函数的属性定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnCodeLoaderClassCleanupOfTargetAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnCodeLoaderClassCleanupOfTargetAttribute : Attribute
     {
-        private readonly SystemType _classType;
+        private readonly Type _classType;
 
-        public SystemType ClassType => _classType;
+        public Type ClassType => _classType;
 
-        public OnCodeLoaderClassCleanupOfTargetAttribute(SystemType classType)
+        public OnCodeLoaderClassCleanupOfTargetAttribute(Type classType)
         {
             _classType = classType;
         }
@@ -64,14 +61,14 @@ namespace GameEngine
     /// <summary>
     /// 代码加载类的结构信息查找函数的属性定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnCodeLoaderClassLookupOfTargetAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnCodeLoaderClassLookupOfTargetAttribute : Attribute
     {
-        private readonly SystemType _classType;
+        private readonly Type _classType;
 
-        public SystemType ClassType => _classType;
+        public Type ClassType => _classType;
 
-        public OnCodeLoaderClassLookupOfTargetAttribute(SystemType classType)
+        public OnCodeLoaderClassLookupOfTargetAttribute(Type classType)
         {
             _classType = classType;
         }
@@ -82,26 +79,26 @@ namespace GameEngine
     /// <summary>
     /// 绑定处理接口注册函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnProcessRegisterClassOfTargetAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnProcessRegisterClassOfTargetAttribute : Attribute
     {
-        private readonly SystemType _classType;
+        private readonly Type _classType;
 
-        public SystemType ClassType => _classType;
+        public Type ClassType => _classType;
 
-        public OnProcessRegisterClassOfTargetAttribute(SystemType classType) { _classType = classType; }
+        public OnProcessRegisterClassOfTargetAttribute(Type classType) { _classType = classType; }
     }
 
     /// <summary>
     /// 绑定处理接口注销函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnProcessUnregisterClassOfTargetAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnProcessUnregisterClassOfTargetAttribute : Attribute
     {
-        private readonly SystemType _classType;
+        private readonly Type _classType;
 
-        public SystemType ClassType => _classType;
+        public Type ClassType => _classType;
 
-        public OnProcessUnregisterClassOfTargetAttribute(SystemType classType) { _classType = classType; }
+        public OnProcessUnregisterClassOfTargetAttribute(Type classType) { _classType = classType; }
     }
 }

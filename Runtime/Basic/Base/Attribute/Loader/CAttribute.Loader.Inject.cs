@@ -22,28 +22,25 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 注入控制类型注册函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     internal class OnInjectOfControlRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
     {
-        public OnInjectOfControlRegisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
+        public OnInjectOfControlRegisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }
 
     /// <summary>
     /// 注入控制类型注销函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     internal class OnInjectOfControlUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
     {
-        public OnInjectOfControlUnregisterClassOfTargetAttribute(SystemType classType) : base(classType) { }
+        public OnInjectOfControlUnregisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }
 }

@@ -24,10 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -76,7 +75,7 @@ namespace GameEngine
         /// <param name="container">回调信息数据容器</param>
         /// <param name="func">操作回调接口</param>
         private void OnAutomaticallyCallSyntaxInfoProcessHandler<SourceType>(IDictionary<SourceType, IDictionary<string, bool>> container,
-                                                                             System.Action<string, SourceType> func)
+                                                                             Action<string, SourceType> func)
         {
             IDictionary<SourceType, IList<string>> dict = new Dictionary<SourceType, IList<string>>();
 

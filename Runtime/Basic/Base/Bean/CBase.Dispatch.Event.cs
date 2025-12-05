@@ -24,10 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -41,7 +40,7 @@ namespace GameEngine
         /// <summary>
         /// 基础对象内部事件类型的订阅回调映射列表
         /// </summary>
-        private IDictionary<SystemType, IDictionary<string, bool>> _eventSubscribeCallForType;
+        private IDictionary<Type, IDictionary<string, bool>> _eventSubscribeCallForType;
 
         /// <summary>
         /// 事件订阅回调函数的绑定接口缓存容器
@@ -55,7 +54,7 @@ namespace GameEngine
         {
             // 事件订阅回调映射容器初始化
             _eventSubscribeCallForId = new Dictionary<int, IDictionary<string, bool>>();
-            _eventSubscribeCallForType = new Dictionary<SystemType, IDictionary<string, bool>>();
+            _eventSubscribeCallForType = new Dictionary<Type, IDictionary<string, bool>>();
         }
 
         /// <summary>
@@ -183,7 +182,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="eventType">事件类型</param>
         /// <returns>返回后处理的操作结果</returns>
-        protected abstract bool OnSubscribeActionPostProcess(SystemType eventType);
+        protected abstract bool OnSubscribeActionPostProcess(Type eventType);
         /// <summary>
         /// 针对指定事件标识移除事件订阅的后处理程序
         /// </summary>
@@ -193,7 +192,7 @@ namespace GameEngine
         /// 针对指定事件类型移除事件订阅的后处理程序
         /// </summary>
         /// <param name="eventType">事件类型</param>
-        protected abstract void OnUnsubscribeActionPostProcess(SystemType eventType);
+        protected abstract void OnUnsubscribeActionPostProcess(Type eventType);
 
         /// <summary>
         /// 检测当前基础对象是否订阅了目标事件标识
@@ -215,7 +214,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="eventType">事件类型</param>
         /// <returns>若订阅了给定事件类型则返回true，否则返回false</returns>
-        protected internal virtual bool IsSubscribedOfTargetType(SystemType eventType)
+        protected internal virtual bool IsSubscribedOfTargetType(Type eventType)
         {
             if (_eventSubscribeCallForType.ContainsKey(eventType) && _eventSubscribeCallForType[eventType].Count > 0)
             {
@@ -232,7 +231,7 @@ namespace GameEngine
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
         public virtual bool Subscribe(int eventID)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -301,9 +300,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="eventType">事件类型</param>
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
-        public virtual bool Subscribe(SystemType eventType)
+        public virtual bool Subscribe(Type eventType)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -312,7 +311,7 @@ namespace GameEngine
         /// <typeparam name="T">事件类型</typeparam>
         /// <param name="func">监听回调函数</param>
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
-        public bool Subscribe<T>(System.Action<T> func) where T : struct
+        public bool Subscribe<T>(Action<T> func) where T : struct
         {
             string fullname = NovaEngine.Utility.Text.GetFullName(func.Method);
             return Subscribe(fullname, func.Method, typeof(T));
@@ -325,7 +324,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="eventType">事件类型</param>
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
-        public bool Subscribe(string fullname, MethodInfo methodInfo, SystemType eventType)
+        public bool Subscribe(string fullname, MethodInfo methodInfo, Type eventType)
         {
             return Subscribe(fullname, methodInfo, eventType, false);
         }
@@ -338,7 +337,7 @@ namespace GameEngine
         /// <param name="eventType">事件类型</param>
         /// <param name="automatically">自动装载状态标识</param>
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
-        protected internal bool Subscribe(string fullname, MethodInfo methodInfo, SystemType eventType, bool automatically)
+        protected internal bool Subscribe(string fullname, MethodInfo methodInfo, Type eventType, bool automatically)
         {
             // 2025-11-30：
             // 针对普通函数采用对象自身构建的方式
@@ -434,7 +433,7 @@ namespace GameEngine
         /// 取消当前基础对象对指定事件的订阅
         /// </summary>
         /// <param name="eventType">事件类型</param>
-        public virtual void Unsubscribe(SystemType eventType)
+        public virtual void Unsubscribe(Type eventType)
         {
             // 若针对特定事件绑定了监听回调，则移除相应的回调句柄
             if (_eventSubscribeCallForType.ContainsKey(eventType))
@@ -461,7 +460,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="eventType">事件类型</param>
-        public void Unsubscribe(MethodInfo methodInfo, SystemType eventType)
+        public void Unsubscribe(MethodInfo methodInfo, Type eventType)
         {
             string fullname = _Generator.GenUniqueName(methodInfo);
 
@@ -483,7 +482,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="fullname">函数名称</param>
         /// <param name="eventType">事件类型</param>
-        protected internal void Unsubscribe(string fullname, SystemType eventType)
+        protected internal void Unsubscribe(string fullname, Type eventType)
         {
             if (_eventSubscribeCallForType.TryGetValue(eventType, out IDictionary<string, bool> calls))
             {
@@ -508,7 +507,7 @@ namespace GameEngine
         protected internal void UnsubscribeAllAutomaticallyEvents()
         {
             OnAutomaticallyCallSyntaxInfoProcessHandler<int>(_eventSubscribeCallForId, Unsubscribe);
-            OnAutomaticallyCallSyntaxInfoProcessHandler<SystemType>(_eventSubscribeCallForType, Unsubscribe);
+            OnAutomaticallyCallSyntaxInfoProcessHandler<Type>(_eventSubscribeCallForType, Unsubscribe);
         }
 
         /// <summary>
@@ -523,7 +522,7 @@ namespace GameEngine
                 for (int n = 0; n < c; ++n) { Unsubscribe(id_keys[n]); }
             }
 
-            IList<SystemType> type_keys = NovaEngine.Utility.Collection.ToListForKeys<SystemType, IDictionary<string, bool>>(_eventSubscribeCallForType);
+            IList<Type> type_keys = NovaEngine.Utility.Collection.ToListForKeys<Type, IDictionary<string, bool>>(_eventSubscribeCallForType);
             if (null != type_keys)
             {
                 int c = type_keys.Count;
@@ -578,7 +577,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="eventType">事件类型</param>
         /// <param name="automatically">自动装载状态标识</param>
-        private void AddEventCallDelegateHandler(string fullname, MethodInfo methodInfo, SystemType eventType, bool automatically)
+        private void AddEventCallDelegateHandler(string fullname, MethodInfo methodInfo, Type eventType, bool automatically)
         {
             // 静态函数（包括扩展类型）
             if (methodInfo.IsStatic)

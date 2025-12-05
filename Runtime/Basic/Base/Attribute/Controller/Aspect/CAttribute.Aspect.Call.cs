@@ -24,18 +24,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 切面调用的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class OnAspectCallAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    public class OnAspectCallAttribute : Attribute
     {
         /// <summary>
         /// 定义切点的函数名称
@@ -71,7 +68,7 @@ namespace GameEngine
     /// <summary>
     /// 切面扩展调用的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class OnAspectExtendCallAttribute : OnAspectCallAttribute
     {
         public OnAspectExtendCallAttribute(string methodName) : base(methodName, AspectAccessType.Extend)
@@ -84,7 +81,7 @@ namespace GameEngine
     /// <summary>
     /// 切面前置调用的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class OnAspectBeforeCallAttribute : OnAspectCallAttribute
     {
         public OnAspectBeforeCallAttribute(string methodName) : base(methodName, AspectAccessType.Before)
@@ -97,7 +94,7 @@ namespace GameEngine
     /// <summary>
     /// 切面后置调用的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class OnAspectAfterCallAttribute : OnAspectCallAttribute
     {
         public OnAspectAfterCallAttribute(string methodName) : base(methodName, AspectAccessType.After)
@@ -110,7 +107,7 @@ namespace GameEngine
     /// <summary>
     /// 切面返回调用的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class OnAspectAfterReturningCallAttribute : OnAspectCallAttribute
     {
         public OnAspectAfterReturningCallAttribute(string methodName) : base(methodName, AspectAccessType.AfterReturning)
@@ -123,7 +120,7 @@ namespace GameEngine
     /// <summary>
     /// 切面异常调用的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class OnAspectAfterThrowingCallAttribute : OnAspectCallAttribute
     {
         public OnAspectAfterThrowingCallAttribute(string methodName) : base(methodName, AspectAccessType.AfterThrowing)
@@ -136,7 +133,7 @@ namespace GameEngine
     /// <summary>
     /// 切面环绕调用的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class OnAspectAroundCallAttribute : OnAspectCallAttribute
     {
         public OnAspectAroundCallAttribute(string methodName) : base(methodName, AspectAccessType.Around)

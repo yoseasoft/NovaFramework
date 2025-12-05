@@ -24,10 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -134,7 +133,7 @@ namespace GameEngine
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
         protected internal virtual bool AddMessageListener(int opcode)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -205,7 +204,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="messageType">消息类型</param>
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
-        public bool AddMessageListener(SystemType messageType)
+        public bool AddMessageListener(Type messageType)
         {
             int opcode = NetworkHandler.Instance.GetOpcodeByMessageType(messageType);
 
@@ -218,7 +217,7 @@ namespace GameEngine
         /// <typeparam name="T">消息类型</typeparam>
         /// <param name="func">监听回调函数</param>
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
-        public bool AddMessageListener<T>(System.Action<T> func) where T : class
+        public bool AddMessageListener<T>(Action<T> func) where T : class
         {
             string fullname = NovaEngine.Utility.Text.GetFullName(func.Method);
             return AddMessageListener(fullname, func.Method, typeof(T));
@@ -231,7 +230,7 @@ namespace GameEngine
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="messageType">消息类型</param>
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
-        public bool AddMessageListener(string fullname, MethodInfo methodInfo, SystemType messageType)
+        public bool AddMessageListener(string fullname, MethodInfo methodInfo, Type messageType)
         {
             int opcode = NetworkHandler.Instance.GetOpcodeByMessageType(messageType);
 
@@ -246,7 +245,7 @@ namespace GameEngine
         /// <param name="messageType">消息类型</param>
         /// <param name="automatically">自动装载状态标识</param>
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
-        protected internal bool AddMessageListener(string fullname, MethodInfo methodInfo, SystemType messageType, bool automatically)
+        protected internal bool AddMessageListener(string fullname, MethodInfo methodInfo, Type messageType, bool automatically)
         {
             int opcode = NetworkHandler.Instance.GetOpcodeByMessageType(messageType);
 
@@ -318,7 +317,7 @@ namespace GameEngine
         /// 取消当前基础对象对指定消息类型的监听回调
         /// </summary>
         /// <param name="messageType">消息类型</param>
-        public void RemoveMessageListener(SystemType messageType)
+        public void RemoveMessageListener(Type messageType)
         {
             int opcode = NetworkHandler.Instance.GetOpcodeByMessageType(messageType);
 
@@ -340,7 +339,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">监听回调函数</param>
         /// <param name="messageType">消息类型</param>
-        public void RemoveMessageListener(MethodInfo methodInfo, SystemType messageType)
+        public void RemoveMessageListener(MethodInfo methodInfo, Type messageType)
         {
             int opcode = NetworkHandler.Instance.GetOpcodeByMessageType(messageType);
 
@@ -362,7 +361,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="fullname">函数名称</param>
         /// <param name="messageType">消息类型</param>
-        protected internal void RemoveMessageListener(string fullname, SystemType messageType)
+        protected internal void RemoveMessageListener(string fullname, Type messageType)
         {
             int opcode = NetworkHandler.Instance.GetOpcodeByMessageType(messageType);
 

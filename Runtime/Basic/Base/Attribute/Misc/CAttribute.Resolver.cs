@@ -23,20 +23,16 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Xml;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
 
 namespace GameEngine
 {
     /// <summary>
     /// 基于XML文件的配置解析器回调句柄函数的属性定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnXmlConfigureResolvingCallbackAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnXmlConfigureResolvingCallbackAttribute : Attribute
     {
         /// <summary>
         /// 解析的目标节点类型

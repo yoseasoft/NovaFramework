@@ -23,10 +23,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Runtime.CompilerServices;
 using Cysharp.Threading.Tasks;
 
-using SystemType = System.Type;
 using UnityObject = UnityEngine.Object;
 using UnityTransform = UnityEngine.Transform;
 using UnityVector3 = UnityEngine.Vector3;
@@ -70,7 +70,7 @@ namespace GameEngine
         /// <param name="url">资源地址</param>
         /// <param name="type">资源类型</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public UnityObject LoadAsset(string name, string url, SystemType type)
+        public UnityObject LoadAsset(string name, string url, Type type)
         {
             AssetSource assetSource = _assetLoader.LoadAsset(name, url, type);
             return assetSource.Original;

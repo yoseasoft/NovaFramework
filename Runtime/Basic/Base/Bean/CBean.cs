@@ -24,7 +24,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine
 {
@@ -44,7 +44,7 @@ namespace GameEngine
         /// <summary>
         /// 实体对象的类型
         /// </summary>
-        private readonly SystemType _beanType;
+        private readonly Type _beanType;
         /// <summary>
         /// 实体对象的用户数据
         /// </summary>
@@ -66,7 +66,7 @@ namespace GameEngine
         /// <summary>
         /// 获取或设置实体对象的类型
         /// </summary>
-        public SystemType BeanType { get { return _beanType; } }
+        public Type BeanType { get { return _beanType; } }
         /// <summary>
         /// 获取或设置实体对象的用户数据
         /// </summary>
@@ -148,7 +148,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="featureType">特性类型</param>
         /// <returns>若当前对象实例具备给定特性类型则返回true，否则返回false</returns>
-        protected internal bool HasFeatureType(SystemType featureType)
+        protected internal bool HasFeatureType(Type featureType)
         {
             return this.Symbol.HasFeatureType(featureType);
         }
@@ -158,7 +158,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="interfaceType">接口类型</param>
         /// <returns>若当前对象实例具备给定的接口类型则返回true，否则返回false</returns>
-        protected internal bool HasInterfaceType(SystemType interfaceType)
+        protected internal bool HasInterfaceType(Type interfaceType)
         {
             return this.Symbol.HasInterfaceType(interfaceType);
         }

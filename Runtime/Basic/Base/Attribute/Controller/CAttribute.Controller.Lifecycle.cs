@@ -22,17 +22,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 控制器类的子模块初始化回调句柄的声明属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnControllerSubmoduleInitCallbackAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnControllerSubmoduleInitCallbackAttribute : Attribute
     {
         public OnControllerSubmoduleInitCallbackAttribute() : base() { }
     }
@@ -40,8 +38,8 @@ namespace GameEngine
     /// <summary>
     /// 控制器类的子模块清理回调句柄的声明属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnControllerSubmoduleCleanupCallbackAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnControllerSubmoduleCleanupCallbackAttribute : Attribute
     {
         public OnControllerSubmoduleCleanupCallbackAttribute() : base() { }
     }
@@ -49,8 +47,8 @@ namespace GameEngine
     /// <summary>
     /// 控制器类的子模块刷新回调句柄的声明属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnControllerSubmoduleUpdateCallbackAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnControllerSubmoduleUpdateCallbackAttribute : Attribute
     {
         public OnControllerSubmoduleUpdateCallbackAttribute() : base() { }
     }
@@ -58,8 +56,8 @@ namespace GameEngine
     /// <summary>
     /// 控制器类的子模块后置刷新回调句柄的声明属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnControllerSubmoduleLateUpdateCallbackAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnControllerSubmoduleLateUpdateCallbackAttribute : Attribute
     {
         public OnControllerSubmoduleLateUpdateCallbackAttribute() : base() { }
     }
@@ -67,8 +65,8 @@ namespace GameEngine
     /// <summary>
     /// 控制器类的子模块重载回调句柄的声明属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnControllerSubmoduleReloadCallbackAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnControllerSubmoduleReloadCallbackAttribute : Attribute
     {
         public OnControllerSubmoduleReloadCallbackAttribute() : base() { }
     }
@@ -76,8 +74,8 @@ namespace GameEngine
     /// <summary>
     /// 控制器类的子模块倾泻回调句柄的声明属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnControllerSubmoduleDumpCallbackAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal class OnControllerSubmoduleDumpCallbackAttribute : Attribute
     {
         public OnControllerSubmoduleDumpCallbackAttribute() : base() { }
     }

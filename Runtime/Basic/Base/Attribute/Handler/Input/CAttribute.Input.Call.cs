@@ -23,23 +23,20 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 输入转发类型注册函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class OnInputDispatchCallAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+    public class OnInputDispatchCallAttribute : Attribute
     {
         /// <summary>
         /// 输入响应的目标对象类型
         /// </summary>
-        private readonly SystemType _classType;
+        private readonly Type _classType;
         /// <summary>
         /// 输入编码唯一标识
         /// </summary>
@@ -51,12 +48,12 @@ namespace GameEngine
         /// <summary>
         /// 派发侦听的输入数据类型
         /// </summary>
-        private readonly SystemType _inputDataType;
+        private readonly Type _inputDataType;
 
         /// <summary>
         /// 目标对象类型获取函数
         /// </summary>
-        public SystemType ClassType => _classType;
+        public Type ClassType => _classType;
         /// <summary>
         /// 输入编码获取函数
         /// </summary>
@@ -68,7 +65,7 @@ namespace GameEngine
         /// <summary>
         /// 输入数据类型获取函数
         /// </summary>
-        public SystemType InputDataType => _inputDataType;
+        public Type InputDataType => _inputDataType;
 
         public OnInputDispatchCallAttribute(int inputCode) : this(null, inputCode, InputOperationType.Unknown, null)
         { }
@@ -76,19 +73,19 @@ namespace GameEngine
         public OnInputDispatchCallAttribute(int inputCode, InputOperationType operationType) : this(null, inputCode, operationType, null)
         { }
 
-        public OnInputDispatchCallAttribute(SystemType inputDataType) : this(null, 0, InputOperationType.Unknown, inputDataType)
+        public OnInputDispatchCallAttribute(Type inputDataType) : this(null, 0, InputOperationType.Unknown, inputDataType)
         { }
 
-        public OnInputDispatchCallAttribute(SystemType classType, int inputCode) : this(classType, inputCode, InputOperationType.Unknown, null)
+        public OnInputDispatchCallAttribute(Type classType, int inputCode) : this(classType, inputCode, InputOperationType.Unknown, null)
         { }
 
-        public OnInputDispatchCallAttribute(SystemType classType, int inputCode, InputOperationType operationType) : this(classType, inputCode, operationType, null)
+        public OnInputDispatchCallAttribute(Type classType, int inputCode, InputOperationType operationType) : this(classType, inputCode, operationType, null)
         { }
 
-        public OnInputDispatchCallAttribute(SystemType classType, SystemType inputDataType) : this(classType, 0, InputOperationType.Unknown, inputDataType)
+        public OnInputDispatchCallAttribute(Type classType, Type inputDataType) : this(classType, 0, InputOperationType.Unknown, inputDataType)
         { }
 
-        private OnInputDispatchCallAttribute(SystemType classType, int inputCode, InputOperationType operationType, SystemType inputDataType) : base()
+        private OnInputDispatchCallAttribute(Type classType, int inputCode, InputOperationType operationType, Type inputDataType) : base()
         {
             _classType = classType;
             _inputCode = inputCode;
@@ -100,8 +97,8 @@ namespace GameEngine
     /// <summary>
     /// 输入的监听绑定函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class InputResponseBindingOfTargetAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+    public class InputResponseBindingOfTargetAttribute : Attribute
     {
         /// <summary>
         /// 输入编码唯一标识
@@ -114,7 +111,7 @@ namespace GameEngine
         /// <summary>
         /// 派发侦听的输入数据类型
         /// </summary>
-        private readonly SystemType _inputDataType;
+        private readonly Type _inputDataType;
         /// <summary>
         /// 监听绑定的观察行为类型
         /// </summary>
@@ -122,7 +119,7 @@ namespace GameEngine
 
         public int InputCode => _inputCode;
         public InputOperationType OperationType => _operationType;
-        public SystemType InputDataType => _inputDataType;
+        public Type InputDataType => _inputDataType;
         public AspectBehaviourType BehaviourType => _behaviourType;
 
         public InputResponseBindingOfTargetAttribute(int inputCode) : this(inputCode, InputOperationType.Unknown, null, AspectBehaviourType.Initialize)
@@ -137,13 +134,13 @@ namespace GameEngine
         public InputResponseBindingOfTargetAttribute(int inputCode, InputOperationType operationType, AspectBehaviourType behaviourType) : this(inputCode, operationType, null, behaviourType)
         { }
 
-        public InputResponseBindingOfTargetAttribute(SystemType inputDataType) : this(0, InputOperationType.Unknown, inputDataType, AspectBehaviourType.Initialize)
+        public InputResponseBindingOfTargetAttribute(Type inputDataType) : this(0, InputOperationType.Unknown, inputDataType, AspectBehaviourType.Initialize)
         { }
 
-        public InputResponseBindingOfTargetAttribute(SystemType inputDataType, AspectBehaviourType behaviourType) : this(0, InputOperationType.Unknown, inputDataType, behaviourType)
+        public InputResponseBindingOfTargetAttribute(Type inputDataType, AspectBehaviourType behaviourType) : this(0, InputOperationType.Unknown, inputDataType, behaviourType)
         { }
 
-        private InputResponseBindingOfTargetAttribute(int inputCode, InputOperationType operationType, SystemType inputDataType, AspectBehaviourType behaviourType) : base()
+        private InputResponseBindingOfTargetAttribute(int inputCode, InputOperationType operationType, Type inputDataType, AspectBehaviourType behaviourType) : base()
         {
             _inputCode = inputCode;
             _operationType = operationType;

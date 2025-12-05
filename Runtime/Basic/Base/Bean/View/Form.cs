@@ -23,9 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using Cysharp.Threading.Tasks;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -69,7 +68,7 @@ namespace GameEngine
         /// <summary>
         /// 窗口对象所属的视图类型
         /// </summary>
-        protected SystemType _viewType = null;
+        protected Type _viewType = null;
 
         /// <summary>
         /// 窗口对象载入完成状态标识
@@ -84,14 +83,14 @@ namespace GameEngine
         /// <summary>
         /// 获取窗口对象所属的视图类型
         /// </summary>
-        public SystemType ViewType => _viewType;
+        public Type ViewType => _viewType;
 
         /// <summary>
         /// 获取窗口对象当前载入状态
         /// </summary>
         public bool IsLoaded => _isLoaded;
 
-        protected Form(SystemType viewType)
+        protected Form(Type viewType)
         {
             _viewType = viewType;
         }
@@ -103,7 +102,7 @@ namespace GameEngine
         {
             await UniTask.CompletedTask;
 
-            Debugger.Throw<System.NotImplementedException>();
+            Debugger.Throw<NotImplementedException>();
         }
 
         /// <summary>
@@ -111,7 +110,7 @@ namespace GameEngine
         /// </summary>
         protected internal virtual void Unload()
         {
-            Debugger.Throw<System.NotImplementedException>();
+            Debugger.Throw<NotImplementedException>();
         }
 
         /// <summary>
@@ -119,7 +118,7 @@ namespace GameEngine
         /// </summary>
         protected internal virtual void Show()
         {
-            Debugger.Throw<System.NotImplementedException>();
+            Debugger.Throw<NotImplementedException>();
         }
 
         /// <summary>
@@ -127,7 +126,7 @@ namespace GameEngine
         /// </summary>
         protected internal virtual void Hide()
         {
-            Debugger.Throw<System.NotImplementedException>();
+            Debugger.Throw<NotImplementedException>();
         }
 
         #region 窗口对象内部节点访问相关的接口函数
@@ -139,7 +138,7 @@ namespace GameEngine
         /// <returns>返回查找到的节点对象实例</returns>
         public virtual object GetChild(string path)
         {
-            Debugger.Throw<System.NotImplementedException>();
+            Debugger.Throw<NotImplementedException>();
             return null;
         }
 

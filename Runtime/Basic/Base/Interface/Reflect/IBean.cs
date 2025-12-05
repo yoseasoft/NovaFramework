@@ -25,7 +25,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine
 {
@@ -49,6 +49,6 @@ namespace GameEngine
         /// <summary>
         /// 获取实体对象的类型
         /// </summary>
-        SystemType BeanType { get; }
+        Type BeanType { get; }
     }
 }

@@ -22,23 +22,20 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
+using System;
 
 namespace GameEngine
 {
     /// <summary>
     /// 事件分发类型注册函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class OnEventDispatchCallAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+    public class OnEventDispatchCallAttribute : Attribute
     {
         /// <summary>
         /// 派发事件的目标对象类型
         /// </summary>
-        private readonly SystemType _classType;
+        private readonly Type _classType;
         /// <summary>
         /// 派发侦听的事件标识
         /// </summary>
@@ -46,12 +43,12 @@ namespace GameEngine
         /// <summary>
         /// 派发侦听的事件数据类型
         /// </summary>
-        private readonly SystemType _eventDataType;
+        private readonly Type _eventDataType;
 
         /// <summary>
         /// 目标对象类型获取函数
         /// </summary>
-        public SystemType ClassType => _classType;
+        public Type ClassType => _classType;
         /// <summary>
         /// 事件标识获取函数
         /// </summary>
@@ -59,21 +56,21 @@ namespace GameEngine
         /// <summary>
         /// 事件数据类型获取函数
         /// </summary>
-        public SystemType EventDataType => _eventDataType;
+        public Type EventDataType => _eventDataType;
 
         public OnEventDispatchCallAttribute(int eventID) : this(null, eventID)
         { }
 
-        public OnEventDispatchCallAttribute(SystemType eventDataType) : this(null, eventDataType)
+        public OnEventDispatchCallAttribute(Type eventDataType) : this(null, eventDataType)
         { }
 
-        public OnEventDispatchCallAttribute(SystemType classType, int eventID) : this(classType, eventID, null)
+        public OnEventDispatchCallAttribute(Type classType, int eventID) : this(classType, eventID, null)
         { }
 
-        public OnEventDispatchCallAttribute(SystemType classType, SystemType eventDataType) : this(classType, 0, eventDataType)
+        public OnEventDispatchCallAttribute(Type classType, Type eventDataType) : this(classType, 0, eventDataType)
         { }
 
-        private OnEventDispatchCallAttribute(SystemType classType, int eventID, SystemType eventDataType) : base()
+        private OnEventDispatchCallAttribute(Type classType, int eventID, Type eventDataType) : base()
         {
             _classType = classType;
             _eventID = eventID;
@@ -84,8 +81,8 @@ namespace GameEngine
     /// <summary>
     /// 事件订阅绑定函数的属性类型定义
     /// </summary>
-    [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class EventSubscribeBindingOfTargetAttribute : SystemAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+    public class EventSubscribeBindingOfTargetAttribute : Attribute
     {
         /// <summary>
         /// 订阅绑定的事件标识
@@ -94,14 +91,14 @@ namespace GameEngine
         /// <summary>
         /// 订阅绑定的事件数据类型
         /// </summary>
-        private readonly SystemType _eventDataType;
+        private readonly Type _eventDataType;
         /// <summary>
         /// 订阅绑定的观察行为类型
         /// </summary>
         private readonly AspectBehaviourType _behaviourType;
 
         public int EventID => _eventID;
-        public SystemType EventDataType => _eventDataType;
+        public Type EventDataType => _eventDataType;
         public AspectBehaviourType BehaviourType => _behaviourType;
 
         public EventSubscribeBindingOfTargetAttribute(int eventID) : this(eventID, null, AspectBehaviour.AutobindBehaviourTypeOfBeanExtensionMethod)
@@ -110,13 +107,13 @@ namespace GameEngine
         public EventSubscribeBindingOfTargetAttribute(int eventID, AspectBehaviourType behaviourType) : this(eventID, null, behaviourType)
         { }
 
-        public EventSubscribeBindingOfTargetAttribute(SystemType eventDataType) : this(0, eventDataType, AspectBehaviour.AutobindBehaviourTypeOfBeanExtensionMethod)
+        public EventSubscribeBindingOfTargetAttribute(Type eventDataType) : this(0, eventDataType, AspectBehaviour.AutobindBehaviourTypeOfBeanExtensionMethod)
         { }
 
-        public EventSubscribeBindingOfTargetAttribute(SystemType eventDataType, AspectBehaviourType behaviourType) : this(0, eventDataType, behaviourType)
+        public EventSubscribeBindingOfTargetAttribute(Type eventDataType, AspectBehaviourType behaviourType) : this(0, eventDataType, behaviourType)
         { }
 
-        private EventSubscribeBindingOfTargetAttribute(int eventID, SystemType eventDataType, AspectBehaviourType behaviourType) : base()
+        private EventSubscribeBindingOfTargetAttribute(int eventID, Type eventDataType, AspectBehaviourType behaviourType) : base()
         {
             _eventID = eventID;
             _eventDataType = eventDataType;
