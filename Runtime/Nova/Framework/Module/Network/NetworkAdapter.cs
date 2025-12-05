@@ -24,15 +24,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemException = System.Exception;
-using SystemEnum = System.Enum;
-using SystemType = System.Type;
-using SystemASCIIEncoding = System.Text.ASCIIEncoding;
-using SystemMemoryStream = System.IO.MemoryStream;
-using SystemBinaryReader = System.IO.BinaryReader;
-using SystemSeekOrigin = System.IO.SeekOrigin;
+using System.IO;
+using System.Text;
 
 namespace NovaEngine.Module
 {
@@ -59,7 +54,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// ASCII字符集编码
         /// </summary>
-        private static readonly SystemASCIIEncoding ASCII = new SystemASCIIEncoding();
+        private static readonly ASCIIEncoding ASCII = new ASCIIEncoding();
 
         /// <summary>
         /// 网络适配器启动操作
@@ -67,7 +62,7 @@ namespace NovaEngine.Module
         public static void Startup()
         {
             string namespaceTag = typeof(NetworkAdapter).Namespace;
-            foreach (string enumName in SystemEnum.GetNames(typeof(NetworkServiceType)))
+            foreach (string enumName in Enum.GetNames(typeof(NetworkServiceType)))
             {
                 if (enumName.Equals(NetworkServiceType.Unknown.ToString()))
                 {
@@ -77,7 +72,7 @@ namespace NovaEngine.Module
                 // 类名反射时需要包含命名空间前缀
                 string serviceName = Utility.Text.Format("{%s}.{%s}{%s}", namespaceTag, enumName, NetworkServiceClassUnifiedStandardName);
 
-                SystemType serviceType = SystemType.GetType(serviceName);
+                Type serviceType = Type.GetType(serviceName);
                 if (null == serviceType)
                 {
                     Debugger.Info("Could not found any network service class with target name {%s}.", serviceName);
@@ -139,7 +134,7 @@ namespace NovaEngine.Module
         /// 添加指定类型的网络服务接口实例
         /// </summary>
         /// <param name="serviceType">对象类型</param>
-        private static void AddService(SystemType serviceType)
+        private static void AddService(Type serviceType)
         {
             if (false == typeof(NetworkService).IsAssignableFrom(serviceType))
             {
@@ -148,7 +143,7 @@ namespace NovaEngine.Module
             }
 
             // 创建实例
-            NetworkService service = System.Activator.CreateInstance(serviceType) as NetworkService;
+            NetworkService service = Activator.CreateInstance(serviceType) as NetworkService;
             int type = service.ServiceType;
 
             if (_services.ContainsKey(type))
@@ -378,7 +373,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="channelID">网络通道对象唯一标识</param>
         /// <param name="stream">数据流</param>
-        public static void Send(int channelID, SystemMemoryStream stream)
+        public static void Send(int channelID, MemoryStream stream)
         {
             NetworkChannel channel = GetChannel(channelID);
             if (null == channel || channel.IsClosed)
@@ -389,15 +384,15 @@ namespace NovaEngine.Module
             channel.Send(stream);
         }
 
-        private static void OnReadCallback(int channelID, SystemMemoryStream memoryStream, int streamType)
+        private static void OnReadCallback(int channelID, MemoryStream memoryStream, int streamType)
         {
-            memoryStream.Seek(0, SystemSeekOrigin.Begin);
+            memoryStream.Seek(0, SeekOrigin.Begin);
 
             // ushort opcode = 0;
-            SystemBinaryReader reader = null;
+            BinaryReader reader = null;
             try
             {
-                reader = new SystemBinaryReader(memoryStream);
+                reader = new BinaryReader(memoryStream);
                 byte[] message = reader.ReadBytes((int) (memoryStream.Length - memoryStream.Position));
 
                 switch (streamType)
@@ -413,7 +408,7 @@ namespace NovaEngine.Module
                         break;
                 }
             }
-            catch (SystemException e)
+            catch (Exception e)
             {
                 Logger.Error(e);
                 NetworkChannel channel = GetChannel(channelID);
@@ -422,14 +417,14 @@ namespace NovaEngine.Module
             }
         }
 
-        private static void OnWriteFailedCallback(int channelID, SystemMemoryStream memoryStream, int streamType)
+        private static void OnWriteFailedCallback(int channelID, MemoryStream memoryStream, int streamType)
         {
-            SystemBinaryReader reader = null;
+            BinaryReader reader = null;
             try
             {
-                memoryStream.Seek(0, SystemSeekOrigin.Begin);
+                memoryStream.Seek(0, SeekOrigin.Begin);
 
-                reader = new SystemBinaryReader(memoryStream);
+                reader = new BinaryReader(memoryStream);
                 byte[] message = reader.ReadBytes((int) (memoryStream.Length - memoryStream.Position));
 
                 switch (streamType)
@@ -445,16 +440,13 @@ namespace NovaEngine.Module
                         break;
                 }
             }
-            catch (SystemException e)
+            catch (Exception e)
             {
                 Logger.Error(e);
             }
             finally
             {
-                if (null != reader)
-                {
-                    reader.Close();
-                }
+                reader?.Close();
             }
         }
     }

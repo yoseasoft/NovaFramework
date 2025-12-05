@@ -25,11 +25,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Customize.Extension;
-
-using SystemDateTime = System.DateTime;
-using SystemTimeSpan = System.TimeSpan;
 
 namespace NovaEngine.Module
 {
@@ -195,8 +193,7 @@ namespace NovaEngine.Module
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
         public (int, bool) Schedule(string name, int interval, int loop)
         {
-            TimerInfo info = null;
-            if (TryGetTimerInfoByName(name, out info))
+            if (TryGetTimerInfoByName(name, out TimerInfo info))
             {
                 if (false == info.Expired)
                 {
@@ -206,7 +203,7 @@ namespace NovaEngine.Module
 
                 info.Interval = interval;
                 info.Counting = loop;
-                info.Looper = (SCHEDULE_REPEAT_FOREVER == loop ? true : false);
+                info.Looper = (SCHEDULE_REPEAT_FOREVER == loop);
                 info.ReloadTime();
                 return (info.Session, false);
             }
@@ -218,7 +215,7 @@ namespace NovaEngine.Module
             info.Name = name;
             info.Interval = interval;
             info.Counting = loop;
-            info.Looper = (SCHEDULE_REPEAT_FOREVER == loop ? true : false);
+            info.Looper = (SCHEDULE_REPEAT_FOREVER == loop);
             info.Initialize();
             _activeTaskQueue.Add(info);
 
@@ -365,7 +362,7 @@ namespace NovaEngine.Module
         {
             get
             {
-                SystemTimeSpan ts = new SystemTimeSpan(SystemDateTime.UtcNow.Ticks - new SystemDateTime(1970, 1, 1, 0, 0, 0).Ticks);
+                TimeSpan ts = new TimeSpan(DateTime.UtcNow.Ticks - new DateTime(1970, 1, 1, 0, 0, 0).Ticks);
                 return (long) ts.TotalMilliseconds;
             }
         }
@@ -432,7 +429,7 @@ namespace NovaEngine.Module
             /// <summary>
             /// 定时任务管理器实例
             /// </summary>
-            private TimerModule _timerModule = null;
+            private readonly TimerModule _timerModule;
 
             public TimerInfo(TimerModule module)
             {

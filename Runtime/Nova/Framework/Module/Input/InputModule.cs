@@ -25,10 +25,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
-
-using SystemEnum = System.Enum;
-using SystemArray = System.Array;
 
 using UnityInput = UnityEngine.Input;
 using UnityKeyCode = UnityEngine.KeyCode;
@@ -43,7 +42,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 按键编码列表
         /// </summary>
-        private SystemArray _keyCodeArray = null;
+        private Array _keyCodeArray = null;
 
         public InputModule() : base()
         {
@@ -59,9 +58,9 @@ namespace NovaEngine.Module
         /// </summary>
         protected override void OnInitialize()
         {
-            SystemArray all_keycodes = SystemEnum.GetValues(typeof(UnityKeyCode));
+            Array all_keycodes = Enum.GetValues(typeof(UnityKeyCode));
             IList<UnityKeyCode> keycode_list = new List<UnityKeyCode>();
-            System.Collections.IEnumerator keycode_enumerator = all_keycodes.GetEnumerator();
+            IEnumerator keycode_enumerator = all_keycodes.GetEnumerator();
             while (keycode_enumerator.MoveNext())
             {
                 UnityKeyCode keycode = (UnityKeyCode) keycode_enumerator.Current;

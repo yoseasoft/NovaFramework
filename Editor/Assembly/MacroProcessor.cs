@@ -23,17 +23,11 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Xml;
 
 using UnityEditor;
-
-using SystemEncoding = System.Text.Encoding;
-using SystemUTF8Encoding = System.Text.UTF8Encoding;
-using SystemMemoryStream = System.IO.MemoryStream;
-using SystemXmlDocument = System.Xml.XmlDocument;
-using SystemXmlElement = System.Xml.XmlElement;
-using SystemXmlNode = System.Xml.XmlNode;
-using SystemXmlWriter = System.Xml.XmlWriter;
-using SystemXmlWriterSettings = System.Xml.XmlWriterSettings;
 
 namespace NovaEngine.Editor
 {
@@ -45,7 +39,7 @@ namespace NovaEngine.Editor
     {
         static string OnGeneratedCSProject(string path, string content)
         {
-            SystemXmlDocument xmlDoc = new SystemXmlDocument();
+            XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(content);
 
             if (false == IsCSProjectReferenced(xmlDoc.DocumentElement))
@@ -55,38 +49,38 @@ namespace NovaEngine.Editor
                 return content;
 
             // 将修改后的XML结构重新输出为文本
-            using (SystemMemoryStream memoryStream = new SystemMemoryStream())
+            using (MemoryStream memoryStream = new MemoryStream())
             {
-                SystemXmlWriterSettings writerSettings = new SystemXmlWriterSettings
+                XmlWriterSettings writerSettings = new XmlWriterSettings
                 {
                     Indent = true,
-                    Encoding = new SystemUTF8Encoding(false), //无BOM
+                    Encoding = new UTF8Encoding(false), //无BOM
                     OmitXmlDeclaration = false
                 };
 
-                using (SystemXmlWriter xmlWriter = SystemXmlWriter.Create(memoryStream, writerSettings))
+                using (XmlWriter xmlWriter = XmlWriter.Create(memoryStream, writerSettings))
                 {
                     xmlDoc.Save(xmlWriter);
                 }
-                return SystemEncoding.UTF8.GetString(memoryStream.ToArray());
+                return Encoding.UTF8.GetString(memoryStream.ToArray());
             }
         }
 
         /// <summary>
         /// 处理宏定义
         /// </summary>
-        private static bool ProcessDefineConstants(SystemXmlElement element)
+        private static bool ProcessDefineConstants(XmlElement element)
         {
             if (null == element)
                 return false;
 
             bool processed = false;
-            foreach (SystemXmlNode node in element.ChildNodes)
+            foreach (XmlNode node in element.ChildNodes)
             {
                 if (node.Name != "PropertyGroup")
                     continue;
 
-                foreach (SystemXmlNode childNode in node.ChildNodes)
+                foreach (XmlNode childNode in node.ChildNodes)
                 {
                     if (childNode.Name != "DefineConstants")
                         continue;
@@ -110,17 +104,17 @@ namespace NovaEngine.Editor
         /// <summary>
         /// 检测工程是否引用了NovaFramework
         /// </summary>
-        private static bool IsCSProjectReferenced(SystemXmlElement element)
+        private static bool IsCSProjectReferenced(XmlElement element)
         {
             if (null == element)
                 return false;
 
-            foreach (SystemXmlNode node in element.ChildNodes)
+            foreach (XmlNode node in element.ChildNodes)
             {
                 if (node.Name != "ItemGroup")
                     continue;
 
-                foreach (SystemXmlNode childNode in node.ChildNodes)
+                foreach (XmlNode childNode in node.ChildNodes)
                 {
                     if (childNode.Name != "Reference" && childNode.Name != "ProjectReference")
                         continue;
