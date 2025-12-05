@@ -24,12 +24,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.IO;
 using System.Net;
-
-using SystemDateTime = System.DateTime;
-using SystemEncoding = System.Text.Encoding;
-using SystemStringBuilder = System.Text.StringBuilder;
+using System.Text;
 
 namespace NovaEngine.Network
 {
@@ -107,12 +105,12 @@ namespace NovaEngine.Network
 
             BinaryReader reader = new BinaryReader(fstream);
 
-            string boundary = "----------" + SystemDateTime.Now.Ticks.ToString("x");
+            string boundary = "----------" + DateTime.Now.Ticks.ToString("x");
 
-            byte[] boundaryBytes = SystemEncoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
+            byte[] boundaryBytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
 
             // 请求头部信息
-            SystemStringBuilder sb = new SystemStringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.Append("--");
             sb.Append(boundary);
             sb.Append("\r\n");
@@ -127,7 +125,7 @@ namespace NovaEngine.Network
             sb.Append("\r\n");
             sb.Append("\r\n");
             string header = sb.ToString();
-            byte[] headerBytes = SystemEncoding.UTF8.GetBytes(header);
+            byte[] headerBytes = Encoding.UTF8.GetBytes(header);
 
             HttpWebRequest httpReq = HttpWebRequest.Create(url) as HttpWebRequest;
             httpReq.Method = "POST";
@@ -171,7 +169,7 @@ namespace NovaEngine.Network
                 }
                 else
                 {
-                    byte[] postParamsBytes = SystemEncoding.UTF8.GetBytes(fieldsStr);
+                    byte[] postParamsBytes = Encoding.UTF8.GetBytes(fieldsStr);
                     length += postParamsBytes.Length;
                     httpReq.ContentLength = length;
                     postStream = httpReq.GetRequestStream();
@@ -186,7 +184,7 @@ namespace NovaEngine.Network
                 long offset = 0;
 
                 // 开始上传时间
-                // SystemDateTime startTime = SystemDateTime.Now;
+                // DateTime startTime = DateTime.Now;
                 int size = reader.Read(buffer, 0, bufferLength);
 
                 // 发送请求头部消息
@@ -227,7 +225,7 @@ namespace NovaEngine.Network
 
                 succeed(sReturnString);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 Logger.Error("An error occurred for upload file to target url {0}: {1}.", url, e.ToString());
 

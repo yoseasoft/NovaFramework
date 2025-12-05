@@ -34,25 +34,15 @@
 
 // #define __USED_WEBSOCKET_LIBRARIES_TYPE
 
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Customize.Extension;
 
-using SystemArray = System.Array;
-using SystemUri = System.Uri;
-using SystemMemoryStream = System.IO.MemoryStream;
-using SystemSeekOrigin = System.IO.SeekOrigin;
-
 #if __USING_SystemNetWebsocket_LIBRARIES_TYPE
-using SystemCancellationTokenSource = System.Threading.CancellationTokenSource;
-using SystemWebSocket = System.Net.WebSockets.WebSocket;
-using SystemWebSocketState = System.Net.WebSockets.WebSocketState;
-using SystemClientWebSocket = System.Net.WebSockets.ClientWebSocket;
-using SystemWebSocketMessageType = System.Net.WebSockets.WebSocketMessageType;
-using SystemHttpListenerWebSocketContext = System.Net.WebSockets.HttpListenerWebSocketContext;
-using SystemWebSocketReceiveResult = System.Net.WebSockets.WebSocketReceiveResult;
-using SystemValueWebSocketReceiveResult = System.Net.WebSockets.ValueWebSocketReceiveResult;
-using SystemWebSocketCloseStatus = System.Net.WebSockets.WebSocketCloseStatus;
+using System.Net.WebSockets;
+using System.Threading;
 #endif
 
 namespace NovaEngine.Module
@@ -73,8 +63,8 @@ namespace NovaEngine.Module
 
 #if __USING_SystemNetWebsocket_LIBRARIES_TYPE
 
-        private SystemClientWebSocket _webSocket;
-        private SystemCancellationTokenSource _cancellationTokenSource;
+        private ClientWebSocket _webSocket;
+        private CancellationTokenSource _cancellationTokenSource;
 
         private readonly byte[] _readBuffer = null;
 
@@ -103,7 +93,7 @@ namespace NovaEngine.Module
         private readonly byte[] _packetHeaderCached = null;
 
 
-        private readonly SystemMemoryStream _memoryStream = null;
+        private readonly MemoryStream _memoryStream = null;
 
         private readonly MessagePacket _packet = null;
 
@@ -158,8 +148,8 @@ namespace NovaEngine.Module
             });
 
 #if __USING_SystemNetWebsocket_LIBRARIES_TYPE
-            this._webSocket = new SystemClientWebSocket();
-            this._cancellationTokenSource = new SystemCancellationTokenSource();
+            this._webSocket = new ClientWebSocket();
+            this._cancellationTokenSource = new CancellationTokenSource();
 #elif __USING_WebSocketSharp_LIBRARIES_TYPE
             this._webSocket = new WebSocketSharp.WebSocket(url);
 
@@ -235,13 +225,13 @@ namespace NovaEngine.Module
         {
             try
             {
-                await _webSocket.ConnectAsync(new SystemUri(_url), _cancellationTokenSource.Token);
+                await _webSocket.ConnectAsync(new Uri(_url), _cancellationTokenSource.Token);
 
                 // Logger.Info("The WebSocket connect state {0} for target url {1}.", _webSocket.State, _url);
 
                 OnConnectionComplete();
             }
-            catch (System.Exception exception)
+            catch (Exception exception)
             {
                 Logger.Error(exception);
 
@@ -260,7 +250,7 @@ namespace NovaEngine.Module
                 return;
             }
 
-            if (_webSocket.State != SystemWebSocketState.Open)
+            if (_webSocket.State != WebSocketState.Open)
             {
                 this.OnError(NetworkErrorCode.SocketError);
                 return;
@@ -346,12 +336,12 @@ namespace NovaEngine.Module
                 return true;
             }
 
-            if (this._webSocket.State != SystemWebSocketState.Open || this._cancellationTokenSource.IsCancellationRequested)
+            if (this._webSocket.State != WebSocketState.Open || this._cancellationTokenSource.IsCancellationRequested)
             {
                 return true;
             }
 
-            if (this._webSocket.CloseStatus.HasValue && this._webSocket.CloseStatus.Value != SystemWebSocketCloseStatus.Empty)
+            if (this._webSocket.CloseStatus.HasValue && this._webSocket.CloseStatus.Value != WebSocketCloseStatus.Empty)
             {
                 Logger.Info("The WebSocket was closed by status {0}.", this._webSocket.CloseStatus.Value);
                 return true;
@@ -387,7 +377,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="memoryStream">消息数据流</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override void Send(SystemMemoryStream memoryStream)
+        public override void Send(MemoryStream memoryStream)
         {
             Send(memoryStream.GetBuffer(), 0, (int) memoryStream.Length);
         }
@@ -484,20 +474,20 @@ namespace NovaEngine.Module
 
                 try
                 {
-                    stream.Seek(0, SystemSeekOrigin.Begin);
+                    stream.Seek(0, SeekOrigin.Begin);
 
 #if __USING_SystemNetWebsocket_LIBRARIES_TYPE
-                    // SystemCancellationTokenSource tokenSource = new SystemCancellationTokenSource();
+                    // CancellationTokenSource tokenSource = new CancellationTokenSource();
                     // tokenSource.CancelAfter(5000);
-                    // await this._webSocket.SendAsync(stream.GetMemory(), SystemWebSocketMessageType.Text, true, tokenSource.Token);
-                    await this._webSocket.SendAsync(stream.GetMemory(), SystemWebSocketMessageType.Text, true, this._cancellationTokenSource.Token);
+                    // await this._webSocket.SendAsync(stream.GetMemory(), WebSocketMessageType.Text, true, tokenSource.Token);
+                    await this._webSocket.SendAsync(stream.GetMemory(), WebSocketMessageType.Text, true, this._cancellationTokenSource.Token);
 #elif __USING_WebSocketSharp_LIBRARIES_TYPE
                     this._webSocket.Send(stream, (int) stream.Length);
 #elif __USING_UnityWebSocket_LIBRARIES_TYPE
                     this._webSocket.SendAsync(stream.GetMemory().ToArray());
 #endif
                 }
-                catch (System.Exception e)
+                catch (Exception e)
                 {
                     Logger.Error(e);
 
@@ -523,16 +513,16 @@ namespace NovaEngine.Module
 
         private async void OnRecvAsync()
         {
-            SystemValueWebSocketReceiveResult result;
+            ValueWebSocketReceiveResult result;
             int receiveCount = 0;
             do
             {
-                result = await _webSocket.ReceiveAsync(new System.Memory<byte>(_readBuffer, receiveCount, _readBuffer.Length - receiveCount),
+                result = await _webSocket.ReceiveAsync(new Memory<byte>(_readBuffer, receiveCount, _readBuffer.Length - receiveCount),
                         this._cancellationTokenSource.Token);
                 receiveCount += result.Count;
             } while (false == result.EndOfMessage);
 
-            if (result.MessageType == SystemWebSocketMessageType.Close)
+            if (result.MessageType == WebSocketMessageType.Close)
             {
                 this.OnError(NetworkErrorCode.PacketReadError);
                 return;
@@ -540,7 +530,7 @@ namespace NovaEngine.Module
 
             if (receiveCount > _readBuffer.Length)
             {
-                await this._webSocket.CloseAsync(SystemWebSocketCloseStatus.MessageTooBig, $"message too big: {receiveCount}",
+                await this._webSocket.CloseAsync(WebSocketCloseStatus.MessageTooBig, $"message too big: {receiveCount}",
                         this._cancellationTokenSource.Token);
                 this.OnError(NetworkErrorCode.PacketReadError);
                 return;
@@ -564,14 +554,14 @@ namespace NovaEngine.Module
                 IO.MemoryBuffer buffer = Acquire();
                 buffer.Write(this._readBuffer, 0, recvSize);
 
-                buffer.Seek(0, SystemSeekOrigin.Begin);
+                buffer.Seek(0, SeekOrigin.Begin);
 
                 // this._readCallback.Invoke(buffer, MessageStreamCode.Byte);
                 this._packet.OnDispatched(buffer);
 
                 Recycle(buffer);
             }
-            catch (System.Exception exception)
+            catch (Exception exception)
             {
                 Logger.Error(exception);
             }
@@ -593,7 +583,7 @@ namespace NovaEngine.Module
             IO.MemoryBuffer buffer = Acquire();
             buffer.Write(e.RawData, 0, e.RawData.Length);
 
-            buffer.Seek(0, SystemSeekOrigin.Begin);
+            buffer.Seek(0, SeekOrigin.Begin);
 
             // this._readCallback.Invoke(buffer, MessageStreamCode.Byte);
             this._packet.OnDispatched(buffer);
@@ -630,7 +620,7 @@ namespace NovaEngine.Module
                 return;
             }
 
-            buffer.Seek(0, SystemSeekOrigin.Begin);
+            buffer.Seek(0, SeekOrigin.Begin);
 
             // this._readCallback.Invoke(buffer, MessageStreamCode.Byte);
             this._packet.OnDispatched(buffer);
@@ -682,7 +672,7 @@ namespace NovaEngine.Module
                 return;
             }
 
-            memoryBuffer.Seek(0, SystemSeekOrigin.Begin);
+            memoryBuffer.Seek(0, SeekOrigin.Begin);
             memoryBuffer.SetLength(0);
 
             this._bufferCached.Enqueue(memoryBuffer);

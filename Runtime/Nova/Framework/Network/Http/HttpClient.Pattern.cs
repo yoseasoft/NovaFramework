@@ -23,10 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Collections;
+using System.Text;
 using UnityEngine.Networking;
-
-using SystemIEnumerator = System.Collections.IEnumerator;
-using SystemEncoding = System.Text.Encoding;
 
 namespace NovaEngine.Network
 {
@@ -56,10 +55,10 @@ namespace NovaEngine.Network
         /// <param name="url">网络服务地址</param>
         /// <param name="data">数据流</param>
         /// <param name="handler">网络响应接口</param>
-        public SystemIEnumerator SendJsonRequest(int linkID, string url, string data, OnHttpResponseHandler handler)
+        public IEnumerator SendJsonRequest(int linkID, string url, string data, OnHttpResponseHandler handler)
         {
             UnityWebRequest request = new UnityWebRequest(url, "POST");
-            byte[] postBytes = SystemEncoding.UTF8.GetBytes(data);
+            byte[] postBytes = Encoding.UTF8.GetBytes(data);
             request.uploadHandler = new UploadHandlerRaw(postBytes);
             request.downloadHandler = new DownloadHandlerBuffer();
             request.certificateHandler = new AcceptAllCertificatesHandler();// 必须验证, 具体原因可进入AcceptAllCertificatesHandler查看

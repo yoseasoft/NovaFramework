@@ -24,7 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemIEnumerator = System.Collections.IEnumerator;
+using System.Collections;
+using System.Collections.Generic;
 
 using UnityWebRequest = UnityEngine.Networking.UnityWebRequest;
 using UnityWWWForm = UnityEngine.WWWForm;
@@ -62,7 +63,7 @@ namespace NovaEngine.Network
         /// <param name="linkID">链接唯一标识</param>
         /// <param name="url">网络服务地址</param>
         /// <param name="handler">网络响应接口</param>
-        public SystemIEnumerator SendRequest(int linkID, string url, OnHttpResponseHandler handler)
+        public IEnumerator SendRequest(int linkID, string url, OnHttpResponseHandler handler)
         {
             UnityWebRequest request = UnityWebRequest.Get(url);// new UnityWebRequest(url);
             request.certificateHandler = new AcceptAllCertificatesHandler();// 必须验证, 具体原因可进入AcceptAllCertificatesHandler查看
@@ -79,7 +80,7 @@ namespace NovaEngine.Network
         /// <param name="fields">包头字段</param>
         /// <param name="data">数据流</param>
         /// <param name="handler">网络响应接口</param>
-        public SystemIEnumerator SendPostRequest(int linkID, string url, string fields, byte[] data, OnHttpResponseHandler handler)
+        public IEnumerator SendPostRequest(int linkID, string url, string fields, byte[] data, OnHttpResponseHandler handler)
         {
             UnityWWWForm form = new UnityWWWForm();
             string[] temp = fields.Split('|');
@@ -112,9 +113,9 @@ namespace NovaEngine.Network
         /// <param name="fileName"></param>
         /// <param name="handler"></param>
         /// <returns></returns>
-        public SystemIEnumerator SendPostUploadRequest(int linkID, string url, string fields, string fileContent, string fileName, OnHttpResponseHandler handler)
+        public IEnumerator SendPostUploadRequest(int linkID, string url, string fields, string fileContent, string fileName, OnHttpResponseHandler handler)
         {
-            System.Collections.Generic.List<UnityEngine.Networking.IMultipartFormSection> formData = new System.Collections.Generic.List<UnityEngine.Networking.IMultipartFormSection>();
+            List<UnityEngine.Networking.IMultipartFormSection> formData = new List<UnityEngine.Networking.IMultipartFormSection>();
 
             string[] temp = fields.Split('|');
             for (int n = 0; n < temp.Length; n += 2)
