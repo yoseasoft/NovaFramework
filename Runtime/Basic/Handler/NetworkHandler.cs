@@ -37,7 +37,7 @@ namespace GameEngine
 
     /// <summary>
     /// 网络模块封装的句柄对象类
-    /// 模块具体功能接口请参考<see cref="NovaEngine.NetworkModule"/>类
+    /// 模块具体功能接口请参考<see cref="NovaEngine.Module.NetworkModule"/>类
     /// </summary>
     public sealed partial class NetworkHandler : BaseHandler
     {
@@ -213,9 +213,9 @@ namespace GameEngine
         /// 句柄对象的模块事件转发回调接口
         /// </summary>
         /// <param name="e">模块事件参数</param>
-        public override void OnEventDispatch(NovaEngine.ModuleEventArgs e)
+        public override void OnEventDispatch(NovaEngine.Module.ModuleEventArgs e)
         {
-            NovaEngine.NetworkEventArgs networkEventArgs = e as NovaEngine.NetworkEventArgs;
+            NovaEngine.Module.NetworkEventArgs networkEventArgs = e as NovaEngine.Module.NetworkEventArgs;
             if (null == networkEventArgs)
             {
                 Debugger.Error("The ModuleEventArgs unabled convert to NetworkEventArgs, dispatched it {%d} failed.", e.ID);
@@ -226,24 +226,24 @@ namespace GameEngine
 
             switch (networkEventArgs.Type)
             {
-                case (int) NovaEngine.NetworkModule.ProtocolType.Connected:
+                case (int) NovaEngine.Module.NetworkModule.ProtocolType.Connected:
                     {
                         OnNetworkChannelConnection(networkEventArgs.ChannelID);
                     }
                     break;
-                case (int) NovaEngine.NetworkModule.ProtocolType.Disconnected:
+                case (int) NovaEngine.Module.NetworkModule.ProtocolType.Disconnected:
                     {
                         OnNetworkChannelDisconnection(networkEventArgs.ChannelID);
                     }
                     break;
-                case (int) NovaEngine.NetworkModule.ProtocolType.Exception:
-                case (int) NovaEngine.NetworkModule.ProtocolType.ReadError:
-                case (int) NovaEngine.NetworkModule.ProtocolType.WriteError:
+                case (int) NovaEngine.Module.NetworkModule.ProtocolType.Exception:
+                case (int) NovaEngine.Module.NetworkModule.ProtocolType.ReadError:
+                case (int) NovaEngine.Module.NetworkModule.ProtocolType.WriteError:
                     {
                         OnNetworkChannelConnectError(networkEventArgs.ChannelID);
                     }
                     break;
-                case (int) NovaEngine.NetworkModule.ProtocolType.Dispatched:
+                case (int) NovaEngine.Module.NetworkModule.ProtocolType.Dispatched:
                     {
                         NovaEngine.IO.ByteStreamBuffer streamBuffer = networkEventArgs.Data as NovaEngine.IO.ByteStreamBuffer;
                         byte[] buffer = streamBuffer.ReadBytes();
@@ -261,7 +261,7 @@ namespace GameEngine
         /// <param name="url">网络地址</param>
         /// <returns>若网络连接请求发送成功返回对应的通道实例，否则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public MessageChannel Connect(NovaEngine.NetworkServiceType serviceType, string name, string url)
+        public MessageChannel Connect(NovaEngine.Module.NetworkServiceType serviceType, string name, string url)
         {
             return Connect((int) serviceType, name, url);
         }
@@ -642,9 +642,9 @@ namespace GameEngine
         {
             string namespaceTag = GetType().Namespace;
 
-            foreach (NovaEngine.NetworkServiceType enumValue in SystemEnum.GetValues(typeof(NovaEngine.NetworkServiceType)))
+            foreach (NovaEngine.Module.NetworkServiceType enumValue in SystemEnum.GetValues(typeof(NovaEngine.Module.NetworkServiceType)))
             {
-                if (NovaEngine.NetworkServiceType.Unknown == enumValue)
+                if (NovaEngine.Module.NetworkServiceType.Unknown == enumValue)
                 {
                     continue;
                 }

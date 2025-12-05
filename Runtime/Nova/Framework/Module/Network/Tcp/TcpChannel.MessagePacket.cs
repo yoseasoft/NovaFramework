@@ -24,16 +24,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemBitConverter = System.BitConverter;
-using SystemMemoryStream = System.IO.MemoryStream;
-using SystemSeekOrigin = System.IO.SeekOrigin;
-using SystemIPAddress = System.Net.IPAddress;
+using System;
+using System.IO;
+using System.Net;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
-    /// <summary>
     /// TCP模式网络通道对象抽象基类
-    /// </summary>
     internal sealed partial class TcpChannel
     {
         /// <summary>
@@ -57,13 +54,13 @@ namespace NovaEngine
 
             private readonly IO.CircularLinkedBuffer _buffer = null;
 
-            private SystemMemoryStream _memoryStream = null;
+            private MemoryStream _memoryStream = null;
 
             private ParseStateType _stateType;
             private int _packetSize = 0;
             private bool _isCompleted = false;
 
-            public MessagePacket(int headerSize, IO.CircularLinkedBuffer buffer, SystemMemoryStream memoryStream)
+            public MessagePacket(int headerSize, IO.CircularLinkedBuffer buffer, MemoryStream memoryStream)
             {
                 this._headerSize = headerSize;
                 this._buffer = buffer;
@@ -102,15 +99,15 @@ namespace NovaEngine
                                 switch (this._headerSize)
                                 {
                                     case MessageConstant.HeaderSize_4:
-                                        this._packetSize = SystemBitConverter.ToInt32(this._memoryStream.GetBuffer(), 0);
+                                        this._packetSize = BitConverter.ToInt32(this._memoryStream.GetBuffer(), 0);
                                         if (this._packetSize > MessageConstant.MaxPacketSize_4 || this._packetSize < MessageConstant.MinPacketSize_4)
                                         {
                                             throw new CFrameworkException("receive header size '{%d}' out of the range.", this._packetSize);
                                         }
                                         break;
                                     case MessageConstant.HeaderSize_2:
-                                        short messageLength = SystemBitConverter.ToInt16(this._memoryStream.GetBuffer(), 0);
-                                        this._packetSize = SystemIPAddress.NetworkToHostOrder(messageLength);
+                                        short messageLength = BitConverter.ToInt16(this._memoryStream.GetBuffer(), 0);
+                                        this._packetSize = IPAddress.NetworkToHostOrder(messageLength);
                                         if (this._packetSize > MessageConstant.MaxPacketSize_2 || this._packetSize < MessageConstant.MinPacketSize_2)
                                         {
                                             throw new CFrameworkException("receive header size '{%d}' out of the range.", this._packetSize);
@@ -131,7 +128,7 @@ namespace NovaEngine
                             }
                             else
                             {
-                                this._memoryStream.Seek(0, SystemSeekOrigin.Begin);
+                                this._memoryStream.Seek(0, SeekOrigin.Begin);
                                 this._memoryStream.SetLength(this._packetSize);
 
                                 byte[] bytes = this._memoryStream.GetBuffer();
@@ -152,7 +149,7 @@ namespace NovaEngine
             /// 提取解析后的数据包
             /// </summary>
             /// <returns>返回数据流</returns>
-            public SystemMemoryStream GetPacket()
+            public MemoryStream GetPacket()
             {
                 if (false == this._isCompleted)
                 {

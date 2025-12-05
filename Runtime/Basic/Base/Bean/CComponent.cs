@@ -156,7 +156,7 @@ namespace GameEngine
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
         public int Schedule(int interval, TimerHandler.TimerReportingHandler handler)
         {
-            return Schedule(interval, NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
+            return Schedule(interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace GameEngine
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
         public int Schedule(int interval, TimerHandler.TimerReportingForSessionHandler handler)
         {
-            return Schedule(interval, NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
+            return Schedule(interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace GameEngine
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
         public int Schedule(string name, int interval, TimerHandler.TimerReportingHandler handler)
         {
-            return Schedule(interval, NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
+            return Schedule(interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
         }
 
         /// <summary>
@@ -191,12 +191,12 @@ namespace GameEngine
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
         public int Schedule(string name, int interval, TimerHandler.TimerReportingForSessionHandler handler)
         {
-            return Schedule(interval, NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
+            return Schedule(interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
         }
 
         /// <summary>
         /// 引用对象的定时任务调度启动接口，设置启动一个属于该对象的任务定时器<br/>
-        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
         /// </summary>
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
         /// <param name="loop">任务循环次数</param>
@@ -204,12 +204,12 @@ namespace GameEngine
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
         public int Schedule(int interval, int loop, TimerHandler.TimerReportingHandler handler)
         {
-            return this.Entity?.Schedule(interval, loop, handler) ?? NovaEngine.TimerModule.SCHEDULE_CALL_FAILED;
+            return this.Entity?.Schedule(interval, loop, handler) ?? NovaEngine.Module.TimerModule.SCHEDULE_CALL_FAILED;
         }
 
         /// <summary>
         /// 引用对象的定时任务调度启动接口，设置启动一个属于该对象的任务定时器<br/>
-        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
         /// </summary>
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
         /// <param name="loop">任务循环次数</param>
@@ -217,12 +217,12 @@ namespace GameEngine
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
         public int Schedule(int interval, int loop, TimerHandler.TimerReportingForSessionHandler handler)
         {
-            return this.Entity?.Schedule(interval, loop, handler) ?? NovaEngine.TimerModule.SCHEDULE_CALL_FAILED;
+            return this.Entity?.Schedule(interval, loop, handler) ?? NovaEngine.Module.TimerModule.SCHEDULE_CALL_FAILED;
         }
 
         /// <summary>
         /// 引用对象的定时任务调度启动接口，设置启动一个属于该对象的任务定时器<br/>
-        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
         /// </summary>
         /// <param name="name">任务名称</param>
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
@@ -231,12 +231,12 @@ namespace GameEngine
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
         public int Schedule(string name, int interval, int loop, TimerHandler.TimerReportingHandler handler)
         {
-            return this.Entity?.Schedule(name, interval, loop, handler) ?? NovaEngine.TimerModule.SCHEDULE_CALL_FAILED;
+            return this.Entity?.Schedule(name, interval, loop, handler) ?? NovaEngine.Module.TimerModule.SCHEDULE_CALL_FAILED;
         }
 
         /// <summary>
         /// 引用对象的定时任务调度启动接口，设置启动一个属于该对象的任务定时器<br/>
-        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
         /// </summary>
         /// <param name="name">任务名称</param>
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
@@ -245,7 +245,7 @@ namespace GameEngine
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
         public int Schedule(string name, int interval, int loop, TimerHandler.TimerReportingForSessionHandler handler)
         {
-            return this.Entity?.Schedule(name, interval, loop, handler) ?? NovaEngine.TimerModule.SCHEDULE_CALL_FAILED;
+            return this.Entity?.Schedule(name, interval, loop, handler) ?? NovaEngine.Module.TimerModule.SCHEDULE_CALL_FAILED;
         }
 
         /// <summary>

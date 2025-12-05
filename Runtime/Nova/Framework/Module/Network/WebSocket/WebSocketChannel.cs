@@ -55,7 +55,7 @@ using SystemValueWebSocketReceiveResult = System.Net.WebSockets.ValueWebSocketRe
 using SystemWebSocketCloseStatus = System.Net.WebSockets.WebSocketCloseStatus;
 #endif
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// WebSocket模式网络通道对象抽象基类

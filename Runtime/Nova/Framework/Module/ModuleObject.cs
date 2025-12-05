@@ -27,7 +27,7 @@
 
 using SystemAction = System.Action;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// 引擎框架模块对象的抽象定义类

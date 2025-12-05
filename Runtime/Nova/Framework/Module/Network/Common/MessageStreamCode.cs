@@ -25,7 +25,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// 网络消息数据流类型定义

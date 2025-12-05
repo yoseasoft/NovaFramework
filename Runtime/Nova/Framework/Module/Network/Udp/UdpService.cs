@@ -24,7 +24,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// UDP模式网络服务接口管理基类

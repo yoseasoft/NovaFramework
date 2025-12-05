@@ -24,11 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
-    /// <summary>
-    /// 定时管理模块，通过一个全局唯一队列对所有的定时任务进行统一处理
-    /// </summary>
+    /// 定时管理模块对象类
     internal partial class TimerModule
     {
         /// <summary>

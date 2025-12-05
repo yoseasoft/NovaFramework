@@ -24,7 +24,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// 网络对象事件参数基类定义

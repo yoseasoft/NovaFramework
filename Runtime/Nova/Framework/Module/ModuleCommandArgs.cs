@@ -24,7 +24,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// 模块类指令参数基类定义

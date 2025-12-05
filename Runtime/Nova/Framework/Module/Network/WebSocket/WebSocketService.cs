@@ -22,11 +22,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 
-using SystemException = System.Exception;
-
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// WebSocket模式网络服务接口管理基类
@@ -98,7 +97,7 @@ namespace NovaEngine
                     {
                         channel.OnSend();
                     }
-                    catch (SystemException e)
+                    catch (Exception e)
                     {
                         throw new CFrameworkException("Wait for send failed.", e);
                     }

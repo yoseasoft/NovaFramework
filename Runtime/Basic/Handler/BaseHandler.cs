@@ -84,35 +84,35 @@ namespace GameEngine
         /// <summary>
         /// 定时器模块的实例引用
         /// </summary>
-        private NovaEngine.TimerModule _timerModule = null;
+        private NovaEngine.Module.TimerModule _timerModule = null;
         /// <summary>
         /// 线程模块的实例引用
         /// </summary>
-        private NovaEngine.ThreadModule _threadModule = null;
+        private NovaEngine.Module.ThreadModule _threadModule = null;
         /// <summary>
         /// 任务模块的实例引用
         /// </summary>
-        private NovaEngine.TaskModule _taskModule = null;
+        private NovaEngine.Module.TaskModule _taskModule = null;
         /// <summary>
         /// 网络模块的实例引用
         /// </summary>
-        private NovaEngine.NetworkModule _networkModule = null;
+        private NovaEngine.Module.NetworkModule _networkModule = null;
         /// <summary>
         /// 资源模块的实例引用
         /// </summary>
-        private NovaEngine.ResourceModule _resourceModule;
+        private NovaEngine.Module.ResourceModule _resourceModule;
         /// <summary>
         /// 文件模块的实例引用
         /// </summary>
-        private NovaEngine.FileModule _fileModule = null;
+        private NovaEngine.Module.FileModule _fileModule = null;
         /// <summary>
         /// 输入模块的实例引用
         /// </summary>
-        private NovaEngine.InputModule _inputModule = null;
+        private NovaEngine.Module.InputModule _inputModule = null;
         /// <summary>
         /// 场景模块的实例引用
         /// </summary>
-        private NovaEngine.SceneModule _sceneModule = null;
+        private NovaEngine.Module.SceneModule _sceneModule = null;
 
         /// <summary>
         /// 句柄子模块行为流程回调的缓存队列
@@ -132,35 +132,35 @@ namespace GameEngine
         /// <summary>
         /// 获取定时器模块的对象实例
         /// </summary>
-        internal NovaEngine.TimerModule TimerModule => _timerModule;
+        internal NovaEngine.Module.TimerModule TimerModule => _timerModule;
         /// <summary>
         /// 获取线程模块的对象实例
         /// </summary>
-        internal NovaEngine.ThreadModule ThreadModule => _threadModule;
+        internal NovaEngine.Module.ThreadModule ThreadModule => _threadModule;
         /// <summary>
         /// 获取任务模块的对象实例
         /// </summary>
-        internal NovaEngine.TaskModule TaskModule => _taskModule;
+        internal NovaEngine.Module.TaskModule TaskModule => _taskModule;
         /// <summary>
         /// 获取网络模块的对象实例
         /// </summary>
-        internal NovaEngine.NetworkModule NetworkModule => _networkModule;
+        internal NovaEngine.Module.NetworkModule NetworkModule => _networkModule;
         /// <summary>
         /// 获取输入模块的对象实例
         /// </summary>
-        internal NovaEngine.InputModule InputModule => _inputModule;
+        internal NovaEngine.Module.InputModule InputModule => _inputModule;
         /// <summary>
         /// 获取资源模块的对象实例
         /// </summary>
-        internal NovaEngine.ResourceModule ResourceModule => _resourceModule;
+        internal NovaEngine.Module.ResourceModule ResourceModule => _resourceModule;
         /// <summary>
         /// 获取文件模块的对象实例
         /// </summary>
-        internal NovaEngine.FileModule FileModule => _fileModule;
+        internal NovaEngine.Module.FileModule FileModule => _fileModule;
         /// <summary>
         /// 获取场景模块的对象实例
         /// </summary>
-        internal NovaEngine.SceneModule SceneModule => _sceneModule;
+        internal NovaEngine.Module.SceneModule SceneModule => _sceneModule;
 
         /// <summary>
         /// 句柄对象初始化接口函数
@@ -169,14 +169,14 @@ namespace GameEngine
         public bool Initialize()
         {
             // 初始化模块实例
-            _timerModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.TimerModule>();
-            _threadModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.ThreadModule>();
-            _taskModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.TaskModule>();
-            _networkModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.NetworkModule>();
-            _inputModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.InputModule>();
-            _resourceModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.ResourceModule>();
-            _fileModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.FileModule>();
-            _sceneModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.SceneModule>();
+            _timerModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.Module.TimerModule>();
+            _threadModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.Module.ThreadModule>();
+            _taskModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.Module.TaskModule>();
+            _networkModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.Module.NetworkModule>();
+            _inputModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.Module.InputModule>();
+            _resourceModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.Module.ResourceModule>();
+            _fileModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.Module.FileModule>();
+            _sceneModule = NovaEngine.Facade.Instance.GetModule<NovaEngine.Module.SceneModule>();
 
             // 初始化子模块行为流程缓存队列
             _cachedSubmoduleBehaviourCallbacks = new Dictionary<SystemType, SystemDelegate>();
@@ -313,7 +313,7 @@ namespace GameEngine
         /// 句柄对象的模块事件转发回调接口
         /// </summary>
         /// <param name="e">模块事件参数</param>
-        public abstract void OnEventDispatch(NovaEngine.ModuleEventArgs e);
+        public abstract void OnEventDispatch(NovaEngine.Module.ModuleEventArgs e);
 
         #region 句柄子模块调度管理接口函数
 

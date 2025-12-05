@@ -24,15 +24,12 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 
-using SystemType = System.Type;
-
-namespace NovaEngine
+namespace NovaEngine.Module
 {
-    /// <summary>
     /// 引擎框架模块中控台管理类
-    /// </summary>
     internal static partial class ModuleController
     {
         /// <summary>
@@ -45,10 +42,10 @@ namespace NovaEngine
             /// </summary>
             private class ModuleConfigureInfo
             {
-                string _name;                // 模块名称
-                int _type;                   // 模块类型
-                int _priority;               // 模块优先级
-                SystemType _reflectionType;  // 模块映射类型
+                string _name;          // 模块名称
+                int _type;             // 模块类型
+                int _priority;         // 模块优先级
+                Type _reflectionType;  // 模块映射类型
 
                 /// <summary>
                 /// 模块名称属性访问Getter/Setter接口
@@ -68,7 +65,7 @@ namespace NovaEngine
                 /// <summary>
                 /// 模块映射类型属性访问Getter/Setter接口
                 /// </summary>
-                public SystemType ReflectionType { get { return _reflectionType; } set { _reflectionType = value; } }
+                public Type ReflectionType { get { return _reflectionType; } set { _reflectionType = value; } }
             }
 
             /// <summary>
@@ -98,7 +95,7 @@ namespace NovaEngine
                 // 获取当前命名空间
                 string namespace_tag = typeof(ModuleController).Namespace;
 
-                foreach (ModuleObject.ModuleEventType enumValue in System.Enum.GetValues(typeof(ModuleObject.ModuleEventType)))
+                foreach (ModuleObject.ModuleEventType enumValue in Enum.GetValues(typeof(ModuleObject.ModuleEventType)))
                 {
                     if (ModuleObject.ModuleEventType.Default == enumValue || ModuleObject.ModuleEventType.User == enumValue)
                     {
@@ -110,7 +107,7 @@ namespace NovaEngine
                     // 类名反射时需要包含命名空间前缀
                     string moduleName = Utility.Text.Format("{0}.{1}{2}", namespace_tag, enumName, ModuleClassUnifiedStandardName);
 
-                    SystemType moduleType = SystemType.GetType(moduleName);
+                    Type moduleType = Type.GetType(moduleName);
                     if (null == moduleType)
                     {
                         Logger.Info("Could not found any module class with target name {0}.", moduleName);
@@ -152,7 +149,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="moduleType">模块对象类型</param>
             /// <param name="clsType">模块映射类型</param>
-            private static void RegModuleConfigureInfo(ModuleObject.ModuleEventType moduleType, SystemType clsType)
+            private static void RegModuleConfigureInfo(ModuleObject.ModuleEventType moduleType, Type clsType)
             {
                 // 若打开启用标识，则必须提供映射类型参数
                 Logger.Assert(null != clsType, ErrorText.InvalidArguments);
@@ -220,7 +217,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="clsType">模块映射类型</param>
             /// <returns>返回给定映射类型模块的名称</returns>
-            public static string GetModuleName(SystemType clsType)
+            public static string GetModuleName(Type clsType)
             {
                 IEnumerator<ModuleConfigureInfo> e = _configureInfos.GetEnumerator();
                 while (e.MoveNext())
@@ -254,7 +251,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="clsType">模块映射类型</param>
             /// <returns>返回给定映射类型模块的对象类型</returns>
-            public static int GetModuleType(SystemType clsType)
+            public static int GetModuleType(Type clsType)
             {
                 IEnumerator<ModuleConfigureInfo> e = _configureInfos.GetEnumerator();
                 while (e.MoveNext())
@@ -287,7 +284,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="type">模块对象类型</param>
             /// <returns>返回给定类型模块的映射类型</returns>
-            public static SystemType GetModuleReflectionType(int type)
+            public static Type GetModuleReflectionType(int type)
             {
                 ModuleConfigureInfo found = GetModuleConfigureInfoByType(type);
                 if (null != found)

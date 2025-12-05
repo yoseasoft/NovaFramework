@@ -26,12 +26,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
-    /// <summary>
     /// 引擎框架模块对象的抽象定义类
-    /// 我们使用该抽象模块对象类替换原本的管理器基类，重新设计管理器的调度接口及事件转发接口
-    /// </summary>
     internal abstract partial class ModuleObject
     {
         /// <summary>

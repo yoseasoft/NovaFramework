@@ -24,11 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
-    /// <summary>
     /// 引擎框架模块中控台管理类
-    /// </summary>
     internal static partial class ModuleController
     {
         /// <summary>

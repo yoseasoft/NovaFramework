@@ -24,7 +24,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// UDP模式网络通道对象抽象基类

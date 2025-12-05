@@ -24,26 +24,24 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemException = System.Exception;
-using SystemArray = System.Array;
-using SystemEncoding = System.Text.Encoding;
-using SystemMemoryStream = System.IO.MemoryStream;
-using SystemSeekOrigin = System.IO.SeekOrigin;
-using SystemIEnumerator = System.Collections.IEnumerator;
+using System;
+using System.Collections;
+using System.IO;
+using System.Text;
 
 using UnityWaitForEndOfFrame = UnityEngine.WaitForEndOfFrame;
 using UnityWebRequest = UnityEngine.Networking.UnityWebRequest;
 using UnityUploadHandlerRaw = UnityEngine.Networking.UploadHandlerRaw;
 using UnityDownloadHandlerBuffer = UnityEngine.Networking.DownloadHandlerBuffer;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// HTTP模式网络通道对象抽象基类
     /// </summary>
     internal sealed class HttpChannel : NetworkChannel
     {
-        private readonly SystemMemoryStream _memoryStream = null;
+        private readonly MemoryStream _memoryStream = null;
 
         /// <summary>
         /// HTTP网络通道对象的新实例构建接口
@@ -96,19 +94,19 @@ namespace NovaEngine
         /// 网络通道数据下行操作接口
         /// </summary>
         /// <param name="memoryStream">消息数据流</param>
-        public override void Send(SystemMemoryStream memoryStream)
+        public override void Send(MemoryStream memoryStream)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        private SystemIEnumerator __ConnectAsync()
+        private IEnumerator __ConnectAsync()
         {
             yield return new UnityWaitForEndOfFrame();
 
             this._connectionCallback?.Invoke(this);
         }
 
-        private SystemIEnumerator __DoPostRequest(byte[] body)
+        private IEnumerator __DoPostRequest(byte[] body)
         {
             UnityWebRequest webRequest = new UnityWebRequest(this._url, "POST");
             webRequest.certificateHandler = new Network.AcceptAllCertificatesHandler();// 必须验证, 具体原因可进入Network.AcceptAllCertificatesHandler查看
@@ -120,34 +118,34 @@ namespace NovaEngine
             if (UnityWebRequest.Result.ProtocolError == webRequest.result || UnityWebRequest.Result.ConnectionError == webRequest.result)
             {
                 Logger.Error(webRequest.error);
-                this._memoryStream.Seek(0, SystemSeekOrigin.Begin);
+                this._memoryStream.Seek(0, SeekOrigin.Begin);
                 this._memoryStream.SetLength(body.Length);
-                SystemArray.Copy(body, 0, this._memoryStream.GetBuffer(), 0, body.Length);
+                Array.Copy(body, 0, this._memoryStream.GetBuffer(), 0, body.Length);
                 _writeFailedCallback?.Invoke(this._memoryStream, MessageStreamCode.String);
             }
             else
             {
                 long size = (long) webRequest.downloadedBytes;
                 // Logger.Debug(webRequest.downloadHandler.text);
-                this._memoryStream.Seek(0, SystemSeekOrigin.Begin);
+                this._memoryStream.Seek(0, SeekOrigin.Begin);
                 this._memoryStream.SetLength(size);
-                SystemArray.Copy(webRequest.downloadHandler.data, 0, this._memoryStream.GetBuffer(), 0, size);
+                Array.Copy(webRequest.downloadHandler.data, 0, this._memoryStream.GetBuffer(), 0, size);
 
                 try
                 {
                     // 协议码为空
                     this._readCallback.Invoke(this._memoryStream, MessageStreamCode.String);
                 }
-                catch (SystemException e)
+                catch (Exception e)
                 {
                     Logger.Error(e);
                 }
             }
         }
 
-        private SystemIEnumerator __DoPostRequest(string message)
+        private IEnumerator __DoPostRequest(string message)
         {
-            byte[] body = SystemEncoding.UTF8.GetBytes(message);
+            byte[] body = Encoding.UTF8.GetBytes(message);
             yield return __DoPostRequest(body);
         }
     }

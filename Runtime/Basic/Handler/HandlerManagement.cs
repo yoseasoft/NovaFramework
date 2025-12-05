@@ -94,8 +94,8 @@ namespace GameEngine
                 // 2025-08-12：
                 // 此处是否有必要检查该值的一致性，理论上同名即可
                 // 值相同的意义在哪里？转发事件的来源模块检测需要？
-                NovaEngine.ModuleObject.ModuleEventType eventType = NovaEngine.Utility.Convertion.GetEnumFromName<NovaEngine.ModuleObject.ModuleEventType>(enumName);
-                if (NovaEngine.ModuleObject.ModuleEventType.Default != eventType)
+                NovaEngine.Module.ModuleObject.ModuleEventType eventType = NovaEngine.Utility.Convertion.GetEnumFromName<NovaEngine.Module.ModuleObject.ModuleEventType>(enumName);
+                if (NovaEngine.Module.ModuleObject.ModuleEventType.Default != eventType)
                 {
                     if (System.Convert.ToInt32(enumValue) != System.Convert.ToInt32(eventType))
                     {
@@ -164,7 +164,7 @@ namespace GameEngine
 
             // 添加句柄相关指令事件代理
             HandlerDispatchedCommandAgent commandAgent = new HandlerDispatchedCommandAgent();
-            NovaEngine.ModuleController.AddCommandAgent(HandlerDispatchedCommandAgent.COMMAND_AGENT_NAME, commandAgent);
+            NovaEngine.Module.ModuleController.AddCommandAgent(HandlerDispatchedCommandAgent.COMMAND_AGENT_NAME, commandAgent);
 
             _isOnStartup = true;
         }
@@ -191,7 +191,7 @@ namespace GameEngine
             // 例如：移除引用对象实例时，其内部需要先注销所有的定时器实例，
             // 但定时器需要通知到‘TimerModule’并在底层移除后通过事件转播的形式告知‘TimerHandler’管理器一个定时任务‘Finished’的结果，
             // 如果此时转发代理已被移除，那么上层将永远接收不到定时任务已结束的通知。
-            NovaEngine.ModuleController.RemoveCommandAgent(HandlerDispatchedCommandAgent.COMMAND_AGENT_NAME);
+            NovaEngine.Module.ModuleController.RemoveCommandAgent(HandlerDispatchedCommandAgent.COMMAND_AGENT_NAME);
 
             // 清理所有的句柄实例缓存
             //
@@ -404,7 +404,7 @@ namespace GameEngine
         /// 句柄对象的模块事件转发回调接口
         /// </summary>
         /// <param name="e">模块事件参数</param>
-        public static bool OnEventDispatch(NovaEngine.ModuleEventArgs e)
+        public static bool OnEventDispatch(NovaEngine.Module.ModuleEventArgs e)
         {
             int eventType = e.ID;
 

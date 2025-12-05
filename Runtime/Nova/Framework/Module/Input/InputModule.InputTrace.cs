@@ -24,15 +24,11 @@
 
 using System.Collections.Generic;
 
-using UnityInput = UnityEngine.Input;
-using UnityTouch = UnityEngine.Touch;
 using UnityKeyCode = UnityEngine.KeyCode;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
-    /// <summary>
-    /// 输入管理器，处理通过键盘、鼠标及触屏等方式产生的事件通知访问接口
-    /// </summary>
+    /// 输入管理器对象类
     internal partial class InputModule
     {
         /// <summary>

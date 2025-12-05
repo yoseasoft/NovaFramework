@@ -26,14 +26,15 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+
 using SystemType = System.Type;
 
 using UnityObject = UnityEngine.Object;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
-    /// 资源管理器，统一处理打包资源的加载读取，缓存释放等功能，为其提供操作接口
+    /// 资源管理器对象类，统一处理打包资源的加载读取，缓存释放等功能，为其提供操作接口
     /// </summary>
     internal sealed partial class ResourceModule : ModuleObject
     {

@@ -29,10 +29,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
-    /// 任务管理器，统一处理所有外部协调的任务逻辑<br/>
+    /// 任务管理器对象类，统一处理所有外部协调的任务逻辑<br/>
     /// 参考开源项目<code>UnityMainThreadDispatcher</code>的实现方式，以队列的形式逐个完成任务的调度<br/>
     /// 开源项目下载地址：https://github.com/PimDeWitte/UnityMainThreadDispatcher.git
     /// </summary>

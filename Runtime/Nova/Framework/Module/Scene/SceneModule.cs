@@ -27,12 +27,13 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+
 using UnityEngine.SceneManagement;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
-    /// 场景管理器，处理场景相关的加载/卸载，及同屏场景间切换等访问接口
+    /// 场景管理器对象类，处理场景相关的加载/卸载，及同屏场景间切换等访问接口
     /// </summary>
     internal sealed partial class SceneModule : ModuleObject
     {

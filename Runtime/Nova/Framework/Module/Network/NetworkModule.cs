@@ -29,10 +29,10 @@ using System.Collections.Generic;
 
 using UnityWebRequest = UnityEngine.Networking.UnityWebRequest;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
-    /// 网络管理模块，处理网络相关的连接/断开，及数据包通信等访问接口
+    /// 网络管理模块对象类，处理网络相关的连接/断开，及数据包通信等访问接口
     /// 优化网络操作接口，整合SOCKET，HTTP链接及读写接口
     /// </summary>
     internal sealed partial class NetworkModule : ModuleObject, Network.ISocketCall, Network.IHttpCall

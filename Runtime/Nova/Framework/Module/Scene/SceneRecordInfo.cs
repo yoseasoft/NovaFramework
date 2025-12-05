@@ -25,7 +25,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// 场景对象运行时信息数据封装对象类，对场景资源及相关使用参数进行统一封装管理

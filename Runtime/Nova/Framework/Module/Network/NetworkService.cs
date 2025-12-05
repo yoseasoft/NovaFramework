@@ -26,7 +26,7 @@
 
 using RecyclableMemoryStreamManager = Microsoft.IO.RecyclableMemoryStreamManager;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// 网络服务接口管理基类

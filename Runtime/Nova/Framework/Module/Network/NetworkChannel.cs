@@ -24,10 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemAction = System.Action;
-using SystemMemoryStream = System.IO.MemoryStream;
+using System.IO;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// 网络通道对象抽象基类
@@ -82,12 +81,12 @@ namespace NovaEngine
         /// <summary>
         /// 网络数据读入操作回调接口代理接口
         /// </summary>
-        protected System.Action<SystemMemoryStream, int> _readCallback;
+        protected System.Action<MemoryStream, int> _readCallback;
 
         /// <summary>
         /// 网络数据写入操作失败回调接口代理接口
         /// </summary>
-        protected System.Action<SystemMemoryStream, int> _writeFailedCallback;
+        protected System.Action<MemoryStream, int> _writeFailedCallback;
 
         /// <summary>
         /// 获取网络通道唯一标识
@@ -176,7 +175,7 @@ namespace NovaEngine
         /// <summary>
         /// 添加或移除网络数据读入操作回调接口代理接口
         /// </summary>
-        public event System.Action<SystemMemoryStream, int> ReadCallback
+        public event System.Action<MemoryStream, int> ReadCallback
         {
             add { _readCallback += value; }
             remove { _readCallback -= value; }
@@ -185,7 +184,7 @@ namespace NovaEngine
         /// <summary>
         /// 添加或移除网络数据写入操作失败回调接口代理接口
         /// </summary>
-        public event System.Action<SystemMemoryStream, int> WriteFailedCallback
+        public event System.Action<MemoryStream, int> WriteFailedCallback
         {
             add { _writeFailedCallback += value; }
             remove { _writeFailedCallback -= value; }
@@ -287,6 +286,6 @@ namespace NovaEngine
         /// 网络通道数据下行操作接口
         /// </summary>
         /// <param name="memoryStream">消息数据流</param>
-        public abstract void Send(SystemMemoryStream memoryStream);
+        public abstract void Send(MemoryStream memoryStream);
     }
 }

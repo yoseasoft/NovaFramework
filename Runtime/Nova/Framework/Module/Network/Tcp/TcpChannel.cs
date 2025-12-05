@@ -24,33 +24,24 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
 using System.Customize.Extension;
 
-using SystemException = System.Exception;
-using SystemArray = System.Array;
-using SystemMemoryStream = System.IO.MemoryStream;
-using SystemSeekOrigin = System.IO.SeekOrigin;
-using SystemIPEndPoint = System.Net.IPEndPoint;
-using SystemAddressFamily = System.Net.Sockets.AddressFamily;
-using SystemSocket = System.Net.Sockets.Socket;
-using SystemSocketType = System.Net.Sockets.SocketType;
-using SystemSocketError = System.Net.Sockets.SocketError;
-using SystemProtocolType = System.Net.Sockets.ProtocolType;
-using SystemSocketAsyncEventArgs = System.Net.Sockets.SocketAsyncEventArgs;
-using SystemSocketAsyncOperation = System.Net.Sockets.SocketAsyncOperation;
-
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// TCP模式网络通道对象抽象基类
     /// </summary>
     internal sealed partial class TcpChannel : NetworkChannel
     {
-        private SystemSocket _socket = null;
+        private Socket _socket = null;
 
-        private SystemSocketAsyncEventArgs _readEventArgs = null;
+        private SocketAsyncEventArgs _readEventArgs = null;
 
-        private SystemSocketAsyncEventArgs _writeEventArgs = null;
+        private SocketAsyncEventArgs _writeEventArgs = null;
 
         private readonly IO.CircularLinkedBuffer _readBuffer = null;
 
@@ -67,11 +58,11 @@ namespace NovaEngine
         private readonly byte[] _packetHeaderCached = null;
 
 
-        private readonly SystemMemoryStream _memoryStream = null;
+        private readonly MemoryStream _memoryStream = null;
 
         private readonly MessagePacket _packet = null;
 
-        private readonly SystemIPEndPoint _remoteIp = null;
+        private readonly IPEndPoint _remoteIp = null;
 
         /// <summary>
         /// 网络通道当前连接状态标识
@@ -114,15 +105,15 @@ namespace NovaEngine
             this._writeBuffer = new IO.CircularLinkedBuffer();
             this._memoryStream = service.MemoryStreamManager.GetStream(name, ushort.MaxValue);
 
-            this._socket = new SystemSocket(SystemAddressFamily.InterNetwork, SystemSocketType.Stream, SystemProtocolType.Tcp);
+            this._socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             this._socket.NoDelay = true;
             this._packet = new MessagePacket(this._headerSize, this._readBuffer, this._memoryStream);
-            this._readEventArgs = new SystemSocketAsyncEventArgs();
-            this._writeEventArgs = new SystemSocketAsyncEventArgs();
+            this._readEventArgs = new SocketAsyncEventArgs();
+            this._writeEventArgs = new SocketAsyncEventArgs();
             this._readEventArgs.Completed += this.OnOperationComplete;
             this._writeEventArgs.Completed += this.OnOperationComplete;
 
-            SystemIPEndPoint ip = Utility.Network.ToIPEndPoint(url);
+            IPEndPoint ip = Utility.Network.ToIPEndPoint(url);
 
             // this._url = ip.ToString();
             this._remoteIp = ip;
@@ -173,10 +164,10 @@ namespace NovaEngine
         /// <param name="message">消息内容</param>
         public override void Send(byte[] message)
         {
-            this._memoryStream.Seek(MessageConstant.MessageIndex, SystemSeekOrigin.Begin);
+            this._memoryStream.Seek(MessageConstant.MessageIndex, SeekOrigin.Begin);
             this._memoryStream.SetLength(message.Length);
 
-            SystemArray.Copy(message, 0, this._memoryStream.GetBuffer(), 0, message.Length);
+            Array.Copy(message, 0, this._memoryStream.GetBuffer(), 0, message.Length);
 
             this.Send(this._memoryStream);
         }
@@ -185,7 +176,7 @@ namespace NovaEngine
         /// 网络通道数据下行操作接口
         /// </summary>
         /// <param name="memoryStream">消息数据流</param>
-        public override void Send(SystemMemoryStream memoryStream)
+        public override void Send(MemoryStream memoryStream)
         {
             if (this.IsClosed)
             {
@@ -254,7 +245,7 @@ namespace NovaEngine
             {
                 this._readEventArgs.SetBuffer(buffer, offset, count);
             }
-            catch (SystemException e)
+            catch (Exception e)
             {
                 throw new CFrameworkException("socket set buffer error.", e);
             }
@@ -305,7 +296,7 @@ namespace NovaEngine
             {
                 this._writeEventArgs.SetBuffer(buffer, offset, count);
             }
-            catch (SystemException e)
+            catch (Exception e)
             {
                 throw new CFrameworkException("socket set buffer error.", e);
             }
@@ -326,8 +317,8 @@ namespace NovaEngine
                 return;
             }
 
-            SystemSocketAsyncEventArgs e = (SystemSocketAsyncEventArgs) o;
-            if (SystemSocketError.Success != e.SocketError)
+            SocketAsyncEventArgs e = (SocketAsyncEventArgs) o;
+            if (SocketError.Success != e.SocketError)
             {
                 this.OnError((int) e.SocketError);
                 return;
@@ -343,7 +334,7 @@ namespace NovaEngine
 
         private void OnDisconnectionComplete(object o)
         {
-            SystemSocketAsyncEventArgs e = (SystemSocketAsyncEventArgs) o;
+            SocketAsyncEventArgs e = (SocketAsyncEventArgs) o;
             this.OnError((int) e.SocketError);
         }
 
@@ -354,8 +345,8 @@ namespace NovaEngine
                 return;
             }
 
-            SystemSocketAsyncEventArgs e = (SystemSocketAsyncEventArgs) o;
-            if (SystemSocketError.Success != e.SocketError)
+            SocketAsyncEventArgs e = (SocketAsyncEventArgs) o;
+            if (SocketError.Success != e.SocketError)
             {
                 this.OnError((int) e.SocketError);
                 return;
@@ -384,7 +375,7 @@ namespace NovaEngine
                         break;
                     }
                 }
-                catch (SystemException ee)
+                catch (Exception ee)
                 {
                     Logger.Error("receive bytes parse failed '{%s}'.", ee.ToString());
 
@@ -396,7 +387,7 @@ namespace NovaEngine
                 {
                     this._readCallback.Invoke(this._packet.GetPacket(), MessageStreamCode.Byte);
                 }
-                catch (SystemException ee)
+                catch (Exception ee)
                 {
                     Logger.Error(ee.ToString());
                 }
@@ -415,8 +406,8 @@ namespace NovaEngine
                 return;
             }
 
-            SystemSocketAsyncEventArgs e = (SystemSocketAsyncEventArgs) o;
-            if (SystemSocketError.Success != e.SocketError)
+            SocketAsyncEventArgs e = (SocketAsyncEventArgs) o;
+            if (SocketError.Success != e.SocketError)
             {
                 this.OnError((int) e.SocketError);
                 return;
@@ -438,20 +429,20 @@ namespace NovaEngine
             this.OnSend();
         }
 
-        private void OnOperationComplete(object sender, SystemSocketAsyncEventArgs e)
+        private void OnOperationComplete(object sender, SocketAsyncEventArgs e)
         {
             switch (e.LastOperation)
             {
-                case SystemSocketAsyncOperation.Connect:
+                case SocketAsyncOperation.Connect:
                     ModuleController.QueueOnMainThread(this.OnConnectionComplete, e);
                     break;
-                case SystemSocketAsyncOperation.Disconnect:
+                case SocketAsyncOperation.Disconnect:
                     ModuleController.QueueOnMainThread(this.OnDisconnectionComplete, e);
                     break;
-                case SystemSocketAsyncOperation.Receive:
+                case SocketAsyncOperation.Receive:
                     ModuleController.QueueOnMainThread(this.OnRecvComplete, e);
                     break;
-                case SystemSocketAsyncOperation.Send:
+                case SocketAsyncOperation.Send:
                     ModuleController.QueueOnMainThread(this.OnSendComplete, e);
                     break;
                 default:

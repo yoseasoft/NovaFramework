@@ -30,7 +30,7 @@ namespace GameEngine
 {
     /// <summary>
     /// 定时器模块封装的句柄对象类
-    /// 模块具体功能接口请参考<see cref="NovaEngine.TimerModule"/>类
+    /// 模块具体功能接口请参考<see cref="NovaEngine.Module.TimerModule"/>类
     /// </summary>
     public sealed partial class TimerHandler : BaseHandler
     {
@@ -127,14 +127,14 @@ namespace GameEngine
         /// 句柄对象的模块事件转发回调接口
         /// </summary>
         /// <param name="e">模块事件参数</param>
-        public override void OnEventDispatch(NovaEngine.ModuleEventArgs e)
+        public override void OnEventDispatch(NovaEngine.Module.ModuleEventArgs e)
         {
-            NovaEngine.TimerEventArgs tea = e as NovaEngine.TimerEventArgs;
+            NovaEngine.Module.TimerEventArgs tea = e as NovaEngine.Module.TimerEventArgs;
             Debugger.Assert(tea != null);
 
             switch (tea.Type)
             {
-                case (int) NovaEngine.TimerModule.ProtocolType.Dispatched:
+                case (int) NovaEngine.Module.TimerModule.ProtocolType.Dispatched:
                 {
                     // 统计定时事件派发
                     _Profiler.CallStat(Profiler.Statistics.StatCode.TimerDispatched, tea.Session);
@@ -142,12 +142,12 @@ namespace GameEngine
                     TimerReportingCallback handler;
                     if (false == _timerClockingCallbacks.TryGetValue(tea.Session, out handler))
                     {
-                        Debugger.Error("Could not found any valid timer clocking handler with session id {0}, dispatched event args failed..", tea.Session);
+                        Debugger.Error("Could not found any valid timer clocking handler with session id {%d}, dispatched event args failed..", tea.Session);
                     }
                     handler?.Invoke(tea.Session);
                 }
                 break;
-                case (int) NovaEngine.TimerModule.ProtocolType.Finished:
+                case (int) NovaEngine.Module.TimerModule.ProtocolType.Finished:
                 {
                     // 统计定时事件结束
                     _Profiler.CallStat(Profiler.Statistics.StatCode.TimerFinished, tea.Session);
@@ -160,12 +160,12 @@ namespace GameEngine
                         _timerFinishingCallbacks.Remove(tea.Session);
                     }
 
-                    // Debugger.Log("Remove timer clocking handler with session id {0}.", tea.Session);
+                    // Debugger.Log("Remove timer clocking handler with session id {%d}.", tea.Session);
 
                     // 会话合法性检查
                     if (false == _timerClockingCallbacks.ContainsKey(tea.Session))
                     {
-                        Debugger.Error("The timer clocked session id {0} was not found, remove it failed.", tea.Session);
+                        Debugger.Error("The timer clocked session id {%d} was not found, remove it failed.", tea.Session);
                     }
                     _timerClockingCallbacks.Remove(tea.Session);
                 }
@@ -181,7 +181,7 @@ namespace GameEngine
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
         public int Schedule(int interval, TimerReportingHandler clocking)
         {
-            return Schedule(interval, NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER, clocking);
+            return Schedule(interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, clocking);
         }
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace GameEngine
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
         public int Schedule(int interval, TimerReportingForSessionHandler clocking)
         {
-            return Schedule(interval, NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER, clocking);
+            return Schedule(interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, clocking);
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace GameEngine
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
         public int Schedule(string name, int interval, TimerReportingHandler clocking)
         {
-            return Schedule(name, interval, NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER, clocking);
+            return Schedule(name, interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, clocking);
         }
 
         /// <summary>
@@ -216,12 +216,12 @@ namespace GameEngine
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
         public int Schedule(string name, int interval, TimerReportingForSessionHandler clocking)
         {
-            return Schedule(name, interval, NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER, clocking);
+            return Schedule(name, interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, clocking);
         }
 
         /// <summary>
         /// 定时任务调度启动接口，设置启动一个新的任务定时器
-        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
         /// </summary>
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
         /// <param name="loop">任务循环次数</param>
@@ -234,7 +234,7 @@ namespace GameEngine
 
         /// <summary>
         /// 定时任务调度启动接口，设置启动一个新的任务定时器
-        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
         /// </summary>
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
         /// <param name="loop">任务循环次数</param>
@@ -247,7 +247,7 @@ namespace GameEngine
 
         /// <summary>
         /// 定时任务调度启动接口，设置启动一个新的任务定时器
-        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
         /// </summary>
         /// <param name="name">任务名称</param>
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
@@ -261,7 +261,7 @@ namespace GameEngine
 
         /// <summary>
         /// 定时任务调度启动接口，设置启动一个新的任务定时器
-        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
         /// </summary>
         /// <param name="name">任务名称</param>
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
@@ -275,7 +275,7 @@ namespace GameEngine
 
         /// <summary>
         /// 定时任务调度启动接口，设置启动一个新的任务定时器
-        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
         /// </summary>
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
         /// <param name="loop">任务循环次数</param>
@@ -300,7 +300,7 @@ namespace GameEngine
 
         /// <summary>
         /// 定时任务调度启动接口，设置启动一个新的任务定时器
-        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
         /// </summary>
         /// <param name="name">任务名称</param>
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
@@ -326,7 +326,7 @@ namespace GameEngine
 
         /// <summary>
         /// 定时任务调度启动接口，设置启动一个新的任务定时器
-        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
         /// </summary>
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
         /// <param name="loop">任务循环次数</param>
@@ -351,7 +351,7 @@ namespace GameEngine
 
         /// <summary>
         /// 定时任务调度启动接口，设置启动一个新的任务定时器
-        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
         /// </summary>
         /// <param name="name">任务名称</param>
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
@@ -377,7 +377,7 @@ namespace GameEngine
 
         /// <summary>
         /// 定时任务调度启动接口，设置启动一个新的任务定时器
-        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
         /// </summary>
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
         /// <param name="loop">任务循环次数</param>
@@ -391,7 +391,7 @@ namespace GameEngine
 
         /// <summary>
         /// 定时任务调度启动接口，设置启动一个新的任务定时器
-        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
+        /// 若需要设置一个无限循环的任务，可以将‘loop’设置为<see cref="NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER"/>
         /// </summary>
         /// <param name="name">任务名称</param>
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
@@ -405,28 +405,28 @@ namespace GameEngine
 
             if (sessionID <= 0)
             {
-                Debugger.Error("The target timer '{0}' processing was occurred exception, scheduled it failed.", name);
+                Debugger.Error("The target timer '{%s}' processing was occurred exception, scheduled it failed.", name);
                 return sessionID;
             }
 
             if (_timerClockingCallbacks.ContainsKey(sessionID))
             {
-                Debugger.Error(false == newly, "The timer clocked session id {0} was already exist, repeat add will be override old handler.", sessionID);
+                Debugger.Error(false == newly, "The timer clocked session id {%d} was already exist, repeat add will be override old handler.", sessionID);
                 _timerClockingCallbacks.Remove(sessionID);
             }
 
-            // Debugger.Log("Add timer clocking handler with session id {0}.", sessionID);
+            // Debugger.Log("Add timer clocking handler with session id {%d}.", sessionID);
             _timerClockingCallbacks.Add(sessionID, clocking);
 
             if (_timerFinishingCallbacks.ContainsKey(sessionID))
             {
-                Debugger.Error(false == newly, "The timer finished session id {0} was already exist, repeat add will be override old handler.", sessionID);
+                Debugger.Error(false == newly, "The timer finished session id {%d} was already exist, repeat add will be override old handler.", sessionID);
                 _timerFinishingCallbacks.Remove(sessionID);
             }
 
             if (finishing != null)
             {
-                // Debugger.Log("Add timer finishing handler with session id {0}.", sessionID);
+                // Debugger.Log("Add timer finishing handler with session id {%d}.", sessionID);
                 _timerFinishingCallbacks.Add(sessionID, finishing);
             }
 

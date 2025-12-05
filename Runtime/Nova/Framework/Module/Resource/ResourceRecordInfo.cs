@@ -26,7 +26,7 @@ using System.Collections.Generic;
 
 using UnityObject = UnityEngine.Object;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// 资源对象运行时信息数据封装对象类，对资源及相关实例化对象进行统一封装管理

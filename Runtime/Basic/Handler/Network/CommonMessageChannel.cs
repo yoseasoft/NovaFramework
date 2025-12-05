@@ -35,7 +35,7 @@ namespace GameEngine
         public TcpMessageChannel(int channelID, string name) : this(channelID, name, string.Empty)
         { }
 
-        public TcpMessageChannel(int channelID, string name, string url) : base(channelID, (int) NovaEngine.NetworkServiceType.Tcp, name, url)
+        public TcpMessageChannel(int channelID, string name, string url) : base(channelID, (int) NovaEngine.Module.NetworkServiceType.Tcp, name, url)
         { }
     }
 
@@ -50,7 +50,7 @@ namespace GameEngine
         public WebSocketMessageChannel(int channelID, string name) : this(channelID, name, string.Empty)
         { }
 
-        public WebSocketMessageChannel(int channelID, string name, string url) : base(channelID, (int) NovaEngine.NetworkServiceType.WebSocket, name, url)
+        public WebSocketMessageChannel(int channelID, string name, string url) : base(channelID, (int) NovaEngine.Module.NetworkServiceType.WebSocket, name, url)
         { }
     }
 
@@ -65,7 +65,7 @@ namespace GameEngine
         public HttpMessageChannel(int channelID, string name) : this(channelID, name, string.Empty)
         { }
 
-        public HttpMessageChannel(int channelID, string name, string url) : base(channelID, (int) NovaEngine.NetworkServiceType.Http, name, url)
+        public HttpMessageChannel(int channelID, string name, string url) : base(channelID, (int) NovaEngine.Module.NetworkServiceType.Http, name, url)
         { }
     }
 }

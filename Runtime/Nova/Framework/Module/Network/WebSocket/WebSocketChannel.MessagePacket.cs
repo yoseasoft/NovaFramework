@@ -22,12 +22,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemBitConverter = System.BitConverter;
-using SystemIPAddress = System.Net.IPAddress;
-using SystemMemoryStream = System.IO.MemoryStream;
-using SystemSeekOrigin = System.IO.SeekOrigin;
+using System;
+using System.IO;
+using System.Net;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// WebSocket模式网络通道对象抽象基类
@@ -49,11 +48,11 @@ namespace NovaEngine
             /// </summary>
             private readonly byte[] _packetHeaderCached = null;
 
-            private SystemMemoryStream _memoryStream = null;
+            private MemoryStream _memoryStream = null;
 
-            private System.Action<SystemMemoryStream> _callback = null;
+            private Action<MemoryStream> _callback = null;
 
-            public MessagePacket(int headerSize, SystemMemoryStream memoryStream, System.Action<SystemMemoryStream> callback)
+            public MessagePacket(int headerSize, MemoryStream memoryStream, Action<MemoryStream> callback)
             {
                 this._headerSize = headerSize;
                 this._packetHeaderCached = new byte[headerSize];
@@ -86,15 +85,15 @@ namespace NovaEngine
                     switch (this._headerSize)
                     {
                         case MessageConstant.HeaderSize_4:
-                            packetSize = SystemBitConverter.ToInt32(this._packetHeaderCached, 0);
+                            packetSize = BitConverter.ToInt32(this._packetHeaderCached, 0);
                             if (packetSize > MessageConstant.MaxPacketSize_4 || packetSize < MessageConstant.MinPacketSize_4)
                             {
                                 throw new CFrameworkException("receive header size '{%d}' out of the range.", packetSize);
                             }
                             break;
                         case MessageConstant.HeaderSize_2:
-                            short messageLength = SystemBitConverter.ToInt16(this._packetHeaderCached, 0);
-                            packetSize = SystemIPAddress.NetworkToHostOrder(messageLength);
+                            short messageLength = BitConverter.ToInt16(this._packetHeaderCached, 0);
+                            packetSize = IPAddress.NetworkToHostOrder(messageLength);
                             if (packetSize > MessageConstant.MaxPacketSize_2 || packetSize < MessageConstant.MinPacketSize_2)
                             {
                                 throw new CFrameworkException("receive header size '{%d}' out of the range.", packetSize);
@@ -110,7 +109,7 @@ namespace NovaEngine
                         break;
                     }
 
-                    this._memoryStream.Seek(0, SystemSeekOrigin.Begin);
+                    this._memoryStream.Seek(0, SeekOrigin.Begin);
                     this._memoryStream.SetLength(packetSize);
 
                     byte[] bytes = this._memoryStream.GetBuffer();

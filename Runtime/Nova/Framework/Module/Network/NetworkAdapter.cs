@@ -34,7 +34,7 @@ using SystemMemoryStream = System.IO.MemoryStream;
 using SystemBinaryReader = System.IO.BinaryReader;
 using SystemSeekOrigin = System.IO.SeekOrigin;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// 通用模式下的网络适配组件操作接口类

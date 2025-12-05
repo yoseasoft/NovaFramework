@@ -81,6 +81,6 @@ namespace GameEngine
         /// 句柄对象的模块事件转发回调接口
         /// </summary>
         /// <param name="e">模块事件参数</param>
-        void OnEventDispatch(NovaEngine.ModuleEventArgs e);
+        void OnEventDispatch(NovaEngine.Module.ModuleEventArgs e);
     }
 }

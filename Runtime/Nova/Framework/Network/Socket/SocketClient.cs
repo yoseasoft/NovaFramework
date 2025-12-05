@@ -23,14 +23,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-
-using SystemArray = System.Array;
-using SystemBitConverter = System.BitConverter;
-using SystemAsyncCallback = System.AsyncCallback;
-using SystemIAsyncResult = System.IAsyncResult;
 
 namespace NovaEngine.Network
 {
@@ -60,8 +56,8 @@ namespace NovaEngine.Network
 
         private MemoryStream _memStream = null;
         private BinaryReader _reader = null;
-        private SystemAsyncCallback _readCallback = null;
-        private SystemAsyncCallback _writeCallback = null;
+        private AsyncCallback _readCallback = null;
+        private AsyncCallback _writeCallback = null;
 
         private byte[] _buffer = new byte[MAX_READBUFFER_SIZE];
 
@@ -100,8 +96,8 @@ namespace NovaEngine.Network
 
             _memStream = new MemoryStream();
             _reader = new BinaryReader(_memStream);
-            _readCallback = new SystemAsyncCallback(OnRead);
-            _writeCallback = new SystemAsyncCallback(OnWrite);
+            _readCallback = new AsyncCallback(OnRead);
+            _writeCallback = new AsyncCallback(OnWrite);
 
             // 初始默认为关闭状态
             _isClosed = true;
@@ -171,16 +167,16 @@ namespace NovaEngine.Network
                 _tcpClient.SendTimeout = 1000;
                 _tcpClient.ReceiveTimeout = 1000;
                 _tcpClient.NoDelay = true;
-                _tcpClient.BeginConnect(host, port, new SystemAsyncCallback(OnConnection), null);
+                _tcpClient.BeginConnect(host, port, new AsyncCallback(OnConnection), null);
 
-                ModuleController.QueueOnMainThread(delegate () {
+                Module.ModuleController.QueueOnMainThread(delegate () {
                     if (false == _isClosed && null != _tcpClient && false == _tcpClient.Connected)
                     {
                         this.OnConnectError(_sequenceId);
                     }
                 }, CONNECT_TIMEOUT);
                 return _sequenceId;
-            } catch (System.Exception e)
+            } catch (Exception e)
             {
                 Logger.Error(e.Message);
 
@@ -199,7 +195,7 @@ namespace NovaEngine.Network
             try
             {
                 this.Disconnect();
-            } catch (System.Exception e)
+            } catch (Exception e)
             {
                 Logger.Error(e.Message);
             }
@@ -274,7 +270,7 @@ namespace NovaEngine.Network
         /// 连接成功回调通知
         /// </summary>
         /// <param name="ar">异步操作结果参数</param>
-        private void OnConnection(SystemIAsyncResult ar)
+        private void OnConnection(IAsyncResult ar)
         {
             if (_isClosed)
             {
@@ -322,7 +318,7 @@ namespace NovaEngine.Network
             _notification.OnDisconnection(fd);
         }
 
-        private void OnRead(SystemIAsyncResult ar)
+        private void OnRead(IAsyncResult ar)
         {
             int readBytes = 0;
             try
@@ -353,10 +349,10 @@ namespace NovaEngine.Network
                 lock (_tcpClient.GetStream())
                 {
                     // 继续读取网络上行数据流
-                    SystemArray.Clear(_buffer, 0, _buffer.Length);
+                    Array.Clear(_buffer, 0, _buffer.Length);
                     _tcpClient.GetStream().BeginRead(_buffer, 0, MAX_READBUFFER_SIZE, _readCallback, null);
                 }
-            } catch (System.Exception e)
+            } catch (Exception e)
             {
                 Logger.Error(e.Message);
 
@@ -364,12 +360,12 @@ namespace NovaEngine.Network
             }
         }
 
-        private void OnWrite(SystemIAsyncResult ar)
+        private void OnWrite(IAsyncResult ar)
         {
             try
             {
                 _outStream.EndWrite(ar);
-            } catch (System.Exception e)
+            } catch (Exception e)
             {
                 Logger.Error(e.Message);
 
@@ -385,7 +381,7 @@ namespace NovaEngine.Network
             _memStream.Seek(0, SeekOrigin.Begin);
             while (this.RemainingBytes() > 2)
             {
-                short messageLength = SystemBitConverter.ToInt16(_reader.ReadBytes(2), 0);
+                short messageLength = BitConverter.ToInt16(_reader.ReadBytes(2), 0);
                 messageLength = IPAddress.NetworkToHostOrder(messageLength);
                 if (this.RemainingBytes() >= messageLength)
                 {

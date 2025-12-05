@@ -31,10 +31,10 @@ using System.Customize.Extension;
 using SystemDateTime = System.DateTime;
 using SystemTimeSpan = System.TimeSpan;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
-    /// 定时管理模块，通过一个全局唯一队列对所有的定时任务进行统一处理
+    /// 定时管理模块对象类，通过一个全局唯一队列对所有的定时任务进行统一处理
     /// </summary>
     internal sealed partial class TimerModule : ModuleObject
     {

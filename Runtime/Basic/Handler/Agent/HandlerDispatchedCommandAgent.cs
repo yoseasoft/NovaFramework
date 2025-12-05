@@ -54,11 +54,11 @@ namespace GameEngine
         /// <param name="command">指令对象实例</param>
         public void Call(NovaEngine.CommandArgs command)
         {
-            NovaEngine.ModuleCommandArgs moduleCommand = command as NovaEngine.ModuleCommandArgs;
+            NovaEngine.Module.ModuleCommandArgs moduleCommand = command as NovaEngine.Module.ModuleCommandArgs;
 
             if (false == HandlerManagement.OnEventDispatch(moduleCommand.Data))
             {
-                Debugger.Error("Could not found any mached handler instance with current command type {0}.", moduleCommand.Type.ToString());
+                Debugger.Error("Could not found any mached handler instance with current command type {%d}.", moduleCommand.Type);
             }
 
             NovaEngine.ReferencePool.Release(moduleCommand);

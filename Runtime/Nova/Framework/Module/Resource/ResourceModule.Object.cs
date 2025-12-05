@@ -29,14 +29,11 @@ using System.Collections.Generic;
 
 using UnityObject = UnityEngine.Object;
 using UnityGameObject = UnityEngine.GameObject;
-using UnityTransform = UnityEngine.Transform;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
-    /// <summary>
-    /// 资源管理器，统一处理打包资源的加载读取，缓存释放等功能，为其提供操作接口
-    /// </summary>
+    /// 资源管理器对象类
     internal partial class ResourceModule
     {
         /// <summary>

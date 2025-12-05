@@ -24,12 +24,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 
-using SystemException = System.Exception;
-using SystemIPEndPoint = System.Net.IPEndPoint;
-
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// TCP模式网络服务接口管理基类
@@ -101,7 +99,7 @@ namespace NovaEngine
                     {
                         channel.OnSend();
                     }
-                    catch (SystemException e)
+                    catch (Exception e)
                     {
                         throw new CFrameworkException("Wait for send failed.", e);
                     }

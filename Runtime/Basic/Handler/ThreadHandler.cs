@@ -28,7 +28,7 @@ namespace GameEngine
 {
     /// <summary>
     /// 线程模块封装的句柄对象类
-    /// 模块具体功能接口请参考<see cref="NovaEngine.ThreadModule"/>类
+    /// 模块具体功能接口请参考<see cref="NovaEngine.Module.ThreadModule"/>类
     /// </summary>
     public sealed partial class ThreadHandler : BaseHandler
     {
@@ -92,7 +92,7 @@ namespace GameEngine
         /// 句柄对象的模块事件转发回调接口
         /// </summary>
         /// <param name="e">模块事件参数</param>
-        public override void OnEventDispatch(NovaEngine.ModuleEventArgs e)
+        public override void OnEventDispatch(NovaEngine.Module.ModuleEventArgs e)
         {
         }
     }

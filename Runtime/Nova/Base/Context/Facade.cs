@@ -25,12 +25,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemIEnumerator = System.Collections.IEnumerator;
+using System;
+using System.Collections;
 
-using UnityObject = UnityEngine.Object;
-using UnityGameObject = UnityEngine.GameObject;
-using UnityComponent = UnityEngine.Component;
 using UnityMonoBehaviour = UnityEngine.MonoBehaviour;
 using UnityCoroutine = UnityEngine.Coroutine;
 
@@ -99,7 +96,7 @@ namespace NovaEngine
             _instance = this;
 
             // 初始化模块控制器的配置信息
-            ModuleController.Config.InitModuleConfigure();
+            Module.ModuleController.Config.InitModuleConfigure();
 
             return true;
         }
@@ -154,7 +151,7 @@ namespace NovaEngine
         /// </summary>
         public void Startup()
         {
-            ModuleController.Startup();
+            Module.ModuleController.Startup();
         }
 
         /// <summary>
@@ -162,7 +159,7 @@ namespace NovaEngine
         /// </summary>
         public void Shutdown()
         {
-            ModuleController.Shutdown();
+            Module.ModuleController.Shutdown();
         }
 
         /// <summary>
@@ -171,7 +168,7 @@ namespace NovaEngine
         public void Update()
         {
             // 模块刷新
-            ModuleController.Update();
+            Module.ModuleController.Update();
         }
 
         /// <summary>
@@ -180,7 +177,7 @@ namespace NovaEngine
         public void LateUpdate()
         {
             // 模块后置刷新
-            ModuleController.LateUpdate();
+            Module.ModuleController.LateUpdate();
         }
 
         /// <summary>
@@ -195,7 +192,7 @@ namespace NovaEngine
         /// </summary>
         public void Collect()
         {
-            System.GC.Collect();
+            GC.Collect();
         }
 
         #region 模块对象与模块指令的注册/转发接口函数
@@ -207,16 +204,16 @@ namespace NovaEngine
         /// <param name="type">事件类型</param>
         internal void SendModuleCommand(int id, int type)
         {
-            ModuleController.CallCommand(id, type);
+            Module.ModuleController.CallCommand(id, type);
         }
 
         /// <summary>
         /// 发送模块指令，由当前系统控制器立即执行处理
         /// </summary>
         /// <param name="args">指令参数实例</param>
-        internal void SendModuleCommand(ModuleCommandArgs args)
+        internal void SendModuleCommand(Module.ModuleCommandArgs args)
         {
-            ModuleController.CallCommand(args);
+            Module.ModuleController.CallCommand(args);
         }
 
         /// <summary>
@@ -224,9 +221,9 @@ namespace NovaEngine
         /// </summary>
         /// <typeparam name="T">模块类型</typeparam>
         /// <returns>返回该名称对应的模块对象实例</returns>
-        public T GetModule<T>() where T : ModuleObject
+        public T GetModule<T>() where T : Module.ModuleObject
         {
-            return ModuleController.GetModule<T>();
+            return Module.ModuleController.GetModule<T>();
         }
 
         #endregion
@@ -247,7 +244,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="routine">协程对象实例</param>
         /// <returns>协程调度返回信息</returns>
-        public UnityCoroutine StartCoroutine(SystemIEnumerator routine)
+        public UnityCoroutine StartCoroutine(IEnumerator routine)
         {
             UnityMonoBehaviour controller = GetRootController();
             if (null != controller)

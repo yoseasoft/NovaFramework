@@ -26,12 +26,12 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Threading;
 
 using SystemType = System.Type;
 using SystemAction = System.Action;
-using SystemSendOrPostCallback = System.Threading.SendOrPostCallback;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
     /// 引擎框架模块中控台管理类，对当前程序的所有模块对象实例进行统一管理调度
@@ -399,7 +399,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="callback">任务回调接口</param>
         /// <param name="args">参数对象</param>
-        public static void QueueOnMainThread(SystemSendOrPostCallback callback, object args)
+        public static void QueueOnMainThread(SendOrPostCallback callback, object args)
         {
             QueueOnMainThread(() => { callback(args); });
         }

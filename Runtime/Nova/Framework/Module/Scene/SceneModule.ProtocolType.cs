@@ -24,11 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
-    /// <summary>
-    /// 场景管理器，处理场景相关的加载/卸载，及同屏场景间切换等访问接口
-    /// </summary>
+    /// 场景管理器对象类
     internal partial class SceneModule
     {
         /// <summary>

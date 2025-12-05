@@ -25,11 +25,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
-    /// <summary>
-    /// 网络管理模块，处理网络相关的连接/断开，及数据包通信等访问接口
-    /// </summary>
+    /// 网络管理模块对象类
     internal partial class NetworkModule
     {
         /// <summary>

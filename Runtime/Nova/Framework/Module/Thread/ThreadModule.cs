@@ -25,10 +25,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
-    /// 线程管理器，对协程及线程进行封装，对外提供统一的调用接口
+    /// 线程管理器对象类，对协程及线程进行封装，对外提供统一的调用接口
     /// </summary>
     internal sealed partial class ThreadModule : ModuleObject
     {

@@ -31,13 +31,12 @@ using SystemEnum = System.Enum;
 using SystemArray = System.Array;
 
 using UnityInput = UnityEngine.Input;
-using UnityTouch = UnityEngine.Touch;
 using UnityKeyCode = UnityEngine.KeyCode;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
-    /// 输入管理器，处理通过键盘、鼠标及触屏等方式产生的事件通知访问接口
+    /// 输入管理器对象类，处理通过键盘、鼠标及触屏等方式产生的事件通知访问接口
     /// </summary>
     internal sealed partial class InputModule : ModuleObject
     {

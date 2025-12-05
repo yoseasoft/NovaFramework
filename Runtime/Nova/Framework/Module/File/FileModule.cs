@@ -27,10 +27,10 @@
 
 using System.Collections.Generic;
 
-namespace NovaEngine
+namespace NovaEngine.Module
 {
     /// <summary>
-    /// 文件管理器，对当前系统存储的文件提供基础的读写访问操作接口
+    /// 文件管理器对象类，对当前系统存储的文件提供基础的读写访问操作接口
     /// </summary>
     internal sealed partial class FileModule : ModuleObject
     {
