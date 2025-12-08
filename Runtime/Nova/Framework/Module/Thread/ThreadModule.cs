@@ -35,54 +35,54 @@ namespace NovaEngine.Module
         /// <summary>
         /// 线程模块事件类型
         /// </summary>
-        public override int EventType => (int) ModuleEventType.Thread;
+        public override sealed int EventType => (int) ModuleEventType.Thread;
 
         /// <summary>
         /// 管理器对象初始化接口函数
         /// </summary>
-        protected override void OnInitialize()
+        protected override sealed void OnInitialize()
         {
         }
 
         /// <summary>
         /// 管理器对象清理接口函数
         /// </summary>
-        protected override void OnCleanup()
+        protected override sealed void OnCleanup()
         {
         }
 
         /// <summary>
         /// 管理器对象初始启动接口
         /// </summary>
-        protected override void OnStartup()
+        protected override sealed void OnStartup()
         {
         }
 
         /// <summary>
         /// 管理器对象结束关闭接口
         /// </summary>
-        protected override void OnShutdown()
+        protected override sealed void OnShutdown()
         {
         }
 
         /// <summary>
         /// 管理器对象垃圾回收调度接口
         /// </summary>
-        protected override void OnDump()
+        protected override sealed void OnDump()
         {
         }
 
         /// <summary>
         /// 线程管理器内部事务更新接口
         /// </summary>
-        protected override void OnUpdate()
+        protected override sealed void OnUpdate()
         {
         }
 
         /// <summary>
         /// 线程管理器内部后置更新接口
         /// </summary>
-        protected override void OnLateUpdate()
+        protected override sealed void OnLateUpdate()
         {
         }
 
@@ -90,7 +90,7 @@ namespace NovaEngine.Module
         /// 在当前上下文以协程方式运行目标回调句柄接口
         /// </summary>
         /// <param name="handler">目标回调句柄</param>
-        public static void Coroutine(ICoroutinable handler)
+        public void Coroutine(ICoroutinable handler)
         {
             // TODO: Facade.Instance.DoWork(handler);
         }

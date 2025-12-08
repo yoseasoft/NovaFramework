@@ -24,10 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -47,31 +46,31 @@ namespace GameEngine
         /// <summary>
         /// 输入回调绑定的输入数据类型
         /// </summary>
-        private readonly SystemType _inputDataType;
+        private readonly Type _inputDataType;
 
         public int InputCode => _inputCode;
         public int OperationType => _operationType;
-        public SystemType InputDataType => _inputDataType;
+        public Type InputDataType => _inputDataType;
 
         #region 为静态回调函数构建委托句柄的构造函数
 
-        public InputCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int inputCode, int operationType)
+        public InputCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, int inputCode, int operationType)
             : this(fullname, targetType, methodInfo, inputCode, operationType, false)
         { }
 
-        public InputCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int inputCode, int operationType, bool automatically)
+        public InputCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, int inputCode, int operationType, bool automatically)
             : this(fullname, targetType, methodInfo, inputCode, operationType, null, automatically)
         { }
 
-        public InputCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType inputDataType)
+        public InputCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, Type inputDataType)
             : this(fullname, targetType, methodInfo, inputDataType, false)
         { }
 
-        public InputCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType inputDataType, bool automatically)
+        public InputCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, Type inputDataType, bool automatically)
             : this(fullname, targetType, methodInfo, 0, 0, inputDataType, automatically)
         { }
 
-        private InputCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int inputCode, int operationType, SystemType inputDataType, bool automatically)
+        private InputCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, int inputCode, int operationType, Type inputDataType, bool automatically)
             : base(fullname, targetType, methodInfo, automatically)
         {
             _inputCode = inputCode;
@@ -83,23 +82,23 @@ namespace GameEngine
 
         #region 为普通回调函数构建委托句柄的构造函数
 
-        public InputCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int inputCode, int operationType)
+        public InputCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, int inputCode, int operationType)
             : this(targetObject, fullname, targetType, methodInfo, inputCode, operationType, false)
         { }
 
-        public InputCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int inputCode, int operationType, bool automatically)
+        public InputCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, int inputCode, int operationType, bool automatically)
             : this(targetObject, fullname, targetType, methodInfo, inputCode, operationType, null, automatically)
         { }
 
-        public InputCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, SystemType inputDataType)
+        public InputCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, Type inputDataType)
             : this(targetObject, fullname, targetType, methodInfo, inputDataType, false)
         { }
 
-        public InputCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, SystemType inputDataType, bool automatically)
+        public InputCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, Type inputDataType, bool automatically)
             : this(targetObject, fullname, targetType, methodInfo, 0, 0, inputDataType, automatically)
         { }
 
-        private InputCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int inputCode, int operationType, SystemType inputDataType, bool automatically)
+        private InputCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, int inputCode, int operationType, Type inputDataType, bool automatically)
             : base(targetObject, fullname, targetType, methodInfo, automatically)
         {
             _inputCode = inputCode;

@@ -953,14 +953,14 @@ namespace GameEngine
             // 是否有检查的必要呢？
             if (HasComponent(component))
             {
-                Debugger.Warn("The component instance '{%t}' was already registed, repeat added it failed.", component.BeanType);
+                Debugger.Warn("The component instance '{%t}' was already registered, repeat added it failed.", component.BeanType);
                 return null;
             }
 
             string componentName = GetComponentName(component);
             if (_components.ContainsKey(componentName))
             {
-                Debugger.Warn("The component name '{%s}' was already registed, repeat added it failed.", componentName);
+                Debugger.Warn("The component name '{%s}' was already registered, repeat added it failed.", componentName);
                 return null;
             }
 

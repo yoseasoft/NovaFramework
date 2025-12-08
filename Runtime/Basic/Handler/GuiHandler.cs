@@ -25,11 +25,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Cysharp.Threading.Tasks;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -148,7 +147,7 @@ namespace GameEngine
         {
         }
 
-        #region 视图类动态注册绑定接口函数
+        #region 视图对象类型注册绑定相关的接口函数
 
         /// <summary>
         /// 注册指定的视图名称及对应的对象类到当前的句柄管理容器中
@@ -158,7 +157,7 @@ namespace GameEngine
         /// <param name="clsType">视图类型</param>
         /// <param name="priority">视图优先级</param>
         /// <returns>若视图类型注册成功则返回true，否则返回false</returns>
-        private bool RegisterViewClass(string viewName, SystemType clsType, int priority)
+        private bool RegisterViewClass(string viewName, Type clsType, int priority)
         {
             Debugger.Assert(false == string.IsNullOrEmpty(viewName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
 
@@ -191,28 +190,31 @@ namespace GameEngine
         /// 通过指定的视图名称动态创建一个对应的视图对象实例
         /// </summary>
         /// <param name="viewName">视图名称</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public async UniTask<CView> OpenUI(string viewName)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public async UniTask<CView> OpenUI(string viewName, object userData = null)
         {
-            SystemType viewType;
-            if (false == _entityClassTypes.TryGetValue(viewName, out viewType))
+            if (false == _entityClassTypes.TryGetValue(viewName, out Type viewType))
             {
                 Debugger.Warn("Could not found any correct view class with target name '{%s}', opened view failed.", viewName);
                 return null;
             }
 
             // 视图对象实例化
-            return await OpenUI(viewType);
+            return await OpenUI(viewType, userData);
         }
 
         /// <summary>
         /// 通过指定的视图类型动态创建一个对应的视图对象实例
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public async UniTask<T> OpenUI<T>() where T : CView
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public async UniTask<T> OpenUI<T>(object userData = null) where T : CView
         {
-            SystemType viewType = typeof(T);
+            Type viewType = typeof(T);
             if (false == _entityClassTypes.Values.Contains(viewType))
             {
                 Debugger.Error("Could not found any correct view class with target type '{%t}', opened view failed.", viewType);
@@ -220,15 +222,16 @@ namespace GameEngine
             }
 
             // 视图对象实例化
-            return await OpenUI(viewType) as T;
+            return await OpenUI(viewType, userData) as T;
         }
 
         /// <summary>
         /// 通过指定的视图类型动态创建一个对应的视图对象实例
         /// </summary>
         /// <param name="viewType">视图类型</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public async UniTask<CView> OpenUI(SystemType viewType)
+        public async UniTask<CView> OpenUI(Type viewType, object userData = null)
         {
             Debugger.Assert(viewType, NovaEngine.ErrorText.InvalidArguments);
             if (false == _entityClassTypes.Values.Contains(viewType))
@@ -275,6 +278,9 @@ namespace GameEngine
             // 启动视图对象
             Call(view, view.Startup, AspectBehaviourType.Startup);
 
+            // 补充用户数据
+            view.UserData = userData;
+
             // 唤醒视图对象
             CallEntityAwakeProcess(view);
 
@@ -294,8 +300,7 @@ namespace GameEngine
         /// <returns>若视图处于打开状态则返回true，否则返回false</returns>
         public bool HasUI(string viewName)
         {
-            SystemType viewType;
-            if (false == _entityClassTypes.TryGetValue(viewName, out viewType))
+            if (false == _entityClassTypes.TryGetValue(viewName, out Type viewType))
             {
                 Debugger.Warn("Could not found any correct view class with target name '{%s}', found view failed.", viewName);
                 return false;
@@ -309,6 +314,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
         /// <returns>若视图处于打开状态则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasUI<T>() where T : CView
         {
             return NovaEngine.Utility.Collection.ContainsType<CView, T>(_views);
@@ -319,7 +325,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>若视图处于打开状态则返回true，否则返回false</returns>
-        public bool HasUI(SystemType viewType)
+        public bool HasUI(Type viewType)
         {
             foreach (CView view in _views)
             {
@@ -339,8 +345,7 @@ namespace GameEngine
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
         public CView FindUI(string viewName)
         {
-            SystemType viewType;
-            if (false == _entityClassTypes.TryGetValue(viewName, out viewType))
+            if (false == _entityClassTypes.TryGetValue(viewName, out Type viewType))
             {
                 Debugger.Warn("Could not found any correct view class with target name '{%s}', found view failed.", viewName);
                 return null;
@@ -356,7 +361,7 @@ namespace GameEngine
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
         public T FindUI<T>() where T : CView
         {
-            SystemType viewType = typeof(T);
+            Type viewType = typeof(T);
             if (false == _entityClassTypes.Values.Contains(viewType))
             {
                 Debugger.Error("Could not found any correct view class with target type '{%t}', found view failed.", viewType);
@@ -371,7 +376,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
-        public CView FindUI(SystemType viewType)
+        public CView FindUI(Type viewType)
         {
             foreach (CView view in _views)
             {
@@ -397,7 +402,7 @@ namespace GameEngine
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
         public async UniTask<T> FindUIAsync<T>() where T : CView
         {
-            SystemType viewType = typeof(T);
+            Type viewType = typeof(T);
             if (false == _entityClassTypes.Values.Contains(viewType))
             {
                 Debugger.Error("Could not found any correct view class with target type '{%t}', found view failed.", viewType);
@@ -412,7 +417,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
-        public async UniTask<CView> FindUIAsync(SystemType viewType)
+        public async UniTask<CView> FindUIAsync(Type viewType)
         {
             foreach (CView view in _views)
             {
@@ -450,6 +455,9 @@ namespace GameEngine
 
                 // 销毁视图对象
                 CallEntityDestroyProcess(view);
+
+                // 清除用户数据
+                view.UserData = null;
 
                 // 关闭视图实例
                 view.__Close();
@@ -505,10 +513,10 @@ namespace GameEngine
         /// 若存在相同名称的多个视图对象实例，则一同移除
         /// </summary>
         /// <param name="viewName">视图名称</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void CloseUI(string viewName)
         {
-            SystemType viewType;
-            if (false == _entityClassTypes.TryGetValue(viewName, out viewType))
+            if (false == _entityClassTypes.TryGetValue(viewName, out Type viewType))
             {
                 Debugger.Warn("Could not found any correct view class with target name '{%s}', closed view failed.", viewName);
                 return;
@@ -522,9 +530,10 @@ namespace GameEngine
         /// 若存在相同类型的多个视图对象实例，则一同移除
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void CloseUI<T>() where T : CView
         {
-            SystemType viewType = typeof(T);
+            Type viewType = typeof(T);
 
             CloseUI(viewType);
         }
@@ -534,7 +543,7 @@ namespace GameEngine
         /// 若存在相同类型的多个视图对象实例，则一同移除
         /// </summary>
         /// <param name="viewType">视图类型</param>
-        public void CloseUI(SystemType viewType)
+        public void CloseUI(Type viewType)
         {
             foreach (CView view in NovaEngine.Utility.Collection.Reverse<CView>(_views))
             {
@@ -599,9 +608,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回对应视图的名称，若视图不存在则返回null</returns>
-        internal string GetViewNameForType(SystemType viewType)
+        internal string GetViewNameForType(Type viewType)
         {
-            foreach (KeyValuePair<string, SystemType> pair in _entityClassTypes)
+            foreach (KeyValuePair<string, Type> pair in _entityClassTypes)
             {
                 if (pair.Value == viewType)
                 {
@@ -627,7 +636,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回给定类型的全部实例</returns>
-        internal IList<CView> FindAllViewsByType(SystemType viewType)
+        internal IList<CView> FindAllViewsByType(Type viewType)
         {
             IList<CView> result = new List<CView>();
             IEnumerator<CView> e = _views.GetEnumerator();
@@ -666,7 +675,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="classType">管理器类型</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void RegisterFormManager(SystemType classType)
+        public void RegisterFormManager(Type classType)
         {
             FormMaster.RegisterFormManager(classType);
         }

@@ -23,10 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -185,7 +184,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>返回基础对象实例列表，若检索失败则返回null</returns>
-        public static IList<CObject> GetObject(SystemType objectType)
+        public static IList<CObject> GetObject(Type objectType)
         {
             return ObjectHandler.Instance.GetObject(objectType);
         }
@@ -203,30 +202,33 @@ namespace GameEngine
         /// 通过指定的对象名称动态创建一个对应的基础对象实例
         /// </summary>
         /// <param name="objectName">对象名称</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public static CObject CreateObject(string objectName)
+        public static CObject CreateObject(string objectName, object userData = null)
         {
-            return ObjectHandler.Instance.CreateObject(objectName);
+            return ObjectHandler.Instance.CreateObject(objectName, userData);
         }
 
         /// <summary>
         /// 通过指定的对象类型动态创建一个对应的基础对象实例
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public static T CreateObject<T>() where T : CObject
+        public static T CreateObject<T>(object userData = null) where T : CObject
         {
-            return ObjectHandler.Instance.CreateObject<T>();
+            return ObjectHandler.Instance.CreateObject<T>(userData);
         }
 
         /// <summary>
         /// 通过指定的对象类型动态创建一个对应的基础对象实例
         /// </summary>
         /// <param name="objectType">对象类型</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public static CObject CreateObject(SystemType objectType)
+        public static CObject CreateObject(Type objectType, object userData = null)
         {
-            return ObjectHandler.Instance.CreateObject(objectType);
+            return ObjectHandler.Instance.CreateObject(objectType, userData);
         }
 
         /// <summary>
@@ -260,7 +262,7 @@ namespace GameEngine
         /// 从当前对象管理容器中销毁指定类型对应的所有基础对象实例
         /// </summary>
         /// <param name="objectType">对象类型</param>
-        public static void DestroyObject(SystemType objectType)
+        public static void DestroyObject(Type objectType)
         {
             ObjectHandler.Instance.DestroyObject(objectType);
         }
@@ -290,57 +292,63 @@ namespace GameEngine
         /// 根据指定的场景名称替换当前的场景实例
         /// </summary>
         /// <param name="sceneName">场景名称</param>
-        public static void ReplaceScene(string sceneName)
+        /// <param name="userData">用户数据</param>
+        public static void ReplaceScene(string sceneName, object userData = null)
         {
-            SceneHandler.Instance.ReplaceScene(sceneName);
+            SceneHandler.Instance.ReplaceScene(sceneName, userData);
         }
 
         /// <summary>
         /// 根据指定的场景类型替换当前的场景实例
         /// </summary>
         /// <typeparam name="T">场景类型</typeparam>
-        public static void ReplaceScene<T>() where T : CScene
+        /// <param name="userData">用户数据</param>
+        public static void ReplaceScene<T>(object userData = null) where T : CScene
         {
-            SceneHandler.Instance.ReplaceScene<T>();
+            SceneHandler.Instance.ReplaceScene<T>(userData);
         }
 
         /// <summary>
         /// 根据指定的场景类型替换当前的场景实例
         /// </summary>
         /// <param name="sceneType">场景类型</param>
-        public static void ReplaceScene(SystemType sceneType)
+        /// <param name="userData">用户数据</param>
+        public static void ReplaceScene(Type sceneType, object userData = null)
         {
-            SceneHandler.Instance.ReplaceScene(sceneType);
+            SceneHandler.Instance.ReplaceScene(sceneType, userData);
         }
 
         /// <summary>
         /// 根据指定的场景名称改变当前的场景实例
         /// </summary>
         /// <param name="sceneName">场景名称</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>返回改变的目标场景实例，若切换场景失败返回null</returns>
-        public static CScene ChangeScene(string sceneName)
+        public static CScene ChangeScene(string sceneName, object userData = null)
         {
-            return SceneHandler.Instance.ChangeScene(sceneName);
+            return SceneHandler.Instance.ChangeScene(sceneName, userData);
         }
 
         /// <summary>
         /// 根据指定的场景类型改变当前的场景实例
         /// </summary>
         /// <typeparam name="T">场景类型</typeparam>
+        /// <param name="userData">用户数据</param>
         /// <returns>返回改变的目标场景实例，若切换场景失败返回null</returns>
-        public static T ChangeScene<T>() where T : CScene
+        public static T ChangeScene<T>(object userData = null) where T : CScene
         {
-            return SceneHandler.Instance.ChangeScene<T>();
+            return SceneHandler.Instance.ChangeScene<T>(userData);
         }
 
         /// <summary>
         /// 根据指定的场景类型改变当前的场景实例
         /// </summary>
         /// <param name="sceneType">场景类型</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>返回改变的目标场景实例，若切换场景失败返回null</returns>
-        public static CScene ChangeScene(SystemType sceneType)
+        public static CScene ChangeScene(Type sceneType, object userData = null)
         {
-            return SceneHandler.Instance.ChangeScene(sceneType);
+            return SceneHandler.Instance.ChangeScene(sceneType, userData);
         }
 
         #endregion
@@ -372,7 +380,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="actorType">对象类型</param>
         /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
-        public static IList<CActor> GetActor(SystemType actorType)
+        public static IList<CActor> GetActor(Type actorType)
         {
             return ActorHandler.Instance.GetActor(actorType);
         }
@@ -390,30 +398,33 @@ namespace GameEngine
         /// 根据指定的角色名称动态创建一个对应的角色对象实例
         /// </summary>
         /// <param name="actorName">角色名称</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public static CActor CreateActor(string actorName)
+        public static CActor CreateActor(string actorName, object userData = null)
         {
-            return ActorHandler.Instance.CreateActor(actorName);
+            return ActorHandler.Instance.CreateActor(actorName, userData);
         }
 
         /// <summary>
         /// 根据指定的角色类型动态创建一个对应的角色对象实例
         /// </summary>
         /// <typeparam name="T">角色类型</typeparam>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public static T CreateActor<T>() where T : CActor
+        public static T CreateActor<T>(object userData = null) where T : CActor
         {
-            return ActorHandler.Instance.CreateActor<T>();
+            return ActorHandler.Instance.CreateActor<T>(userData);
         }
 
         /// <summary>
         /// 根据指定的角色类型动态创建一个对应的角色对象实例
         /// </summary>
         /// <param name="actorType">角色类型</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public static CActor CreateActor(SystemType actorType)
+        public static CActor CreateActor(Type actorType, object userData = null)
         {
-            return ActorHandler.Instance.CreateActor(actorType);
+            return ActorHandler.Instance.CreateActor(actorType, userData);
         }
 
         /// <summary>
@@ -447,7 +458,7 @@ namespace GameEngine
         /// 销毁指定角色类型对应的所有角色对象实例
         /// </summary>
         /// <param name="actorType">角色类型</param>
-        public static void DestroyActor(SystemType actorType)
+        public static void DestroyActor(Type actorType)
         {
             ActorHandler.Instance.DestroyActor(actorType);
         }
@@ -460,30 +471,33 @@ namespace GameEngine
         /// 根据指定的视图名称动态创建一个对应的视图对象实例
         /// </summary>
         /// <param name="viewName">视图名称</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public static async UniTask<CView> OpenUI(string viewName)
+        public static async UniTask<CView> OpenUI(string viewName, object userData = null)
         {
-            return await GuiHandler.Instance.OpenUI(viewName);
+            return await GuiHandler.Instance.OpenUI(viewName, userData);
         }
 
         /// <summary>
         /// 根据指定的视图类型动态创建一个对应的视图对象实例
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public static async UniTask<T> OpenUI<T>() where T : CView
+        public static async UniTask<T> OpenUI<T>(object userData = null) where T : CView
         {
-            return await GuiHandler.Instance.OpenUI<T>();
+            return await GuiHandler.Instance.OpenUI<T>(userData);
         }
 
         /// <summary>
         /// 根据指定的视图类型动态创建一个对应的视图对象实例
         /// </summary>
         /// <param name="viewType">视图类型</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public static async UniTask<CView> OpenUI(SystemType viewType)
+        public static async UniTask<CView> OpenUI(Type viewType, object userData = null)
         {
-            return await GuiHandler.Instance.OpenUI(viewType);
+            return await GuiHandler.Instance.OpenUI(viewType, userData);
         }
 
         /// <summary>
@@ -509,7 +523,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>若视图处于打开状态则返回true，否则返回false</returns>
-        public static bool HasUI(SystemType viewType)
+        public static bool HasUI(Type viewType)
         {
             return GuiHandler.Instance.HasUI(viewType);
         }
@@ -539,7 +553,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
-        public static CView FindUI(SystemType viewType)
+        public static CView FindUI(Type viewType)
         {
             return GuiHandler.Instance.FindUI(viewType);
         }
@@ -559,7 +573,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
-        public static async UniTask<CView> FindUIAsync(SystemType viewType)
+        public static async UniTask<CView> FindUIAsync(Type viewType)
         {
             return await GuiHandler.Instance.FindUIAsync(viewType);
         }
@@ -595,7 +609,7 @@ namespace GameEngine
         /// 关闭指定的视图类型对应的视图对象实例
         /// </summary>
         /// <param name="viewType">视图类型</param>
-        public static void CloseUI(SystemType viewType)
+        public static void CloseUI(Type viewType)
         {
             GuiHandler.Instance.CloseUI(viewType);
         }

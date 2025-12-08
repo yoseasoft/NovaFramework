@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+
 namespace NovaEngine
 {
     /// <summary>
@@ -37,7 +39,7 @@ namespace NovaEngine
         /// <param name="value">变量值</param>
         public static void SetBool(string key, bool value)
         {
-            SetValue(key, System.Convert.ToString(value));
+            SetValue(key, Convert.ToString(value));
         }
 
         /// <summary>
@@ -60,7 +62,7 @@ namespace NovaEngine
         /// <param name="value">变量值</param>
         public static void SetInt(string key, int value)
         {
-            SetValue(key, System.Convert.ToString(value));
+            SetValue(key, Convert.ToString(value));
         }
 
         /// <summary>
@@ -83,7 +85,7 @@ namespace NovaEngine
         /// <param name="value">变量值</param>
         public static void SetLong(string key, long value)
         {
-            SetValue(key, System.Convert.ToString(value));
+            SetValue(key, Convert.ToString(value));
         }
 
         /// <summary>
@@ -106,7 +108,7 @@ namespace NovaEngine
         /// <param name="value">变量值</param>
         public static void SetFloat(string key, float value)
         {
-            SetValue(key, System.Convert.ToString(value));
+            SetValue(key, Convert.ToString(value));
         }
 
         /// <summary>
@@ -127,9 +129,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="key">配置键</param>
         /// <param name="value">变量值</param>
-        public static void SetDateTime(string key, System.DateTime dateTime)
+        public static void SetDateTime(string key, DateTime dateTime)
         {
-            SetValue(key, System.Convert.ToString(dateTime));
+            SetValue(key, Convert.ToString(dateTime));
         }
 
         /// <summary>
@@ -137,12 +139,12 @@ namespace NovaEngine
         /// </summary>
         /// <param name="key">配置键</param>
         /// <returns>返回变量值</returns>
-        public static System.DateTime GetDateTime(string key)
+        public static DateTime GetDateTime(string key)
         {
             string value = GetValue(key);
 
-            if (null == value) return System.DateTime.MinValue;
-            return Utility.Convertion.StringToDateTime(value, System.DateTime.MinValue);
+            if (null == value) return DateTime.MinValue;
+            return Utility.Convertion.StringToDateTime(value, DateTime.MinValue);
         }
     }
 }

@@ -23,9 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
@@ -38,7 +38,7 @@ namespace GameEngine
         /// <summary>
         /// 基础对象类型映射注册管理容器
         /// </summary>
-        private readonly IDictionary<string, SystemType> _objectClassTypes;
+        private readonly IDictionary<string, Type> _objectClassTypes;
         /// <summary>
         /// 对象优先级映射注册管理容器
         /// </summary>
@@ -68,7 +68,7 @@ namespace GameEngine
         public ObjectHandler()
         {
             // 初始化对象类注册容器
-            _objectClassTypes = new Dictionary<string, SystemType>();
+            _objectClassTypes = new Dictionary<string, Type>();
             _objectPriorities = new Dictionary<string, int>();
             _objects = new List<CObject>();
             // 对象执行列表初始化
@@ -156,7 +156,7 @@ namespace GameEngine
         {
         }
 
-        #region 对象类注册/注销接口函数
+        #region 基础对象类型注册绑定相关的接口函数
 
         /// <summary>
         /// 注册指定的对象名称及对应的对象类到当前的句柄管理容器中
@@ -166,19 +166,19 @@ namespace GameEngine
         /// <param name="clsType">对象类型</param>
         /// <param name="priority">优先级</param>
         /// <returns>若对象类型注册成功则返回true，否则返回false</returns>
-        private bool RegisterObjectClass(string objectName, SystemType clsType, int priority)
+        private bool RegisterObjectClass(string objectName, Type clsType, int priority)
         {
             Debugger.Assert(false == string.IsNullOrEmpty(objectName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
 
             if (false == typeof(CObject).IsAssignableFrom(clsType))
             {
-                Debugger.Warn("The register type {0} must be inherited from 'CObject'.", clsType.Name);
+                Debugger.Warn("The register type {%t} must be inherited from 'CObject'.", clsType);
                 return false;
             }
 
             if (_objectClassTypes.ContainsKey(objectName))
             {
-                Debugger.Warn("The object name {0} was already registed, repeat add will be override old name.", objectName);
+                Debugger.Warn("The object name {%s} was already registered, repeat add will be override old name.", objectName);
                 _objectClassTypes.Remove(objectName);
             }
 
@@ -202,17 +202,17 @@ namespace GameEngine
 
         #endregion
 
-        #region 基础对象实例访问操作函数合集
+        #region 基础对象实例创建/销毁管理相关的操作函数合集
 
         /// <summary>
         /// 通过指定的对象名称从实例容器中获取对应的基础对象实例列表
         /// </summary>
         /// <param name="objectName">对象名称</param>
         /// <returns>返回基础对象实例列表，若检索失败则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IList<CObject> GetObject(string objectName)
         {
-            SystemType objectType = null;
-            if (_objectClassTypes.TryGetValue(objectName, out objectType))
+            if (_objectClassTypes.TryGetValue(objectName, out Type objectType))
             {
                 return GetObject(objectType);
             }
@@ -225,9 +225,10 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <returns>返回基础对象实例列表，若检索失败则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IList<T> GetObject<T>() where T : CObject
         {
-            SystemType objectType = typeof(T);
+            Type objectType = typeof(T);
 
             return NovaEngine.Utility.Collection.CastAndToList<CObject, T>(GetObject(objectType));
         }
@@ -237,7 +238,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>返回基础对象实例列表，若检索失败则返回null</returns>
-        public IList<CObject> GetObject(SystemType objectType)
+        public IList<CObject> GetObject(Type objectType)
         {
             List<CObject> objects = new List<CObject>();
             for (int n = 0; n < _objects.Count; ++n)
@@ -261,6 +262,7 @@ namespace GameEngine
         /// 获取当前已创建的全部基础对象实例
         /// </summary>
         /// <returns>返回已创建的全部基础对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IList<CObject> GetAllObjects()
         {
             return _objects;
@@ -270,27 +272,30 @@ namespace GameEngine
         /// 通过指定的对象名称动态创建一个对应的基础对象实例
         /// </summary>
         /// <param name="objectName">对象名称</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public CObject CreateObject(string objectName)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public CObject CreateObject(string objectName, object userData = null)
         {
-            SystemType objectType = null;
-            if (false == _objectClassTypes.TryGetValue(objectName, out objectType))
+            if (false == _objectClassTypes.TryGetValue(objectName, out Type objectType))
             {
-                Debugger.Warn("Could not found any correct object class with target name '{0}', created object failed.", objectName);
+                Debugger.Warn("Could not found any correct object class with target name '{%s}', created object failed.", objectName);
                 return null;
             }
 
-            return CreateObject(objectType);
+            return CreateObject(objectType, userData);
         }
 
         /// <summary>
         /// 通过指定的对象类型动态创建一个对应的基础对象实例
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public T CreateObject<T>() where T : CObject
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T CreateObject<T>(object userData = null) where T : CObject
         {
-            SystemType objectType = typeof(T);
+            Type objectType = typeof(T);
 
             return CreateObject(objectType) as T;
         }
@@ -299,13 +304,14 @@ namespace GameEngine
         /// 通过指定的对象类型动态创建一个对应的基础对象实例
         /// </summary>
         /// <param name="objectType">对象类型</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public CObject CreateObject(SystemType objectType)
+        public CObject CreateObject(Type objectType, object userData = null)
         {
             Debugger.Assert(objectType, NovaEngine.ErrorText.InvalidArguments);
             if (false == _objectClassTypes.Values.Contains(objectType))
             {
-                Debugger.Error("Could not found any correct object class with target type '{0}', created object failed.", objectType.FullName);
+                Debugger.Error("Could not found any correct object class with target type '{%t}', created object failed.", objectType);
                 return null;
             }
 
@@ -320,6 +326,9 @@ namespace GameEngine
 
             // 启动对象实例
             Call(obj, obj.Startup, AspectBehaviourType.Startup);
+
+            // 补充用户数据
+            obj.UserData = userData;
 
             // 唤醒实例
             Call(obj, obj.Awake, AspectBehaviourType.Awake);
@@ -350,6 +359,9 @@ namespace GameEngine
             // 销毁实例
             Call(obj, obj.Destroy, AspectBehaviourType.Destroy);
 
+            // 清除用户数据
+            obj.UserData = null;
+
             // 关闭基础对象实例
             Call(obj, obj.Shutdown, AspectBehaviourType.Shutdown);
 
@@ -369,10 +381,10 @@ namespace GameEngine
         /// 从当前对象管理容器中移除指定名称对应的所有基础对象实例
         /// </summary>
         /// <param name="objectName">对象名称</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal void RemoveObject(string objectName)
         {
-            SystemType objectType = null;
-            if (_objectClassTypes.TryGetValue(objectName, out objectType))
+            if (_objectClassTypes.TryGetValue(objectName, out Type objectType))
             {
                 RemoveObject(objectType);
             }
@@ -382,9 +394,10 @@ namespace GameEngine
         /// 从当前对象管理容器中移除指定类型对应的所有基础对象实例
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal void RemoveObject<T>() where T : CObject
         {
-            SystemType objectType = typeof(T);
+            Type objectType = typeof(T);
 
             RemoveObject(objectType);
         }
@@ -393,7 +406,7 @@ namespace GameEngine
         /// 从当前对象管理容器中移除指定类型对应的所有基础对象实例
         /// </summary>
         /// <param name="objectType">对象类型</param>
-        internal void RemoveObject(SystemType objectType)
+        internal void RemoveObject(Type objectType)
         {
             IEnumerable<CObject> objects = NovaEngine.Utility.Collection.Reverse<CObject>(_objects);
             foreach (CObject obj in objects)
@@ -444,10 +457,10 @@ namespace GameEngine
         /// 从当前对象管理容器中销毁指定名称对应的所有基础对象实例
         /// </summary>
         /// <param name="objectName">对象名称</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DestroyObject(string objectName)
         {
-            SystemType objectType = null;
-            if (_objectClassTypes.TryGetValue(objectName, out objectType))
+            if (_objectClassTypes.TryGetValue(objectName, out Type objectType))
             {
                 DestroyObject(objectType);
             }
@@ -457,9 +470,10 @@ namespace GameEngine
         /// 从当前对象管理容器中销毁指定类型对应的所有基础对象实例
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DestroyObject<T>() where T : CObject
         {
-            SystemType objectType = typeof(T);
+            Type objectType = typeof(T);
 
             DestroyObject(objectType);
         }
@@ -468,7 +482,7 @@ namespace GameEngine
         /// 从当前对象管理容器中销毁指定类型对应的所有基础对象实例
         /// </summary>
         /// <param name="objectType">对象类型</param>
-        public void DestroyObject(SystemType objectType)
+        public void DestroyObject(Type objectType)
         {
             IEnumerable<CObject> objects = NovaEngine.Utility.Collection.Reverse<CObject>(_objects);
             foreach (CObject obj in objects)
@@ -523,7 +537,7 @@ namespace GameEngine
 
         #endregion
 
-        #region 基础对象扩展操作函数合集
+        #region 基础对象实例检索查询相关的操作函数合集
 
         /// <summary>
         /// 通过指定的对象类型获取对应对象的名称
@@ -540,9 +554,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>返回对应对象的名称，若对象不存在则返回null</returns>
-        internal string GetObjectNameForType(SystemType objectType)
+        internal string GetObjectNameForType(Type objectType)
         {
-            foreach (KeyValuePair<string, SystemType> pair in _objectClassTypes)
+            foreach (KeyValuePair<string, Type> pair in _objectClassTypes)
             {
                 if (pair.Value == objectType)
                 {
@@ -559,7 +573,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>返回给定类型的全部实例</returns>
-        internal IList<CObject> FindAllObjectsByType(SystemType objectType)
+        internal IList<CObject> FindAllObjectsByType(Type objectType)
         {
             IList<CObject> result = new List<CObject>();
             IEnumerator<CObject> e = _objects.GetEnumerator();

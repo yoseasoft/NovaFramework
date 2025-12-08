@@ -56,7 +56,7 @@ namespace GameEngine
         {
         }
 
-        public CObjectClassAttribute(int priority) : this(string.Empty, priority)
+        public CObjectClassAttribute(int priority) : this(null, priority)
         {
         }
 

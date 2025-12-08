@@ -51,12 +51,12 @@ namespace NovaEngine.Module
         /// <summary>
         /// 输入模块事件类型
         /// </summary>
-        public override int EventType => (int) ModuleEventType.Input;
+        public override sealed int EventType => (int) ModuleEventType.Input;
 
         /// <summary>
         /// 管理器对象初始化接口函数
         /// </summary>
-        protected override void OnInitialize()
+        protected override sealed void OnInitialize()
         {
             Array all_keycodes = Enum.GetValues(typeof(UnityKeyCode));
             IList<UnityKeyCode> keycode_list = new List<UnityKeyCode>();
@@ -77,7 +77,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 管理器对象清理接口函数
         /// </summary>
-        protected override void OnCleanup()
+        protected override sealed void OnCleanup()
         {
             CleanupInputTrace();
 
@@ -87,28 +87,28 @@ namespace NovaEngine.Module
         /// <summary>
         /// 管理器对象初始启动接口
         /// </summary>
-        protected override void OnStartup()
+        protected override sealed void OnStartup()
         {
         }
 
         /// <summary>
         /// 管理器对象结束关闭接口
         /// </summary>
-        protected override void OnShutdown()
+        protected override sealed void OnShutdown()
         {
         }
 
         /// <summary>
         /// 管理器对象垃圾回收调度接口
         /// </summary>
-        protected override void OnDump()
+        protected override sealed void OnDump()
         {
         }
 
         /// <summary>
         /// 交互管理器内部事务更新接口
         /// </summary>
-        protected override void OnUpdate()
+        protected override sealed void OnUpdate()
         {
 #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_EDITOR
             //if (Environment.ON_KEYBOARD_ENABLED)
@@ -237,7 +237,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 交互管理器内部后置更新接口
         /// </summary>
-        protected override void OnLateUpdate()
+        protected override sealed void OnLateUpdate()
         {
             this.RemoveAllInputKeycodes();
         }

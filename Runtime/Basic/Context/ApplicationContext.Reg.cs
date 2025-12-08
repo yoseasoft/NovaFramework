@@ -22,6 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Cysharp.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace GameEngine
         /// 应用程序加载指定的应用配置
         /// </summary>
         /// <param name="mstream">数据流</param>
-        [System.Obsolete()]
+        [Obsolete]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void LoadApplicationConfigure(MemoryStream mstream)
         {
@@ -160,7 +161,7 @@ namespace GameEngine
         /// 应用程序加载指定的实体配置
         /// </summary>
         /// <param name="mstream">数据流</param>
-        [System.Obsolete()]
+        [Obsolete]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void LoadBeanConfigure(MemoryStream mstream)
         {
@@ -266,7 +267,7 @@ namespace GameEngine
         /// 请注意，该接口不建议由用户自定调用，因为这需要充分了解代码加载的流程<br/>
         /// 并在合适的节点进行调度，否则将导致不可预知的问题
         /// </summary>
-        [System.Obsolete]
+        [Obsolete]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnloadAllBeanConfigureInfos()
         {

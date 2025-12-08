@@ -34,7 +34,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 事件参数类型标识
         /// </summary>
-        public override int ID => (int) ModuleObject.ModuleEventType.Timer;
+        public override sealed int ID => (int) ModuleObject.ModuleEventType.Timer;
 
         private int _type;
 
@@ -62,7 +62,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 定时参数对象初始化接口
         /// </summary>
-        public override void Initialize()
+        public override sealed void Initialize()
         {
             _type = 0;
             _session = 0;
@@ -71,7 +71,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 定时参数对象清理接口
         /// </summary>
-        public override void Cleanup()
+        public override sealed void Cleanup()
         {
             _type = 0;
             _session = 0;
@@ -81,7 +81,7 @@ namespace NovaEngine.Module
         /// 定时参数克隆接口
         /// </summary>
         /// <param name="args">模块事件参数对象</param>
-        public override void CopyTo(ModuleEventArgs args)
+        public override sealed void CopyTo(ModuleEventArgs args)
         {
             throw new System.NotImplementedException();
         }

@@ -50,12 +50,12 @@ namespace NovaEngine.Module
         /// <summary>
         /// 场景模块事件类型
         /// </summary>
-        public override int EventType => (int) ModuleEventType.Scene;
+        public override sealed int EventType => (int) ModuleEventType.Scene;
 
         /// <summary>
         /// 管理器对象初始化接口函数
         /// </summary>
-        protected override void OnInitialize()
+        protected override sealed void OnInitialize()
         {
             Logger.Assert(SceneManager.sceneCount > 0, "程序启动初始环境中必须存在至少一个有效的场景实例，当前环境获取场景数据失败！");
             if (SceneManager.sceneCount > 1)
@@ -86,7 +86,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 管理器对象清理接口函数
         /// </summary>
-        protected override void OnCleanup()
+        protected override sealed void OnCleanup()
         {
             // 对象清理时清除掉全部场景
             this.RemoveAllSceneRecordInfos();
@@ -95,21 +95,21 @@ namespace NovaEngine.Module
         /// <summary>
         /// 管理器对象初始启动接口
         /// </summary>
-        protected override void OnStartup()
+        protected override sealed void OnStartup()
         {
         }
 
         /// <summary>
         /// 管理器对象结束关闭接口
         /// </summary>
-        protected override void OnShutdown()
+        protected override sealed void OnShutdown()
         {
         }
 
         /// <summary>
         /// 管理器对象垃圾回收调度接口
         /// </summary>
-        protected override void OnDump()
+        protected override sealed void OnDump()
         {
         }
 
@@ -124,7 +124,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 场景管理器内部事务更新接口
         /// </summary>
-        protected override void OnUpdate()
+        protected override sealed void OnUpdate()
         {
             foreach (KeyValuePair<string, SceneRecordInfo> pair in _sceneRecordInfos)
             {
@@ -137,7 +137,7 @@ namespace NovaEngine.Module
             }
         }
 
-        protected override void OnLateUpdate()
+        protected override sealed void OnLateUpdate()
         {
         }
 

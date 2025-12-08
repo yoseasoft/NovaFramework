@@ -24,11 +24,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using Cysharp.Threading.Tasks;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -46,11 +46,15 @@ namespace GameEngine
         /// <summary>
         /// 当前运行的场景对象类型
         /// </summary>
-        private SystemType _currentSceneType;
+        private Type _currentSceneType;
         /// <summary>
         /// 当前待命的场景对象类型
         /// </summary>
-        private SystemType _waitingSceneType;
+        private Type _waitingSceneType;
+        /// <summary>
+        /// 当前待命的场景上下文数据
+        /// </summary>
+        private object _waitingSceneContext;
 
         /// <summary>
         /// 句柄对象的单例访问获取接口
@@ -100,6 +104,9 @@ namespace GameEngine
                 _currentSceneType = null;
             }
 
+            _waitingSceneType = null;
+            _waitingSceneContext = null;
+
             // 清理场景类型注册列表
             UnregisterAllSceneClasses();
 
@@ -139,7 +146,7 @@ namespace GameEngine
             {
                 lock (_lock)
                 {
-                    ChangeScene(_waitingSceneType);
+                    ChangeScene(_waitingSceneType, _waitingSceneContext);
                 }
             }
 
@@ -187,12 +194,13 @@ namespace GameEngine
         /// 若在此之前多次进行替换操作，将只保留最后一次作为最终的场景
         /// </summary>
         /// <param name="sceneName">场景名称</param>
-        public void ReplaceScene(string sceneName)
+        /// <param name="userData">用户数据</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void ReplaceScene(string sceneName, object userData = null)
         {
-            SystemType sceneType;
-            if (_entityClassTypes.TryGetValue(sceneName, out sceneType))
+            if (_entityClassTypes.TryGetValue(sceneName, out Type sceneType))
             {
-                ReplaceScene(sceneType);
+                ReplaceScene(sceneType, userData);
             }
         }
 
@@ -202,10 +210,12 @@ namespace GameEngine
         /// 若在此之前多次进行替换操作，将只保留最后一次作为最终的场景
         /// </summary>
         /// <typeparam name="T">场景类型</typeparam>
-        public void ReplaceScene<T>() where T : CScene
+        /// <param name="userData">用户数据</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void ReplaceScene<T>(object userData = null) where T : CScene
         {
-            SystemType sceneType = typeof(T);
-            ReplaceScene(sceneType);
+            Type sceneType = typeof(T);
+            ReplaceScene(sceneType, userData);
         }
 
         /// <summary>
@@ -214,7 +224,8 @@ namespace GameEngine
         /// 若在此之前多次进行替换操作，将只保留最后一次作为最终的场景
         /// </summary>
         /// <param name="sceneType">场景类型</param>
-        public void ReplaceScene(SystemType sceneType)
+        /// <param name="userData">用户数据</param>
+        public void ReplaceScene(Type sceneType, object userData = null)
         {
             Debugger.Assert(sceneType, NovaEngine.ErrorText.InvalidArguments);
             if (sceneType == _currentSceneType)
@@ -236,6 +247,7 @@ namespace GameEngine
             }
 
             _waitingSceneType = sceneType;
+            _waitingSceneContext = userData;
         }
 
         /// <summary>
@@ -243,7 +255,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="sceneType">场景类型</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        private CScene CreateScene(SystemType sceneType)
+        private CScene CreateScene(Type sceneType)
         {
             if (false == _entityClassTypes.Values.Contains(sceneType))
             {
@@ -258,13 +270,14 @@ namespace GameEngine
         /// 将当前场景切换到指定名称的场景实例
         /// </summary>
         /// <param name="sceneName">场景名称</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>返回改变的目标场景实例，若切换场景失败返回null</returns>
-        public CScene ChangeScene(string sceneName)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public CScene ChangeScene(string sceneName, object userData = null)
         {
-            SystemType sceneType;
-            if (_entityClassTypes.TryGetValue(sceneName, out sceneType))
+            if (_entityClassTypes.TryGetValue(sceneName, out Type sceneType))
             {
-                return ChangeScene(sceneType);
+                return ChangeScene(sceneType, userData);
             }
 
             return null;
@@ -274,19 +287,22 @@ namespace GameEngine
         /// 将当前场景切换到指定类型的场景实例
         /// </summary>
         /// <typeparam name="T">场景类型</typeparam>
+        /// <param name="userData">用户数据</param>
         /// <returns>返回改变的目标场景实例，若切换场景失败返回null</returns>
-        public T ChangeScene<T>() where T : CScene
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T ChangeScene<T>(object userData = null) where T : CScene
         {
-            SystemType sceneType = typeof(T);
-            return ChangeScene(sceneType) as T;
+            Type sceneType = typeof(T);
+            return ChangeScene(sceneType, userData) as T;
         }
 
         /// <summary>
         /// 将当前场景切换到指定类型的场景实例
         /// </summary>
         /// <param name="sceneType">场景类型</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>返回改变的目标场景实例，若切换场景失败返回null</returns>
-        public CScene ChangeScene(SystemType sceneType)
+        public CScene ChangeScene(Type sceneType, object userData = null)
         {
             CScene scene = GetCurrentScene();
             if (null != scene)
@@ -299,8 +315,16 @@ namespace GameEngine
 
                 _Profiler.CallStat(Profiler.Statistics.StatCode.SceneExit, scene);
 
+                // 销毁场景对象实例
                 CallEntityDestroyProcess(scene);
+
+                // 清除用户数据
+                scene.UserData = null;
+
+                // 关闭场景对象实例
                 Call(scene, scene.Shutdown, AspectBehaviourType.Shutdown);
+
+                // 移除实例
                 RemoveEntity(scene);
 
                 // 回收场景实例
@@ -323,6 +347,11 @@ namespace GameEngine
             // 设置当前场景后再启动场景
             Call(scene, scene.Startup, AspectBehaviourType.Startup);
 
+            // 补充用户数据
+            scene.UserData = _waitingSceneContext;
+            // 使用完成后将上下文数据清除
+            _waitingSceneContext = null;
+
             // 唤醒场景对象实例
             CallEntityAwakeProcess(scene);
 
@@ -337,7 +366,7 @@ namespace GameEngine
         /// <param name="assetName">场景资源名称</param>
         /// <param name="url">场景资源路径</param>
         /// <param name="completed">结束回调</param>
-        public GooAsset.Scene LoadSceneAsset(string assetName, string url, System.Action<GooAsset.Scene> completed = null)
+        public GooAsset.Scene LoadSceneAsset(string assetName, string url, Action<GooAsset.Scene> completed = null)
         {
             return SceneModule.LoadScene(assetName, url, completed);
         }
@@ -379,9 +408,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="sceneType">场景类型</param>
         /// <returns>返回对应场景的名称，若场景不存在则返回null</returns>
-        internal string GetSceneNameForType(SystemType sceneType)
+        internal string GetSceneNameForType(Type sceneType)
         {
-            foreach (KeyValuePair<string, SystemType> pair in _entityClassTypes)
+            foreach (KeyValuePair<string, Type> pair in _entityClassTypes)
             {
                 if (pair.Value == sceneType)
                 {
@@ -392,7 +421,7 @@ namespace GameEngine
             return null;
         }
 
-        #region 场景对象类注册接口函数
+        #region 场景对象类型注册绑定相关的接口函数
 
         /// <summary>
         /// 注册指定的场景名称及对应的对象类到当前的句柄管理容器中
@@ -402,7 +431,7 @@ namespace GameEngine
         /// <param name="clsType">场景类型</param>
         /// <param name="priority">场景优先级</param>
         /// <returns>若场景类型注册成功则返回true，否则返回false</returns>
-        private bool RegisterSceneClass(string sceneName, SystemType clsType, int priority)
+        private bool RegisterSceneClass(string sceneName, Type clsType, int priority)
         {
             Debugger.Assert(false == string.IsNullOrEmpty(sceneName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
 

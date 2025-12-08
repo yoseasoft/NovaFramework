@@ -87,7 +87,7 @@ namespace NovaEngine
         /// <param name="init">会话初始值</param>
         /// <param name="max">会话最大值</param>
         /// <returns>返回自增后的当前会话值标识</returns>
-        public static int NextSession(string name, int init = Session.SESSION_INIT_VALUE, int max = SESSION_MAX_VALUE)
+        public static int NextSession(string name, int init = SESSION_INIT_VALUE, int max = SESSION_MAX_VALUE)
         {
             lock (_locked)
             {
@@ -102,9 +102,9 @@ namespace NovaEngine
         /// <param name="init">会话初始值</param>
         /// <param name="max">会话最大值</param>
         /// <returns>返回自增后的当前会话值标识</returns>
-        public static int UnsafeNextSession(string name, int init = Session.SESSION_INIT_VALUE, int max = SESSION_MAX_VALUE)
+        public static int UnsafeNextSession(string name, int init = SESSION_INIT_VALUE, int max = SESSION_MAX_VALUE)
         {
-            int session = 0;
+            int session;
             if (_sessionNameMappings.ContainsKey(name))
             {
                 session = (int) _sessionNameMappings[name];
@@ -128,7 +128,7 @@ namespace NovaEngine
         /// <param name="init">会话初始值</param>
         /// <param name="max">会话最大值</param>
         /// <returns>返回自增后的当前会话值标识</returns>
-        public static int NextSession(int type, int init = Session.SESSION_INIT_VALUE, int max = SESSION_MAX_VALUE)
+        public static int NextSession(int type, int init = SESSION_INIT_VALUE, int max = SESSION_MAX_VALUE)
         {
             lock (_locked)
             {
@@ -143,9 +143,9 @@ namespace NovaEngine
         /// <param name="init">会话初始值</param>
         /// <param name="max">会话最大值</param>
         /// <returns>返回自增后的当前会话值标识</returns>
-        public static int UnsafeNextSession(int type, int init = Session.SESSION_INIT_VALUE, int max = SESSION_MAX_VALUE)
+        public static int UnsafeNextSession(int type, int init = SESSION_INIT_VALUE, int max = SESSION_MAX_VALUE)
         {
-            int session = 0;
+            int session;
             if (_sessionTypeMappings.ContainsKey(type))
             {
                 session = (int) _sessionTypeMappings[type];

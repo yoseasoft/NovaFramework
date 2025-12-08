@@ -22,11 +22,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 
 using Cysharp.Threading.Tasks;
-
-using SystemType = System.Type;
 
 using UniTaskForMessage = Cysharp.Threading.Tasks.UniTask<object>;
 using UniTaskCompletionSourceForMessage = Cysharp.Threading.Tasks.UniTaskCompletionSource<object>;
@@ -147,10 +146,10 @@ namespace GameEngine
                 Debugger.Warn("Could not found any response code with target message type '{%d}'.", opcode);
 
                 // 如果你想在一个异步UniTask方法中取消行为，请手动抛出OperationCanceledException：
-                throw new System.OperationCanceledException();
+                throw new OperationCanceledException();
             }
 
-            var (failed, result) = await SendAwaitOfTargetResponse(responseCode).TimeoutWithoutException<object>(System.TimeSpan.FromMilliseconds(SOCKET_CONNECTION_RECEIVED_TIME_SPAN_OF_TIMEOUT));
+            var (failed, result) = await SendAwaitOfTargetResponse(responseCode).TimeoutWithoutException<object>(TimeSpan.FromMilliseconds(SOCKET_CONNECTION_RECEIVED_TIME_SPAN_OF_TIMEOUT));
             if (failed)
             {
                 Debugger.Warn("Send target message opcode '{%d}' was timeout, awaited it response failed.", opcode);
@@ -189,7 +188,7 @@ namespace GameEngine
         /// <returns>返回给定类型对应的消息编码结构信息，若不存在则返回null</returns>
         private Loader.Structuring.NetworkMessageCodeInfo GetMessageCodeInfoByType(int opcode)
         {
-            SystemType messageType = NetworkHandler.Instance.GetMessageClassByType(opcode);
+            Type messageType = NetworkHandler.Instance.GetMessageClassByType(opcode);
             if (null == messageType)
             {
                 Debugger.Warn("Could not found any message class with target type '{%d}', getting the code info failed.", opcode);

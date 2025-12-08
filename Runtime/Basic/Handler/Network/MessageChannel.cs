@@ -22,10 +22,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -151,10 +150,10 @@ namespace GameEngine
         /// <returns>返回创建的通道对象实例，若创建失败则返回null</returns>
         public static MessageChannel Create(int channelID, int channelType, string name, string url)
         {
-            SystemType classType = NetworkHandler.Instance.GetMessageChannelTypeByServiceType(channelType);
+            Type classType = NetworkHandler.Instance.GetMessageChannelTypeByServiceType(channelType);
             Debugger.Assert(classType, NovaEngine.ErrorText.InvalidArguments);
 
-            MessageChannel channel = System.Activator.CreateInstance(classType, new object[] { channelID, name, url }) as MessageChannel;
+            MessageChannel channel = Activator.CreateInstance(classType, new object[] { channelID, name, url }) as MessageChannel;
             channel.Initialize();
 
             return channel;

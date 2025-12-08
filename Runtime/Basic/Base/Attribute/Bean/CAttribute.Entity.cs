@@ -30,7 +30,7 @@ namespace GameEngine
     /// 实体类声明属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public abstract class DeclareEntityClassAttribute : Attribute
+    public abstract class CEntityDeclareClassAttribute : Attribute
     {
         /// <summary>
         /// 实体名称
@@ -51,7 +51,7 @@ namespace GameEngine
         /// </summary>
         protected internal int Priority => _priority;
 
-        protected DeclareEntityClassAttribute(string name, int priority) : base()
+        protected CEntityDeclareClassAttribute(string name, int priority) : base()
         {
             _name = name ?? string.Empty;
             _priority = priority;
@@ -62,7 +62,7 @@ namespace GameEngine
     /// 实体自动挂载的目标组件的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
-    public class CEntityAutomaticActivationComponentAttribute : Attribute
+    public class CComponentAutomaticActivationOfEntityAttribute : Attribute
     {
         /// <summary>
         /// 组件引用对象类型
@@ -90,15 +90,15 @@ namespace GameEngine
         /// </summary>
         public AspectBehaviourType ActivationBehaviourType => _activationBehaviourType;
 
-        public CEntityAutomaticActivationComponentAttribute(Type referenceType) : this(referenceType, 0, AspectBehaviourType.Initialize)
+        public CComponentAutomaticActivationOfEntityAttribute(Type referenceType) : this(referenceType, 0, AspectBehaviourType.Initialize)
         {
         }
 
-        public CEntityAutomaticActivationComponentAttribute(Type referenceType, int priority) : this(referenceType, priority, AspectBehaviourType.Initialize)
+        public CComponentAutomaticActivationOfEntityAttribute(Type referenceType, int priority) : this(referenceType, priority, AspectBehaviourType.Initialize)
         {
         }
 
-        public CEntityAutomaticActivationComponentAttribute(Type referenceType, int priority, AspectBehaviourType activationBehaviourType) : base()
+        public CComponentAutomaticActivationOfEntityAttribute(Type referenceType, int priority, AspectBehaviourType activationBehaviourType) : base()
         {
             _referenceType = referenceType;
             _priority = priority;

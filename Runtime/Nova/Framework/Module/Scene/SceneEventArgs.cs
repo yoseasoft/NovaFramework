@@ -34,7 +34,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 事件参数类型标识
         /// </summary>
-        public override int ID => (int) ModuleObject.ModuleEventType.Scene;
+        public override sealed int ID => (int) ModuleObject.ModuleEventType.Scene;
 
         /// <summary>
         /// 场景协议类型
@@ -68,7 +68,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 场景参数对象初始化接口
         /// </summary>
-        public override void Initialize()
+        public override sealed void Initialize()
         {
             _data = null;
         }
@@ -76,7 +76,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 场景参数对象清理接口
         /// </summary>
-        public override void Cleanup()
+        public override sealed void Cleanup()
         {
             _data = null;
         }
@@ -85,7 +85,7 @@ namespace NovaEngine.Module
         /// 场景参数克隆接口
         /// </summary>
         /// <param name="args">模块事件参数对象</param>
-        public override void CopyTo(ModuleEventArgs args)
+        public override sealed void CopyTo(ModuleEventArgs args)
         {
             throw new System.NotImplementedException();
         }

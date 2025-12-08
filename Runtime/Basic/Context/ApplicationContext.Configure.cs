@@ -25,6 +25,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Xml;
 using System.Customize.Extension;
 using Cysharp.Threading.Tasks;
@@ -202,7 +203,7 @@ namespace GameEngine
                 if (text.IsNullOrEmpty())
                     return false;
 
-                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(text);
+                byte[] buffer = Encoding.UTF8.GetBytes(text);
                 ms.Write(buffer, 0, buffer.Length);
                 ms.Seek(0, SeekOrigin.Begin);
 
@@ -234,7 +235,7 @@ namespace GameEngine
                 if (text.IsNullOrEmpty())
                     return false;
 
-                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(text);
+                byte[] buffer = Encoding.UTF8.GetBytes(text);
                 ms.Write(buffer, 0, buffer.Length);
                 ms.Seek(0, SeekOrigin.Begin);
 

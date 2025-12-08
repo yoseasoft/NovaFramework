@@ -34,7 +34,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 事件参数类型标识
         /// </summary>
-        public override int ID => (int) ModuleObject.ModuleEventType.Network;
+        public override sealed int ID => (int) ModuleObject.ModuleEventType.Network;
 
         /// <summary>
         /// 网络基础指令协议类型
@@ -79,7 +79,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 事件参数对象初始化接口
         /// </summary>
-        public override void Initialize()
+        public override sealed void Initialize()
         {
             _type = 0;
             _channelID = 0;
@@ -89,7 +89,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 事件参数对象清理接口
         /// </summary>
-        public override void Cleanup()
+        public override sealed void Cleanup()
         {
             _type = 0;
             _channelID = 0;
@@ -100,7 +100,7 @@ namespace NovaEngine.Module
         /// 事件参数克隆接口
         /// </summary>
         /// <param name="args">模块事件参数对象</param>
-        public override void CopyTo(ModuleEventArgs args)
+        public override sealed void CopyTo(ModuleEventArgs args)
         {
             throw new System.NotImplementedException();
         }

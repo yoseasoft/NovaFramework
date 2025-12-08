@@ -24,10 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -43,30 +42,30 @@ namespace GameEngine
         /// <summary>
         /// 事件回调绑定的事件数据类型
         /// </summary>
-        private readonly SystemType _eventDataType;
+        private readonly Type _eventDataType;
 
         public int EventID => _eventID;
-        public SystemType EventDataType => _eventDataType;
+        public Type EventDataType => _eventDataType;
 
         #region 为静态回调函数构建委托句柄的构造函数
 
-        public EventCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int eventID)
+        public EventCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, int eventID)
             : this(fullname, targetType, methodInfo, eventID, false)
         { }
 
-        public EventCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int eventID, bool automatically)
+        public EventCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, int eventID, bool automatically)
             : this(fullname, targetType, methodInfo, eventID, null, automatically)
         { }
 
-        public EventCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType eventDataType)
+        public EventCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, Type eventDataType)
             : this(fullname, targetType, methodInfo, eventDataType, false)
         { }
 
-        public EventCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType eventDataType, bool automatically)
+        public EventCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, Type eventDataType, bool automatically)
             : this(fullname, targetType, methodInfo, 0, eventDataType, automatically)
         { }
 
-        private EventCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int eventID, SystemType eventDataType, bool automatically)
+        private EventCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, int eventID, Type eventDataType, bool automatically)
             : base(fullname, targetType, methodInfo, automatically)
         {
             _eventID = eventID;
@@ -77,23 +76,23 @@ namespace GameEngine
 
         #region 为普通回调函数构建委托句柄的构造函数
 
-        public EventCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int eventID)
+        public EventCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, int eventID)
             : this(targetObject, fullname, targetType, methodInfo, eventID, false)
         { }
 
-        public EventCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int eventID, bool automatically)
+        public EventCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, int eventID, bool automatically)
             : this(targetObject, fullname, targetType, methodInfo, eventID, null, automatically)
         { }
 
-        public EventCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, SystemType eventDataType)
+        public EventCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, Type eventDataType)
             : this(targetObject, fullname, targetType, methodInfo, eventDataType, false)
         { }
 
-        public EventCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, SystemType eventDataType, bool automatically)
+        public EventCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, Type eventDataType, bool automatically)
             : this(targetObject, fullname, targetType, methodInfo, 0, eventDataType, automatically)
         { }
 
-        private EventCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int eventID, SystemType eventDataType, bool automatically)
+        private EventCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, int eventID, Type eventDataType, bool automatically)
             : base(targetObject, fullname, targetType, methodInfo, automatically)
         {
             _eventID = eventID;

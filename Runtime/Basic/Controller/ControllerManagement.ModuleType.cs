@@ -25,9 +25,7 @@
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 控制器的管理对象类，负责对所有的控制器对象实例进行统一的调度管理
-    /// </summary>
+    /// 控制器的管理对象类
     public static partial class ControllerManagement
     {
         /// <summary>

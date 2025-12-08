@@ -48,7 +48,7 @@ namespace GameEngine
         /// <summary>
         /// 实体对象的用户数据
         /// </summary>
-        private object _userdata;
+        private object _userData;
 
         /// <summary>
         /// 实体对象的符号标记
@@ -62,7 +62,7 @@ namespace GameEngine
         /// <summary>
         /// 获取或设置实体对象的名称
         /// </summary>
-        public string BeanName { get { return _beanName; } internal set { _beanName = value; } }
+        public string BeanName { get { return _beanName; } protected internal set { _beanName = value; } }
         /// <summary>
         /// 获取或设置实体对象的类型
         /// </summary>
@@ -70,7 +70,7 @@ namespace GameEngine
         /// <summary>
         /// 获取或设置实体对象的用户数据
         /// </summary>
-        public object Userdata { get { return _userdata; } protected set { _userdata = value; } }
+        public object UserData { get { return _userData; } protected internal set { _userData = value; } }
 
         /// <summary>
         /// 获取实体对象对应的符号对象实例
@@ -114,7 +114,9 @@ namespace GameEngine
             _beanId = 0;
             _beanName = null;
             // _beanType = null;
-            _userdata = null;
+            _userData = null;
+
+            _symbol = null;
         }
 
         /// <summary>

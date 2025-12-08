@@ -55,7 +55,7 @@ namespace GameEngine
         {
         }
 
-        public CComponentClassAttribute(int priority) : this(string.Empty, priority)
+        public CComponentClassAttribute(int priority) : this(null, priority)
         {
         }
 

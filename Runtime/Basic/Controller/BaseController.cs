@@ -23,11 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-
-using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
 
 namespace GameEngine
 {
@@ -39,7 +37,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器子模块行为流程回调的缓存队列
         /// </summary>
-        private IDictionary<SystemType, SystemDelegate> _cachedSubmoduleBehaviourCallbacks = null;
+        private IDictionary<Type, Delegate> _cachedSubmoduleBehaviourCallbacks = null;
 
         /// <summary>
         /// 控制器对象初始化通知接口函数
@@ -47,7 +45,7 @@ namespace GameEngine
         protected override sealed void Initialize()
         {
             // 初始化子模块行为流程缓存队列
-            _cachedSubmoduleBehaviourCallbacks = new Dictionary<SystemType, SystemDelegate>();
+            _cachedSubmoduleBehaviourCallbacks = new Dictionary<Type, Delegate>();
 
             OnInitialize();
 
@@ -203,19 +201,17 @@ namespace GameEngine
         /// </summary>
         /// <param name="attrType">属性类型</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void OnSubmoduleActionCallbackOfTargetAttribute(SystemType attrType)
+        private void OnSubmoduleActionCallbackOfTargetAttribute(Type attrType)
         {
-            SystemDelegate callback;
-            if (TryGetSubmoduleBehaviourCallback(attrType, out callback))
+            if (TryGetSubmoduleBehaviourCallback(attrType, out Delegate callback))
             {
                 callback.DynamicInvoke();
             }
         }
 
-        private bool TryGetSubmoduleBehaviourCallback(SystemType targetType, out SystemDelegate callback)
+        private bool TryGetSubmoduleBehaviourCallback(Type targetType, out Delegate callback)
         {
-            SystemDelegate handler;
-            if (_cachedSubmoduleBehaviourCallbacks.TryGetValue(targetType, out handler))
+            if (_cachedSubmoduleBehaviourCallbacks.TryGetValue(targetType, out Delegate handler))
             {
                 callback = handler;
                 return null != callback;

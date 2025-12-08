@@ -24,10 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -43,30 +42,30 @@ namespace GameEngine
         /// <summary>
         /// 消息回调绑定的协议对象类型
         /// </summary>
-        private readonly SystemType _messageType;
+        private readonly Type _messageType;
 
         public int Opcode => _opcode;
-        public SystemType MessageType => _messageType;
+        public Type MessageType => _messageType;
 
         #region 为静态回调函数构建委托句柄的构造函数
 
-        public MessageCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int opcode)
+        public MessageCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, int opcode)
             : this(fullname, targetType, methodInfo, opcode, false)
         { }
 
-        public MessageCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int opcode, bool automatically)
+        public MessageCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, int opcode, bool automatically)
             : this(fullname, targetType, methodInfo, opcode, null, automatically)
         { }
 
-        public MessageCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType messageType)
+        public MessageCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, Type messageType)
             : this(fullname, targetType, methodInfo, messageType, false)
         { }
 
-        public MessageCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType messageType, bool automatically)
+        public MessageCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, Type messageType, bool automatically)
             : this(fullname, targetType, methodInfo, 0, messageType, automatically)
         { }
 
-        private MessageCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int opcode, SystemType messageType, bool automatically)
+        private MessageCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, int opcode, Type messageType, bool automatically)
             : base(fullname, targetType, methodInfo, automatically)
         {
             _opcode = opcode;
@@ -77,23 +76,23 @@ namespace GameEngine
 
         #region 为普通回调函数构建委托句柄的构造函数
 
-        public MessageCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int opcode)
+        public MessageCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, int opcode)
             : this(targetObject, fullname, targetType, methodInfo, opcode, false)
         { }
 
-        public MessageCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int opcode, bool automatically)
+        public MessageCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, int opcode, bool automatically)
             : this(targetObject, fullname, targetType, methodInfo, opcode, null, automatically)
         { }
 
-        public MessageCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, SystemType messageType)
+        public MessageCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, Type messageType)
             : this(targetObject, fullname, targetType, methodInfo, messageType, false)
         { }
 
-        public MessageCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, SystemType messageType, bool automatically)
+        public MessageCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, Type messageType, bool automatically)
             : this(targetObject, fullname, targetType, methodInfo, 0, messageType, automatically)
         { }
 
-        private MessageCallMethodInfo(IBean targetObject, string fullname, SystemType targetType, MethodInfo methodInfo, int opcode, SystemType messageType, bool automatically)
+        private MessageCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, int opcode, Type messageType, bool automatically)
             : base(targetObject, fullname, targetType, methodInfo, automatically)
         {
             _opcode = opcode;

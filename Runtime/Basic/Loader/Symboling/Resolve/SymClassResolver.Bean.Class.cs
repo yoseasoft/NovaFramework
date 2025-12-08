@@ -60,11 +60,11 @@ namespace GameEngine.Loader.Symboling
             {
                 SystemAttribute attr = classTypeAttrs[n];
                 SystemType attrType = attr.GetType();
-                if (typeof(CEntityAutomaticActivationComponentAttribute) == attrType)
+                if (typeof(CComponentAutomaticActivationOfEntityAttribute) == attrType)
                 {
                     Debugger.Assert(typeof(CEntity).IsAssignableFrom(symClass.ClassType), "Invalid symbol class type '{0}'.", symClass.FullName);
 
-                    CEntityAutomaticActivationComponentAttribute _attr = (CEntityAutomaticActivationComponentAttribute) attr;
+                    CComponentAutomaticActivationOfEntityAttribute _attr = (CComponentAutomaticActivationOfEntityAttribute) attr;
 
                     if (null == _attr.ReferenceType)
                     {

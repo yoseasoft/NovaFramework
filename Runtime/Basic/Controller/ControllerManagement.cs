@@ -23,11 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemEnum = System.Enum;
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -44,7 +42,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器对象类的类型映射管理容器
         /// </summary>
-        private static IDictionary<int, SystemType> _controllerClassTypes;
+        private static IDictionary<int, Type> _controllerClassTypes;
         /// <summary>
         /// 控制器对象实例的映射管理容器
         /// </summary>
@@ -67,12 +65,12 @@ namespace GameEngine
             string namespaceTag = typeof(ControllerManagement).Namespace;
 
             // 管理容器初始化
-            _controllerClassTypes = new Dictionary<int, SystemType>();
+            _controllerClassTypes = new Dictionary<int, Type>();
             _controllerObjects = new Dictionary<int, IController>();
             _controllerCreateCallbacks = new Dictionary<int, NovaEngine.ISingleton.SingletonCreateHandler>();
             _controllerDestroyCallbacks = new Dictionary<int, NovaEngine.ISingleton.SingletonDestroyHandler>();
 
-            foreach (string enumName in SystemEnum.GetNames(typeof(ModuleType)))
+            foreach (string enumName in Enum.GetNames(typeof(ModuleType)))
             {
                 if (enumName.Equals(ModuleType.Unknown.ToString()))
                 {
@@ -82,7 +80,7 @@ namespace GameEngine
                 // 类名反射时需要包含命名空间前缀
                 string controllerName = NovaEngine.Utility.Text.Format("{%s}.{%s}{%s}", namespaceTag, enumName, ControllerClassUnifiedStandardName);
 
-                SystemType controllerType = SystemType.GetType(controllerName);
+                Type controllerType = Type.GetType(controllerName);
                 if (null == controllerType)
                 {
                     Debugger.Info("Could not found any controller class with target name {%s}.", controllerName);
@@ -96,8 +94,8 @@ namespace GameEngine
                 }
 
                 int enumType = (int) NovaEngine.Utility.Convertion.GetEnumFromName<ModuleType>(enumName);
-                SystemType singletonType = typeof(NovaEngine.Singleton<>);
-                SystemType controllerGenericType = singletonType.MakeGenericType(new SystemType[] { controllerType });
+                Type singletonType = typeof(NovaEngine.Singleton<>);
+                Type controllerGenericType = singletonType.MakeGenericType(new Type[] { controllerType });
 
                 MethodInfo controllerCreateMethod = controllerGenericType.GetMethod("Create", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
                 MethodInfo controllerDestroyMethod = controllerGenericType.GetMethod("Destroy", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);

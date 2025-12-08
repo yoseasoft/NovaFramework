@@ -24,9 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
+using System.Runtime.CompilerServices;
 
 using UnityGameObject = UnityEngine.GameObject;
 
@@ -138,7 +138,7 @@ namespace GameEngine
         {
         }
 
-        #region 角色类注册/注销接口函数
+        #region 角色对象类型注册绑定相关的接口函数
 
         /// <summary>
         /// 注册指定的角色名称及对应的角色类到当前的句柄管理容器中
@@ -148,7 +148,7 @@ namespace GameEngine
         /// <param name="clsType">对象类型</param>
         /// <param name="priority">对象优先级</param>
         /// <returns>若对象类型注册成功则返回true，否则返回false</returns>
-        private bool RegisterActorClass(string actorName, SystemType clsType, int priority)
+        private bool RegisterActorClass(string actorName, Type clsType, int priority)
         {
             Debugger.Assert(false == string.IsNullOrEmpty(actorName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
 
@@ -179,7 +179,7 @@ namespace GameEngine
 
         #endregion
 
-        #region 角色对象实例访问操作函数合集
+        #region 角色对象实例创建/销毁管理相关的操作函数合集
 
         /// <summary>
         /// 通过指定的角色名称从实例容器中获取对应的角色对象实例列表
@@ -188,8 +188,7 @@ namespace GameEngine
         /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
         public IList<CActor> GetActor(string actorName)
         {
-            SystemType actorType = null;
-            if (_entityClassTypes.TryGetValue(actorName, out actorType))
+            if (_entityClassTypes.TryGetValue(actorName, out Type actorType))
             {
                 return GetActor(actorType);
             }
@@ -204,7 +203,7 @@ namespace GameEngine
         /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
         public IList<T> GetActor<T>() where T : CActor
         {
-            SystemType actorType = typeof(T);
+            Type actorType = typeof(T);
 
             return NovaEngine.Utility.Collection.CastAndToList<CActor, T>(GetActor(actorType));
         }
@@ -214,7 +213,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="actorType">对象类型</param>
         /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
-        public IList<CActor> GetActor(SystemType actorType)
+        public IList<CActor> GetActor(Type actorType)
         {
             List<CActor> actors = new List<CActor>();
             for (int n = 0; n < _actors.Count; ++n)
@@ -238,6 +237,7 @@ namespace GameEngine
         /// 获取当前已创建的全部角色对象实例
         /// </summary>
         /// <returns>返回已创建的全部角色对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IList<CActor> GetAllActors()
         {
             return _actors;
@@ -247,37 +247,41 @@ namespace GameEngine
         /// 通过指定的角色名称动态创建一个对应的角色对象实例
         /// </summary>
         /// <param name="actorName">对象名称</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public CActor CreateActor(string actorName)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public CActor CreateActor(string actorName, object userData = null)
         {
-            SystemType actorType = null;
-            if (false == _entityClassTypes.TryGetValue(actorName, out actorType))
+            if (false == _entityClassTypes.TryGetValue(actorName, out Type actorType))
             {
                 Debugger.Warn("Could not found any correct actor class with target name '{%s}', created actor failed.", actorName);
                 return null;
             }
 
-            return CreateActor(actorType);
+            return CreateActor(actorType, userData);
         }
 
         /// <summary>
         /// 通过指定的角色类型动态创建一个对应的角色对象实例
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public T CreateActor<T>() where T : CActor
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T CreateActor<T>(object userData = null) where T : CActor
         {
-            SystemType actorType = typeof(T);
+            Type actorType = typeof(T);
 
-            return CreateActor(actorType) as T;
+            return CreateActor(actorType, userData) as T;
         }
 
         /// <summary>
         /// 通过指定的角色类型动态创建一个对应的角色对象实例
         /// </summary>
         /// <param name="actorType">对象类型</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public CActor CreateActor(SystemType actorType)
+        public CActor CreateActor(Type actorType, object userData = null)
         {
             Debugger.Assert(actorType, NovaEngine.ErrorText.InvalidArguments);
             if (false == _entityClassTypes.Values.Contains(actorType))
@@ -299,6 +303,9 @@ namespace GameEngine
 
             // 启动对象实例
             Call(obj, obj.Startup, AspectBehaviourType.Startup);
+
+            // 补充用户数据
+            obj.UserData = userData;
 
             // 唤醒对象实例
             CallEntityAwakeProcess(obj);
@@ -325,6 +332,9 @@ namespace GameEngine
             // 销毁角色对象实例
             CallEntityDestroyProcess(actor);
 
+            // 清除用户数据
+            actor.UserData = null;
+
             // 关闭角色对象实例
             Call(actor, actor.Shutdown, AspectBehaviourType.Shutdown);
 
@@ -342,10 +352,10 @@ namespace GameEngine
         /// 从当前角色管理容器中移除指定名称对应的所有角色对象实例
         /// </summary>
         /// <param name="actorName">对象名称</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal void RemoveActor(string actorName)
         {
-            SystemType actorType = null;
-            if (_entityClassTypes.TryGetValue(actorName, out actorType))
+            if (_entityClassTypes.TryGetValue(actorName, out Type actorType))
             {
                 RemoveActor(actorType);
             }
@@ -355,9 +365,10 @@ namespace GameEngine
         /// 从当前角色管理容器中移除指定类型对应的所有角色对象实例
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal void RemoveActor<T>() where T : CActor
         {
-            SystemType actorType = typeof(T);
+            Type actorType = typeof(T);
 
             RemoveActor(actorType);
         }
@@ -366,7 +377,7 @@ namespace GameEngine
         /// 从当前角色管理容器中移除指定类型对应的所有角色对象实例
         /// </summary>
         /// <param name="actorType">对象类型</param>
-        internal void RemoveActor(SystemType actorType)
+        internal void RemoveActor(Type actorType)
         {
             IEnumerable<CActor> actors = NovaEngine.Utility.Collection.Reverse<CActor>(_actors);
             foreach (CActor obj in actors)
@@ -417,10 +428,10 @@ namespace GameEngine
         /// 从当前角色管理容器中销毁指定名称对应的所有角色对象实例
         /// </summary>
         /// <param name="actorName">对象名称</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DestroyActor(string actorName)
         {
-            SystemType actorType = null;
-            if (_entityClassTypes.TryGetValue(actorName, out actorType))
+            if (_entityClassTypes.TryGetValue(actorName, out Type actorType))
             {
                 DestroyActor(actorType);
             }
@@ -430,9 +441,10 @@ namespace GameEngine
         /// 从当前角色管理容器中销毁指定类型对应的所有角色对象实例
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DestroyActor<T>() where T : CActor
         {
-            SystemType actorType = typeof(T);
+            Type actorType = typeof(T);
 
             DestroyActor(actorType);
         }
@@ -441,7 +453,7 @@ namespace GameEngine
         /// 从当前角色管理容器中销毁指定类型对应的所有角色对象实例
         /// </summary>
         /// <param name="actorType">对象类型</param>
-        public void DestroyActor(SystemType actorType)
+        public void DestroyActor(Type actorType)
         {
             IEnumerable<CActor> actors = NovaEngine.Utility.Collection.Reverse<CActor>(_actors);
             foreach (CActor obj in actors)
@@ -466,7 +478,7 @@ namespace GameEngine
 
         #endregion
 
-        #region 角色对象扩展操作函数合集
+        #region 角色对象实例检索查询相关的操作函数合集
 
         /// <summary>
         /// 同步实例化对象
@@ -494,9 +506,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="actorType">对象类型</param>
         /// <returns>返回对应角色的名称，若角色不存在则返回null</returns>
-        internal string GetActorNameForType(SystemType actorType)
+        internal string GetActorNameForType(Type actorType)
         {
-            foreach (KeyValuePair<string, SystemType> pair in _entityClassTypes)
+            foreach (KeyValuePair<string, Type> pair in _entityClassTypes)
             {
                 if (pair.Value == actorType)
                 {
@@ -513,7 +525,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="actorType">对象类型</param>
         /// <returns>返回给定类型的全部实例</returns>
-        internal IList<CActor> FindAllActorsByType(SystemType actorType)
+        internal IList<CActor> FindAllActorsByType(Type actorType)
         {
             IList<CActor> result = new List<CActor>();
             IEnumerator<CActor> e = _actors.GetEnumerator();

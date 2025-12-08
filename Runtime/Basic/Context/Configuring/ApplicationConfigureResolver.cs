@@ -22,13 +22,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Xml;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
 
 namespace GameEngine.Context.Configuring
 {
@@ -59,18 +57,18 @@ namespace GameEngine.Context.Configuring
             // 初始化解析容器
             _applicationConfigureResolveCallbacks = new Dictionary<XmlNodeType, IDictionary<string, OnConfigureObjectLoadingHandler>>();
 
-            SystemType targetType = typeof(ApplicationConfigureResolver);
+            Type targetType = typeof(ApplicationConfigureResolver);
             MethodInfo[] methods = targetType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             for (int n = 0; n < methods.Length; ++n)
             {
                 MethodInfo method = methods[n];
-                SystemAttribute attr = method.GetCustomAttribute(typeof(OnXmlConfigureResolvingCallbackAttribute));
+                Attribute attr = method.GetCustomAttribute(typeof(OnXmlConfigureResolvingCallbackAttribute));
                 if (null != attr)
                 {
                     OnXmlConfigureResolvingCallbackAttribute _attr = (OnXmlConfigureResolvingCallbackAttribute) attr;
 
                     OnConfigureObjectLoadingHandler callback = method.CreateDelegate(typeof(OnConfigureObjectLoadingHandler)) as OnConfigureObjectLoadingHandler;
-                    Debugger.Assert(null != callback, "Invalid configure resolve callback.");
+                    Debugger.Assert(callback, "Invalid configure resolve callback.");
 
                     AddConfigureResolveCallback(_attr.NodeType, _attr.NodeName, callback);
                 }

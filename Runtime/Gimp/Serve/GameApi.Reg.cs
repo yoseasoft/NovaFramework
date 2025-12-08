@@ -22,9 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Runtime.CompilerServices;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -37,7 +36,7 @@ namespace GameEngine
         /// 注册指定类型的热加载模块对象到当前管理句柄中
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
-        [System.Obsolete]
+        [Obsolete]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RegisterHotModule<T>() where T : IHotModule, new()
         {
@@ -48,9 +47,9 @@ namespace GameEngine
         /// 注册指定类型的热加载模块对象到当前管理句柄中
         /// </summary>
         /// <param name="type">对象类型</param>
-        [System.Obsolete]
+        [Obsolete]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void RegisterHotModule(SystemType type)
+        public static void RegisterHotModule(Type type)
         {
             HotModuleManager.RegisterHotModule(type);
         }
@@ -68,7 +67,7 @@ namespace GameEngine
         /// 从当前管理句柄中注销指定类型的热加载模块对象实例
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
-        [System.Obsolete]
+        [Obsolete]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnregisterHotModule<T>() where T : IHotModule
         {
@@ -79,9 +78,9 @@ namespace GameEngine
         /// 从当前管理句柄中注销指定类型的热加载模块对象实例
         /// </summary>
         /// <param name="type">对象类型</param>
-        [System.Obsolete]
+        [Obsolete]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void UnregisterHotModule(SystemType type)
+        public static void UnregisterHotModule(Type type)
         {
             HotModuleManager.UnregisterHotModule(type);
         }
@@ -118,7 +117,7 @@ namespace GameEngine
         /// <param name="classType">对象类型</param>
         /// <returns>若注册解析器对象实例成功则返回true，否则返回false</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool RegisterMessageTranslator(int serviceType, SystemType classType)
+        public static bool RegisterMessageTranslator(int serviceType, Type classType)
         {
             return NetworkHandler.Instance.RegMessageTranslator(serviceType, classType);
         }
@@ -148,7 +147,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="classType">对象类型</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SetMessageProtocolType(SystemType classType)
+        public static void SetMessageProtocolType(Type classType)
         {
             NetworkHandler.Instance.SetMessageProtocolType(classType);
         }
@@ -172,7 +171,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="classType">管理器类型</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void RegisterFormManager(SystemType classType)
+        public static void RegisterFormManager(Type classType)
         {
             GuiHandler.Instance.RegisterFormManager(classType);
         }

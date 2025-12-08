@@ -23,9 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Runtime.CompilerServices;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -53,7 +52,7 @@ namespace GameEngine
         /// <param name="classType">对象类型</param>
         /// <returns>返回对应的对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static CBean GetBean(SystemType classType)
+        public static CBean GetBean(Type classType)
         {
             return InjectController.Instance.GetBean(classType);
         }
@@ -92,7 +91,7 @@ namespace GameEngine
         /// <param name="classType">对象类型</param>
         /// <returns>返回对应的对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static CBean CreateBean(SystemType classType)
+        public static CBean CreateBean(Type classType)
         {
             return InjectController.Instance.CreateBean(classType);
         }

@@ -23,10 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -42,11 +41,11 @@ namespace GameEngine
 
         public ViewNoticeType NoticeType => _noticeType;
 
-        public ViewNoticeCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, ViewNoticeType noticeType)
+        public ViewNoticeCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, ViewNoticeType noticeType)
             : this(fullname, targetType, methodInfo, noticeType, false)
         { }
 
-        public ViewNoticeCallMethodInfo(string fullname, SystemType targetType, MethodInfo methodInfo, ViewNoticeType noticeType, bool automatically)
+        public ViewNoticeCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, ViewNoticeType noticeType, bool automatically)
             : base(fullname, targetType, methodInfo, automatically)
         {
             _noticeType = noticeType;
@@ -60,7 +59,7 @@ namespace GameEngine
         {
             // _callback.DynamicInvoke();
 
-            Debugger.Throw<System.NotImplementedException>();
+            Debugger.Throw<NotImplementedException>();
         }
 
         /// <summary>

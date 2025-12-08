@@ -30,12 +30,12 @@ namespace GameEngine
     /// 角色实现类声明属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class CActorClassAttribute : DeclareEntityClassAttribute
+    public class CActorClassAttribute : CEntityDeclareClassAttribute
     {
         public CActorClassAttribute(string actorName) : this(actorName, 0)
         { }
 
-        public CActorClassAttribute(int priority) : this(string.Empty, priority)
+        public CActorClassAttribute(int priority) : this(null, priority)
         { }
 
         public CActorClassAttribute(string actorName, int priority) : base(actorName, priority)

@@ -27,6 +27,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace NovaEngine
@@ -88,10 +89,10 @@ namespace NovaEngine
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("PROPERTIES={");
-            System.Reflection.FieldInfo[] fields = typeof(Configuration).GetFields();
+            FieldInfo[] fields = typeof(Configuration).GetFields();
             for (int n = 0; n < fields.Length; ++n)
             {
-                System.Reflection.FieldInfo field = fields[n];
+                FieldInfo field = fields[n];
                 sb.AppendFormat("{0}={1},", field.Name, field.GetValue(null));
             }
 

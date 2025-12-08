@@ -115,7 +115,7 @@ namespace GameEngine
         {
             if (false == typeof(IFormManager).IsAssignableFrom(classType))
             {
-                Debugger.Error(LogGroupTag.Module, "The form manager class '{%t}' must be inherited from 'IFormManager' type, registed it failed.", classType);
+                Debugger.Error(LogGroupTag.Module, "The form manager class '{%t}' must be inherited from 'IFormManager' type, registered it failed.", classType);
                 return;
             }
 
