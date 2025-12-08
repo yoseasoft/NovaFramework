@@ -22,20 +22,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
-
 namespace GameEngine
 {
-    /// <summary>
-    /// 原型对象管理类，用于对场景上下文中的所有原型对象提供通用的访问操作接口
-    /// </summary>
+    /// 原型对象管理类
     internal sealed partial class BeanController
     {
         /// <summary>
@@ -47,8 +40,8 @@ namespace GameEngine
         /// <summary>
         /// 原型对象生命周期注册相关函数的属性定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        private class OnBeanLifecycleRegisterAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        private class OnBeanLifecycleRegisterAttribute : Attribute
         {
             /// <summary>
             /// 管理生命周期对象的行为类型
@@ -63,8 +56,8 @@ namespace GameEngine
         /// <summary>
         /// 原型对象生命周期注销相关函数的属性定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        private class OnBeanLifecycleUnregisterAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        private class OnBeanLifecycleUnregisterAttribute : Attribute
         {
             /// <summary>
             /// 管理生命周期对象的行为类型
@@ -79,22 +72,22 @@ namespace GameEngine
         /// <summary>
         /// 原型对象生命周期处理服务接口注册相关函数的属性定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        private class OnBeanLifecycleProcessRegisterOfTargetAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        private class OnBeanLifecycleProcessRegisterOfTargetAttribute : Attribute
         {
             /// <summary>
             /// 匹配生命周期处理服务的目标对象类型
             /// </summary>
-            private readonly SystemType _classType;
+            private readonly Type _classType;
             /// <summary>
             /// 执行生命周期处理服务的行为类型
             /// </summary>
             private readonly AspectBehaviourType _behaviourType;
 
-            public SystemType ClassType => _classType;
+            public Type ClassType => _classType;
             public AspectBehaviourType BehaviourType => _behaviourType;
 
-            public OnBeanLifecycleProcessRegisterOfTargetAttribute(SystemType classType, AspectBehaviourType behaviourType)
+            public OnBeanLifecycleProcessRegisterOfTargetAttribute(Type classType, AspectBehaviourType behaviourType)
             {
                 _classType = classType;
                 _behaviourType = behaviourType;
@@ -104,7 +97,7 @@ namespace GameEngine
         /// <summary>
         /// 原型对象生命周期服务处理句柄列表容器
         /// </summary>
-        private IDictionary<SystemType, IDictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler>> _beanLifecycleProcessingCallbacks = null;
+        private IDictionary<Type, IDictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler>> _beanLifecycleProcessingCallbacks = null;
 
         /// <summary>
         /// 原型对象生命周期注册函数列表容器
@@ -122,28 +115,28 @@ namespace GameEngine
         private void OnBeanLifecycleInitialize()
         {
             // 初始化原型对象生命周期句柄列表容器
-            _beanLifecycleProcessingCallbacks = new Dictionary<SystemType, IDictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler>>();
+            _beanLifecycleProcessingCallbacks = new Dictionary<Type, IDictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler>>();
             // 初始化原型对象生命周期注册函数列表容器
             _beanLifecycleRegisterCallbacks = new Dictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler>();
             // 初始化原型对象生命周期注销函数列表容器
             _beanLifecycleUnregisterCallbacks = new Dictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler>();
 
-            SystemType classType = typeof(BeanController);
+            Type classType = typeof(BeanController);
             MethodInfo[] methods = classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             for (int n = 0; n < methods.Length; ++n)
             {
                 MethodInfo method = methods[n];
-                IEnumerable<SystemAttribute> e = method.GetCustomAttributes();
-                foreach (SystemAttribute attr in e)
+                IEnumerable<Attribute> e = method.GetCustomAttributes();
+                foreach (Attribute attr in e)
                 {
-                    SystemType attrType = attr.GetType();
+                    Type attrType = attr.GetType();
                     if (typeof(OnBeanLifecycleRegisterAttribute) == attrType)
                     {
                         Debugger.Assert(false == method.IsStatic);
 
                         OnBeanLifecycleRegisterAttribute _attr = (OnBeanLifecycleRegisterAttribute) attr;
 
-                        SystemDelegate callback = method.CreateDelegate(typeof(OnBeanLifecycleProcessingHandler), this);
+                        Delegate callback = method.CreateDelegate(typeof(OnBeanLifecycleProcessingHandler), this);
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                         NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(callback, typeof(IBean));
 
@@ -155,7 +148,7 @@ namespace GameEngine
 
                         OnBeanLifecycleUnregisterAttribute _attr = (OnBeanLifecycleUnregisterAttribute) attr;
 
-                        SystemDelegate callback = method.CreateDelegate(typeof(OnBeanLifecycleProcessingHandler), this);
+                        Delegate callback = method.CreateDelegate(typeof(OnBeanLifecycleProcessingHandler), this);
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                         NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(callback, typeof(IBean));
 
@@ -167,7 +160,7 @@ namespace GameEngine
 
                         OnBeanLifecycleProcessRegisterOfTargetAttribute _attr = (OnBeanLifecycleProcessRegisterOfTargetAttribute) attr;
 
-                        SystemDelegate callback = method.CreateDelegate(typeof(OnBeanLifecycleProcessingHandler), this);
+                        Delegate callback = method.CreateDelegate(typeof(OnBeanLifecycleProcessingHandler), this);
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                         NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(callback, _attr.ClassType);
 
@@ -214,7 +207,7 @@ namespace GameEngine
         {
             if (_beanLifecycleRegisterCallbacks.ContainsKey(behaviourType))
             {
-                Debugger.Warn("The bean lifecycle register callback for target behaviour type '{0}' was already exist, repeat added it will be override old value.", behaviourType.ToString());
+                Debugger.Warn("The bean lifecycle register callback for target behaviour type '{%i}' was already exist, repeat added it will be override old value.", behaviourType);
                 _beanLifecycleRegisterCallbacks.Remove(behaviourType);
             }
 
@@ -230,7 +223,7 @@ namespace GameEngine
         {
             if (_beanLifecycleUnregisterCallbacks.ContainsKey(behaviourType))
             {
-                Debugger.Warn("The bean lifecycle unregister callback for target behaviour type '{0}' was already exist, repeat added it will be override old value.", behaviourType.ToString());
+                Debugger.Warn("The bean lifecycle unregister callback for target behaviour type '{%i}' was already exist, repeat added it will be override old value.", behaviourType);
                 _beanLifecycleUnregisterCallbacks.Remove(behaviourType);
             }
 
@@ -246,7 +239,7 @@ namespace GameEngine
         {
             if (false == _beanLifecycleRegisterCallbacks.TryGetValue(behaviourType, out OnBeanLifecycleProcessingHandler callback))
             {
-                Debugger.Error("Could not found any lifecycle notfication callback with target behaviour type '{0}', register bean lifecycle notification failed.", behaviourType.ToString());
+                Debugger.Error("Could not found any lifecycle notfication callback with target behaviour type '{%i}', register bean lifecycle notification failed.", behaviourType);
                 return;
             }
 
@@ -320,11 +313,11 @@ namespace GameEngine
         /// <param name="behaviourType">行为类型</param>
         /// <param name="callback">回调句柄</param>
         /// <returns>若查找回调句柄成功返回true，否则返回false</returns>
-        private bool TryGetBeanLifecycleProcessingCallback(SystemType targetType, AspectBehaviourType behaviourType, out OnBeanLifecycleProcessingHandler callback)
+        private bool TryGetBeanLifecycleProcessingCallback(Type targetType, AspectBehaviourType behaviourType, out OnBeanLifecycleProcessingHandler callback)
         {
             callback = null;
 
-            foreach (KeyValuePair<SystemType, IDictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler>> pair in _beanLifecycleProcessingCallbacks)
+            foreach (KeyValuePair<Type, IDictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler>> pair in _beanLifecycleProcessingCallbacks)
             {
                 if (pair.Key.IsAssignableFrom(targetType))
                 {
@@ -347,7 +340,7 @@ namespace GameEngine
         /// <param name="targetType">对象类型</param>
         /// <param name="behaviourType">行为类型</param>
         /// <param name="callback">回调句柄</param>
-        private void AddBeanLifecycleProcessingCallHandler(SystemType targetType, AspectBehaviourType behaviourType, OnBeanLifecycleProcessingHandler callback)
+        private void AddBeanLifecycleProcessingCallHandler(Type targetType, AspectBehaviourType behaviourType, OnBeanLifecycleProcessingHandler callback)
         {
             IDictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler> dict;
             if (false == _beanLifecycleProcessingCallbacks.TryGetValue(targetType, out dict))

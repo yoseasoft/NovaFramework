@@ -23,10 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Threading;
-
-using SystemAction = System.Action;
 
 namespace GameEngine.HFSM
 {
@@ -41,7 +40,7 @@ namespace GameEngine.HFSM
         private StateMachine _machine;
 
         private IStateSequence _sequencer; // current phase (deactivate or activate)
-        private SystemAction _nextPhase; // switch structure between phases
+        private Action _nextPhase; // switch structure between phases
         private (State from, State to)? _pending; // coalesce a single pending request
         /// <summary>
         /// 用于跟踪上一次过渡请求的临时引用
@@ -146,7 +145,7 @@ namespace GameEngine.HFSM
                     if (null != _nextPhase)
                     {
                         // 激活新的分支
-                        SystemAction f = _nextPhase;
+                        Action f = _nextPhase;
                         _nextPhase = null;
                         f();
                     }

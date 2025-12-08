@@ -23,21 +23,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemRegex = System.Text.RegularExpressions.Regex;
-using SystemRegexOptions = System.Text.RegularExpressions.RegexOptions;
-using SystemMatch = System.Text.RegularExpressions.Match;
-using SystemMatchCollection = System.Text.RegularExpressions.MatchCollection;
-using SystemTextReader = System.IO.TextReader;
-using SystemStringReader = System.IO.StringReader;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 标准定义接口的控制器类，对整个程序所有标准定义函数进行统一的整合和管理
-    /// </summary>
+    /// 标准定义接口的控制器类
     internal sealed partial class ApiController
     {
         /// <summary>
@@ -117,14 +111,14 @@ namespace GameEngine
 
             Api.Expression.ApiCallGroup group = new Api.Expression.ApiCallGroup();
 
-            string line = null;
-            SystemTextReader reader = new SystemStringReader(text);
+            string line;
+            TextReader reader = new StringReader(text);
             while (null != (line = reader.ReadLine()))
             {
                 line = line.Trim();
 
-                // SystemMatchCollection matches = SystemRegex.Matches(line, ApiCallMethodResolvePattern, SystemRegexOptions.Multiline);
-                // foreach (SystemMatch match in matches) {}
+                // MatchCollection matches = Regex.Matches(line, ApiCallMethodResolvePattern, RegexOptions.Multiline);
+                // foreach (Match match in matches) {}
 
                 // 正则表达式匹配的结果有三个值
                 // 例如：line = @"function(param1, param2)"
@@ -132,7 +126,7 @@ namespace GameEngine
                 // match.Groups[0].value = @"function(param1, param2)"
                 // match.Groups[1].value = @"function"
                 // match.Groups[2].value = @"param1, param2"
-                SystemMatch match = SystemRegex.Match(line, ApiCallMethodResolvePattern, SystemRegexOptions.Multiline);
+                Match match = Regex.Match(line, ApiCallMethodResolvePattern, RegexOptions.Multiline);
                 if (match.Groups.Count < 3)
                 {
                     Debugger.Warn(LogGroupTag.Controller, "编程接口传入的配置数据‘{%s}’不是一个有效的功能函数定义格式，无法正确解析为功能回调函数实例！", line);
@@ -152,7 +146,7 @@ namespace GameEngine
                 string[] strParameterArray = null;
                 if (false == string.IsNullOrEmpty(strParameters))
                 {
-                    strParameterArray = strParameters.Split(NovaEngine.Definition.CCharacter.Comma, System.StringSplitOptions.RemoveEmptyEntries);
+                    strParameterArray = strParameters.Split(NovaEngine.Definition.CCharacter.Comma, StringSplitOptions.RemoveEmptyEntries);
                 }
 
                 if (strParameterArray?.Length != call_info.ParameterTypes?.Count)

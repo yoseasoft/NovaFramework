@@ -22,15 +22,12 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 对象池管理类，用于对场景上下文中使用的对象池提供通用的访问操作接口
-    /// </summary>
+    /// 对象池管理类
     internal sealed partial class PoolController
     {
         /// <summary>
@@ -62,7 +59,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="classType">对象类型</param>
         /// <returns>返回对象实例，若创建失败则返回null</returns>
-        private CEntity CreateEntityInstance(SystemType classType)
+        private CEntity CreateEntityInstance(Type classType)
         {
             NovaEngine.IReference reference = NovaEngine.ReferencePool.Acquire(classType);
 

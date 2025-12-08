@@ -24,13 +24,9 @@
 
 using System.Collections.Generic;
 
-using SystemType = System.Type;
-
 namespace GameEngine
 {
-    /// <summary>
-    /// 反射注入接口的控制器类，对整个程序所有反射注入函数进行统一的整合和管理
-    /// </summary>
+    /// 反射注入接口的控制器类
     internal partial class InjectController
     {
         /// <summary>
@@ -80,7 +76,7 @@ namespace GameEngine
         {
             if (_multipleBeanInstanceCaches.Contains(obj))
             {
-                Debugger.Warn("The target bean object '{0}' was already exist within multiple bean instance cache, repeat added it failed.", obj.BeanName);
+                Debugger.Warn("The target bean object '{%s}' was already exist within multiple bean instance cache, repeat added it failed.", obj.BeanName);
                 return;
             }
 
@@ -96,7 +92,7 @@ namespace GameEngine
             string beanName = obj.BeanName;
             if (_singletonBeanInstanceCaches.ContainsKey(beanName))
             {
-                Debugger.Warn("The target bean name '{0}' was already exist within singleton bean instance cache, repeat added it will be override old value.", beanName);
+                Debugger.Warn("The target bean name '{%s}' was already exist within singleton bean instance cache, repeat added it will be override old value.", beanName);
 
                 // 移除旧的实例
                 RemoveCachedSingletonBeanInstanceByName(beanName);
@@ -175,7 +171,7 @@ namespace GameEngine
         {
             if (false == _multipleBeanInstanceCaches.Contains(obj))
             {
-                Debugger.Warn("Could not found any bean instance '{0}' within multiple cache, removed it failed.", obj.BeanName);
+                Debugger.Warn("Could not found any bean instance '{%s}' within multiple cache, removed it failed.", obj.BeanName);
                 return;
             }
 
@@ -190,7 +186,7 @@ namespace GameEngine
         {
             if (false == _singletonBeanInstanceCaches.TryGetValue(beanName, out CBean obj))
             {
-                Debugger.Warn("Could not found any bean record with target name '{0}' from singleton bean instance cache, removed it failed.", beanName);
+                Debugger.Warn("Could not found any bean record with target name '{%s}' from singleton bean instance cache, removed it failed.", beanName);
                 return;
             }
 
@@ -205,7 +201,7 @@ namespace GameEngine
         {
             if (false == _multipleBeanInstanceCaches.Contains(obj))
             {
-                Debugger.Warn("Could not found any bean instance '{0}' within multiple cache, removed it failed.", obj.BeanName);
+                Debugger.Warn("Could not found any bean instance '{%s}' within multiple cache, removed it failed.", obj.BeanName);
                 return;
             }
 
@@ -224,7 +220,7 @@ namespace GameEngine
         {
             if (false == _singletonBeanInstanceCaches.TryGetValue(beanName, out CBean obj))
             {
-                Debugger.Warn("Could not found any bean record with target name '{0}' from singleton bean instance cache, released it failed.", beanName);
+                Debugger.Warn("Could not found any bean record with target name '{%s}' from singleton bean instance cache, released it failed.", beanName);
                 return;
             }
 

@@ -23,13 +23,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 提供切面访问接口的服务类，对整个程序内部的对象实例提供切面访问的服务逻辑处理
-    /// </summary>
+    /// 提供切面访问接口的服务类
     public static partial class AspectCallService
     {
         [OnServiceProcessRegisterOfTarget(typeof(CView), AspectBehaviourType.Initialize)]
@@ -66,7 +64,7 @@ namespace GameEngine
 
         private static void RegViewNoticeCallByTargetType(CView obj, AspectBehaviourType behaviourType, bool reload)
         {
-            SystemType targetType = obj.BeanType;
+            Type targetType = obj.BeanType;
             Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CEntity));
             if (null == codeInfo)
             {
@@ -93,7 +91,7 @@ namespace GameEngine
                     continue;
                 }
 
-                // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
+                // Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
                 // Debugger.Assert(null != callback, "Invalid method type.");
 
                 Debugger.Info(LogGroupTag.Controller, "Register view '{%t}' notice call with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);

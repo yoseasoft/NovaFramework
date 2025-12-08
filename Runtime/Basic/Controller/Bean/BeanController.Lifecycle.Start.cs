@@ -26,9 +26,7 @@ using System.Collections.Generic;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 原型对象管理类，用于对场景上下文中的所有原型对象提供通用的访问操作接口
-    /// </summary>
+    /// 原型对象管理类
     internal sealed partial class BeanController
     {
         /// <summary>
@@ -126,8 +124,7 @@ namespace GameEngine
             {
                 IBean bean = list[n];
 
-                OnBeanLifecycleProcessingHandler callback;
-                if (false == TryGetBeanLifecycleProcessingCallback(bean.BeanType, AspectBehaviourType.Start, out callback))
+                if (false == TryGetBeanLifecycleProcessingCallback(bean.BeanType, AspectBehaviourType.Start, out OnBeanLifecycleProcessingHandler callback))
                 {
                     Debugger.Warn("Could not found any bean start processing callback with target type '{%t}', calling start process failed.", bean.BeanType);
                     continue;

@@ -22,21 +22,18 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 反射注入接口的控制器类，对整个程序所有反射注入函数进行统一的整合和管理
-    /// </summary>
+    /// 反射注入接口的控制器类
     internal partial class InjectController
     {
         /// <summary>
         /// 对象激活状态管理容器
         /// </summary>
-        private IDictionary<SystemType, AspectBehaviourType> _objectActivationStatus = null;
+        private IDictionary<Type, AspectBehaviourType> _objectActivationStatus = null;
 
         /// <summary>
         /// 对象注入状态标识的初始化回调函数
@@ -45,7 +42,7 @@ namespace GameEngine
         private void InitInjectObjectStatuss()
         {
             // 对象激活状态管理容器初始化
-            _objectActivationStatus = new Dictionary<SystemType, AspectBehaviourType>();
+            _objectActivationStatus = new Dictionary<Type, AspectBehaviourType>();
         }
 
         /// <summary>
@@ -67,11 +64,11 @@ namespace GameEngine
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
         /// <param name="behaviourType">行为类型</param>
-        private void SetObjectActivationStatus(SystemType targetType, AspectBehaviourType behaviourType)
+        private void SetObjectActivationStatus(Type targetType, AspectBehaviourType behaviourType)
         {
             if (_objectActivationStatus.ContainsKey(targetType))
             {
-                Debugger.Warn("The target object status '{0}' was already exist, repeat added it will be override old value.", NovaEngine.Utility.Text.ToString(targetType));
+                Debugger.Warn("The target object status '{%t}' was already exist, repeat added it will be override old value.", targetType);
 
                 _objectActivationStatus.Remove(targetType);
             }
@@ -84,7 +81,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
         /// <returns>返回对象的行为标识，若该对象为注册则返回默认行为标识</returns>
-        public AspectBehaviourType GetObjectActivationBehaviourByType(SystemType targetType)
+        public AspectBehaviourType GetObjectActivationBehaviourByType(Type targetType)
         {
             if (_objectActivationStatus.TryGetValue(targetType, out AspectBehaviourType result))
             {
@@ -98,11 +95,11 @@ namespace GameEngine
         /// 移除指定对象类型的激活状态信息
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
-        private void RemoveObjectActivationStatus(SystemType targetType)
+        private void RemoveObjectActivationStatus(Type targetType)
         {
             if (false == _objectActivationStatus.ContainsKey(targetType))
             {
-                Debugger.Warn("Could not found any activation status with target type '{0}', removed it failed.", NovaEngine.Utility.Text.ToString(targetType));
+                Debugger.Warn("Could not found any activation status with target type '{%t}', removed it failed.", targetType);
                 return;
             }
 

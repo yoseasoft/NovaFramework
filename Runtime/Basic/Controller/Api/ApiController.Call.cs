@@ -23,17 +23,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-
 namespace GameEngine
 {
-    /// <summary>
-    /// 标准定义接口的控制器类，对整个程序所有标准定义函数进行统一的整合和管理
-    /// </summary>
+    /// 标准定义接口的控制器类
     internal sealed partial class ApiController
     {
         /// <summary>
@@ -48,7 +44,7 @@ namespace GameEngine
             /// <summary>
             /// 接口调用类的目标对象类型
             /// </summary>
-            public SystemType TargetType { get; set; }
+            public Type TargetType { get; set; }
             /// <summary>
             /// 接口调用类的功能名称
             /// </summary>
@@ -56,7 +52,7 @@ namespace GameEngine
             /// <summary>
             /// 接口调用类的回调函数句柄
             /// </summary>
-            public SystemDelegate Callback { get; set; }
+            public Delegate Callback { get; set; }
 
             /// <summary>
             /// 接口调用类的扩展状态标识
@@ -65,15 +61,15 @@ namespace GameEngine
             /// <summary>
             /// 接口调用类的扩展对象类型
             /// </summary>
-            public SystemType ExtensionObjectType { get; set; }
+            public Type ExtensionObjectType { get; set; }
             /// <summary>
             /// 接口调用类的参数类型列表
             /// </summary>
-            public IList<SystemType> ParameterTypes { get; set; }
+            public IList<Type> ParameterTypes { get; set; }
             /// <summary>
             /// 接口调用类的返回值类型
             /// </summary>
-            public SystemType ReturnType { get; set; }
+            public Type ReturnType { get; set; }
         }
 
         /// <summary>
@@ -146,7 +142,7 @@ namespace GameEngine
 
                 object[] new_args = new object[args.Length + 1];
                 new_args[0] = obj;
-                System.Array.Copy(args, 0, new_args, 1, args.Length);
+                Array.Copy(args, 0, new_args, 1, args.Length);
                 info.Callback.DynamicInvoke(new_args);
             } // info.IsExtension
             else // 全局接口类型
@@ -165,7 +161,7 @@ namespace GameEngine
         /// <param name="functionName">功能名称</param>
         /// <param name="callback">回调接口</param>
         /// <returns>返回功能接口对象实例</returns>
-        private ApiCallInfo AddApiFunctionCallInfo(string fullname, SystemType targetType, string functionName, SystemDelegate callback)
+        private ApiCallInfo AddApiFunctionCallInfo(string fullname, Type targetType, string functionName, Delegate callback)
         {
             ApiCallInfo info = new ApiCallInfo();
             info.Fullname = fullname;
@@ -188,7 +184,7 @@ namespace GameEngine
             if (null != parameters && parameters.Length > pos)
             {
                 // 如果是扩展函数，这里记录的参数列表从第二个参数开始算
-                info.ParameterTypes = new List<SystemType>();
+                info.ParameterTypes = new List<Type>();
                 for (int n = pos; n < parameters.Length; ++n)
                 {
                     info.ParameterTypes.Add(parameters[n].ParameterType);

@@ -22,42 +22,35 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
-
 namespace GameEngine
 {
-    /// <summary>
-    /// 原型对象管理类，用于对场景上下文中的所有原型对象提供通用的访问操作接口
-    /// </summary>
+    /// 原型对象管理类
     internal sealed partial class BeanController
     {
         /// <summary>
         /// 原型对象查找操作函数接口定义
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
-        private delegate IList<IBean> OnBeanLookupProcessingHandler(SystemType targetType);
+        private delegate IList<IBean> OnBeanLookupProcessingHandler(Type targetType);
 
         /// <summary>
         /// 原型对象查找操作服务接口注册相关函数的属性定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        private class OnBeanLookupProcessRegisterOfTargetAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        private class OnBeanLookupProcessRegisterOfTargetAttribute : Attribute
         {
             /// <summary>
             /// 匹配查找操作服务的目标对象类型
             /// </summary>
-            private readonly SystemType _classType;
+            private readonly Type _classType;
 
-            public SystemType ClassType => _classType;
+            public Type ClassType => _classType;
 
-            public OnBeanLookupProcessRegisterOfTargetAttribute(SystemType classType)
+            public OnBeanLookupProcessRegisterOfTargetAttribute(Type classType)
             {
                 _classType = classType;
             }
@@ -66,7 +59,7 @@ namespace GameEngine
         /// <summary>
         /// 原型对象查找操作处理句柄列表容器
         /// </summary>
-        private IDictionary<SystemType, SystemDelegate> _beanLookupProcessingCallbacks = null;
+        private IDictionary<Type, Delegate> _beanLookupProcessingCallbacks = null;
 
         /// <summary>
         /// 原型管理对象的查找操作初始化通知接口函数
@@ -75,26 +68,26 @@ namespace GameEngine
         private void OnBeanLookupInitialize()
         {
             // 初始化原型对象查找操作句柄列表容器
-            _beanLookupProcessingCallbacks = new Dictionary<SystemType, SystemDelegate>();
+            _beanLookupProcessingCallbacks = new Dictionary<Type, Delegate>();
 
-            SystemType classType = typeof(BeanController);
+            Type classType = typeof(BeanController);
             MethodInfo[] methods = classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             for (int n = 0; n < methods.Length; ++n)
             {
                 MethodInfo method = methods[n];
-                IEnumerable<SystemAttribute> e = method.GetCustomAttributes();
-                foreach (SystemAttribute attr in e)
+                IEnumerable<Attribute> e = method.GetCustomAttributes();
+                foreach (Attribute attr in e)
                 {
-                    SystemType attrType = attr.GetType();
+                    Type attrType = attr.GetType();
                     if (typeof(OnBeanLookupProcessRegisterOfTargetAttribute) == attrType)
                     {
                         Debugger.Assert(false == method.IsStatic);
 
                         OnBeanLookupProcessRegisterOfTargetAttribute _attr = (OnBeanLookupProcessRegisterOfTargetAttribute) attr;
 
-                        // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericFuncDelegate(this, method);
+                        // Delegate callback = NovaEngine.Utility.Reflection.CreateGenericFuncDelegate(this, method);
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                        SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericFuncDelegateAndCheckParameterAndReturnType(this, method, null, typeof(SystemType));
+                        Delegate callback = NovaEngine.Utility.Reflection.CreateGenericFuncDelegateAndCheckParameterAndReturnType(this, method, null, typeof(Type));
 
                         AddBeanLookupProcessingCallHandler(_attr.ClassType, callback);
                     }
@@ -121,7 +114,7 @@ namespace GameEngine
         /// <returns>返回给定类型的全部实例</returns>
         public IList<T> FindAllBeans<T>() where T : IBean
         {
-            SystemType classType = typeof(T);
+            Type classType = typeof(T);
 
             return NovaEngine.Utility.Collection.CastAndToList<IBean, T>(FindAllBeans(classType));
         }
@@ -132,12 +125,11 @@ namespace GameEngine
         /// </summary>
         /// <param name="classType">类型标识</param>
         /// <returns>返回给定类型的全部实例</returns>
-        public IList<IBean> FindAllBeans(SystemType classType)
+        public IList<IBean> FindAllBeans(Type classType)
         {
-            SystemDelegate callback;
-            if (false == TryGetBeanLookupProcessingCallback(classType, out callback))
+            if (false == TryGetBeanLookupProcessingCallback(classType, out Delegate callback))
             {
-                Debugger.Warn("Could not found any bean lookup processing callback with target type '{0}', calling lookup process failed.", classType.FullName);
+                Debugger.Warn("Could not found any bean lookup processing callback with target type '{%t}', calling lookup process failed.", classType);
                 return null;
             }
 
@@ -152,11 +144,11 @@ namespace GameEngine
         /// <param name="targetType">对象类型</param>
         /// <param name="callback">回调句柄</param>
         /// <returns>若查找回调句柄成功返回true，否则返回false</returns>
-        private bool TryGetBeanLookupProcessingCallback(SystemType targetType, out SystemDelegate callback)
+        private bool TryGetBeanLookupProcessingCallback(Type targetType, out Delegate callback)
         {
             callback = null;
 
-            foreach (KeyValuePair<SystemType, SystemDelegate> pair in _beanLookupProcessingCallbacks)
+            foreach (KeyValuePair<Type, Delegate> pair in _beanLookupProcessingCallbacks)
             {
                 if (pair.Key.IsAssignableFrom(targetType))
                 {
@@ -173,12 +165,12 @@ namespace GameEngine
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <param name="callback">回调句柄</param>
-        private void AddBeanLookupProcessingCallHandler(SystemType targetType, SystemDelegate callback)
+        private void AddBeanLookupProcessingCallHandler(Type targetType, Delegate callback)
         {
             if (_beanLookupProcessingCallbacks.ContainsKey(targetType))
             {
-                Debugger.Warn("The callback '{0}' was already exists for target type '{1}', repeated add it will be override old handler.",
-                        NovaEngine.Utility.Text.ToString(callback), targetType.FullName);
+                Debugger.Warn("The callback '{%t}' was already exists for target type '{%t}', repeated add it will be override old handler.",
+                        callback, targetType);
 
                 _beanLookupProcessingCallbacks.Remove(targetType);
             }
@@ -197,10 +189,10 @@ namespace GameEngine
         /// <returns>返回实体类型的全部实例</returns>
         private IList<CEntity> FindAllEntities()
         {
-            SystemType entityType = typeof(CEntity);
+            Type entityType = typeof(CEntity);
             List<CEntity> entities = new List<CEntity>();
 
-            foreach (KeyValuePair<SystemType, SystemDelegate> pair in _beanLookupProcessingCallbacks)
+            foreach (KeyValuePair<Type, Delegate> pair in _beanLookupProcessingCallbacks)
             {
                 if (entityType.IsAssignableFrom(pair.Key))
                 {
@@ -222,7 +214,7 @@ namespace GameEngine
         /// <param name="classType">对象类型</param>
         /// <returns>返回给定类型的全部实例</returns>
         [OnBeanLookupProcessRegisterOfTarget(typeof(CObject))]
-        private IList<IBean> FindAllObjectsByType(SystemType classType)
+        private IList<IBean> FindAllObjectsByType(Type classType)
         {
             ObjectHandler handler = ObjectHandler.Instance;
             IList<CObject> list = handler.FindAllObjectsByType(classType);
@@ -236,7 +228,7 @@ namespace GameEngine
         /// <param name="classType">场景类型</param>
         /// <returns>返回给定类型的全部实例</returns>
         [OnBeanLookupProcessRegisterOfTarget(typeof(CScene))]
-        private IList<IBean> FindAllScenesByType(SystemType classType)
+        private IList<IBean> FindAllScenesByType(Type classType)
         {
             SceneHandler handler = SceneHandler.Instance;
             CScene currentScene = handler.GetCurrentScene();
@@ -257,7 +249,7 @@ namespace GameEngine
         /// <param name="classType">对象类型</param>
         /// <returns>返回给定类型的全部实例</returns>
         [OnBeanLookupProcessRegisterOfTarget(typeof(CActor))]
-        private IList<IBean> FindAllActorsByType(SystemType classType)
+        private IList<IBean> FindAllActorsByType(Type classType)
         {
             ActorHandler handler = ActorHandler.Instance;
             IList<CActor> list = handler.FindAllActorsByType(classType);
@@ -271,7 +263,7 @@ namespace GameEngine
         /// <param name="classType">视图类型</param>
         /// <returns>返回给定类型的全部实例</returns>
         [OnBeanLookupProcessRegisterOfTarget(typeof(CView))]
-        private IList<IBean> FindAllViewsByType(SystemType classType)
+        private IList<IBean> FindAllViewsByType(Type classType)
         {
             GuiHandler handler = GuiHandler.Instance;
             IList<CView> list = handler.FindAllViewsByType(classType);
@@ -285,7 +277,7 @@ namespace GameEngine
         /// <param name="classType">组件类型</param>
         /// <returns>返回给定类型的全部实例</returns>
         [OnBeanLookupProcessRegisterOfTarget(typeof(CComponent))]
-        private IList<IBean> FindAllComponentsByType(SystemType classType)
+        private IList<IBean> FindAllComponentsByType(Type classType)
         {
             IList<CEntity> entities = FindAllEntities();
             IList<IBean> components = new List<IBean>();

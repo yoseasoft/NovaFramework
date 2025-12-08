@@ -23,19 +23,14 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemEnum = System.Enum;
-using SystemDelegate = System.Delegate;
 
 using SystemAction_object = System.Action<object>;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 切面访问接口的控制器类，对整个程序所有切面访问函数进行统一的整合和管理
-    /// </summary>
+    /// 切面访问接口的控制器类
     internal sealed partial class AspectController
     {
         /// <summary>
@@ -50,7 +45,7 @@ namespace GameEngine
             /// <summary>
             /// 切面调用类的目标对象类型
             /// </summary>
-            public SystemType TargetType { get; set; }
+            public Type TargetType { get; set; }
             /// <summary>
             /// 切面调用类的目标函数名称
             /// </summary>
@@ -68,16 +63,16 @@ namespace GameEngine
         /// <summary>
         /// 通用类型切点回调的数据结构容器
         /// </summary>
-        private IDictionary<SystemType, IList<AspectCallInfo>> _genericTypeCallInfos = null;
+        private IDictionary<Type, IList<AspectCallInfo>> _genericTypeCallInfos = null;
 
         /// <summary>
         /// 通用类型的回调句柄对应标识的映射容器
         /// </summary>
-        private IDictionary<SystemType, IDictionary<AspectAccessType, bool>> _genericTypeCallStatus = null;
+        private IDictionary<Type, IDictionary<AspectAccessType, bool>> _genericTypeCallStatus = null;
         /// <summary>
         /// 通用类型的回调句柄管理容器
         /// </summary>
-        private IDictionary<SystemType, IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>>> _genericTypeCachedCallbacks = null;
+        private IDictionary<Type, IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>>> _genericTypeCachedCallbacks = null;
 
         /// <summary>
         /// 切面回调相关内容的初始化回调函数
@@ -86,9 +81,9 @@ namespace GameEngine
         private void InitializeForAspectCall()
         {
             // 数据容器初始化
-            _genericTypeCallInfos = new Dictionary<SystemType, IList<AspectCallInfo>>();
-            _genericTypeCallStatus = new Dictionary<SystemType, IDictionary<AspectAccessType, bool>>();
-            _genericTypeCachedCallbacks = new Dictionary<SystemType, IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>>>();
+            _genericTypeCallInfos = new Dictionary<Type, IList<AspectCallInfo>>();
+            _genericTypeCallStatus = new Dictionary<Type, IDictionary<AspectAccessType, bool>>();
+            _genericTypeCachedCallbacks = new Dictionary<Type, IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>>>();
         }
 
         /// <summary>
@@ -112,7 +107,7 @@ namespace GameEngine
         /// <param name="methodName">函数名称</param>
         private void CallExtend(object obj, string methodName)
         {
-            SystemType targetType = obj.GetType();
+            Type targetType = obj.GetType();
 
             if (TryGetAspectCallback(targetType, methodName, AspectAccessType.Extend, out SystemAction_object callback))
             {
@@ -127,10 +122,9 @@ namespace GameEngine
         /// <param name="methodName">函数名称</param>
         private void CallBefore(object obj, string methodName)
         {
-            SystemType targetType = obj.GetType();
+            Type targetType = obj.GetType();
 
-            SystemAction_object callback = null;
-            if (TryGetAspectCallback(targetType, methodName, AspectAccessType.Before, out callback))
+            if (TryGetAspectCallback(targetType, methodName, AspectAccessType.Before, out SystemAction_object callback))
             {
                 callback.Invoke(obj);
             }
@@ -144,10 +138,9 @@ namespace GameEngine
         /// <param name="isException">异常状态标识</param>
         private void CallAfter(object obj, string methodName, bool isException)
         {
-            SystemType targetType = obj.GetType();
+            Type targetType = obj.GetType();
 
-            SystemAction_object callback = null;
-            if (TryGetAspectCallback(targetType, methodName, AspectAccessType.After, out callback))
+            if (TryGetAspectCallback(targetType, methodName, AspectAccessType.After, out SystemAction_object callback))
             {
                 callback.Invoke(obj);
             }
@@ -180,7 +173,7 @@ namespace GameEngine
         /// <returns>若存在可执行的环绕回调函数则返回true，否则返回false</returns>
         private bool CallAround(object obj, string methodName)
         {
-            SystemType targetType = obj.GetType();
+            Type targetType = obj.GetType();
 
             if (TryGetAspectCallback(targetType, methodName, AspectAccessType.Around, out SystemAction_object callback))
             {
@@ -202,7 +195,7 @@ namespace GameEngine
         /// <param name="methodName">函数名称</param>
         /// <param name="accessType">函数访问类型</param>
         /// <param name="callback">函数回调句柄</param>
-        private void AddAspectCallForGenericType(string fullname, SystemType targetType, string methodName, AspectAccessType accessType, SystemAction_object callback)
+        private void AddAspectCallForGenericType(string fullname, Type targetType, string methodName, AspectAccessType accessType, SystemAction_object callback)
         {
             AspectCallInfo info = new AspectCallInfo();
             info.Fullname = fullname;
@@ -211,8 +204,8 @@ namespace GameEngine
             info.AccessType = accessType;
             info.Callback = callback;
 
-            Debugger.Info(LogGroupTag.Controller, "Add new aspect call '{0}' to target method '{1}' of the class type '{2}'.",
-                    fullname, methodName, NovaEngine.Utility.Text.ToString(targetType));
+            Debugger.Info(LogGroupTag.Controller, "Add new aspect call '{%s}' to target method '{%s}' of the class type '{%t}'.",
+                    fullname, methodName, targetType);
 
             if (false == _genericTypeCallInfos.TryGetValue(targetType, out IList<AspectCallInfo> callInfos))
             {
@@ -231,12 +224,12 @@ namespace GameEngine
         /// <param name="targetType">目标对象类型</param>
         /// <param name="methodName">函数名称</param>
         /// <param name="accessType">函数访问类型</param>
-        private void RemoveAspectCallForGenericType(string fullname, SystemType targetType, string methodName, AspectAccessType accessType)
+        private void RemoveAspectCallForGenericType(string fullname, Type targetType, string methodName, AspectAccessType accessType)
         {
-            Debugger.Info(LogGroupTag.Controller, "Remove aspect call '{0}' with target method '{1}' and class type '{2}'.", fullname, methodName, NovaEngine.Utility.Text.ToString(targetType));
+            Debugger.Info(LogGroupTag.Controller, "Remove aspect call '{%s}' with target method '{%s}' and class type '{%t}'.", fullname, methodName, targetType);
             if (false == _genericTypeCallInfos.ContainsKey(targetType))
             {
-                Debugger.Warn(LogGroupTag.Controller, "Could not found any apsect call '{0}' with target class type '{1}', removed it failed.", fullname, NovaEngine.Utility.Text.ToString(targetType));
+                Debugger.Warn(LogGroupTag.Controller, "Could not found any apsect call '{%s}' with target class type '{%t}', removed it failed.", fullname, targetType);
                 return;
             }
 
@@ -261,8 +254,8 @@ namespace GameEngine
                 }
             }
 
-            Debugger.Warn(LogGroupTag.Controller, "Could not found any apsect call '{0}' with target method '{1}' and class type '{2}', removed it failed.",
-                    fullname, methodName, NovaEngine.Utility.Text.ToString(targetType));
+            Debugger.Warn(LogGroupTag.Controller, "Could not found any apsect call '{%s}' with target method '{%s}' and class type '{%t}', removed it failed.",
+                    fullname, methodName, targetType);
         }
 
         /// <summary>
@@ -293,7 +286,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
         /// <returns>返回给定类型对应的缓存容器，若类型错误则返回null</returns>
-        private IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>> GetGenericTypeCachedCallbackByType(SystemType targetType)
+        private IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>> GetGenericTypeCachedCallbackByType(Type targetType)
         {
             if (false == _genericTypeCachedCallbacks.TryGetValue(targetType, out IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>> container))
             {
@@ -312,7 +305,7 @@ namespace GameEngine
         /// <param name="accessType">函数访问类型</param>
         /// <param name="callback">回调句柄实例</param>
         /// <returns>若查找回调句柄成功返回true，否则返回false</returns>
-        private bool TryGetAspectCallback(SystemType targetType,
+        private bool TryGetAspectCallback(Type targetType,
                                           string methodName,
                                           AspectAccessType accessType,
                                           out SystemAction_object callback)
@@ -368,7 +361,7 @@ namespace GameEngine
         /// <param name="accessType">访问类型</param>
         /// <param name="callback">回调函数句柄</param>
         /// <param name="container">目标管理容器</param>
-        private void CombineAspectCallbackByType(SystemType targetType,
+        private void CombineAspectCallbackByType(Type targetType,
                                                  string methodName,
                                                  AspectAccessType accessType,
                                                  SystemAction_object callback,
@@ -391,7 +384,7 @@ namespace GameEngine
             if (callbacks.ContainsKey(methodName))
             {
                 // 已有委托函数，则对原有函数进行合并操作
-                callbacks[methodName] = (SystemAction_object) SystemDelegate.Combine(callbacks[methodName], callback);
+                callbacks[methodName] = (SystemAction_object) Delegate.Combine(callbacks[methodName], callback);
             }
             else
             {
@@ -406,7 +399,7 @@ namespace GameEngine
         /// <param name="container">访问类型回调状态容器</param>
         private void ResetAspectCallStatusOnClass(IDictionary<AspectAccessType, bool> container)
         {
-            foreach (AspectAccessType enumValue in SystemEnum.GetValues(typeof(AspectAccessType)))
+            foreach (AspectAccessType enumValue in Enum.GetValues(typeof(AspectAccessType)))
             {
                 if (AspectAccessType.Unknown == enumValue)
                 {
@@ -415,7 +408,7 @@ namespace GameEngine
 
                 if (container.ContainsKey(enumValue))
                 {
-                    Debugger.Warn("The aspect access type '{0}' was already exist within call status, repeat added it will be override old value.", enumValue.ToString());
+                    Debugger.Warn("The aspect access type '{%i}' was already exist within call status, repeat added it will be override old value.", enumValue);
                     container.Remove(enumValue);
                 }
 
@@ -430,7 +423,7 @@ namespace GameEngine
         /// <param name="accessType">访问类型</param>
         /// <param name="status">回调状态标识</param>
         /// <returns>若容器中已记录对应的状态标识则返回true，否则返回false</returns>
-        private bool TryGetCachedAspectCallStatus(SystemType targetType, AspectAccessType accessType, out bool status)
+        private bool TryGetCachedAspectCallStatus(Type targetType, AspectAccessType accessType, out bool status)
         {
             status = false;
 
@@ -452,13 +445,13 @@ namespace GameEngine
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
         /// <returns>若缓存成功返回true，没有需要缓存的回调则返回false</returns>
-        private bool TryCachedAspectCallbacks(SystemType targetType)
+        private bool TryCachedAspectCallbacks(Type targetType)
         {
             bool result = false;
 
             IList<AspectCallInfo> infos = null;
 
-            SystemType currentClassType = targetType;
+            Type currentClassType = targetType;
             while (null != currentClassType)
             {
                 if (_genericTypeCallInfos.TryGetValue(currentClassType, out IList<AspectCallInfo> list))

@@ -22,16 +22,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using SystemType = System.Type;
-
 namespace GameEngine
 {
-    /// <summary>
-    /// 事件管理对象类，用于对场景上下文中的所有节点对象进行事件管理及分发
-    /// </summary>
+    /// 事件管理对象类
     internal partial class EventController
     {
         /// <summary>
@@ -41,7 +38,7 @@ namespace GameEngine
         /// <summary>
         /// 事件数据分发调度接口的数据结构容器
         /// </summary>
-        private IDictionary<SystemType, IList<EventCallMethodInfo>> _eventDataDistributeCallInfos;
+        private IDictionary<Type, IList<EventCallMethodInfo>> _eventDataDistributeCallInfos;
 
         /// <summary>
         /// 事件分发回调管理模块的初始化函数
@@ -52,7 +49,7 @@ namespace GameEngine
             // 事件标识分发容器初始化
             _eventIdDistributeCallInfos = new Dictionary<int, IList<EventCallMethodInfo>>();
             // 事件数据分发容器初始化
-            _eventDataDistributeCallInfos = new Dictionary<SystemType, IList<EventCallMethodInfo>>();
+            _eventDataDistributeCallInfos = new Dictionary<Type, IList<EventCallMethodInfo>>();
         }
 
         /// <summary>
@@ -121,7 +118,7 @@ namespace GameEngine
         /// <param name="eventData">事件数据</param>
         private void OnEventDistributeCallDispatched(object eventData)
         {
-            SystemType eventDataType = eventData.GetType();
+            Type eventDataType = eventData.GetType();
 
             IList<EventCallMethodInfo> list = null;
             if (_eventDataDistributeCallInfos.TryGetValue(eventDataType, out list))
@@ -158,7 +155,7 @@ namespace GameEngine
         /// <param name="targetType">目标对象类型</param>
         /// <param name="methodInfo">函数对象</param>
         /// <param name="eventID">事件标识</param>
-        private void AddEventDistributeCallInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int eventID)
+        private void AddEventDistributeCallInfo(string fullname, Type targetType, MethodInfo methodInfo, int eventID)
         {
             EventCallMethodInfo info = new EventCallMethodInfo(fullname, targetType, methodInfo, eventID);
 
@@ -184,7 +181,7 @@ namespace GameEngine
         /// <param name="targetType">目标对象类型</param>
         /// <param name="methodInfo">函数对象</param>
         /// <param name="eventDataType">事件数据类型</param>
-        private void AddEventDistributeCallInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType eventDataType)
+        private void AddEventDistributeCallInfo(string fullname, Type targetType, MethodInfo methodInfo, Type eventDataType)
         {
             EventCallMethodInfo info = new EventCallMethodInfo(fullname, targetType, methodInfo, eventDataType);
 
@@ -209,7 +206,7 @@ namespace GameEngine
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
         /// <param name="eventID">事件标识</param>
-        private void RemoveEventDistributeCallInfo(string fullname, SystemType targetType, int eventID)
+        private void RemoveEventDistributeCallInfo(string fullname, Type targetType, int eventID)
         {
             Debugger.Info(LogGroupTag.Controller, "Remove event distribute call '{%s}' with target ID '{%d}' and class type '{%t}'.",
                     fullname, eventID, targetType);
@@ -247,7 +244,7 @@ namespace GameEngine
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
         /// <param name="eventDataType">事件数据类型</param>
-        private void RemoveEventDistributeCallInfo(string fullname, SystemType targetType, SystemType eventDataType)
+        private void RemoveEventDistributeCallInfo(string fullname, Type targetType, Type eventDataType)
         {
             Debugger.Info(LogGroupTag.Controller, "Remove event distribute call '{%s}' with target data type '{%t}' and class type '{%t}'.",
                     fullname, eventDataType, targetType);

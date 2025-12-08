@@ -22,12 +22,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
-using SystemAction = System.Action;
-using SystemDelegate = System.Delegate;
 
 namespace GameEngine
 {
@@ -114,7 +111,7 @@ namespace GameEngine
                         return;
                     }
 
-                    SystemAction action = (SystemAction) SystemDelegate.CreateDelegate(typeof(SystemAction), obj, methodInfo);
+                    Action action = (Action) Delegate.CreateDelegate(typeof(Action), obj, methodInfo);
                     Call(action);
                 }
                 else
@@ -129,7 +126,7 @@ namespace GameEngine
         /// 指定切入点的函数调用接口
         /// </summary>
         /// <param name="func">目标函数</param>
-        public void Call(SystemAction func)
+        public void Call(Action func)
         {
             bool isException = false;
 
@@ -137,7 +134,7 @@ namespace GameEngine
 
             if (false == CallAround(func.Target, func.Method.Name))
             {
-                try { func(); } catch (System.Exception e) { isException = true; Debugger.Error(e); }
+                try { func(); } catch (Exception e) { isException = true; Debugger.Error(e); }
             }
 
             CallAfter(func.Target, func.Method.Name, isException);
@@ -149,7 +146,7 @@ namespace GameEngine
         /// <typeparam name="T">参数类型</typeparam>
         /// <param name="func">目标函数</param>
         /// <param name="arg1">参数值</param>
-        public void Call<T>(System.Action<T> func, T arg1)
+        public void Call<T>(Action<T> func, T arg1)
         {
             bool isException = false;
 
@@ -157,7 +154,7 @@ namespace GameEngine
 
             if (false == CallAround(func.Target, func.Method.Name))
             {
-                try { func(arg1); } catch (System.Exception e) { isException = true; Debugger.Error(e); }
+                try { func(arg1); } catch (Exception e) { isException = true; Debugger.Error(e); }
             }
 
             CallAfter(func.Target, func.Method.Name, isException);
@@ -171,7 +168,7 @@ namespace GameEngine
         /// <param name="func">目标函数</param>
         /// <param name="arg1">参数值</param>
         /// <param name="arg2">参数值</param>
-        public void Call<T1, T2>(System.Action<T1, T2> func, T1 arg1, T2 arg2)
+        public void Call<T1, T2>(Action<T1, T2> func, T1 arg1, T2 arg2)
         {
             bool isException = false;
 
@@ -179,7 +176,7 @@ namespace GameEngine
 
             if (false == CallAround(func.Target, func.Method.Name))
             {
-                try { func(arg1, arg2); } catch (System.Exception e) { isException = true; Debugger.Error(e); }
+                try { func(arg1, arg2); } catch (Exception e) { isException = true; Debugger.Error(e); }
             }
 
             CallAfter(func.Target, func.Method.Name, isException);
@@ -191,16 +188,16 @@ namespace GameEngine
         /// <typeparam name="V">返回值类型</typeparam>
         /// <param name="func">目标函数</param>
         /// <returns>返回目标函数调用后的返回结果</returns>
-        public V Call<V>(System.Func<V> func)
+        public V Call<V>(Func<V> func)
         {
             bool isException = false;
 
             CallBefore(func.Target, func.Method.Name);
 
-            V result = default(V);
+            V result = default;
             if (false == CallAround(func.Target, func.Method.Name))
             {
-                try { result = func(); } catch (System.Exception e) { isException = true; Debugger.Error(e); }
+                try { result = func(); } catch (Exception e) { isException = true; Debugger.Error(e); }
             }
 
             CallAfter(func.Target, func.Method.Name, isException);
@@ -216,16 +213,16 @@ namespace GameEngine
         /// <param name="func">目标函数</param>
         /// <param name="arg1">参数值</param>
         /// <returns>返回目标函数调用后的返回结果</returns>
-        public V Call<T, V>(System.Func<T, V> func, T arg1)
+        public V Call<T, V>(Func<T, V> func, T arg1)
         {
             bool isException = false;
 
             CallBefore(func.Target, func.Method.Name);
 
-            V result = default(V);
+            V result = default;
             if (false == CallAround(func.Target, func.Method.Name))
             {
-                try { result = func(arg1); } catch (System.Exception e) { isException = true; Debugger.Error(e); }
+                try { result = func(arg1); } catch (Exception e) { isException = true; Debugger.Error(e); }
             }
 
             CallAfter(func.Target, func.Method.Name, isException);
@@ -243,16 +240,16 @@ namespace GameEngine
         /// <param name="arg1">参数值</param>
         /// <param name="arg2">参数值</param>
         /// <returns>返回目标函数调用后的返回结果</returns>
-        public V Call<T1, T2, V>(System.Func<T1, T2, V> func, T1 arg1, T2 arg2)
+        public V Call<T1, T2, V>(Func<T1, T2, V> func, T1 arg1, T2 arg2)
         {
             bool isException = false;
 
             CallBefore(func.Target, func.Method.Name);
 
-            V result = default(V);
+            V result = default;
             if (false == CallAround(func.Target, func.Method.Name))
             {
-                try { result = func(arg1, arg2); } catch (System.Exception e) { isException = true; Debugger.Error(e); }
+                try { result = func(arg1, arg2); } catch (Exception e) { isException = true; Debugger.Error(e); }
             }
 
             CallAfter(func.Target, func.Method.Name, isException);

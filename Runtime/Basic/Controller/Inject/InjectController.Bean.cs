@@ -22,13 +22,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 反射注入接口的控制器类，对整个程序所有反射注入函数进行统一的整合和管理
-    /// </summary>
+    /// 反射注入接口的控制器类
     internal partial class InjectController
     {
         /// <summary>
@@ -50,7 +48,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="classType">对象类型</param>
         /// <returns>返回对应的对象实例</returns>
-        public CBean GetBean(SystemType classType)
+        public CBean GetBean(Type classType)
         {
             Loader.Symboling.SymClass symbol = Loader.CodeLoader.GetSymClassByType(classType);
             if (null != symbol)
@@ -80,20 +78,20 @@ namespace GameEngine
             Loader.Symboling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
             if (null == bean)
             {
-                Debugger.Warn("Could not found any bean class with target name '{0}' from loader, created bean object instance failed.", beanName);
+                Debugger.Warn("Could not found any bean class with target name '{%s}' from loader, created bean object instance failed.", beanName);
                 return null;
             }
 
             if (false == bean.Singleton)
             {
-                Debugger.Warn("The target bean '{0}' was multiple mode, please used 'CreateBean' method to build bean instance.", beanName);
+                Debugger.Warn("The target bean '{%s}' was multiple mode, please used 'CreateBean' method to build bean instance.", beanName);
                 return null;
             }
 
             obj = CreateBeanInstance(bean);
             if (null == obj)
             {
-                Debugger.Warn("Failed to create singleton bean instance with target name '{0}', please checked the bean configure was correct.", beanName);
+                Debugger.Warn("Failed to create singleton bean instance with target name '{%s}', please checked the bean configure was correct.", beanName);
                 return null;
             }
 
@@ -122,7 +120,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="classType">对象类型</param>
         /// <returns>返回对应的对象实例</returns>
-        public CBean CreateBean(SystemType classType)
+        public CBean CreateBean(Type classType)
         {
             Loader.Symboling.SymClass symbol = Loader.CodeLoader.GetSymClassByType(classType);
             if (null != symbol)
@@ -146,20 +144,20 @@ namespace GameEngine
             Loader.Symboling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
             if (null == bean)
             {
-                Debugger.Warn("Could not found any bean class with target name '{0}' from loader, created bean object instance failed.", beanName);
+                Debugger.Warn("Could not found any bean class with target name '{%s}' from loader, created bean object instance failed.", beanName);
                 return null;
             }
 
             if (bean.Singleton)
             {
-                Debugger.Warn("The target bean '{0}' was singleton mode, please used 'GetBean' method to build bean instance.", beanName);
+                Debugger.Warn("The target bean '{%s}' was singleton mode, please used 'GetBean' method to build bean instance.", beanName);
                 return null;
             }
 
             CBean obj = CreateBeanInstance(bean);
             if (null == obj)
             {
-                Debugger.Warn("Failed to create multiple bean instance with target name '{0}', please checked the bean configure was correct.", beanName);
+                Debugger.Warn("Failed to create multiple bean instance with target name '{%s}', please checked the bean configure was correct.", beanName);
                 return null;
             }
 
@@ -185,7 +183,7 @@ namespace GameEngine
             Loader.Symboling.Bean beanClass = Loader.CodeLoader.GetBeanClassByName(beanName);
             if (null == beanClass)
             {
-                Debugger.Warn("Could not found any bean class with target name '{0}' from loader, created bean object instance failed.", beanName);
+                Debugger.Warn("Could not found any bean class with target name '{%s}' from loader, created bean object instance failed.", beanName);
                 return;
             }
 
@@ -215,7 +213,7 @@ namespace GameEngine
             Loader.Symboling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
             if (null == bean)
             {
-                Debugger.Warn("Could not found any bean class struct with target name '{0}', create bean instance failed.", beanName);
+                Debugger.Warn("Could not found any bean class struct with target name '{%s}', create bean instance failed.", beanName);
                 return null;
             }
 
@@ -227,12 +225,12 @@ namespace GameEngine
         /// </summary>
         /// <param name="classType">对象类型</param>
         /// <returns>返回新创建的对象实例</returns>
-        private CBean CreateBeanInstance(SystemType classType)
+        private CBean CreateBeanInstance(Type classType)
         {
             Loader.Symboling.SymClass symClass = Loader.CodeLoader.GetSymClassByType(classType);
             if (null == symClass)
             {
-                Debugger.Warn("Could not found any bean class struct with target type '{0}', create bean instance failed.", NovaEngine.Utility.Text.ToString(classType));
+                Debugger.Warn("Could not found any bean class struct with target type '{%t}', create bean instance failed.", classType);
                 return null;
             }
 

@@ -22,13 +22,12 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 原型对象管理类，用于对场景上下文中的所有原型对象提供通用的访问操作接口
-    /// </summary>
+    /// 原型对象管理类
     internal sealed partial class BeanController
     {
         /// <summary>
@@ -144,8 +143,7 @@ namespace GameEngine
                 // 先从队列中移除目标对象
                 _beanDestroyNotificationList.Remove(bean);
 
-                OnBeanLifecycleProcessingHandler callback;
-                if (false == TryGetBeanLifecycleProcessingCallback(bean.BeanType, AspectBehaviourType.Destroy, out callback))
+                if (false == TryGetBeanLifecycleProcessingCallback(bean.BeanType, AspectBehaviourType.Destroy, out OnBeanLifecycleProcessingHandler callback))
                 {
                     Debugger.Error("Could not found any bean destroy processing callback with target type '{%t}', calling destroy process failed.", bean.BeanType);
                     continue;
@@ -167,7 +165,7 @@ namespace GameEngine
         [OnBeanLifecycleProcessRegisterOfTarget(typeof(CScene), AspectBehaviourType.Destroy)]
         private void OnSceneDestroyProcess(IBean bean)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         [OnBeanLifecycleProcessRegisterOfTarget(typeof(CActor), AspectBehaviourType.Destroy)]

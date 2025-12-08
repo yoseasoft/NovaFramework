@@ -22,15 +22,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
-using SystemAction = System.Action;
-using SystemDelegate = System.Delegate;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
 
 using SystemAction_object_bool = System.Action<object, bool>;
 
@@ -50,28 +44,28 @@ namespace GameEngine
         /// <summary>
         /// 切面处理服务接口注册相关函数的属性定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        private class OnServiceProcessRegisterOfTargetAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        private class OnServiceProcessRegisterOfTargetAttribute : Attribute
         {
             /// <summary>
             /// 匹配切面服务的目标对象类型
             /// </summary>
-            private readonly SystemType _classType;
+            private readonly Type _classType;
             /// <summary>
             /// 执行切面服务的函数名称
             /// </summary>
             private readonly string _methodName;
 
-            public SystemType ClassType => _classType;
+            public Type ClassType => _classType;
             public string MethodName => _methodName;
 
-            public OnServiceProcessRegisterOfTargetAttribute(SystemType classType, string methodName)
+            public OnServiceProcessRegisterOfTargetAttribute(Type classType, string methodName)
             {
                 _classType = classType;
                 _methodName = methodName;
             }
 
-            public OnServiceProcessRegisterOfTargetAttribute(SystemType classType, AspectBehaviourType behaviourType)
+            public OnServiceProcessRegisterOfTargetAttribute(Type classType, AspectBehaviourType behaviourType)
             {
                 if (false == NovaEngine.Utility.Convertion.IsCorrectedEnumValue<AspectBehaviourType>((int) behaviourType))
                 {
@@ -87,12 +81,12 @@ namespace GameEngine
         /// <summary>
         /// 切面服务处理回调的管理容器
         /// </summary>
-        // private static IDictionary<SystemType, IDictionary<string, OnAspectServiceProcessingCallHandler>> _serviceProcessCallInfos = new Dictionary<SystemType, IDictionary<string, OnAspectServiceProcessingCallHandler>>();
-        private static IDictionary<SystemType, IDictionary<string, SystemAction_object_bool>> _serviceProcessCallInfos = null;
+        // private static IDictionary<Type, IDictionary<string, OnAspectServiceProcessingCallHandler>> _serviceProcessCallInfos = new Dictionary<Type, IDictionary<string, OnAspectServiceProcessingCallHandler>>();
+        private static IDictionary<Type, IDictionary<string, SystemAction_object_bool>> _serviceProcessCallInfos = null;
         /// <summary>
         /// 切面服务处理的启用状态标识的管理容器
         /// </summary>
-        private static IDictionary<SystemType, IDictionary<string, bool>> _serviceProcessCallStatus = null;
+        private static IDictionary<Type, IDictionary<string, bool>> _serviceProcessCallStatus = null;
 
         /// <summary>
         /// 初始化切面服务处理类声明的全部回调接口
@@ -100,27 +94,27 @@ namespace GameEngine
         internal static void InitAllServiceProcessingCallbacks()
         {
             // 切面服务管理容器初始化
-            _serviceProcessCallInfos = new Dictionary<SystemType, IDictionary<string, SystemAction_object_bool>>();
-            _serviceProcessCallStatus = new Dictionary<SystemType, IDictionary<string, bool>>();
+            _serviceProcessCallInfos = new Dictionary<Type, IDictionary<string, SystemAction_object_bool>>();
+            _serviceProcessCallStatus = new Dictionary<Type, IDictionary<string, bool>>();
 
-            SystemType classType = typeof(AspectCallService);
+            Type classType = typeof(AspectCallService);
             MethodInfo[] methods = classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             for (int n = 0; n < methods.Length; ++n)
             {
                 MethodInfo method = methods[n];
-                IEnumerable<SystemAttribute> e = method.GetCustomAttributes();
-                foreach (SystemAttribute attr in e)
+                IEnumerable<Attribute> e = method.GetCustomAttributes();
+                foreach (Attribute attr in e)
                 {
-                    SystemType attrType = attr.GetType();
+                    Type attrType = attr.GetType();
                     if (typeof(OnServiceProcessRegisterOfTargetAttribute) == attrType)
                     {
                         Debugger.Assert(method.IsStatic);
 
                         OnServiceProcessRegisterOfTargetAttribute _attr = (OnServiceProcessRegisterOfTargetAttribute) attr;
 
-                        // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(method);
+                        // Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(method);
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                        // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegateAndCheckParameterType(method, _attr.ClassType, typeof(bool));
+                        // Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegateAndCheckParameterType(method, _attr.ClassType, typeof(bool));
                         SystemAction_object_bool callback = NovaEngine.Utility.Reflection.CreateGenericActionAndCheckParameterType<object, bool>(method, _attr.ClassType, typeof(bool));
 
                         AddServiceProcessingCallHandler(_attr.ClassType, _attr.MethodName, callback);
@@ -150,7 +144,7 @@ namespace GameEngine
         /// <returns>若存在指定的服务处理程序并完成调度则返回true，否则返回false</returns>
         internal static bool CallServiceProcess(object target, string methodName, bool reload = false)
         {
-            SystemType targetType = target.GetType();
+            Type targetType = target.GetType();
 
             bool ret_status = false, has_status = false;
             if (TryGetServiceProcessingCallStatus(targetType, methodName, out ret_status))
@@ -198,7 +192,7 @@ namespace GameEngine
         /// <param name="targetType">对象类型</param>
         /// <param name="methodName">函数名称</param>
         /// <param name="handler">回调句柄</param>
-        private static void AddServiceProcessingCallHandler(SystemType targetType, string methodName, SystemAction_object_bool handler)
+        private static void AddServiceProcessingCallHandler(Type targetType, string methodName, SystemAction_object_bool handler)
         {
             IDictionary<string, SystemAction_object_bool> targetServiceInfos = null;
             if (false == _serviceProcessCallInfos.TryGetValue(targetType, out targetServiceInfos))
@@ -210,8 +204,8 @@ namespace GameEngine
 
             if (targetServiceInfos.ContainsKey(methodName))
             {
-                Debugger.Warn("The handler '{0}' was already exists for target method '{1}.{2}', repeated add it will be override old handler.",
-                        NovaEngine.Utility.Text.ToString(handler), NovaEngine.Utility.Text.ToString(targetType), methodName);
+                Debugger.Warn("The handler '{%t}' was already exists for target method '{%t}.{%s}', repeated add it will be override old handler.",
+                        handler, targetType, methodName);
 
                 targetServiceInfos.Remove(methodName);
             }
@@ -225,7 +219,7 @@ namespace GameEngine
         /// <param name="targetType">对象类型</param>
         /// <param name="methodName">函数名称</param>
         /// <param name="status">启用状态标识</param>
-        private static void AddServiceProcessingCallStatus(SystemType targetType, string methodName, bool status)
+        private static void AddServiceProcessingCallStatus(Type targetType, string methodName, bool status)
         {
             IDictionary<string, bool> targetServiceStatus = null;
             if (false == _serviceProcessCallStatus.TryGetValue(targetType, out targetServiceStatus))
@@ -237,8 +231,8 @@ namespace GameEngine
 
             if (targetServiceStatus.ContainsKey(methodName))
             {
-                Debugger.Warn("The service processing status '{0}' was already exists for target method '{1}.{2}', repeated add it will be override old handler.",
-                        status, NovaEngine.Utility.Text.ToString(targetType), methodName);
+                Debugger.Warn("The service processing status '{%b}' was already exists for target method '{%t}.{%s}', repeated add it will be override old handler.",
+                        status, targetType, methodName);
 
                 targetServiceStatus.Remove(methodName);
             }
@@ -252,19 +246,19 @@ namespace GameEngine
         /// <param name="targetType">对象类型</param>
         /// <param name="handlers">句柄列表</param>
         /// <returns>若查找句柄列表成功返回true，否则返回false</returns>
-        private static bool TryGetServiceProcessingCallHandler(SystemType targetType, out IList<IDictionary<string, SystemAction_object_bool>> handlers)
+        private static bool TryGetServiceProcessingCallHandler(Type targetType, out IList<IDictionary<string, SystemAction_object_bool>> handlers)
         {
             handlers = null;
 
             IList<IDictionary<string, SystemAction_object_bool>> list = null;
-            IEnumerator<KeyValuePair<SystemType, IDictionary<string, SystemAction_object_bool>>> e = _serviceProcessCallInfos.GetEnumerator();
+            IEnumerator<KeyValuePair<Type, IDictionary<string, SystemAction_object_bool>>> e = _serviceProcessCallInfos.GetEnumerator();
             while (e.MoveNext())
             {
-                if (e.Current.Key.IsSubclassOf(typeof(SystemAttribute)))
+                if (e.Current.Key.IsSubclassOf(typeof(Attribute)))
                 {
                     // 属性类的绑定回调
-                    IEnumerable<SystemAttribute> attrTypes = targetType.GetCustomAttributes();
-                    foreach (SystemAttribute attrType in attrTypes)
+                    IEnumerable<Attribute> attrTypes = targetType.GetCustomAttributes();
+                    foreach (Attribute attrType in attrTypes)
                     {
                         if (e.Current.Key == attrType.GetType())
                         {
@@ -301,7 +295,7 @@ namespace GameEngine
         /// <param name="methodName">函数名称</param>
         /// <param name="status">启用状态标识</param>
         /// <returns>若查找状态标识成功返回true，否则返回false</returns>
-        private static bool TryGetServiceProcessingCallStatus(SystemType targetType, string methodName, out bool status)
+        private static bool TryGetServiceProcessingCallStatus(Type targetType, string methodName, out bool status)
         {
             status = false;
 

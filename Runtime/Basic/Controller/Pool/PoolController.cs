@@ -22,11 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemActivator = System.Activator;
 
 namespace GameEngine
 {
@@ -38,12 +35,12 @@ namespace GameEngine
         /// <summary>
         /// 池对象类型统计列表
         /// </summary>
-        private IList<SystemType> _poolObjectTypes = null;
+        private IList<Type> _poolObjectTypes = null;
 
         /// <summary>
         /// 池对象处理信息管理列表
         /// </summary>
-        private IDictionary<SystemType, PoolObjectProcessInfo> _poolObjectProcessInfos = null;
+        private IDictionary<Type, PoolObjectProcessInfo> _poolObjectProcessInfos = null;
 
         /// <summary>
         /// 池管理对象初始化通知接口函数
@@ -51,10 +48,10 @@ namespace GameEngine
         protected override sealed void OnInitialize()
         {
             // 初始化池对象类型列表
-            _poolObjectTypes = new List<SystemType>();
+            _poolObjectTypes = new List<Type>();
 
             // 初始化池对象处理信息管理列表
-            _poolObjectProcessInfos = new Dictionary<SystemType, PoolObjectProcessInfo>();
+            _poolObjectProcessInfos = new Dictionary<Type, PoolObjectProcessInfo>();
         }
 
         /// <summary>
@@ -114,12 +111,12 @@ namespace GameEngine
         /// </summary>
         /// <param name="classType">对象类型</param>
         /// <returns>返回对象实例，若创建失败则返回null</returns>
-        public object CreateObject(SystemType classType)
+        public object CreateObject(Type classType)
         {
             // 非池化管理的目标对象类型
             if (false == IsPoolObjectType(classType))
             {
-                object instance = SystemActivator.CreateInstance(classType);
+                object instance = Activator.CreateInstance(classType);
                 Debugger.Assert(instance, NovaEngine.ErrorText.InvalidArguments);
 
                 return instance;
@@ -130,8 +127,7 @@ namespace GameEngine
                 return info.ObjectCreateCallback.DynamicInvoke(classType);
             }
 
-            Debugger.Warn("Unsupported create object with target type '{0}' from pool controller, created instance failed.",
-                    NovaEngine.Utility.Text.ToString(classType));
+            Debugger.Warn("Unsupported create object with target type '{%t}' from pool controller, created instance failed.", classType);
             return null;
         }
 
@@ -171,7 +167,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <returns>若给定类型为池化对象则返回true，否则返回false</returns>
-        private bool IsPoolObjectType(SystemType targetType)
+        private bool IsPoolObjectType(Type targetType)
         {
             for (int n = 0; n < _poolObjectTypes.Count; ++n)
             {
@@ -189,12 +185,11 @@ namespace GameEngine
         /// 新的对象类型成功添加后，此类型对象在创建实例时将根据类型使用对应的池管理方式
         /// </summary>
         /// <param name="targetType">对象类型</param>
-        public void AddPoolObjectType(SystemType targetType)
+        public void AddPoolObjectType(Type targetType)
         {
             if (_poolObjectTypes.Contains(targetType))
             {
-                Debugger.Warn("The target object type '{0}' was already exist within pool controller, repeat added it failed.",
-                        NovaEngine.Utility.Text.ToString(targetType));
+                Debugger.Warn("The target object type '{%t}' was already exist within pool controller, repeat added it failed.", targetType);
                 return;
             }
 
@@ -205,7 +200,7 @@ namespace GameEngine
         /// 从当前的池对象类型列表中移除指定的对象类型
         /// </summary>
         /// <param name="targetType">对象类型</param>
-        private void RemovePoolObjectType(SystemType targetType)
+        private void RemovePoolObjectType(Type targetType)
         {
             if (_poolObjectTypes.Contains(targetType))
             {
@@ -231,10 +226,10 @@ namespace GameEngine
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="createAction">创建对象回调函数</param>
         /// <param name="releaseAction">释放对象回调函数</param>
-        private void AddPoolObjectProcessInfo<T>(System.Func<SystemType, T> createAction, System.Action<T> releaseAction)
+        private void AddPoolObjectProcessInfo<T>(Func<Type, T> createAction, Action<T> releaseAction)
         {
-            SystemDelegate createCallback = SystemDelegate.CreateDelegate(typeof(System.Func<SystemType, T>), this, createAction.Method);
-            SystemDelegate releaseCallback = SystemDelegate.CreateDelegate(typeof(System.Action<T>), this, releaseAction.Method);
+            Delegate createCallback = Delegate.CreateDelegate(typeof(Func<Type, T>), this, createAction.Method);
+            Delegate releaseCallback = Delegate.CreateDelegate(typeof(Action<T>), this, releaseAction.Method);
 
             AddPoolObjectProcessInfo(typeof(T), createCallback, releaseCallback);
         }
@@ -245,12 +240,11 @@ namespace GameEngine
         /// <param name="targetType">对象类型</param>
         /// <param name="createCallback">创建对象回调函数</param>
         /// <param name="releaseCallback">释放对象回调函数</param>
-        private void AddPoolObjectProcessInfo(SystemType targetType, SystemDelegate createCallback, SystemDelegate releaseCallback)
+        private void AddPoolObjectProcessInfo(Type targetType, Delegate createCallback, Delegate releaseCallback)
         {
             if (_poolObjectProcessInfos.ContainsKey(targetType))
             {
-                Debugger.Warn("The target object type '{0}' was already exist within pool controller's processing map, repeat added it failed.",
-                        NovaEngine.Utility.Text.ToString(targetType));
+                Debugger.Warn("The target object type '{%t}' was already exist within pool controller's processing map, repeat added it failed.", targetType);
                 return;
             }
 
@@ -264,9 +258,9 @@ namespace GameEngine
         /// <param name="targetType">对象类型</param>
         /// <param name="info">池对象处理信息</param>
         /// <returns>若存在指定的对象类型则返回true，否则返回false</returns>
-        private bool TryGetPoolObjectProcessByType(SystemType targetType, out PoolObjectProcessInfo info)
+        private bool TryGetPoolObjectProcessByType(Type targetType, out PoolObjectProcessInfo info)
         {
-            IEnumerator<SystemType> e = _poolObjectProcessInfos.Keys.GetEnumerator();
+            IEnumerator<Type> e = _poolObjectProcessInfos.Keys.GetEnumerator();
             while (e.MoveNext())
             {
                 if (e.Current == targetType || e.Current.IsAssignableFrom(targetType))
@@ -294,7 +288,7 @@ namespace GameEngine
         /// 从当前的池对象处理信息管理列表中移除指定的对象类型
         /// </summary>
         /// <param name="targetType">对象类型</param>
-        private void RemovePoolObjectProcessInfo(SystemType targetType)
+        private void RemovePoolObjectProcessInfo(Type targetType)
         {
             if (_poolObjectProcessInfos.ContainsKey(targetType))
             {
@@ -318,16 +312,16 @@ namespace GameEngine
             /// <summary>
             /// 对象创建回调函数
             /// </summary>
-            private readonly SystemDelegate _objectCreateCallback;
+            private readonly Delegate _objectCreateCallback;
             /// <summary>
             /// 对象释放回调函数
             /// </summary>
-            private readonly SystemDelegate _objectReleaseCallback;
+            private readonly Delegate _objectReleaseCallback;
 
-            public SystemDelegate ObjectCreateCallback => _objectCreateCallback;
-            public SystemDelegate ObjectReleaseCallback => _objectReleaseCallback;
+            public Delegate ObjectCreateCallback => _objectCreateCallback;
+            public Delegate ObjectReleaseCallback => _objectReleaseCallback;
 
-            public PoolObjectProcessInfo(SystemDelegate objectCreateCallback, SystemDelegate objectReleaseCallback)
+            public PoolObjectProcessInfo(Delegate objectCreateCallback, Delegate objectReleaseCallback)
             {
                 _objectCreateCallback = objectCreateCallback;
                 _objectReleaseCallback = objectReleaseCallback;

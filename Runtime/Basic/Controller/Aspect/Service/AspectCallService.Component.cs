@@ -24,13 +24,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 提供切面访问接口的服务类，对整个程序内部的对象实例提供切面访问的服务逻辑处理
-    /// </summary>
+    /// 提供切面访问接口的服务类
     public static partial class AspectCallService
     {
         [OnServiceProcessRegisterOfTarget(typeof(CComponent), AspectBehaviourType.Initialize)]
@@ -67,7 +65,7 @@ namespace GameEngine
 
         private static void RegComponentDispatchCallByTargetType(CComponent component, AspectBehaviourType behaviourType, bool reload)
         {
-            SystemType targetType = component.BeanType;
+            Type targetType = component.BeanType;
             Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CComponent));
             if (null == codeInfo)
             {
@@ -94,7 +92,7 @@ namespace GameEngine
                     continue;
                 }
 
-                // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
+                // Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
                 // Debugger.Assert(null != callback, "Invalid method type.");
 
                 Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' input listener with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);
@@ -125,7 +123,7 @@ namespace GameEngine
                     continue;
                 }
 
-                // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
+                // Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
                 // Debugger.Assert(null != callback, "Invalid method type.");
 
                 Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' event listener with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);
@@ -156,7 +154,7 @@ namespace GameEngine
                     continue;
                 }
 
-                // SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
+                // Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
                 // Debugger.Assert(null != callback, "Invalid method type.");
 
                 Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' message listener with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);

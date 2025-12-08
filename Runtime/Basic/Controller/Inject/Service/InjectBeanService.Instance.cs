@@ -22,21 +22,18 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 提供注入操作接口的服务类，对整个程序内部的对象实例提供注入操作的服务逻辑处理
-    /// </summary>
+    /// 提供注入操作接口的服务类
     public static partial class InjectBeanService
     {
         /// <summary>
         /// 注入实体对象的信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, IDictionary<string, GeneralInstantiateGenerator>> _beanInstanceInfos = null;
+        private static IDictionary<Type, IDictionary<string, GeneralInstantiateGenerator>> _beanInstanceInfos = null;
 
         /// <summary>
         /// 实体对象实例的管理信息初始化接口函数
@@ -44,7 +41,7 @@ namespace GameEngine
         [OnServiceProcessInitCallback]
         private static void InitBeanInstanceInfos()
         {
-            _beanInstanceInfos = new Dictionary<SystemType, IDictionary<string, GeneralInstantiateGenerator>>();
+            _beanInstanceInfos = new Dictionary<Type, IDictionary<string, GeneralInstantiateGenerator>>();
         }
 
         /// <summary>
@@ -64,14 +61,14 @@ namespace GameEngine
         /// </summary>
         /// <param name="classType">对象类型</param>
         /// <returns>返回新创建的对象实例</returns>
-        public static object CreateObjectInstance(SystemType classType)
+        public static object CreateObjectInstance(Type classType)
         {
             if (typeof(CBean).IsAssignableFrom(classType))
             {
                 return CreateBeanInstance(classType);
             }
 
-            return System.Activator.CreateInstance(classType);
+            return Activator.CreateInstance(classType);
         }
 
         /// <summary>
@@ -84,7 +81,7 @@ namespace GameEngine
             Loader.Symboling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
             if (null == bean)
             {
-                Debugger.Warn("Could not found any bean class struct with target name '{0}', create bean instance failed.", beanName);
+                Debugger.Warn("Could not found any bean class struct with target name '{%s}', create bean instance failed.", beanName);
                 return null;
             }
 
@@ -96,12 +93,12 @@ namespace GameEngine
         /// </summary>
         /// <param name="classType">对象类型</param>
         /// <returns>返回新创建的对象实例</returns>
-        public static CBean CreateBeanInstance(SystemType classType)
+        public static CBean CreateBeanInstance(Type classType)
         {
             Loader.Symboling.SymClass symClass = Loader.CodeLoader.GetSymClassByType(classType);
             if (null == symClass)
             {
-                Debugger.Warn("Could not found any bean class struct with target type '{0}', create bean instance failed.", NovaEngine.Utility.Text.ToString(classType));
+                Debugger.Warn("Could not found any bean class struct with target type '{%t}', create bean instance failed.", classType);
                 return null;
             }
 
@@ -128,7 +125,7 @@ namespace GameEngine
         /// <returns>返回新创建的实体对象实例，若创建失败返回null</returns>
         internal static CBean CreateBeanInstance(Loader.Symboling.Bean bean)
         {
-            SystemType classType = bean.Symbol.ClassType;
+            Type classType = bean.Symbol.ClassType;
             string beanName = bean.BeanName;
 
             Debugger.Assert(classType.IsClass && false == string.IsNullOrEmpty(beanName), NovaEngine.ErrorText.InvalidArguments);
@@ -162,7 +159,7 @@ namespace GameEngine
         /// <param name="obj">对象实例</param>
         internal static void ReleaseObjectInstance(object obj)
         {
-            SystemType classType = obj.GetType();
+            Type classType = obj.GetType();
 
             if (typeof(CBean).IsAssignableFrom(classType))
             {
@@ -212,7 +209,7 @@ namespace GameEngine
             /// <summary>
             /// 对象类型声明
             /// </summary>
-            protected SystemType _classType = null;
+            protected Type _classType = null;
             /// <summary>
             /// 对象实体名称
             /// </summary>
@@ -223,7 +220,7 @@ namespace GameEngine
             /// </summary>
             public abstract bool SingletonMode { get; }
 
-            protected GeneralInstantiateGenerator(SystemType classType, string beanName)
+            protected GeneralInstantiateGenerator(Type classType, string beanName)
             {
                 Debugger.Assert(typeof(CBean).IsAssignableFrom(classType), NovaEngine.ErrorText.InvalidArguments);
 
@@ -259,7 +256,7 @@ namespace GameEngine
                 if (typeof(CScene).IsAssignableFrom(_classType))
                 {
                     // obj = SceneHandler.Instance.CreateScene(m_classType);
-                    throw new System.ArgumentException();
+                    throw new ArgumentException();
                 }
                 else if (typeof(CActor).IsAssignableFrom(_classType))
                 {
@@ -271,7 +268,7 @@ namespace GameEngine
                 }
                 else
                 {
-                    obj = System.Activator.CreateInstance(_classType) as CBean;
+                    obj = Activator.CreateInstance(_classType) as CBean;
 
                     AspectController.Instance.Call(obj.Initialize);
                 }
@@ -301,7 +298,7 @@ namespace GameEngine
 
                 if (typeof(CScene).IsAssignableFrom(_classType))
                 {
-                    throw new System.ArgumentException();
+                    throw new ArgumentException();
                 }
                 else if (typeof(CActor).IsAssignableFrom(_classType))
                 {
@@ -333,7 +330,7 @@ namespace GameEngine
             /// </summary>
             public override bool SingletonMode => false;
 
-            public MultipleInstantiateGenerator(SystemType classType, string beanName) : base(classType, beanName)
+            public MultipleInstantiateGenerator(Type classType, string beanName) : base(classType, beanName)
             {
                 _objects = new List<CBean>();
             }
@@ -403,7 +400,7 @@ namespace GameEngine
             /// </summary>
             public override bool SingletonMode => true;
 
-            public SingletonInstantiateGenerator(SystemType classType, string beanName) : base(classType, beanName)
+            public SingletonInstantiateGenerator(Type classType, string beanName) : base(classType, beanName)
             {
                 _instance = null;
                 _referenceCount = 0;

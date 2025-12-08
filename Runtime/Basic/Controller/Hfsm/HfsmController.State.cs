@@ -25,9 +25,7 @@
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 状态管理对象类，用于对场景上下文中的所有引用对象的状态进行集中管理及分发
-    /// </summary>
+    /// 状态管理对象类
     internal sealed partial class HfsmController
     {
         /// <summary>

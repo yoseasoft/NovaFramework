@@ -22,19 +22,17 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 提供切面访问接口的服务类，对整个程序内部的对象实例提供切面访问的服务逻辑处理
-    /// </summary>
+    /// 提供切面访问接口的服务类
     public static partial class AspectCallService
     {
         [OnServiceProcessRegisterOfTarget(typeof(CScene), AspectBehaviourType.Startup)]
         private static void CallServiceProcessOfSceneStartup(CScene scene, bool reload)
         {
-            SystemType targetType = scene.BeanType;
+            Type targetType = scene.BeanType;
             Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CScene));
             if (null == codeInfo)
             {

@@ -23,22 +23,19 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using SystemType = System.Type;
-
 namespace GameEngine
 {
-    /// <summary>
-    /// 事件管理对象类，用于对场景上下文中的所有节点对象进行事件管理及分发
-    /// </summary>
+    /// 事件管理对象类
     internal partial class EventController
     {
         /// <summary>
         /// 事件订阅回调绑定接口的缓存容器
         /// </summary>
-        private IDictionary<SystemType, IDictionary<string, EventCallMethodInfo>> _eventSubscribeBindingCaches;
+        private IDictionary<Type, IDictionary<string, EventCallMethodInfo>> _eventSubscribeBindingCaches;
 
         /// <summary>
         /// 事件订阅绑定管理模块的初始化函数
@@ -47,7 +44,7 @@ namespace GameEngine
         private void InitializeForEventSubscribeBinding()
         {
             // 初始化回调绑定缓存容器
-            _eventSubscribeBindingCaches = new Dictionary<SystemType, IDictionary<string, EventCallMethodInfo>>();
+            _eventSubscribeBindingCaches = new Dictionary<Type, IDictionary<string, EventCallMethodInfo>>();
         }
 
         /// <summary>
@@ -84,7 +81,7 @@ namespace GameEngine
         /// <param name="methodInfo">函数对象</param>
         /// <param name="eventID">事件标识</param>
         /// <param name="automatically">自动装载状态标识</param>
-        internal void AddEventSubscribeBindingCallInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int eventID, bool automatically)
+        internal void AddEventSubscribeBindingCallInfo(string fullname, Type targetType, MethodInfo methodInfo, int eventID, bool automatically)
         {
             if (false == _eventSubscribeBindingCaches.TryGetValue(targetType, out IDictionary<string, EventCallMethodInfo> eventCallMethodInfos))
             {
@@ -112,7 +109,7 @@ namespace GameEngine
         /// <param name="methodInfo">函数对象</param>
         /// <param name="eventDataType">事件数据类型</param>
         /// <param name="automatically">自动装载状态标识</param>
-        internal void AddEventSubscribeBindingCallInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType eventDataType, bool automatically)
+        internal void AddEventSubscribeBindingCallInfo(string fullname, Type targetType, MethodInfo methodInfo, Type eventDataType, bool automatically)
         {
             if (false == _eventSubscribeBindingCaches.TryGetValue(targetType, out IDictionary<string, EventCallMethodInfo> eventCallMethodInfos))
             {
@@ -137,7 +134,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
-        internal void RemoveEventSubscribeBindingCallInfo(string fullname, SystemType targetType)
+        internal void RemoveEventSubscribeBindingCallInfo(string fullname, Type targetType)
         {
             Debugger.Info(LogGroupTag.Controller, "移除指定的事件订阅绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。", targetType, fullname);
 
@@ -171,7 +168,7 @@ namespace GameEngine
         /// <param name="targetType">目标对象类型</param>
         /// <param name="eventID">事件标识</param>
         /// <param name="args">事件参数</param>
-        internal void InvokeEventSubscribeBindingCall(IBean targetObject, string fullname, SystemType targetType, int eventID, params object[] args)
+        internal void InvokeEventSubscribeBindingCall(IBean targetObject, string fullname, Type targetType, int eventID, params object[] args)
         {
             EventCallMethodInfo eventCallMethodInfo = FindEventSubscribeBindingCallByName(fullname, targetType);
             if (null == eventCallMethodInfo)
@@ -190,7 +187,7 @@ namespace GameEngine
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
         /// <param name="eventData">事件数据</param>
-        internal void InvokeEventSubscribeBindingCall(IBean targetObject, string fullname, SystemType targetType, object eventData)
+        internal void InvokeEventSubscribeBindingCall(IBean targetObject, string fullname, Type targetType, object eventData)
         {
             EventCallMethodInfo eventCallMethodInfo = FindEventSubscribeBindingCallByName(fullname, targetType);
             if (null == eventCallMethodInfo)
@@ -208,7 +205,7 @@ namespace GameEngine
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
         /// <returns>返回绑定函数实例</returns>
-        private EventCallMethodInfo FindEventSubscribeBindingCallByName(string fullname, SystemType targetType)
+        private EventCallMethodInfo FindEventSubscribeBindingCallByName(string fullname, Type targetType)
         {
             if (_eventSubscribeBindingCaches.TryGetValue(targetType, out IDictionary<string, EventCallMethodInfo> eventCallMethodInfos))
             {
@@ -227,7 +224,7 @@ namespace GameEngine
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
         /// <returns>若函数以自动方式进行绑定则返回true，否则返回false</returns>
-        internal bool IsEventSubscribeBindingForAutomatically(string fullname, SystemType targetType)
+        internal bool IsEventSubscribeBindingForAutomatically(string fullname, Type targetType)
         {
             EventCallMethodInfo eventCallMethodInfo = FindEventSubscribeBindingCallByName(fullname, targetType);
             if (null == eventCallMethodInfo)

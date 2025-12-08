@@ -22,16 +22,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Reflection;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
-using SystemAction = System.Action;
-using SystemDelegate = System.Delegate;
-
 namespace GameEngine
 {
     /// <summary>

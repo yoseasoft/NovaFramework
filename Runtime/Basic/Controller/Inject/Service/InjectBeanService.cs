@@ -22,14 +22,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
 
 namespace GameEngine
 {
@@ -41,8 +36,8 @@ namespace GameEngine
         /// <summary>
         /// 服务初始化调度接口函数的属性定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        private class OnServiceProcessInitCallbackAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        private class OnServiceProcessInitCallbackAttribute : Attribute
         {
             public OnServiceProcessInitCallbackAttribute() : base() { }
         }
@@ -50,8 +45,8 @@ namespace GameEngine
         /// <summary>
         /// 服务清理调度接口函数的属性定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        private class OnServiceProcessCleanupCallbackAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        private class OnServiceProcessCleanupCallbackAttribute : Attribute
         {
             public OnServiceProcessCleanupCallbackAttribute() : base() { }
         }
@@ -59,38 +54,38 @@ namespace GameEngine
         /// <summary>
         /// 服务初始化处理回调的函数容器
         /// </summary>
-        private static IList<SystemDelegate> _serviceProcessInitCallbacks = null;
+        private static IList<Delegate> _serviceProcessInitCallbacks = null;
         /// <summary>
         /// 服务清理处理回调的函数容器
         /// </summary>
-        private static IList<SystemDelegate> _serviceProcessCleanupCallbacks = null;
+        private static IList<Delegate> _serviceProcessCleanupCallbacks = null;
 
         /// <summary>
         /// 初始化注入服务处理类声明的全部回调接口
         /// </summary>
         internal static void InitAllServiceProcessingCallbacks()
         {
-            _serviceProcessInitCallbacks = new List<SystemDelegate>();
-            _serviceProcessCleanupCallbacks = new List<SystemDelegate>();
+            _serviceProcessInitCallbacks = new List<Delegate>();
+            _serviceProcessCleanupCallbacks = new List<Delegate>();
 
-            SystemType classType = typeof(InjectBeanService);
+            Type classType = typeof(InjectBeanService);
             MethodInfo[] methods = classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             for (int n = 0; n < methods.Length; ++n)
             {
                 MethodInfo method = methods[n];
-                IEnumerable<SystemAttribute> e = method.GetCustomAttributes();
-                foreach (SystemAttribute attr in e)
+                IEnumerable<Attribute> e = method.GetCustomAttributes();
+                foreach (Attribute attr in e)
                 {
-                    SystemType attrType = attr.GetType();
+                    Type attrType = attr.GetType();
                     if (typeof(OnServiceProcessInitCallbackAttribute) == attrType)
                     {
-                        SystemDelegate callback = method.CreateDelegate(typeof(NovaEngine.Definition.Delegate.EmptyFunctionHandler));
+                        Delegate callback = method.CreateDelegate(typeof(NovaEngine.Definition.Delegate.EmptyFunctionHandler));
 
                         _serviceProcessInitCallbacks.Add(callback);
                     }
                     else if (typeof(OnServiceProcessCleanupCallbackAttribute) == attrType)
                     {
-                        SystemDelegate callback = method.CreateDelegate(typeof(NovaEngine.Definition.Delegate.EmptyFunctionHandler));
+                        Delegate callback = method.CreateDelegate(typeof(NovaEngine.Definition.Delegate.EmptyFunctionHandler));
 
                         _serviceProcessCleanupCallbacks.Add(callback);
                     }

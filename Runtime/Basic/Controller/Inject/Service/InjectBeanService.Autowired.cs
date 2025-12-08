@@ -24,13 +24,9 @@
 
 using System.Collections.Generic;
 
-using SystemType = System.Type;
-
 namespace GameEngine
 {
-    /// <summary>
-    /// 提供注入操作接口的服务类，对整个程序内部的对象实例提供注入操作的服务逻辑处理
-    /// </summary>
+    /// 提供注入操作接口的服务类
     public static partial class InjectBeanService
     {
         /// <summary>

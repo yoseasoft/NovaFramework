@@ -22,9 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -41,7 +40,7 @@ namespace GameEngine
         /// <summary>
         /// 针对事件类型进行分发的监听对象管理列表容器
         /// </summary>
-        private IDictionary<SystemType, IList<IEventDispatch>> _eventListenersForType;
+        private IDictionary<Type, IList<IEventDispatch>> _eventListenersForType;
 
         /// <summary>
         /// 事件分发数据的缓冲管理队列
@@ -55,7 +54,7 @@ namespace GameEngine
         {
             // 初始化监听列表
             _eventListenersForId = new Dictionary<int, IList<IEventDispatch>>();
-            _eventListenersForType = new Dictionary<SystemType, IList<IEventDispatch>>();
+            _eventListenersForType = new Dictionary<Type, IList<IEventDispatch>>();
 
             // 初始化事件数据缓冲队列
             _eventBuffers = new Queue<EventData>();
@@ -272,7 +271,7 @@ namespace GameEngine
             // 检查是否重复订阅
             if (list.Contains(listener))
             {
-                Debugger.Warn("The listener for target event '{0}' was already subscribed, cannot repeat do it.", eventID);
+                Debugger.Warn("The listener for target event '{%d}' was already subscribed, cannot repeat do it.", eventID);
                 return false;
             }
 
@@ -287,7 +286,7 @@ namespace GameEngine
         /// <param name="eventType">事件类型</param>
         /// <param name="listener">事件监听回调接口</param>
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
-        public bool Subscribe(SystemType eventType, IEventDispatch listener)
+        public bool Subscribe(Type eventType, IEventDispatch listener)
         {
             IList<IEventDispatch> list;
             if (false == _eventListenersForType.TryGetValue(eventType, out list))
@@ -302,7 +301,7 @@ namespace GameEngine
             // 检查是否重复订阅
             if (list.Contains(listener))
             {
-                Debugger.Warn("The listener for target event '{0}' was already subscribed, cannot repeat do it.", eventType.FullName);
+                Debugger.Warn("The listener for target event '{%t}' was already subscribed, cannot repeat do it.", eventType);
                 return false;
             }
 
@@ -321,7 +320,7 @@ namespace GameEngine
             IList<IEventDispatch> list;
             if (false == _eventListenersForId.TryGetValue(eventID, out list))
             {
-                Debugger.Warn("Could not found any listener for target event '{0}' with on subscribed, do unsubscribe failed.", eventID);
+                Debugger.Warn("Could not found any listener for target event '{%d}' with on subscribed, do unsubscribe failed.", eventID);
                 return;
             }
 
@@ -338,12 +337,12 @@ namespace GameEngine
         /// </summary>
         /// <param name="eventType">事件类型</param>
         /// <param name="listener">事件监听回调接口</param>
-        public void Unsubscribe(SystemType eventType, IEventDispatch listener)
+        public void Unsubscribe(Type eventType, IEventDispatch listener)
         {
             IList<IEventDispatch> list;
             if (false == _eventListenersForType.TryGetValue(eventType, out list))
             {
-                Debugger.Warn("Could not found any listener for target event '{0}' with on subscribed, do unsubscribe failed.", eventType.FullName);
+                Debugger.Warn("Could not found any listener for target event '{%t}' with on subscribed, do unsubscribe failed.", eventType);
                 return;
             }
 
@@ -366,7 +365,7 @@ namespace GameEngine
                 Unsubscribe(ids[n], listener);
             }
 
-            IList<SystemType> types = NovaEngine.Utility.Collection.ToListForKeys<SystemType, IList<IEventDispatch>>(_eventListenersForType);
+            IList<Type> types = NovaEngine.Utility.Collection.ToListForKeys<Type, IList<IEventDispatch>>(_eventListenersForType);
             for (int n = 0; null != types && n < types.Count; ++n)
             {
                 Unsubscribe(types[n], listener);

@@ -23,15 +23,12 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemEnum = System.Enum;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 切面访问接口的控制器类，对整个程序所有切面访问函数进行统一的整合和管理
-    /// </summary>
+    /// 切面访问接口的控制器类
     internal sealed partial class AspectController
     {
         /// <summary>
@@ -67,7 +64,7 @@ namespace GameEngine
         /// </summary>
         private void _InitBehaviourNameTypes()
         {
-            foreach (AspectBehaviourType aspectBehaviourType in SystemEnum.GetValues(typeof(AspectBehaviourType)))
+            foreach (AspectBehaviourType aspectBehaviourType in Enum.GetValues(typeof(AspectBehaviourType)))
             {
                 // if (AspectBehaviourType.Unknown == aspectBehaviourType)
                 if ((int) AspectBehaviourType.Unknown == ((int) aspectBehaviourType & 0xff))
@@ -79,7 +76,7 @@ namespace GameEngine
                 }
 
                 // 通过枚举类型获取其对应的名称
-                string aspectBehaviourName = SystemEnum.GetName(typeof(AspectBehaviourType), aspectBehaviourType);
+                string aspectBehaviourName = Enum.GetName(typeof(AspectBehaviourType), aspectBehaviourType);
 
                 Debugger.Assert(false == _behaviourNameTypes.ContainsKey(aspectBehaviourName));
 

@@ -22,21 +22,18 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 原型对象管理类，用于对场景上下文中的所有原型对象提供通用的访问操作接口
-    /// </summary>
+    /// 原型对象管理类
     internal sealed partial class BeanController
     {
         /// <summary>
         /// 组件对象类型映射注册管理容器
         /// </summary>
-        private NovaEngine.DoubleMap<string, SystemType> _componentClassTypes = null;
+        private NovaEngine.DoubleMap<string, Type> _componentClassTypes = null;
 
         /// <summary>
         /// 原型管理对象的组件模块初始化通知接口函数
@@ -45,7 +42,7 @@ namespace GameEngine
         private void OnComponentInitialize()
         {
             // 初始化组件类注册容器
-            _componentClassTypes = new NovaEngine.DoubleMap<string, SystemType>();
+            _componentClassTypes = new NovaEngine.DoubleMap<string, Type>();
         }
 
         /// <summary>
@@ -66,9 +63,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="componentName">组件名称</param>
         /// <returns>返回名称对应的组件对象类型，若不存在则返回null</returns>
-        public SystemType FindComponentTypeByName(string componentName)
+        public Type FindComponentTypeByName(string componentName)
         {
-            if (_componentClassTypes.TryGetValueByKey(componentName, out SystemType componentType))
+            if (_componentClassTypes.TryGetValueByKey(componentName, out Type componentType))
             {
                 return componentType;
             }
@@ -81,7 +78,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="componentType">组件类型</param>
         /// <returns>返回给定组件类型对应的名称</returns>
-        public string GetComponentNameByType(SystemType componentType)
+        public string GetComponentNameByType(Type componentType)
         {
             if (_componentClassTypes.TryGetKeyByValue(componentType, out string componentName))
             {
@@ -98,7 +95,7 @@ namespace GameEngine
         /// <param name="componentName">组件名称</param>
         /// <param name="clsType">组件类型</param>
         /// <returns>若组件类型注册成功则返回true，否则返回false</returns>
-        internal bool RegisterComponentClass(string componentName, SystemType clsType)
+        internal bool RegisterComponentClass(string componentName, Type clsType)
         {
             Debugger.Assert(false == string.IsNullOrEmpty(componentName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
 
