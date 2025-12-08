@@ -25,7 +25,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemDateTime = System.DateTime;
+using System;
 
 namespace GameEngine.Profiler.Statistics
 {
@@ -42,38 +42,38 @@ namespace GameEngine.Profiler.Statistics
         /// <summary>
         /// 统计信息对象创建时间
         /// </summary>
-        private readonly SystemDateTime _createTime;
+        private readonly DateTime _createTime;
         /// <summary>
         /// 统计信息对象释放时间
         /// </summary>
-        private SystemDateTime _releaseTime;
+        private DateTime _releaseTime;
         /// <summary>
         /// 统计信息对象访问时间
         /// </summary>
-        private SystemDateTime _accessTime;
+        private DateTime _accessTime;
 
         public int Uid => _uid;
 
-        public SystemDateTime CreateTime => _createTime;
-        public SystemDateTime ReleaseTime => _releaseTime;
-        public SystemDateTime AccessTime => _accessTime;
+        public DateTime CreateTime => _createTime;
+        public DateTime ReleaseTime => _releaseTime;
+        public DateTime AccessTime => _accessTime;
 
         protected StatInfo(int uid)
         {
             _uid = uid;
-            _createTime = SystemDateTime.Now;
-            _releaseTime = SystemDateTime.MinValue;
+            _createTime = DateTime.Now;
+            _releaseTime = DateTime.MinValue;
             _accessTime = _createTime;
         }
 
         internal void Release()
         {
-            _releaseTime = SystemDateTime.Now;
+            _releaseTime = DateTime.Now;
         }
 
         internal void Access()
         {
-            _accessTime = SystemDateTime.Now;
+            _accessTime = DateTime.Now;
         }
     }
 }

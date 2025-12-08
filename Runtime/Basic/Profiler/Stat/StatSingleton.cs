@@ -25,13 +25,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace GameEngine.Profiler.Statistics
 {
@@ -56,7 +52,7 @@ namespace GameEngine.Profiler.Statistics
 
         private IList<TRecord> _statInfoRecords;
 
-        private IDictionary<int, SystemMethodInfo> _regStatMethodTypes;
+        private IDictionary<int, MethodInfo> _regStatMethodTypes;
 
         /// <summary>
         /// 获取统计模块的模块类型标识
@@ -108,7 +104,7 @@ namespace GameEngine.Profiler.Statistics
             {
                 if (null == StatSingleton<TObject, TRecord>._instance)
                 {
-                    StatSingleton<TObject, TRecord>._instance = System.Activator.CreateInstance<TObject>();
+                    StatSingleton<TObject, TRecord>._instance = Activator.CreateInstance<TObject>();
                     (StatSingleton<TObject, TRecord>._instance as StatSingleton<TObject, TRecord>).Initialize(statType);
                 }
             }
@@ -136,7 +132,7 @@ namespace GameEngine.Profiler.Statistics
         {
             _statType = statType;
             _statInfoRecords = new List<TRecord>();
-            _regStatMethodTypes = new Dictionary<int, SystemMethodInfo>();
+            _regStatMethodTypes = new Dictionary<int, MethodInfo>();
 
             // 仅在调试模块下开启统计功能
             // 2025-09-12：
@@ -223,12 +219,12 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         private void InitAllStatMethods()
         {
-            SystemType classType = GetType();
-            SystemMethodInfo[] methods = classType.GetMethods(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Instance);
+            Type classType = GetType();
+            MethodInfo[] methods = classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             for (int n = 0; n < methods.Length; ++n)
             {
-                SystemMethodInfo method = methods[n];
-                SystemAttribute attr = method.GetCustomAttribute(typeof(IStat.OnStatFunctionRegisterAttribute));
+                MethodInfo method = methods[n];
+                Attribute attr = method.GetCustomAttribute(typeof(IStat.OnStatFunctionRegisterAttribute));
                 if (null != attr)
                 {
                     IStat.OnStatFunctionRegisterAttribute _attr = (IStat.OnStatFunctionRegisterAttribute) attr;
@@ -249,10 +245,10 @@ namespace GameEngine.Profiler.Statistics
                 throw new NovaEngine.CFrameworkException("The method name is invalid.");
             }
 
-            SystemMethodInfo method = this.GetType().GetMethod(methodName, SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Instance);
+            MethodInfo method = this.GetType().GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             if (null == method)
             {
-                Debugger.Error("Could not found any method info with name '{0}' in current class '{1}', register that method info failed.", methodName, this.GetType().FullName);
+                Debugger.Error("Could not found any method info with name '{%s}' in current class '{%t}', register that method info failed.", methodName, this);
                 return;
             }
 
@@ -264,13 +260,13 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         /// <param name="funcType">统计类型</param>
         /// <param name="method">函数信息</param>
-        protected void RegisterStatMethod(int funcType, SystemMethodInfo method)
+        protected void RegisterStatMethod(int funcType, MethodInfo method)
         {
             Debugger.Assert(null != _regStatMethodTypes, "The register method container must be non-null.");
 
             if (_regStatMethodTypes.ContainsKey(funcType))
             {
-                Debugger.Warn("The stat method type '{0}' was already register, repeat do it will be override old value.", funcType);
+                Debugger.Warn("The stat method type '{%d}' was already register, repeat do it will be override old value.", funcType);
                 _regStatMethodTypes.Remove(funcType);
             }
 
@@ -306,10 +302,10 @@ namespace GameEngine.Profiler.Statistics
         {
             // if (!IsActivated()) return;
 
-            SystemMethodInfo method = null;
+            MethodInfo method = null;
             if (false == (StatSingleton<TObject, TRecord>._instance as StatSingleton<TObject, TRecord>)._regStatMethodTypes.TryGetValue(funcType, out method))
             {
-                Debugger.Warn("Could not found any register stat method with type '{0}', invoke it failed.", funcType);
+                Debugger.Warn("Could not found any register stat method with type '{%d}', invoke it failed.", funcType);
                 return;
             }
 

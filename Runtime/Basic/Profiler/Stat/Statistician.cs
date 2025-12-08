@@ -23,13 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemEnum = System.Enum;
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
+using System.Reflection;
 
 namespace GameEngine.Profiler.Statistics
 {
@@ -70,7 +66,7 @@ namespace GameEngine.Profiler.Statistics
         /// <summary>
         /// 模块统计对象类的类型映射管理容器
         /// </summary>
-        private static IDictionary<int, SystemType> _statClassTypes;
+        private static IDictionary<int, Type> _statClassTypes;
 
         /// <summary>
         /// 模块统计对象类的实例映射容器
@@ -93,7 +89,7 @@ namespace GameEngine.Profiler.Statistics
         /// <summary>
         /// 模块统计对象类的编码映射管理容器
         /// </summary>
-        private static IDictionary<int, SystemType> _statCodeTypes;
+        private static IDictionary<int, Type> _statCodeTypes;
 
         /// <summary>
         /// 初始化句柄对象的全部统计模块
@@ -101,12 +97,12 @@ namespace GameEngine.Profiler.Statistics
         internal static void Startup()
         {
             // 管理容器初始化
-            _statClassTypes = new Dictionary<int, SystemType>();
+            _statClassTypes = new Dictionary<int, Type>();
             _statObjects = new Dictionary<int, IStat>();
             _statCreateCallbacks = new Dictionary<int, StatCreateHandler>();
             _statDestroyCallbacks = new Dictionary<int, StatDestroyHandler>();
             _statProcessCallbacks = new Dictionary<int, StatProcessHandler>();
-            _statCodeTypes = new Dictionary<int, SystemType>();
+            _statCodeTypes = new Dictionary<int, Type>();
 
             // 加载全部统计模块
             LoadAllStats();
@@ -118,7 +114,7 @@ namespace GameEngine.Profiler.Statistics
 
                 if (false == _statObjects.ContainsKey(pair.Key))
                 {
-                    Debugger.Warn("Could not found any stat class '{0}' from manager list, created it failed.", pair.Key);
+                    Debugger.Warn("Could not found any stat class '{%d}' from manager list, created it failed.", pair.Key);
 
                     // _statObjects.Add(pair.Key, stat_module as IStat);
                 }
@@ -167,7 +163,7 @@ namespace GameEngine.Profiler.Statistics
         {
             string namespaceTag = typeof(Statistician).Namespace;
 
-            foreach (StatType enumType in SystemEnum.GetValues(typeof(StatType)))
+            foreach (StatType enumType in Enum.GetValues(typeof(StatType)))
             {
                 if (StatType.Unknown == enumType)
                 {
@@ -180,8 +176,8 @@ namespace GameEngine.Profiler.Statistics
                 string statName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, StatClassUnifiedStandardName);
                 string statInfoName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, StatInfoClassUnifiedStandardName);
 
-                SystemType statType = SystemType.GetType(statName);
-                SystemType statInfoType = SystemType.GetType(statInfoName);
+                Type statType = Type.GetType(statName);
+                Type statInfoType = Type.GetType(statInfoName);
                 if (null == statType || null == statInfoType)
                 {
                     Debugger.Info(LogGroupTag.Profiler, "无法搜索到能匹配相应名称的统计模块类型‘{%s}’或统计信息类型‘{%s}’。", statName, statInfoName);
@@ -200,12 +196,12 @@ namespace GameEngine.Profiler.Statistics
                     continue;
                 }
 
-                SystemType singletonType = typeof(StatSingleton<,>);
-                SystemType statGenericType = singletonType.MakeGenericType(new SystemType[] { statType, statInfoType });
+                Type singletonType = typeof(StatSingleton<,>);
+                Type statGenericType = singletonType.MakeGenericType(new Type[] { statType, statInfoType });
 
-                SystemMethodInfo statCreateMethod = statGenericType.GetMethod("Create", SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
-                SystemMethodInfo statDestroyMethod = statGenericType.GetMethod("Destroy", SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
-                SystemMethodInfo statProcessMethod = statGenericType.GetMethod("Process", SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
+                MethodInfo statCreateMethod = statGenericType.GetMethod("Create", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+                MethodInfo statDestroyMethod = statGenericType.GetMethod("Destroy", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+                MethodInfo statProcessMethod = statGenericType.GetMethod("Process", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
                 Debugger.Assert(null != statCreateMethod && null != statDestroyMethod && null != statProcessMethod, "Invalid stat type.");
 
                 StatCreateHandler statCreateCallback = statCreateMethod.CreateDelegate(typeof(StatCreateHandler)) as StatCreateHandler;
@@ -213,7 +209,7 @@ namespace GameEngine.Profiler.Statistics
                 StatProcessHandler statProcessCallback = statProcessMethod.CreateDelegate(typeof(StatProcessHandler)) as StatProcessHandler;
                 Debugger.Assert(null != statCreateCallback && null != statDestroyCallback && null != statProcessCallback, "Invalid method type.");
 
-                Debugger.Log(LogGroupTag.Profiler, "Load stat type '{0}' succeed.", statType.FullName);
+                Debugger.Log(LogGroupTag.Profiler, "Load stat type '{%t}' succeed.", statType);
 
                 _statClassTypes.Add((int) enumType, statType);
                 _statCreateCallbacks.Add((int) enumType, statCreateCallback);
@@ -235,7 +231,7 @@ namespace GameEngine.Profiler.Statistics
                 return;
             }
 
-            if (false == _statCodeTypes.TryGetValue(funcType, out SystemType targetType))
+            if (false == _statCodeTypes.TryGetValue(funcType, out Type targetType))
             {
                 Debugger.Warn(LogGroupTag.Profiler, "当前统计模块的编码映射容器中无法找到匹配指定功能编码‘{%d}’的统计类型，移除该统计编码操作失败！", funcType);
                 return;
@@ -260,7 +256,7 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
         /// <param name="statCodeList">功能编码列表</param>
-        private static void RegisterStatCodeTypes(SystemType targetType, IList<int> statCodeList)
+        private static void RegisterStatCodeTypes(Type targetType, IList<int> statCodeList)
         {
             if (null == statCodeList)
                 return;
@@ -276,7 +272,7 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
         /// <param name="statCode">功能编码</param>
-        private static void RegisterStatCodeTypes(SystemType targetType, int statCode)
+        private static void RegisterStatCodeTypes(Type targetType, int statCode)
         {
             if (_statCodeTypes.ContainsKey(statCode))
             {
@@ -291,13 +287,13 @@ namespace GameEngine.Profiler.Statistics
         /// 移除指定对象类型的所有统计功能编码
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
-        private static void RemoveStatCode(SystemType targetType)
+        private static void RemoveStatCode(Type targetType)
         {
             IList<int> codes = NovaEngine.Utility.Collection.ToList<int>(_statCodeTypes.Keys);
             for (int n = 0; n < codes.Count; ++n)
             {
                 int k = codes[n];
-                if (false == _statCodeTypes.TryGetValue(k, out SystemType classType))
+                if (false == _statCodeTypes.TryGetValue(k, out Type classType))
                 {
                     Debugger.Warn(LogGroupTag.Profiler, "当前控制中心的编码映射容器中无法找到匹配指定功能编码‘{%d}’的统计类型，移除该统计编码操作失败！", k);
                     continue;
@@ -368,7 +364,7 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         /// <param name="clsType">统计模块类型</param>
         /// <returns>返回类型名称获取对应的对象实例</returns>
-        public static IStat GetStat(SystemType clsType)
+        public static IStat GetStat(Type clsType)
         {
             foreach (KeyValuePair<int, IStat> pair in _statObjects)
             {

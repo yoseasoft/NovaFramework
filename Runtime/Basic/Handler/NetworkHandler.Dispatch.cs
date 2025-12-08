@@ -98,8 +98,7 @@ namespace GameEngine
         {
             if (false == _messageDispatchListeners.TryGetValue(opcode, out IList<IMessageDispatch> list))
             {
-                list = new List<IMessageDispatch>();
-                list.Add(listener);
+                list = new List<IMessageDispatch>() { listener };
 
                 _messageDispatchListeners.Add(opcode, list);
                 return true;
@@ -233,8 +232,7 @@ namespace GameEngine
             }
             else
             {
-                IList<MessageCallMethodInfo> list = new List<MessageCallMethodInfo>();
-                list.Add(info);
+                IList<MessageCallMethodInfo> list = new List<MessageCallMethodInfo>() { info };
                 _messageDistributeCallInfos.Add(opcode, list);
             }
         }

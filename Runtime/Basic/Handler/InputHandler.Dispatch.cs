@@ -113,8 +113,7 @@ namespace GameEngine
 
             if (false == _inputListenersForCode.TryGetValue(inputCode, out IList<IInputDispatch> list))
             {
-                list = new List<IInputDispatch>();
-                list.Add(listener);
+                list = new List<IInputDispatch>() { listener };
 
                 _inputListenersForCode.Add(inputCode, list);
                 return true;
@@ -144,8 +143,7 @@ namespace GameEngine
 
             if (false == _inputListenersForType.TryGetValue(inputType, out IList<IInputDispatch> list))
             {
-                list = new List<IInputDispatch>();
-                list.Add(listener);
+                list = new List<IInputDispatch>() { listener };
 
                 _inputListenersForType.Add(inputType, list);
                 return true;
@@ -321,8 +319,7 @@ namespace GameEngine
             }
             else
             {
-                IList<InputCallMethodInfo> list = new List<InputCallMethodInfo>();
-                list.Add(info);
+                IList<InputCallMethodInfo> list = new List<InputCallMethodInfo>() { info };
                 _inputCodeDistributeCallInfos.Add(inputCode, list);
             }
         }
@@ -347,8 +344,7 @@ namespace GameEngine
             }
             else
             {
-                IList<InputCallMethodInfo> list = new List<InputCallMethodInfo>();
-                list.Add(info);
+                IList<InputCallMethodInfo> list = new List<InputCallMethodInfo>() { info };
                 _inputDataDistributeCallInfos.Add(inputDataType, list);
             }
         }

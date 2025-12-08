@@ -22,10 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.IO;
+using System;
 using System.Reflection;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -103,7 +101,7 @@ namespace GameEngine
             {
                 Loader.CodeLoader.LoadFromAssembly(assembly, reload);
             }
-            catch (System.Exception e) { Debugger.Error(e.ToString()); }
+            catch (Exception e) { Debugger.Error(e.ToString()); }
         }
 
         /// <summary>
@@ -122,7 +120,7 @@ namespace GameEngine
         /// <param name="classType">当前解析类</param>
         /// <param name="current">当前进度值</param>
         /// <param name="max">上限值</param>
-        private static void LoadClassProgress(string assemblyName, SystemType classType, int current, int max)
+        private static void LoadClassProgress(string assemblyName, Type classType, int current, int max)
         {
         }
 

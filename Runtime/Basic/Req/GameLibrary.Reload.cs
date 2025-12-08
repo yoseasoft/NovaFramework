@@ -24,9 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -96,7 +95,7 @@ namespace GameEngine
 
             obj.Reload();
 
-            System.Array lifecycleTypes = System.Enum.GetValues(typeof(AspectBehaviourType));
+            Array lifecycleTypes = Enum.GetValues(typeof(AspectBehaviourType));
             for (int n = 0; n < lifecycleTypes.Length; ++n)
             {
                 AspectBehaviourType lifecycleType = (AspectBehaviourType) lifecycleTypes.GetValue(n);
