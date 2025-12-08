@@ -22,9 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Runtime.InteropServices;
-
-using SystemType = System.Type;
 
 namespace NovaEngine
 {
@@ -32,9 +31,9 @@ namespace NovaEngine
     /// 引用对象缓冲池信息数据结构定义
     /// </summary>
     [StructLayout(LayoutKind.Auto)]
-    public struct ReferencePoolInfo
+    public readonly struct ReferencePoolInfo
     {
-        private readonly SystemType _type;
+        private readonly Type _type;
         private readonly int _unusedReferenceCount;
         private readonly int _usingReferenceCount;
         private readonly int _acquireReferenceCount;
@@ -52,7 +51,7 @@ namespace NovaEngine
         /// <param name="releaseReferenceCount">归还引用数量</param>
         /// <param name="addReferenceCount">增加引用数量</param>
         /// <param name="removeReferenceCount">移除引用数量</param>
-        public ReferencePoolInfo(SystemType type,
+        public ReferencePoolInfo(Type type,
                                  int unusedReferenceCount,
                                  int usingReferenceCount,
                                  int acquireReferenceCount,
@@ -72,7 +71,7 @@ namespace NovaEngine
         /// <summary>
         /// 获取引用对象池数据结构实例类型
         /// </summary>
-        public SystemType Type
+        public Type Type
         {
             get { return _type; }
         }

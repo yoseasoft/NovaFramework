@@ -23,16 +23,12 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemDateTime = System.DateTime;
 
 namespace NovaEngine.ObjectPool
 {
-    /// <summary>
-    /// 对象池的管理器实现类，该类通过完成管理器标准接口实现对象池的全部管理流程<br/>
-    /// 当您需要使用对象池技术时，无需自己去实现一个对象池管理器类，建议您直接通过该类去达到目的
-    /// </summary>
+    /// 对象池的管理器实现类
     internal sealed partial class ObjectPoolManager
     {
         /// <summary>
@@ -87,7 +83,7 @@ namespace NovaEngine.ObjectPool
             /// <summary>
             /// 获取对象实例的上次使用时间
             /// </summary>
-            public SystemDateTime LastUseTime
+            public DateTime LastUseTime
             {
                 get { return _object.LastUseTime; }
             }
@@ -170,7 +166,7 @@ namespace NovaEngine.ObjectPool
             public T Spawn()
             {
                 _spawnCount++;
-                _object.LastUseTime = SystemDateTime.UtcNow;
+                _object.LastUseTime = DateTime.UtcNow;
                 _object.OnSpawn();
                 return _object;
             }
@@ -181,11 +177,11 @@ namespace NovaEngine.ObjectPool
             public void Unspawn()
             {
                 _object.OnUnspawn();
-                _object.LastUseTime = SystemDateTime.UtcNow;
+                _object.LastUseTime = DateTime.UtcNow;
                 _spawnCount--;
                 if (_spawnCount < 0)
                 {
-                    throw new CFrameworkException("Object '{0}' spawn count is less than zero.", Name);
+                    throw new CFrameworkException("Object '{%s}' spawn count is less than zero.", Name);
                 }
             }
 

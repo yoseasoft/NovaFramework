@@ -23,9 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace NovaEngine
 {
@@ -43,7 +42,7 @@ namespace NovaEngine
         /// <summary>
         /// 引用对象后处理句柄管理容器
         /// </summary>
-        private static IDictionary<SystemType, ReferencePostProcessInfo> _referencePostProcessInfos = new Dictionary<SystemType, ReferencePostProcessInfo>();
+        private readonly static IDictionary<Type, ReferencePostProcessInfo> _referencePostProcessInfos = new Dictionary<Type, ReferencePostProcessInfo>();
 
         /// <summary>
         /// 添加指定对象类型的后处理句柄函数
@@ -51,11 +50,11 @@ namespace NovaEngine
         /// <param name="type">对象类型</param>
         /// <param name="createCallback">创建回调</param>
         /// <param name="releaseCallback">释放回调</param>
-        public static void AddReferencePostProcess(SystemType type, ReferencePostProcessHandler createCallback, ReferencePostProcessHandler releaseCallback)
+        public static void AddReferencePostProcess(Type type, ReferencePostProcessHandler createCallback, ReferencePostProcessHandler releaseCallback)
         {
             if (_referencePostProcessInfos.ContainsKey(type))
             {
-                Logger.Warn("The reference '{0}' type's post process was already exist, repeat added it will be override old value.", type.FullName);
+                Logger.Warn("The reference '{%t}' type's post process was already exist, repeat added it will be override old value.", type);
 
                 _referencePostProcessInfos.Remove(type);
             }
@@ -63,7 +62,7 @@ namespace NovaEngine
             // 后处理管理容器中已有的类型和当前添加类型存在继承关系，不允许进行此次添加操作
             if (IsHavingInheritanceRelationshipWithinPostProcessList(type))
             {
-                Logger.Error("The reference '{0}' type having inheritance relationship from post process list, added it failed.", type.FullName);
+                Logger.Error("The reference '{%t}' type having inheritance relationship from post process list, added it failed.", type);
 
                 return;
             }
@@ -76,7 +75,7 @@ namespace NovaEngine
         /// 移除指定对象类型的后处理句柄函数
         /// </summary>
         /// <param name="type">对象类型</param>
-        public static void RemoveReferencePostProcess(SystemType type)
+        public static void RemoveReferencePostProcess(Type type)
         {
             if (_referencePostProcessInfos.ContainsKey(type))
             {
@@ -98,9 +97,9 @@ namespace NovaEngine
         /// <param name="type">对象类型</param>
         /// <param name="info">后处理信息</param>
         /// <returns>若存在指定类型的后处理实例则返回true，否则返回false</returns>
-        private static bool TryGetReferencePostProcessInfo(SystemType type, out ReferencePostProcessInfo info)
+        private static bool TryGetReferencePostProcessInfo(Type type, out ReferencePostProcessInfo info)
         {
-            IEnumerator<SystemType> e = _referencePostProcessInfos.Keys.GetEnumerator();
+            IEnumerator<Type> e = _referencePostProcessInfos.Keys.GetEnumerator();
             info = null;
             while (e.MoveNext())
             {
@@ -119,9 +118,9 @@ namespace NovaEngine
         /// </summary>
         /// <param name="type">对象类型</param>
         /// <returns>若存在继承关系则返回true，否则返回false</returns>
-        private static bool IsHavingInheritanceRelationshipWithinPostProcessList(SystemType type)
+        private static bool IsHavingInheritanceRelationshipWithinPostProcessList(Type type)
         {
-            IEnumerator<SystemType> e = _referencePostProcessInfos.Keys.GetEnumerator();
+            IEnumerator<Type> e = _referencePostProcessInfos.Keys.GetEnumerator();
             while (e.MoveNext())
             {
                 if (IsHavingInheritanceRelationshipForTypes(type, e.Current))
@@ -139,7 +138,7 @@ namespace NovaEngine
         /// <param name="arg0">对象类型</param>
         /// <param name="arg1">对象类型</param>
         /// <returns>若存在继承关系则返回true，否则返回false</returns>
-        private static bool IsHavingInheritanceRelationshipForTypes(SystemType arg0, SystemType arg1)
+        private static bool IsHavingInheritanceRelationshipForTypes(Type arg0, Type arg1)
         {
             if (arg0.IsAssignableFrom(arg1) || arg1.IsAssignableFrom(arg0))
             {
@@ -159,7 +158,7 @@ namespace NovaEngine
             /// <summary>
             /// 后处理操作的目标对象类型
             /// </summary>
-            private readonly SystemType _targetType;
+            private readonly Type _targetType;
             /// <summary>
             /// 引用对象实例创建的后处理回调
             /// </summary>
@@ -169,11 +168,11 @@ namespace NovaEngine
             /// </summary>
             private readonly ReferencePostProcessHandler _releaseCallback;
 
-            public SystemType TargetType => _targetType;
+            public Type TargetType => _targetType;
             public ReferencePostProcessHandler CreateCallback => _createCallback;
             public ReferencePostProcessHandler ReleaseCallback => _releaseCallback;
 
-            public ReferencePostProcessInfo(SystemType targetType, ReferencePostProcessHandler createCallback, ReferencePostProcessHandler releaseCallback)
+            public ReferencePostProcessInfo(Type targetType, ReferencePostProcessHandler createCallback, ReferencePostProcessHandler releaseCallback)
             {
                 _targetType = targetType;
                 _createCallback = createCallback;

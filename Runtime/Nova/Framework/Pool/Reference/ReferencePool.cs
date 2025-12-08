@@ -22,9 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace NovaEngine
 {
@@ -36,7 +35,7 @@ namespace NovaEngine
         /// <summary>
         /// 引用对象缓冲池数据集合
         /// </summary>
-        private static readonly Dictionary<SystemType, ReferenceCollection> _referenceCollections = new Dictionary<SystemType, ReferenceCollection>();
+        private static readonly Dictionary<Type, ReferenceCollection> _referenceCollections = new Dictionary<Type, ReferenceCollection>();
 
         /// <summary>
         /// 强制检查启动标识
@@ -73,7 +72,7 @@ namespace NovaEngine
                 int index = 0;
 
                 results = new ReferencePoolInfo[_referenceCollections.Count];
-                foreach (KeyValuePair<SystemType, ReferenceCollection> referenceCollection in _referenceCollections)
+                foreach (KeyValuePair<Type, ReferenceCollection> referenceCollection in _referenceCollections)
                 {
                     ReferenceCollection collection = referenceCollection.Value;
                     results[index] = new ReferencePoolInfo(referenceCollection.Key,
@@ -98,7 +97,7 @@ namespace NovaEngine
         {
             lock (_referenceCollections)
             {
-                foreach (KeyValuePair<SystemType, ReferenceCollection> referenceCollection in _referenceCollections)
+                foreach (KeyValuePair<Type, ReferenceCollection> referenceCollection in _referenceCollections)
                 {
                     referenceCollection.Value.RemoveAll();
                 }
@@ -122,7 +121,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="referenceType">引用类型</param>
         /// <returns>返回引用对象实例</returns>
-        public static IReference Acquire(SystemType referenceType)
+        public static IReference Acquire(Type referenceType)
         {
             InternalCheckReferenceType(referenceType);
             return GetReferenceCollection(referenceType).Acquire();
@@ -139,7 +138,7 @@ namespace NovaEngine
                 throw new CFrameworkException("Reference is invalid.");
             }
 
-            SystemType referenceType = reference.GetType();
+            Type referenceType = reference.GetType();
             InternalCheckReferenceType(referenceType);
             GetReferenceCollection(referenceType).Release(reference);
         }
@@ -159,7 +158,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="referenceType">引用类型</param>
         /// <param name="count">追加数量</param>
-        public static void Add(SystemType referenceType, int count)
+        public static void Add(Type referenceType, int count)
         {
             InternalCheckReferenceType(referenceType);
             GetReferenceCollection(referenceType).Add(count);
@@ -180,7 +179,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="referenceType">引用类型</param>
         /// <param name="count">移除数量</param>
-        public static void Remove(SystemType referenceType, int count)
+        public static void Remove(Type referenceType, int count)
         {
             InternalCheckReferenceType(referenceType);
             GetReferenceCollection(referenceType).Remove(count);
@@ -199,13 +198,13 @@ namespace NovaEngine
         /// 从引用池中移除所有的引用对象实例
         /// </summary>
         /// <param name="referenceType">引用类型</param>
-        public static void RemoveAll(SystemType referenceType)
+        public static void RemoveAll(Type referenceType)
         {
             InternalCheckReferenceType(referenceType);
             GetReferenceCollection(referenceType).RemoveAll();
         }
 
-        private static void InternalCheckReferenceType(SystemType referenceType)
+        private static void InternalCheckReferenceType(Type referenceType)
         {
             if (false == _strictCheckEnabled)
             {
@@ -224,11 +223,11 @@ namespace NovaEngine
 
             if (false == typeof(IReference).IsAssignableFrom(referenceType))
             {
-                throw new CFrameworkException("Reference type '{0}' is invalid", referenceType.FullName);
+                throw new CFrameworkException("Reference type '{%t}' is invalid", referenceType);
             }
         }
 
-        private static ReferenceCollection GetReferenceCollection(SystemType referenceType)
+        private static ReferenceCollection GetReferenceCollection(Type referenceType)
         {
             if (null == referenceType)
             {

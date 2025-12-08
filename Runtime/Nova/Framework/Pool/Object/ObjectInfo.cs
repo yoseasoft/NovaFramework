@@ -23,9 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Runtime.InteropServices;
-
-using SystemDateTime = System.DateTime;
 
 namespace NovaEngine.ObjectPool
 {
@@ -54,7 +53,7 @@ namespace NovaEngine.ObjectPool
         /// <summary>
         /// 对象上次使用的时间
         /// </summary>
-        private readonly SystemDateTime _lastUseTime;
+        private readonly DateTime _lastUseTime;
         /// <summary>
         /// 对象的孵化计数
         /// </summary>
@@ -79,7 +78,7 @@ namespace NovaEngine.ObjectPool
         /// <summary>
         /// 获取对象的上次使用时间
         /// </summary>
-        public SystemDateTime LastUseTime => _lastUseTime;
+        public DateTime LastUseTime => _lastUseTime;
         /// <summary>
         /// 获取对象的孵化计数
         /// </summary>
@@ -102,7 +101,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="priority">对象优先级</param>
         /// <param name="lastUseTime">对象上次使用时间</param>
         /// <param name="spawnCount">对象孵化计数</param>
-        public ObjectInfo(string name, bool locked, bool releasabled, int priority, SystemDateTime lastUseTime, int spawnCount)
+        public ObjectInfo(string name, bool locked, bool releasabled, int priority, DateTime lastUseTime, int spawnCount)
         {
             _name = name;
             _locked = locked;

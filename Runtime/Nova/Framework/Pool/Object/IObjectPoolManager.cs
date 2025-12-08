@@ -23,9 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace NovaEngine.ObjectPool
 {
@@ -53,7 +52,7 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>若存在给定类型的对象池则返回true，否则返回false</returns>
-        bool HasObjectPool(SystemType objectType);
+        bool HasObjectPool(Type objectType);
 
         /// <summary>
         /// 检查是否存在指定类型和名称的对象池
@@ -69,14 +68,14 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="name">对象池名称</param>
         /// <returns>若存在给定类型和名称的对象池则返回true，否则返回false</returns>
-        bool HasObjectPool(SystemType objectType, string name);
+        bool HasObjectPool(Type objectType, string name);
 
         /// <summary>
         /// 检查是否存在匹配指定条件的对象池
         /// </summary>
         /// <param name="condition">要检查的条件</param>
         /// <returns>若存在匹配给定条件的对象池则返回true，否则返回false</returns>
-        bool HasObjectPool(System.Predicate<ObjectPoolBase> condition);
+        bool HasObjectPool(Predicate<ObjectPoolBase> condition);
 
         /// <summary>
         /// 获取指定类型对应的对象池实例
@@ -90,7 +89,7 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>返回与类型对应的对象池实例</returns>
-        ObjectPoolBase GetObjectPool(SystemType objectType);
+        ObjectPoolBase GetObjectPool(Type objectType);
 
         /// <summary>
         /// 获取指定类型和名称对应的对象池实例
@@ -106,28 +105,28 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="name">对象池名称</param>
         /// <returns>返回与类型和名称对应的对象池实例</returns>
-        ObjectPoolBase GetObjectPool(SystemType objectType, string name);
+        ObjectPoolBase GetObjectPool(Type objectType, string name);
 
         /// <summary>
         /// 获取匹配指定条件的对象池实例
         /// </summary>
         /// <param name="condition">要检查的条件</param>
         /// <returns>返回匹配给定条件的对象池实例</returns>
-        ObjectPoolBase GetObjectPool(System.Predicate<ObjectPoolBase> condition);
+        ObjectPoolBase GetObjectPool(Predicate<ObjectPoolBase> condition);
 
         /// <summary>
         /// 批量获取匹配指定条件的对象池实例的集合
         /// </summary>
         /// <param name="condition">要检查的条件</param>
         /// <returns>返回匹配给定条件的对象池实例的集合</returns>
-        ObjectPoolBase[] GetObjectPools(System.Predicate<ObjectPoolBase> condition);
+        ObjectPoolBase[] GetObjectPools(Predicate<ObjectPoolBase> condition);
 
         /// <summary>
         /// 获取匹配指定条件的对象池实例，并填充到指定容器中
         /// </summary>
         /// <param name="condition">要检查的条件</param>
         /// <param name="results">填充对象池的容器</param>
-        void GetObjectPools(System.Predicate<ObjectPoolBase> condition, IList<ObjectPoolBase> results);
+        void GetObjectPools(Predicate<ObjectPoolBase> condition, IList<ObjectPoolBase> results);
 
         /// <summary>
         /// 获取当前管理容器中所有的对象池实例
@@ -167,7 +166,7 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType);
+        ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType);
 
         /// <summary>
         /// 创建允许单次获取的指定类型和名称的对象池实例
@@ -183,7 +182,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="name">对象池名称</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, string name);
+        ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name);
 
         /// <summary>
         /// 创建允许单次获取的指定类型的对象池实例
@@ -199,7 +198,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="capacity">对象池的容量</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, int capacity);
+        ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, int capacity);
 
         /// <summary>
         /// 创建允许单次获取的指定类型的对象池实例
@@ -215,7 +214,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, float expireTime);
+        ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, float expireTime);
 
         /// <summary>
         /// 创建允许单次获取的指定类型和名称的对象池实例
@@ -233,7 +232,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="name">对象池名称</param>
         /// <param name="capacity">对象池的容量</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, string name, int capacity);
+        ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, int capacity);
 
         /// <summary>
         /// 创建允许单次获取的指定类型和名称的对象池实例
@@ -251,7 +250,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="name">对象池名称</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, string name, float expireTime);
+        ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, float expireTime);
 
         /// <summary>
         /// 创建允许单次获取的指定类型的对象池实例
@@ -269,7 +268,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, int capacity, float expireTime);
+        ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, int capacity, float expireTime);
 
         /// <summary>
         /// 创建允许单次获取的指定类型的对象池实例
@@ -287,7 +286,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, int capacity, int priority);
+        ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, int capacity, int priority);
 
         /// <summary>
         /// 创建允许单次获取的指定类型的对象池实例
@@ -305,7 +304,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, float expireTime, int priority);
+        ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, float expireTime, int priority);
 
         /// <summary>
         /// 创建允许单次获取的指定类型和名称的对象池实例
@@ -325,7 +324,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, string name, int capacity, float expireTime);
+        ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, int capacity, float expireTime);
 
         /// <summary>
         /// 创建允许单次获取的指定类型和名称的对象池实例
@@ -345,7 +344,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, string name, int capacity, int priority);
+        ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, int capacity, int priority);
 
         /// <summary>
         /// 创建允许单次获取的指定类型和名称的对象池实例
@@ -365,7 +364,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, string name, float expireTime, int priority);
+        ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, float expireTime, int priority);
 
         /// <summary>
         /// 创建允许单次获取的指定类型的对象池实例
@@ -385,7 +384,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, int capacity, float expireTime, int priority);
+        ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, int capacity, float expireTime, int priority);
 
         /// <summary>
         /// 创建允许单次获取的指定类型和名称的对象池实例
@@ -407,7 +406,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, string name, int capacity, float expireTime, int priority);
+        ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, int capacity, float expireTime, int priority);
 
         /// <summary>
         /// 创建允许单次获取的指定类型和名称的对象池实例
@@ -431,7 +430,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, string name, float autoReleaseInterval, int capacity, float expireTime, int priority);
+        ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, float autoReleaseInterval, int capacity, float expireTime, int priority);
 
         /// <summary>
         /// 创建允许多次获取的指定类型的对象池实例
@@ -445,7 +444,7 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType);
+        ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType);
 
         /// <summary>
         /// 创建允许多次获取的指定类型和名称的对象池实例
@@ -461,7 +460,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="name">对象池名称</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, string name);
+        ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name);
 
         /// <summary>
         /// 创建允许多次获取的指定类型的对象池实例
@@ -477,7 +476,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="capacity">对象池的容量</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, int capacity);
+        ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, int capacity);
 
         /// <summary>
         /// 创建允许多次获取的指定类型的对象池实例
@@ -493,7 +492,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, float expireTime);
+        ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, float expireTime);
 
         /// <summary>
         /// 创建允许多次获取的指定类型和名称的对象池实例
@@ -511,7 +510,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="name">对象池名称</param>
         /// <param name="capacity">对象池的容量</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, string name, int capacity);
+        ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, int capacity);
 
         /// <summary>
         /// 创建允许多次获取的指定类型和名称的对象池实例
@@ -529,7 +528,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="name">对象池名称</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, string name, float expireTime);
+        ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, float expireTime);
 
         /// <summary>
         /// 创建允许多次获取的指定类型的对象池实例
@@ -547,7 +546,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, int capacity, float expireTime);
+        ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, int capacity, float expireTime);
 
         /// <summary>
         /// 创建允许多次获取的指定类型的对象池实例
@@ -565,7 +564,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, int capacity, int priority);
+        ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, int capacity, int priority);
 
         /// <summary>
         /// 创建允许多次获取的指定类型的对象池实例
@@ -583,7 +582,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, float expireTime, int priority);
+        ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, float expireTime, int priority);
 
         /// <summary>
         /// 创建允许多次获取的指定类型和名称的对象池实例
@@ -603,7 +602,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, string name, int capacity, float expireTime);
+        ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, int capacity, float expireTime);
 
         /// <summary>
         /// 创建允许多次获取的指定类型和名称的对象池实例
@@ -623,7 +622,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, string name, int capacity, int priority);
+        ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, int capacity, int priority);
 
         /// <summary>
         /// 创建允许多次获取的指定类型和名称的对象池实例
@@ -643,7 +642,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, string name, float expireTime, int priority);
+        ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, float expireTime, int priority);
 
         /// <summary>
         /// 创建允许多次获取的指定类型的对象池实例
@@ -663,7 +662,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, int capacity, float expireTime, int priority);
+        ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, int capacity, float expireTime, int priority);
 
         /// <summary>
         /// 创建允许多次获取的指定类型和名称的对象池实例
@@ -685,7 +684,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, string name, int capacity, float expireTime, int priority);
+        ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, int capacity, float expireTime, int priority);
 
         /// <summary>
         /// 创建允许多次获取的指定类型和名称的对象池实例
@@ -709,7 +708,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, string name, float autoReleaseInterval, int capacity, float expireTime, int priority);
+        ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, float autoReleaseInterval, int capacity, float expireTime, int priority);
 
         /// <summary>
         /// 销毁指定类型的对象池实例
@@ -723,7 +722,7 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>若对象池销毁成功返回true，否则返回false</returns>
-        bool DestroyObjectPool(SystemType objectType);
+        bool DestroyObjectPool(Type objectType);
 
         /// <summary>
         /// 销毁指定类型和名称的对象池实例
@@ -739,7 +738,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="name">对象池名称</param>
         /// <returns>若对象池销毁成功返回true，否则返回false</returns>
-        bool DestroyObjectPool(SystemType objectType, string name);
+        bool DestroyObjectPool(Type objectType, string name);
 
         /// <summary>
         /// 从当前管理容器中销毁指定的对象池实例

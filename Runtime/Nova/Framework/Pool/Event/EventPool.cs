@@ -23,6 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 
 namespace NovaEngine
@@ -33,13 +34,13 @@ namespace NovaEngine
     /// <typeparam name="T">事件类型</typeparam>
     internal sealed partial class EventPool<T> where T : EventArgs
     {
-        private readonly MultiDictionary<int, System.EventHandler<T>> _eventHandlers;
+        private readonly MultiDictionary<int, EventHandler<T>> _eventHandlers;
         private readonly Queue<Event> _events;
-        private readonly Dictionary<object, LinkedListNode<System.EventHandler<T>>> _cachedNodes;
-        private readonly Dictionary<object, LinkedListNode<System.EventHandler<T>>> _tempNodes;
+        private readonly Dictionary<object, LinkedListNode<EventHandler<T>>> _cachedNodes;
+        private readonly Dictionary<object, LinkedListNode<EventHandler<T>>> _tempNodes;
         private readonly AllowHandlerType _mode;
 
-        private System.EventHandler<T> _defaultHandler;
+        private EventHandler<T> _defaultHandler;
 
         /// <summary>
         /// 事件对象缓冲池的新实例构建接口
@@ -47,10 +48,10 @@ namespace NovaEngine
         /// <param name="mode">事件池模式</param>
         public EventPool(AllowHandlerType mode)
         {
-            _eventHandlers = new MultiDictionary<int, System.EventHandler<T>>();
+            _eventHandlers = new MultiDictionary<int, EventHandler<T>>();
             _events = new Queue<Event>();
-            _cachedNodes = new Dictionary<object, LinkedListNode<System.EventHandler<T>>>();
-            _tempNodes = new Dictionary<object, LinkedListNode<System.EventHandler<T>>>();
+            _cachedNodes = new Dictionary<object, LinkedListNode<EventHandler<T>>>();
+            _tempNodes = new Dictionary<object, LinkedListNode<EventHandler<T>>>();
             _mode = mode;
             _defaultHandler = null;
         }
@@ -127,8 +128,7 @@ namespace NovaEngine
         /// <returns>返回对应事件类型编号的处理函数的数量</returns>
         public int Count(int id)
         {
-            DoubleLinkedList<System.EventHandler<T>> range = default(DoubleLinkedList<System.EventHandler<T>>);
-            if (_eventHandlers.TryGetValue(id, out range))
+            if (_eventHandlers.TryGetValue(id, out DoubleLinkedList<EventHandler<T>> range))
             {
                 return range.Count;
             }
@@ -142,7 +142,7 @@ namespace NovaEngine
         /// <param name="id">事件类型编号</param>
         /// <param name="handler">待校验的事件处理函数</param>
         /// <returns>若存在对应的事件处理函数则返回true，否则返回false</returns>
-        public bool Check(int id, System.EventHandler<T> handler)
+        public bool Check(int id, EventHandler<T> handler)
         {
             if (null == handler)
             {
@@ -157,7 +157,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="id">事件类型编号</param>
         /// <param name="handler">待订阅的事件处理函数</param>
-        public void Subscribe(int id, System.EventHandler<T> handler)
+        public void Subscribe(int id, EventHandler<T> handler)
         {
             if (null == handler)
             {
@@ -170,11 +170,11 @@ namespace NovaEngine
             }
             else if ((_mode & AllowHandlerType.AllowMultiHandler) != AllowHandlerType.AllowMultiHandler)
             {
-                throw new CFrameworkException("Event '{0}' not allow multi handler.", id.ToString());
+                throw new CFrameworkException("Event '{%d}' not allow multi handler.", id);
             }
             else if ((_mode & AllowHandlerType.AllowDuplicateHandler) != AllowHandlerType.AllowDuplicateHandler)
             {
-                throw new CFrameworkException("Event '{0}' not allow duplicate handler.", id.ToString());
+                throw new CFrameworkException("Event '{%d}' not allow duplicate handler.", id);
             }
             else
             {
@@ -187,7 +187,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="id">事件类型编号</param>
         /// <param name="handler">待取消订阅的事件处理函数</param>
-        public void Unsubscribe(int id, System.EventHandler<T> handler)
+        public void Unsubscribe(int id, EventHandler<T> handler)
         {
             if (null == handler)
             {
@@ -196,7 +196,7 @@ namespace NovaEngine
 
             if (_cachedNodes.Count > 0)
             {
-                foreach (KeyValuePair<object, LinkedListNode<System.EventHandler<T>>> cachedNode in _cachedNodes)
+                foreach (KeyValuePair<object, LinkedListNode<EventHandler<T>>> cachedNode in _cachedNodes)
                 {
                     if (cachedNode.Value != null && cachedNode.Value.Value == handler)
                     {
@@ -206,7 +206,7 @@ namespace NovaEngine
 
                 if (_tempNodes.Count > 0)
                 {
-                    foreach (KeyValuePair<object, LinkedListNode<System.EventHandler<T>>> cachedNode in _tempNodes)
+                    foreach (KeyValuePair<object, LinkedListNode<EventHandler<T>>> cachedNode in _tempNodes)
                     {
                         _cachedNodes[cachedNode.Key] = cachedNode.Value;
                     }
@@ -217,7 +217,7 @@ namespace NovaEngine
 
             if (false == _eventHandlers.Remove(id, handler))
             {
-                throw new CFrameworkException("Event '{0}' not exists specified handler.", id.ToString());
+                throw new CFrameworkException("Event '{%d}' not exists specified handler.", id);
             }
         }
 
@@ -225,7 +225,7 @@ namespace NovaEngine
         /// 设置默认事件处理函数
         /// </summary>
         /// <param name="handler">待设置的事件处理函数</param>
-        public void SetDefaultHandler(System.EventHandler<T> handler)
+        public void SetDefaultHandler(EventHandler<T> handler)
         {
             _defaultHandler = handler;
         }
@@ -272,10 +272,10 @@ namespace NovaEngine
         private void HandleEvent(object sender, T e)
         {
             bool noHandlerException = false;
-            DoubleLinkedList<System.EventHandler<T>> range = default(DoubleLinkedList<System.EventHandler<T>>);
-            if (_eventHandlers.TryGetValue(e.ID, out range))
+
+            if (_eventHandlers.TryGetValue(e.ID, out DoubleLinkedList<EventHandler<T>> range))
             {
-                LinkedListNode<System.EventHandler<T>> current = range.First;
+                LinkedListNode<EventHandler<T>> current = range.First;
                 while (current != null && current != range.Terminal)
                 {
                     _cachedNodes[e] = current.Next != range.Terminal ? current.Next : null;
@@ -298,7 +298,7 @@ namespace NovaEngine
 
             if (noHandlerException)
             {
-                throw new CFrameworkException("Event '{0}' not allow no handler.", e.ID.ToString());
+                throw new CFrameworkException("Event '{%d}' not allow no handler.", e.ID);
             }
         }
     }

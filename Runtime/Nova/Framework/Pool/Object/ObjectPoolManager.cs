@@ -23,9 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
+using System.Runtime.CompilerServices;
 
 namespace NovaEngine.ObjectPool
 {
@@ -41,7 +41,7 @@ namespace NovaEngine.ObjectPool
 
         private readonly IDictionary<TypeNamePair, ObjectPoolBase> _objectPools;
         private readonly IList<ObjectPoolBase> _cachedAllObjectPools;
-        private readonly System.Comparison<ObjectPoolBase> _objectPoolComparer;
+        private readonly Comparison<ObjectPoolBase> _objectPoolComparer;
 
         /// <summary>
         /// 获取对象池的数量
@@ -63,6 +63,7 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <returns>若存在给定类型的对象池则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasObjectPool<T>() where T : ObjectBase
         {
             return InternalHasObjectPool(new TypeNamePair(typeof(T)));
@@ -73,7 +74,8 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>若存在给定类型的对象池则返回true，否则返回false</returns>
-        public bool HasObjectPool(SystemType objectType)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool HasObjectPool(Type objectType)
         {
             if (null == objectType)
             {
@@ -82,7 +84,7 @@ namespace NovaEngine.ObjectPool
 
             if (false == typeof(ObjectBase).IsAssignableFrom(objectType))
             {
-                throw new CFrameworkException("Object type '{0}' is invalid.", objectType.FullName);
+                throw new CFrameworkException("Object type '{%t}' is invalid.", objectType);
             }
 
             return InternalHasObjectPool(new TypeNamePair(objectType));
@@ -94,6 +96,7 @@ namespace NovaEngine.ObjectPool
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="name">对象池名称</param>
         /// <returns>若存在给定类型和名称的对象池则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasObjectPool<T>(string name) where T : ObjectBase
         {
             return InternalHasObjectPool(new TypeNamePair(typeof(T), name));
@@ -105,7 +108,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="name">对象池名称</param>
         /// <returns>若存在给定类型和名称的对象池则返回true，否则返回false</returns>
-        public bool HasObjectPool(SystemType objectType, string name)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool HasObjectPool(Type objectType, string name)
         {
             if (null == objectType)
             {
@@ -114,7 +118,7 @@ namespace NovaEngine.ObjectPool
 
             if (false == typeof(ObjectBase).IsAssignableFrom(objectType))
             {
-                throw new CFrameworkException("Object type '{0}' is invalid.", objectType.FullName);
+                throw new CFrameworkException("Object type '{%t}' is invalid.", objectType);
             }
 
             return InternalHasObjectPool(new TypeNamePair(objectType, name));
@@ -125,7 +129,8 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <param name="condition">要检查的条件</param>
         /// <returns>若存在匹配给定条件的对象池则返回true，否则返回false</returns>
-        public bool HasObjectPool(System.Predicate<ObjectPoolBase> condition)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool HasObjectPool(Predicate<ObjectPoolBase> condition)
         {
             if (null == condition)
             {
@@ -148,6 +153,7 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <returns>返回与类型对应的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> GetObjectPool<T>() where T : ObjectBase
         {
             return (IObjectPool<T>) InternalGetObjectPool(new TypeNamePair(typeof(T)));
@@ -158,7 +164,8 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>返回与类型对应的对象池实例</returns>
-        public ObjectPoolBase GetObjectPool(SystemType objectType)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase GetObjectPool(Type objectType)
         {
             if (null == objectType)
             {
@@ -167,7 +174,7 @@ namespace NovaEngine.ObjectPool
 
             if (false == typeof(ObjectBase).IsAssignableFrom(objectType))
             {
-                throw new CFrameworkException("Object type '{0}' is invalid.", objectType.FullName);
+                throw new CFrameworkException("Object type '{%t}' is invalid.", objectType);
             }
 
             return InternalGetObjectPool(new TypeNamePair(objectType));
@@ -179,6 +186,7 @@ namespace NovaEngine.ObjectPool
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="name">对象池名称</param>
         /// <returns>返回与类型和名称对应的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> GetObjectPool<T>(string name) where T : ObjectBase
         {
             return (IObjectPool<T>) InternalGetObjectPool(new TypeNamePair(typeof(T), name));
@@ -190,7 +198,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="name">对象池名称</param>
         /// <returns>返回与类型和名称对应的对象池实例</returns>
-        public ObjectPoolBase GetObjectPool(SystemType objectType, string name)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase GetObjectPool(Type objectType, string name)
         {
             if (null == objectType)
             {
@@ -199,7 +208,7 @@ namespace NovaEngine.ObjectPool
 
             if (false == typeof(ObjectBase).IsAssignableFrom(objectType))
             {
-                throw new CFrameworkException("Object type '{0}' is invalid.", objectType.FullName);
+                throw new CFrameworkException("Object type '{%t}' is invalid.", objectType);
             }
 
             return InternalGetObjectPool(new TypeNamePair(objectType, name));
@@ -210,7 +219,8 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <param name="condition">要检查的条件</param>
         /// <returns>返回匹配给定条件的对象池实例</returns>
-        public ObjectPoolBase GetObjectPool(System.Predicate<ObjectPoolBase> condition)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase GetObjectPool(Predicate<ObjectPoolBase> condition)
         {
             if (null == condition)
             {
@@ -233,7 +243,8 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <param name="condition">要检查的条件</param>
         /// <returns>返回匹配给定条件的对象池实例的集合</returns>
-        public ObjectPoolBase[] GetObjectPools(System.Predicate<ObjectPoolBase> condition)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase[] GetObjectPools(Predicate<ObjectPoolBase> condition)
         {
             if (null == condition)
             {
@@ -257,7 +268,8 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <param name="condition">要检查的条件</param>
         /// <param name="results">填充对象池的容器</param>
-        public void GetObjectPools(System.Predicate<ObjectPoolBase> condition, IList<ObjectPoolBase> results)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void GetObjectPools(Predicate<ObjectPoolBase> condition, IList<ObjectPoolBase> results)
         {
             if (null == condition)
             {
@@ -283,6 +295,7 @@ namespace NovaEngine.ObjectPool
         /// 获取当前管理容器中所有的对象池实例
         /// </summary>
         /// <returns>返回所有对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ObjectPoolBase[] GetAllObjectPools()
         {
             return GetAllObjectPools(false);
@@ -292,6 +305,7 @@ namespace NovaEngine.ObjectPool
         /// 获取当前管理容器中所有的对象池实例，并填充到指定容器中
         /// </summary>
         /// <param name="results">填充对象池的容器</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void GetAllObjectPools(List<ObjectPoolBase> results)
         {
             GetAllObjectPools(false, results);
@@ -357,9 +371,10 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <returns>返回创建的给定类型的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>() where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, false, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(null, false, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -367,9 +382,10 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        public ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, false, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, null, false, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -378,6 +394,7 @@ namespace NovaEngine.ObjectPool
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="name">对象池名称</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(string name) where T : ObjectBase
         {
             return InternalCreateObjectPool<T>(name, false, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
@@ -389,7 +406,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="name">对象池名称</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        public ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, string name)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name)
         {
             return InternalCreateObjectPool(objectType, name, false, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
         }
@@ -400,9 +418,10 @@ namespace NovaEngine.ObjectPool
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="capacity">对象池的容量</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(int capacity) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, false, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(null, false, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -411,9 +430,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="capacity">对象池的容量</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        public ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, int capacity)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, int capacity)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, false, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, null, false, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -422,9 +442,10 @@ namespace NovaEngine.ObjectPool
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(float expireTime) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, false, expireTime, DefaultCapacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(null, false, expireTime, DefaultCapacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -433,9 +454,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        public ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, float expireTime)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, float expireTime)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, false, expireTime, DefaultCapacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, null, false, expireTime, DefaultCapacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -445,6 +467,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="name">对象池名称</param>
         /// <param name="capacity">对象池的容量</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(string name, int capacity) where T : ObjectBase
         {
             return InternalCreateObjectPool<T>(name, false, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
@@ -457,7 +480,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="name">对象池名称</param>
         /// <param name="capacity">对象池的容量</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        public ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, string name, int capacity)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, int capacity)
         {
             return InternalCreateObjectPool(objectType, name, false, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
         }
@@ -469,6 +493,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="name">对象池名称</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(string name, float expireTime) where T : ObjectBase
         {
             return InternalCreateObjectPool<T>(name, false, expireTime, DefaultCapacity, expireTime, DefaultPriority);
@@ -481,7 +506,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="name">对象池名称</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        public ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, string name, float expireTime)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, float expireTime)
         {
             return InternalCreateObjectPool(objectType, name, false, expireTime, DefaultCapacity, expireTime, DefaultPriority);
         }
@@ -493,9 +519,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(int capacity, float expireTime) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, false, expireTime, capacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(null, false, expireTime, capacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -505,9 +532,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        public ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, int capacity, float expireTime)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, int capacity, float expireTime)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, false, expireTime, capacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, null, false, expireTime, capacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -517,9 +545,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(int capacity, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, false, DefaultExpireTime, capacity, DefaultExpireTime, priority);
+            return InternalCreateObjectPool<T>(null, false, DefaultExpireTime, capacity, DefaultExpireTime, priority);
         }
 
         /// <summary>
@@ -529,9 +558,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        public ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, int capacity, int priority)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, int capacity, int priority)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, false, DefaultExpireTime, capacity, DefaultExpireTime, priority);
+            return InternalCreateObjectPool(objectType, null, false, DefaultExpireTime, capacity, DefaultExpireTime, priority);
         }
 
         /// <summary>
@@ -541,9 +571,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(float expireTime, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, false, expireTime, DefaultCapacity, expireTime, priority);
+            return InternalCreateObjectPool<T>(null, false, expireTime, DefaultCapacity, expireTime, priority);
         }
 
         /// <summary>
@@ -553,9 +584,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        public ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, float expireTime, int priority)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, float expireTime, int priority)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, false, expireTime, DefaultCapacity, expireTime, priority);
+            return InternalCreateObjectPool(objectType, null, false, expireTime, DefaultCapacity, expireTime, priority);
         }
 
         /// <summary>
@@ -566,6 +598,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(string name, int capacity, float expireTime) where T : ObjectBase
         {
             return InternalCreateObjectPool<T>(name, false, expireTime, capacity, expireTime, DefaultPriority);
@@ -579,7 +612,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        public ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, string name, int capacity, float expireTime)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, int capacity, float expireTime)
         {
             return InternalCreateObjectPool(objectType, name, false, expireTime, capacity, expireTime, DefaultPriority);
         }
@@ -592,6 +626,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(string name, int capacity, int priority) where T : ObjectBase
         {
             return InternalCreateObjectPool<T>(name, false, DefaultExpireTime, capacity, DefaultExpireTime, priority);
@@ -605,7 +640,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        public ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, string name, int capacity, int priority)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, int capacity, int priority)
         {
             return InternalCreateObjectPool(objectType, name, false, DefaultExpireTime, capacity, DefaultExpireTime, priority);
         }
@@ -618,6 +654,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(string name, float expireTime, int priority) where T : ObjectBase
         {
             return InternalCreateObjectPool<T>(name, false, expireTime, DefaultCapacity, expireTime, priority);
@@ -631,7 +668,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        public ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, string name, float expireTime, int priority)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, float expireTime, int priority)
         {
             return InternalCreateObjectPool(objectType, name, false, expireTime, DefaultCapacity, expireTime, priority);
         }
@@ -644,9 +682,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(int capacity, float expireTime, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, false, expireTime, capacity, expireTime, priority);
+            return InternalCreateObjectPool<T>(null, false, expireTime, capacity, expireTime, priority);
         }
 
         /// <summary>
@@ -657,9 +696,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        public ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, int capacity, float expireTime, int priority)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, int capacity, float expireTime, int priority)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, false, expireTime, capacity, expireTime, priority);
+            return InternalCreateObjectPool(objectType, null, false, expireTime, capacity, expireTime, priority);
         }
 
         /// <summary>
@@ -671,6 +711,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(string name, int capacity, float expireTime, int priority) where T : ObjectBase
         {
             return InternalCreateObjectPool<T>(name, false, expireTime, capacity, expireTime, priority);
@@ -685,7 +726,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        public ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, string name, int capacity, float expireTime, int priority)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, int capacity, float expireTime, int priority)
         {
             return InternalCreateObjectPool(objectType, name, false, expireTime, capacity, expireTime, priority);
         }
@@ -700,6 +742,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(string name, float autoReleaseInterval, int capacity, float expireTime, int priority) where T : ObjectBase
         {
             return InternalCreateObjectPool<T>(name, false, autoReleaseInterval, capacity, expireTime, priority);
@@ -715,7 +758,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        public ObjectPoolBase CreateSingleSpawnObjectPool(SystemType objectType, string name, float autoReleaseInterval, int capacity, float expireTime, int priority)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, float autoReleaseInterval, int capacity, float expireTime, int priority)
         {
             return InternalCreateObjectPool(objectType, name, false, autoReleaseInterval, capacity, expireTime, priority);
         }
@@ -725,9 +769,10 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <returns>返回创建的给定类型的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>() where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, true, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(null, true, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -735,9 +780,10 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        public ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, true, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, null, true, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -746,6 +792,7 @@ namespace NovaEngine.ObjectPool
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="name">对象池名称</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(string name) where T : ObjectBase
         {
             return InternalCreateObjectPool<T>(name, true, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
@@ -757,7 +804,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="name">对象池名称</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        public ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, string name)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name)
         {
             return InternalCreateObjectPool(objectType, name, true, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
         }
@@ -768,9 +816,10 @@ namespace NovaEngine.ObjectPool
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="capacity">对象池的容量</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(int capacity) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, true, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(null, true, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -779,9 +828,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="capacity">对象池的容量</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        public ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, int capacity)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, int capacity)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, true, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, null, true, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -790,9 +840,10 @@ namespace NovaEngine.ObjectPool
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(float expireTime) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, true, expireTime, DefaultCapacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(null, true, expireTime, DefaultCapacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -801,9 +852,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        public ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, float expireTime)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, float expireTime)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, true, expireTime, DefaultCapacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, null, true, expireTime, DefaultCapacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -813,6 +865,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="name">对象池名称</param>
         /// <param name="capacity">对象池的容量</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(string name, int capacity) where T : ObjectBase
         {
             return InternalCreateObjectPool<T>(name, true, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
@@ -825,7 +878,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="name">对象池名称</param>
         /// <param name="capacity">对象池的容量</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        public ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, string name, int capacity)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, int capacity)
         {
             return InternalCreateObjectPool(objectType, name, true, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
         }
@@ -837,6 +891,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="name">对象池名称</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(string name, float expireTime) where T : ObjectBase
         {
             return InternalCreateObjectPool<T>(name, true, expireTime, DefaultCapacity, expireTime, DefaultPriority);
@@ -849,7 +904,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="name">对象池名称</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        public ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, string name, float expireTime)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, float expireTime)
         {
             return InternalCreateObjectPool(objectType, name, true, expireTime, DefaultCapacity, expireTime, DefaultPriority);
         }
@@ -861,9 +917,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(int capacity, float expireTime) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, true, expireTime, capacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(null, true, expireTime, capacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -873,9 +930,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        public ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, int capacity, float expireTime)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, int capacity, float expireTime)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, true, expireTime, capacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, null, true, expireTime, capacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -885,9 +943,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(int capacity, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, true, DefaultExpireTime, capacity, DefaultExpireTime, priority);
+            return InternalCreateObjectPool<T>(null, true, DefaultExpireTime, capacity, DefaultExpireTime, priority);
         }
 
         /// <summary>
@@ -897,9 +956,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        public ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, int capacity, int priority)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, int capacity, int priority)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, true, DefaultExpireTime, capacity, DefaultExpireTime, priority);
+            return InternalCreateObjectPool(objectType, null, true, DefaultExpireTime, capacity, DefaultExpireTime, priority);
         }
 
         /// <summary>
@@ -909,9 +969,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(float expireTime, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, true, expireTime, DefaultCapacity, expireTime, priority);
+            return InternalCreateObjectPool<T>(null, true, expireTime, DefaultCapacity, expireTime, priority);
         }
 
         /// <summary>
@@ -921,9 +982,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        public ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, float expireTime, int priority)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, float expireTime, int priority)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, true, expireTime, DefaultCapacity, expireTime, priority);
+            return InternalCreateObjectPool(objectType, null, true, expireTime, DefaultCapacity, expireTime, priority);
         }
 
         /// <summary>
@@ -934,6 +996,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(string name, int capacity, float expireTime) where T : ObjectBase
         {
             return InternalCreateObjectPool<T>(name, true, expireTime, capacity, expireTime, DefaultPriority);
@@ -947,7 +1010,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="expireTime">对象池过期时间</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        public ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, string name, int capacity, float expireTime)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, int capacity, float expireTime)
         {
             return InternalCreateObjectPool(objectType, name, true, expireTime, capacity, expireTime, DefaultPriority);
         }
@@ -960,6 +1024,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(string name, int capacity, int priority) where T : ObjectBase
         {
             return InternalCreateObjectPool<T>(name, true, DefaultExpireTime, capacity, DefaultExpireTime, priority);
@@ -973,7 +1038,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="capacity">对象池的容量</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        public ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, string name, int capacity, int priority)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, int capacity, int priority)
         {
             return InternalCreateObjectPool(objectType, name, true, DefaultExpireTime, capacity, DefaultExpireTime, priority);
         }
@@ -986,6 +1052,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(string name, float expireTime, int priority) where T : ObjectBase
         {
             return InternalCreateObjectPool<T>(name, true, expireTime, DefaultCapacity, expireTime, priority);
@@ -999,7 +1066,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        public ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, string name, float expireTime, int priority)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, float expireTime, int priority)
         {
             return InternalCreateObjectPool(objectType, name, true, expireTime, DefaultCapacity, expireTime, priority);
         }
@@ -1012,9 +1080,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(int capacity, float expireTime, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, true, expireTime, capacity, expireTime, priority);
+            return InternalCreateObjectPool<T>(null, true, expireTime, capacity, expireTime, priority);
         }
 
         /// <summary>
@@ -1025,9 +1094,10 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型的对象池实例</returns>
-        public ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, int capacity, float expireTime, int priority)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, int capacity, float expireTime, int priority)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, true, expireTime, capacity, expireTime, priority);
+            return InternalCreateObjectPool(objectType, null, true, expireTime, capacity, expireTime, priority);
         }
 
         /// <summary>
@@ -1039,6 +1109,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(string name, int capacity, float expireTime, int priority) where T : ObjectBase
         {
             return InternalCreateObjectPool<T>(name, true, expireTime, capacity, expireTime, priority);
@@ -1053,7 +1124,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        public ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, string name, int capacity, float expireTime, int priority)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, int capacity, float expireTime, int priority)
         {
             return InternalCreateObjectPool(objectType, name, true, expireTime, capacity, expireTime, priority);
         }
@@ -1068,6 +1140,7 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(string name, float autoReleaseInterval, int capacity, float expireTime, int priority) where T : ObjectBase
         {
             return InternalCreateObjectPool<T>(name, true, autoReleaseInterval, capacity, expireTime, priority);
@@ -1083,7 +1156,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="expireTime">对象池过期时间</param>
         /// <param name="priority">对象池的优先级</param>
         /// <returns>返回创建的给定类型和名称的对象池实例</returns>
-        public ObjectPoolBase CreateMultiSpawnObjectPool(SystemType objectType, string name, float autoReleaseInterval, int capacity, float expireTime, int priority)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, float autoReleaseInterval, int capacity, float expireTime, int priority)
         {
             return InternalCreateObjectPool(objectType, name, true, autoReleaseInterval, capacity, expireTime, priority);
         }
@@ -1093,6 +1167,7 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <returns>若对象池销毁成功返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool DestroyObjectPool<T>() where T : ObjectBase
         {
             return InternalDestroyObjectPool(new TypeNamePair(typeof(T)));
@@ -1103,7 +1178,8 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>若对象池销毁成功返回true，否则返回false</returns>
-        public bool DestroyObjectPool(SystemType objectType)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool DestroyObjectPool(Type objectType)
         {
             if (null == objectType)
             {
@@ -1112,7 +1188,7 @@ namespace NovaEngine.ObjectPool
 
             if (false == typeof(ObjectBase).IsAssignableFrom(objectType))
             {
-                throw new CFrameworkException("Object type '{0}' is invalid.", objectType.FullName);
+                throw new CFrameworkException("Object type '{%t}' is invalid.", objectType);
             }
 
             return InternalDestroyObjectPool(new TypeNamePair(objectType));
@@ -1124,6 +1200,7 @@ namespace NovaEngine.ObjectPool
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="name">对象池名称</param>
         /// <returns>若对象池销毁成功返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool DestroyObjectPool<T>(string name) where T : ObjectBase
         {
             return InternalDestroyObjectPool(new TypeNamePair(typeof(T), name));
@@ -1135,7 +1212,8 @@ namespace NovaEngine.ObjectPool
         /// <param name="objectType">对象类型</param>
         /// <param name="name">对象池名称</param>
         /// <returns>若对象池销毁成功返回true，否则返回false</returns>
-        public bool DestroyObjectPool(SystemType objectType, string name)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool DestroyObjectPool(Type objectType, string name)
         {
             if (null == objectType)
             {
@@ -1144,7 +1222,7 @@ namespace NovaEngine.ObjectPool
 
             if (false == typeof(ObjectBase).IsAssignableFrom(objectType))
             {
-                throw new CFrameworkException("Object type '{0}' is invalid.", objectType.FullName);
+                throw new CFrameworkException("Object type '{%t}' is invalid.", objectType);
             }
 
             return InternalDestroyObjectPool(new TypeNamePair(objectType, name));
@@ -1156,6 +1234,7 @@ namespace NovaEngine.ObjectPool
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="objectPool">目标对象池实例</param>
         /// <returns>若对象池销毁成功返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool DestroyObjectPool<T>(IObjectPool<T> objectPool) where T : ObjectBase
         {
             if (null == objectPool)
@@ -1171,6 +1250,7 @@ namespace NovaEngine.ObjectPool
         /// </summary>
         /// <param name="objectPool">目标对象池实例</param>
         /// <returns>若对象池销毁成功返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool DestroyObjectPool(ObjectPoolBase objectPool)
         {
             if (null == objectPool)
@@ -1205,15 +1285,16 @@ namespace NovaEngine.ObjectPool
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool InternalHasObjectPool(TypeNamePair typeNamePair)
         {
             return _objectPools.ContainsKey(typeNamePair);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private ObjectPoolBase InternalGetObjectPool(TypeNamePair typeNamePair)
         {
-            ObjectPoolBase objectPool = null;
-            if (_objectPools.TryGetValue(typeNamePair, out objectPool))
+            if (_objectPools.TryGetValue(typeNamePair, out ObjectPoolBase objectPool))
             {
                 return objectPool;
             }
@@ -1226,7 +1307,7 @@ namespace NovaEngine.ObjectPool
             TypeNamePair typeNamePair = new TypeNamePair(typeof(T), name);
             if (HasObjectPool<T>(name))
             {
-                throw new CFrameworkException("Already exist object pool '{0}'.", typeNamePair);
+                throw new CFrameworkException("Already exist object pool '{%i}'.", typeNamePair);
             }
 
             ObjectPool<T> objectPool = new ObjectPool<T>(name, allowMultiSpawn, autoReleaseInterval, capacity, expireTime, priority);
@@ -1234,7 +1315,7 @@ namespace NovaEngine.ObjectPool
             return objectPool;
         }
 
-        private ObjectPoolBase InternalCreateObjectPool(SystemType objectType, string name, bool allowMultiSpawn, float autoReleaseInterval, int capacity, float expireTime, int priority)
+        private ObjectPoolBase InternalCreateObjectPool(Type objectType, string name, bool allowMultiSpawn, float autoReleaseInterval, int capacity, float expireTime, int priority)
         {
             if (null == objectType)
             {
@@ -1243,25 +1324,25 @@ namespace NovaEngine.ObjectPool
 
             if (false == typeof(ObjectBase).IsAssignableFrom(objectType))
             {
-                throw new CFrameworkException("Object type '{0}' is invalid.", objectType.FullName);
+                throw new CFrameworkException("Object type '{%t}' is invalid.", objectType);
             }
 
             TypeNamePair typeNamePair = new TypeNamePair(objectType, name);
             if (HasObjectPool(objectType, name))
             {
-                throw new CFrameworkException("Already exist object pool '{0}'.", typeNamePair);
+                throw new CFrameworkException("Already exist object pool '{%i}'.", typeNamePair);
             }
 
-            SystemType objectPoolType = typeof(ObjectPool<>).MakeGenericType(objectType);
-            ObjectPoolBase objectPool = (ObjectPoolBase) System.Activator.CreateInstance(objectPoolType, name, allowMultiSpawn, autoReleaseInterval, capacity, expireTime, priority);
+            Type objectPoolType = typeof(ObjectPool<>).MakeGenericType(objectType);
+            ObjectPoolBase objectPool = (ObjectPoolBase) Activator.CreateInstance(objectPoolType, name, allowMultiSpawn, autoReleaseInterval, capacity, expireTime, priority);
             _objectPools.Add(typeNamePair, objectPool);
             return objectPool;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool InternalDestroyObjectPool(TypeNamePair typeNamePair)
         {
-            ObjectPoolBase objectPool = null;
-            if (_objectPools.TryGetValue(typeNamePair, out objectPool))
+            if (_objectPools.TryGetValue(typeNamePair, out ObjectPoolBase objectPool))
             {
                 objectPool.Shutdown();
                 return _objectPools.Remove(typeNamePair);
@@ -1270,6 +1351,7 @@ namespace NovaEngine.ObjectPool
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static int ObjectPoolComparer(ObjectPoolBase arg0, ObjectPoolBase arg1)
         {
             return arg0.Priority.CompareTo(arg1.Priority);

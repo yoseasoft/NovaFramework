@@ -23,18 +23,17 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+
 namespace NovaEngine
 {
-    /// <summary>
     /// 事件对象缓冲池实例定义
-    /// </summary>
-    /// <typeparam name="T">事件类型</typeparam>
-    internal sealed partial class EventPool<T> where T : EventArgs
+    internal sealed partial class EventPool<T>
     {
         /// <summary>
         /// 事件池分配处理模式的枚举类型定义
         /// </summary>
-        [System.Flags]
+        [Flags]
         internal enum AllowHandlerType : byte
         {
             /// <summary>

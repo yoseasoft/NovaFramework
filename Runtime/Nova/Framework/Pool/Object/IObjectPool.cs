@@ -23,9 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace NovaEngine.ObjectPool
 {
@@ -49,7 +48,7 @@ namespace NovaEngine.ObjectPool
         /// <summary>
         /// 获取对象池中的对象类型
         /// </summary>
-        SystemType ObjectType { get; }
+        Type ObjectType { get; }
 
         /// <summary>
         /// 获取对象池中对象的数量

@@ -398,7 +398,7 @@ namespace NovaEngine
             /// <returns>返回字符串信息</returns>
             private static string __GetMethodParamsNames(MethodBase method)
             {
-                ParameterInfo[] array = (Reflection.IsTypeOfExtension(method) ? Collection.SkipAndToArray<ParameterInfo>(method.GetParameters(), 1) : method.GetParameters());
+                ParameterInfo[] array = (Reflection.IsTypeOfExtension(method) ? Collection.SkipAndToArray(method.GetParameters(), 1) : method.GetParameters());
                 StringBuilder stringBuilder = new StringBuilder();
                 for (int n = 0, num = array.Length; n < num; ++n)
                 {

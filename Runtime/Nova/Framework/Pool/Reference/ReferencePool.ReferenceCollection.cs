@@ -22,8 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemActivator = System.Activator;
+using System;
 
 namespace NovaEngine
 {
@@ -46,7 +45,7 @@ namespace NovaEngine
             /// <summary>
             /// 引用对象类型标识
             /// </summary>
-            private readonly SystemType _referenceType;
+            private readonly Type _referenceType;
             /// <summary>
             /// 引用对象后处理信息
             /// </summary>
@@ -76,7 +75,7 @@ namespace NovaEngine
             /// 缓存容器的构造函数
             /// </summary>
             /// <param name="referenceType">引用对象类型</param>
-            public ReferenceCollection(SystemType referenceType)
+            public ReferenceCollection(Type referenceType)
             {
                 ReferencePostProcessInfo postProcessInfo;
                 TryGetReferencePostProcessInfo(referenceType, out postProcessInfo);
@@ -94,7 +93,7 @@ namespace NovaEngine
             /// <summary>
             /// 获取引用对象类型标识
             /// </summary>
-            public SystemType ReferenceType
+            public Type ReferenceType
             {
                 get { return _referenceType; }
             }
@@ -201,7 +200,7 @@ namespace NovaEngine
                     else
                     {
                         _addReferenceCount++;
-                        inst = (IReference) SystemActivator.CreateInstance(_referenceType);
+                        inst = (IReference) Activator.CreateInstance(_referenceType);
                     }
                 }
 
@@ -269,7 +268,7 @@ namespace NovaEngine
                     while (count > 0)
                     {
                         count--;
-                        _references.Enqueue((IReference) SystemActivator.CreateInstance(_referenceType));
+                        _references.Enqueue((IReference) Activator.CreateInstance(_referenceType));
                     }
                 }
             }

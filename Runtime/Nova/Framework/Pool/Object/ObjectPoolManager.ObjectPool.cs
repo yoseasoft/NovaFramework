@@ -23,17 +23,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemDateTime = System.DateTime;
+using System.Runtime.CompilerServices;
 
 namespace NovaEngine.ObjectPool
 {
-    /// <summary>
-    /// 对象池的管理器实现类，该类通过完成管理器标准接口实现对象池的全部管理流程<br/>
-    /// 当您需要使用对象池技术时，无需自己去实现一个对象池管理器类，建议您直接通过该类去达到目的
-    /// </summary>
+    /// 对象池的管理器实现类
     internal sealed partial class ObjectPoolManager
     {
         /// <summary>
@@ -57,7 +53,7 @@ namespace NovaEngine.ObjectPool
             /// <summary>
             /// 获取对象池中的对象类型
             /// </summary>
-            public override SystemType ObjectType
+            public override Type ObjectType
             {
                 get { return typeof(T); }
             }
@@ -196,6 +192,7 @@ namespace NovaEngine.ObjectPool
             /// 检测当前对象池是否处于可孵化状态
             /// </summary>
             /// <returns>若当前对象池可孵化对象则返回true，否则返回false</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool CanSpawn()
             {
                 return CanSpawn(string.Empty);
@@ -213,8 +210,7 @@ namespace NovaEngine.ObjectPool
                     throw new CFrameworkException("Name is invalid.");
                 }
 
-                DoubleLinkedList<Object<T>> objectRange = default(DoubleLinkedList<Object<T>>);
-                if (_objects.TryGetValue(name, out objectRange))
+                if (_objects.TryGetValue(name, out DoubleLinkedList<Object<T>> objectRange))
                 {
                     foreach (Object<T> internalObject in objectRange)
                     {
@@ -233,6 +229,7 @@ namespace NovaEngine.ObjectPool
             /// 从当前对象池中孵化一个对象实例
             /// </summary>
             /// <returns>返回孵化的对象实例</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public T Spawn()
             {
                 return Spawn(string.Empty);
@@ -250,8 +247,7 @@ namespace NovaEngine.ObjectPool
                     throw new CFrameworkException("Name is invalid.");
                 }
 
-                DoubleLinkedList<Object<T>> objectRange = default(DoubleLinkedList<Object<T>>);
-                if (_objects.TryGetValue(name, out objectRange))
+                if (_objects.TryGetValue(name, out DoubleLinkedList<Object<T>> objectRange))
                 {
                     foreach (Object<T> internalObject in objectRange)
                     {
@@ -270,6 +266,7 @@ namespace NovaEngine.ObjectPool
             /// 回收一个指定的孵化对象实例
             /// </summary>
             /// <param name="obj">目标对象实例</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void Unspawn(T obj)
             {
                 if (null == obj)
@@ -302,8 +299,8 @@ namespace NovaEngine.ObjectPool
                 }
                 else
                 {
-                    throw new CFrameworkException("Can not find target in object pool '{0}', target type is '{1}', target value is '{2}'.",
-                                         new TypeNamePair(typeof(T), Name), target.GetType().FullName, target);
+                    throw new CFrameworkException("Can not find target in object pool '{%i}', target type is '{%t}', target value is '{%i}'.",
+                                         new TypeNamePair(typeof(T), Name), target, target);
                 }
             }
 
@@ -312,6 +309,7 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             /// <param name="obj">目标对象实例</param>
             /// <param name="locked">锁定状态</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void SetLocked(T obj, bool locked)
             {
                 if (null == obj)
@@ -341,8 +339,8 @@ namespace NovaEngine.ObjectPool
                 }
                 else
                 {
-                    throw new CFrameworkException("Can not find target in object pool '{0}', target type is '{1}', target value is '{2}'.",
-                                         new TypeNamePair(typeof(T), Name), target.GetType().FullName, target);
+                    throw new CFrameworkException("Can not find target in object pool '{%i}', target type is '{%t}', target value is '{%i}'.",
+                                         new TypeNamePair(typeof(T), Name), target, target);
                 }
             }
 
@@ -351,6 +349,7 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             /// <param name="obj">目标对象实例</param>
             /// <param name="priority">优先级</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void SetPriority(T obj, int priority)
             {
                 if (null == obj)
@@ -380,8 +379,8 @@ namespace NovaEngine.ObjectPool
                 }
                 else
                 {
-                    throw new CFrameworkException("Can not find target in object pool '{0}', target type is '{1}', target value is '{2}'.",
-                                         new TypeNamePair(typeof(T), Name), target.GetType().FullName, target);
+                    throw new CFrameworkException("Can not find target in object pool '{%i}', target type is '{%t}', target value is '{%i}'.",
+                                         new TypeNamePair(typeof(T), Name), target, target);
                 }
             }
 
@@ -390,6 +389,7 @@ namespace NovaEngine.ObjectPool
             /// </summary>
             /// <param name="obj">目标对象实例</param>
             /// <returns>释放对象实例成功则返回true，否则返回false</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool ReleaseObject(T obj)
             {
                 if (null == obj)
@@ -435,6 +435,7 @@ namespace NovaEngine.ObjectPool
             /// <summary>
             /// 释放对象池中的所有可释放对象实例
             /// </summary>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public override void Release()
             {
                 Release(Count - _capacity, _defaultReleaseObjectFilterCallback);
@@ -445,6 +446,7 @@ namespace NovaEngine.ObjectPool
             /// 若剩余对象的数量不足，则释放全部对象实例
             /// </summary>
             /// <param name="releaseCount">尝试释放的对象数量</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public override void Release(int releaseCount)
             {
                 Release(releaseCount, _defaultReleaseObjectFilterCallback);
@@ -454,6 +456,7 @@ namespace NovaEngine.ObjectPool
             /// 根据指定筛选规则释放对象池中的所有可释放对象实例
             /// </summary>
             /// <param name="callback">释放对象筛选函数</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void Release(ReleaseObjectFilterCallback<T> callback)
             {
                 Release(Count - _capacity, callback);
@@ -476,10 +479,10 @@ namespace NovaEngine.ObjectPool
                     releaseCount = 0;
                 }
 
-                SystemDateTime expireTime = SystemDateTime.MinValue;
+                DateTime expireTime = DateTime.MinValue;
                 if (_expireTime < float.MaxValue)
                 {
-                    expireTime = SystemDateTime.UtcNow.AddSeconds(-_expireTime);
+                    expireTime = DateTime.UtcNow.AddSeconds(-_expireTime);
                 }
 
                 _autoReleaseTime = 0f;
@@ -569,8 +572,7 @@ namespace NovaEngine.ObjectPool
                     return null;
                 }
 
-                Object<T> internalObject = null;
-                if (_objectMap.TryGetValue(target, out internalObject))
+                if (_objectMap.TryGetValue(target, out Object<T> internalObject))
                 {
                     return internalObject;
                 }
@@ -602,11 +604,11 @@ namespace NovaEngine.ObjectPool
                 }
             }
 
-            private IList<T> DefaultReleaseObjectFilterCallback(IList<T> candidateObjects, int releaseCount, SystemDateTime expireTime)
+            private IList<T> DefaultReleaseObjectFilterCallback(IList<T> candidateObjects, int releaseCount, DateTime expireTime)
             {
                 _cachedToReleaseObjects.Clear();
 
-                if (expireTime > SystemDateTime.MinValue)
+                if (expireTime > DateTime.MinValue)
                 {
                     for (int n = candidateObjects.Count - 1; n >= 0; --n)
                     {

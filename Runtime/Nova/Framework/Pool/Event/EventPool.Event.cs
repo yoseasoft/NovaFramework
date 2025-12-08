@@ -25,11 +25,8 @@
 
 namespace NovaEngine
 {
-    /// <summary>
     /// 事件对象缓冲池实例定义
-    /// </summary>
-    /// <typeparam name="T">事件类型</typeparam>
-    internal sealed partial class EventPool<T> where T : EventArgs
+    internal sealed partial class EventPool<T>
     {
         /// <summary>
         /// 事件节点对象实例

@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemDateTime = System.DateTime;
+using System;
 
 namespace NovaEngine.ObjectPool
 {
@@ -53,7 +53,7 @@ namespace NovaEngine.ObjectPool
         /// <summary>
         /// 对象最后使用的时间
         /// </summary>
-        private SystemDateTime _lastUseTime;
+        private DateTime _lastUseTime;
 
         /// <summary>
         /// 获取对象的名称
@@ -92,7 +92,7 @@ namespace NovaEngine.ObjectPool
         /// <summary>
         /// 获取或设置对象最后使用的时间
         /// </summary>
-        public SystemDateTime LastUseTime
+        public DateTime LastUseTime
         {
             get { return _lastUseTime; }
             set { _lastUseTime = value; }
@@ -112,7 +112,7 @@ namespace NovaEngine.ObjectPool
             _target = null;
             _locked = false;
             _priority = 0;
-            _lastUseTime = default(SystemDateTime);
+            _lastUseTime = default;
         }
 
         /// <summary>
@@ -174,14 +174,14 @@ namespace NovaEngine.ObjectPool
         {
             if (null == target)
             {
-                throw new CFrameworkException("Target '{0}' is invalid.", name);
+                throw new CFrameworkException("Target '{%s}' is invalid.", name);
             }
 
             _name = name ?? string.Empty;
             _target = target;
             _locked = locked;
             _priority = priority;
-            _lastUseTime = SystemDateTime.UtcNow;
+            _lastUseTime = DateTime.UtcNow;
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace NovaEngine.ObjectPool
             _target = null;
             _locked = false;
             _priority = 0;
-            _lastUseTime = default(SystemDateTime);
+            _lastUseTime = default;
         }
 
         /// <summary>

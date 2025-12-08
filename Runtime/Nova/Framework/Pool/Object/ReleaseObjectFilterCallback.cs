@@ -23,9 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemDateTime = System.DateTime;
 
 namespace NovaEngine.ObjectPool
 {
@@ -39,5 +38,5 @@ namespace NovaEngine.ObjectPool
     /// <returns>返回经过筛选需要释放的对象集合</returns>
     public delegate IList<T> ReleaseObjectFilterCallback<T>(IList<T> candidateObjects,
                                                             int releaseCount,
-                                                            SystemDateTime expireTime) where T : ObjectBase;
+                                                            DateTime expireTime) where T : ObjectBase;
 }
