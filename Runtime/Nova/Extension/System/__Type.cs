@@ -23,11 +23,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemEncoding = System.Text.Encoding;
-using SystemStream = System.IO.Stream;
-using SystemAssembly = System.Reflection.Assembly;
-
 namespace System.Customize.Extension
 {
     /// <summary>

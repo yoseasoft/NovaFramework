@@ -22,9 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemDateTime = System.DateTime;
 
 using UnityObject = UnityEngine.Object;
 using UnityResources = UnityEngine.Resources;
@@ -51,12 +50,12 @@ namespace GameEngine.Profiler.Debugging
             /// <summary>
             /// 记录对象的比较器函数引用
             /// </summary>
-            private readonly System.Comparison<Record> _recordComparer = RecordComparer;
+            private readonly Comparison<Record> _recordComparer = RecordComparer;
 
             /// <summary>
             /// 记录刷新的时间标签
             /// </summary>
-            private SystemDateTime _sampleTime = SystemDateTime.MinValue;
+            private DateTime _sampleTime = DateTime.MinValue;
             /// <summary>
             /// 所有记录的累计总数
             /// </summary>
@@ -76,7 +75,7 @@ namespace GameEngine.Profiler.Debugging
                         TakeSample();
                     }
 
-                    if (_sampleTime <= SystemDateTime.MinValue)
+                    if (_sampleTime <= DateTime.MinValue)
                     {
                         UnityGUILayout.Label("<b>Please take sample at first.</b>");
                     }
@@ -116,7 +115,7 @@ namespace GameEngine.Profiler.Debugging
             private void TakeSample()
             {
                 _records.Clear();
-                _sampleTime = SystemDateTime.UtcNow;
+                _sampleTime = DateTime.UtcNow;
                 _sampleCount = 0;
                 _sampleSize = 0L;
 

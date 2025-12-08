@@ -25,6 +25,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -95,7 +96,7 @@ namespace GameEngine
         {
             FieldInfo[] fieldInfos = controller.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-            System.Type launcherType = typeof(EngineLauncher);
+            Type launcherType = typeof(EngineLauncher);
             for (int n = 0; n < fieldInfos.Length; ++n)
             {
                 FieldInfo fieldInfo = fieldInfos[n];
@@ -114,7 +115,7 @@ namespace GameEngine
                         continue;
                     }
 
-                    System.Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(methodInfo);
+                    Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(methodInfo);
                     if (null == callback)
                     {
                         Debugger.Warn("Cannot generic action delegate with target method '{0}', initialized controller callback property '{1}' failed.", methodInfo.Name, fieldInfo.Name);

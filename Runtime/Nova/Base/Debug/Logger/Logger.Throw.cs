@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+
 namespace NovaEngine
 {
     /// <summary>
@@ -75,7 +77,7 @@ namespace NovaEngine
         /// 此处对异常进行一次封装，之所以这样做，是为了在发布模式下能支持提供更多的错误信息
         /// </summary>
         /// <param name="exception">异常实例</param>
-        internal static void Throw(System.Exception exception)
+        internal static void Throw(Exception exception)
         {
             __Throw_ImplementedOnSystem(exception);
         }
@@ -85,7 +87,7 @@ namespace NovaEngine
         /// 此处对异常进行一次封装，之所以这样做，是为了在发布模式下能支持提供更多的错误信息
         /// </summary>
         /// <param name="type">异常类型</param>
-        internal static void Throw(System.Type type)
+        internal static void Throw(Type type)
         {
             __Throw_ImplementedOnSystem(type);
         }
@@ -96,7 +98,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="type">异常类型</param>
         /// <param name="message">消息内容</param>
-        internal static void Throw(System.Type type, string message)
+        internal static void Throw(Type type, string message)
         {
             __Throw_ImplementedOnSystem(type, message);
         }
@@ -108,7 +110,7 @@ namespace NovaEngine
         /// <param name="type">异常类型</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
-        internal static void Throw(System.Type type, string format, params object[] args)
+        internal static void Throw(Type type, string format, params object[] args)
         {
             __Throw_ImplementedOnSystem(type, format, args);
         }
@@ -118,7 +120,7 @@ namespace NovaEngine
         /// 此处对异常进行一次封装，之所以这样做，是为了在发布模式下能支持提供更多的错误信息
         /// </summary>
         /// <typeparam name="T">异常类型</typeparam>
-        internal static void Throw<T>() where T : System.Exception
+        internal static void Throw<T>() where T : Exception
         {
             __Throw_ImplementedOnSystem(typeof(T));
         }
@@ -129,7 +131,7 @@ namespace NovaEngine
         /// </summary>
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="message">消息内容</param>
-        internal static void Throw<T>(string message) where T : System.Exception
+        internal static void Throw<T>(string message) where T : Exception
         {
             __Throw_ImplementedOnSystem(typeof(T), message);
         }
@@ -141,7 +143,7 @@ namespace NovaEngine
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
-        internal static void Throw<T>(string format, params object[] args) where T : System.Exception
+        internal static void Throw<T>(string format, params object[] args) where T : Exception
         {
             __Throw_ImplementedOnSystem(typeof(T), format, args);
         }
@@ -188,7 +190,7 @@ namespace NovaEngine
         /// 系统异常，通过引擎接口实现的异常函数
         /// </summary>
         /// <param name="exception">异常实例</param>
-        internal static void __Throw_ImplementedOnSystem(System.Exception exception)
+        internal static void __Throw_ImplementedOnSystem(Exception exception)
         {
             throw new CFrameworkException(exception);
         }
@@ -197,7 +199,7 @@ namespace NovaEngine
         /// 系统异常，通过引擎接口实现的异常函数
         /// </summary>
         /// <param name="type">异常类型</param>
-        internal static void __Throw_ImplementedOnSystem(System.Type type)
+        internal static void __Throw_ImplementedOnSystem(Type type)
         {
             throw new CFrameworkException(type);
         }
@@ -207,7 +209,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="type">异常类型</param>
         /// <param name="message">消息内容</param>
-        internal static void __Throw_ImplementedOnSystem(System.Type type, string message)
+        internal static void __Throw_ImplementedOnSystem(Type type, string message)
         {
             throw new CFrameworkException(type, message);
         }
@@ -218,7 +220,7 @@ namespace NovaEngine
         /// <param name="type">异常类型</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
-        internal static void __Throw_ImplementedOnSystem(System.Type type, string format, params object[] args)
+        internal static void __Throw_ImplementedOnSystem(Type type, string format, params object[] args)
         {
             throw new CFrameworkException(type, format, args);
         }
@@ -263,7 +265,7 @@ namespace NovaEngine
         /// 系统异常，通过引擎接口实现的异常函数
         /// </summary>
         /// <param name="exception">异常实例</param>
-        internal static void __Throw_ImplementedOnOutput(System.Exception exception)
+        internal static void __Throw_ImplementedOnOutput(Exception exception)
         {
             Fatal(exception.Message);
         }
@@ -272,7 +274,7 @@ namespace NovaEngine
         /// 系统异常，通过引擎接口实现的异常函数
         /// </summary>
         /// <param name="type">异常类型</param>
-        internal static void __Throw_ImplementedOnOutput(System.Type type)
+        internal static void __Throw_ImplementedOnOutput(Type type)
         {
             Fatal(Utility.Text.ToString(type));
         }
@@ -282,7 +284,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="type">异常类型</param>
         /// <param name="message">消息内容</param>
-        internal static void __Throw_ImplementedOnOutput(System.Type type, string message)
+        internal static void __Throw_ImplementedOnOutput(Type type, string message)
         {
             Fatal(message);
         }
@@ -293,7 +295,7 @@ namespace NovaEngine
         /// <param name="type">异常类型</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
-        internal static void __Throw_ImplementedOnOutput(System.Type type, string format, params object[] args)
+        internal static void __Throw_ImplementedOnOutput(Type type, string format, params object[] args)
         {
             Fatal(format, args);
         }

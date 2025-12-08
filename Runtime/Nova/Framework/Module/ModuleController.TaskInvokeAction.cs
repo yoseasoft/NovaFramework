@@ -24,6 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+
 namespace NovaEngine.Module
 {
     /// 引擎框架模块中控台管理类
@@ -42,7 +44,7 @@ namespace NovaEngine.Module
             /// <summary>
             /// 任务回调接口
             /// </summary>
-            public System.Action _action;
+            public Action _action;
         }
     }
 }

@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+
 namespace NovaEngine
 {
     /// 调试器对象工具类
@@ -68,7 +70,7 @@ namespace NovaEngine
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="exception">异常实例</param>
-        public static void Throw(System.Exception exception)
+        public static void Throw(Exception exception)
         {
             Instance._throw_exception?.Invoke(exception);
         }
@@ -77,7 +79,7 @@ namespace NovaEngine
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="type">异常类型</param>
-        public static void Throw(System.Type type)
+        public static void Throw(Type type)
         {
             Instance._throw_type?.Invoke(type);
         }
@@ -87,7 +89,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="type">异常类型</param>
         /// <param name="message">消息内容</param>
-        public static void Throw(System.Type type, string message)
+        public static void Throw(Type type, string message)
         {
             Instance._throw_type_string?.Invoke(type, message);
         }
@@ -98,7 +100,7 @@ namespace NovaEngine
         /// <param name="type">异常类型</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
-        public static void Throw(System.Type type, string format, params object[] args)
+        public static void Throw(Type type, string format, params object[] args)
         {
             Instance._throw_type_format_args?.Invoke(type, format, args);
         }
@@ -107,7 +109,7 @@ namespace NovaEngine
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
         /// <typeparam name="T">异常类型</typeparam>
-        public static void Throw<T>() where T : System.Exception
+        public static void Throw<T>() where T : Exception
         {
             Throw(typeof(T));
         }
@@ -117,7 +119,7 @@ namespace NovaEngine
         /// </summary>
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="message">消息内容</param>
-        public static void Throw<T>(string message) where T : System.Exception
+        public static void Throw<T>(string message) where T : Exception
         {
             Throw(typeof(T), message);
         }
@@ -128,7 +130,7 @@ namespace NovaEngine
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
-        public static void Throw<T>(string format, params object[] args) where T : System.Exception
+        public static void Throw<T>(string format, params object[] args) where T : Exception
         {
             Throw(typeof(T), format, args);
         }
@@ -178,7 +180,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="exception">异常实例</param>
-        public static void Throw(bool condition, System.Exception exception)
+        public static void Throw(bool condition, Exception exception)
         {
             if (condition) Throw(exception);
         }
@@ -188,7 +190,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="type">异常类型</param>
-        public static void Throw(bool condition, System.Type type)
+        public static void Throw(bool condition, Type type)
         {
             if (condition) Throw(type);
         }
@@ -199,7 +201,7 @@ namespace NovaEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="type">异常类型</param>
         /// <param name="message">消息内容</param>
-        public static void Throw(bool condition, System.Type type, string message)
+        public static void Throw(bool condition, Type type, string message)
         {
             if (condition) Throw(type, message);
         }
@@ -211,7 +213,7 @@ namespace NovaEngine
         /// <param name="type">异常类型</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
-        public static void Throw(bool condition, System.Type type, string format, params object[] args)
+        public static void Throw(bool condition, Type type, string format, params object[] args)
         {
             if (condition) Throw(type, format, args);
         }
@@ -221,7 +223,7 @@ namespace NovaEngine
         /// </summary>
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="condition">条件表达式</param>
-        public static void Throw<T>(bool condition) where T : System.Exception
+        public static void Throw<T>(bool condition) where T : Exception
         {
             if (condition) Throw<T>();
         }
@@ -232,7 +234,7 @@ namespace NovaEngine
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">消息内容</param>
-        public static void Throw<T>(bool condition, string message) where T : System.Exception
+        public static void Throw<T>(bool condition, string message) where T : Exception
         {
             if (condition) Throw<T>(message);
         }
@@ -244,7 +246,7 @@ namespace NovaEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
-        public static void Throw<T>(bool condition, string format, params object[] args) where T : System.Exception
+        public static void Throw<T>(bool condition, string format, params object[] args) where T : Exception
         {
             if (condition) Throw<T>(format, args);
         }

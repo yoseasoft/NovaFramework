@@ -22,8 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-using SystemDateTime = System.DateTime;
 
 using UnityObject = UnityEngine.Object;
 using UnityResources = UnityEngine.Resources;
@@ -55,12 +55,12 @@ namespace GameEngine.Profiler.Debugging
             /// <summary>
             /// 实例对象的比较器函数引用
             /// </summary>
-            private readonly System.Comparison<Sample> _sampleComparer = SampleComparer;
+            private readonly Comparison<Sample> _sampleComparer = SampleComparer;
 
             /// <summary>
             /// 实例刷新的时间标签
             /// </summary>
-            private SystemDateTime _sampleTime = SystemDateTime.MinValue;
+            private DateTime _sampleTime = DateTime.MinValue;
             /// <summary>
             /// 所有实例的累计内存大小
             /// </summary>
@@ -85,7 +85,7 @@ namespace GameEngine.Profiler.Debugging
                         TakeSample();
                     }
 
-                    if (_sampleTime <= SystemDateTime.MinValue)
+                    if (_sampleTime <= DateTime.MinValue)
                     {
                         UnityGUILayout.Label(NovaEngine.Utility.Text.Format("<b>Please take sample for {0} first.</b>", typeName));
                     }
@@ -154,7 +154,7 @@ namespace GameEngine.Profiler.Debugging
             /// </summary>
             private void TakeSample()
             {
-                _sampleTime = SystemDateTime.UtcNow;
+                _sampleTime = DateTime.UtcNow;
                 _sampleSize = 0L;
                 _duplicateSampleSize = 0L;
                 _duplicateSampleCount = 0;

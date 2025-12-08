@@ -25,6 +25,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+
 namespace NovaEngine.Module
 {
     /// 网络管理模块对象类
@@ -33,7 +35,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 网络基础指令协议类型
         /// </summary>
-        [System.Flags]
+        [Flags]
         public enum ProtocolType : byte
         {
             /// <summary>

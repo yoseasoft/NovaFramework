@@ -22,6 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+
 namespace NovaEngine
 {
     /// <summary>
@@ -75,7 +77,7 @@ namespace NovaEngine
             /// <param name="message">日志内容</param>
             public void Output(LogOutputLevelType level, object message)
             {
-                System.Console.WriteLine(message.ToString());
+                Console.WriteLine(message.ToString());
             }
         }
     }

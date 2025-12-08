@@ -22,7 +22,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemDateTime = System.DateTime;
 using UnityGUILayout = UnityEngine.GUILayout;
 
 namespace GameEngine.Profiler.Debugging

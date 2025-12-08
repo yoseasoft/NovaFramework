@@ -25,7 +25,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemAction = System.Action;
+using System;
 
 namespace NovaEngine.Module
 {
@@ -38,7 +38,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 模块类型常量定义
         /// </summary>
-        public static readonly System.Type CLASS_TYPE = typeof(ModuleObject);
+        public static readonly Type CLASS_TYPE = typeof(ModuleObject);
 
         /// <summary>
         /// 模块类的新实例构建接口
@@ -228,7 +228,7 @@ namespace NovaEngine.Module
         /// 在当前主线程下以排队方式执行目标任务逻辑，该逻辑仅可一次性执行完成，不可循环等待
         /// </summary>
         /// <param name="action">目标任务项</param>
-        public static void QueueOnMainThread(SystemAction action)
+        public static void QueueOnMainThread(Action action)
         {
             ModuleController.QueueOnMainThread(action);
         }
@@ -238,7 +238,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="action">目标任务项</param>
         /// <param name="delay">延迟时间</param>
-        public static void QueueOnMainThread(SystemAction action, float delay)
+        public static void QueueOnMainThread(Action action, float delay)
         {
             ModuleController.QueueOnMainThread(action, delay);
         }
@@ -258,9 +258,9 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="typeName">类型名称</param>
         /// <returns>若名称对应类型继承自模块类则返回true，否则返回false</returns>
-        public static bool IsInheritanceType(System.Type typeName)
+        public static bool IsInheritanceType(Type typeName)
         {
-            if (typeName.IsSubclassOf(ModuleObject.CLASS_TYPE))
+            if (typeName.IsSubclassOf(CLASS_TYPE))
             {
                 return true;
             }

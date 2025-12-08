@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+
 namespace GameEngine
 {
     /// <summary>
@@ -81,7 +83,7 @@ namespace GameEngine
             //     targetName = GameConfig.TUTORIAL_MODULE_EXTERNAL_GATEWAY_NAME;
             // }
 
-            System.Type type = NovaEngine.Utility.Assembly.GetType(targetName);
+            Type type = NovaEngine.Utility.Assembly.GetType(targetName);
             if (type == null)
             {
                 Debugger.Error("Could not found '{%s}' class type with current assemblies list, call that function '{%s}' failed.", targetName, methodName);

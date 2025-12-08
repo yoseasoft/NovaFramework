@@ -22,12 +22,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Customize.Extension;
 using UnityEngine.Customize.Extension;
 
-using SystemType = System.Type;
-
+using UnityObject = UnityEngine.Object;
 using UnityGameObject = UnityEngine.GameObject;
 
 namespace NovaEngine
@@ -51,6 +52,7 @@ namespace NovaEngine
         /// </summary>
         /// <typeparam name="T">类型声明</typeparam>
         /// <returns>返回类型声明对应的组件实例，若不存在则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T GetComponent<T>() where T : CFrameworkComponent
         {
             return (T) GetComponent(typeof(T));
@@ -61,7 +63,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="componentType">类型标识</param>
         /// <returns>返回类型标识对应的组件实例，若不存在则返回null</returns>
-        public static CFrameworkComponent GetComponent(SystemType componentType)
+        public static CFrameworkComponent GetComponent(Type componentType)
         {
             foreach (KeyValuePair<string, CFrameworkComponent> pair in _frameworkComponents)
             {
@@ -79,10 +81,10 @@ namespace NovaEngine
         /// </summary>
         /// <param name="name">节点名称</param>
         /// <returns>返回名称对应的组件实例，若不存在则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static CFrameworkComponent GetComponent(string name)
         {
-            CFrameworkComponent component = null;
-            if (_frameworkComponents.TryGetValue(name, out component))
+            if (_frameworkComponents.TryGetValue(name, out CFrameworkComponent component))
             {
                 return component;
             }
@@ -97,6 +99,7 @@ namespace NovaEngine
         /// </summary>
         /// <typeparam name="T">组件类型</typeparam>
         /// <returns>返回注册的组件对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T RegisterComponent<T>() where T : CFrameworkComponent
         {
             return (T) RegisterComponent(typeof(T));
@@ -109,7 +112,8 @@ namespace NovaEngine
         /// </summary>
         /// <param name="componentType">组件类型</param>
         /// <returns>返回注册的组件对象实例</returns>
-        public static CFrameworkComponent RegisterComponent(SystemType componentType)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static CFrameworkComponent RegisterComponent(Type componentType)
         {
             return RegisterComponent(componentType.FullName, componentType);
         }
@@ -122,6 +126,7 @@ namespace NovaEngine
         /// <typeparam name="T">组件类型</typeparam>
         /// <param name="name">节点名称</param>
         /// <returns>返回注册的组件对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T RegisterComponent<T>(string name) where T : CFrameworkComponent
         {
             return (T) RegisterComponent(name, typeof(T));
@@ -135,7 +140,7 @@ namespace NovaEngine
         /// <param name="name">节点名称</param>
         /// <param name="componentType">组件类型</param>
         /// <returns>返回注册的组件对象实例</returns>
-        public static CFrameworkComponent RegisterComponent(string name, SystemType componentType)
+        public static CFrameworkComponent RegisterComponent(string name, Type componentType)
         {
             if (name.IsNullOrEmpty())
             {
@@ -146,7 +151,7 @@ namespace NovaEngine
             // 每个GameObject仅能容许一个CFrameworkComponent实例
             if (_frameworkGameObjects.ContainsKey(name))
             {
-                Logger.Error("The register component name '{0}' is already exist, cannot repeat register it.", name);
+                Logger.Error("The register component name '{%s}' is already exist, cannot repeat register it.", name);
                 CFrameworkComponent c = _frameworkComponents[name];
                 if (c.GetType() == componentType)
                 {
@@ -154,13 +159,13 @@ namespace NovaEngine
                 }
 
                 // 已注册的组件类型和新注册组件类型不一致
-                Logger.Error("The register component type '{0}' not matched the exist type '{1}', get it failed.", componentType.FullName, c.GetType().FullName);
+                Logger.Error("The register component type '{%t}' not matched the exist type '{%t}', get it failed.", componentType, c);
                 return null;
             }
 
             if (false == typeof(CFrameworkComponent).IsAssignableFrom(componentType))
             {
-                Logger.Error("The register component type '{0}' must be inherited from CFrameworkComponent, check the type invalid.", componentType.FullName);
+                Logger.Error("The register component type '{%t}' must be inherited from CFrameworkComponent, check the type invalid.", componentType);
                 return null;
             }
 
@@ -196,14 +201,14 @@ namespace NovaEngine
 
             if (false == _frameworkGameObjects.ContainsKey(name))
             {
-                Logger.Error("Could not found any component name '{0}' in current framework, unregister it failed.", name);
+                Logger.Error("Could not found any component name '{%s}' in current framework, unregister it failed.", name);
                 return;
             }
 
             UnityGameObject gameObject = _frameworkGameObjects[name];
             CFrameworkComponent component = _frameworkComponents[name];
-            UnityEngine.Object.Destroy(component);
-            UnityEngine.GameObject.Destroy(gameObject);
+            UnityObject.Destroy(component);
+            UnityObject.Destroy(gameObject);
 
             _frameworkGameObjects.Remove(name);
             _frameworkComponents.Remove(name);
@@ -213,6 +218,7 @@ namespace NovaEngine
         /// 注销指定类型的组件对象实例
         /// </summary>
         /// <typeparam name="T">组件类型</typeparam>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnregisterComponent<T>()
         {
             UnregisterComponent(typeof(T));
@@ -222,7 +228,7 @@ namespace NovaEngine
         /// 注销指定类型的组件对象实例
         /// </summary>
         /// <param name="componentType">组件类型</param>
-        public static void UnregisterComponent(SystemType componentType)
+        public static void UnregisterComponent(Type componentType)
         {
             foreach (KeyValuePair<string, CFrameworkComponent> pair in _frameworkComponents)
             {
@@ -239,7 +245,7 @@ namespace NovaEngine
         /// </summary>
         private static void RemoveAllComponents()
         {
-            IList<string> keys = Utility.Collection.ToList<string>(_frameworkGameObjects.Keys);
+            IList<string> keys = Utility.Collection.ToList(_frameworkGameObjects.Keys);
             for (int n = 0; null != keys && n < keys.Count; ++n)
             {
                 UnregisterComponent(keys[n]);

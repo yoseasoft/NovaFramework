@@ -24,6 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+
 namespace NovaEngine
 {
     /// <summary>
@@ -73,7 +75,7 @@ namespace NovaEngine
         {
             if (Singleton<T>._instance == null)
             {
-                Singleton<T>._instance = System.Activator.CreateInstance<T>();
+                Singleton<T>._instance = Activator.CreateInstance<T>();
                 (Singleton<T>._instance as Singleton<T>).Initialize();
             }
 

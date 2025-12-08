@@ -22,10 +22,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemDateTime = System.DateTime;
+using System;
 
 using UnityLogType = UnityEngine.LogType;
-using UnityTime = UnityEngine.Time;
 
 namespace GameEngine.Profiler.Debugging
 {
@@ -42,7 +41,7 @@ namespace GameEngine.Profiler.Debugging
             /// <summary>
             /// 日志记录发生的时间
             /// </summary>
-            private SystemDateTime _time;
+            private DateTime _time;
             /// <summary>
             /// 日志记录发生的帧数
             /// </summary>
@@ -63,7 +62,7 @@ namespace GameEngine.Profiler.Debugging
             /// <summary>
             /// 获取当前日志记录发生的时间
             /// </summary>
-            public SystemDateTime Time { get { return _time; } }
+            public DateTime Time { get { return _time; } }
             /// <summary>
             /// 获取当前日志记录发生的帧数
             /// </summary>
@@ -83,7 +82,7 @@ namespace GameEngine.Profiler.Debugging
 
             public LogNode()
             {
-                _time = default(SystemDateTime);
+                _time = default;
                 _frameCount = 0;
                 _type = UnityLogType.Error;
                 _message = null;
@@ -102,7 +101,7 @@ namespace GameEngine.Profiler.Debugging
             /// </summary>
             public void Cleanup()
             {
-                _time = default(SystemDateTime);
+                _time = default;
                 _frameCount = 0;
                 _type = UnityLogType.Error;
                 _message = null;
@@ -121,7 +120,7 @@ namespace GameEngine.Profiler.Debugging
             public static LogNode Create(UnityLogType type, string message, string stackTrace)
             {
                 LogNode node = NovaEngine.ReferencePool.Acquire<LogNode>();
-                node._time = SystemDateTime.UtcNow;
+                node._time = DateTime.UtcNow;
                 node._frameCount = NovaEngine.Timestamp.FrameCount;
                 node._type = type;
                 node._message = message;

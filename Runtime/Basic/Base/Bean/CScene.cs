@@ -24,6 +24,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using Cysharp.Threading.Tasks;
 
 namespace GameEngine
@@ -217,7 +218,7 @@ namespace GameEngine
         /// <param name="assetName">场景资源名称</param>
         /// <param name="assetUrl">场景资源路径</param>
         /// <param name="completed">结束回调</param>
-        public GooAsset.Scene LoadSceneAsset(string assetName, string assetUrl, System.Action<GooAsset.Scene> completed = null)
+        public GooAsset.Scene LoadSceneAsset(string assetName, string assetUrl, Action<GooAsset.Scene> completed = null)
         {
             return SceneHandler.LoadSceneAsset(assetName, assetUrl, completed);
         }

@@ -22,6 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 
 using UnityColor = UnityEngine.Color;
@@ -41,7 +42,7 @@ namespace GameEngine.Profiler.Debugging
         /// <summary>
         /// 调试器的控制台窗口对象类，声明了控制台输出内容的管理控制接口函数
         /// </summary>
-        [System.Serializable]
+        [Serializable]
         public sealed class ConsoleWindow : IDebuggerWindow
         {
             /// <summary>
@@ -339,7 +340,7 @@ namespace GameEngine.Profiler.Debugging
                             UnityColor32 color = GetLogStringColor(_selectedNode.Type);
                             if (UnityGUILayout.Button(NovaEngine.Utility.Text.Format("",
                                     color.r.ToString("x2"), color.g.ToString("x2"), color.b.ToString("x2"), color.a.ToString("x2"),
-                                    _selectedNode.Message, _selectedNode.StackTrace, System.Environment.NewLine), "label"))
+                                    _selectedNode.Message, _selectedNode.StackTrace, Environment.NewLine), "label"))
                             {
                             }
                         }

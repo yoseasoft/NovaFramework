@@ -22,6 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -87,7 +88,7 @@ namespace NovaEngine
 
                 return process;
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 throw new CFrameworkException($"dir: {Path.GetFullPath(workingDirectory)}, command: {exe} {arguments}.", e);
             }
@@ -120,7 +121,7 @@ namespace NovaEngine
             {
                 self.EnableRaisingEvents = true;
             }
-            catch (System.InvalidOperationException)
+            catch (InvalidOperationException)
             {
                 if (self.HasExited)
                 {

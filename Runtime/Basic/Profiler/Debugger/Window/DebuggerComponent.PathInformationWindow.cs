@@ -22,7 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemEnvironment = System.Environment;
+using System;
+
 using UnityApplication = UnityEngine.Application;
 using UnityGUILayout = UnityEngine.GUILayout;
 
@@ -43,7 +44,7 @@ namespace GameEngine.Profiler.Debugging
                 UnityGUILayout.Label("<b>Path Information</b>");
                 UnityGUILayout.BeginVertical("box");
                 {
-                    DrawItem("Current Directory", NovaEngine.Utility.Path.GetRegularPath(SystemEnvironment.CurrentDirectory));
+                    DrawItem("Current Directory", NovaEngine.Utility.Path.GetRegularPath(Environment.CurrentDirectory));
                     DrawItem("Data Path", NovaEngine.Utility.Path.GetRegularPath(UnityApplication.dataPath));
                     DrawItem("Persistent Data Path", NovaEngine.Utility.Path.GetRegularPath(UnityApplication.persistentDataPath));
                     DrawItem("Streaming Assets Path", NovaEngine.Utility.Path.GetRegularPath(UnityApplication.streamingAssetsPath));

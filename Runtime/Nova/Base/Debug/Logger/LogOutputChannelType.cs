@@ -23,12 +23,14 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+
 namespace NovaEngine
 {
     /// <summary>
     /// 日志处理通道类型定义
     /// </summary>
-    [System.Flags]
+    [Flags]
     internal enum LogOutputChannelType : byte
     {
         /// <summary>

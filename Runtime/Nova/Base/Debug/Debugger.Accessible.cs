@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+
 namespace NovaEngine
 {
     /// 调试器对象工具类
@@ -56,10 +58,10 @@ namespace NovaEngine
         protected internal delegate void ThrowHandler_code(int errorCode);
         protected internal delegate void ThrowHandler_string(string message);
         protected internal delegate void ThrowHandler_format_args(string format, params object[] args);
-        protected internal delegate void ThrowHandler_exception(System.Exception exception);
-        protected internal delegate void ThrowHandler_type(System.Type type);
-        protected internal delegate void ThrowHandler_type_string(System.Type type, string message);
-        protected internal delegate void ThrowHandler_type_format_args(System.Type type, string format, params object[] args);
+        protected internal delegate void ThrowHandler_exception(Exception exception);
+        protected internal delegate void ThrowHandler_type(Type type);
+        protected internal delegate void ThrowHandler_type_string(Type type, string message);
+        protected internal delegate void ThrowHandler_type_format_args(Type type, string format, params object[] args);
 
         /// <summary>
         /// 调试模式下的输出回调接口
@@ -220,20 +222,20 @@ namespace NovaEngine
         /// 空置版本的日志异常接口，用于忽略对应的异常回调
         /// </summary>
         /// <param name="exception">系统异常</param>
-        private static void Blank_Throw(System.Exception exception) { }
+        private static void Blank_Throw(Exception exception) { }
 
         /// <summary>
         /// 空置版本的日志异常接口，用于忽略对应的异常回调
         /// </summary>
         /// <param name="type">异常类型</param>
-        private static void Blank_Throw(System.Type type) { }
+        private static void Blank_Throw(Type type) { }
 
         /// <summary>
         /// 空置版本的日志异常接口，用于忽略对应的异常回调
         /// </summary>
         /// <param name="type">异常类型</param>
         /// <param name="message">日志内容</param>
-        private static void Blank_Throw(System.Type type, string message) { }
+        private static void Blank_Throw(Type type, string message) { }
 
         /// <summary>
         /// 空置版本的日志异常接口，用于忽略对应的异常回调
@@ -241,7 +243,7 @@ namespace NovaEngine
         /// <param name="type">异常类型</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
-        private static void Blank_Throw(System.Type type, string format, params object[] args) { }
+        private static void Blank_Throw(Type type, string format, params object[] args) { }
 
         /// <summary>
         /// 重新绑定全部日志输出回调接口为空置模式

@@ -24,6 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+
 namespace GameEngine
 {
     /// <summary>
@@ -72,7 +74,7 @@ namespace GameEngine
                     ReloadConfigure();
                     break;
                 default:
-                    Debugger.Throw<System.InvalidOperationException>($"Invalid reload type {commandType}.");
+                    Debugger.Throw<InvalidOperationException>($"Invalid reload type {commandType}.");
                     break;
             }
         }
@@ -156,7 +158,7 @@ namespace GameEngine
             // { targetName = GameMacros.GAME_IMPORT_MODULE_EXTERNAL_GATEWAY_NAME; }
             string targetName = GameMacros.GAME_IMPORT_MODULE_EXTERNAL_GATEWAY_NAME;
 
-            System.Type type = NovaEngine.Utility.Assembly.GetType(targetName);
+            Type type = NovaEngine.Utility.Assembly.GetType(targetName);
             if (type == null)
             {
                 Debugger.Error("Could not found '{%s}' class type with current assemblies list, call that function '{%s}' failed.", targetName, methodName);

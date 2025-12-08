@@ -25,11 +25,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Threading;
-
-using SystemType = System.Type;
-using SystemAction = System.Action;
 
 namespace NovaEngine.Module
 {
@@ -198,7 +196,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="clsType">模块类型</param>
         /// <returns>返回类型名称获取对应的对象实例</returns>
-        public static ModuleObject GetModule(SystemType clsType)
+        public static ModuleObject GetModule(Type clsType)
         {
             int type = Config.GetModuleType(clsType);
 
@@ -254,13 +252,13 @@ namespace NovaEngine.Module
                 throw new CFrameworkException("Module type is already exists.");
             }
 
-            SystemType typeName = Config.GetModuleReflectionType(moduleType);
+            Type typeName = Config.GetModuleReflectionType(moduleType);
             if (null == typeName)
             {
                 throw new CFrameworkException("Module type is invalid.");
             }
 
-            ModuleObject module = (ModuleObject) System.Activator.CreateInstance(typeName);
+            ModuleObject module = (ModuleObject) Activator.CreateInstance(typeName);
             module.Initialize();
 
             // 启动模块实例
@@ -389,7 +387,7 @@ namespace NovaEngine.Module
         /// 在当前主线程下以排队方式执行目标任务逻辑，该逻辑仅可一次性执行完成，不可循环等待
         /// </summary>
         /// <param name="action">目标任务项</param>
-        public static void QueueOnMainThread(SystemAction action)
+        public static void QueueOnMainThread(Action action)
         {
             QueueOnMainThread(action, 0f);
         }
@@ -409,7 +407,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="action">目标任务项</param>
         /// <param name="delay">延迟时间</param>
-        public static void QueueOnMainThread(SystemAction action, float delay)
+        public static void QueueOnMainThread(Action action, float delay)
         {
             float time = 0f;
             if (delay > 0f)
@@ -458,7 +456,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="id">事件类型编号</param>
         /// <param name="handler">事件处理函数</param>
-        public static void RegisterEventHandler(int id, System.EventHandler<ModuleEventArgs> handler)
+        public static void RegisterEventHandler(int id, EventHandler<ModuleEventArgs> handler)
         {
             _eventHandler.Subscribe(id, handler);
         }
@@ -468,7 +466,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="id">事件类型编号</param>
         /// <param name="handler">事件处理函数</param>
-        public static void UnregisterEventHandler(int id, System.EventHandler<ModuleEventArgs> handler)
+        public static void UnregisterEventHandler(int id, EventHandler<ModuleEventArgs> handler)
         {
             _eventHandler.Unsubscribe(id, handler);
         }

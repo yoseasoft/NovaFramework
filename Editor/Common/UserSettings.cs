@@ -22,6 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+
 namespace NovaEngine.Editor
 {
     /// <summary>
@@ -134,7 +136,7 @@ namespace NovaEngine.Editor
         /// </summary>
         /// <param name="key">记录键</param>
         /// <param name="value">记录值</param>
-        public static void SetDateTime(string key, System.DateTime dateTime)
+        public static void SetDateTime(string key, DateTime dateTime)
         {
             CoreEngine.Editor.UserSettings.SetDateTime(key, dateTime);
         }
@@ -144,7 +146,7 @@ namespace NovaEngine.Editor
         /// </summary>
         /// <param name="key">记录键</param>
         /// <returns>若存在指定键对应的记录信息，则返回其值</returns>
-        public static System.DateTime GetDateTime(string key)
+        public static DateTime GetDateTime(string key)
         {
             return CoreEngine.Editor.UserSettings.GetDateTime(key);
         }

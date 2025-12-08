@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+
 namespace GameEngine
 {
     /// 控制器的管理对象类
@@ -31,7 +33,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器的模块分类类型的枚举定义
         /// </summary>
-        [System.Flags]
+        [Flags]
         private enum ModuleType : uint
         {
             /// <summary>

@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+
 namespace NovaEngine
 {
     /// <summary>
@@ -33,6 +35,6 @@ namespace NovaEngine
         /// <summary>
         /// 对象实例化函数接口，由缓存管理器统一调用
         /// </summary>
-        object CreateInstance(System.Type classType);
+        object CreateInstance(Type classType);
     }
 }

@@ -23,6 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -143,7 +144,7 @@ namespace NovaEngine
         {
             if (ContainsKey(tkey) || ContainsKey(nkey))
             {
-                Logger.Warn("The composite map key '{%o}, {%o}' was already exist, repeat added it failed.", tkey, nkey);
+                Logger.Warn("The composite map key '{%i}, {%i}' was already exist, repeat added it failed.", tkey, nkey);
                 return false;
             }
 
@@ -161,7 +162,7 @@ namespace NovaEngine
         {
             if (false == _keyMap.TryGetValueByKey(key, out TNameKey nameKey))
             {
-                Logger.Warn("Could not found any value with class key '{%o}', removed it failed.", key);
+                Logger.Warn("Could not found any value with class key '{%i}', removed it failed.", key);
                 return;
             }
 
@@ -178,7 +179,7 @@ namespace NovaEngine
         {
             if (false == _keyMap.TryGetKeyByValue(key, out TTypeKey classKey))
             {
-                Logger.Warn("Could not found any value with name key '{%o}', removed it failed.", key);
+                Logger.Warn("Could not found any value with name key '{%i}', removed it failed.", key);
                 return;
             }
 
@@ -211,7 +212,7 @@ namespace NovaEngine
                     return value;
                 }
 
-                throw new System.IndexOutOfRangeException();
+                throw new IndexOutOfRangeException();
             }
         }
 
@@ -229,7 +230,7 @@ namespace NovaEngine
                     return value;
                 }
 
-                throw new System.IndexOutOfRangeException();
+                throw new IndexOutOfRangeException();
             }
         }
 

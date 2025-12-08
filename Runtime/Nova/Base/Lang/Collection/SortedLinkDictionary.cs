@@ -22,6 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace NovaEngine
@@ -31,7 +33,7 @@ namespace NovaEngine
     /// 该类继承自<see cref="System.Collections.Generic.Dictionary{TKey, TValue}"/>结构
     /// 并在此基础上维护了一份链表，对存入字典的数据进行排序
     /// </summary>
-    public class SortedLinkDictionary<TKey, TValue> : Dictionary<TKey, TValue> where TKey : System.IComparable<TKey>, System.Collections.IEnumerable
+    public class SortedLinkDictionary<TKey, TValue> : Dictionary<TKey, TValue> where TKey : IComparable<TKey>, IEnumerable
     {
         /// <summary>
         /// 缓冲池的最大长度的常量定义
@@ -120,7 +122,7 @@ namespace NovaEngine
             // 遍历对比进行插入
             while (true)
             {
-                Node node = null;
+                Node node;
                 if (null == p.Next)
                 {
                     node = Fetch();

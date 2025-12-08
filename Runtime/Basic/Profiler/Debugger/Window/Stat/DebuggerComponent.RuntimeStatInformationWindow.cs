@@ -22,9 +22,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 
-using SystemDateTime = System.DateTime;
 using UnityGUILayout = UnityEngine.GUILayout;
 
 namespace GameEngine.Profiler.Debugging
@@ -43,13 +43,13 @@ namespace GameEngine.Profiler.Debugging
             {
                 T stat = Statistics.Statistician.GetStat<T>();
 
-                int statType = 0;
+                int statType;
                 string statName = string.Empty;
                 IList<Statistics.StatInfo> infos = null;
                 if (null != stat)
                 {
                     statType = stat.StatType;
-                    statName = System.Enum.GetName(typeof(Statistics.StatType), statType);
+                    statName = Enum.GetName(typeof(Statistics.StatType), statType);
 
                     infos = stat.GetAllStatInfos();
                 }
@@ -64,7 +64,7 @@ namespace GameEngine.Profiler.Debugging
                     else
                     {
                         UnityGUILayout.Label(NovaEngine.Utility.Text.Format("<b>{0} {1} infos obtained at {2}.</b>",
-                                infos.Count.ToString(), statName.ToLower(), SystemDateTime.UtcNow.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")));
+                                infos.Count.ToString(), statName.ToLower(), DateTime.UtcNow.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")));
 
                         UnityGUILayout.BeginHorizontal();
                         {
@@ -101,9 +101,9 @@ namespace GameEngine.Profiler.Debugging
             /// </summary>
             /// <param name="dateTime">日期时间对象</param>
             /// <returns>返回日期时间的显示格式，若为非法格式则返回默认显示值</returns>
-            protected static string StatDateTimeToString(SystemDateTime dateTime)
+            protected static string StatDateTimeToString(DateTime dateTime)
             {
-                if (null == dateTime || SystemDateTime.MinValue.Equals(dateTime))
+                if (null == dateTime || DateTime.MinValue.Equals(dateTime))
                 {
                     return NovaEngine.Definition.CString.Minus;
                 }

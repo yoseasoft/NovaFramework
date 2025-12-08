@@ -23,9 +23,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace NovaEngine
 {
@@ -63,9 +64,10 @@ namespace NovaEngine
         /// </summary>
         /// <typeparam name="T">管理器类型</typeparam>
         /// <returns>若给定类型的管理器实例已存在则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool HasManager<T>() where T : IManager
         {
-            SystemType managerType = GetActualUsageMamagerType(typeof(T));
+            Type managerType = GetActualUsageMamagerType(typeof(T));
 
             return HasManager(managerType);
         }
@@ -75,7 +77,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="managerType">管理器类型</param>
         /// <returns>若给定类型的管理器实例已存在则返回true，否则返回false</returns>
-        public static bool HasManager(SystemType managerType)
+        public static bool HasManager(Type managerType)
         {
             // 检查是否存在相同类型的管理器实例
             foreach (IManager v in _frameworkManagers)
@@ -91,6 +93,7 @@ namespace NovaEngine
         /// </summary>
         /// <typeparam name="T">管理器类型</typeparam>
         /// <returns>返回查找的管理器实例，若实例不存在，则自动创建一个新的实例并返回</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T GetManager<T>() where T : class
         {
             return CreateManager<T>();
@@ -102,7 +105,8 @@ namespace NovaEngine
         /// </summary>
         /// <param name="managerType">管理器类型</param>
         /// <returns>返回给定类型对应的管理器实例</returns>
-        private static IManager GetManager(SystemType managerType)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static IManager GetManager(Type managerType)
         {
             return CreateManager(managerType);
         }
@@ -112,9 +116,10 @@ namespace NovaEngine
         /// </summary>
         /// <typeparam name="T">管理器类型</typeparam>
         /// <returns>若实例创建成功则返回其引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T CreateManager<T>() where T : class
         {
-            SystemType managerType = GetActualUsageMamagerType(typeof(T));
+            Type managerType = GetActualUsageMamagerType(typeof(T));
 
             return CreateManager(managerType) as T;
         }
@@ -124,7 +129,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="managerType">管理器类型</param>
         /// <returns>若实例创建成功则返回其引用，否则返回null</returns>
-        private static IManager CreateManager(SystemType managerType)
+        private static IManager CreateManager(Type managerType)
         {
             // 检查是否存在相同类型的管理器实例
             foreach (IManager v in _frameworkManagers)
@@ -132,10 +137,10 @@ namespace NovaEngine
                 if (v.GetType() == managerType) { return v; }
             }
 
-            IManager manager = System.Activator.CreateInstance(managerType) as IManager;
+            IManager manager = Activator.CreateInstance(managerType) as IManager;
             if (null == manager)
             {
-                throw new CFrameworkException("Cannot create manager '{0}'.", managerType.FullName);
+                throw new CFrameworkException("Cannot create manager '{%t}'.", managerType);
             }
 
             // 管理器实例初始化
@@ -197,9 +202,10 @@ namespace NovaEngine
         /// 移除指定类型的管理器对象实例
         /// </summary>
         /// <typeparam name="T">管理器类型</typeparam>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RemoveManager<T>()
         {
-            SystemType managerType = GetActualUsageMamagerType(typeof(T));
+            Type managerType = GetActualUsageMamagerType(typeof(T));
 
             RemoveManager(managerType);
         }
@@ -208,7 +214,7 @@ namespace NovaEngine
         /// 移除指定类型的管理器对象实例
         /// </summary>
         /// <param name="managerType">管理器类型</param>
-        private static void RemoveManager(SystemType managerType)
+        private static void RemoveManager(Type managerType)
         {
             IManager manager = GetManager(managerType);
 
@@ -218,7 +224,7 @@ namespace NovaEngine
             }
             else
             {
-                Logger.Warn("Could not found any manager instance with type '{0}', remove ti failed.", managerType.FullName);
+                Logger.Warn("Could not found any manager instance with type '{%t}', remove ti failed.", managerType);
             }
         }
 
@@ -235,7 +241,7 @@ namespace NovaEngine
             {
                 if (IsExpiredManager(manager))
                 {
-                    Logger.Warn("The target manager '{0}' was already expired, repeat removed it failed.", manager.GetType().FullName);
+                    Logger.Warn("The target manager '{%t}' was already expired, repeat removed it failed.", manager);
                 }
                 else
                 {
@@ -414,36 +420,36 @@ namespace NovaEngine
         /// </summary>
         /// <param name="managerType">模块类型</param>
         /// <returns>返回真实应用的模块类型</returns>
-        private static SystemType GetActualUsageMamagerType(SystemType managerType)
+        private static Type GetActualUsageMamagerType(Type managerType)
         {
-            SystemType actualType = managerType;
+            Type actualType = managerType;
             if (actualType.IsInterface)
             {
-                // throw new CException("You must get manager by interface, but '{0}' is not.", actualType.FullName);
+                // throw new CException("You must get manager by interface, but '{%t}' is not.", actualType);
 
                 string managerName = Utility.Text.Format("{0}.{1}", actualType.Namespace, actualType.Name.Substring(1));
 
-                System.Reflection.Assembly[] _assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
-                foreach (System.Reflection.Assembly assembly in _assemblies)
+                Assembly[] _assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                foreach (Assembly assembly in _assemblies)
                 {
-                    actualType = SystemType.GetType(string.Format("{0}, {1}", managerName, assembly.FullName));
+                    actualType = Type.GetType(string.Format("{0}, {1}", managerName, assembly.FullName));
                     if (null != actualType)
                     {
                         break;
                     }
                 }
-                // actualType = SystemType.GetType(managerName);
+                // actualType = Type.GetType(managerName);
 
                 if (null == actualType)
                 {
-                    throw new CFrameworkException("Cannot find manager type '{0}'.", managerName);
+                    throw new CFrameworkException("Cannot find manager type '{%s}'.", managerName);
                 }
             }
 
             /*
             if (false == interfaceType.FullName.StartsWith("NovaEngine.", SystemStringComparison.Ordinal))
             {
-                throw new CException("You must get a Nova Engine manager, but '{0}' is not.", interfaceType.FullName);
+                throw new CException("You must get a Nova Engine manager, but '{%t}' is not.", interfaceType);
             }
             */
 

@@ -22,6 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 
 namespace NovaEngine
@@ -95,7 +96,7 @@ namespace NovaEngine
         /// 遍历当前的映射容器，同时通过指定的委托行为处理每一次遍历的数据项
         /// </summary>
         /// <param name="action">委托行为</param>
-        public void ForEach(System.Action<TKey, TValue> action)
+        public void ForEach(Action<TKey, TValue> action)
         {
             if (null == action)
             {
