@@ -26,23 +26,19 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
+using System.Reflection;
 
 namespace GameEngine
 {
-    /// <summary>
     /// 输入模块封装的句柄对象类
-    /// 模块具体功能接口请参考<see cref="NovaEngine.InputModule"/>类
-    /// </summary>
     public sealed partial class InputHandler
     {
         /// <summary>
         /// 输入响应回调绑定接口的缓存容器
         /// </summary>
-        private IDictionary<SystemType, IDictionary<string, InputCallMethodInfo>> _inputResponseBindingCaches;
+        private IDictionary<Type, IDictionary<string, InputCallMethodInfo>> _inputResponseBindingCaches;
 
         /// <summary>
         /// 输入响应绑定接口初始化回调函数
@@ -52,7 +48,7 @@ namespace GameEngine
         private void OnInputResponseBindingInitialize()
         {
             // 初始化回调绑定缓存容器
-            _inputResponseBindingCaches = new Dictionary<SystemType, IDictionary<string, InputCallMethodInfo>>();
+            _inputResponseBindingCaches = new Dictionary<Type, IDictionary<string, InputCallMethodInfo>>();
         }
 
         /// <summary>
@@ -89,7 +85,7 @@ namespace GameEngine
         /// <param name="inputCode">按键编码</param>
         /// <param name="operationType">操作类型</param>
         /// <param name="automatically">自动装载状态标识</param>
-        internal void AddInputResponseBindingCallInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int inputCode, int operationType, bool automatically)
+        internal void AddInputResponseBindingCallInfo(string fullname, Type targetType, MethodInfo methodInfo, int inputCode, int operationType, bool automatically)
         {
             if (false == _inputResponseBindingCaches.TryGetValue(targetType, out IDictionary<string, InputCallMethodInfo> inputCallMethodInfos))
             {
@@ -117,7 +113,7 @@ namespace GameEngine
         /// <param name="methodInfo">函数对象</param>
         /// <param name="inputDataType">输入数据类型</param>
         /// <param name="automatically">自动装载状态标识</param>
-        internal void AddInputResponseBindingCallInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType inputDataType, bool automatically)
+        internal void AddInputResponseBindingCallInfo(string fullname, Type targetType, MethodInfo methodInfo, Type inputDataType, bool automatically)
         {
             if (false == _inputResponseBindingCaches.TryGetValue(targetType, out IDictionary<string, InputCallMethodInfo> inputCallMethodInfos))
             {
@@ -142,7 +138,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
-        internal void RemoveInputResponseBindingCallInfo(string fullname, SystemType targetType)
+        internal void RemoveInputResponseBindingCallInfo(string fullname, Type targetType)
         {
             Debugger.Info(LogGroupTag.Module, "移除指定的输入响应绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。", targetType, fullname);
 
@@ -176,7 +172,7 @@ namespace GameEngine
         /// <param name="targetType">目标对象类型</param>
         /// <param name="inputCode">按键编码</param>
         /// <param name="operationType">按键操作类型</param>
-        internal void InvokeInputResponseBindingCall(IBean targetObject, string fullname, SystemType targetType, int inputCode, int operationType)
+        internal void InvokeInputResponseBindingCall(IBean targetObject, string fullname, Type targetType, int inputCode, int operationType)
         {
             InputCallMethodInfo inputCallMethodInfo = FindInputResponseBindingCallByName(fullname, targetType);
             if (null == inputCallMethodInfo)
@@ -195,7 +191,7 @@ namespace GameEngine
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
         /// <param name="inputData">输入数据</param>
-        internal void InvokeInputResponseBindingCall(IBean targetObject, string fullname, SystemType targetType, object inputData)
+        internal void InvokeInputResponseBindingCall(IBean targetObject, string fullname, Type targetType, object inputData)
         {
             InputCallMethodInfo inputCallMethodInfo = FindInputResponseBindingCallByName(fullname, targetType);
             if (null == inputCallMethodInfo)
@@ -213,7 +209,7 @@ namespace GameEngine
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
         /// <returns>返回绑定函数实例</returns>
-        private InputCallMethodInfo FindInputResponseBindingCallByName(string fullname, SystemType targetType)
+        private InputCallMethodInfo FindInputResponseBindingCallByName(string fullname, Type targetType)
         {
             if (_inputResponseBindingCaches.TryGetValue(targetType, out IDictionary<string, InputCallMethodInfo> inputCallMethodInfos))
             {

@@ -91,7 +91,7 @@ namespace GameEngine
                 return;
             }
 
-            IList<UnityKeyCode> list = null;
+            IList<UnityKeyCode> list;
 
             // 按下操作分发调度流程
             if (InputModule.IsAnyKeycodePressed())
@@ -246,8 +246,7 @@ namespace GameEngine
             // 输入分发调度
             OnInputDistributeCallDispatched(inputCode, operationType);
 
-            IList<IInputDispatch> listeners;
-            if (_inputListenersForCode.TryGetValue(inputCode, out listeners))
+            if (_inputListenersForCode.TryGetValue(inputCode, out IList<IInputDispatch> listeners))
             {
                 IList<IInputDispatch> list;
                 if (listeners.Count > 1)
@@ -279,8 +278,7 @@ namespace GameEngine
             // 输入分发调度
             OnInputDistributeCallDispatched(inputData);
 
-            IList<IInputDispatch> listeners;
-            if (_inputListenersForType.TryGetValue(inputData.GetType(), out listeners))
+            if (_inputListenersForType.TryGetValue(inputData.GetType(), out IList<IInputDispatch> listeners))
             {
                 IList<IInputDispatch> list;
                 if (listeners.Count > 1)

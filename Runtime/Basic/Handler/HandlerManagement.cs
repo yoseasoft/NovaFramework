@@ -23,10 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemEnum = System.Enum;
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -43,11 +41,11 @@ namespace GameEngine
         /// <summary>
         /// 句柄定义类型的管理容器
         /// </summary>
-        private static IList<SystemType> _handlerDeclaringTypes = null;
+        private static IList<Type> _handlerDeclaringTypes = null;
         /// <summary>
         /// 句柄对象类型的管理容器
         /// </summary>
-        private static IDictionary<int, SystemType> _handlerClassTypes = null;
+        private static IDictionary<int, Type> _handlerClassTypes = null;
         /// <summary>
         /// 句柄对象实例的管理容器
         /// </summary>
@@ -74,15 +72,15 @@ namespace GameEngine
             string namespaceTag = typeof(HandlerManagement).Namespace;
 
             // 定义类型管理容器初始化
-            _handlerDeclaringTypes = new List<SystemType>();
+            _handlerDeclaringTypes = new List<Type>();
             // 对象类型管理容器初始化
-            _handlerClassTypes = new Dictionary<int, SystemType>();
+            _handlerClassTypes = new Dictionary<int, Type>();
             // 实例管理容器初始化
             _handlerRegisterObjects = new Dictionary<int, IHandler>();
             // 排序容器初始化
             // _handlerSortingList = new LinkedList<IHandler>();
 
-            foreach (HandlerClassType enumValue in SystemEnum.GetValues(typeof(HandlerClassType)))
+            foreach (HandlerClassType enumValue in Enum.GetValues(typeof(HandlerClassType)))
             {
                 if (HandlerClassType.Default == enumValue || HandlerClassType.User == enumValue)
                 {
@@ -97,7 +95,7 @@ namespace GameEngine
                 NovaEngine.Module.ModuleObject.ModuleEventType eventType = NovaEngine.Utility.Convertion.GetEnumFromName<NovaEngine.Module.ModuleObject.ModuleEventType>(enumName);
                 if (NovaEngine.Module.ModuleObject.ModuleEventType.Default != eventType)
                 {
-                    if (System.Convert.ToInt32(enumValue) != System.Convert.ToInt32(eventType))
+                    if (Convert.ToInt32(enumValue) != Convert.ToInt32(eventType))
                     {
                         Debugger.Error(LogGroupTag.Module, "The handler class type '{%s}' was not matched module event type '{%i}', registed it failed.", enumName, eventType);
                         continue;
@@ -107,7 +105,7 @@ namespace GameEngine
                 // 类名反射时需要包含命名空间前缀
                 string handlerName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, HandlerClassUnifiedStandardName);
 
-                SystemType handlerType = SystemType.GetType(handlerName);
+                Type handlerType = Type.GetType(handlerName);
                 if (null == handlerType)
                 {
                     Debugger.Info(LogGroupTag.Module, "Could not found any handler class with target name {%s}.", handlerName);
@@ -121,14 +119,14 @@ namespace GameEngine
                 }
 
                 // 创建并初始化实例
-                IHandler handler = System.Activator.CreateInstance(handlerType) as IHandler;
+                IHandler handler = Activator.CreateInstance(handlerType) as IHandler;
                 if (null == handler || false == handler.Initialize())
                 {
                     Debugger.Error("The handler type {%s} create or init failed.", handlerName);
                     continue;
                 }
 
-                (handler as BaseHandler).HandlerType = System.Convert.ToInt32(enumValue);
+                (handler as BaseHandler).HandlerType = Convert.ToInt32(enumValue);
 
                 // Debugger.Info("Register new handler {%s} to target class type {%i}.", handlerName, handler.HandlerType);
 
@@ -142,7 +140,7 @@ namespace GameEngine
                 // _handlerSortingList.AddLast(handler);
 
                 // 添加所有定义的句柄基类
-                SystemType baseType = handlerType.BaseType;
+                Type baseType = handlerType.BaseType;
                 while (null != baseType)
                 {
                     if (false == typeof(IHandler).IsAssignableFrom(baseType) || baseType.IsInterface)
@@ -334,10 +332,10 @@ namespace GameEngine
         /// 获取当前注册的全部有效的句柄类型
         /// </summary>
         /// <returns>返回句柄类型列表</returns>
-        internal static IList<SystemType> GetAllHandlerTypes()
+        internal static IList<Type> GetAllHandlerTypes()
         {
-            IList<SystemType> result = null;
-            result = NovaEngine.Utility.Collection.ToListForValues<int, SystemType>(_handlerClassTypes);
+            IList<Type> result = null;
+            result = NovaEngine.Utility.Collection.ToListForValues<int, Type>(_handlerClassTypes);
             return result;
         }
 
@@ -345,7 +343,7 @@ namespace GameEngine
         /// 获取当前注册的全部定义的句柄类型
         /// </summary>
         /// <returns>返回句柄类型列表</returns>
-        internal static IList<SystemType> GetAllHandlerDeclaringTypes()
+        internal static IList<Type> GetAllHandlerDeclaringTypes()
         {
             return _handlerDeclaringTypes;
         }
@@ -355,9 +353,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="handlerType">句柄标识</param>
         /// <returns>返回给定标识对应的句柄类型，若不存在则返回null</returns>
-        internal static SystemType GetHandlerType(int handlerType)
+        internal static Type GetHandlerType(int handlerType)
         {
-            SystemType classType = null;
+            Type classType = null;
             if (false == _handlerClassTypes.TryGetValue(handlerType, out classType))
             {
                 return null;
@@ -389,7 +387,7 @@ namespace GameEngine
         /// <returns>返回句柄对象实例，若查找失败则返回null</returns>
         public static T GetHandler<T>() where T : IHandler
         {
-            SystemType clsType = typeof(T);
+            Type clsType = typeof(T);
 
             foreach (KeyValuePair<int, IHandler> pair in _handlerRegisterObjects)
             {

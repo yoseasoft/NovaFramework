@@ -23,9 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -38,7 +37,7 @@ namespace GameEngine
         /// <summary>
         /// 实体对象类型映射注册管理容器
         /// </summary>
-        protected IDictionary<string, SystemType> _entityClassTypes;
+        protected IDictionary<string, Type> _entityClassTypes;
         /// <summary>
         /// 实体优先级映射注册管理容器
         /// </summary>
@@ -104,7 +103,7 @@ namespace GameEngine
         protected override bool OnInitialize()
         {
             // 初始化实体类注册容器
-            _entityClassTypes = new Dictionary<string, SystemType>();
+            _entityClassTypes = new Dictionary<string, Type>();
             _entityPriorities = new Dictionary<string, int>();
 
             // 实体映射容器初始化
@@ -219,7 +218,7 @@ namespace GameEngine
         /// <param name="clsType">实体类型</param>
         /// <param name="priority">实体优先级</param>
         /// <returns>若实体类型注册成功则返回true，否则返回false</returns>
-        protected bool RegisterEntityClass(string entityName, SystemType clsType, int priority)
+        protected bool RegisterEntityClass(string entityName, Type clsType, int priority)
         {
             Debugger.Assert(false == string.IsNullOrEmpty(entityName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
 
@@ -590,7 +589,7 @@ namespace GameEngine
 
             _systems.Add(system);
 
-            SystemType type = system.GetType();
+            Type type = system.GetType();
 
             // 注册初始化回调接口
             if (typeof(IInitializeSystem).IsAssignableFrom(type))

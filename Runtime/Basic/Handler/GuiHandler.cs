@@ -260,12 +260,12 @@ namespace GameEngine
             }
 
             // 添加实例到管理容器中
-            _AddView(view);
+            OnGroupBindingForTargetView(view);
 
             await view.CreateWindow();
             if (!view.IsLoaded)
             {
-                _RemoveView(view);
+                OnGroupUnbindingForTargetView(view);
                 RemoveEntity(view);
 
                 // 回收视图实例
@@ -465,7 +465,7 @@ namespace GameEngine
             }
 
             // 从管理容器中移除实例
-            _RemoveView(view);
+            OnGroupUnbindingForTargetView(view);
             // 移除视图实例
             RemoveEntity(view);
 
@@ -570,7 +570,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="view">视图对象实例</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void _AddView(CView view)
+        private void OnGroupBindingForTargetView(CView view)
         {
             _views.Add(view);
 
@@ -583,7 +583,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="view">视图对象实例</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void _RemoveView(CView view)
+        private void OnGroupUnbindingForTargetView(CView view)
         {
             ViewGroup viewGroup = FindGroupByViewType(view.BeanType);
             viewGroup?.OnViewGroupUnbinding(view);

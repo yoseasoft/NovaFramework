@@ -24,9 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using Cysharp.Threading.Tasks;
-
-using SystemType = System.Type;
 
 using UnityObject = UnityEngine.Object;
 
@@ -109,7 +108,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="type">资源类型</param>
-        public UnityObject LoadAsset(string url, SystemType type)
+        public UnityObject LoadAsset(string url, Type type)
         {
             return ResourceModule.LoadAsset(url, type);
         }
@@ -119,7 +118,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="completed">加载完成回调</param>
-        public GooAsset.Asset LoadAssetAsync<T>(string url, System.Action<UnityObject> completed) where T : UnityObject
+        public GooAsset.Asset LoadAssetAsync<T>(string url, Action<UnityObject> completed) where T : UnityObject
         {
             return ResourceModule.LoadAssetAsync(url, typeof(T), completed);
         }
@@ -184,7 +183,7 @@ namespace GameEngine
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="isAdditive">是否使用叠加方式加载</param>
         /// <param name="completed">加载完成回调</param>
-        public GooAsset.Scene LoadSceneAsync(string url, bool isAdditive, System.Action<GooAsset.Scene> completed)
+        public GooAsset.Scene LoadSceneAsync(string url, bool isAdditive, Action<GooAsset.Scene> completed)
         {
             return ResourceModule.LoadSceneAsync(url, isAdditive, completed);
         }
@@ -227,7 +226,7 @@ namespace GameEngine
         /// 异步加载原始流式文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
         /// </summary>
         /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
-        public GooAsset.RawFile LoadRawFileAsync(string url, System.Action<GooAsset.RawFile> completed)
+        public GooAsset.RawFile LoadRawFileAsync(string url, Action<GooAsset.RawFile> completed)
         {
             return ResourceModule.LoadRawFileAsync(url, completed);
         }

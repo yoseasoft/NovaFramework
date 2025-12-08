@@ -23,9 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemDateTime = System.DateTime;
 
 namespace GameEngine.Profiler.Statistics
 {

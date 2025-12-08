@@ -25,11 +25,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine.Scripting;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -97,8 +96,7 @@ namespace GameEngine
         /// <returns>若添加监听接口成功则返回true，否则返回false</returns>
         public bool AddMessageDispatchListener(int opcode, IMessageDispatch listener)
         {
-            IList<IMessageDispatch> list;
-            if (false == _messageDispatchListeners.TryGetValue(opcode, out list))
+            if (false == _messageDispatchListeners.TryGetValue(opcode, out IList<IMessageDispatch> list))
             {
                 list = new List<IMessageDispatch>();
                 list.Add(listener);
@@ -110,7 +108,7 @@ namespace GameEngine
             // 检查是否重复注册
             if (list.Contains(listener))
             {
-                Debugger.Warn("The listener for target message '{0}' was already exist, cannot repeat add it.", opcode);
+                Debugger.Warn("The listener for target message '{%d}' was already exist, cannot repeat add it.", opcode);
                 return false;
             }
 
@@ -125,7 +123,7 @@ namespace GameEngine
         /// <param name="messageType">消息类型</param>
         /// <param name="listener">消息监听回调接口</param>
         /// <returns>若添加监听接口成功则返回true，否则返回false</returns>
-        public bool AddMessageDispatchListener(SystemType messageType, IMessageDispatch listener)
+        public bool AddMessageDispatchListener(Type messageType, IMessageDispatch listener)
         {
             int opcode = GetOpcodeByMessageType(messageType);
 
@@ -139,10 +137,9 @@ namespace GameEngine
         /// <param name="listener">消息监听回调接口</param>
         public void RemoveMessageDispatchListener(int opcode, IMessageDispatch listener)
         {
-            IList<IMessageDispatch> list;
-            if (false == _messageDispatchListeners.TryGetValue(opcode, out list))
+            if (false == _messageDispatchListeners.TryGetValue(opcode, out IList<IMessageDispatch> list))
             {
-                Debugger.Warn("Could not found any listener for target message '{0}' in dispatch container, removed it failed.", opcode);
+                Debugger.Warn("Could not found any listener for target message '{%d}' in dispatch container, removed it failed.", opcode);
                 return;
             }
 
@@ -159,7 +156,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="messageType">消息类型</param>
         /// <param name="listener">消息监听回调接口</param>
-        public void RemoveMessageDispatchListener(SystemType messageType, IMessageDispatch listener)
+        public void RemoveMessageDispatchListener(Type messageType, IMessageDispatch listener)
         {
             int opcode = GetOpcodeByMessageType(messageType);
 
@@ -189,8 +186,7 @@ namespace GameEngine
         /// <param name="message">消息内容</param>
         private void OnMessageDistributeCallDispatched(int opcode, object message)
         {
-            IList<MessageCallMethodInfo> list = null;
-            if (_messageDistributeCallInfos.TryGetValue(opcode, out list))
+            if (_messageDistributeCallInfos.TryGetValue(opcode, out IList<MessageCallMethodInfo> list))
             {
                 IEnumerator<MessageCallMethodInfo> e_info = list.GetEnumerator();
                 while (e_info.MoveNext())
@@ -224,7 +220,7 @@ namespace GameEngine
         /// <param name="targetType">目标对象类型</param>
         /// <param name="methodInfo">函数对象</param>
         /// <param name="opcode">协议编码</param>
-        private void AddMessageDistributeCallInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int opcode)
+        private void AddMessageDistributeCallInfo(string fullname, Type targetType, MethodInfo methodInfo, int opcode)
         {
             MessageCallMethodInfo info = new MessageCallMethodInfo(fullname, targetType, methodInfo, opcode);
 
@@ -250,7 +246,7 @@ namespace GameEngine
         /// <param name="targetType">目标对象类型</param>
         /// <param name="methodInfo">函数对象</param>
         /// <param name="messageType">消息对象类型</param>
-        private void AddMessageDistributeCallInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType messageType)
+        private void AddMessageDistributeCallInfo(string fullname, Type targetType, MethodInfo methodInfo, Type messageType)
         {
             int opcode = GetOpcodeByMessageType(messageType);
 
@@ -263,7 +259,7 @@ namespace GameEngine
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
         /// <param name="opcode">协议编码</param>
-        private void RemoveMessageDistributeCallInfo(string fullname, SystemType targetType, int opcode)
+        private void RemoveMessageDistributeCallInfo(string fullname, Type targetType, int opcode)
         {
             Debugger.Info(LogGroupTag.Module, "Remove message distribute call '{%s}' with target opcode '{%d}' and class type '{%t}'.",
                     fullname, opcode, targetType);
@@ -301,7 +297,7 @@ namespace GameEngine
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
         /// <param name="messageType">消息对象类型</param>
-        private void RemoveMessageDistributeCallInfo(string fullname, SystemType targetType, SystemType messageType)
+        private void RemoveMessageDistributeCallInfo(string fullname, Type targetType, Type messageType)
         {
             int opcode = GetOpcodeByMessageType(messageType);
 

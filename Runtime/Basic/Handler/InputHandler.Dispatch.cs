@@ -26,17 +26,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
+using System.Reflection;
 
 namespace GameEngine
 {
-    /// <summary>
     /// 输入模块封装的句柄对象类
-    /// 模块具体功能接口请参考<see cref="NovaEngine.InputModule"/>类
-    /// </summary>
     public sealed partial class InputHandler
     {
         /// <summary>
@@ -47,7 +43,7 @@ namespace GameEngine
         /// <summary>
         /// 针对事件类型进行分发的监听对象管理列表容器
         /// </summary>
-        private IDictionary<SystemType, IList<IInputDispatch>> _inputListenersForType;
+        private IDictionary<Type, IList<IInputDispatch>> _inputListenersForType;
 
         /// <summary>
         /// 按键编码分发调度接口的数据结构容器
@@ -57,7 +53,7 @@ namespace GameEngine
         /// <summary>
         /// 输入数据分发调度接口的数据结构容器
         /// </summary>
-        private IDictionary<SystemType, IList<InputCallMethodInfo>> _inputDataDistributeCallInfos;
+        private IDictionary<Type, IList<InputCallMethodInfo>> _inputDataDistributeCallInfos;
 
         /// <summary>
         /// 输入回调转发接口初始化回调函数
@@ -68,10 +64,10 @@ namespace GameEngine
         {
             // 初始化实例对象调度管理容器
             _inputListenersForCode = new Dictionary<int, IList<IInputDispatch>>();
-            _inputListenersForType = new Dictionary<SystemType, IList<IInputDispatch>>();
+            _inputListenersForType = new Dictionary<Type, IList<IInputDispatch>>();
             // 初始化全局转发调度管理容器
             _inputCodeDistributeCallInfos = new Dictionary<int, IList<InputCallMethodInfo>>();
-            _inputDataDistributeCallInfos = new Dictionary<SystemType, IList<InputCallMethodInfo>>();
+            _inputDataDistributeCallInfos = new Dictionary<Type, IList<InputCallMethodInfo>>();
         }
 
         /// <summary>
@@ -113,11 +109,9 @@ namespace GameEngine
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
         public bool AddInputResponse(int inputCode, IInputDispatch listener)
         {
-            //Debugger.Info(LogGroupTag.Module, "新增目标对象类型‘{%s}’的输入转发监听回调接口到指定的输入编码‘{%d}’对应的输入响应管理容器中！",
-            //        NovaEngine.Utility.Text.ToString(listener.GetType()), inputCode);
+            // Debugger.Info(LogGroupTag.Module, "新增目标对象类型‘{%t}’的输入转发监听回调接口到指定的输入编码‘{%d}’对应的输入响应管理容器中！", listener, inputCode);
 
-            IList<IInputDispatch> list;
-            if (false == _inputListenersForCode.TryGetValue(inputCode, out list))
+            if (false == _inputListenersForCode.TryGetValue(inputCode, out IList<IInputDispatch> list))
             {
                 list = new List<IInputDispatch>();
                 list.Add(listener);
@@ -129,7 +123,7 @@ namespace GameEngine
             // 检查是否重复添加
             if (list.Contains(listener))
             {
-                Debugger.Warn("The listener for target input '{0}' was already added, cannot repeat do it.", inputCode);
+                Debugger.Warn("The listener for target input '{%d}' was already added, cannot repeat do it.", inputCode);
                 return false;
             }
 
@@ -144,13 +138,11 @@ namespace GameEngine
         /// <param name="inputType">输入类型</param>
         /// <param name="listener">监听回调接口</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        public bool AddInputResponse(SystemType inputType, IInputDispatch listener)
+        public bool AddInputResponse(Type inputType, IInputDispatch listener)
         {
-            //Debugger.Info(LogGroupTag.Module, "新增目标对象类型‘{%s}’的输入转发监听回调接口到指定的输入数据类型‘{%s}’对应的输入响应管理容器中！",
-            //        NovaEngine.Utility.Text.ToString(listener.GetType()), NovaEngine.Utility.Text.ToString(inputType));
+            // Debugger.Info(LogGroupTag.Module, "新增目标对象类型‘{%t}’的输入转发监听回调接口到指定的输入数据类型‘{%t}’对应的输入响应管理容器中！", listener, inputType);
 
-            IList<IInputDispatch> list;
-            if (false == _inputListenersForType.TryGetValue(inputType, out list))
+            if (false == _inputListenersForType.TryGetValue(inputType, out IList<IInputDispatch> list))
             {
                 list = new List<IInputDispatch>();
                 list.Add(listener);
@@ -162,7 +154,7 @@ namespace GameEngine
             // 检查是否重复添加
             if (list.Contains(listener))
             {
-                Debugger.Warn("The listener for target input '{0}' was already added, cannot repeat do it.", inputType.FullName);
+                Debugger.Warn("The listener for target input '{%t}' was already added, cannot repeat do it.", inputType);
                 return false;
             }
 
@@ -178,10 +170,9 @@ namespace GameEngine
         /// <param name="listener">监听回调接口</param>
         public void RemoveInputResponse(int inputCode, IInputDispatch listener)
         {
-            IList<IInputDispatch> list;
-            if (false == _inputListenersForCode.TryGetValue(inputCode, out list))
+            if (false == _inputListenersForCode.TryGetValue(inputCode, out IList<IInputDispatch> list))
             {
-                Debugger.Warn("Could not found any listener for target input '{0}' with on added, do removed it failed.", inputCode);
+                Debugger.Warn("Could not found any listener for target input '{%d}' with on added, do removed it failed.", inputCode);
                 return;
             }
 
@@ -192,8 +183,7 @@ namespace GameEngine
                 _inputListenersForCode.Remove(inputCode);
             }
 
-            //Debugger.Info(LogGroupTag.Module, "从输入响应管理容器中移除指定的输入编码‘{%d}’对应的目标对象类型‘{%s}’的输入转发监听回调接口！",
-            //        inputCode, NovaEngine.Utility.Text.ToString(listener.GetType()));
+            // Debugger.Info(LogGroupTag.Module, "从输入响应管理容器中移除指定的输入编码‘{%d}’对应的目标对象类型‘{%t}’的输入转发监听回调接口！", inputCode, listener);
         }
 
         /// <summary>
@@ -201,12 +191,11 @@ namespace GameEngine
         /// </summary>
         /// <param name="inputType">输入类型</param>
         /// <param name="listener">监听回调接口</param>
-        public void RemoveInputResponse(SystemType inputType, IInputDispatch listener)
+        public void RemoveInputResponse(Type inputType, IInputDispatch listener)
         {
-            IList<IInputDispatch> list;
-            if (false == _inputListenersForType.TryGetValue(inputType, out list))
+            if (false == _inputListenersForType.TryGetValue(inputType, out IList<IInputDispatch> list))
             {
-                Debugger.Warn("Could not found any listener for target input '{0}' with on added, do removed it failed.", inputType.FullName);
+                Debugger.Warn("Could not found any listener for target input '{%t}' with on added, do removed it failed.", inputType);
                 return;
             }
 
@@ -217,8 +206,7 @@ namespace GameEngine
                 _inputListenersForType.Remove(inputType);
             }
 
-            //Debugger.Info(LogGroupTag.Module, "从输入响应管理容器中移除指定的输入数据类型‘{%s}’对应的目标对象类型‘{%s}’的输入转发监听回调接口！",
-            //        NovaEngine.Utility.Text.ToString(inputType), NovaEngine.Utility.Text.ToString(listener.GetType()));
+            // Debugger.Info(LogGroupTag.Module, "从输入响应管理容器中移除指定的输入数据类型‘{%t}’对应的目标对象类型‘{%t}’的输入转发监听回调接口！", inputType, listener);
         }
 
         /// <summary>
@@ -232,7 +220,7 @@ namespace GameEngine
                 RemoveInputResponse(ids[n], listener);
             }
 
-            IList<SystemType> types = NovaEngine.Utility.Collection.ToListForKeys<SystemType, IList<IInputDispatch>>(_inputListenersForType);
+            IList<Type> types = NovaEngine.Utility.Collection.ToListForKeys<Type, IList<IInputDispatch>>(_inputListenersForType);
             for (int n = 0; null != types && n < types.Count; ++n)
             {
                 RemoveInputResponse(types[n], listener);
@@ -250,8 +238,7 @@ namespace GameEngine
         /// <param name="operationType">按键操作类型</param>
         private void OnInputDistributeCallDispatched(int inputCode, int operationType)
         {
-            IList<InputCallMethodInfo> list = null;
-            if (_inputCodeDistributeCallInfos.TryGetValue(inputCode, out list))
+            if (_inputCodeDistributeCallInfos.TryGetValue(inputCode, out IList<InputCallMethodInfo> list))
             {
                 IEnumerator<InputCallMethodInfo> e_info = list.GetEnumerator();
                 while (e_info.MoveNext())
@@ -284,10 +271,9 @@ namespace GameEngine
         /// <param name="inputData">输入数据</param>
         private void OnInputDistributeCallDispatched(object inputData)
         {
-            SystemType inputDataType = inputData.GetType();
+            Type inputDataType = inputData.GetType();
 
-            IList<InputCallMethodInfo> list = null;
-            if (_inputDataDistributeCallInfos.TryGetValue(inputDataType, out list))
+            if (_inputDataDistributeCallInfos.TryGetValue(inputDataType, out IList<InputCallMethodInfo> list))
             {
                 IEnumerator<InputCallMethodInfo> e_info = list.GetEnumerator();
                 while (e_info.MoveNext())
@@ -322,7 +308,7 @@ namespace GameEngine
         /// <param name="methodInfo">函数对象</param>
         /// <param name="inputCode">按键编码</param>
         /// <param name="operationType">操作类型</param>
-        private void AddInputDistributeCallInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, int inputCode, int operationType)
+        private void AddInputDistributeCallInfo(string fullname, Type targetType, MethodInfo methodInfo, int inputCode, int operationType)
         {
             InputCallMethodInfo info = new InputCallMethodInfo(fullname, targetType, methodInfo, inputCode, operationType);
 
@@ -348,7 +334,7 @@ namespace GameEngine
         /// <param name="targetType">目标对象类型</param>
         /// <param name="methodInfo">函数对象</param>
         /// <param name="inputDataType">输入数据类型</param>
-        private void AddInputDistributeCallInfo(string fullname, SystemType targetType, SystemMethodInfo methodInfo, SystemType inputDataType)
+        private void AddInputDistributeCallInfo(string fullname, Type targetType, MethodInfo methodInfo, Type inputDataType)
         {
             InputCallMethodInfo info = new InputCallMethodInfo(fullname, targetType, methodInfo, inputDataType);
 
@@ -373,7 +359,7 @@ namespace GameEngine
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
         /// <param name="inputCode">按键编码</param>
-        private void RemoveInputDistributeCallInfo(string fullname, SystemType targetType, int inputCode, int operationType)
+        private void RemoveInputDistributeCallInfo(string fullname, Type targetType, int inputCode, int operationType)
         {
             Debugger.Info(LogGroupTag.Module, "移除指定的按键编码‘{%d}’及操作类型‘{%d}’对应的全部输入响应监听事件，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     inputCode, operationType, targetType, fullname);
@@ -415,7 +401,7 @@ namespace GameEngine
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
         /// <param name="inputDataType">输入数据类型</param>
-        private void RemoveInputDistributeCallInfo(string fullname, SystemType targetType, SystemType inputDataType)
+        private void RemoveInputDistributeCallInfo(string fullname, Type targetType, Type inputDataType)
         {
             Debugger.Info(LogGroupTag.Module, "移除指定的按键编码的数据类型‘{%t}’对应的全部输入响应监听事件，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     inputDataType, targetType, fullname);

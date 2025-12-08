@@ -73,7 +73,7 @@ namespace GameEngine
         /// <summary>
         /// 注入控制器对象倾泻调度函数接口
         /// </summary>
-        protected override void OnDump()
+        protected override sealed void OnDump()
         {
         }
 

@@ -24,12 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
 
 namespace GameEngine.Profiler.Statistics
 {
@@ -42,8 +38,8 @@ namespace GameEngine.Profiler.Statistics
         /// <summary>
         /// 统计模块功能接口注册绑定的声明属性类型定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        protected internal sealed class OnStatFunctionRegisterAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        protected internal sealed class OnStatFunctionRegisterAttribute : Attribute
         {
             /// <summary>
             /// 统计模块的功能标识

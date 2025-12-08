@@ -23,17 +23,16 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
     /// <summary>
     /// 视图分组策略相关枚举类型定义
     /// </summary>
-    [System.Flags]
+    [Flags]
     public enum ViewGroupStrategyType : byte
     {
         /// <summary>
@@ -57,10 +56,7 @@ namespace GameEngine
         Mask = 0x10,
     }
 
-    /// <summary>
     /// 用户界面模块封装的句柄对象类
-    /// 模块具体功能接口请参考<see cref="NovaEngine.GuiModule"/>类
-    /// </summary>
     public sealed partial class GuiHandler : EntityHandler
     {
         /// <summary>
@@ -80,7 +76,7 @@ namespace GameEngine
         /// <summary>
         /// 视图类型绑定分组名称映射容器
         /// </summary>
-        private IDictionary<SystemType, string> _viewBindingGroupNames;
+        private IDictionary<Type, string> _viewBindingGroupNames;
 
         /// <summary>
         /// 视图分组管理接口初始化回调函数
@@ -95,7 +91,7 @@ namespace GameEngine
             _sortingGroupList = new List<ViewGroup>();
 
             // 初始化视图绑定分组名称映射容器
-            _viewBindingGroupNames = new Dictionary<SystemType, string>();
+            _viewBindingGroupNames = new Dictionary<Type, string>();
 
             // 注册默认分组
             AddViewGroup(_defaultViewGroupName, 0, ViewGroupStrategyType.None);
@@ -210,7 +206,7 @@ namespace GameEngine
         /// <summary>
         /// 视图分组对象类，用于对窗口对象进行分组标记，以及同组内的变化通知
         /// </summary>
-        private sealed class ViewGroup : System.IComparable<ViewGroup>
+        private sealed class ViewGroup : IComparable<ViewGroup>
         {
             /// <summary>
             /// 分组对象的名称
@@ -308,7 +304,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <param name="groupName">分组名称</param>
-        private void AddViewBindingGroupName(SystemType viewType, string groupName)
+        private void AddViewBindingGroupName(Type viewType, string groupName)
         {
             if (_viewBindingGroupNames.ContainsKey(viewType))
             {
@@ -338,7 +334,7 @@ namespace GameEngine
         /// 从当前分组绑定映射容器中移除指定视图类型的绑定关系
         /// </summary>
         /// <param name="viewType">视图类型</param>
-        private void RemoveViewBindingGroupName(SystemType viewType)
+        private void RemoveViewBindingGroupName(Type viewType)
         {
             if (false == _viewBindingGroupNames.ContainsKey(viewType))
             {
@@ -355,7 +351,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回视图类型对应的分组对象实例</returns>
-        private ViewGroup FindGroupByViewType(SystemType viewType)
+        private ViewGroup FindGroupByViewType(Type viewType)
         {
             if (null == _viewGroups)
             {

@@ -34,7 +34,7 @@ namespace GameEngine
         /// <summary>
         /// 状态管理初始化通知接口函数
         /// </summary>
-        protected override void OnInitialize()
+        protected override sealed void OnInitialize()
         {
             // 初始化监听列表
         }
@@ -42,7 +42,7 @@ namespace GameEngine
         /// <summary>
         /// 状态管理清理通知接口函数
         /// </summary>
-        protected override void OnCleanup()
+        protected override sealed void OnCleanup()
         {
             // 清理监听列表
         }
@@ -71,7 +71,7 @@ namespace GameEngine
         /// <summary>
         /// 状态管理倾泻调度函数接口
         /// </summary>
-        protected override void OnDump()
+        protected override sealed void OnDump()
         {
         }
     }

@@ -25,13 +25,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemFieldInfo = System.Reflection.FieldInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace GameEngine
 {
@@ -119,15 +115,15 @@ namespace GameEngine
 
             // 正式环境中的参数调整
             // 将仅在调试模式中开启的标识关闭
-            SystemType classType = typeof(GameMacros);
-            SystemFieldInfo[] fieldInfos = classType.GetFields(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
+            Type classType = typeof(GameMacros);
+            FieldInfo[] fieldInfos = classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             for (int n = 0; n < fieldInfos.Length; ++n)
             {
-                SystemFieldInfo fieldInfo = fieldInfos[n];
-                IEnumerable<SystemAttribute> attrs = fieldInfo.GetCustomAttributes();
-                foreach (SystemAttribute attr in attrs)
+                FieldInfo fieldInfo = fieldInfos[n];
+                IEnumerable<Attribute> attrs = fieldInfo.GetCustomAttributes();
+                foreach (Attribute attr in attrs)
                 {
-                    SystemType attrType = attr.GetType();
+                    Type attrType = attr.GetType();
                     if (typeof(EnableOnReleaseModeAttribute) == attrType)
                     {
                         // 非调试模式下，该属性标识的字段直接设置为true

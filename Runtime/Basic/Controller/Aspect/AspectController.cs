@@ -42,7 +42,7 @@ namespace GameEngine
         /// <summary>
         /// 切面管理对象初始化通知接口函数
         /// </summary>
-        protected override void OnInitialize()
+        protected override sealed void OnInitialize()
         {
             // 切面服务的初始化
             AspectCallService.InitAllServiceProcessingCallbacks();
@@ -51,7 +51,7 @@ namespace GameEngine
         /// <summary>
         /// 切面管理对象清理通知接口函数
         /// </summary>
-        protected override void OnCleanup()
+        protected override sealed void OnCleanup()
         {
             // 切面服务的清理
             AspectCallService.CleanupAllServiceProcessingCallbacks();
@@ -81,7 +81,7 @@ namespace GameEngine
         /// <summary>
         /// 切面管理对象倾泻调度函数接口
         /// </summary>
-        protected override void OnDump()
+        protected override sealed void OnDump()
         {
         }
 

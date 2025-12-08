@@ -104,7 +104,7 @@ namespace NovaEngine
             /// <summary>
             /// 日志通道类型标识
             /// </summary>
-            private LogOutputChannelType _channelType;
+            private readonly LogOutputChannelType _channelType;
 
             /// <summary>
             /// 日志通道类型标识获取函数
@@ -125,15 +125,15 @@ namespace NovaEngine
             /// <summary>
             /// 日志通道类型标识
             /// </summary>
-            private LogOutputChannelType _channelType;
+            private readonly LogOutputChannelType _channelType;
             /// <summary>
             /// 日志通道对象的启用回调接口
             /// </summary>
-            private Definition.Delegate.EmptyFunctionHandler _startupCallback;
+            private readonly Definition.Delegate.EmptyFunctionHandler _startupCallback;
             /// <summary>
             /// 日志通道对象的关闭回调接口
             /// </summary>
-            private Definition.Delegate.EmptyFunctionHandler _shutdownCallback;
+            private readonly Definition.Delegate.EmptyFunctionHandler _shutdownCallback;
             /// <summary>
             /// 日志通道对象当前的启用状态标识
             /// </summary>

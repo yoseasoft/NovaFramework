@@ -25,11 +25,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine.Scripting;
-
-using SystemType = System.Type;
 
 namespace GameEngine
 {
@@ -39,7 +38,7 @@ namespace GameEngine
         /// <summary>
         /// 消息监听回调绑定接口的缓存容器
         /// </summary>
-        private IDictionary<SystemType, IDictionary<string, MessageCallMethodInfo>> _messageListenerBindingCaches;
+        private IDictionary<Type, IDictionary<string, MessageCallMethodInfo>> _messageListenerBindingCaches;
 
         /// <summary>
         /// 消息监听绑定接口初始化回调函数
@@ -49,7 +48,7 @@ namespace GameEngine
         private void OnMessageListenerBindingInitialize()
         {
             // 初始化回调绑定缓存容器
-            _messageListenerBindingCaches = new Dictionary<SystemType, IDictionary<string, MessageCallMethodInfo>>();
+            _messageListenerBindingCaches = new Dictionary<Type, IDictionary<string, MessageCallMethodInfo>>();
         }
 
         /// <summary>
@@ -88,7 +87,7 @@ namespace GameEngine
         /// <param name="methodInfo">函数对象</param>
         /// <param name="opcode">协议编码</param>
         /// <param name="automatically">自动装载状态标识</param>
-        internal void AddMessageListenerBindingCallInfo(string fullname, SystemType targetType, MethodInfo methodInfo, int opcode, bool automatically)
+        internal void AddMessageListenerBindingCallInfo(string fullname, Type targetType, MethodInfo methodInfo, int opcode, bool automatically)
         {
             if (false == _messageListenerBindingCaches.TryGetValue(targetType, out IDictionary<string, MessageCallMethodInfo> messageCallMethodInfos))
             {
@@ -116,7 +115,7 @@ namespace GameEngine
         /// <param name="methodInfo">函数对象</param>
         /// <param name="messageType">消息对象类型</param>
         /// <param name="automatically">自动装载状态标识</param>
-        internal void AddMessageListenerBindingCallInfo(string fullname, SystemType targetType, MethodInfo methodInfo, SystemType messageType, bool automatically)
+        internal void AddMessageListenerBindingCallInfo(string fullname, Type targetType, MethodInfo methodInfo, Type messageType, bool automatically)
         {
             int opcode = GetOpcodeByMessageType(messageType);
 
@@ -128,7 +127,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
-        internal void RemoveMessageListenerBindingCallInfo(string fullname, SystemType targetType)
+        internal void RemoveMessageListenerBindingCallInfo(string fullname, Type targetType)
         {
             Debugger.Info(LogGroupTag.Module, "移除指定的消息监听绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。", targetType, fullname);
 
@@ -161,7 +160,7 @@ namespace GameEngine
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
         /// <param name="message">消息内容</param>
-        internal void InvokeMessageListenerBindingCall(IBean targetObject, string fullname, SystemType targetType, object message)
+        internal void InvokeMessageListenerBindingCall(IBean targetObject, string fullname, Type targetType, object message)
         {
             MessageCallMethodInfo messageCallMethodInfo = FindMessageListenerBindingCallByName(fullname, targetType);
             if (null == messageCallMethodInfo)
@@ -179,7 +178,7 @@ namespace GameEngine
         /// <param name="fullname">完整名称</param>
         /// <param name="targetType">目标对象类型</param>
         /// <returns>返回绑定函数实例</returns>
-        private MessageCallMethodInfo FindMessageListenerBindingCallByName(string fullname, SystemType targetType)
+        private MessageCallMethodInfo FindMessageListenerBindingCallByName(string fullname, Type targetType)
         {
             if (_messageListenerBindingCaches.TryGetValue(targetType, out IDictionary<string, MessageCallMethodInfo> messageCallMethodInfos))
             {

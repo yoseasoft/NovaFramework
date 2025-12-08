@@ -25,12 +25,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-
-using SystemEnum = System.Enum;
-using SystemType = System.Type;
-using SystemAction = System.Action;
 
 namespace GameEngine
 {
@@ -50,12 +47,12 @@ namespace GameEngine
         /// <summary>
         /// 网络消息协议对象类映射字典
         /// </summary>
-        private IDictionary<int, SystemType> _messageClassTypes;
+        private IDictionary<int, Type> _messageClassTypes;
 
         /// <summary>
         /// 网络消息通道对象管理容器
         /// </summary>
-        private IDictionary<int, SystemType> _messageChannelTypes;
+        private IDictionary<int, Type> _messageChannelTypes;
         /// <summary>
         /// 网络消息解析服务对象管理容器
         /// </summary>
@@ -78,12 +75,12 @@ namespace GameEngine
         /// <summary>
         /// 消息协议类型
         /// </summary>
-        private SystemType _messageProtocolType;
+        private Type _messageProtocolType;
 
         /// <summary>
         /// 消息的调用队列
         /// </summary>
-        private Queue<SystemAction> _messageInvokeQueue;
+        private Queue<Action> _messageInvokeQueue;
 
         /// <summary>
         /// 句柄对象的单例访问获取接口
@@ -97,9 +94,9 @@ namespace GameEngine
         protected override bool OnInitialize()
         {
             // 初始化协议对象映射字典
-            _messageClassTypes = new Dictionary<int, SystemType>();
+            _messageClassTypes = new Dictionary<int, Type>();
             // 初始化网络消息通道对象管理容器
-            _messageChannelTypes = new Dictionary<int, SystemType>();
+            _messageChannelTypes = new Dictionary<int, Type>();
             // 初始化网络消息解析对象管理容器
             _messageTranslators = new Dictionary<int, IMessageTranslator>();
 
@@ -112,7 +109,7 @@ namespace GameEngine
             _messageChannels = new Dictionary<int, MessageChannel>();
 
             // 初始化消息调用队列
-            _messageInvokeQueue = new Queue<SystemAction>();
+            _messageInvokeQueue = new Queue<Action>();
 
             // 加载消息通道数据
             LoadAllMessageChannelTypes();
@@ -191,13 +188,13 @@ namespace GameEngine
         {
             if (_messageInvokeQueue.Count > 0)
             {
-                Queue<SystemAction> queue = new Queue<SystemAction>(_messageInvokeQueue);
+                Queue<Action> queue = new Queue<Action>(_messageInvokeQueue);
                 _messageInvokeQueue.Clear();
 
                 while (queue.Count > 0)
                 {
-                    SystemAction f = queue.Dequeue();
-                    try { f(); } catch(System.Exception e) { Debugger.Error(e); }
+                    Action f = queue.Dequeue();
+                    try { f(); } catch(Exception e) { Debugger.Error(e); }
                 }
             }
         }
@@ -398,7 +395,7 @@ namespace GameEngine
             // byte[] buffer = ProtoBuf.Extension.ProtobufHelper.ToBytes(message);
             // SendMessage(channelID, buffer);
 
-            Debugger.Throw<System.NotImplementedException>();
+            Debugger.Throw<NotImplementedException>();
         }
 
         /// <summary>
@@ -406,9 +403,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="clsType">消息类型</param>
         /// <returns>返回消息类型对应的操作码，若类型非法则返回0</returns>
-        public int GetOpcodeByMessageType(SystemType clsType)
+        public int GetOpcodeByMessageType(Type clsType)
         {
-            foreach (KeyValuePair<int, SystemType> pair in _messageClassTypes)
+            foreach (KeyValuePair<int, Type> pair in _messageClassTypes)
             {
                 if (pair.Value == clsType)
                 {
@@ -579,8 +576,7 @@ namespace GameEngine
                 OnMessageDistributeCallDispatched(opcode, message);
             }
 
-            IList<IMessageDispatch> listeners = null;
-            if (_messageDispatchListeners.TryGetValue(opcode, out listeners))
+            if (_messageDispatchListeners.TryGetValue(opcode, out IList<IMessageDispatch> listeners))
             {
                 v = true;
 
@@ -642,7 +638,7 @@ namespace GameEngine
         {
             string namespaceTag = GetType().Namespace;
 
-            foreach (NovaEngine.Module.NetworkServiceType enumValue in SystemEnum.GetValues(typeof(NovaEngine.Module.NetworkServiceType)))
+            foreach (NovaEngine.Module.NetworkServiceType enumValue in Enum.GetValues(typeof(NovaEngine.Module.NetworkServiceType)))
             {
                 if (NovaEngine.Module.NetworkServiceType.Unknown == enumValue)
                 {
@@ -654,8 +650,8 @@ namespace GameEngine
                 string channelClassName = NovaEngine.FormatString.Format("{%s}.{%s}{%s}", namespaceTag, enumName, MessageChannelClassUnifiedStandardName);
                 // string translatorClassName = NovaEngine.FormatString.Format("{%s}.{%s}{%s}", namespaceTag, enumName, MessageTranslatorClassUnifiedStandardName);
 
-                SystemType channelClassType = SystemType.GetType(channelClassName);
-                // SystemType translatorClassType = SystemType.GetType(translatorClassName);
+                Type channelClassType = Type.GetType(channelClassName);
+                // Type translatorClassType = Type.GetType(translatorClassName);
 
                 if (null == channelClassType)
                 {
@@ -676,7 +672,7 @@ namespace GameEngine
                 //}
 
                 //// 创建实例
-                //IMessageTranslator messageTranslator = System.Activator.CreateInstance(translatorClassType) as IMessageTranslator;
+                //IMessageTranslator messageTranslator = Activator.CreateInstance(translatorClassType) as IMessageTranslator;
                 //if (null == messageTranslator)
                 //{
                 //    Debugger.Error("The message translator class type {%s} created failed.", translatorClassName);
@@ -709,7 +705,7 @@ namespace GameEngine
         /// <param name="serviceType">服务类型</param>
         /// <param name="classType">对象类型</param>
         /// <returns>若注册解析器对象实例成功则返回true，否则返回false</returns>
-        public bool RegMessageTranslator(int serviceType, SystemType classType)
+        public bool RegMessageTranslator(int serviceType, Type classType)
         {
             if (false == _messageChannelTypes.ContainsKey(serviceType))
             {
@@ -730,7 +726,7 @@ namespace GameEngine
             }
 
             // 创建实例
-            IMessageTranslator messageTranslator = System.Activator.CreateInstance(classType) as IMessageTranslator;
+            IMessageTranslator messageTranslator = Activator.CreateInstance(classType) as IMessageTranslator;
             if (null == messageTranslator)
             {
                 Debugger.Error(LogGroupTag.Module, "The message translator class type {%t} created instance failed.", classType);
@@ -758,7 +754,7 @@ namespace GameEngine
         /// <param name="serviceType">服务类型</param>
         /// <returns>返回对应类型的消息通道对象，若不存在对应类型的通道对象则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SystemType GetMessageChannelTypeByServiceType(int serviceType)
+        public Type GetMessageChannelTypeByServiceType(int serviceType)
         {
             if (false == _messageChannelTypes.ContainsKey(serviceType))
             {
@@ -799,7 +795,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="classType">对象类型</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetMessageProtocolType(SystemType classType)
+        public void SetMessageProtocolType(Type classType)
         {
             if (null != _messageProtocolType)
             {
@@ -814,7 +810,7 @@ namespace GameEngine
         /// </summary>
         /// <returns>返回当前网络支持的消息协议类型</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SystemType GetMessageProtocolType()
+        public Type GetMessageProtocolType()
         {
             Debugger.Assert(_messageProtocolType, NovaEngine.ErrorText.NullObjectReference);
 
@@ -840,7 +836,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="msgType">消息类型</param>
         /// <param name="classType">对象类</param>
-        private void RegMessageClassTypes(int msgType, SystemType classType)
+        private void RegMessageClassTypes(int msgType, Type classType)
         {
             Debugger.Assert(msgType > 0, NovaEngine.ErrorText.InvalidArguments);
 
@@ -884,7 +880,7 @@ namespace GameEngine
         /// <param name="msgType">消息类型</param>
         /// <returns>返回给定类型对应的消息对象类，若不存在则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SystemType GetMessageClassByType(int msgType)
+        public Type GetMessageClassByType(int msgType)
         {
             if (_messageClassTypes.ContainsKey(msgType))
             {

@@ -50,7 +50,7 @@ namespace GameEngine
         /// <summary>
         /// 事件分发对象初始化通知接口函数
         /// </summary>
-        protected override void OnInitialize()
+        protected override sealed void OnInitialize()
         {
             // 初始化监听列表
             _eventListenersForId = new Dictionary<int, IList<IEventDispatch>>();
@@ -63,7 +63,7 @@ namespace GameEngine
         /// <summary>
         /// 事件分发对象清理通知接口函数
         /// </summary>
-        protected override void OnCleanup()
+        protected override sealed void OnCleanup()
         {
             // 清理事件数据缓冲队列
             _eventBuffers.Clear();
@@ -111,7 +111,7 @@ namespace GameEngine
         /// <summary>
         /// 事件管理对象倾泻调度函数接口
         /// </summary>
-        protected override void OnDump()
+        protected override sealed void OnDump()
         {
         }
 
