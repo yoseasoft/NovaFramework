@@ -22,12 +22,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine.Loader.Configuring
 {
@@ -67,12 +66,12 @@ namespace GameEngine.Loader.Configuring
             // 初始化实例容器
             _nodeConfigureInfos = new Dictionary<string, BaseConfigureInfo>();
 
-            SystemType targetType = typeof(CodeConfigureResolver);
+            Type targetType = typeof(CodeConfigureResolver);
             MethodInfo[] methods = targetType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             for (int n = 0; n < methods.Length; ++n)
             {
                 MethodInfo method = methods[n];
-                SystemAttribute attr = method.GetCustomAttribute(typeof(OnXmlConfigureResolvingCallbackAttribute));
+                Attribute attr = method.GetCustomAttribute(typeof(OnXmlConfigureResolvingCallbackAttribute));
                 if (null != attr)
                 {
                     OnXmlConfigureResolvingCallbackAttribute _attr = (OnXmlConfigureResolvingCallbackAttribute) attr;
@@ -127,6 +126,7 @@ namespace GameEngine.Loader.Configuring
         /// <summary>
         /// 卸载当前所有解析登记的配置数据对象实例
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnloadAllConfigureContents()
         {
             _nodeConfigureInfos?.Clear();
@@ -153,6 +153,7 @@ namespace GameEngine.Loader.Configuring
         /// </summary>
         /// <param name="targetName">配置名称</param>
         /// <returns>返回配置数据实例，若查找失败返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BaseConfigureInfo GetNodeConfigureInfoByName(string targetName)
         {
             if (_nodeConfigureInfos.TryGetValue(targetName, out BaseConfigureInfo info))
@@ -167,6 +168,7 @@ namespace GameEngine.Loader.Configuring
         /// 获取当前注册的所有配置数据结构信息对象实例
         /// </summary>
         /// <returns>返回当前所有配置数据实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IList<BaseConfigureInfo> GetAllNodeConfigureInfos()
         {
             return NovaEngine.Utility.Collection.ToListForValues(_nodeConfigureInfos);
@@ -182,8 +184,7 @@ namespace GameEngine.Loader.Configuring
         /// <param name="callback">解析回调句柄</param>
         private static void AddConfigureResolveCallback(XmlNodeType nodeType, string nodeName, OnConfigureObjectLoadingHandler callback)
         {
-            IDictionary<string, OnConfigureObjectLoadingHandler> callbacks;
-            if (false == _codeConfigureResolveCallbacks.TryGetValue(nodeType, out callbacks))
+            if (false == _codeConfigureResolveCallbacks.TryGetValue(nodeType, out IDictionary<string, OnConfigureObjectLoadingHandler> callbacks))
             {
                 callbacks = new Dictionary<string, OnConfigureObjectLoadingHandler>();
                 _codeConfigureResolveCallbacks.Add(nodeType, callbacks);
@@ -201,6 +202,7 @@ namespace GameEngine.Loader.Configuring
         /// <summary>
         /// 移除所有注册的配置解析回调句柄
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void RemoveAllConfigureResolveCallbacks()
         {
             _codeConfigureResolveCallbacks.Clear();

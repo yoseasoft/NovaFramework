@@ -22,15 +22,12 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集的分析处理类，对业务层载入的所有对象类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集的分析处理类
     public static partial class CodeLoader
     {
         /// <summary>
@@ -59,7 +56,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
         /// <returns>返回配置数据实例集合，若查找失败返回null</returns>
-        internal static IList<Configuring.BeanConfigureInfo> GetBeanConfigureByType(SystemType targetType)
+        internal static IList<Configuring.BeanConfigureInfo> GetBeanConfigureByType(Type targetType)
         {
             if (null == targetType)
             {

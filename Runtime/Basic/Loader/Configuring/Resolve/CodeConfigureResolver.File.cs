@@ -25,8 +25,6 @@
 using System.Xml;
 using UnityEngine.Scripting;
 
-using SystemType = System.Type;
-
 namespace GameEngine.Loader.Configuring
 {
     /// 对象配置数据的解析类

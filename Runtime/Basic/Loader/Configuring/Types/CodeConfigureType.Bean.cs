@@ -23,9 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine.Loader.Configuring
 {
@@ -37,7 +36,7 @@ namespace GameEngine.Loader.Configuring
         /// <summary>
         /// 节点对应的对象类型
         /// </summary>
-        private SystemType _classType;
+        private Type _classType;
         /// <summary>
         /// 节点对象的父节点名称
         /// </summary>
@@ -64,7 +63,7 @@ namespace GameEngine.Loader.Configuring
         private IList<BeanComponentConfigureInfo> _components;
 
         public override ConfigureInfoType Type => ConfigureInfoType.Bean;
-        public SystemType ClassType { get { return _classType; } internal set { _classType = value; } }
+        public Type ClassType { get { return _classType; } internal set { _classType = value; } }
         public string ParentName { get { return _parentName; } internal set { _parentName = value; } }
         public bool Singleton { get { return _singleton; } internal set { _singleton = value; } }
         public bool Inherited { get { return _inherited; } internal set { _inherited = value; } }
@@ -97,8 +96,7 @@ namespace GameEngine.Loader.Configuring
             }
             else if (_fields.ContainsKey(fieldInfo.FieldName))
             {
-                Debugger.Warn("The bean '{0}' class's field '{1}' was already exist, repeat added it will be override old value.",
-                        NovaEngine.Utility.Text.ToString(_classType), fieldInfo.FieldName);
+                Debugger.Warn("The bean '{%t}' class's field '{%s}' was already exist, repeat added it will be override old value.", _classType, fieldInfo.FieldName);
                 _fields.Remove(fieldInfo.FieldName);
             }
 
@@ -154,8 +152,7 @@ namespace GameEngine.Loader.Configuring
             }
             else if (_properties.ContainsKey(propertyInfo.PropertyName))
             {
-                Debugger.Warn("The bean '{0}' class's property '{1}' was already exist, repeat added it will be override old value.",
-                        NovaEngine.Utility.Text.ToString(_classType), propertyInfo.PropertyName);
+                Debugger.Warn("The bean '{%t}' class's property '{%s}' was already exist, repeat added it will be override old value.", _classType, propertyInfo.PropertyName);
                 _properties.Remove(propertyInfo.PropertyName);
             }
 
@@ -211,8 +208,7 @@ namespace GameEngine.Loader.Configuring
             }
             else if (_components.Contains(componentInfo))
             {
-                Debugger.Warn("The bean '{0}' class's component '{1}' was already exist, repeat added it will be override old value.",
-                        NovaEngine.Utility.Text.ToString(_classType), componentInfo.ToString());
+                Debugger.Warn("The bean '{%t}' class's component '{%i}' was already exist, repeat added it will be override old value.", _classType, componentInfo);
                 _components.Remove(componentInfo);
             }
 
@@ -252,7 +248,7 @@ namespace GameEngine.Loader.Configuring
         {
             if (null == _components || index < 0 || index >= _components.Count)
             {
-                Debugger.Warn("Invalid index ({0}) for configure bean component info list.", index);
+                Debugger.Warn("Invalid index ({%d}) for configure bean component info list.", index);
                 return null;
             }
 

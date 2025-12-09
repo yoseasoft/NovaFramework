@@ -22,9 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemParameterInfo = System.Reflection.ParameterInfo;
+using System.Reflection;
 
 namespace GameEngine.Loader.Inspecting
 {
@@ -38,7 +36,7 @@ namespace GameEngine.Loader.Inspecting
         /// </summary>
         /// <param name="methodInfo">函数类型</param>
         /// <returns>若格式正确则返回true，否则返回false</returns>
-        public static bool CheckFunctionFormatOfTarget(SystemMethodInfo methodInfo)
+        public static bool CheckFunctionFormatOfTarget(MethodInfo methodInfo)
         {
             return false;
         }
@@ -48,13 +46,13 @@ namespace GameEngine.Loader.Inspecting
         /// </summary>
         /// <param name="methodInfo">函数类型</param>
         /// <returns>若为无参格式则返回true，否则返回false</returns>
-        public static bool CheckFunctionFormatOfTargetWithNullParameterType(SystemMethodInfo methodInfo)
+        public static bool CheckFunctionFormatOfTargetWithNullParameterType(MethodInfo methodInfo)
         {
             // 无参类型的函数有三种格式:
             // 1. [static] void OnFunctionCall();
             // 2. static void OnFunctionCall(IBean obj);
             // 2. static void OnFunctionCall(this IBean obj);
-            SystemParameterInfo[] paramInfos = methodInfo.GetParameters();
+            ParameterInfo[] paramInfos = methodInfo.GetParameters();
             if (null == paramInfos || paramInfos.Length <= 0)
             {
                 return true;

@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine.Loader.Configuring
 {
@@ -39,7 +39,7 @@ namespace GameEngine.Loader.Configuring
         /// <summary>
         /// 节点组件的引用类型
         /// </summary>
-        private SystemType _referenceType;
+        private Type _referenceType;
         /// <summary>
         /// 节点组件的优先级
         /// </summary>
@@ -50,7 +50,7 @@ namespace GameEngine.Loader.Configuring
         private AspectBehaviourType _activationBehaviourType;
 
         public string ReferenceName { get { return _referenceName; } internal set { _referenceName = value; } }
-        public SystemType ReferenceType { get { return _referenceType; } internal set { _referenceType = value; } }
+        public Type ReferenceType { get { return _referenceType; } internal set { _referenceType = value; } }
         public int Priority { get { return _priority; } internal set { _priority = value; } }
         public AspectBehaviourType ActivationBehaviourType { get { return _activationBehaviourType; } internal set { _activationBehaviourType = value; } }
 

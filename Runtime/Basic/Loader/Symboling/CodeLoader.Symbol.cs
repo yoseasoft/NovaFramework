@@ -23,16 +23,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-using SystemType = System.Type;
-
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集的分析处理类，对业务层载入的所有对象类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集的分析处理类
     public static partial class CodeLoader
     {
         /// <summary>
@@ -82,7 +79,7 @@ namespace GameEngine.Loader
         /// <param name="targetType">对象类型</param>
         /// <param name="reload">重载状态标识</param>
         /// <returns>若存在给定类型属性通用类库则返回对应处理结果，否则返回false</returns>
-        private static Symboling.SymClass LoadSymClass(SystemType targetType, bool reload)
+        private static Symboling.SymClass LoadSymClass(Type targetType, bool reload)
         {
             Symboling.SymClass symbol = Symboling.SymClassResolver.ResolveSymClass(targetType, reload);
             if (null == symbol)
@@ -227,7 +224,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="classType">对象类型</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void RegisterSymbolResolverOfInstantiationClass(SystemType classType)
+        public static void RegisterSymbolResolverOfInstantiationClass(Type classType)
         {
             Symboling.SymClassResolver.AddInstantiationClassResolver(classType);
         }
@@ -255,7 +252,7 @@ namespace GameEngine.Loader
         /// 移除外部实现的可实例化对象类型的符号解析器
         /// </summary>
         /// <param name="classType">对象类型</param>
-        public static void UnregisterSymbolResolverOfInstantiationClass(SystemType classType)
+        public static void UnregisterSymbolResolverOfInstantiationClass(Type classType)
         {
             Symboling.SymClassResolver.RemoveInstantiationClassResolver(classType);
         }
@@ -296,7 +293,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <returns>返回对应的标记数据实例，若查找失败返回null</returns>
-        public static Symboling.SymClass GetSymClassByType(SystemType targetType)
+        public static Symboling.SymClass GetSymClassByType(Type targetType)
         {
             if (null == _symClassMaps)
             {
@@ -316,7 +313,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="baseType"></param>
         /// <returns></returns>
-        public static IList<Symboling.SymClass> FindAllSymClassesInheritedFrom(SystemType baseType)
+        public static IList<Symboling.SymClass> FindAllSymClassesInheritedFrom(Type baseType)
         {
             IList<Symboling.SymClass> results = null;
 
@@ -339,7 +336,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="featureType">特性类型</param>
         /// <returns>返回对应的标记数据列表，若查找失败返回null</returns>
-        public static IList<Symboling.SymClass> FindAllSymClassesByFeatureType(SystemType featureType)
+        public static IList<Symboling.SymClass> FindAllSymClassesByFeatureType(Type featureType)
         {
             IList<Symboling.SymClass> results = null;
 
@@ -362,7 +359,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="interfaceType">接口类型</param>
         /// <returns>返回对应的标记数据列表，若查找失败返回null</returns>
-        public static IList<Symboling.SymClass> FindAllSymClassesByInterfaceType(SystemType interfaceType)
+        public static IList<Symboling.SymClass> FindAllSymClassesByInterfaceType(Type interfaceType)
         {
             IList<Symboling.SymClass> results = null;
 
@@ -400,7 +397,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <returns>返回对应的Bean信息数据实例，若查找失败返回null</returns>
-        public static Symboling.Bean GetBeanClassByType(SystemType targetType)
+        public static Symboling.Bean GetBeanClassByType(Type targetType)
         {
             Symboling.SymClass symClass = GetSymClassByType(targetType);
             if (null != symClass)

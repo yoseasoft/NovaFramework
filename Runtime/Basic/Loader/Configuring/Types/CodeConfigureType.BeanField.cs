@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine.Loader.Configuring
 {
@@ -43,7 +43,7 @@ namespace GameEngine.Loader.Configuring
         /// <summary>
         /// 节点字段的引用类型
         /// </summary>
-        private SystemType _referenceType;
+        private Type _referenceType;
         /// <summary>
         /// 节点字段的配置值
         /// </summary>
@@ -51,7 +51,7 @@ namespace GameEngine.Loader.Configuring
 
         public string FieldName { get { return _fieldName; } internal set { _fieldName = value; } }
         public string ReferenceName { get { return _referenceName; } internal set { _referenceName = value; } }
-        public SystemType ReferenceType { get { return _referenceType; } internal set { _referenceType = value; } }
+        public Type ReferenceType { get { return _referenceType; } internal set { _referenceType = value; } }
         public string ReferenceValue { get { return _referenceValue; } internal set { _referenceValue = value; } }
 
         /// <summary>

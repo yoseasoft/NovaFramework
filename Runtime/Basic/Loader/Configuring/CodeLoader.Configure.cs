@@ -27,15 +27,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Xml;
 using System.Customize.Extension;
 using Cysharp.Threading.Tasks;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集的分析处理类，对业务层载入的所有对象类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集的分析处理类
     public static partial class CodeLoader
     {
         /// <summary>
@@ -206,7 +205,7 @@ namespace GameEngine.Loader
                 if (text.IsNullOrEmpty())
                     return false;
 
-                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(text);
+                byte[] buffer = Encoding.UTF8.GetBytes(text);
                 ms.Write(buffer, 0, buffer.Length);
                 ms.Seek(0, SeekOrigin.Begin);
 
@@ -238,7 +237,7 @@ namespace GameEngine.Loader
                 if (text.IsNullOrEmpty())
                     return false;
 
-                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(text);
+                byte[] buffer = Encoding.UTF8.GetBytes(text);
                 ms.Write(buffer, 0, buffer.Length);
                 ms.Seek(0, SeekOrigin.Begin);
 
