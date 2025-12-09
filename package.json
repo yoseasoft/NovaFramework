@@ -20,6 +20,7 @@
     "com.unity.modules.assetbundle": "1.0.0",
     "com.unity.modules.unitywebrequest": "1.0.0",
     "com.unity.modules.unitywebrequestwww": "1.0.0",
+    "com.yoseasoft.gooasset": "1.0.0",
     "com.novaframework.unity.unitask": "1.0.0"
   },
   "samples": [
