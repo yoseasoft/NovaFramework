@@ -25,26 +25,16 @@
 namespace GameEngine
 {
     /// <summary>
-    /// 网络管理器的连接状态监听接口类，用于对网络模块相关连接状态事件的转发操作进行监听回调
+    /// 网络管理器的数据传输监听接口类，用于对网络模块相关消息数据上下行操作进行监听回调
     /// </summary>
-    public interface INetworkConnectListener
+    public interface INetworkTransmissionListener
     {
         /// <summary>
-        /// 网络连接成功的回调通知接口函数
+        /// 网络消息数据传输的回调通知接口函数
         /// </summary>
-        /// <param name="channel">消息通信对象实例</param>
-        void OnConnection(MessageChannel channel);
-
-        /// <summary>
-        /// 网络连接断开的回调通知接口函数
-        /// </summary>
-        /// <param name="channel">消息通信对象实例</param>
-        void OnDisconnection(MessageChannel channel);
-
-        /// <summary>
-        /// 网络连接异常的回调通知接口函数
-        /// </summary>
-        /// <param name="channel">消息通信对象实例</param>
-        void OnConnectError(MessageChannel channel);
+        /// <param name="channelID">通道标识</param>
+        /// <param name="buffer">消息数据流</param>
+        /// <returns>若该消息已被处理则返回true，否则返回false</returns>
+        bool OnRecvMessage(int channelID, byte[] buffer);
     }
 }

@@ -28,10 +28,10 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Customize.Extension;
 
 namespace GameEngine
 {
-
     /// <summary>
     /// 网络模块封装的句柄对象类
     /// 模块具体功能接口请参考<see cref="NovaEngine.Module.NetworkModule"/>类
@@ -61,11 +61,11 @@ namespace GameEngine
         /// <summary>
         /// 网络连接监听对象实例管理容器
         /// </summary>
-        private IList<INetworkConnectListener> _networkConnectListeners;
+        private IList<INetworkConnectionListener> _networkConnectionListeners;
         /// <summary>
-        /// 消息转发监听对象实例管理容器
+        /// 消息传输监听对象实例管理容器
         /// </summary>
-        private IList<INetworkDispatchListener> _networkDispatchListeners;
+        private IList<INetworkTransmissionListener> _networkTransmissionListeners;
 
         /// <summary>
         /// 消息通道对象实例管理容器
@@ -101,9 +101,9 @@ namespace GameEngine
             _messageTranslators = new Dictionary<int, IMessageTranslator>();
 
             // 初始化网络连接监听对象管理容器
-            _networkConnectListeners = new List<INetworkConnectListener>();
-            // 初始化消息转发监听对象管理容器
-            _networkDispatchListeners = new List<INetworkDispatchListener>();
+            _networkConnectionListeners = new List<INetworkConnectionListener>();
+            // 初始化消息传输监听对象管理容器
+            _networkTransmissionListeners = new List<INetworkTransmissionListener>();
 
             // 初始化消息通道对象管理容器
             _messageChannels = new Dictionary<int, MessageChannel>();
@@ -134,14 +134,14 @@ namespace GameEngine
             _messageChannels = null;
 
             // 移除所有网络连接监听实例
-            RemoveAllNetworkConnectListeners();
+            RemoveAllNetworkConnectionListeners();
             // 移除所有消息转发监听实例
-            RemoveAllNetworkDispatchListeners();
+            RemoveAllNetworkTransmissionListeners();
 
             // 清理网络连接监听对象管理容器
-            _networkConnectListeners = null;
-            // 清理消息转发监听对象管理容器
-            _networkDispatchListeners = null;
+            _networkConnectionListeners = null;
+            // 清理消息传输监听对象管理容器
+            _networkTransmissionListeners = null;
 
             // 移除消息通道数据
             RemoveAllMessageChannelTypes();
@@ -436,7 +436,7 @@ namespace GameEngine
 
                 channel.OnConnected();
 
-                IEnumerator<INetworkConnectListener> e = _networkConnectListeners.GetEnumerator();
+                IEnumerator<INetworkConnectionListener> e = _networkConnectionListeners.GetEnumerator();
                 while (e.MoveNext())
                 {
                     e.Current.OnConnection(channel);
@@ -455,7 +455,7 @@ namespace GameEngine
             MessageChannel channel = GetChannel(channelID);
             if (null != channel)
             {
-                IEnumerator<INetworkConnectListener> e = _networkConnectListeners.GetEnumerator();
+                IEnumerator<INetworkConnectionListener> e = _networkConnectionListeners.GetEnumerator();
                 while (e.MoveNext())
                 {
                     e.Current.OnDisconnection(channel);
@@ -477,7 +477,7 @@ namespace GameEngine
             MessageChannel channel = GetChannel(channelID);
             if (null != channel)
             {
-                IEnumerator<INetworkConnectListener> e = _networkConnectListeners.GetEnumerator();
+                IEnumerator<INetworkConnectionListener> e = _networkConnectionListeners.GetEnumerator();
                 while (e.MoveNext())
                 {
                     e.Current.OnConnectError(channel);
@@ -496,13 +496,13 @@ namespace GameEngine
         private void OnNetworkChannelReceiveMessage(int channelID, byte[] buffer)
         {
             // 2025-12-04：
-            // 新增消息转发监听接口，允许业务自行实现派发策略
-            if (_networkDispatchListeners.Count > 0)
+            // 新增消息传输监听接口，允许业务自行实现派发策略
+            if (_networkTransmissionListeners.Count > 0)
             {
                 bool processed = false;
-                for (int n = 0; n < _networkDispatchListeners.Count; ++n)
+                for (int n = 0; n < _networkTransmissionListeners.Count; ++n)
                 {
-                    processed = processed || _networkDispatchListeners[n].OnMessageDispatch(channelID, buffer);
+                    processed = processed || _networkTransmissionListeners[n].OnRecvMessage(channelID, buffer);
                 }
 
                 // 若监听器处理了该消息，则不再进行后续处理
@@ -659,25 +659,23 @@ namespace GameEngine
                     continue;
                 }
 
-                //if (null == translatorClassType)
-                //{
-                //    Debugger.Info(LogGroupTag.Module, "Could not found any message translator class with target name {%s}.", translatorClassName);
-                //    continue;
-                //}
+                //
+                // 2025-11-05：
+                // 此处将消息转译对象的实例化操作调整到外部模块中进行
+                // 因为不同业务对消息编码/解码的方式亦有所不同，有个性化定制的需求
+                // 所以该步骤由外部模块自行注册管理
+                //
 
-                //if (false == typeof(IMessageTranslator).IsAssignableFrom(translatorClassType))
-                //{
-                //    Debugger.Warn("The message translator class type {%s} must be inherited from 'IMessageTranslator' interface.", translatorClassName);
-                //    continue;
-                //}
+                // if (null == translatorClassType)
+                // { Debugger.Info(LogGroupTag.Module, "Could not found any message translator class with target name {%s}.", translatorClassName); continue; }
 
-                //// 创建实例
-                //IMessageTranslator messageTranslator = Activator.CreateInstance(translatorClassType) as IMessageTranslator;
-                //if (null == messageTranslator)
-                //{
-                //    Debugger.Error("The message translator class type {%s} created failed.", translatorClassName);
-                //    continue;
-                //}
+                // if (false == typeof(IMessageTranslator).IsAssignableFrom(translatorClassType))
+                // { Debugger.Warn("The message translator class type {%s} must be inherited from 'IMessageTranslator' interface.", translatorClassName); continue; }
+
+                // 创建消息转译对象的实例
+                // IMessageTranslator messageTranslator = Activator.CreateInstance(translatorClassType) as IMessageTranslator;
+                // if (null == messageTranslator)
+                // { Debugger.Error("The message translator class type {%s} created failed.", translatorClassName); continue; }
 
                 Debugger.Info(LogGroupTag.Module, "Register new message channel type '{%s}' to target service type '{%s}'.", channelClassName, enumName);
                 // Debugger.Info(LogGroupTag.Module, "Register new message translator class '{%s}' to target service type '{%s}'.", translatorClassName, enumName);
@@ -719,7 +717,7 @@ namespace GameEngine
                 return false;
             }
 
-            if (false == typeof(IMessageTranslator).IsAssignableFrom(classType))
+            if (false == classType.Is<IMessageTranslator>())
             {
                 Debugger.Error(LogGroupTag.Module, "The message translator class type {%t} must be inherited from 'IMessageTranslator' interface.", classType);
                 return false;
@@ -900,15 +898,15 @@ namespace GameEngine
         /// </summary>
         /// <param name="listener">监听对象实例</param>
         /// <returns>若给定的实例添加成功则返回true，否则返回false</returns>
-        public bool AddNetworkConnectListener(INetworkConnectListener listener)
+        public bool AddNetworkConnectionListener(INetworkConnectionListener listener)
         {
-            if (_networkConnectListeners.Contains(listener))
+            if (_networkConnectionListeners.Contains(listener))
             {
-                Debugger.Warn("The target network connect listener instance was already existed, added it failed.");
+                Debugger.Warn("The target network connection listener instance was already existed, added it failed.");
                 return false;
             }
 
-            _networkConnectListeners.Add(listener);
+            _networkConnectionListeners.Add(listener);
             return true;
         }
 
@@ -916,63 +914,63 @@ namespace GameEngine
         /// 从当前网络管理句柄中移除指定的网络连接监听对象实例
         /// </summary>
         /// <param name="listener">监听对象实例</param>
-        public void RemoveNetworkConnectListener(INetworkConnectListener listener)
+        public void RemoveNetworkConnectionListener(INetworkConnectionListener listener)
         {
-            if (false == _networkConnectListeners.Contains(listener))
+            if (false == _networkConnectionListeners.Contains(listener))
             {
-                Debugger.Warn("Could not found any network connect listener instance from current manage container, removed it failed.");
+                Debugger.Warn("Could not found any network connection listener instance from current manage container, removed it failed.");
                 return;
             }
 
-            _networkConnectListeners.Remove(listener);
+            _networkConnectionListeners.Remove(listener);
         }
 
         /// <summary>
         /// 清除当前网络管理句柄中的所有网络连接监听对象实例
         /// </summary>
-        private void RemoveAllNetworkConnectListeners()
+        private void RemoveAllNetworkConnectionListeners()
         {
-            _networkConnectListeners.Clear();
+            _networkConnectionListeners.Clear();
         }
 
         /// <summary>
-        /// 添加指定的事件转发监听对象实例到当前网络管理句柄中
+        /// 添加指定的消息传输监听对象实例到当前网络管理句柄中
         /// </summary>
-        /// <param name="listener">事件转发监听对象实例</param>
+        /// <param name="listener">消息传输监听对象实例</param>
         /// <returns>若给定的实例添加成功则返回true，否则返回false</returns>
-        public bool AddNetworkDispatchListener(INetworkDispatchListener listener)
+        public bool AddNetworkTransmissionListener(INetworkTransmissionListener listener)
         {
-            if (_networkDispatchListeners.Contains(listener))
+            if (_networkTransmissionListeners.Contains(listener))
             {
-                Debugger.Warn("The target network dispatch listener instance was already existed, added it failed.");
+                Debugger.Warn("The target network transmission listener instance was already existed, added it failed.");
                 return false;
             }
 
-            _networkDispatchListeners.Add(listener);
+            _networkTransmissionListeners.Add(listener);
             return true;
         }
 
         /// <summary>
-        /// 从当前网络管理句柄中移除指定的事件转发监听对象实例
+        /// 从当前网络管理句柄中移除指定的消息传输监听对象实例
         /// </summary>
-        /// <param name="listener">事件转发监听对象实例</param>
-        public void RemoveNetworkDispatchListener(INetworkDispatchListener listener)
+        /// <param name="listener">消息传输监听对象实例</param>
+        public void RemoveNetworkTransmissionListener(INetworkTransmissionListener listener)
         {
-            if (false == _networkDispatchListeners.Contains(listener))
+            if (false == _networkTransmissionListeners.Contains(listener))
             {
-                Debugger.Warn("Could not found any network dispatch listener instance from current manage container, removed it failed.");
+                Debugger.Warn("Could not found any network transmission listener instance from current manage container, removed it failed.");
                 return;
             }
 
-            _networkDispatchListeners.Remove(listener);
+            _networkTransmissionListeners.Remove(listener);
         }
 
         /// <summary>
-        /// 清除当前网络管理句柄中的所有事件转发监听对象实例
+        /// 清除当前网络管理句柄中的所有消息传输监听对象实例
         /// </summary>
-        private void RemoveAllNetworkDispatchListeners()
+        private void RemoveAllNetworkTransmissionListeners()
         {
-            _networkDispatchListeners.Clear();
+            _networkTransmissionListeners.Clear();
         }
 
         #endregion
