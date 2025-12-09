@@ -23,15 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemFieldInfo = System.Reflection.FieldInfo;
-using SystemPropertyInfo = System.Reflection.PropertyInfo;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace GameEngine.Loader.Symboling
 {
@@ -64,7 +58,7 @@ namespace GameEngine.Loader.Symboling
         /// <param name="targetType">目标对象类型</param>
         /// <param name="reload">重载状态标识</param>
         /// <returns>若对象标记解析成功则返回数据实例，否则返回null</returns>
-        public static SymClass ResolveSymClass(SystemType targetType, bool reload)
+        public static SymClass ResolveSymClass(Type targetType, bool reload)
         {
             SymClass symbol = new SymClass();
 
@@ -73,15 +67,15 @@ namespace GameEngine.Loader.Symboling
             // 
             // if (false == NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(targetType))
             // {
-            //     // Debugger.Info("The target class type '{0}' must be instantiable type, parsed it failed.", NovaEngine.Utility.Text.ToString(targetType));
+            //     // Debugger.Info("The target class type '{%t}' must be instantiable type, parsed it failed.", targetType);
             //     return null;
             // }
 
             // 记录目标对象类型
             symbol.ClassType = targetType;
 
-            IEnumerable<SystemAttribute> classTypeAttrs = targetType.GetCustomAttributes();
-            foreach (SystemAttribute attr in classTypeAttrs)
+            IEnumerable<Attribute> classTypeAttrs = targetType.GetCustomAttributes();
+            foreach (Attribute attr in classTypeAttrs)
             {
                 // 添加类属性实例
                 symbol.AddAttribute(attr);
@@ -90,19 +84,19 @@ namespace GameEngine.Loader.Symboling
                 symbol.AddFeatureType(attr.GetType());
             }
 
-            SystemType[] interfaceTypes = targetType.GetInterfaces();
+            Type[] interfaceTypes = targetType.GetInterfaces();
             for (int n = 0; null != interfaceTypes && n < interfaceTypes.Length; ++n)
             {
-                SystemType interfaceType = interfaceTypes[n];
+                Type interfaceType = interfaceTypes[n];
 
                 // 添加接口标识
                 symbol.AddInterfaceType(interfaceType);
             }
 
-            SystemFieldInfo[] fields = targetType.GetFields(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Instance); // SystemBindingFlags.Static
+            FieldInfo[] fields = targetType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance); // BindingFlags.Static
             for (int n = 0; null != fields && n < fields.Length; ++n)
             {
-                SystemFieldInfo field = fields[n];
+                FieldInfo field = fields[n];
 
                 if (false == CodeLoader.SymbolResolvingFullStatus)
                 {
@@ -113,17 +107,17 @@ namespace GameEngine.Loader.Symboling
 
                 if (false == TryGetSymField(field, out SymField symField))
                 {
-                    Debugger.Warn("Cannot resolve field '{0}' from target class type '{1}', added it failed.", field.Name, symbol.FullName);
+                    Debugger.Warn("Cannot resolve field '{%s}' from target class type '{%s}', added it failed.", field.Name, symbol.FullName);
                     continue;
                 }
 
                 symbol.AddField(symField);
             }
 
-            SystemPropertyInfo[] properties = targetType.GetProperties(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Instance); // SystemBindingFlags.Static
+            PropertyInfo[] properties = targetType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance); // BindingFlags.Static
             for (int n = 0; null != properties && n < properties.Length; ++n)
             {
-                SystemPropertyInfo property = properties[n];
+                PropertyInfo property = properties[n];
 
                 if (false == CodeLoader.SymbolResolvingFullStatus)
                 {
@@ -134,17 +128,17 @@ namespace GameEngine.Loader.Symboling
 
                 if (false == TryGetSymProperty(property, out SymProperty symProperty))
                 {
-                    Debugger.Warn("Cannot resolve property '{0}' from target class type '{1}', added it failed.", property.Name, symbol.FullName);
+                    Debugger.Warn("Cannot resolve property '{%s}' from target class type '{%s}', added it failed.", property.Name, symbol.FullName);
                     continue;
                 }
 
                 symbol.AddProperty(symProperty);
             }
 
-            SystemMethodInfo[] methods = targetType.GetMethods(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static | SystemBindingFlags.Instance);
+            MethodInfo[] methods = targetType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
             for (int n = 0; null != methods && n < methods.Length; ++n)
             {
-                SystemMethodInfo method = methods[n];
+                MethodInfo method = methods[n];
 
                 if (false == CodeLoader.SymbolResolvingFullStatus)
                 {
@@ -162,7 +156,7 @@ namespace GameEngine.Loader.Symboling
 
                 if (false == TryGetSymMethod(method, out SymMethod symMethod))
                 {
-                    Debugger.Warn("Cannot resolve method '{0}' from target class type '{1}', added it failed.", method.Name, symbol.FullName);
+                    Debugger.Warn("Cannot resolve method '{%s}' from target class type '{%s}', added it failed.", method.Name, symbol.FullName);
                     continue;
                 }
 
@@ -201,7 +195,7 @@ namespace GameEngine.Loader.Symboling
         /// <param name="symbol">类型标记结构</param>
         private static void CreateBeanObjectsWithConfigureFile(SymClass symbol)
         {
-            SystemType targetType = symbol.ClassType;
+            Type targetType = symbol.ClassType;
 
             // 读取配置数据
             IList< Configuring.BeanConfigureInfo> beanConfigureInfos = CodeLoader.GetBeanConfigureByType(targetType);
@@ -240,13 +234,13 @@ namespace GameEngine.Loader.Symboling
         /// <param name="fieldInfo">字段对象实例</param>
         /// <param name="symbol">类型标记结构</param>
         /// <returns>若字段标记解析成功则返回true，否则返回false</returns>
-        private static bool TryGetSymField(SystemFieldInfo fieldInfo, out SymField symbol)
+        private static bool TryGetSymField(FieldInfo fieldInfo, out SymField symbol)
         {
             symbol = new SymField();
             symbol.FieldInfo = fieldInfo;
 
-            IEnumerable<SystemAttribute> field_attrs = fieldInfo.GetCustomAttributes();
-            foreach (SystemAttribute attr in field_attrs)
+            IEnumerable<Attribute> field_attrs = fieldInfo.GetCustomAttributes();
+            foreach (Attribute attr in field_attrs)
             {
                 // 添加属性实例
                 symbol.AddAttribute(attr);
@@ -261,13 +255,13 @@ namespace GameEngine.Loader.Symboling
         /// <param name="propertyInfo">属性对象实例</param>
         /// <param name="symbol">类型标记结构</param>
         /// <returns>若属性标记解析成功则返回true，否则返回false</returns>
-        private static bool TryGetSymProperty(SystemPropertyInfo propertyInfo, out SymProperty symbol)
+        private static bool TryGetSymProperty(PropertyInfo propertyInfo, out SymProperty symbol)
         {
             symbol = new SymProperty();
             symbol.PropertyInfo = propertyInfo;
 
-            IEnumerable<SystemAttribute> property_attrs = propertyInfo.GetCustomAttributes();
-            foreach (SystemAttribute attr in property_attrs)
+            IEnumerable<Attribute> property_attrs = propertyInfo.GetCustomAttributes();
+            foreach (Attribute attr in property_attrs)
             {
                 // 添加属性实例
                 symbol.AddAttribute(attr);
@@ -282,13 +276,13 @@ namespace GameEngine.Loader.Symboling
         /// <param name="methodInfo">函数对象实例</param>
         /// <param name="symbol">类型标记结构</param>
         /// <returns>若函数标记解析成功则返回true，否则返回false</returns>
-        private static bool TryGetSymMethod(SystemMethodInfo methodInfo, out SymMethod symbol)
+        private static bool TryGetSymMethod(MethodInfo methodInfo, out SymMethod symbol)
         {
             symbol = new SymMethod();
             symbol.MethodInfo = methodInfo;
 
-            IEnumerable<SystemAttribute> method_attrs = methodInfo.GetCustomAttributes();
-            foreach (SystemAttribute attr in method_attrs)
+            IEnumerable<Attribute> method_attrs = methodInfo.GetCustomAttributes();
+            foreach (Attribute attr in method_attrs)
             {
                 // 添加属性实例
                 symbol.AddAttribute(attr);

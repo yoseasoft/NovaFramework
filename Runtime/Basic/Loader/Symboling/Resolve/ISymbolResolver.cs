@@ -22,8 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
+using System;
 
 namespace GameEngine.Loader.Symboling
 {
@@ -44,7 +43,7 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <returns>若目标对象类型匹配则返回true，否则返回false</returns>
-        bool Matches(SystemType targetType);
+        bool Matches(Type targetType);
 
         /// <summary>
         /// 指定符号对象类的解析函数

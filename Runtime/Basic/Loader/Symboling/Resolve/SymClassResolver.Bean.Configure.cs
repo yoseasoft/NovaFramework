@@ -22,21 +22,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemFieldInfo = System.Reflection.FieldInfo;
-using SystemPropertyInfo = System.Reflection.PropertyInfo;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
-
 namespace GameEngine.Loader.Symboling
 {
-    /// <summary>
-    /// 标记对象的解析类，对基础对象类的注入标记进行解析和构建
-    /// </summary>
+    /// 标记对象的解析类
     internal static partial class SymClassResolver
     {
         /// <summary>
@@ -61,7 +53,7 @@ namespace GameEngine.Loader.Symboling
             bean.Inherited = beanConfigureInfo.Inherited;
 
             // 递归所有的父类，把具备继承标识的配置都加载进来
-            SystemType parentType = symClass.ClassType;
+            Type parentType = symClass.ClassType;
             Configuring.BeanConfigureInfo parentBeanInfo = beanConfigureInfo;
             while (null != parentType)
             {
@@ -80,8 +72,8 @@ namespace GameEngine.Loader.Symboling
                     {
                         if (list.Count > 1)
                         {
-                            Debugger.Warn("The bean info '{0}' has multiple parent object with target type '{1}', only chosed first bean and used it.",
-                                    parentBeanInfo.Name, NovaEngine.Utility.Text.ToString(parentType));
+                            Debugger.Warn("The bean info '{%s}' has multiple parent object with target type '{%t}', only chosed first bean and used it.",
+                                    parentBeanInfo.Name, parentType);
                         }
                         parentBeanInfo = list[0];
                     }
@@ -118,14 +110,14 @@ namespace GameEngine.Loader.Symboling
                     Symboling.SymField symField = symClass.GetFieldByName(configureBeanFieldInfo.FieldName);
                     if (null == symField)
                     {
-                        Debugger.Error("Could not found any symbol field with target name '{0}', please rechecked your configure bean '{1}' and repair it.",
+                        Debugger.Error("Could not found any symbol field with target name '{%s}', please rechecked your configure bean '{%s}' and repair it.",
                                 configureBeanFieldInfo.FieldName, configureBeanInfo.Name);
                         continue;
                     }
 
                     if (bean.HasFieldByName(configureBeanFieldInfo.FieldName))
                     {
-                        Debugger.Warn("The target bean field '{0}' was already exist within bean object '{1}', repeat added it failed.",
+                        Debugger.Warn("The target bean field '{%s}' was already exist within bean object '{%s}', repeat added it failed.",
                                 configureBeanFieldInfo.FieldName, bean.BeanName);
                         continue;
                     }
@@ -136,7 +128,7 @@ namespace GameEngine.Loader.Symboling
                     if (false == string.IsNullOrEmpty(configureBeanFieldInfo.ReferenceName))
                     {
                         Configuring.BeanConfigureInfo referenceConfigureBeanInfo = CodeLoader.GetBeanConfigureByName(configureBeanFieldInfo.ReferenceName);
-                        Debugger.Assert(null != referenceConfigureBeanInfo, "Invalid configure reference name '{0}'.", configureBeanFieldInfo.ReferenceName);
+                        Debugger.Assert(null != referenceConfigureBeanInfo, "Invalid configure reference name '{%s}'.", configureBeanFieldInfo.ReferenceName);
 
                         beanField.ReferenceBeanName = configureBeanFieldInfo.ReferenceName;
                     }
@@ -163,7 +155,7 @@ namespace GameEngine.Loader.Symboling
                 if (false == string.IsNullOrEmpty(configureBeanComponentInfo.ReferenceName))
                 {
                     Configuring.BeanConfigureInfo referenceConfigureBeanInfo = CodeLoader.GetBeanConfigureByName(configureBeanComponentInfo.ReferenceName);
-                    Debugger.Assert(null != referenceConfigureBeanInfo, "Invalid configure reference name '{0}'.", configureBeanComponentInfo.ReferenceName);
+                    Debugger.Assert(null != referenceConfigureBeanInfo, "Invalid configure reference name '{%s}'.", configureBeanComponentInfo.ReferenceName);
 
                     beanComponent.ReferenceBeanName = configureBeanComponentInfo.ReferenceName;
                 }

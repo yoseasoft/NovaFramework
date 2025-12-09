@@ -22,16 +22,12 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
 
 namespace GameEngine.Loader.Symboling
 {
-    /// <summary>
-    /// 标记对象的解析类，对基础对象类的注入标记进行解析和构建
-    /// </summary>
+    /// 标记对象的解析类
     internal static partial class SymClassResolver
     {
         /// <summary>
@@ -55,11 +51,11 @@ namespace GameEngine.Loader.Symboling
             defaultBeanInstance.BeanName = defaultBeanName;
             defaultBeanInstance.Singleton = false;
 
-            IList<SystemAttribute> classTypeAttrs = symClass.Attributes;
+            IList<Attribute> classTypeAttrs = symClass.Attributes;
             for (int n = 0; null != classTypeAttrs && n < classTypeAttrs.Count; ++n)
             {
-                SystemAttribute attr = classTypeAttrs[n];
-                SystemType attrType = attr.GetType();
+                Attribute attr = classTypeAttrs[n];
+                Type attrType = attr.GetType();
                 if (typeof(CComponentAutomaticActivationOfEntityAttribute) == attrType)
                 {
                     Debugger.Assert(typeof(CEntity).IsAssignableFrom(symClass.ClassType), "Invalid symbol class type '{0}'.", symClass.FullName);
@@ -89,11 +85,11 @@ namespace GameEngine.Loader.Symboling
                 {
                     SymField symField = fieldInfoEnumerator.Current.Value;
 
-                    IList<SystemAttribute> fieldTypeAttrs = symClass.Attributes;
+                    IList<Attribute> fieldTypeAttrs = symClass.Attributes;
                     for (int n = 0; null != fieldTypeAttrs && n < fieldTypeAttrs.Count; ++n)
                     {
-                        SystemAttribute attr = classTypeAttrs[n];
-                        SystemType attrType = attr.GetType();
+                        Attribute attr = classTypeAttrs[n];
+                        Type attrType = attr.GetType();
 
                         if (typeof(OnBeanAutowiredAttribute) == attrType)
                         {
@@ -102,7 +98,7 @@ namespace GameEngine.Loader.Symboling
                             // 如果没有填写引用类型，那么该字段的类型必须是可以实例化的类型
                             if (null == _attr.ReferenceType && NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(symField.FieldType))
                             {
-                                Debugger.Warn("Could not found any reference type or value with target bean field '{0}', resolved field configure failed.", symField.FieldName);
+                                Debugger.Warn("Could not found any reference type or value with target bean field '{%s}', resolved field configure failed.", symField.FieldName);
                                 continue;
                             }
 
