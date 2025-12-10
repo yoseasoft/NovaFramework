@@ -22,22 +22,18 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集的分析处理类，对业务层载入的所有对象类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集的分析处理类
     public static partial class CodeLoader
     {
         /// <summary>
         /// 加载对象类的子模块行为流程回调的缓存队列
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> _cachedSubmoduleActionCallbacks = null;
+        private static IDictionary<Type, Delegate> _cachedSubmoduleActionCallbacks = null;
 
         #region 加载对象的子模块调度管理接口函数
 
@@ -46,7 +42,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static void OnCodeLoaderSubmoduleInitCallback()
         {
-            _cachedSubmoduleActionCallbacks = new Dictionary<SystemType, SystemDelegate>();
+            _cachedSubmoduleActionCallbacks = new Dictionary<Type, Delegate>();
 
             OnCodeLoaderSubmoduleActionCallbackOfTargetAttribute(typeof(OnClassSubmoduleInitializeCallbackAttribute));
         }
@@ -66,20 +62,17 @@ namespace GameEngine.Loader
         /// 加载对象子模块指定类型的回调函数触发处理接口
         /// </summary>
         /// <param name="attrType">属性类型</param>
-        private static void OnCodeLoaderSubmoduleActionCallbackOfTargetAttribute(SystemType attrType)
+        private static void OnCodeLoaderSubmoduleActionCallbackOfTargetAttribute(Type attrType)
         {
-            SystemDelegate callback;
-
-            if (TryGetCodeLoaderSubmoduleActionCallback(attrType, out callback))
+            if (TryGetCodeLoaderSubmoduleActionCallback(attrType, out Delegate callback))
             {
                 callback.DynamicInvoke();
             }
         }
 
-        private static bool TryGetCodeLoaderSubmoduleActionCallback(SystemType targetType, out SystemDelegate callback)
+        private static bool TryGetCodeLoaderSubmoduleActionCallback(Type targetType, out Delegate callback)
         {
-            SystemDelegate handler;
-            if (_cachedSubmoduleActionCallbacks.TryGetValue(targetType, out handler))
+            if (_cachedSubmoduleActionCallbacks.TryGetValue(targetType, out Delegate handler))
             {
                 callback = handler;
                 return null != callback;

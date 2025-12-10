@@ -24,15 +24,12 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Cysharp.Threading.Tasks;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-
-using SystemMemoryStream = System.IO.MemoryStream;
 
 namespace GameEngine.Loader
 {
@@ -48,7 +45,7 @@ namespace GameEngine.Loader
         /// <param name="targetType">对象类型</param>
         /// <param name="codeInfo">类的结构信息</param>
         /// <param name="reload">重载状态标识</param>
-        public delegate void OnCodeTypeLoadedHandler(SystemType targetType, Structuring.GeneralCodeInfo codeInfo, bool reload);
+        public delegate void OnCodeTypeLoadedHandler(Type targetType, Structuring.GeneralCodeInfo codeInfo, bool reload);
 
         /// <summary>
         /// 编码类型清除操作的回调句柄
@@ -63,12 +60,12 @@ namespace GameEngine.Loader
         /// <summary>
         /// 程序集的类类型统计列表
         /// </summary>
-        private static readonly IList<SystemType> _assemblyClassTypes = new List<SystemType>();
+        private static readonly IList<Type> _assemblyClassTypes = new List<Type>();
 
         /// <summary>
         /// 对象类的编码类型加载回调句柄映射容器
         /// </summary>
-        private static readonly IDictionary<SystemType, LinkedList<OnCodeTypeLoadedHandler>> _codeTypeLoadedCallbacks = new Dictionary<SystemType, LinkedList<OnCodeTypeLoadedHandler>>();
+        private static readonly IDictionary<Type, LinkedList<OnCodeTypeLoadedHandler>> _codeTypeLoadedCallbacks = new Dictionary<Type, LinkedList<OnCodeTypeLoadedHandler>>();
 
         /// <summary>
         /// 程序集加载器的启动函数
@@ -114,7 +111,7 @@ namespace GameEngine.Loader
         /// </summary>
         private static void RemoveAllAssemblyLoadTypes()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -124,7 +121,7 @@ namespace GameEngine.Loader
         /// <param name="reload">重载标识</param>
         public static void LoadFromAssembly(Assembly assembly, bool reload)
         {
-            // string assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName().FullName;
+            // string assemblyName = Assembly.GetExecutingAssembly().GetName().FullName;
             string assemblyName = assembly.FullName;
             if (_assemblyLibraryCaches.TryGetValue(assemblyName, out Assembly assemblyVersion))
             {
@@ -134,14 +131,14 @@ namespace GameEngine.Loader
 
             _assemblyLibraryCaches.Add(assemblyName, assembly);
 
-            SystemType[] allTypes = assembly.GetTypes();
+            Type[] allTypes = assembly.GetTypes();
 
             // LinkedList<OnCodeTypeLoadedHandler> handlers = null;
             // 用字典模式，在获取句柄列表的同时，对其因目标解析对象类型的不同而进行分类
-            IDictionary<SystemType, IList<OnCodeTypeLoadedHandler>> handlers = null;
+            IDictionary<Type, IList<OnCodeTypeLoadedHandler>> handlers;
             for (int n = 0; null != allTypes && n < allTypes.Length; ++n)
             {
-                SystemType type = allTypes[n];
+                Type type = allTypes[n];
                 Debugger.Assert(false == _assemblyClassTypes.Contains(type), "Invalid class type {0}.", type.FullName);
                 _assemblyClassTypes.Add(type);
 
@@ -190,7 +187,7 @@ namespace GameEngine.Loader
                 if (TryGetAllMathcedCodeTypeLoadedHandlerWithTargetClassType(type, out handlers))
                 {
                     Structuring.GeneralCodeInfo info = null;
-                    foreach (KeyValuePair<SystemType, IList<OnCodeTypeLoadedHandler>> pair in handlers)
+                    foreach (KeyValuePair<Type, IList<OnCodeTypeLoadedHandler>> pair in handlers)
                     {
                         IEnumerator<OnCodeTypeLoadedHandler> e = pair.Value.GetEnumerator();
                         while (e.MoveNext())
@@ -220,7 +217,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <returns>若给定类型可加载则返回true，否则返回false</returns>
-        private static bool IsLoadableClassType(SystemType targetType)
+        private static bool IsLoadableClassType(Type targetType)
         {
             // 非对象类或接口类
             if (false == targetType.IsClass && false == targetType.IsInterface)
@@ -229,7 +226,7 @@ namespace GameEngine.Loader
             }
 
             // 泛型类或属性类
-            if (targetType.IsGenericType || targetType.IsSubclassOf(typeof(SystemAttribute)))
+            if (targetType.IsGenericType || targetType.IsSubclassOf(typeof(Attribute)))
             {
                 return false;
             }
@@ -256,10 +253,9 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <returns>若存在给定类型对应的回调句柄则返回true，否则返回false</returns>
-        private static bool IsCodeTypeLoadedCallbackExist(SystemType targetType)
+        private static bool IsCodeTypeLoadedCallbackExist(Type targetType)
         {
-            LinkedList<OnCodeTypeLoadedHandler> handlers = null;
-            if (TryGetCodeTypeLoadedHandler(targetType, out handlers) && handlers.Count > 0)
+            if (TryGetCodeTypeLoadedHandler(targetType, out LinkedList<OnCodeTypeLoadedHandler> handlers) && handlers.Count > 0)
             {
                 return true;
             }
@@ -273,24 +269,24 @@ namespace GameEngine.Loader
         /// <param name="targetType">对象类型</param>
         /// <param name="handler">句柄列表</param>
         /// <returns>若查找句柄列表成功返回true，否则返回false</returns>
-        private static bool TryGetCodeTypeLoadedHandler(SystemType targetType, out LinkedList<OnCodeTypeLoadedHandler> handler)
+        private static bool TryGetCodeTypeLoadedHandler(Type targetType, out LinkedList<OnCodeTypeLoadedHandler> handler)
         {
             handler = null;
 
             Symboling.SymClass symClass = GetSymClassByType(targetType);
-            IEnumerator<KeyValuePair<SystemType, LinkedList<OnCodeTypeLoadedHandler>>> e = _codeTypeLoadedCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<Type, LinkedList<OnCodeTypeLoadedHandler>>> e = _codeTypeLoadedCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
-                if (e.Current.Key.IsSubclassOf(typeof(SystemAttribute)))
+                if (e.Current.Key.IsSubclassOf(typeof(Attribute)))
                 {
                     // 属性类的绑定回调
-                    // IEnumerable<SystemAttribute> attrTypes = targetType.GetCustomAttributes();
-                    IList<SystemType> attrTypes = symClass.FeatureTypes;
-                    // foreach (SystemAttribute attrType in attrTypes)
+                    // IEnumerable<Attribute> attrTypes = targetType.GetCustomAttributes();
+                    IList<Type> attrTypes = symClass.FeatureTypes;
+                    // foreach (Attribute attrType in attrTypes)
                     for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
                     {
                         // if (e.Current.Key == attrType.GetType() || e.Current.Key.IsAssignableFrom(attrType.GetType()))
-                        SystemType attrType = attrTypes[n];
+                        Type attrType = attrTypes[n];
                         if (e.Current.Key == attrType || e.Current.Key.IsAssignableFrom(attrType))
                         {
                             handler = e.Current.Value;
@@ -314,23 +310,23 @@ namespace GameEngine.Loader
 
         /// <summary>
         /// 通过指定的类型从加载回调管理容器中查找对应的回调句柄实例<br/>
-        /// 该函数与<see cref="GameEngine.CodeLoader.TryGetCodeTypeLoadedHandler(SystemType, out LinkedList{OnCodeTypeLoadedHandler})"/>函数的区别在于<br/>
+        /// 该函数与<see cref="GameEngine.CodeLoader.TryGetCodeTypeLoadedHandler(Type, out LinkedList{OnCodeTypeLoadedHandler})"/>函数的区别在于<br/>
         /// 它同时返回句柄对应的目标解析对象类的类型，您可以在调用句柄前用该类型直接进行一些前置的检测操作
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <param name="handlers">句柄列表</param>
         /// <returns>若查找句柄列表成功返回true，否则返回false</returns>
-        private static bool TryGetAllMathcedCodeTypeLoadedHandlerWithTargetClassType(SystemType targetType, out IDictionary<SystemType, IList<OnCodeTypeLoadedHandler>> handlers)
+        private static bool TryGetAllMathcedCodeTypeLoadedHandlerWithTargetClassType(Type targetType, out IDictionary<Type, IList<OnCodeTypeLoadedHandler>> handlers)
         {
             bool result = false;
 
-            IDictionary<SystemType, IList<OnCodeTypeLoadedHandler>> dict = null;
+            IDictionary<Type, IList<OnCodeTypeLoadedHandler>> dict = null;
 
             Symboling.SymClass symClass = GetSymClassByType(targetType);
-            IEnumerator<KeyValuePair<SystemType, LinkedList<OnCodeTypeLoadedHandler>>> e = _codeTypeLoadedCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<Type, LinkedList<OnCodeTypeLoadedHandler>>> e = _codeTypeLoadedCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
-                if (e.Current.Key.IsSubclassOf(typeof(SystemAttribute)))
+                if (e.Current.Key.IsSubclassOf(typeof(Attribute)))
                 {
                     /**
                      * fixed on 2025-07-08：
@@ -339,20 +335,20 @@ namespace GameEngine.Loader
                      */
 
                     // 属性类的绑定回调
-                    // IEnumerable<SystemAttribute> attrTypes = targetType.GetCustomAttributes();
-                    IList<SystemType> attrTypes = symClass.FeatureTypes;
-                    // foreach (SystemAttribute attrType in attrTypes)
+                    // IEnumerable<Attribute> attrTypes = targetType.GetCustomAttributes();
+                    IList<Type> attrTypes = symClass.FeatureTypes;
+                    // foreach (Attribute attrType in attrTypes)
                     for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
                     {
                         // if (e.Current.Key == attrType.GetType() || e.Current.Key.IsAssignableFrom(attrType.GetType()))
-                        SystemType attrType = attrTypes[n];
+                        Type attrType = attrTypes[n];
                         if (e.Current.Key == attrType || e.Current.Key.IsAssignableFrom(attrType))
                         {
-                            if (null == dict) dict = new Dictionary<SystemType, IList<OnCodeTypeLoadedHandler>>();
+                            if (null == dict) dict = new Dictionary<Type, IList<OnCodeTypeLoadedHandler>>();
                             Debugger.Assert(false == dict.ContainsKey(e.Current.Key), "Repeat added it failed.");
 
                             List<OnCodeTypeLoadedHandler> list = new List<OnCodeTypeLoadedHandler>();
-                            list.AddRange(NovaEngine.Utility.Collection.ToArray<OnCodeTypeLoadedHandler>(e.Current.Value));
+                            list.AddRange(NovaEngine.Utility.Collection.ToArray(e.Current.Value));
                             dict.Add(e.Current.Key, list);
 
                             break;
@@ -364,11 +360,11 @@ namespace GameEngine.Loader
                     // 对象类的绑定回调
                     if (e.Current.Key == targetType || e.Current.Key.IsAssignableFrom(targetType))
                     {
-                        if (null == dict) dict = new Dictionary<SystemType, IList<OnCodeTypeLoadedHandler>>();
+                        if (null == dict) dict = new Dictionary<Type, IList<OnCodeTypeLoadedHandler>>();
                         Debugger.Assert(false == dict.ContainsKey(e.Current.Key), "Repeat added it failed.");
 
                         List<OnCodeTypeLoadedHandler> list = new List<OnCodeTypeLoadedHandler>();
-                        list.AddRange(NovaEngine.Utility.Collection.ToArray<OnCodeTypeLoadedHandler>(e.Current.Value));
+                        list.AddRange(NovaEngine.Utility.Collection.ToArray(e.Current.Value));
                         dict.Add(e.Current.Key, list);
                     }
                 }
@@ -394,13 +390,13 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="func">过滤函数</param>
         /// <returns>若查找类型成功返回对应的列表，否则返回null</returns>
-        public static IList<SystemType> FindClassTypesByFilterCondition(System.Func<SystemType, bool> func)
+        public static IList<Type> FindClassTypesByFilterCondition(Func<Type, bool> func)
         {
-            IList<SystemType> result = new List<SystemType>();
+            IList<Type> result = new List<Type>();
 
             for (int n = 0; n < _assemblyClassTypes.Count; ++n)
             {
-                SystemType targetType = _assemblyClassTypes[n];
+                Type targetType = _assemblyClassTypes[n];
                 if (func(targetType))
                 {
                     result.Add(targetType);
@@ -432,10 +428,9 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <param name="callback">回调句柄实例</param>
-        internal static void AddCodeTypeLoadedCallback(SystemType targetType, OnCodeTypeLoadedHandler callback)
+        internal static void AddCodeTypeLoadedCallback(Type targetType, OnCodeTypeLoadedHandler callback)
         {
-            LinkedList<OnCodeTypeLoadedHandler> handlers = null;
-            if (false == _codeTypeLoadedCallbacks.TryGetValue(targetType, out handlers))
+            if (false == _codeTypeLoadedCallbacks.TryGetValue(targetType, out LinkedList<OnCodeTypeLoadedHandler> handlers))
             {
                 handlers = new LinkedList<OnCodeTypeLoadedHandler>();
                 handlers.AddLast(callback);
@@ -458,10 +453,9 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <param name="callback">回调句柄实例</param>
-        internal static void RemoveCodeTypeLoadedCallback(SystemType targetType, OnCodeTypeLoadedHandler callback)
+        internal static void RemoveCodeTypeLoadedCallback(Type targetType, OnCodeTypeLoadedHandler callback)
         {
-            LinkedList<OnCodeTypeLoadedHandler> handlers = null;
-            if (false == _codeTypeLoadedCallbacks.TryGetValue(targetType, out handlers))
+            if (false == _codeTypeLoadedCallbacks.TryGetValue(targetType, out LinkedList<OnCodeTypeLoadedHandler> handlers))
             {
                 Debugger.Warn("Could not found any load callback from this type '{%t}', remove it failed.", targetType);
                 return;
@@ -493,7 +487,7 @@ namespace GameEngine.Loader
         /// <param name="buffer">数据流</param>
         /// <param name="offset">数据偏移</param>
         /// <param name="length">数据长度</param>
-        [System.Obsolete]
+        [Obsolete]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void LoadBeanConfigureInfo(byte[] buffer, int offset, int length)
         {
@@ -505,9 +499,9 @@ namespace GameEngine.Loader
         /// 需要注意的是，必须在加载程序集之前，加载完成所有的配置数据，否则将导致程序集中的类型解析时，无法抽取到正确配置信息
         /// </summary>
         /// <param name="memoryStream">数据流</param>
-        [System.Obsolete]
+        [Obsolete]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void LoadBeanConfigureInfo(SystemMemoryStream memoryStream)
+        internal static void LoadBeanConfigureInfo(MemoryStream memoryStream)
         {
             LoadGeneralConfigure(memoryStream);
         }

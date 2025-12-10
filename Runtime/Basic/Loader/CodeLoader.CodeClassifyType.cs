@@ -25,15 +25,13 @@
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集的分析处理类，对业务层载入的所有对象类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集的分析处理类
     public static partial class CodeLoader
     {
         /// <summary>
         /// 程序集的编码分类类型的枚举定义
         /// </summary>
-        // [System.Flags]
+        // [Flags]
         private enum CodeClassifyType : byte
         {
             /// <summary>

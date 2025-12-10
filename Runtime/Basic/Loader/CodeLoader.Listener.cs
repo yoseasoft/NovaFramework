@@ -24,15 +24,12 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集的分析处理类，对业务层载入的所有对象类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集的分析处理类
     public static partial class CodeLoader
     {
         /// <summary>
@@ -41,7 +38,7 @@ namespace GameEngine.Loader
         /// <param name="assemblyName">程序集名称</param>
         /// <param name="classType">当前解析类</param>
         /// <returns>若目标类需要加载则返回true，否则返回false</returns>
-        public delegate bool AssemblyLoadFiltingProcessor(string assemblyName, SystemType classType);
+        public delegate bool AssemblyLoadFiltingProcessor(string assemblyName, Type classType);
 
         /// <summary>
         /// 指定名称的程序集解析进度通知回调函数接口
@@ -50,7 +47,7 @@ namespace GameEngine.Loader
         /// <param name="classType">当前解析类</param>
         /// <param name="current">当前进度值</param>
         /// <param name="max">上限值</param>
-        public delegate void LoadClassProgress(string assemblyName, SystemType classType, int current, int max);
+        public delegate void LoadClassProgress(string assemblyName, Type classType, int current, int max);
 
         /// <summary>
         /// 指定名称的程序集解析完成通知回调函数接口
@@ -79,7 +76,7 @@ namespace GameEngine.Loader
         /// <param name="assemblyName">程序集名称</param>
         /// <param name="classType">当前解析类</param>
         /// <returns>若目标类需要加载则返回true，否则返回false</returns>
-        private static bool CallAssemblyLoadFiltingProcessor(string assemblyName, SystemType classType)
+        private static bool CallAssemblyLoadFiltingProcessor(string assemblyName, Type classType)
         {
             for (int n = 0; null != _assemblyLoadFiltingProcessorCallbacks && n < _assemblyLoadFiltingProcessorCallbacks.Count; ++n)
             {
@@ -98,7 +95,7 @@ namespace GameEngine.Loader
         /// <param name="classType">当前解析类</param>
         /// <param name="current">当前进度值</param>
         /// <param name="max">上限值</param>
-        private static void CallLoadClassProgress(string assemblyName, SystemType classType, int current, int max)
+        private static void CallLoadClassProgress(string assemblyName, Type classType, int current, int max)
         {
             for (int n = 0; null != _loadClassProgressCallbacks && n < _loadClassProgressCallbacks.Count; ++n)
             {
