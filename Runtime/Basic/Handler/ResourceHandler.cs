@@ -25,6 +25,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
 using UnityObject = UnityEngine.Object;
@@ -101,7 +102,7 @@ namespace GameEngine
         {
         }
 
-        #region 资源加载/卸载相关的接口函数
+        #region 对象资源加载及卸载操作相关的接口函数
 
         /// <summary>
         /// 同步加载资源
@@ -165,7 +166,7 @@ namespace GameEngine
 
         #endregion
 
-        #region 场景加载/卸载相关的接口函数
+        #region 场景资源加载及卸载操作相关的接口函数
 
         /// <summary>
         /// 同步加载场景
@@ -211,7 +212,7 @@ namespace GameEngine
 
         #endregion
 
-        # region 原始文件加载相关的接口函数
+        # region 原始文件资源加载及卸载操作相关的接口函数
 
         /// <summary>
         /// 同步加载原始流式文件(直接读取persistentDataPath中的文件, 然后可根据文件保存路径(RawFile.savePath)读取文件, 使用同步加载前需已保证文件更新)
@@ -243,5 +244,15 @@ namespace GameEngine
         }
 
         #endregion
+
+        /// <summary>
+        /// 通过指定的标签获取能匹配该标签的所有资源路径信息
+        /// </summary>
+        /// <param name="tag">资源标签</param>
+        /// <returns>返回资源路径列表，若该标签不存在任何信息则返回null</returns>
+        public IList<string> GetAllAssetPathsByTag(string tag)
+        {
+            return ResourceModule.GetAllAssetPathsByTag(tag);
+        }
     }
 }
