@@ -22,7 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine.Loader.Symboling
 {
@@ -30,7 +30,7 @@ namespace GameEngine.Loader.Symboling
     /// 通用对象类的标记数据的集合类型<br/>
     /// 该类型是针对标记对象封装的映射容器，提供两种键的快速访问，可以提高访问效率
     /// </summary>
-    public sealed class SymClassMap : NovaEngine.CompositeKeyMap<SystemType, string, SymClass>
+    public sealed class SymClassMap : NovaEngine.CompositeKeyMap<Type, string, SymClass>
     {
         /// <summary>
         /// 新增指定的标记对象实例到当前映射容器中

@@ -22,7 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine.Loader.Structuring
 {
@@ -99,7 +99,7 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 事件调用模块的监听事件数据类型
         /// </summary>
-        public SystemType EventDataType { get; internal set; }
+        public Type EventDataType { get; internal set; }
     }
 
     /// <summary>

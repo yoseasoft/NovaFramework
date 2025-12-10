@@ -24,7 +24,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine.Loader.Structuring
 {
@@ -116,7 +116,7 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 消息处理模块的消息对象类型
         /// </summary>
-        public SystemType MessageType { get; internal set; }
+        public Type MessageType { get; internal set; }
     }
 
     /// <summary>

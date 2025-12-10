@@ -24,11 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Symboling
 {
@@ -44,7 +42,7 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// 属性的类型
         /// </summary>
-        private SystemType _propertyType;
+        private Type _propertyType;
         /// <summary>
         /// 属性的获取接口函数
         /// </summary>
@@ -74,7 +72,7 @@ namespace GameEngine.Loader.Symboling
         }
 
         public string PropertyName => _propertyName;
-        public SystemType PropertyType => _propertyType;
+        public Type PropertyType => _propertyType;
         public MethodInfo GetMethodInfo => _getMethodInfo;
         public MethodInfo SetMethodInfo => _setMethodInfo;
 

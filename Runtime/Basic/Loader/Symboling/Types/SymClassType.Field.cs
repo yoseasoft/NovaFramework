@@ -24,11 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Symboling
 {
@@ -44,7 +42,7 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// 字段的类型
         /// </summary>
-        private SystemType _fieldType;
+        private Type _fieldType;
         /// <summary>
         /// 字段对象实例
         /// </summary>
@@ -63,7 +61,7 @@ namespace GameEngine.Loader.Symboling
         }
 
         public string FieldName => _fieldName;
-        public SystemType FieldType => _fieldType;
+        public Type FieldType => _fieldType;
 
         public SymField() : base() { }
 

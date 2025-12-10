@@ -23,11 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemMethodInfo = System.Reflection.MethodInfo;
+using System.Reflection;
 
 namespace GameEngine.Loader.Structuring
 {
@@ -43,11 +41,11 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 函数类型的目标对象类型
         /// </summary>
-        public SystemType TargetType { get; internal set; }
+        public Type TargetType { get; internal set; }
         /// <summary>
         /// 函数类型的回调函数
         /// </summary>
-        public SystemMethodInfo Method { get; internal set; }
+        public MethodInfo Method { get; internal set; }
     }
 
     /// <summary>

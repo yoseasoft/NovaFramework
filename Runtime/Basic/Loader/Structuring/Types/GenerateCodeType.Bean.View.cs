@@ -25,8 +25,6 @@
 
 using System.Collections.Generic;
 
-using SystemType = System.Type;
-
 namespace GameEngine.Loader.Structuring
 {
     /// <summary>

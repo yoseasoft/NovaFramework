@@ -24,10 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Symboling
 {
@@ -369,8 +367,8 @@ namespace GameEngine.Loader.Symboling
 
             if (HasComponentByReferenceType(component.ReferenceClassType) || HasComponentByReferenceName(component.ReferenceBeanName))
             {
-                Debugger.Warn("The bean object '{0}' was already exist with target reference class type '{1}' or reference bean name '{2}', repeat added it failed.",
-                        _beanName, NovaEngine.Utility.Text.ToString(component.ReferenceClassType), component.ReferenceBeanName);
+                Debugger.Warn("The bean object '{%s}' was already exist with target reference class type '{%t}' or reference bean name '{%s}', repeat added it failed.",
+                        _beanName, component.ReferenceClassType, component.ReferenceBeanName);
                 return;
             }
 
@@ -382,7 +380,7 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         /// <param name="componentType">组件类型</param>
         /// <returns>若存在目标组件信息实例则返回true，否则返回false</returns>
-        public bool HasComponentByReferenceType(SystemType componentType)
+        public bool HasComponentByReferenceType(Type componentType)
         {
             if (null == _components || null == componentType)
             {
@@ -448,7 +446,7 @@ namespace GameEngine.Loader.Symboling
         {
             if (null == _components || index < 0 || index >= _components.Count)
             {
-                Debugger.Warn("Invalid index ({0}) for bean object component list.", index);
+                Debugger.Warn("Invalid index ({%d}) for bean object component list.", index);
                 return null;
             }
 
@@ -460,7 +458,7 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         /// <param name="componentType">组件类型</param>
         /// <returns>返回查找的组件信息实例，若查找失败返回null</returns>
-        public BeanComponent GetComponentByReferenceType(SystemType componentType)
+        public BeanComponent GetComponentByReferenceType(Type componentType)
         {
             if (null == _components || null == componentType)
             {
@@ -516,8 +514,8 @@ namespace GameEngine.Loader.Symboling
 
             if (false == _components.Contains(component))
             {
-                Debugger.Warn("Could not found any component type '{0}' from target bean object '{1}', removed it failed.",
-                        NovaEngine.Utility.Text.ToString(component.ReferenceClassType), _beanName);
+                Debugger.Warn("Could not found any component type '{%t}' from target bean object '{%s}', removed it failed.",
+                        component.ReferenceClassType, _beanName);
                 return;
             }
 
@@ -528,7 +526,7 @@ namespace GameEngine.Loader.Symboling
         /// 移除类组件信息列表中指定引用类型的组件信息实例
         /// </summary>
         /// <param name="componentType">组件类型</param>
-        public void RemoveComponentByReferenceType(SystemType componentType)
+        public void RemoveComponentByReferenceType(Type componentType)
         {
             if (null == _components)
             {

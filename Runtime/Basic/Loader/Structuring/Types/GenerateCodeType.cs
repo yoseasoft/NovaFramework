@@ -22,7 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine.Loader.Structuring
 {
@@ -38,8 +38,8 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 结构对象的类型标识
         /// </summary>
-        protected SystemType _classType;
+        protected Type _classType;
 
-        public SystemType ClassType { get { return _classType; } internal set { _classType = value; } }
+        public Type ClassType { get { return _classType; } internal set { _classType = value; } }
     }
 }

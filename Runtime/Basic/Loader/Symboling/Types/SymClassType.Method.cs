@@ -24,11 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Symboling
 {
@@ -58,18 +56,18 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// 函数参数类型
         /// </summary>
-        private SystemType[] _parameterTypes;
+        private Type[] _parameterTypes;
 
         /// <summary>
         /// 函数的返回类型
         /// </summary>
-        private SystemType _returnType;
+        private Type _returnType;
 
         /// <summary>
         /// 函数扩展参数类型
         /// 该参数仅当函数为扩展函数类型时有效
         /// </summary>
-        private SystemType _extensionParameterType;
+        private Type _extensionParameterType;
 
         /// <summary>
         /// 函数是否为静态类型
@@ -93,7 +91,7 @@ namespace GameEngine.Loader.Symboling
 
                 ParameterInfo[] parameters = _methodInfo.GetParameters();
                 _parameters = new ParameterInfo[parameters.Length];
-                _parameterTypes = new SystemType[parameters.Length];
+                _parameterTypes = new Type[parameters.Length];
                 _extensionParameterType = null;
                 for (int n = 0; n < parameters.Length; ++n)
                 {
@@ -124,9 +122,9 @@ namespace GameEngine.Loader.Symboling
         public string FullName => _fullName;
 
         public ParameterInfo[] Parameters => _parameters;
-        public SystemType[] ParameterTypes => _parameterTypes;
-        public SystemType ReturnType => _returnType;
-        public SystemType ExtensionParameterType => _extensionParameterType;
+        public Type[] ParameterTypes => _parameterTypes;
+        public Type ReturnType => _returnType;
+        public Type ExtensionParameterType => _extensionParameterType;
 
         public bool IsStatic => _isStatic;
         public bool IsExtension => _isExtension;
@@ -152,7 +150,7 @@ namespace GameEngine.Loader.Symboling
         {
             if (index < 0 || index >= _parameters.Length)
             {
-                Debugger.Warn("The method parameter search index '{0}' out of the range, getted it failed.", index);
+                Debugger.Warn("The method parameter search index '{%d}' out of the range, getted it failed.", index);
                 return null;
             }
 
@@ -164,11 +162,11 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         /// <param name="index">索引值</param>
         /// <returns>返回给定索引的参数类型，若不存在返回null</returns>
-        public SystemType GetParameterType(int index)
+        public Type GetParameterType(int index)
         {
             if (index < 0 || index >= _parameterTypes.Length)
             {
-                Debugger.Warn("The method parameter type search index '{0}' out of the range, getted it failed.", index);
+                Debugger.Warn("The method parameter type search index '{%d}' out of the range, getted it failed.", index);
                 return null;
             }
 

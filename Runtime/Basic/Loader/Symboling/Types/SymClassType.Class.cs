@@ -24,10 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
 
 namespace GameEngine.Loader.Symboling
 {
@@ -47,11 +45,11 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// 对象类的类型
         /// </summary>
-        private SystemType _classType;
+        private Type _classType;
         /// <summary>
         /// 对象类的父类类型
         /// </summary>
-        private SystemType _baseType;
+        private Type _baseType;
 
         /// <summary>
         /// 对象类的默认Bean实例名称，该名称由类标记对象自动生成，不可主动赋值
@@ -86,15 +84,15 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// 对象类包含的特性信息
         /// </summary>
-        private IList<SystemType> _featureTypes;
+        private IList<Type> _featureTypes;
         /// <summary>
         /// 对象类包含的特性实例
         /// </summary>
-        private IDictionary<SystemType, SystemAttribute> _featureObjects;
+        private IDictionary<Type, Attribute> _featureObjects;
         /// <summary>
         /// 对象类包含的接口信息
         /// </summary>
-        private IList<SystemType> _interfaceTypes;
+        private IList<Type> _interfaceTypes;
         /// <summary>
         /// 对象类包含的切面行为类型信息
         /// </summary>
@@ -118,7 +116,7 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         private IDictionary<string, Bean> _beans;
 
-        public SystemType ClassType
+        public Type ClassType
         {
             get { return _classType; }
             internal set
@@ -156,7 +154,7 @@ namespace GameEngine.Loader.Symboling
 
         public string ClassName => _className;
         public string FullName => _fullName;
-        public SystemType BaseType => _baseType;
+        public Type BaseType => _baseType;
 
         public bool IsInterface => _isInterface;
         public bool IsClass => _isClass;
@@ -165,9 +163,9 @@ namespace GameEngine.Loader.Symboling
         public bool IsInstantiate => _isInstantiate;
         public bool IsExtension => _isExtension;
 
-        public IList<SystemType> FeatureTypes => _featureTypes;
-        public IDictionary<SystemType, SystemAttribute> FeatureObjects => _featureObjects;
-        public IList<SystemType> InterfaceTypes => _interfaceTypes;
+        public IList<Type> FeatureTypes => _featureTypes;
+        public IDictionary<Type, Attribute> FeatureObjects => _featureObjects;
+        public IList<Type> InterfaceTypes => _interfaceTypes;
         public IList<AspectBehaviourType> AspectBehaviourTypes => _aspectBehaviourTypes;
 
         public IDictionary<string, SymField> Fields => _fields;
@@ -195,7 +193,7 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         /// <param name="parentType">父类型</param>
         /// <returns>若继承自给定类型则返回true，否则返回false</returns>
-        public bool IsInheritedFrom(SystemType parentType)
+        public bool IsInheritedFrom(Type parentType)
         {
             if (null != parentType && parentType.IsAssignableFrom(_classType))
             {
@@ -211,11 +209,11 @@ namespace GameEngine.Loader.Symboling
         /// 新增指定的类特性实例到当前的类标记对象中
         /// </summary>
         /// <param name="featureType">类特性实例</param>
-        public void AddFeatureType(SystemType featureType)
+        public void AddFeatureType(Type featureType)
         {
             if (null == _featureTypes)
             {
-                _featureTypes = new List<SystemType>();
+                _featureTypes = new List<Type>();
             }
 
             if (_featureTypes.Contains(featureType))
@@ -232,7 +230,7 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         /// <param name="featureType">特性类型</param>
         /// <returns>若存在目标特性实例则返回true，否则返回false</returns>
-        public bool HasFeatureType(SystemType featureType)
+        public bool HasFeatureType(Type featureType)
         {
             if (null == _featureTypes)
             {
@@ -246,7 +244,7 @@ namespace GameEngine.Loader.Symboling
         /// 从当前的类标记对象中移除指定类型的类特性实例
         /// </summary>
         /// <param name="featureType">特性类型</param>
-        public void RemoveFeatureType(SystemType featureType)
+        public void RemoveFeatureType(Type featureType)
         {
             if (null == _featureTypes)
             {
@@ -279,14 +277,14 @@ namespace GameEngine.Loader.Symboling
         /// 新增指定的类特性实例到当前的类标记对象中
         /// </summary>
         /// <param name="attribute">类特性实例</param>
-        public void AddFeatureObject(SystemAttribute attribute)
+        public void AddFeatureObject(Attribute attribute)
         {
             if (null == _featureObjects)
             {
-                _featureObjects = new Dictionary<SystemType, SystemAttribute>();
+                _featureObjects = new Dictionary<Type, Attribute>();
             }
 
-            SystemType featureType = attribute.GetType();
+            Type featureType = attribute.GetType();
             if (_featureObjects.ContainsKey(featureType))
             {
                 Debugger.Warn("The symbol class '{%t}' feature object '{%t}' was already exist, repeat added it failed.", _classType, featureType);
@@ -304,7 +302,7 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         /// <param name="featureType">特性类型</param>
         /// <returns>若存在目标特性实例则返回true，否则返回false</returns>
-        public bool HasFeatureObject(SystemType featureType)
+        public bool HasFeatureObject(Type featureType)
         {
             if (null == _featureObjects)
             {
@@ -320,9 +318,9 @@ namespace GameEngine.Loader.Symboling
         /// <typeparam name="T">特性类型</typeparam>
         /// <param name="featureObject">特性对象实例</param>
         /// <returns>若存在指定类型的特性对象实例则返回true，否则返回false</returns>
-        public bool TryGetFeatureObject<T>(out T featureObject) where T : System.Attribute
+        public bool TryGetFeatureObject<T>(out T featureObject) where T : Attribute
         {
-            if (null != _featureObjects && _featureObjects.TryGetValue(typeof(T), out SystemAttribute attribute))
+            if (null != _featureObjects && _featureObjects.TryGetValue(typeof(T), out Attribute attribute))
             {
                 featureObject = attribute as T;
                 Debugger.Assert(featureObject, NovaEngine.ErrorText.InvalidArguments);
@@ -340,7 +338,7 @@ namespace GameEngine.Loader.Symboling
         /// <param name="featureType">特性类型</param>
         /// <param name="featureObject">特性对象实例</param>
         /// <returns>若存在指定类型的特性对象实例则返回true，否则返回false</returns>
-        public bool TryGetFeatureObject(SystemType featureType, out SystemAttribute featureObject)
+        public bool TryGetFeatureObject(Type featureType, out Attribute featureObject)
         {
             if (null == _featureObjects)
             {
@@ -355,7 +353,7 @@ namespace GameEngine.Loader.Symboling
         /// 从当前的类标记对象中移除指定类型的类特性实例
         /// </summary>
         /// <param name="featureType">特性类型</param>
-        public void RemoveFeatureObject(SystemType featureType)
+        public void RemoveFeatureObject(Type featureType)
         {
             if (null == _featureObjects)
             {
@@ -391,11 +389,11 @@ namespace GameEngine.Loader.Symboling
         /// 新增指定的类接口实例到当前的类标记对象中
         /// </summary>
         /// <param name="interfaceType">类接口实例</param>
-        public void AddInterfaceType(SystemType interfaceType)
+        public void AddInterfaceType(Type interfaceType)
         {
             if (null == _interfaceTypes)
             {
-                _interfaceTypes = new List<SystemType>();
+                _interfaceTypes = new List<Type>();
             }
 
             if (_interfaceTypes.Contains(interfaceType))
@@ -412,7 +410,7 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         /// <param name="interfaceType">接口类型</param>
         /// <returns>若存在目标接口实例则返回true，否则返回false</returns>
-        public bool HasInterfaceType(SystemType interfaceType)
+        public bool HasInterfaceType(Type interfaceType)
         {
             if (null == _interfaceTypes)
             {
@@ -426,7 +424,7 @@ namespace GameEngine.Loader.Symboling
         /// 从当前的类标记对象中移除指定类型的接口实例
         /// </summary>
         /// <param name="interfaceType">接口类型</param>
-        public void RemoveInterfaceType(SystemType interfaceType)
+        public void RemoveInterfaceType(Type interfaceType)
         {
             if (null == _interfaceTypes)
             {

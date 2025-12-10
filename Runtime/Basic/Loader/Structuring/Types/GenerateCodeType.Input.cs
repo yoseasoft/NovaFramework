@@ -23,7 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine.Loader.Structuring
 {
@@ -104,7 +104,7 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 输入调用模块的监听键码集合数据类型
         /// </summary>
-        public SystemType InputDataType { get; internal set; }
+        public Type InputDataType { get; internal set; }
     }
 
     /// <summary>

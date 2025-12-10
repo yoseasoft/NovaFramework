@@ -22,22 +22,20 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace GameEngine.Loader.Symboling
 {
     /// <summary>
     /// Bean对象类的组件数据的结构信息
     /// </summary>
-    public class BeanComponent : BeanMember, System.IEquatable<BeanComponent>
+    public class BeanComponent : BeanMember, IEquatable<BeanComponent>
     {
         /// <summary>
         /// 组件引用的实例类型
         /// </summary>
-        private SystemType _referenceClassType;
+        private Type _referenceClassType;
         /// <summary>
         /// 组件引用的实体名称
         /// </summary>
@@ -51,7 +49,7 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         private AspectBehaviourType _activationBehaviourType;
 
-        public SystemType ReferenceClassType { get { return _referenceClassType; } internal set { _referenceClassType = value; } }
+        public Type ReferenceClassType { get { return _referenceClassType; } internal set { _referenceClassType = value; } }
         public string ReferenceBeanName { get { return _referenceBeanName; } internal set { _referenceBeanName = value; } }
         public int Priority { get { return _priority; } internal set { _priority = value; } }
         public AspectBehaviourType ActivationBehaviourType { get { return _activationBehaviourType; } internal set { _activationBehaviourType = value; } }

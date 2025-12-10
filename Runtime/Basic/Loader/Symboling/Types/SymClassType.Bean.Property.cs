@@ -23,15 +23,14 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemStringBuilder = System.Text.StringBuilder;
+using System;
 
 namespace GameEngine.Loader.Symboling
 {
     /// <summary>
     /// Bean对象类的属性数据的结构信息
     /// </summary>
-    public class BeanProperty : BeanMember, System.IEquatable<BeanProperty>
+    public class BeanProperty : BeanMember, IEquatable<BeanProperty>
     {
         /// <summary>
         /// 属性对象的名称
@@ -40,7 +39,7 @@ namespace GameEngine.Loader.Symboling
         /// <summary>
         /// 属性引用的实例类型
         /// </summary>
-        private SystemType _referenceClassType;
+        private Type _referenceClassType;
         /// <summary>
         /// 属性引用的实例名称
         /// </summary>
@@ -51,7 +50,7 @@ namespace GameEngine.Loader.Symboling
         private object _referenceValue;
 
         public string PropertyName { get { return _propertyName; } internal set { _propertyName = value; } }
-        public SystemType ReferenceClassType { get { return _referenceClassType; } internal set { _referenceClassType = value; } }
+        public Type ReferenceClassType { get { return _referenceClassType; } internal set { _referenceClassType = value; } }
         public string ReferenceBeanName { get { return _referenceBeanName; } internal set { _referenceBeanName = value; } }
         public object ReferenceValue { get { return _referenceValue; } internal set { _referenceValue = value; } }
 
