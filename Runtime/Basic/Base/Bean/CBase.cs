@@ -197,7 +197,7 @@ namespace GameEngine
             //        IsOnTargetLifecycle(AspectBehaviourType.LateExecute) ||
             //        IsOnTargetLifecycle(AspectBehaviourType.Update) ||
             //        IsOnTargetLifecycle(AspectBehaviourType.LateUpdate);
-            return IsTheLifecycleTypeBetweenOfTargetRanges(AspectBehaviourType.WorkingBegan, AspectBehaviourType.WorkingEnded);
+            return IsTheLifecycleTypeBetweenOfTargetRanges(AspectBehaviourType.WorkingBegan, AspectBehaviourType.WorkingEnded) && IsCurrentLifecycleTypeRunning;
         }
 
         /// <summary>

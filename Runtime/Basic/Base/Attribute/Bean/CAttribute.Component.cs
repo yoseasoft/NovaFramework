@@ -65,4 +65,26 @@ namespace GameEngine
             _priority = priority;
         }
     }
+
+    /// <summary>
+    /// 组件依赖关联声明属性类型定义
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class CComponentDependenceAttribute : Attribute
+    {
+        /// <summary>
+        /// 组件依赖关联类型
+        /// </summary>
+        private readonly Type _dependenceType;
+
+        /// <summary>
+        /// 组件依赖关联类型获取函数
+        /// </summary>
+        public Type DependenceType => _dependenceType;
+
+        public CComponentDependenceAttribute(Type dependenceType) : base()
+        {
+            _dependenceType = dependenceType;
+        }
+    }
 }

@@ -36,9 +36,9 @@ namespace GameEngine
         Unknown = 0x00,
 
         /// <summary>
-        /// 开启标签
+        /// 进入生命周期起始标签
         /// </summary>
-        OpeningBegan = 0x0100,
+        EntryingBegan = 0x0100,
 
         /// <summary>
         /// 初始化服务节点<br/>
@@ -65,12 +65,12 @@ namespace GameEngine
         Start = 0x0108,
 
         /// <summary>
-        /// 打开结束标签
+        /// 进入生命周期结束标签
         /// </summary>
-        OpeningEnded = 0x0200,
+        EntryingEnded = 0x0200,
 
         /// <summary>
-        /// 工作标签
+        /// 工作起始标签
         /// </summary>
         WorkingBegan = 0x0200,
 
@@ -100,9 +100,9 @@ namespace GameEngine
         WorkingEnded = 0x0300,
 
         /// <summary>
-        /// 关闭标签
+        /// 离开生命周期起始标签
         /// </summary>
-        ClosingBegan = 0x0400,
+        LeavingBegan = 0x0400,
 
         /// <summary>
         /// 销毁服务节点<br/>
@@ -123,9 +123,9 @@ namespace GameEngine
         Cleanup = 0x0404,
 
         /// <summary>
-        /// 关闭结束标签
+        /// 离开生命周期结束标签
         /// </summary>
-        ClosingEnded = 0x0500,
+        LeavingEnded = 0x0500,
 
         /// <summary>
         /// 释放服务节点

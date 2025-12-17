@@ -932,7 +932,7 @@ namespace GameEngine
 
             if (IsOnWorkingStatus())
             {
-                Debugger.Error("The entity instance was working now, cannot added any component at once.");
+                Debugger.Error("The entity instance was working '{%i}' now, cannot added any component at once.", CurrentLifecycleType);
                 return null;
             }
 
@@ -954,14 +954,14 @@ namespace GameEngine
             if (HasComponent(component))
             {
                 Debugger.Warn("The component instance '{%t}' was already registered, repeat added it failed.", component.BeanType);
-                return null;
+                return component;
             }
 
             string componentName = GetComponentName(component);
             if (_components.ContainsKey(componentName))
             {
                 Debugger.Warn("The component name '{%s}' was already registered, repeat added it failed.", componentName);
-                return null;
+                return _components[componentName];
             }
 
             // 增加实体对象的引用

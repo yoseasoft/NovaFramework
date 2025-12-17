@@ -22,21 +22,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
-using SystemEnum = System.Enum;
-
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集的分析处理类，对业务层载入的所有对象类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集的分析处理类
     public static partial class CodeLoader
     {
         /// <summary>
@@ -51,8 +43,8 @@ namespace GameEngine.Loader
         /// <summary>
         /// 绑定处理器类初始化函数的属性定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        internal class OnBindingProcessorInitAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        internal class OnBindingProcessorInitAttribute : Attribute
         {
             public OnBindingProcessorInitAttribute() { }
         }
@@ -60,8 +52,8 @@ namespace GameEngine.Loader
         /// <summary>
         /// 绑定处理器类清理函数的属性定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        internal class OnBindingProcessorCleanupAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        internal class OnBindingProcessorCleanupAttribute : Attribute
         {
             public OnBindingProcessorCleanupAttribute() { }
         }
@@ -74,11 +66,11 @@ namespace GameEngine.Loader
         /// <summary>
         /// 初始化绑定处理服务类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> _codeBindingProcessorInitCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<Type, Delegate> _codeBindingProcessorInitCallbacks = new Dictionary<Type, Delegate>();
         /// <summary>
         /// 清理绑定处理服务类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> _codeBindingProcessorCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private static IDictionary<Type, Delegate> _codeBindingProcessorCleanupCallbacks = new Dictionary<Type, Delegate>();
 
         /// <summary>
         /// 初始化针对所有绑定处理类声明的全部绑定回调接口
@@ -88,7 +80,7 @@ namespace GameEngine.Loader
         {
             string namespaceTag = typeof(CodeLoader).Namespace;
 
-            foreach (string enumName in SystemEnum.GetNames(typeof(CodeClassifyType)))
+            foreach (string enumName in Enum.GetNames(typeof(CodeClassifyType)))
             {
                 if (enumName.Equals(CodeClassifyType.Unknown.ToString()))
                 {
@@ -99,7 +91,7 @@ namespace GameEngine.Loader
                 // 类名反射时需要包含命名空间前缀
                 string processorName = NovaEngine.FormatString.Format("{%s}.{%s}{%s}", namespaceTag, enumName, BindingProcessorClassUnifiedStandardName);
 
-                SystemType processorType = SystemType.GetType(processorName);
+                Type processorType = Type.GetType(processorName);
                 if (null == processorType)
                 {
                     Debugger.Info("Could not found any code binding processor class with target name {%s}.", processorName);
@@ -117,7 +109,7 @@ namespace GameEngine.Loader
                 AddBindingProcessorTypeImplementedClass(processorType);
             }
 
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _codeBindingProcessorInitCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<Type, Delegate>> e = _codeBindingProcessorInitCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 OnInitAllBindingProcessorClassesHandler handler = e.Current.Value as OnInitAllBindingProcessorClassesHandler;
@@ -133,7 +125,7 @@ namespace GameEngine.Loader
         [OnClassSubmoduleCleanupCallback]
         private static void CleanupAllBindingProcessorClassLoadingCallbacks()
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _codeBindingProcessorCleanupCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<Type, Delegate>> e = _codeBindingProcessorCleanupCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 OnCleanupAllBindingProcessorClassesHandler handler = e.Current.Value as OnCleanupAllBindingProcessorClassesHandler;
@@ -150,7 +142,7 @@ namespace GameEngine.Loader
         /// 绑定处理服务类加载器的具体实现类注册接口
         /// </summary>
         /// <param name="targetType">对象类型</param>
-        private static void AddBindingProcessorTypeImplementedClass(SystemType targetType)
+        private static void AddBindingProcessorTypeImplementedClass(Type targetType)
         {
             OnInitAllBindingProcessorClassesHandler initCallback = null;
             OnCleanupAllBindingProcessorClassesHandler cleanupCallback = null;
@@ -159,10 +151,10 @@ namespace GameEngine.Loader
             for (int n = 0; n < methods.Length; ++n)
             {
                 MethodInfo method = methods[n];
-                IEnumerable<SystemAttribute> e = method.GetCustomAttributes();
-                foreach (SystemAttribute attr in e)
+                IEnumerable<Attribute> e = method.GetCustomAttributes();
+                foreach (Attribute attr in e)
                 {
-                    SystemType attrType = attr.GetType();
+                    Type attrType = attr.GetType();
                     if (typeof(OnBindingProcessorInitAttribute).IsAssignableFrom(attrType))
                     {
                         initCallback = method.CreateDelegate(typeof(OnInitAllBindingProcessorClassesHandler)) as OnInitAllBindingProcessorClassesHandler;
@@ -192,7 +184,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="handler">句柄实例</param>
         /// <returns>返回给定句柄对应的目标解析对象类型，若不存在则返回null</returns>
-        private static SystemType GetProcessRegisterClassTypeByHandler(OnCodeTypeLoadedHandler handler)
+        private static Type GetProcessRegisterClassTypeByHandler(OnCodeTypeLoadedHandler handler)
         {
             OnProcessRegisterClassOfTargetAttribute attr = handler.Method.GetCustomAttribute<OnProcessRegisterClassOfTargetAttribute>();
             if (null != attr)

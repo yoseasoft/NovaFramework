@@ -37,7 +37,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>若创建Bean对象成功则返回对应实例，否则返回null</returns>
         private static Bean CreateDefaultBeanObjectWithSymClass(SymClass symClass)
         {
-            // 不可实例化的类类型，无需进行Bean实体的构建
+            // 不可实例化的类类型，无需进行Bean实体的构建（这里主要针对的是默认Bean实例）
             if (false == symClass.IsInstantiate)
             {
                 return null;
@@ -55,12 +55,11 @@ namespace GameEngine.Loader.Symboling
             for (int n = 0; null != classTypeAttrs && n < classTypeAttrs.Count; ++n)
             {
                 Attribute attr = classTypeAttrs[n];
-                Type attrType = attr.GetType();
-                if (typeof(CComponentAutomaticActivationOfEntityAttribute) == attrType)
+                if (attr is CComponentAutomaticActivationOfEntityAttribute _attr)
                 {
-                    Debugger.Assert(typeof(CEntity).IsAssignableFrom(symClass.ClassType), "Invalid symbol class type '{0}'.", symClass.FullName);
+                    Debugger.Assert(typeof(CEntity).IsAssignableFrom(symClass.ClassType), "Invalid symbol class type '{%s}'.", symClass.FullName);
 
-                    CComponentAutomaticActivationOfEntityAttribute _attr = (CComponentAutomaticActivationOfEntityAttribute) attr;
+                    // CComponentAutomaticActivationOfEntityAttribute _attr = (CComponentAutomaticActivationOfEntityAttribute) attr;
 
                     if (null == _attr.ReferenceType)
                     {
@@ -77,7 +76,6 @@ namespace GameEngine.Loader.Symboling
                 }
             }
 
-            IDictionary<string, SymField> classTypeFields = symClass.Fields;
             IEnumerator<KeyValuePair<string, SymField>> fieldInfoEnumerator = symClass.GetFieldEnumerator();
             if (null != fieldInfoEnumerator)
             {

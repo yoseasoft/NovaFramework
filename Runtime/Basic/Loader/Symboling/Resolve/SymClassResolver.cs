@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Customize.Extension;
 
 namespace GameEngine.Loader.Symboling
 {
@@ -165,6 +166,13 @@ namespace GameEngine.Loader.Symboling
 
             // 个性化定制
             DoPersonalizedCustomizationOfClass(symbol);
+
+            // 2025-12-10：
+            // 如果符号类不是'IBean'的子类，则不进行Bean的解析和装配
+            if (false == symbol.ClassType.Is<IBean>())
+            {
+                return symbol;
+            }
 
             ///////////////////////////////////////////////////////////////////////////////////////////////////
             // 符号类解析完成，接下来进行Bean的解析和装配

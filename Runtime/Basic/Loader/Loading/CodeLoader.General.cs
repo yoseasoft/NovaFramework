@@ -22,21 +22,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemAttributeUsageAttribute = System.AttributeUsageAttribute;
-using SystemAttributeTargets = System.AttributeTargets;
-using SystemEnum = System.Enum;
-using SystemDelegate = System.Delegate;
-
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集的分析处理类，对业务层载入的所有对象类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集的分析处理类
     public static partial class CodeLoader
     {
         /// <summary>
@@ -53,7 +45,7 @@ namespace GameEngine.Loader
         /// <param name="symClass">对象标记类型</param>
         /// <param name="filterType">过滤对象类型</param>
         /// <returns>若匹配通用类成功则返回true，否则返回false</returns>
-        public delegate bool OnGeneralCodeLoaderMatchHandler(Symboling.SymClass symClass, SystemType filterType);
+        public delegate bool OnGeneralCodeLoaderMatchHandler(Symboling.SymClass symClass, Type filterType);
         /// <summary>
         /// 加载通用类的函数句柄定义
         /// </summary>
@@ -71,8 +63,8 @@ namespace GameEngine.Loader
         /// <summary>
         /// 通用类初始化函数的属性定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        internal class OnGeneralCodeLoaderInitAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        internal class OnGeneralCodeLoaderInitAttribute : Attribute
         {
             public OnGeneralCodeLoaderInitAttribute() { }
         }
@@ -80,8 +72,8 @@ namespace GameEngine.Loader
         /// <summary>
         /// 通用类清理函数的属性定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        internal class OnGeneralCodeLoaderCleanupAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        internal class OnGeneralCodeLoaderCleanupAttribute : Attribute
         {
             public OnGeneralCodeLoaderCleanupAttribute() { }
         }
@@ -89,8 +81,8 @@ namespace GameEngine.Loader
         /// <summary>
         /// 通用类匹配函数的属性定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        internal class OnGeneralCodeLoaderMatchAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        internal class OnGeneralCodeLoaderMatchAttribute : Attribute
         {
             public OnGeneralCodeLoaderMatchAttribute() { }
         }
@@ -98,8 +90,8 @@ namespace GameEngine.Loader
         /// <summary>
         /// 通用类加载函数的属性定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        internal class OnGeneralCodeLoaderLoadAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        internal class OnGeneralCodeLoaderLoadAttribute : Attribute
         {
             public OnGeneralCodeLoaderLoadAttribute() { }
         }
@@ -107,8 +99,8 @@ namespace GameEngine.Loader
         /// <summary>
         /// 通用类结构信息查找函数的属性定义
         /// </summary>
-        [SystemAttributeUsage(SystemAttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        internal class OnGeneralCodeLoaderLookupAttribute : SystemAttribute
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+        internal class OnGeneralCodeLoaderLookupAttribute : Attribute
         {
             public OnGeneralCodeLoaderLookupAttribute() { }
         }
@@ -121,23 +113,23 @@ namespace GameEngine.Loader
             /// <summary>
             /// 第三方加载器的初始化回调函数
             /// </summary>
-            private OnInitAllGeneralCodeLoaderHandler _initCallback;
+            private readonly OnInitAllGeneralCodeLoaderHandler _initCallback;
             /// <summary>
             /// 第三方加载器的清理回调函数
             /// </summary>
-            private OnCleanupAllGeneralCodeLoaderHandler _cleanupCallback;
+            private readonly OnCleanupAllGeneralCodeLoaderHandler _cleanupCallback;
             /// <summary>
             /// 第三方加载器的匹配回调函数
             /// </summary>
-            private OnGeneralCodeLoaderMatchHandler _matchCallback;
+            private readonly OnGeneralCodeLoaderMatchHandler _matchCallback;
             /// <summary>
             /// 第三方加载器的加载回调函数
             /// </summary>
-            private OnGeneralCodeLoaderLoadHandler _loadCallback;
+            private readonly OnGeneralCodeLoaderLoadHandler _loadCallback;
             /// <summary>
             /// 第三方加载器的查找回调函数
             /// </summary>
-            private OnGeneralCodeLoaderLookupHandler _lookupCallback;
+            private readonly OnGeneralCodeLoaderLookupHandler _lookupCallback;
 
             public OnInitAllGeneralCodeLoaderHandler InitCallback => _initCallback;
             public OnCleanupAllGeneralCodeLoaderHandler CleanupCallback => _cleanupCallback;
@@ -177,7 +169,7 @@ namespace GameEngine.Loader
         {
             string namespaceTag = typeof(CodeLoader).Namespace;
 
-            foreach (string enumName in SystemEnum.GetNames(typeof(CodeClassifyType)))
+            foreach (string enumName in Enum.GetNames(typeof(CodeClassifyType)))
             {
                 if (enumName.Equals(CodeClassifyType.Unknown.ToString()))
                 {
@@ -188,7 +180,7 @@ namespace GameEngine.Loader
                 // 类名反射时需要包含命名空间前缀
                 string loaderName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, CodeLoaderClassUnifiedStandardName);
 
-                SystemType loaderType = SystemType.GetType(loaderName);
+                Type loaderType = Type.GetType(loaderName);
                 if (null == loaderType)
                 {
                     Debugger.Info("Could not found any code loader class with target name {%s}.", loaderName);
@@ -232,7 +224,7 @@ namespace GameEngine.Loader
         /// <param name="targetType">对象类型</param>
         /// <param name="reload">重载状态标识</param>
         /// <returns>若存在给定类型属性通用类库则返回对应处理结果，否则返回false</returns>
-        private static bool LoadGeneralClass(SystemType targetType, bool reload)
+        private static bool LoadGeneralClass(Type targetType, bool reload)
         {
             Symboling.SymClass symClass = GetSymClassByType(targetType);
 
@@ -269,7 +261,7 @@ namespace GameEngine.Loader
         /// <param name="targetType">目标对象类型</param>
         /// <param name="filterType">过滤对象类型</param>
         /// <returns>返回类型对应的结构信息</returns>
-        public static Structuring.GeneralCodeInfo LookupGeneralCodeInfo(SystemType targetType, SystemType filterType = null)
+        public static Structuring.GeneralCodeInfo LookupGeneralCodeInfo(Type targetType, Type filterType = null)
         {
             Symboling.SymClass symClass = GetSymClassByType(targetType);
 
@@ -282,7 +274,7 @@ namespace GameEngine.Loader
         /// <param name="symClass">对象标记类型</param>
         /// <param name="filterType">过滤对象类型</param>
         /// <returns>返回类型对应的结构信息</returns>
-        public static Structuring.GeneralCodeInfo LookupGeneralCodeInfo(Symboling.SymClass symClass, SystemType filterType = null)
+        public static Structuring.GeneralCodeInfo LookupGeneralCodeInfo(Symboling.SymClass symClass, Type filterType = null)
         {
             for (int n = 0; n < _generalLoaderList.Count; ++n)
             {
@@ -300,7 +292,7 @@ namespace GameEngine.Loader
         /// 通用类加载器的具体实现类注册接口
         /// </summary>
         /// <param name="targetType">对象类型</param>
-        private static void AddGeneralTypeImplementedClass(SystemType targetType)
+        private static void AddGeneralTypeImplementedClass(Type targetType)
         {
             OnInitAllGeneralCodeLoaderHandler initCallback = null;
             OnCleanupAllGeneralCodeLoaderHandler cleanupCallback = null;
@@ -312,10 +304,10 @@ namespace GameEngine.Loader
             for (int n = 0; n < methods.Length; ++n)
             {
                 MethodInfo method = methods[n];
-                IEnumerable<SystemAttribute> e = method.GetCustomAttributes();
-                foreach (SystemAttribute attr in e)
+                IEnumerable<Attribute> e = method.GetCustomAttributes();
+                foreach (Attribute attr in e)
                 {
-                    SystemType attrType = attr.GetType();
+                    Type attrType = attr.GetType();
                     if (typeof(OnGeneralCodeLoaderInitAttribute).IsAssignableFrom(attrType))
                     {
                         initCallback = method.CreateDelegate(typeof(OnInitAllGeneralCodeLoaderHandler)) as OnInitAllGeneralCodeLoaderHandler;
