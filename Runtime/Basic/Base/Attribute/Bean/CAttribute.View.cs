@@ -68,7 +68,7 @@ namespace GameEngine
     /// <summary>
     /// 视图通知函数的属性类型定义
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class CViewNoticeCallAttribute : Attribute
     {
         /// <summary>

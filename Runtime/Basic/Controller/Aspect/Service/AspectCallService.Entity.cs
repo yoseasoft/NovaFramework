@@ -44,7 +44,7 @@ namespace GameEngine
             Loader.Structuring.EntityCodeInfo entityCodeInfo = codeInfo as Loader.Structuring.EntityCodeInfo;
             if (null == entityCodeInfo)
             {
-                Debugger.Warn("The aspect call entity service process getting error code info '{0}' with target type '{1}', called it failed.", codeInfo.GetType().FullName, targetType.FullName);
+                Debugger.Warn("The aspect call entity service process getting error code info '{%t}' with target type '{%t}', called it failed.", codeInfo, targetType);
                 return;
             }
 
@@ -58,8 +58,8 @@ namespace GameEngine
             Loader.Symboling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
             if (null == bean)
             {
-                Debugger.Warn("Could not found any bean instance with target object '{0}' and name '{1}', please checked the class type resolved process.",
-                        NovaEngine.Utility.Text.ToString(targetType), beanName);
+                Debugger.Warn("Could not found any bean instance with target object '{%t}' and name '{%s}', please checked the class type resolved process.",
+                        targetType, beanName);
                 return;
             }
 
@@ -77,7 +77,7 @@ namespace GameEngine
                 }
                 else
                 {
-                    Debugger.Warn("The entity activation component name or type must be non-null with target bean '{0}', added activation component failed.", beanName);
+                    Debugger.Warn("The entity activation component name or type must be non-null with target bean '{%s}', added activation component failed.", beanName);
                 }
             }
         }

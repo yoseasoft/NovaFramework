@@ -369,7 +369,7 @@ namespace NovaEngine.Module
 
         #endregion
 
-        #region 定时任务的内部管理数据对象类声明
+        #region 定时任务的内部定时信息数据对象类声明
 
         /// <summary>
         /// 定时任务对象基础模型，用于管理定时任务对象相关属性，如会话信息，计划任务等，及回调接口

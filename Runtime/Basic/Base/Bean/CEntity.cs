@@ -208,10 +208,15 @@ namespace GameEngine
         /// </summary>
         public virtual void Awake()
         {
-            // 唤醒当前加载的全部组件
-            foreach (KeyValuePair<string, CComponent> pair in _components)
+            // 开始当前加载的全部组件
+            IList<string> keys = NovaEngine.Utility.Collection.ToListForKeys(_components);
+            for (int n = 0; n < keys.Count; ++n)
             {
-                CComponent component = pair.Value;
+                if (false == _components.TryGetValue(keys[n], out CComponent component))
+                {
+                    Debugger.Warn("Could not found any component instance with target name '{%s}', awaked it failed.", keys[n]);
+                    continue;
+                }
 
                 // 组件尚未唤醒
                 // Debugger.Assert(false == component.IsOnAwakingStatus() && false == component.IsOnDestroyingStatus(), "Invalid entity lifecycle.");
@@ -232,12 +237,12 @@ namespace GameEngine
         public virtual void Start()
         {
             // 开始当前加载的全部组件
-            IList<string> keys = NovaEngine.Utility.Collection.ToListForKeys<string, CComponent>(_components);
+            IList<string> keys = NovaEngine.Utility.Collection.ToListForKeys(_components);
             for (int n = 0; n < keys.Count; ++n)
             {
                 if (false == _components.TryGetValue(keys[n], out CComponent component))
                 {
-                    Debugger.Warn("Could not found any component instance with target name '{0}', started it failed.", keys[n]);
+                    Debugger.Warn("Could not found any component instance with target name '{%s}', started it failed.", keys[n]);
                     continue;
                 }
 
@@ -257,12 +262,12 @@ namespace GameEngine
             _isOnWaitingDestroy = false;
 
             // 停止当前加载的全部组件
-            IList<string> keys = NovaEngine.Utility.Collection.ToListForKeys<string, CComponent>(_components);
+            IList<string> keys = NovaEngine.Utility.Collection.ToListForKeys(_components);
             for (int n = keys.Count - 1; n >= 0; --n)
             {
                 if (false == _components.TryGetValue(keys[n], out CComponent component))
                 {
-                    Debugger.Warn("Could not found any component instance with target name '{0}', destroyed it failed.", keys[n]);
+                    Debugger.Warn("Could not found any component instance with target name '{%s}', destroyed it failed.", keys[n]);
                     continue;
                 }
 

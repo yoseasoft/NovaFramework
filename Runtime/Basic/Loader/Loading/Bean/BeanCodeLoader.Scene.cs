@@ -56,11 +56,10 @@ namespace GameEngine.Loader
             {
                 SystemAttribute attr = attrs[n];
                 SystemType attrType = attr.GetType();
-                if (typeof(CSceneClassAttribute) == attrType)
+                if (attr is CSceneClassAttribute sceneClassAttribute)
                 {
-                    CSceneClassAttribute _attr = (CSceneClassAttribute) attr;
-                    info.EntityName = _attr.Name;
-                    info.Priority = _attr.Priority;
+                    info.EntityName = sceneClassAttribute.Name;
+                    info.Priority = sceneClassAttribute.Priority;
                 }
                 else if (typeof(SceneAutoDisplayOnTargetViewAttribute) == attrType)
                 {

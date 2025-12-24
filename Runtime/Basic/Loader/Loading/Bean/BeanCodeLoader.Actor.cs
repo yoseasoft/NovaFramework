@@ -55,12 +55,10 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
                 SystemAttribute attr = attrs[n];
-                SystemType attrType = attr.GetType();
-                if (typeof(CActorClassAttribute) == attrType)
+                if (attr is CActorClassAttribute actorClassAttribute)
                 {
-                    CActorClassAttribute _attr = (CActorClassAttribute) attr;
-                    info.EntityName = _attr.Name;
-                    info.Priority = _attr.Priority;
+                    info.EntityName = actorClassAttribute.Name;
+                    info.Priority = actorClassAttribute.Priority;
                 }
                 else
                 {

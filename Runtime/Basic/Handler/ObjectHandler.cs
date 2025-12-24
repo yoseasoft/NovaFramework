@@ -306,7 +306,19 @@ namespace GameEngine
         /// <param name="objectType">对象类型</param>
         /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public CObject CreateObject(Type objectType, object userData = null)
+        {
+            return CreateObject(objectType, null, userData);
+        }
+
+        /// <summary>
+        /// 通过指定的对象类型动态创建一个对应的基础对象实例
+        /// </summary>
+        /// <param name="objectType">对象类型</param>
+        /// <param name="userData">用户数据</param>
+        /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        internal CObject CreateObject(Type objectType, string beanName, object userData = null)
         {
             Debugger.Assert(objectType, NovaEngine.ErrorText.InvalidArguments);
             if (false == _objectClassTypes.Values.Contains(objectType))
@@ -317,6 +329,8 @@ namespace GameEngine
 
             // 对象实例化
             CObject obj = CreateInstance(objectType) as CObject;
+            obj.BeanName = beanName;
+            obj.UserData = userData;
 
             // 初始化实体实例
             Call(obj, obj.Initialize, AspectBehaviourType.Initialize);
@@ -326,9 +340,6 @@ namespace GameEngine
 
             // 启动对象实例
             Call(obj, obj.Startup, AspectBehaviourType.Startup);
-
-            // 补充用户数据
-            obj.UserData = userData;
 
             // 唤醒实例
             Call(obj, obj.Awake, AspectBehaviourType.Awake);
@@ -358,9 +369,6 @@ namespace GameEngine
 
             // 销毁实例
             Call(obj, obj.Destroy, AspectBehaviourType.Destroy);
-
-            // 清除用户数据
-            obj.UserData = null;
 
             // 关闭基础对象实例
             Call(obj, obj.Shutdown, AspectBehaviourType.Shutdown);

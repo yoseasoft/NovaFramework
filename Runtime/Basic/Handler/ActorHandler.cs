@@ -281,7 +281,20 @@ namespace GameEngine
         /// <param name="actorType">对象类型</param>
         /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public CActor CreateActor(Type actorType, object userData = null)
+        {
+            return CreateActor(actorType, null, userData);
+        }
+
+        /// <summary>
+        /// 通过指定的角色类型动态创建一个对应的角色对象实例
+        /// </summary>
+        /// <param name="actorType">对象类型</param>
+        /// <param name="beanName">实体名称</param>
+        /// <param name="userData">用户数据</param>
+        /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        internal CActor CreateActor(Type actorType, string beanName, object userData = null)
         {
             Debugger.Assert(actorType, NovaEngine.ErrorText.InvalidArguments);
             if (false == _entityClassTypes.Values.Contains(actorType))
@@ -292,6 +305,9 @@ namespace GameEngine
 
             // 对象实例化
             CActor obj = CreateInstance(actorType) as CActor;
+            obj.BeanName = beanName;
+            obj.UserData = userData;
+
             if (false == AddEntity(obj))
             {
                 Debugger.Warn("The actor instance '{%t}' initialization for error, added it failed.", actorType);
@@ -303,9 +319,6 @@ namespace GameEngine
 
             // 启动对象实例
             Call(obj, obj.Startup, AspectBehaviourType.Startup);
-
-            // 补充用户数据
-            obj.UserData = userData;
 
             // 唤醒对象实例
             CallEntityAwakeProcess(obj);
@@ -331,9 +344,6 @@ namespace GameEngine
 
             // 销毁角色对象实例
             CallEntityDestroyProcess(actor);
-
-            // 清除用户数据
-            actor.UserData = null;
 
             // 关闭角色对象实例
             Call(actor, actor.Shutdown, AspectBehaviourType.Shutdown);

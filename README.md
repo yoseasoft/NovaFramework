@@ -6,6 +6,10 @@ Nova Framework 是一个基于Unity引擎打造的游戏开发框架；
 该框架是一个完整的，集API封装，驱动管理，统筹调度，数据推送等功能于一体的引擎框架；  
 您可以基于该框架，非常轻松的搭建一个稳定的游戏项目；  
 
+该框架主要提供一种新的编程模式 ECP （Entity-Component-Presenter），  
+它集合了 MVC ， ECS 等以数据驱动为核心的设计模式中的优势，提炼出了一套以实体生命周期流程为核心，  
+围绕该核心进行自动流程注入的开发模式。  
+
 关于具体的功能模块，可以前往[说明文档](Documentation/index.md)查阅了解。
 
 ## 支持版本
@@ -46,10 +50,10 @@ git clone https://github.com/yoseasoft/NovaFramework.git
 
 ## 社区与支持
 
-- 💬 **QQ讨论群**: 738774220
-- 🐛 **问题反馈**: [GitHub Issues](https://github.com/yoseasoft/NovaFramework/issues)
-- 💡 **功能建议**: [GitHub Discussions](https://github.com/yoseasoft/NovaFramework/discussions)
-- 📧 **邮件联系**: yoseasoft@outlook.com
+- 💬 **QQ讨论群**：738774220
+- 🐛 **问题反馈**：[GitHub Issues](https://github.com/yoseasoft/NovaFramework/issues)
+- 💡 **功能建议**：[GitHub Discussions](https://github.com/yoseasoft/NovaFramework/discussions)
+- 📧 **邮件联系**：yoseasoft@outlook.com
 
 ## 开源协议
 

@@ -260,21 +260,21 @@ namespace GameEngine
                 }
                 else if (typeof(CActor).IsAssignableFrom(_classType))
                 {
-                    obj = ActorHandler.Instance.CreateActor(_classType);
+                    obj = ActorHandler.Instance.CreateActor(_classType, _beanName);
                 }
                 else if (typeof(CObject).IsAssignableFrom(_classType))
                 {
-                    obj = ObjectHandler.Instance.CreateObject(_classType);
+                    obj = ObjectHandler.Instance.CreateObject(_classType, _beanName);
                 }
                 else
                 {
                     obj = Activator.CreateInstance(_classType) as CBean;
 
+                    // 记录对象实例的映射名称
+                    obj.BeanName = _beanName;
+
                     AspectController.Instance.Call(obj.Initialize);
                 }
-
-                // 记录对象实例的映射名称
-                obj.BeanName = _beanName;
 
                 // 自动装配新创建的对象实例
                 AutowiredProcessingOnCreateTargetObject(obj);
@@ -292,9 +292,6 @@ namespace GameEngine
 
                 // 卸载待销毁的对象实例
                 AutowiredProcessingOnReleaseTargetObject(obj);
-
-                // 移除对象实例的映射名称
-                obj.BeanName = null;
 
                 if (typeof(CScene).IsAssignableFrom(_classType))
                 {

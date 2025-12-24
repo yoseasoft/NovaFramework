@@ -56,16 +56,14 @@ namespace GameEngine.Loader
             {
                 SystemAttribute attr = attrs[n];
                 SystemType attrType = attr.GetType();
-                if (typeof(CViewClassAttribute) == attrType)
+                if (attr is CViewClassAttribute viewClassAttribute)
                 {
-                    CViewClassAttribute _attr = (CViewClassAttribute) attr;
-                    info.EntityName = _attr.Name;
-                    info.Priority = _attr.Priority;
+                    info.EntityName = viewClassAttribute.Name;
+                    info.Priority = viewClassAttribute.Priority;
                 }
-                else if (typeof(CViewGroupAttribute) == attrType)
+                else if (attr is CViewGroupAttribute viewGroupAttribute)
                 {
-                    CViewGroupAttribute _attr = (CViewGroupAttribute) attr;
-                    info.GroupName = _attr.GroupName;
+                    info.GroupName = viewGroupAttribute.GroupName;
                 }
                 else if (typeof(ViewGroupOfSymbioticRelationshipsAttribute) == attrType)
                 {

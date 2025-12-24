@@ -234,6 +234,7 @@ namespace GameEngine
                 _entityClassTypes.Remove(entityName);
             }
 
+            // Debugger.Warn("The new entity class name {%s} and type {%t} register succeed.", entityName, clsType);
             _entityClassTypes.Add(entityName, clsType);
             if (priority > 0)
             {
