@@ -24,14 +24,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
+using System;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 扩展定义的绑定回调管理服务类，对扩展模块的回调接口绑定/注销操作进行统一定义管理
-    /// </summary>
+    /// 扩展定义的绑定回调管理服务类
     internal static partial class ExtendBindingProcessor
     {
         /// <summary>
@@ -41,7 +38,7 @@ namespace GameEngine.Loader
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
         [OnExtendDefinitionRegisterClassOfTarget(typeof(ExtendSupportedAttribute))]
-        private static void LoadCallBindCodeType(SystemType targetType, Structuring.GeneralCodeInfo codeInfo, bool reload)
+        private static void LoadCallBindCodeType(Type targetType, Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
             if (null == codeInfo)
             {

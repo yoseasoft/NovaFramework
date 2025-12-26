@@ -22,22 +22,18 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集中网络消息对象的分析处理类，对业务层载入的所有网络消息类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集中网络消息对象的分析处理类
     internal static partial class NetworkCodeLoader
     {
         /// <summary>
         /// 网络消息接收类的结构信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, Structuring.MessageCallCodeInfo> _messageCallCodeInfos = new Dictionary<SystemType, Structuring.MessageCallCodeInfo>();
+        private readonly static IDictionary<Type, Structuring.MessageCallCodeInfo> _messageCallCodeInfos = new Dictionary<Type, Structuring.MessageCallCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(MessageSystemAttribute))]
         private static bool LoadMessageCallClass(Symboling.SymClass symClass, bool reload)
@@ -53,23 +49,21 @@ namespace GameEngine.Loader
                 // 检查函数格式是否合法
                 if (false == symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCall(symMethod.MethodInfo))
                 {
-                    Debugger.Info(LogGroupTag.CodeLoader, "The message call method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    Debugger.Info(LogGroupTag.CodeLoader, "The message call method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     continue;
                 }
 
-                IList<SystemAttribute> attrs = symMethod.Attributes;
+                IList<Attribute> attrs = symMethod.Attributes;
                 for (int m = 0; null != attrs && m < attrs.Count; ++m)
                 {
-                    SystemAttribute attr = attrs[m];
+                    Attribute attr = attrs[m];
 
-                    if (attr is OnMessageDispatchCallAttribute)
+                    if (attr is OnMessageDispatchCallAttribute onMessageDispatchCallAttribute)
                     {
-                        OnMessageDispatchCallAttribute _attr = (OnMessageDispatchCallAttribute) attr;
-
                         Structuring.MessageCallMethodTypeCodeInfo callMethodInfo = new Structuring.MessageCallMethodTypeCodeInfo();
-                        callMethodInfo.TargetType = _attr.ClassType;
-                        callMethodInfo.Opcode = _attr.Opcode;
-                        callMethodInfo.MessageType = _attr.MessageType;
+                        callMethodInfo.TargetType = onMessageDispatchCallAttribute.ClassType;
+                        callMethodInfo.Opcode = onMessageDispatchCallAttribute.Opcode;
+                        callMethodInfo.MessageType = onMessageDispatchCallAttribute.MessageType;
 
                         if (callMethodInfo.Opcode <= 0 && null == callMethodInfo.MessageType)
                         {
@@ -85,7 +79,7 @@ namespace GameEngine.Loader
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                         if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                         {
-                            bool verificated = false;
+                            bool verificated;
                             if (null == callMethodInfo.TargetType)
                             {
                                 if (Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo))
@@ -126,7 +120,7 @@ namespace GameEngine.Loader
                             // 校验失败
                             if (false == verificated)
                             {
-                                Debugger.Error("Cannot verificated from method info '{0}' to message listener call, loaded this method failed.", symMethod.FullName);
+                                Debugger.Error("Cannot verificated from method info '{%s}' to message listener call, loaded this method failed.", symMethod.FullName);
                                 continue;
                             }
                         }
@@ -138,7 +132,7 @@ namespace GameEngine.Loader
 
             if (info.GetMethodTypeCount() <= 0)
             {
-                Debugger.Warn("The message call method types count must be great than zero, newly added class '{0}' failed.", info.ClassType.FullName);
+                Debugger.Warn("The message call method types count must be great than zero, newly added class '{%t}' failed.", info.ClassType);
                 return false;
             }
 
@@ -151,13 +145,13 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The network message call '{0}' was already existed, repeat added it failed.", symClass.FullName);
+                    Debugger.Warn("The network message call '{%s}' was already existed, repeat added it failed.", symClass.FullName);
                     return false;
                 }
             }
 
             _messageCallCodeInfos.Add(symClass.ClassType, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load message call code info '{0}' succeed from target class type '{1}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load message call code info '{%s}' succeed from target class type '{%s}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
 
             return true;
         }
@@ -171,7 +165,7 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLookupOfTarget(typeof(MessageSystemAttribute))]
         private static Structuring.MessageCallCodeInfo LookupMessageCallCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<SystemType, Structuring.MessageCallCodeInfo> pair in _messageCallCodeInfos)
+            foreach (KeyValuePair<Type, Structuring.MessageCallCodeInfo> pair in _messageCallCodeInfos)
             {
                 if (pair.Key == symClass.ClassType)
                 {

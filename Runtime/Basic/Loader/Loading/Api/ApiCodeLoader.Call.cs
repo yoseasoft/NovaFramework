@@ -23,22 +23,18 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集中编程接口对象的分析处理类，对业务层载入的所有编程接口类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集中编程接口对象的分析处理类
     internal static partial class ApiCodeLoader
     {
         /// <summary>
         /// 切面调用类的结构信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, Structuring.ApiCallCodeInfo> _apiCallCodeInfos = new Dictionary<SystemType, Structuring.ApiCallCodeInfo>();
+        private readonly static IDictionary<Type, Structuring.ApiCallCodeInfo> _apiCallCodeInfos = new Dictionary<Type, Structuring.ApiCallCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(ApiSystemAttribute))]
         private static bool LoadApiCallClass(Symboling.SymClass symClass, bool reload)
@@ -80,14 +76,14 @@ namespace GameEngine.Loader
                 callMethodInfo.Method = symMethod.MethodInfo;
 
                 // if (false == method.IsStatic)
-                // { Debugger.Warn("The api call method '{0} - {1}' must be static type, loaded it failed.", symClass.FullName, symMethod.MethodName); continue; }
+                // { Debugger.Warn("The api call method '{%s}.{%s}' must be static type, loaded it failed.", symClass.FullName, symMethod.MethodName); continue; }
 
                 info.AddMethodType(callMethodInfo);
             }
 
             if (info.GetMethodTypeCount() <= 0)
             {
-                Debugger.Warn("The api call method types count must be great than zero, newly added class '{0}' failed.", info.ClassType.FullName);
+                Debugger.Warn("The api call method types count must be great than zero, newly added class '{%t}' failed.", info.ClassType);
                 return false;
             }
 
@@ -99,13 +95,13 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The api call '{0}' was already existed, repeat added it failed.", symClass.FullName);
+                    Debugger.Warn("The api call '{%s}' was already existed, repeat added it failed.", symClass.FullName);
                     return false;
                 }
             }
 
             _apiCallCodeInfos.Add(symClass.ClassType, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load api call code info '{0}' succeed from target class type '{1}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load api call code info '{%s}' succeed from target class type '{%s}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
 
             return true;
         }
@@ -119,7 +115,7 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLookupOfTarget(typeof(ApiSystemAttribute))]
         private static Structuring.ApiCallCodeInfo LookupApiCallCodeInfo(Symboling.SymClass symCLass)
         {
-            foreach (KeyValuePair<SystemType, Structuring.ApiCallCodeInfo> pair in _apiCallCodeInfos)
+            foreach (KeyValuePair<Type, Structuring.ApiCallCodeInfo> pair in _apiCallCodeInfos)
             {
                 if (pair.Value.ClassType == symCLass.ClassType)
                 {

@@ -24,17 +24,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集中原型对象的分析处理类，对业务层载入的所有原型对象类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集中原型对象的分析处理类
     internal static partial class BeanCodeLoader
     {
         /// <summary>
@@ -43,7 +39,7 @@ namespace GameEngine.Loader
         /// <param name="symClass">对象标记类型</param>
         /// <param name="codeInfo">对象结构信息</param>
         /// <param name="attribute">属性对象</param>
-        private static void LoadBaseClassByAttributeType(Symboling.SymClass symClass, Structuring.BaseBeanCodeInfo codeInfo, SystemAttribute attribute)
+        private static void LoadBaseClassByAttributeType(Symboling.SymClass symClass, Structuring.BaseBeanCodeInfo codeInfo, Attribute attribute)
         {
         }
 
@@ -54,7 +50,7 @@ namespace GameEngine.Loader
         /// <param name="codeInfo">对象结构信息</param>
         /// <param name="symMethod">函数对象</param>
         /// <param name="attribute">属性对象</param>
-        private static void LoadBaseMethodByAttributeType(Symboling.SymClass symClass, Structuring.BaseBeanCodeInfo codeInfo, Symboling.SymMethod symMethod, SystemAttribute attribute)
+        private static void LoadBaseMethodByAttributeType(Symboling.SymClass symClass, Structuring.BaseBeanCodeInfo codeInfo, Symboling.SymMethod symMethod, Attribute attribute)
         {
             if (attribute is InputResponseBindingOfTargetAttribute)
             {
@@ -62,7 +58,7 @@ namespace GameEngine.Loader
 
                 if (symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCall(symMethod.MethodInfo))
                 {
-                    Debugger.Warn("The input responsing method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    Debugger.Warn("The input responsing method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     return;
                 }
 
@@ -100,7 +96,7 @@ namespace GameEngine.Loader
                     // 校验失败
                     if (false == verificated)
                     {
-                        Debugger.Error("Cannot verificated from method info '{0}' to input responsing call, loaded this method failed.", symMethod.FullName);
+                        Debugger.Error("Cannot verificated from method info '{%s}' to input responsing call, loaded this method failed.", symMethod.FullName);
                         return;
                     }
                 }
@@ -113,7 +109,7 @@ namespace GameEngine.Loader
 
                 if (symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCall(symMethod.MethodInfo))
                 {
-                    Debugger.Warn("The event subscribing method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    Debugger.Warn("The event subscribing method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     return;
                 }
 
@@ -150,7 +146,7 @@ namespace GameEngine.Loader
                     // 校验失败
                     if (false == verificated)
                     {
-                        Debugger.Error("Cannot verificated from method info '{0}' to event subscribing call, loaded this method failed.", symMethod.FullName);
+                        Debugger.Error("Cannot verificated from method info '{%s}' to event subscribing call, loaded this method failed.", symMethod.FullName);
                         return;
                     }
                 }
@@ -163,7 +159,7 @@ namespace GameEngine.Loader
 
                 if (symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCall(symMethod.MethodInfo))
                 {
-                    Debugger.Warn("The message binding method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    Debugger.Warn("The message binding method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     return;
                 }
 
@@ -200,7 +196,7 @@ namespace GameEngine.Loader
                     // 校验失败
                     if (false == verificated)
                     {
-                        Debugger.Error("Cannot verificated from method info '{0}' to message binding call, loaded this method failed.", symMethod.FullName);
+                        Debugger.Error("Cannot verificated from method info '{%s}' to message binding call, loaded this method failed.", symMethod.FullName);
                         return;
                     }
                 }

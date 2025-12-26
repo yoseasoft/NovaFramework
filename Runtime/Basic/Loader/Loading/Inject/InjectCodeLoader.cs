@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -49,6 +50,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 初始化针对所有注入控制类声明的全部绑定回调接口
         /// </summary>
+        [Preserve]
         [CodeLoader.OnGeneralCodeLoaderInit]
         private static void InitAllInjectClassLoadingCallbacks()
         {
@@ -89,6 +91,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 清理针对所有注入控制类声明的全部绑定回调接口
         /// </summary>
+        [Preserve]
         [CodeLoader.OnGeneralCodeLoaderCleanup]
         private static void CleanupAllInjectClassLoadingCallbacks()
         {
@@ -112,6 +115,7 @@ namespace GameEngine.Loader
         /// <param name="symClass">对象标记类型</param>
         /// <param name="filterType">过滤对象类型</param>
         /// <returns>若给定类型满足匹配规则则返回true，否则返回false</returns>
+        [Preserve]
         [CodeLoader.OnGeneralCodeLoaderMatch]
         private static bool IsInjectClassMatched(Symboling.SymClass symClass, Type filterType)
         {
@@ -140,6 +144,7 @@ namespace GameEngine.Loader
         /// <param name="symClass">对象标记类型</param>
         /// <param name="reload">重载状态标识</param>
         /// <returns>若存在给定类型属性注入控制类则返回对应处理结果，否则返回false</returns>
+        [Preserve]
         [CodeLoader.OnGeneralCodeLoaderLoad]
         private static bool LoadInjectClass(Symboling.SymClass symClass, bool reload)
         {
@@ -163,6 +168,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="symClass">对象标记类型</param>
         /// <returns>返回类型对应的结构信息</returns>
+        [Preserve]
         [CodeLoader.OnGeneralCodeLoaderLookup]
         private static Structuring.GeneralCodeInfo LookupInjectCodeInfo(Symboling.SymClass symClass)
         {

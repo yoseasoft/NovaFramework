@@ -23,22 +23,18 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集中通知定义对象的分析处理类，对业务层载入的所有通知定义对象类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集中通知定义对象的分析处理类
     internal static partial class NoticeCodeLoader
     {
         /// <summary>
         /// 通知定义调用类的结构信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, Structuring.CViewNoticeCallCodeInfo> _viewNoticeCallCodeInfos = new Dictionary<SystemType, Structuring.CViewNoticeCallCodeInfo>();
+        private readonly static IDictionary<Type, Structuring.CViewNoticeCallCodeInfo> _viewNoticeCallCodeInfos = new Dictionary<Type, Structuring.CViewNoticeCallCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(NoticeSupportedOnViewAttribute))]
         private static bool LoadViewNoticeCallClass(Symboling.SymClass symClass, bool reload)
@@ -58,18 +54,16 @@ namespace GameEngine.Loader
                     continue;
                 }
 
-                SystemType extendClassType = symMethod.ExtensionParameterType;
+                Type extendClassType = symMethod.ExtensionParameterType;
 
-                IList<SystemAttribute> attrs = symMethod.Attributes;
+                IList<Attribute> attrs = symMethod.Attributes;
                 for (int m = 0; null != attrs && m < attrs.Count; ++m)
                 {
-                    SystemAttribute attr = attrs[m];
+                    Attribute attr = attrs[m];
 
-                    if (attr is CViewNoticeCallAttribute)
+                    if (attr is CViewNoticeCallAttribute viewNoticeCallAttribute)
                     {
-                        CViewNoticeCallAttribute _attr = (CViewNoticeCallAttribute) attr;
-
-                        if (_attr.NoticeType <= 0)
+                        if (viewNoticeCallAttribute.NoticeType <= 0)
                         {
                             Debugger.Warn("The notice method '{%s}' was invalid arguments from class '{%s}', added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
@@ -83,8 +77,8 @@ namespace GameEngine.Loader
 
                         Structuring.CViewNoticeMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.CViewNoticeMethodTypeCodeInfo();
                         methodTypeCodeInfo.TargetType = extendClassType;
-                        methodTypeCodeInfo.NoticeType = _attr.NoticeType;
-                        methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                        methodTypeCodeInfo.NoticeType = viewNoticeCallAttribute.NoticeType;
+                        methodTypeCodeInfo.BehaviourType = viewNoticeCallAttribute.BehaviourType;
                         methodTypeCodeInfo.Fullname = symMethod.FullName;
                         methodTypeCodeInfo.Method = symMethod.MethodInfo;
 
@@ -128,7 +122,7 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLookupOfTarget(typeof(NoticeSupportedOnViewAttribute))]
         private static Structuring.CViewNoticeCallCodeInfo LookupViewNoticeCallCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<SystemType, Structuring.CViewNoticeCallCodeInfo> pair in _viewNoticeCallCodeInfos)
+            foreach (KeyValuePair<Type, Structuring.CViewNoticeCallCodeInfo> pair in _viewNoticeCallCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

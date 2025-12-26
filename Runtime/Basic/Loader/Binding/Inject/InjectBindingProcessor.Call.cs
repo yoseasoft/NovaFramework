@@ -22,13 +22,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 反射注入接口的控制器类，对整个程序所有反射注入函数进行统一的整合和管理
-    /// </summary>
+    /// 反射注入接口的控制器类
     internal partial class InjectController
     {
         /// <summary>
@@ -38,11 +36,11 @@ namespace GameEngine
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
         [OnInjectOfControlRegisterClassOfTarget(typeof(InjectAttribute))]
-        private static void LoadCallBindCodeType(SystemType targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
+        private static void LoadCallBindCodeType(Type targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
             if (null == codeInfo)
             {
-                Debugger.Warn("The load code info '{0}' must be non-null, recv arguments invalid.", targetType.FullName);
+                Debugger.Warn("The load code info '{%t}' must be non-null, recv arguments invalid.", targetType);
                 return;
             }
 
@@ -56,7 +54,7 @@ namespace GameEngine
              * Loader.Symboling.SymClass symClass = Loader.CodeLoader.GetSymClassByType(targetType);
              * if (null == symClass)
              * {
-             *     Debugger.Warn("Could not found any symbol class with target type '{0}', loaded inject call failed.", NovaEngine.Utility.Text.ToString(targetType));
+             *     Debugger.Warn("Could not found any symbol class with target type '{%t}', loaded inject call failed.", targetType);
              *     return;
              * }
              */

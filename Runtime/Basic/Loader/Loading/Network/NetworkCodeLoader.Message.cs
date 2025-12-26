@@ -25,20 +25,15 @@
 
 using System.Collections.Generic;
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集中网络消息对象的分析处理类，对业务层载入的所有网络消息类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集中网络消息对象的分析处理类
     internal static partial class NetworkCodeLoader
     {
         /// <summary>
         /// 网络消息对象类的结构信息管理容器
         /// </summary>
-        private static IDictionary<int, Structuring.NetworkMessageCodeInfo> _networkMessageCodeInfos = new Dictionary<int, Structuring.NetworkMessageCodeInfo>();
+        private readonly static IDictionary<int, Structuring.NetworkMessageCodeInfo> _networkMessageCodeInfos = new Dictionary<int, Structuring.NetworkMessageCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(MessageObjectAttribute))]
         private static bool LoadNetworkMessageClass(Symboling.SymClass symClass, bool reload)

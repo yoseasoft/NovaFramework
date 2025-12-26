@@ -23,13 +23,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine
 {
-    /// <summary>
     /// 对象模块封装的句柄对象类
-    /// </summary>
     public sealed partial class ObjectHandler
     {
         /// <summary>
@@ -39,17 +37,17 @@ namespace GameEngine
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
         [OnBeanRegisterClassOfTarget(typeof(CObject))]
-        private static void LoadCodeType(SystemType targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
+        private static void LoadCodeType(Type targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
             if (targetType.IsInterface || targetType.IsAbstract)
             {
-                Debugger.Log("The load code type '{0}' cannot be interface or abstract class, recv arguments invalid.", targetType.FullName);
+                Debugger.Log("The load code type '{%t}' cannot be interface or abstract class, recv arguments invalid.", targetType);
                 return;
             }
 
             if (null == codeInfo)
             {
-                Debugger.Warn("The load code info '{0}' must be non-null, recv arguments invalid.", targetType.FullName);
+                Debugger.Warn("The load code info '{%t}' must be non-null, recv arguments invalid.", targetType);
                 return;
             }
 

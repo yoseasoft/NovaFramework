@@ -23,21 +23,18 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集中切面控制对象的分析处理类，对业务层载入的所有切面控制类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集中切面控制对象的分析处理类
     internal static partial class AspectCodeLoader
     {
         /// <summary>
         /// 切面调用类的结构信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, Structuring.AspectCallCodeInfo> _aspectCallCodeInfos = new Dictionary<SystemType, Structuring.AspectCallCodeInfo>();
+        private readonly static IDictionary<Type, Structuring.AspectCallCodeInfo> _aspectCallCodeInfos = new Dictionary<Type, Structuring.AspectCallCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(AspectAttribute))]
         private static bool LoadAspectCallClass(Symboling.SymClass symClass, bool reload)
@@ -63,7 +60,7 @@ namespace GameEngine.Loader
                     continue;
                 }
 
-                SystemType interruptedSource = null;
+                Type interruptedSource;
                 if (symMethod.IsExtension)
                 {
                     interruptedSource = symMethod.ExtensionParameterType;
@@ -81,7 +78,7 @@ namespace GameEngine.Loader
                 if (null == callMethodInfo.TargetType || string.IsNullOrEmpty(callMethodInfo.MethodName))
                 {
                     // 未进行合法标识的函数忽略它
-                    Debugger.Info(LogGroupTag.CodeLoader, "The aspect call '{0}.{1}' interrupted source and function names cannot be null, added it failed.",
+                    Debugger.Info(LogGroupTag.CodeLoader, "The aspect call '{%s}.{%s}' interrupted source and function names cannot be null, added it failed.",
                             symClass.FullName, symMethod.FullName);
                     continue;
                 }
@@ -89,7 +86,7 @@ namespace GameEngine.Loader
                 // 检查函数格式是否合法
                 if (false == Inspecting.CodeInspector.CheckFunctionFormatOfAspect(symMethod.MethodInfo))
                 {
-                    Debugger.Warn("The aspect call method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.FullName);
+                    Debugger.Warn("The aspect call method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.FullName);
                     continue;
                 }
 
@@ -101,7 +98,7 @@ namespace GameEngine.Loader
                 callMethodInfo.Callback = NovaEngine.Utility.Reflection.CreateGenericAction<object>(symMethod.MethodInfo, callMethodInfo.TargetType);
                 if (null == callMethodInfo.Callback)
                 {
-                    Debugger.Warn("Cannot converted from method info '{0}' to aspect standard call, loaded this method failed.", symMethod.MethodName);
+                    Debugger.Warn("Cannot converted from method info '{%s}' to aspect standard call, loaded this method failed.", symMethod.MethodName);
                     continue;
                 }
 
@@ -110,14 +107,14 @@ namespace GameEngine.Loader
                 NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType);
 
                 // if (false == method.IsStatic)
-                // { Debugger.Warn("The aspect call method '{0} - {1}' must be static type, loaded it failed.", symClass.FullName, method.Name); continue; }
+                // { Debugger.Warn("The aspect call method '{%s}.{%s}' must be static type, loaded it failed.", symClass.FullName, method.Name); continue; }
 
                 info.AddMethodType(callMethodInfo);
             }
 
             if (info.GetMethodTypeCount() <= 0)
             {
-                Debugger.Warn("The aspect call method types count must be great than zero, newly added class '{0}' failed.", symClass.FullName);
+                Debugger.Warn("The aspect call method types count must be great than zero, newly added class '{%s}' failed.", symClass.FullName);
                 return false;
             }
 
@@ -129,7 +126,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The aspect call '{0}' was already existed, repeat added it failed.", symClass.FullName);
+                    Debugger.Warn("The aspect call '{%s}' was already existed, repeat added it failed.", symClass.FullName);
                     return false;
                 }
             }
@@ -149,7 +146,7 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLookupOfTarget(typeof(AspectAttribute))]
         private static Structuring.AspectCallCodeInfo LookupAspectCallCodeInfo(Symboling.SymClass symCLass)
         {
-            foreach (KeyValuePair<SystemType, Structuring.AspectCallCodeInfo> pair in _aspectCallCodeInfos)
+            foreach (KeyValuePair<Type, Structuring.AspectCallCodeInfo> pair in _aspectCallCodeInfos)
             {
                 if (pair.Value.ClassType == symCLass.ClassType)
                 {

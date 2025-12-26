@@ -23,15 +23,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemDelegate = System.Delegate;
+using System;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 标准定义接口的控制器类，对整个程序所有标准定义函数进行统一的整合和管理
-    /// </summary>
+    /// 标准定义接口的控制器类
     internal partial class ApiController
     {
         /// <summary>
@@ -41,7 +37,7 @@ namespace GameEngine
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
         [OnApiCallRegisterClassOfTarget(typeof(ApiSystemAttribute))]
-        private static void LoadCallBindCodeType(SystemType targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
+        private static void LoadCallBindCodeType(Type targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
             if (null == codeInfo)
             {
@@ -56,7 +52,7 @@ namespace GameEngine
             {
                 Loader.Structuring.ApiCallMethodTypeCodeInfo callMethodInfo = apiCodeInfo.GetMethodType(n);
 
-                SystemDelegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(callMethodInfo.Method);
+                Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(callMethodInfo.Method);
                 if (null == callback)
                 {
                     Debugger.Warn("Cannot converted from method info '{%t}' to api standard call, loaded this method failed.", callMethodInfo.Method);

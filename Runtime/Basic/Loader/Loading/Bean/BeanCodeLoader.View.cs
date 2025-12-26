@@ -22,40 +22,36 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集中原型对象的分析处理类，对业务层载入的所有原型对象类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集中原型对象的分析处理类
     internal static partial class BeanCodeLoader
     {
         /// <summary>
         /// 视图类的结构信息管理容器
         /// </summary>
-        private static IDictionary<string, Structuring.ViewCodeInfo> _viewCodeInfos = new Dictionary<string, Structuring.ViewCodeInfo>();
+        private readonly static IDictionary<string, Structuring.ViewCodeInfo> _viewCodeInfos = new Dictionary<string, Structuring.ViewCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(CView))]
         private static bool LoadViewClass(Symboling.SymClass symClass, bool reload)
         {
             if (false == typeof(CView).IsAssignableFrom(symClass.ClassType))
             {
-                Debugger.Warn("The target class type '{0}' must be inherited from 'CView' interface, load it failed.", symClass.FullName);
+                Debugger.Warn("The target class type '{%s}' must be inherited from 'CView' interface, load it failed.", symClass.FullName);
                 return false;
             }
 
             Structuring.ViewCodeInfo info = new Structuring.ViewCodeInfo();
             info.ClassType = symClass.ClassType;
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
+            IList<Attribute> attrs = symClass.Attributes;
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
-                SystemType attrType = attr.GetType();
+                Attribute attr = attrs[n];
+                Type attrType = attr.GetType();
                 if (attr is CViewClassAttribute viewClassAttribute)
                 {
                     info.EntityName = viewClassAttribute.Name;
@@ -117,10 +113,10 @@ namespace GameEngine.Loader
                 return;
             }
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
+            IList<Attribute> attrs = symClass.Attributes;
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
+                Attribute attr = attrs[n];
 
                 LoadEntityMethodByAttributeType(symClass, codeInfo, symMethod, attr);
             }

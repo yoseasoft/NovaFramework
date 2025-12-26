@@ -22,14 +22,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 基于ECS模式定义的句柄对象类，针对实体类型访问操作的接口进行封装
-    /// 该句柄对象提供实体相关的操作访问接口
-    /// </summary>
+    /// 基于ECS模式定义的句柄对象类
     public abstract partial class EntityHandler
     {
         /// <summary>
@@ -39,17 +36,17 @@ namespace GameEngine
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
         [OnBeanRegisterClassOfTarget(typeof(CComponent))]
-        private static void LoadComponentCodeType(SystemType targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
+        private static void LoadComponentCodeType(Type targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
             if (targetType.IsInterface || targetType.IsAbstract)
             {
-                Debugger.Log("The load code type '{0}' cannot be interface or abstract class, recv arguments invalid.", targetType.FullName);
+                Debugger.Log("The load code type '{%t}' cannot be interface or abstract class, recv arguments invalid.", targetType);
                 return;
             }
 
             if (null == codeInfo)
             {
-                Debugger.Warn("The load code info '{0}' must be non-null, recv arguments invalid.", targetType.FullName);
+                Debugger.Warn("The load code info '{%t}' must be non-null, recv arguments invalid.", targetType);
                 return;
             }
 

@@ -22,40 +22,36 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集中原型对象的分析处理类，对业务层载入的所有原型对象类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集中原型对象的分析处理类
     internal static partial class BeanCodeLoader
     {
         /// <summary>
         /// 组件类的结构信息管理容器
         /// </summary>
-        private static IDictionary<string, Structuring.ComponentCodeInfo> _componentCodeInfos = new Dictionary<string, Structuring.ComponentCodeInfo>();
+        private readonly static IDictionary<string, Structuring.ComponentCodeInfo> _componentCodeInfos = new Dictionary<string, Structuring.ComponentCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(CComponent))]
         private static bool LoadComponentClass(Symboling.SymClass symClass, bool reload)
         {
             if (false == typeof(CComponent).IsAssignableFrom(symClass.ClassType))
             {
-                Debugger.Warn("The target class type '{0}' must be inherited from 'CComponent' interface, load it failed.", symClass.ClassName);
+                Debugger.Warn("The target class type '{%s}' must be inherited from 'CComponent' interface, load it failed.", symClass.ClassName);
                 return false;
             }
 
             Structuring.ComponentCodeInfo info = new Structuring.ComponentCodeInfo();
             info.ClassType = symClass.ClassType;
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
+            IList<Attribute> attrs = symClass.Attributes;
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
-                SystemType attrType = attr.GetType();
+                Attribute attr = attrs[n];
+                Type attrType = attr.GetType();
                 if (typeof(CComponentClassAttribute) == attrType)
                 {
                     CComponentClassAttribute _attr = (CComponentClassAttribute) attr;
@@ -91,7 +87,7 @@ namespace GameEngine.Loader
             }
 
             _componentCodeInfos.Add(info.ComponentName, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CComponent' code info '{0}' succeed from target class type '{1}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CComponent' code info '{%s}' succeed from target class type '{%s}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
 
             return true;
         }
@@ -104,10 +100,10 @@ namespace GameEngine.Loader
                 return;
             }
 
-            IList<SystemAttribute> attrs = symMethod.Attributes;
+            IList<Attribute> attrs = symMethod.Attributes;
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
+                Attribute attr = attrs[n];
 
                 LoadBaseMethodByAttributeType(symClass, codeInfo, symMethod, attr);
             }

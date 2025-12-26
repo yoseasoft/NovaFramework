@@ -22,14 +22,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
+using System;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集中原型对象的分析处理类，对业务层载入的所有原型对象类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集中原型对象的分析处理类
     internal static partial class BeanCodeLoader
     {
         /// <summary>
@@ -38,7 +35,7 @@ namespace GameEngine.Loader
         /// <param name="symClass">对象标记类型</param>
         /// <param name="codeInfo">对象结构信息</param>
         /// <param name="attribute">属性对象</param>
-        private static void LoadEntityClassByAttributeType(Symboling.SymClass symClass, Structuring.EntityCodeInfo codeInfo, SystemAttribute attribute)
+        private static void LoadEntityClassByAttributeType(Symboling.SymClass symClass, Structuring.EntityCodeInfo codeInfo, Attribute attribute)
         {
             LoadRefClassByAttributeType(symClass, codeInfo, attribute);
         }
@@ -50,7 +47,7 @@ namespace GameEngine.Loader
         /// <param name="codeInfo">对象结构信息</param>
         /// <param name="symMethod">函数标记对象</param>
         /// <param name="attribute">属性对象</param>
-        private static void LoadEntityMethodByAttributeType(Symboling.SymClass symClass, Structuring.EntityCodeInfo codeInfo, Symboling.SymMethod symMethod, SystemAttribute attribute)
+        private static void LoadEntityMethodByAttributeType(Symboling.SymClass symClass, Structuring.EntityCodeInfo codeInfo, Symboling.SymMethod symMethod, Attribute attribute)
         {
             LoadRefMethodByAttributeType(symClass, codeInfo, symMethod, attribute);
         }

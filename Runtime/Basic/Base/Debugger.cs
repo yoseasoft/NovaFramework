@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+
 namespace GameEngine
 {
     /// <summary>
@@ -412,7 +414,7 @@ namespace GameEngine
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="exception">异常实例</param>
-        public static void Throw(System.Exception exception)
+        public static void Throw(Exception exception)
         {
             NovaEngine.Debugger.Throw(exception);
         }
@@ -421,7 +423,7 @@ namespace GameEngine
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="type">异常类型</param>
-        public static void Throw(System.Type type)
+        public static void Throw(Type type)
         {
             NovaEngine.Debugger.Throw(type);
         }
@@ -431,7 +433,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="type">异常类型</param>
         /// <param name="message">消息内容</param>
-        public static void Throw(System.Type type, string message)
+        public static void Throw(Type type, string message)
         {
             NovaEngine.Debugger.Throw(type, message);
         }
@@ -442,7 +444,7 @@ namespace GameEngine
         /// <param name="type">异常类型</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
-        public static void Throw(System.Type type, string format, params object[] args)
+        public static void Throw(Type type, string format, params object[] args)
         {
             NovaEngine.Debugger.Throw(type, format, args);
         }
@@ -451,7 +453,7 @@ namespace GameEngine
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
         /// <typeparam name="T">异常类型</typeparam>
-        public static void Throw<T>() where T : System.Exception
+        public static void Throw<T>() where T : Exception
         {
             NovaEngine.Debugger.Throw<T>();
         }
@@ -461,7 +463,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="message">消息内容</param>
-        public static void Throw<T>(string message) where T : System.Exception
+        public static void Throw<T>(string message) where T : Exception
         {
             NovaEngine.Debugger.Throw<T>(message);
         }
@@ -472,7 +474,7 @@ namespace GameEngine
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
-        public static void Throw<T>(string format, params object[] args) where T : System.Exception
+        public static void Throw<T>(string format, params object[] args) where T : Exception
         {
             NovaEngine.Debugger.Throw<T>(format, args);
         }
@@ -522,7 +524,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="exception">异常实例</param>
-        public static void Throw(bool condition, System.Exception exception)
+        public static void Throw(bool condition, Exception exception)
         {
             NovaEngine.Debugger.Throw(condition, exception);
         }
@@ -532,7 +534,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="type">异常类型</param>
-        public static void Throw(bool condition, System.Type type)
+        public static void Throw(bool condition, Type type)
         {
             NovaEngine.Debugger.Throw(condition, type);
         }
@@ -543,7 +545,7 @@ namespace GameEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="type">异常类型</param>
         /// <param name="message">消息内容</param>
-        public static void Throw(bool condition, System.Type type, string message)
+        public static void Throw(bool condition, Type type, string message)
         {
             NovaEngine.Debugger.Throw(condition, type, message);
         }
@@ -555,7 +557,7 @@ namespace GameEngine
         /// <param name="type">异常类型</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
-        public static void Throw(bool condition, System.Type type, string format, params object[] args)
+        public static void Throw(bool condition, Type type, string format, params object[] args)
         {
             NovaEngine.Debugger.Throw(condition, type, format, args);
         }
@@ -565,7 +567,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="condition">条件表达式</param>
-        public static void Throw<T>(bool condition) where T : System.Exception
+        public static void Throw<T>(bool condition) where T : Exception
         {
             NovaEngine.Debugger.Throw<T>(condition);
         }
@@ -576,7 +578,7 @@ namespace GameEngine
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">消息内容</param>
-        public static void Throw<T>(bool condition, string message) where T : System.Exception
+        public static void Throw<T>(bool condition, string message) where T : Exception
         {
             NovaEngine.Debugger.Throw<T>(condition, message);
         }
@@ -588,7 +590,7 @@ namespace GameEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
-        public static void Throw<T>(bool condition, string format, params object[] args) where T : System.Exception
+        public static void Throw<T>(bool condition, string format, params object[] args) where T : Exception
         {
             NovaEngine.Debugger.Throw<T>(condition, format, args);
         }

@@ -22,12 +22,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
-using SystemBindingFlags = System.Reflection.BindingFlags;
 
 namespace GameEngine
 {
@@ -66,7 +63,7 @@ namespace GameEngine
         /// <summary>
         /// 日志输出通道分组的属性类型定义
         /// </summary>
-        internal class LogOutputGroupAttribute : SystemAttribute
+        internal class LogOutputGroupAttribute : Attribute
         {
             /// <summary>
             /// 日志分组启用状态标识
@@ -88,21 +85,21 @@ namespace GameEngine
         /// </summary>
         private static void InitLogOutputGroupSettings()
         {
-            SystemType classType = typeof(LogGroupTag);
-            FieldInfo[] fieldInfos = classType.GetFields(SystemBindingFlags.Public | SystemBindingFlags.Static);
+            Type classType = typeof(LogGroupTag);
+            FieldInfo[] fieldInfos = classType.GetFields(BindingFlags.Public | BindingFlags.Static);
             for (int n = 0; null != fieldInfos && n < fieldInfos.Length; ++n)
             {
                 FieldInfo fieldInfo = fieldInfos[n];
                 if (fieldInfo.IsLiteral)
                 {
-                    IEnumerable<SystemAttribute> e = fieldInfo.GetCustomAttributes();
-                    foreach (SystemAttribute attr in e)
+                    IEnumerable<Attribute> e = fieldInfo.GetCustomAttributes();
+                    foreach (Attribute attr in e)
                     {
                         if (typeof(LogOutputGroupAttribute) == attr.GetType())
                         {
                             LogOutputGroupAttribute _attr = (LogOutputGroupAttribute) attr;
 
-                            AddTargetOutputGroup(System.Convert.ToInt32(fieldInfo.GetValue(null)), fieldInfo.Name, _attr.Enabled);
+                            AddTargetOutputGroup(Convert.ToInt32(fieldInfo.GetValue(null)), fieldInfo.Name, _attr.Enabled);
                         }
                     }
                 }

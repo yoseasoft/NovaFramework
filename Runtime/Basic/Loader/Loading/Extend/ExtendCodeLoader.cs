@@ -24,14 +24,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemAttribute = System.Attribute;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -43,31 +39,32 @@ namespace GameEngine.Loader
         /// <summary>
         /// 加载扩展定义类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> _classLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private readonly static IDictionary<Type, Delegate> _classLoadCallbacks = new Dictionary<Type, Delegate>();
         /// <summary>
         /// 清理扩展定义类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> _classCleanupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private readonly static IDictionary<Type, Delegate> _classCleanupCallbacks = new Dictionary<Type, Delegate>();
         /// <summary>
         /// 查找扩展定义类结构信息相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> _codeInfoLookupCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private readonly static IDictionary<Type, Delegate> _codeInfoLookupCallbacks = new Dictionary<Type, Delegate>();
 
         /// <summary>
         /// 初始化针对所有扩展定义类声明的全部绑定回调接口
         /// </summary>
+        [Preserve]
         [CodeLoader.OnGeneralCodeLoaderInit]
         private static void InitAllExtendClassLoadingCallbacks()
         {
-            SystemType classType = typeof(ExtendCodeLoader);
-            SystemMethodInfo[] methods = classType.GetMethods(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static);
+            Type classType = typeof(ExtendCodeLoader);
+            MethodInfo[] methods = classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             for (int n = 0; n < methods.Length; ++n)
             {
-                SystemMethodInfo method = methods[n];
-                IEnumerable<SystemAttribute> e = method.GetCustomAttributes();
-                foreach (SystemAttribute attr in e)
+                MethodInfo method = methods[n];
+                IEnumerable<Attribute> e = method.GetCustomAttributes();
+                foreach (Attribute attr in e)
                 {
-                    SystemType attrType = attr.GetType();
+                    Type attrType = attr.GetType();
                     if (typeof(OnCodeLoaderClassLoadOfTargetAttribute) == attrType)
                     {
                         OnCodeLoaderClassLoadOfTargetAttribute _attr = (OnCodeLoaderClassLoadOfTargetAttribute) attr;
@@ -96,10 +93,11 @@ namespace GameEngine.Loader
         /// <summary>
         /// 清理针对所有扩展定义类声明的全部绑定回调接口
         /// </summary>
+        [Preserve]
         [CodeLoader.OnGeneralCodeLoaderCleanup]
         private static void CleanupAllExtendClassLoadingCallbacks()
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _classCleanupCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<Type, Delegate>> e = _classCleanupCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = e.Current.Value as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
@@ -119,8 +117,9 @@ namespace GameEngine.Loader
         /// <param name="symClass">对象标记类型</param>
         /// <param name="filterType">过滤对象类型</param>
         /// <returns>若给定类型满足匹配规则则返回true，否则返回false</returns>
+        [Preserve]
         [CodeLoader.OnGeneralCodeLoaderMatch]
-        private static bool IsExtendClassMatched(Symboling.SymClass symClass, SystemType filterType)
+        private static bool IsExtendClassMatched(Symboling.SymClass symClass, Type filterType)
         {
             // 存在过滤类型，则直接对比过滤类型即可
             if (null != filterType)
@@ -134,11 +133,11 @@ namespace GameEngine.Loader
                 return false;
             }
 
-            // IList<SystemAttribute> attrs = symClass.Attributes;
-            IList<SystemType> attrTypes = symClass.FeatureTypes;
+            // IList<Attribute> attrs = symClass.Attributes;
+            IList<Type> attrTypes = symClass.FeatureTypes;
             for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
-                SystemType attrType = attrTypes[n];
+                Type attrType = attrTypes[n];
                 // if (IsExtendClassCallbackExist(attr.GetType()))
                 if (IsExtendClassCallbackExist(attrType))
                 {
@@ -155,18 +154,17 @@ namespace GameEngine.Loader
         /// <param name="symClass">对象标记类型</param>
         /// <param name="reload">重载状态标识</param>
         /// <returns>若存在给定类型属性扩展定义类则返回对应处理结果，否则返回false</returns>
+        [Preserve]
         [CodeLoader.OnGeneralCodeLoaderLoad]
         private static bool LoadExtendClass(Symboling.SymClass symClass, bool reload)
         {
-            SystemDelegate callback = null;
-
-            // IList<SystemAttribute> attrs = symClass.Attributes;
-            IList<SystemType> attrTypes = symClass.FeatureTypes;
+            // IList<Attribute> attrs = symClass.Attributes;
+            IList<Type> attrTypes = symClass.FeatureTypes;
             for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
-                SystemType attrType = attrTypes[n];
-                // if (TryGetExtendClassCallbackForTargetContainer(attr.GetType(), out callback, _classLoadCallbacks))
-                if (TryGetExtendClassCallbackForTargetContainer(attrType, out callback, _classLoadCallbacks))
+                Type attrType = attrTypes[n];
+                // if (TryGetExtendClassCallbackForTargetContainer(attr.GetType(), out Delegate callback, _classLoadCallbacks))
+                if (TryGetExtendClassCallbackForTargetContainer(attrType, out Delegate callback, _classLoadCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
                     Debugger.Assert(null != handler, "Invalid extend class load handler.");
@@ -182,18 +180,17 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="symClass">对象标记类型</param>
         /// <returns>返回类型对应的结构信息</returns>
+        [Preserve]
         [CodeLoader.OnGeneralCodeLoaderLookup]
         private static Structuring.GeneralCodeInfo LookupExtendCodeInfo(Symboling.SymClass symClass)
         {
-            SystemDelegate callback = null;
-
-            // IList<SystemAttribute> attrs = symClass.Attributes;
-            IList<SystemType> attrTypes = symClass.FeatureTypes;
+            // IList<Attribute> attrs = symClass.Attributes;
+            IList<Type> attrTypes = symClass.FeatureTypes;
             for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
-                SystemType attrType = attrTypes[n];
-                // if (TryGetExtendClassCallbackForTargetContainer(attr.GetType(), out callback, _codeInfoLookupCallbacks))
-                if (TryGetExtendClassCallbackForTargetContainer(attrType, out callback, _codeInfoLookupCallbacks))
+                Type attrType = attrTypes[n];
+                // if (TryGetExtendClassCallbackForTargetContainer(attr.GetType(), out Delegate callback, _codeInfoLookupCallbacks))
+                if (TryGetExtendClassCallbackForTargetContainer(attrType, out Delegate callback, _codeInfoLookupCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;
                     Debugger.Assert(null != handler, "Invalid extend class lookup handler.");
@@ -209,9 +206,9 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <returns>若存在给定类型对应的回调句柄则返回true，否则返回false</returns>
-        private static bool IsExtendClassCallbackExist(SystemType targetType)
+        private static bool IsExtendClassCallbackExist(Type targetType)
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _classLoadCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<Type, Delegate>> e = _classLoadCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 // 这里的属性类型允许继承，因此不能直接作相等比较
@@ -231,11 +228,11 @@ namespace GameEngine.Loader
         /// <param name="callback">回调句柄</param>
         /// <param name="container">句柄列表容器</param>
         /// <returns>返回通过给定类型查找的回调句柄实例，若不存在则返回null</returns>
-        private static bool TryGetExtendClassCallbackForTargetContainer(SystemType targetType, out SystemDelegate callback, IDictionary<SystemType, SystemDelegate> container)
+        private static bool TryGetExtendClassCallbackForTargetContainer(Type targetType, out Delegate callback, IDictionary<Type, Delegate> container)
         {
             callback = null;
 
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = container.GetEnumerator();
+            IEnumerator<KeyValuePair<Type, Delegate>> e = container.GetEnumerator();
             while (e.MoveNext())
             {
                 // 这里的属性类型允许继承，因此不能直接作相等比较

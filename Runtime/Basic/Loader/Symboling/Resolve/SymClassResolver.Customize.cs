@@ -23,15 +23,12 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine.Loader.Symboling
 {
-    /// <summary>
-    /// 标记对象的解析类，对基础对象类的注入标记进行解析和构建
-    /// </summary>
+    /// 标记对象的解析类
     internal static partial class SymClassResolver
     {
         /// <summary>
@@ -82,10 +79,13 @@ namespace GameEngine.Loader.Symboling
 
         /// <summary>
         /// 给目标符号类绑定指定的特性标签
+        /// 与<see cref="AutobindFeatureTypeForTargetSymbol(SymClass, Type)"/>接口的区别在于，
+        /// 该接口是针对目标符号的类型进行特性绑定的，此类型并不一定是特定的符号类，也可能是某个抽象父类或接口。
+        /// 当传入类型不是一个可实例化的类型时，将对该类型的所有子类或实现类进行特性绑定
         /// </summary>
         /// <param name="targetType">符号类型</param>
         /// <param name="featureType">特性类型</param>
-        private static void AutobindFeatureTypeForTargetSymbol(SystemType targetType, SystemType featureType)
+        private static void AutobindFeatureTypeForTargetSymbol(Type targetType, Type featureType)
         {
             // 通过目标类型，获取到对应的符号类实例
             SymClass symClass = CodeLoader.GetSymClassByType(targetType);
@@ -99,7 +99,7 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         /// <param name="symClass">符号实例</param>
         /// <param name="featureType">特性类型</param>
-        private static void AutobindFeatureTypeForTargetSymbol(SymClass symClass, SystemType featureType)
+        private static void AutobindFeatureTypeForTargetSymbol(SymClass symClass, Type featureType)
         {
             Debugger.Log(LogGroupTag.CodeLoader, "对象类型解析：目标符号类型‘{%s}’动态绑定新的特性‘{%t}’成功。", symClass.ClassName, featureType);
 

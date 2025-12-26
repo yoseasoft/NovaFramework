@@ -23,8 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
-using SystemArray = System.Array;
+using System;
 
 namespace UnityEngine.Customize.Extension
 {
@@ -57,7 +56,7 @@ namespace UnityEngine.Customize.Extension
         /// <param name="self">源组件对象实例</param>
         /// <param name="type">目标组件类型</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static Component GetOrAddComponent(this Component self, SystemType type)
+        public static Component GetOrAddComponent(this Component self, Type type)
         {
             Component component = self.GetComponent(type);
             if (null == component)
@@ -260,7 +259,7 @@ namespace UnityEngine.Customize.Extension
             }
 
             T[] dst = new T[idx];
-            SystemArray.Copy(src, 0, dst, 0, idx);
+            Array.Copy(src, 0, dst, 0, idx);
 
             return dst;
         }
@@ -289,7 +288,7 @@ namespace UnityEngine.Customize.Extension
         /// <param name="self">源组件对象实例</param>
         /// <param name="type">目标组件类型</param>
         /// <returns>返回源组件对象实例</returns>
-        public static Component TryRemoveComponent(this Component self, SystemType type)
+        public static Component TryRemoveComponent(this Component self, Type type)
         {
             Component comp = self.GetComponent(type);
 
@@ -343,7 +342,7 @@ namespace UnityEngine.Customize.Extension
         /// <param name="self">源组件对象实例</param>
         /// <param name="type">目标组件类型</param>
         /// <returns>返回源组件对象实例</returns>
-        public static Component TryRemoveComponents(this Component self, SystemType type)
+        public static Component TryRemoveComponents(this Component self, Type type)
         {
             Component[] comps = self.GetComponents(type);
 

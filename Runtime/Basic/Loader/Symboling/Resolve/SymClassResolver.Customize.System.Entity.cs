@@ -25,13 +25,9 @@
 
 using System.Collections.Generic;
 
-using SystemType = System.Type;
-
 namespace GameEngine.Loader.Symboling
 {
-    /// <summary>
-    /// 标记对象的解析类，对基础对象类的注入标记进行解析和构建
-    /// </summary>
+    /// 标记对象的解析类
     internal static partial class SymClassResolver
     {
         /// <summary>

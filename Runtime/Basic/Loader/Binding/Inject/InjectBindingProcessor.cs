@@ -22,15 +22,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using SystemType = System.Type;
-using SystemDelegate = System.Delegate;
-using SystemAttribute = System.Attribute;
-using SystemAttributeTargets = System.AttributeTargets;
-using SystemMethodInfo = System.Reflection.MethodInfo;
-using SystemBindingFlags = System.Reflection.BindingFlags;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -42,34 +37,35 @@ namespace GameEngine.Loader
         /// <summary>
         /// 加载注入控制类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> _registerClassLoadCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private readonly static IDictionary<Type, Delegate> _registerClassLoadCallbacks = new Dictionary<Type, Delegate>();
         /// <summary>
         /// 清理注入控制类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<SystemType, SystemDelegate> _registerClassUnloadCallbacks = new Dictionary<SystemType, SystemDelegate>();
+        private readonly static IDictionary<Type, Delegate> _registerClassUnloadCallbacks = new Dictionary<Type, Delegate>();
 
         /// <summary>
         /// 初始化针对绑定类声明的全部回调接口
         /// </summary>
+        [Preserve]
         [CodeLoader.OnBindingProcessorInit]
         private static void InitAllCodeBindingCallbacks()
         {
-            SystemType classType = typeof(InjectController);
-            SystemMethodInfo[] methods = classType.GetMethods(SystemBindingFlags.Public | SystemBindingFlags.NonPublic | SystemBindingFlags.Static | SystemBindingFlags.Instance);
+            Type classType = typeof(InjectController);
+            MethodInfo[] methods = classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
             for (int n = 0; n < methods.Length; ++n)
             {
-                SystemMethodInfo method = methods[n];
-                IEnumerable<SystemAttribute> e = method.GetCustomAttributes();
-                foreach (SystemAttribute attr in e)
+                MethodInfo method = methods[n];
+                IEnumerable<Attribute> e = method.GetCustomAttributes();
+                foreach (Attribute attr in e)
                 {
-                    SystemType attrType = attr.GetType();
+                    Type attrType = attr.GetType();
                     if (typeof(OnInjectOfControlRegisterClassOfTargetAttribute) == attrType)
                     {
                         Debugger.Assert(method.IsStatic);
 
                         OnInjectOfControlRegisterClassOfTargetAttribute _attr = (OnInjectOfControlRegisterClassOfTargetAttribute) attr;
 
-                        SystemDelegate callback = method.CreateDelegate(typeof(CodeLoader.OnCodeTypeLoadedHandler));
+                        Delegate callback = method.CreateDelegate(typeof(CodeLoader.OnCodeTypeLoadedHandler));
                         _registerClassLoadCallbacks.Add(_attr.ClassType, callback);
 
                         CodeLoader.AddCodeTypeLoadedCallback(_attr.ClassType, callback as CodeLoader.OnCodeTypeLoadedHandler);
@@ -80,7 +76,7 @@ namespace GameEngine.Loader
 
                         OnInjectOfControlUnregisterClassOfTargetAttribute _attr = (OnInjectOfControlUnregisterClassOfTargetAttribute) attr;
 
-                        SystemDelegate callback = method.CreateDelegate(typeof(CodeLoader.OnCleanupAllCodeTypesHandler));
+                        Delegate callback = method.CreateDelegate(typeof(CodeLoader.OnCleanupAllCodeTypesHandler));
                         _registerClassUnloadCallbacks.Add(_attr.ClassType, callback);
                     }
                 }
@@ -90,10 +86,11 @@ namespace GameEngine.Loader
         /// <summary>
         /// 清理针对绑定类声明的全部回调接口
         /// </summary>
+        [Preserve]
         [CodeLoader.OnBindingProcessorCleanup]
         private static void CleanupAllCodeBindingCallbacks()
         {
-            IEnumerator<KeyValuePair<SystemType, SystemDelegate>> e = _registerClassUnloadCallbacks.GetEnumerator();
+            IEnumerator<KeyValuePair<Type, Delegate>> e = _registerClassUnloadCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
                 CodeLoader.OnCleanupAllCodeTypesHandler handler = e.Current.Value as CodeLoader.OnCleanupAllCodeTypesHandler;

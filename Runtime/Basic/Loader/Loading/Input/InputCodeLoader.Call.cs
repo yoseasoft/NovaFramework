@@ -34,7 +34,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 输入响应类的结构信息管理容器
         /// </summary>
-        private static IDictionary<Type, Structuring.InputCallCodeInfo> _inputCallCodeInfos = new Dictionary<Type, Structuring.InputCallCodeInfo>();
+        private readonly static IDictionary<Type, Structuring.InputCallCodeInfo> _inputCallCodeInfos = new Dictionary<Type, Structuring.InputCallCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(InputSystemAttribute))]
         private static bool LoadInputCallClass(Symboling.SymClass symClass, bool reload)
@@ -59,15 +59,13 @@ namespace GameEngine.Loader
                 {
                     Attribute attr = attrs[m];
 
-                    if (attr is OnInputDispatchCallAttribute)
+                    if (attr is OnInputDispatchCallAttribute onInputDispatchCallAttribute)
                     {
-                        OnInputDispatchCallAttribute _attr = (OnInputDispatchCallAttribute) attr;
-
                         Structuring.InputCallMethodTypeCodeInfo callMethodInfo = new Structuring.InputCallMethodTypeCodeInfo();
-                        callMethodInfo.TargetType = _attr.ClassType;
-                        callMethodInfo.InputCode = _attr.InputCode;
-                        callMethodInfo.OperationType = _attr.OperationType;
-                        callMethodInfo.InputDataType = _attr.InputDataType;
+                        callMethodInfo.TargetType = onInputDispatchCallAttribute.ClassType;
+                        callMethodInfo.InputCode = onInputDispatchCallAttribute.InputCode;
+                        callMethodInfo.OperationType = onInputDispatchCallAttribute.OperationType;
+                        callMethodInfo.InputDataType = onInputDispatchCallAttribute.InputDataType;
 
                         if (callMethodInfo.InputCode <= 0 && callMethodInfo.OperationType <= 0 && null == callMethodInfo.InputDataType)
                         {
@@ -83,7 +81,7 @@ namespace GameEngine.Loader
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                         if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                         {
-                            bool verificated = false;
+                            bool verificated;
                             if (null == callMethodInfo.TargetType)
                             {
                                 if (Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo))

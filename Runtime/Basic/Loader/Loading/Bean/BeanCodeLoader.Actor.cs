@@ -22,39 +22,35 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集中原型对象的分析处理类，对业务层载入的所有原型对象类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集中原型对象的分析处理类
     internal static partial class BeanCodeLoader
     {
         /// <summary>
         /// 对象类的结构信息管理容器
         /// </summary>
-        private static IDictionary<string, Structuring.ActorCodeInfo> _actorCodeInfos = new Dictionary<string, Structuring.ActorCodeInfo>();
+        private readonly static IDictionary<string, Structuring.ActorCodeInfo> _actorCodeInfos = new Dictionary<string, Structuring.ActorCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(CActor))]
         private static bool LoadActorClass(Symboling.SymClass symClass, bool reload)
         {
             if (false == typeof(CActor).IsAssignableFrom(symClass.ClassType))
             {
-                Debugger.Warn("The target class type '{0}' must be inherited from 'CActor' interface, load it failed.", symClass.FullName);
+                Debugger.Warn("The target class type '{%s}' must be inherited from 'CActor' interface, load it failed.", symClass.FullName);
                 return false;
             }
 
             Structuring.ActorCodeInfo info = new Structuring.ActorCodeInfo();
             info.ClassType = symClass.ClassType;
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
+            IList<Attribute> attrs = symClass.Attributes;
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
+                Attribute attr = attrs[n];
                 if (attr is CActorClassAttribute actorClassAttribute)
                 {
                     info.EntityName = actorClassAttribute.Name;
@@ -107,10 +103,10 @@ namespace GameEngine.Loader
                 return;
             }
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
+            IList<Attribute> attrs = symClass.Attributes;
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
+                Attribute attr = attrs[n];
 
                 LoadEntityMethodByAttributeType(symClass, codeInfo, symMethod, attr);
             }

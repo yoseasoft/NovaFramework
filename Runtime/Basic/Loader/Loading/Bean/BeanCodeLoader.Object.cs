@@ -23,40 +23,36 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集中原型对象的分析处理类，对业务层载入的所有原型对象类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集中原型对象的分析处理类
     internal static partial class BeanCodeLoader
     {
         /// <summary>
         /// 对象类的结构信息管理容器
         /// </summary>
-        private static IDictionary<string, Structuring.ObjectCodeInfo> _objectCodeInfos = new Dictionary<string, Structuring.ObjectCodeInfo>();
+        private readonly static IDictionary<string, Structuring.ObjectCodeInfo> _objectCodeInfos = new Dictionary<string, Structuring.ObjectCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(CObject))]
         private static bool LoadObjectClass(Symboling.SymClass symClass, bool reload)
         {
             if (false == typeof(CObject).IsAssignableFrom(symClass.ClassType))
             {
-                Debugger.Warn("The target class type '{0}' must be inherited from 'CObject' interface, load it failed.", symClass.FullName);
+                Debugger.Warn("The target class type '{%s}' must be inherited from 'CObject' interface, load it failed.", symClass.FullName);
                 return false;
             }
 
             Structuring.ObjectCodeInfo info = new Structuring.ObjectCodeInfo();
             info.ClassType = symClass.ClassType;
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
+            IList<Attribute> attrs = symClass.Attributes;
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
-                SystemType attrType = attr.GetType();
+                Attribute attr = attrs[n];
+                Type attrType = attr.GetType();
                 if (typeof(CObjectClassAttribute) == attrType)
                 {
                     CObjectClassAttribute _attr = (CObjectClassAttribute) attr;
@@ -91,13 +87,13 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The object name '{0}' was already existed, repeat added it failed.", info.ObjectName);
+                    Debugger.Warn("The object name '{%s}' was already existed, repeat added it failed.", info.ObjectName);
                     return false;
                 }
             }
 
             _objectCodeInfos.Add(info.ObjectName, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CObject' code info '{0}' succeed from target class type '{1}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load 'CObject' code info '{%s}' succeed from target class type '{%s}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
 
             return true;
         }
@@ -110,10 +106,10 @@ namespace GameEngine.Loader
                 return;
             }
 
-            IList<SystemAttribute> attrs = symClass.Attributes;
+            IList<Attribute> attrs = symClass.Attributes;
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
-                SystemAttribute attr = attrs[n];
+                Attribute attr = attrs[n];
 
                 LoadRefMethodByAttributeType(symClass, codeInfo, symMethod, attr);
             }

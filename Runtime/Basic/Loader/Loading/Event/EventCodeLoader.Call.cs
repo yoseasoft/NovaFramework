@@ -22,22 +22,18 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 消息事件分发调度对象的分析处理类，对业务层载入的所有消息事件调度类进行统一加载及分析处理
-    /// </summary>
+    /// 消息事件分发调度对象的分析处理类
     internal static partial class EventCodeLoader
     {
         /// <summary>
         /// 事件调用类的结构信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, Structuring.EventCallCodeInfo> _eventCallCodeInfos = new Dictionary<SystemType, Structuring.EventCallCodeInfo>();
+        private readonly static IDictionary<Type, Structuring.EventCallCodeInfo> _eventCallCodeInfos = new Dictionary<Type, Structuring.EventCallCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(EventSystemAttribute))]
         private static bool LoadEventCallClass(Symboling.SymClass symClass, bool reload)
@@ -53,14 +49,14 @@ namespace GameEngine.Loader
                 // 检查函数格式是否合法
                 if (false == symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCall(symMethod.MethodInfo))
                 {
-                    Debugger.Info(LogGroupTag.CodeLoader, "The event call method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    Debugger.Info(LogGroupTag.CodeLoader, "The event call method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     continue;
                 }
 
-                IList<SystemAttribute> attrs = symMethod.Attributes;
+                IList<Attribute> attrs = symMethod.Attributes;
                 for (int m = 0; null != attrs && m < attrs.Count; ++m)
                 {
-                    SystemAttribute attr = attrs[m];
+                    Attribute attr = attrs[m];
 
                     if (attr is OnEventDispatchCallAttribute)
                     {
@@ -126,13 +122,13 @@ namespace GameEngine.Loader
                             // 校验失败
                             if (false == verificated)
                             {
-                                Debugger.Error("Cannot verificated from method info '{0}' to event standard call, loaded this method failed.", symMethod.FullName);
+                                Debugger.Error("Cannot verificated from method info '{%s}' to event standard call, loaded this method failed.", symMethod.FullName);
                                 continue;
                             }
                         }
 
                         // if (false == method.IsStatic)
-                        // { Debugger.Warn("The event call method '{0} - {1}' must be static type, loaded it failed.", symClass.FullName, symMethod.MethodName); continue; }
+                        // { Debugger.Warn("The event call method '{%s}.{%s}' must be static type, loaded it failed.", symClass.FullName, symMethod.MethodName); continue; }
 
                         info.AddMethodType(callMethodInfo);
                     }
@@ -141,7 +137,7 @@ namespace GameEngine.Loader
 
             if (info.GetMethodTypeCount() <= 0)
             {
-                Debugger.Warn("The event call method types count must be great than zero, newly added class '{0}' failed.", info.ClassType.FullName);
+                Debugger.Warn("The event call method types count must be great than zero, newly added class '{%t}' failed.", info.ClassType);
                 return false;
             }
 
@@ -153,13 +149,13 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The event call '{0}' was already existed, repeat added it failed.", symClass.FullName);
+                    Debugger.Warn("The event call '{%s}' was already existed, repeat added it failed.", symClass.FullName);
                     return false;
                 }
             }
 
             _eventCallCodeInfos.Add(symClass.ClassType, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load event call code info '{0}' succeed from target class type '{1}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load event call code info '{%s}' succeed from target class type '{%s}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
 
             return true;
         }
@@ -173,7 +169,7 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLookupOfTarget(typeof(EventSystemAttribute))]
         private static Structuring.EventCallCodeInfo LookupEventCallCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<SystemType, Structuring.EventCallCodeInfo> pair in _eventCallCodeInfos)
+            foreach (KeyValuePair<Type, Structuring.EventCallCodeInfo> pair in _eventCallCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

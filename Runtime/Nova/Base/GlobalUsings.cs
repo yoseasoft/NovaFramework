@@ -25,5 +25,6 @@
 // 全局头文件导入
 //global using global::System;
 //global using global::System.Text;
+//global using global::System.Collections;
 //global using global::System.Collections.Generic;
 //global using global::System.Reflection;

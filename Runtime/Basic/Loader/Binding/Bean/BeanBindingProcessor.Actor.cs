@@ -22,13 +22,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemType = System.Type;
+using System;
 
 namespace GameEngine
 {
-    /// <summary>
     /// 角色模块封装的句柄对象类
-    /// </summary>
     public sealed partial class ActorHandler
     {
         /// <summary>
@@ -39,7 +37,7 @@ namespace GameEngine
         /// <param name="reload">重载标识</param>
         [UnityEngine.Scripting.Preserve]
         [OnBeanRegisterClassOfTarget(typeof(CActor))]
-        private static void LoadCodeType(SystemType targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
+        private static void LoadCodeType(Type targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
             if (targetType.IsInterface || targetType.IsAbstract)
             {

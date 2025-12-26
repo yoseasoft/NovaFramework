@@ -23,16 +23,13 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-using SystemType = System.Type;
-
 namespace GameEngine.Loader.Symboling
 {
-    /// <summary>
-    /// 标记对象的解析类，对基础对象类的注入标记进行解析和构建
-    /// </summary>
+    /// 标记对象的解析类
     internal static partial class SymClassResolver
     {
         /// <summary>
@@ -92,7 +89,7 @@ namespace GameEngine.Loader.Symboling
         /// </summary>
         /// <param name="classType">对象类型</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AddInstantiationClassResolver(SystemType classType)
+        public static void AddInstantiationClassResolver(Type classType)
         {
             if (false == typeof(ISymbolResolverOfInstantiationClass).IsAssignableFrom(classType))
             {
@@ -100,7 +97,7 @@ namespace GameEngine.Loader.Symboling
                 return;
             }
 
-            AddInstantiationClassResolver(System.Activator.CreateInstance(classType) as ISymbolResolverOfInstantiationClass);
+            AddInstantiationClassResolver(Activator.CreateInstance(classType) as ISymbolResolverOfInstantiationClass);
         }
 
         /// <summary>
@@ -134,7 +131,7 @@ namespace GameEngine.Loader.Symboling
         /// 移除可实例化对象类型解析流程
         /// </summary>
         /// <param name="classType">对象类型</param>
-        public static void RemoveInstantiationClassResolver(SystemType classType)
+        public static void RemoveInstantiationClassResolver(Type classType)
         {
             if (false == typeof(ISymbolResolverOfInstantiationClass).IsAssignableFrom(classType))
             {

@@ -24,12 +24,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Runtime.CompilerServices;
-
-using SystemType = System.Type;
-using SystemArray = System.Array;
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace UnityEngine.Customize.Extension
 {
@@ -152,7 +150,7 @@ namespace UnityEngine.Customize.Extension
         /// <returns>返回游戏对象当前所在的层级路径</returns>
         public static string GetHierarchyPath(this GameObject self)
         {
-            SystemStringBuilder sb = new SystemStringBuilder();
+            StringBuilder sb = new StringBuilder();
             IList<string> list = new List<string>();
 
             Transform transform = self.transform;
@@ -160,7 +158,7 @@ namespace UnityEngine.Customize.Extension
             while (true)
             {
                 list.Add(transform.name);
-                if (transform.parent != null)
+                if (null != transform.parent)
                 {
                     transform = transform.parent;
                 }
@@ -213,7 +211,7 @@ namespace UnityEngine.Customize.Extension
         /// <param name="self">源节点对象实例</param>
         /// <param name="type">组件类型</param>
         /// <returns>若存在给定类型的组件实例则返回true，否则返回false</returns>
-        public static bool HasComponent(this GameObject self, SystemType type)
+        public static bool HasComponent(this GameObject self, Type type)
         {
             return (null != self.GetComponent(type));
         }
@@ -242,7 +240,7 @@ namespace UnityEngine.Customize.Extension
         /// <param name="self">源节点对象实例</param>
         /// <param name="type">目标组件类型</param>
         /// <returns>返回对应类型的组件对象实例</returns>
-        public static Component GetOrAddComponent(this GameObject self, SystemType type)
+        public static Component GetOrAddComponent(this GameObject self, Type type)
         {
             Component component = self.GetComponent(type);
             if (null == component)
@@ -447,7 +445,7 @@ namespace UnityEngine.Customize.Extension
             }
 
             T[] dst = new T[idx];
-            SystemArray.Copy(src, 0, dst, 0, idx);
+            Array.Copy(src, 0, dst, 0, idx);
 
             return dst;
         }
@@ -476,7 +474,7 @@ namespace UnityEngine.Customize.Extension
         /// <param name="self">源节点对象实例</param>
         /// <param name="type">目标组件类型</param>
         /// <returns>返回源节点对象实例</returns>
-        public static GameObject TryRemoveComponent(this GameObject self, SystemType type)
+        public static GameObject TryRemoveComponent(this GameObject self, Type type)
         {
             Component comp = self.GetComponent(type);
 
@@ -530,7 +528,7 @@ namespace UnityEngine.Customize.Extension
         /// <param name="self">源节点对象实例</param>
         /// <param name="type">目标组件类型</param>
         /// <returns>返回源节点对象实例</returns>
-        public static GameObject TryRemoveComponents<T>(this GameObject self, SystemType type)
+        public static GameObject TryRemoveComponents<T>(this GameObject self, Type type)
         {
             Component[] comps = self.GetComponents(type);
 
@@ -575,7 +573,7 @@ namespace UnityEngine.Customize.Extension
         /// <param name="name">节点名称</param>
         /// <param name="componentTypes">组件类型列表</param>
         /// <returns>返回给定名称的节点对象实例</returns>
-        public static GameObject FindOrCreateGameObject(this GameObject self, string name, params SystemType[] componentTypes)
+        public static GameObject FindOrCreateGameObject(this GameObject self, string name, params Type[] componentTypes)
         {
             Transform trans = self.transform.Find(name);
             if (null == trans)
@@ -608,7 +606,7 @@ namespace UnityEngine.Customize.Extension
         /// <param name="name">节点名称</param>
         /// <param name="componentTypes">组件类型列表</param>
         /// <returns>返回新创建的节点对象实例</returns>
-        public static GameObject CreateGameObject(this GameObject self, string name, params SystemType[] componentTypes)
+        public static GameObject CreateGameObject(this GameObject self, string name, params Type[] componentTypes)
         {
             GameObject go = new GameObject(name, componentTypes).SetParent(self);
             return go;

@@ -23,7 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using SystemEnum = System.Enum;
+using System;
+
 using SystemLanguage = UnityEngine.SystemLanguage;
 
 namespace NovaEngine
@@ -40,9 +41,8 @@ namespace NovaEngine
         /// <returns>若转换成功则返回对应程序语言类型，否则返回未指定类型</returns>
         private static Language PlatformLanguageToApplicationLanguage(SystemLanguage lang)
         {
-            string name = SystemEnum.GetName(typeof(SystemLanguage), lang);
-            Language local_lang;
-            if (SystemEnum.TryParse<Language>(name, out local_lang))
+            string name = Enum.GetName(typeof(SystemLanguage), lang);
+            if (Enum.TryParse<Language>(name, out Language local_lang))
             {
                 return local_lang;
             }

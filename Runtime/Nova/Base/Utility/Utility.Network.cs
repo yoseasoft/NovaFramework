@@ -23,10 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Text;
 using System.Net;
 using System.Net.NetworkInformation;
-
-using SystemStringBuilder = System.Text.StringBuilder;
 
 namespace NovaEngine
 {
@@ -119,7 +118,7 @@ namespace NovaEngine
                     }
                 }
 
-                SystemStringBuilder sb = new SystemStringBuilder();
+                StringBuilder sb = new StringBuilder();
                 for (int n = 0; n < physicalAddress.Length; ++n)
                 {
                     sb.Append(physicalAddress[n]);

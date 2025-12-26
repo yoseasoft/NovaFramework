@@ -33,7 +33,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 注入实体类的结构信息管理容器
         /// </summary>
-        private static IDictionary<Type, Structuring.InjectCallCodeInfo> _injectCallCodeInfos = new Dictionary<Type, Structuring.InjectCallCodeInfo>();
+        private readonly static IDictionary<Type, Structuring.InjectCallCodeInfo> _injectCallCodeInfos = new Dictionary<Type, Structuring.InjectCallCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(InjectAttribute))]
         private static bool LoadInjectCallClass(Symboling.SymClass symClass, bool reload)
