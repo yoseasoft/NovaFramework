@@ -1,7 +1,7 @@
 {
   "name": "com.yoseasoft.novaframework",
   "displayName": "NovaFramework",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "unity": "2018.3",
   "unityRelease": "0f1",
   "description": "NovaEngine Framework Package",

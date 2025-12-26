@@ -25,10 +25,10 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Customize.Extension;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Customize.Extension;
 
 namespace NovaEngine.Module
 {

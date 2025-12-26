@@ -22,34 +22,31 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 程序集中注入控制对象的分析处理类，对业务层载入的所有注入控制类进行统一加载及分析处理
-    /// </summary>
+    /// 程序集中注入控制对象的分析处理类
     internal static partial class InjectCodeLoader
     {
         /// <summary>
         /// 注入实体类的结构信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, Structuring.InjectCallCodeInfo> _injectCallCodeInfos = new Dictionary<SystemType, Structuring.InjectCallCodeInfo>();
+        private static IDictionary<Type, Structuring.InjectCallCodeInfo> _injectCallCodeInfos = new Dictionary<Type, Structuring.InjectCallCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(InjectAttribute))]
         private static bool LoadInjectCallClass(Symboling.SymClass symClass, bool reload)
         {
             if (false == symClass.IsInstantiate)
             {
-                Debugger.Error("The inject call class '{0}' must be instantiable class, loaded it failed.", symClass.FullName);
+                Debugger.Error("The inject call class '{%s}' must be instantiable class, loaded it failed.", symClass.FullName);
                 return false;
             }
 
             Structuring.InjectCallCodeInfo info = new Structuring.InjectCallCodeInfo();
             info.ClassType = symClass.ClassType;
-            info.BehaviourType = AspectBehaviour.AutobindBehaviourTypeOfBeanExtensionMethod;
+            info.BehaviourType = AspectBehaviour.DefaultBehaviourTypeForAutomaticallyInjectedOfBeanExtensionMethod;
 
             if (_injectCallCodeInfos.ContainsKey(symClass.ClassType))
             {
@@ -59,13 +56,13 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The inject call '{0}' was already existed, repeat added it failed.", symClass.FullName);
+                    Debugger.Warn("The inject call '{%s}' was already existed, repeat added it failed.", symClass.FullName);
                     return false;
                 }
             }
 
             _injectCallCodeInfos.Add(symClass.ClassType, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load inject call code info '{0}' succeed from target class type '{1}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load inject call code info '{%s}' succeed from target class type '{%s}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
 
             return true;
         }
@@ -79,7 +76,7 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLookupOfTarget(typeof(InjectAttribute))]
         private static Structuring.InjectCallCodeInfo LookupInjectCallCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<SystemType, Structuring.InjectCallCodeInfo> pair in _injectCallCodeInfos)
+            foreach (KeyValuePair<Type, Structuring.InjectCallCodeInfo> pair in _injectCallCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

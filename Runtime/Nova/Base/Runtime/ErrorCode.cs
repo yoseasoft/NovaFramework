@@ -23,8 +23,8 @@
 /// -------------------------------------------------------------------------------
 
 using System;
-using System.Reflection;
 using System.Customize.Extension;
+using System.Reflection;
 
 namespace NovaEngine
 {

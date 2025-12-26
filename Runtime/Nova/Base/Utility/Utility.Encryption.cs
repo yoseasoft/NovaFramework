@@ -24,9 +24,9 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Customize.Extension;
 using System.IO;
 using System.Security.Cryptography;
-using System.Customize.Extension;
 
 namespace NovaEngine
 {

@@ -24,8 +24,8 @@
 /// -------------------------------------------------------------------------------
 
 using System;
-using System.Runtime.InteropServices;
 using System.Customize.Extension;
+using System.Runtime.InteropServices;
 
 namespace NovaEngine.ObjectPool
 {

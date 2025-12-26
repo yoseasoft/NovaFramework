@@ -24,11 +24,11 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Customize.Extension;
+using System.Linq.Expressions;
 using System.Text;
 using System.Reflection;
-using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
-using System.Customize.Extension;
 
 namespace NovaEngine
 {

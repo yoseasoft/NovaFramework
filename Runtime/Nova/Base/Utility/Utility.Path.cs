@@ -24,10 +24,10 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Customize.Extension;
 using System.IO;
 using System.Text;
 using System.Runtime.CompilerServices;
-using System.Customize.Extension;
 
 using UnityTextAsset = UnityEngine.TextAsset;
 using UnityResources = UnityEngine.Resources;

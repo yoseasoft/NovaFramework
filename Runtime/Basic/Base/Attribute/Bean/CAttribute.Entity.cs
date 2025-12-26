@@ -104,5 +104,31 @@ namespace GameEngine
             _priority = priority;
             _activationBehaviourType = activationBehaviourType;
         }
+
+        /// <summary>
+        /// 重写 Equals 方法，基于值进行比较
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            // 1. 检查是否为同一个对象（引用相等）
+            if (ReferenceEquals(this, obj)) return true;
+            // 2. 检查对象是否为 null 或类型不同
+            if (obj is null || this.GetType() != obj.GetType()) return false;
+
+            // 3. 转换为当前类型后，比较所有关键字段的值
+            CComponentAutomaticActivationOfEntityAttribute other = (CComponentAutomaticActivationOfEntityAttribute) obj;
+            return _referenceType == other._referenceType &&
+                   _priority == other._priority &&
+                   _activationBehaviourType == other._activationBehaviourType;
+        }
+
+        /// <summary>
+        /// 重写 GetHashCode 方法，必须与 Equals 逻辑保持一致
+        /// </summary>
+        public override int GetHashCode()
+        {
+            // 使用 HashCode.Combine 来组合多个字段的哈希值，这是一个推荐的做法
+            return HashCode.Combine(_referenceType, _priority, _activationBehaviourType);
+        }
     }
 }

@@ -76,6 +76,32 @@ namespace GameEngine
             _opcode = opcode;
             _messageType = messageType;
         }
+
+        /// <summary>
+        /// 重写 Equals 方法，基于值进行比较
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            // 1. 检查是否为同一个对象（引用相等）
+            if (ReferenceEquals(this, obj)) return true;
+            // 2. 检查对象是否为 null 或类型不同
+            if (obj is null || this.GetType() != obj.GetType()) return false;
+
+            // 3. 转换为当前类型后，比较所有关键字段的值
+            OnMessageDispatchCallAttribute other = (OnMessageDispatchCallAttribute) obj;
+            return _classType == other._classType &&
+                   _opcode == other._opcode &&
+                   _messageType == other._messageType;
+        }
+
+        /// <summary>
+        /// 重写 GetHashCode 方法，必须与 Equals 逻辑保持一致
+        /// </summary>
+        public override int GetHashCode()
+        {
+            // 使用 HashCode.Combine 来组合多个字段的哈希值，这是一个推荐的做法
+            return HashCode.Combine(_classType, _opcode, _messageType);
+        }
     }
 
     /// <summary>
@@ -118,6 +144,31 @@ namespace GameEngine
             _opcode = opcode;
             _messageType = messageType;
             _behaviourType = behaviourType;
+        }
+
+        /// <summary>
+        /// 重写 Equals 方法，基于值进行比较
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            // 1. 检查是否为同一个对象（引用相等）
+            if (ReferenceEquals(this, obj)) return true;
+            // 2. 检查对象是否为 null 或类型不同
+            if (obj is null || this.GetType() != obj.GetType()) return false;
+
+            // 3. 转换为当前类型后，比较所有关键字段的值
+            MessageListenerBindingOfTargetAttribute other = (MessageListenerBindingOfTargetAttribute) obj;
+            return _opcode == other._opcode &&
+                   _messageType == other._messageType; // && _behaviourType == other._behaviourType;
+        }
+
+        /// <summary>
+        /// 重写 GetHashCode 方法，必须与 Equals 逻辑保持一致
+        /// </summary>
+        public override int GetHashCode()
+        {
+            // 使用 HashCode.Combine 来组合多个字段的哈希值，这是一个推荐的做法
+            return HashCode.Combine(_opcode, _messageType); // , _behaviourType);
         }
     }
 }

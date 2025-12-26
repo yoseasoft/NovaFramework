@@ -23,22 +23,18 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-
-using SystemType = System.Type;
-using SystemAttribute = System.Attribute;
 
 namespace GameEngine.Loader
 {
-    /// <summary>
-    /// 输入响应分发调度对象的分析处理类，对业务层载入的所有输入响应调度类进行统一加载及分析处理
-    /// </summary>
+    /// 输入响应分发调度对象的分析处理类
     internal static partial class InputCodeLoader
     {
         /// <summary>
         /// 输入响应类的结构信息管理容器
         /// </summary>
-        private static IDictionary<SystemType, Structuring.InputCallCodeInfo> _inputCallCodeInfos = new Dictionary<SystemType, Structuring.InputCallCodeInfo>();
+        private static IDictionary<Type, Structuring.InputCallCodeInfo> _inputCallCodeInfos = new Dictionary<Type, Structuring.InputCallCodeInfo>();
 
         [OnCodeLoaderClassLoadOfTarget(typeof(InputSystemAttribute))]
         private static bool LoadInputCallClass(Symboling.SymClass symClass, bool reload)
@@ -54,14 +50,14 @@ namespace GameEngine.Loader
                 // 检查函数格式是否合法
                 if (false == symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCall(symMethod.MethodInfo))
                 {
-                    Debugger.Info(LogGroupTag.CodeLoader, "The input call method '{0}.{1}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    Debugger.Info(LogGroupTag.CodeLoader, "The input call method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     continue;
                 }
 
-                IList<SystemAttribute> attrs = symMethod.Attributes;
+                IList<Attribute> attrs = symMethod.Attributes;
                 for (int m = 0; null != attrs && m < attrs.Count; ++m)
                 {
-                    SystemAttribute attr = attrs[m];
+                    Attribute attr = attrs[m];
 
                     if (attr is OnInputDispatchCallAttribute)
                     {
@@ -128,13 +124,13 @@ namespace GameEngine.Loader
                             // 校验失败
                             if (false == verificated)
                             {
-                                Debugger.Error("Cannot verificated from method info '{0}' to input listener call, loaded this method failed.", symMethod.FullName);
+                                Debugger.Error("Cannot verificated from method info '{%s}' to input listener call, loaded this method failed.", symMethod.FullName);
                                 continue;
                             }
                         }
 
                         // if (false == method.IsStatic)
-                        // { Debugger.Warn("The input call method '{0} - {1}' must be static type, loaded it failed.", symClass.FullName, symMethod.MethodName); continue; }
+                        // { Debugger.Warn("The input call method '{%s}.{%s}' must be static type, loaded it failed.", symClass.FullName, symMethod.MethodName); continue; }
 
                         info.AddMethodType(callMethodInfo);
                     }
@@ -143,7 +139,7 @@ namespace GameEngine.Loader
 
             if (info.GetMethodTypeCount() <= 0)
             {
-                Debugger.Warn("The input call method types count must be great than zero, newly added class '{0}' failed.", info.ClassType.FullName);
+                Debugger.Warn("The input call method types count must be great than zero, newly added class '{%t}' failed.", info.ClassType);
                 return false;
             }
 
@@ -155,13 +151,13 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The input call '{0}' was already existed, repeat added it failed.", symClass.FullName);
+                    Debugger.Warn("The input call '{%s}' was already existed, repeat added it failed.", symClass.FullName);
                     return false;
                 }
             }
 
             _inputCallCodeInfos.Add(symClass.ClassType, info);
-            Debugger.Log(LogGroupTag.CodeLoader, "Load input call code info '{0}' succeed from target class type '{1}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
+            Debugger.Log(LogGroupTag.CodeLoader, "Load input call code info '{%s}' succeed from target class type '{%s}'.", CodeLoaderUtils.ToString(info), symClass.FullName);
 
             return true;
         }
@@ -175,7 +171,7 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLookupOfTarget(typeof(InputSystemAttribute))]
         private static Structuring.InputCallCodeInfo LookupInputCallCodeInfo(Symboling.SymClass symClass)
         {
-            foreach (KeyValuePair<SystemType, Structuring.InputCallCodeInfo> pair in _inputCallCodeInfos)
+            foreach (KeyValuePair<Type, Structuring.InputCallCodeInfo> pair in _inputCallCodeInfos)
             {
                 if (pair.Value.ClassType == symClass.ClassType)
                 {

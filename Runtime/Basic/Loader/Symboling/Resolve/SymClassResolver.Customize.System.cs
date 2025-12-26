@@ -68,17 +68,43 @@ namespace GameEngine.Loader.Symboling
                     {
                         AspectBehaviourType aspectBehaviourType = AspectController.Instance.GetAspectBehaviourTypeByName(aspectCallAttribute.MethodName);
 
+                        /**
+                         * 2025-12-02：
+                         * 扩展注入方式，由原本针对指定类型的注入，修改为
+                         * 在行为注册时，若目标对象为抽象父类或接口，则其所有的子类或实现类，都将注入该切面行为
+                         *
+                         * // 通过扩展的目标类型，获取到对应的符号类实例
+                         * SymClass extensionTargetClass = CodeLoader.GetSymClassByType(method.ExtensionParameterType);
+                         * Debugger.Assert(null != extensionTargetClass, "Invalid extension target type.");
+                         *
+                         * // 将切面行为类型附加到扩展的目标对象上
+                         * extensionTargetClass.AddAspectBehaviourType(aspectBehaviourType);
+                         */
+
                         // Extend访问类型的切面函数，将返回Unknown类型
                         if (AspectBehaviourType.Unknown != aspectBehaviourType)
                         {
-                            // 通过扩展的目标类型，获取到对应的符号类实例
-                            SymClass extensionTargetClass = CodeLoader.GetSymClassByType(method.ExtensionParameterType);
-                            Debugger.Assert(null != extensionTargetClass, "Invalid extension target type.");
+                            if (false == NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(method.ExtensionParameterType))
+                            {
+                                IList<SymClass> extensionTargetClasses = CodeLoader.FindAllSymClassesByInterfaceType(method.ExtensionParameterType);
 
-                            // 将切面行为类型附加到扩展的目标对象上
-                            extensionTargetClass.AddAspectBehaviourType(aspectBehaviourType);
+                                for (int k = 0; null != extensionTargetClasses && k < extensionTargetClasses.Count; ++k)
+                                {
+                                    SymClass extensionTargetClass = extensionTargetClasses[k];
 
-                            // Debugger.Log(LogGroupTag.CodeLoader, "新增切面行为类型‘{%i}’到目标对象实例‘{%s}’", aspectBehaviourType, extensionTargetClass.ClassName);
+                                    // 将切面行为类型附加到扩展的目标对象上
+                                    extensionTargetClass.AddAspectBehaviourType(aspectBehaviourType);
+                                }
+                            }
+                            else
+                            {
+                                // 通过扩展的目标类型，获取到对应的符号类实例
+                                SymClass extensionTargetClass = CodeLoader.GetSymClassByType(method.ExtensionParameterType);
+                                Debugger.Assert(null != extensionTargetClass, "Invalid extension target type.");
+
+                                // 将切面行为类型附加到扩展的目标对象上
+                                extensionTargetClass.AddAspectBehaviourType(aspectBehaviourType);
+                            }
                         }
                         else
                         {
@@ -88,7 +114,7 @@ namespace GameEngine.Loader.Symboling
                         on_aspect_supported = true;
                     }
 
-                    else if (method.HasAttribute(typeof(InputResponseBindingOfTargetAttribute)))
+                    else if (method.HasAttribute(typeof(InputResponseBindingOfTargetAttribute), true))
                     {
                         // 激活扩展的目标类型的输入转发特性
                         AutobindFeatureTypeForTargetSymbol(method.ExtensionParameterType, typeof(InputActivationAttribute));
@@ -96,7 +122,7 @@ namespace GameEngine.Loader.Symboling
                         on_extend_supported = true;
                     }
 
-                    else if (method.HasAttribute(typeof(EventSubscribeBindingOfTargetAttribute)))
+                    else if (method.HasAttribute(typeof(EventSubscribeBindingOfTargetAttribute), true))
                     {
                         // 激活扩展的目标类型的事件转发特性
                         AutobindFeatureTypeForTargetSymbol(method.ExtensionParameterType, typeof(EventActivationAttribute));
@@ -104,7 +130,7 @@ namespace GameEngine.Loader.Symboling
                         on_extend_supported = true;
                     }
 
-                    else if (method.HasAttribute(typeof(MessageListenerBindingOfTargetAttribute)))
+                    else if (method.HasAttribute(typeof(MessageListenerBindingOfTargetAttribute), true))
                     {
                         // 激活扩展的目标类型的消息转发特性
                         AutobindFeatureTypeForTargetSymbol(method.ExtensionParameterType, typeof(MessageActivationAttribute));
@@ -121,24 +147,24 @@ namespace GameEngine.Loader.Symboling
                 {
                     if (!on_input_system)
                     {
-                        on_input_system |= method.HasAttribute(typeof(OnInputDispatchCallAttribute));
+                        on_input_system |= method.HasAttribute(typeof(OnInputDispatchCallAttribute), true);
                     }
 
                     if (!on_event_system)
                     {
-                        on_event_system |= method.HasAttribute(typeof(OnEventDispatchCallAttribute));
+                        on_event_system |= method.HasAttribute(typeof(OnEventDispatchCallAttribute), true);
                     }
 
                     if (!on_message_system)
                     {
-                        on_message_system |= method.HasAttribute(typeof(OnMessageDispatchCallAttribute));
+                        on_message_system |= method.HasAttribute(typeof(OnMessageDispatchCallAttribute), true);
                     }
                 }
 
                 if (!on_api_system)
                 {
-                    on_api_system |= method.HasAttribute(typeof(OnApiDispatchCallAttribute));
-                    // on_api_system |= method.HasAttribute(typeof(ApiFunctionBindingOfTargetAttribute));
+                    on_api_system |= method.HasAttribute(typeof(OnApiDispatchCallAttribute), true);
+                    // on_api_system |= method.HasAttribute(typeof(ApiFunctionBindingOfTargetAttribute), true);
                 }
             }
 

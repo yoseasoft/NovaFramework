@@ -25,9 +25,9 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Customize.Extension;
 using System.Text;
 using System.Security.Cryptography;
-using System.Customize.Extension;
 
 using SystemDateTime = System.DateTime;
 

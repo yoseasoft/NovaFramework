@@ -24,8 +24,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Customize.Extension;
+using System.Runtime.CompilerServices;
 using UnityEngine.Customize.Extension;
 
 using UnityObject = UnityEngine.Object;

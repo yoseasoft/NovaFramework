@@ -25,11 +25,11 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Customize.Extension;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml;
-using System.Customize.Extension;
 using Cysharp.Threading.Tasks;
 
 namespace GameEngine.Loader

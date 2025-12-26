@@ -24,10 +24,10 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Customize.Extension;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
-using System.Customize.Extension;
 
 namespace NovaEngine
 {

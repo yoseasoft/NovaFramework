@@ -31,9 +31,9 @@ namespace GameEngine
     internal static class AspectBehaviour
     {
         /// <summary>
-        /// 原型对象扩展接口自动绑定的默认行为类型
+        /// 原型对象扩展函数自动注入的默认行为类型
         /// </summary>
-        public const AspectBehaviourType AutobindBehaviourTypeOfBeanExtensionMethod = AspectBehaviourType.Initialize;
+        public const AspectBehaviourType DefaultBehaviourTypeForAutomaticallyInjectedOfBeanExtensionMethod = AspectBehaviourType.Initialize;
 
         /// <summary>
         /// 检测指定行为类型是否为加载阶段使用的行为类型
