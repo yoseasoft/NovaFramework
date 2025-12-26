@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -40,6 +41,7 @@ namespace GameEngine
         /// <summary>
         /// 事件订阅绑定管理模块的初始化函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleInitCallback]
         private void InitializeForEventSubscribeBinding()
         {
@@ -50,6 +52,7 @@ namespace GameEngine
         /// <summary>
         /// 事件订阅绑定管理模块的清理函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleCleanupCallback]
         private void CleanupForEventSubscribeBinding()
         {
@@ -64,6 +67,7 @@ namespace GameEngine
         /// <summary>
         /// 事件订阅绑定管理模块的重载函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleReloadCallback]
         private void ReloadForEventSubscribeBinding()
         {

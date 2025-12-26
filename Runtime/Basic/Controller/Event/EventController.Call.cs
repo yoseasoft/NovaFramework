@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -43,6 +44,7 @@ namespace GameEngine
         /// <summary>
         /// 事件分发回调管理模块的初始化函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleInitCallback]
         private void InitializeForEventCall()
         {
@@ -55,6 +57,7 @@ namespace GameEngine
         /// <summary>
         /// 事件分发回调管理模块的清理函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleCleanupCallback]
         private void CleanupForEventCall()
         {
@@ -72,6 +75,7 @@ namespace GameEngine
         /// <summary>
         /// 事件分发回调管理模块的重载函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleReloadCallback]
         private void ReloadForEventCall()
         {
@@ -84,8 +88,7 @@ namespace GameEngine
         /// <param name="args">事件参数列表</param>
         private void OnEventDistributeCallDispatched(int eventID, params object[] args)
         {
-            IList<EventCallMethodInfo> list = null;
-            if (_eventIdDistributeCallInfos.TryGetValue(eventID, out list))
+            if (_eventIdDistributeCallInfos.TryGetValue(eventID, out IList<EventCallMethodInfo> list))
             {
                 IEnumerator<EventCallMethodInfo> e_info = list.GetEnumerator();
                 while (e_info.MoveNext())
@@ -120,8 +123,7 @@ namespace GameEngine
         {
             Type eventDataType = eventData.GetType();
 
-            IList<EventCallMethodInfo> list = null;
-            if (_eventDataDistributeCallInfos.TryGetValue(eventDataType, out list))
+            if (_eventDataDistributeCallInfos.TryGetValue(eventDataType, out IList<EventCallMethodInfo> list))
             {
                 IEnumerator<EventCallMethodInfo> e_info = list.GetEnumerator();
                 while (e_info.MoveNext())

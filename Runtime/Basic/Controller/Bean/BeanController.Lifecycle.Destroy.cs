@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -33,11 +34,12 @@ namespace GameEngine
         /// <summary>
         /// 原型对象销毁通知管理容器
         /// </summary>
-        private IList<IBean> _beanDestroyNotificationList = null;
+        private IList<IBean> _beanDestroyNotificationList;
 
         /// <summary>
         /// 原型管理对象的销毁流程初始化通知接口函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleInitCallback]
         private void OnBeanDestroyInitialize()
         {
@@ -48,6 +50,7 @@ namespace GameEngine
         /// <summary>
         /// 原型管理对象的销毁流程清理通知接口函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleCleanupCallback]
         private void OnBeanDestroyCleanup()
         {
@@ -59,6 +62,7 @@ namespace GameEngine
         /// <summary>
         /// 原型管理对象的销毁流程处理接口函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleDumpCallback]
         private void OnBeanDestroyDump()
         {

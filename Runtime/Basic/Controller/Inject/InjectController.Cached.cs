@@ -23,6 +23,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -32,15 +33,16 @@ namespace GameEngine
         /// <summary>
         /// 多例模式的实体对象的缓存管理容器
         /// </summary>
-        private IList<CBean> _multipleBeanInstanceCaches = null;
+        private IList<CBean> _multipleBeanInstanceCaches;
         /// <summary>
         /// 单例模式的实体对象的缓存管理容器
         /// </summary>
-        private static IDictionary<string, CBean> _singletonBeanInstanceCaches = null;
+        private static IDictionary<string, CBean> _singletonBeanInstanceCaches;
 
         /// <summary>
         /// 实体注入缓存相关的初始化回调函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleInitCallback]
         private void InitInjectBeanCaches()
         {
@@ -53,6 +55,7 @@ namespace GameEngine
         /// <summary>
         /// 实体注入缓存相关的清理回调函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleCleanupCallback]
         private void CleanupInjectBeanCaches()
         {

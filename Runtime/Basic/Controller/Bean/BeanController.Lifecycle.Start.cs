@@ -23,6 +23,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -32,11 +33,12 @@ namespace GameEngine
         /// <summary>
         /// 原型对象开启通知管理容器
         /// </summary>
-        private IList<IBean> _beanStartNotificationList = null;
+        private IList<IBean> _beanStartNotificationList;
 
         /// <summary>
         /// 原型管理对象的开启流程初始化通知接口函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleInitCallback]
         private void OnBeanStartInitialize()
         {
@@ -47,6 +49,7 @@ namespace GameEngine
         /// <summary>
         /// 原型管理对象的开启流程清理通知接口函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleCleanupCallback]
         private void OnBeanStartCleanup()
         {
@@ -58,6 +61,7 @@ namespace GameEngine
         /// <summary>
         /// 原型管理对象的开启流程处理接口函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleUpdateCallback]
         private void OnBeanStartUpdate()
         {

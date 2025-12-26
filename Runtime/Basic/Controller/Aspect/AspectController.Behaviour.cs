@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -34,11 +35,12 @@ namespace GameEngine
         /// <summary>
         /// 切面行为的名称与类型关联映射容器
         /// </summary>
-        private IDictionary<string, AspectBehaviourType> _behaviourNameTypes = null;
+        private IDictionary<string, AspectBehaviourType> _behaviourNameTypes;
 
         /// <summary>
         /// 切面行为相关内容的初始化回调函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleInitCallback]
         private void InitializeForAspectBehaviour()
         {
@@ -51,6 +53,7 @@ namespace GameEngine
         /// <summary>
         /// 切面行为相关内容的清理回调函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleCleanupCallback]
         private void CleanupForAspectBehaviour()
         {

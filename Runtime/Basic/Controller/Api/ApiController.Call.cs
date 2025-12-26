@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -75,11 +76,12 @@ namespace GameEngine
         /// <summary>
         /// 功能调度接口的数据结构容器
         /// </summary>
-        private IDictionary<string, ApiCallInfo> _functionCallInfos = null;
+        private IDictionary<string, ApiCallInfo> _functionCallInfos;
 
         /// <summary>
         /// 编程接口调度相关内容的初始化回调函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleInitCallback]
         private void InitializeForApiCall()
         {
@@ -90,6 +92,7 @@ namespace GameEngine
         /// <summary>
         /// 编程接口调度相关内容的清理回调函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleCleanupCallback]
         private void CleanupForApiCall()
         {

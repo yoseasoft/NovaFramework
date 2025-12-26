@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 using SystemAction_object = System.Action<object>;
 
@@ -63,20 +64,21 @@ namespace GameEngine
         /// <summary>
         /// 通用类型切点回调的数据结构容器
         /// </summary>
-        private IDictionary<Type, IList<AspectCallInfo>> _genericTypeCallInfos = null;
+        private IDictionary<Type, IList<AspectCallInfo>> _genericTypeCallInfos;
 
         /// <summary>
         /// 通用类型的回调句柄对应标识的映射容器
         /// </summary>
-        private IDictionary<Type, IDictionary<AspectAccessType, bool>> _genericTypeCallStatus = null;
+        private IDictionary<Type, IDictionary<AspectAccessType, bool>> _genericTypeCallStatus;
         /// <summary>
         /// 通用类型的回调句柄管理容器
         /// </summary>
-        private IDictionary<Type, IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>>> _genericTypeCachedCallbacks = null;
+        private IDictionary<Type, IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>>> _genericTypeCachedCallbacks;
 
         /// <summary>
         /// 切面回调相关内容的初始化回调函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleInitCallback]
         private void InitializeForAspectCall()
         {
@@ -89,6 +91,7 @@ namespace GameEngine
         /// <summary>
         /// 切面回调相关内容的清理回调函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleCleanupCallback]
         private void CleanupForAspectCall()
         {
@@ -312,8 +315,7 @@ namespace GameEngine
         {
             callback = null;
 
-            bool result = false;
-            if (false == TryGetCachedAspectCallStatus(targetType, accessType, out result))
+            if (false == TryGetCachedAspectCallStatus(targetType, accessType, out bool result))
             {
                 result = TryCachedAspectCallbacks(targetType);
             }
@@ -373,9 +375,7 @@ namespace GameEngine
                 return;
             }
 
-            IDictionary<string, SystemAction_object> callbacks = null;
-
-            if (false == container.TryGetValue(accessType, out callbacks))
+            if (false == container.TryGetValue(accessType, out IDictionary<string, SystemAction_object> callbacks))
             {
                 callbacks = new Dictionary<string, SystemAction_object>();
                 container.Add(accessType, callbacks);
@@ -480,7 +480,7 @@ namespace GameEngine
 
                 foreach (AspectCallInfo info in infos)
                 {
-                    IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>> container = null;
+                    IDictionary<AspectAccessType, IDictionary<string, SystemAction_object>> container;
                     container = GetGenericTypeCachedCallbackByType(targetType);
 
                     CombineAspectCallbackByType(targetType, info.MethodName, info.AccessType, info.Callback, container);

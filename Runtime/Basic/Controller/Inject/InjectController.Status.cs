@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -33,11 +34,12 @@ namespace GameEngine
         /// <summary>
         /// 对象激活状态管理容器
         /// </summary>
-        private IDictionary<Type, AspectBehaviourType> _objectActivationStatus = null;
+        private IDictionary<Type, AspectBehaviourType> _objectActivationStatus;
 
         /// <summary>
         /// 对象注入状态标识的初始化回调函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleInitCallback]
         private void InitInjectObjectStatuss()
         {
@@ -48,6 +50,7 @@ namespace GameEngine
         /// <summary>
         /// 对象注入状态标识的清理回调函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleCleanupCallback]
         private void CleanupInjectObjectStatus()
         {

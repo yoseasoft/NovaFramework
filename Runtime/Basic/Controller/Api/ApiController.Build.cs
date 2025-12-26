@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -48,11 +49,12 @@ namespace GameEngine
         /// <summary>
         /// 表达式构建接口的数据结构容器
         /// </summary>
-        private IDictionary<int, ApiBuildInfo> _expressionBuildInfos = null;
+        private IDictionary<int, ApiBuildInfo> _expressionBuildInfos;
 
         /// <summary>
         /// 编程接口构建相关内容的初始化回调函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleInitCallback]
         private void InitializeForApiBuild()
         {
@@ -63,6 +65,7 @@ namespace GameEngine
         /// <summary>
         /// 编程接口构建相关内容的清理回调函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleCleanupCallback]
         private void CleanupForApiBuild()
         {

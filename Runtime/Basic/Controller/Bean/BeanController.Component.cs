@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -33,11 +34,12 @@ namespace GameEngine
         /// <summary>
         /// 组件对象类型映射注册管理容器
         /// </summary>
-        private NovaEngine.DoubleMap<string, Type> _componentClassTypes = null;
+        private NovaEngine.DoubleMap<string, Type> _componentClassTypes;
 
         /// <summary>
         /// 原型管理对象的组件模块初始化通知接口函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleInitCallback]
         private void OnComponentInitialize()
         {
@@ -48,6 +50,7 @@ namespace GameEngine
         /// <summary>
         /// 原型管理对象的组件模块清理通知接口函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleCleanupCallback]
         private void OnComponentCleanup()
         {

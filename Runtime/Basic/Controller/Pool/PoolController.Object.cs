@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -34,6 +35,7 @@ namespace GameEngine
         /// <summary>
         /// 基础对象处理回调管理模块的初始化函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleInitCallback]
         private void InitializeForObjectProcess()
         {
@@ -45,6 +47,7 @@ namespace GameEngine
         /// <summary>
         /// 基础对象处理回调管理模块的清理函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleCleanupCallback]
         private void CleanupForObjectProcess()
         {

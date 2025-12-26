@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -59,11 +60,12 @@ namespace GameEngine
         /// <summary>
         /// 原型对象查找操作处理句柄列表容器
         /// </summary>
-        private IDictionary<Type, Delegate> _beanLookupProcessingCallbacks = null;
+        private IDictionary<Type, Delegate> _beanLookupProcessingCallbacks;
 
         /// <summary>
         /// 原型管理对象的查找操作初始化通知接口函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleInitCallback]
         private void OnBeanLookupInitialize()
         {
@@ -98,6 +100,7 @@ namespace GameEngine
         /// <summary>
         /// 原型管理对象的查找操作清理通知接口函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleCleanupCallback]
         private void OnBeanLookupCleanup()
         {
@@ -234,8 +237,10 @@ namespace GameEngine
             CScene currentScene = handler.GetCurrentScene();
             if (null != currentScene && classType.IsAssignableFrom(currentScene.BeanType))
             {
-                IList<IBean> result = new List<IBean>(1);
-                result.Add(currentScene);
+                IList<IBean> result = new List<IBean>(1)
+                {
+                    currentScene,
+                };
                 return result;
             }
 

@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -97,20 +98,21 @@ namespace GameEngine
         /// <summary>
         /// 原型对象生命周期服务处理句柄列表容器
         /// </summary>
-        private IDictionary<Type, IDictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler>> _beanLifecycleProcessingCallbacks = null;
+        private IDictionary<Type, IDictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler>> _beanLifecycleProcessingCallbacks;
 
         /// <summary>
         /// 原型对象生命周期注册函数列表容器
         /// </summary>
-        private IDictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler> _beanLifecycleRegisterCallbacks = null;
+        private IDictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler> _beanLifecycleRegisterCallbacks;
         /// <summary>
         /// 原型对象生命周期注销函数列表容器
         /// </summary>
-        private IDictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler> _beanLifecycleUnregisterCallbacks = null;
+        private IDictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler> _beanLifecycleUnregisterCallbacks;
 
         /// <summary>
         /// 原型管理对象的生命周期管理初始化通知接口函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleInitCallback]
         private void OnBeanLifecycleInitialize()
         {
@@ -173,6 +175,7 @@ namespace GameEngine
         /// <summary>
         /// 原型管理对象的生命周期管理清理通知接口函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleCleanupCallback]
         private void OnBeanLifecycleCleanup()
         {
@@ -342,8 +345,7 @@ namespace GameEngine
         /// <param name="callback">回调句柄</param>
         private void AddBeanLifecycleProcessingCallHandler(Type targetType, AspectBehaviourType behaviourType, OnBeanLifecycleProcessingHandler callback)
         {
-            IDictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler> dict;
-            if (false == _beanLifecycleProcessingCallbacks.TryGetValue(targetType, out dict))
+            if (false == _beanLifecycleProcessingCallbacks.TryGetValue(targetType, out IDictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler> dict))
             {
                 dict = new Dictionary<AspectBehaviourType, OnBeanLifecycleProcessingHandler>();
 
@@ -352,8 +354,8 @@ namespace GameEngine
 
             if (dict.ContainsKey(behaviourType))
             {
-                Debugger.Warn("The callback '{0}' was already exists for target type '{1} - {2}', repeated add it will be override old handler.",
-                        NovaEngine.Utility.Text.ToString(callback), targetType.FullName, behaviourType.ToString());
+                Debugger.Warn("The callback '{%t}' was already exists for target type '{%t} - {%i}', repeated add it will be override old handler.",
+                        callback, targetType, behaviourType);
 
                 dict.Remove(behaviourType);
             }

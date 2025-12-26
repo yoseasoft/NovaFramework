@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using UnityEngine.Scripting;
+
 namespace GameEngine
 {
     /// 状态管理对象类
@@ -31,6 +33,7 @@ namespace GameEngine
         /// <summary>
         /// 原型对象状态回调相关内容的初始化回调函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleInitCallback]
         private void InitializeForStateCall()
         {
@@ -39,6 +42,7 @@ namespace GameEngine
         /// <summary>
         /// 原型对象状态回调相关内容的清理回调函数
         /// </summary>
+        [Preserve]
         [OnControllerSubmoduleCleanupCallback]
         private void CleanupForStateCall()
         {
