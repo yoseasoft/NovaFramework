@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -35,6 +36,7 @@ namespace GameEngine.Loader
         /// </summary>
         private readonly static IDictionary<Type, Structuring.MessageCallCodeInfo> _messageCallCodeInfos = new Dictionary<Type, Structuring.MessageCallCodeInfo>();
 
+        [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(MessageSystemAttribute))]
         private static bool LoadMessageCallClass(Symboling.SymClass symClass, bool reload)
         {
@@ -156,12 +158,14 @@ namespace GameEngine.Loader
             return true;
         }
 
+        [Preserve]
         [OnCodeLoaderClassCleanupOfTarget(typeof(MessageSystemAttribute))]
         private static void CleanupAllMessageCallClasses()
         {
             _messageCallCodeInfos.Clear();
         }
 
+        [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(MessageSystemAttribute))]
         private static Structuring.MessageCallCodeInfo LookupMessageCallCodeInfo(Symboling.SymClass symClass)
         {

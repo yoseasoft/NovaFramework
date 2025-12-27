@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -57,7 +58,7 @@ namespace GameEngine
     }
 
     /// 用户界面模块封装的句柄对象类
-    public sealed partial class GuiHandler : EntityHandler
+    public sealed partial class GuiHandler
     {
         /// <summary>
         /// 默认视图分组名称
@@ -81,7 +82,7 @@ namespace GameEngine
         /// <summary>
         /// 视图分组管理接口初始化回调函数
         /// </summary>
-        [UnityEngine.Scripting.Preserve]
+        [Preserve]
         [OnSubmoduleInitCallback]
         private void OnViewGroupingInitialize()
         {
@@ -100,7 +101,7 @@ namespace GameEngine
         /// <summary>
         /// 视图分组管理接口清理回调函数
         /// </summary>
-        [UnityEngine.Scripting.Preserve]
+        [Preserve]
         [OnSubmoduleCleanupCallback]
         private void OnViewGroupingCleanup()
         {
@@ -117,7 +118,7 @@ namespace GameEngine
         /// <summary>
         /// 视图分组管理接口重载回调函数
         /// </summary>
-        [UnityEngine.Scripting.Preserve]
+        [Preserve]
         [OnSubmoduleReloadCallback]
         private void OnViewGroupingReload()
         {

@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -35,6 +36,7 @@ namespace GameEngine.Loader
         /// </summary>
         private readonly static IDictionary<Type, Structuring.InjectCallCodeInfo> _injectCallCodeInfos = new Dictionary<Type, Structuring.InjectCallCodeInfo>();
 
+        [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(InjectAttribute))]
         private static bool LoadInjectCallClass(Symboling.SymClass symClass, bool reload)
         {
@@ -67,12 +69,14 @@ namespace GameEngine.Loader
             return true;
         }
 
+        [Preserve]
         [OnCodeLoaderClassCleanupOfTarget(typeof(InjectAttribute))]
         private static void CleanupAllInjectCallClasses()
         {
             _injectCallCodeInfos.Clear();
         }
 
+        [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(InjectAttribute))]
         private static Structuring.InjectCallCodeInfo LookupInjectCallCodeInfo(Symboling.SymClass symClass)
         {

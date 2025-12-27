@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -35,6 +36,7 @@ namespace GameEngine.Loader
         /// </summary>
         private readonly static IDictionary<Type, Structuring.EventCallCodeInfo> _eventCallCodeInfos = new Dictionary<Type, Structuring.EventCallCodeInfo>();
 
+        [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(EventSystemAttribute))]
         private static bool LoadEventCallClass(Symboling.SymClass symClass, bool reload)
         {
@@ -160,12 +162,14 @@ namespace GameEngine.Loader
             return true;
         }
 
+        [Preserve]
         [OnCodeLoaderClassCleanupOfTarget(typeof(EventSystemAttribute))]
         private static void CleanupAllEventCallClasses()
         {
             _eventCallCodeInfos.Clear();
         }
 
+        [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(EventSystemAttribute))]
         private static Structuring.EventCallCodeInfo LookupEventCallCodeInfo(Symboling.SymClass symClass)
         {

@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -36,6 +37,7 @@ namespace GameEngine.Loader
         /// </summary>
         private readonly static IDictionary<Type, Structuring.AspectCallCodeInfo> _aspectCallCodeInfos = new Dictionary<Type, Structuring.AspectCallCodeInfo>();
 
+        [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(AspectAttribute))]
         private static bool LoadAspectCallClass(Symboling.SymClass symClass, bool reload)
         {
@@ -137,12 +139,14 @@ namespace GameEngine.Loader
             return true;
         }
 
+        [Preserve]
         [OnCodeLoaderClassCleanupOfTarget(typeof(AspectAttribute))]
         private static void CleanupAllAspectCallClasses()
         {
             _aspectCallCodeInfos.Clear();
         }
 
+        [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(AspectAttribute))]
         private static Structuring.AspectCallCodeInfo LookupAspectCallCodeInfo(Symboling.SymClass symCLass)
         {

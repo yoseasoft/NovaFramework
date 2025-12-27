@@ -24,6 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace System.Customize.Extension
 {
     /// <summary>
@@ -37,7 +39,7 @@ namespace System.Customize.Extension
         /// <param name="self">原始字符串</param>
         /// <param name="defaultValue">默认值</param>
         /// <returns>返回转换后的整型数值，若转换失败则返回默认值</returns>
-        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int ToInt32(this string self, int defaultValue = 0)
         {
             return self.TryConvertTo(defaultValue);
@@ -49,7 +51,7 @@ namespace System.Customize.Extension
         /// <param name="self">原始字符串</param>
         /// <param name="defaultValue">默认值</param>
         /// <returns>返回转换后的长整型数值，若转换失败则返回默认值</returns>
-        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static long ToInt64(this string self, long defaultValue = 0L)
         {
             return self.TryConvertTo(defaultValue);
@@ -61,7 +63,7 @@ namespace System.Customize.Extension
         /// <param name="self">原始字符串</param>
         /// <param name="defaultValue">默认值</param>
         /// <returns>返回转换后的浮点型数值，若转换失败则返回默认值</returns>
-        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double ToDouble(this string self, double defaultValue = 0)
         {
             return self.TryConvertTo(defaultValue);
@@ -72,7 +74,7 @@ namespace System.Customize.Extension
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>返回转换后的日期时间类型对象实例</returns>
-        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime ToDateTime(this string self)
         {
             DateTime.TryParse(self, out var result);
@@ -84,7 +86,7 @@ namespace System.Customize.Extension
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>返回转换后的GUID类型对象实例</returns>
-        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Guid ToGuid(this string self)
         {
             return Guid.Parse(self);
@@ -95,7 +97,7 @@ namespace System.Customize.Extension
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>返回转换后的字节数组</returns>
-        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte[] ToByteArray(this string self)
         {
             return Text.Encoding.UTF8.GetBytes(self);
@@ -106,7 +108,7 @@ namespace System.Customize.Extension
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>若给定字符串为null或空字符串则返回true，否则返回false</returns>
-        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNullOrEmpty(this string self)
         {
             return string.IsNullOrEmpty(self);
@@ -117,7 +119,7 @@ namespace System.Customize.Extension
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>若给定字符串不为null且非空字符串则返回true，否则返回false</returns>
-        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNotNullOrEmpty(this string self)
         {
             return !self.IsNullOrEmpty();
@@ -128,7 +130,7 @@ namespace System.Customize.Extension
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>若给定字符串为null或空白字符则返回true，否则返回false</returns>
-        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNullOrWhiteSpace(this string self)
         {
             return string.IsNullOrWhiteSpace(self) || self.EqualsIgnoreCase(NovaEngine.Definition.CString.Null);
@@ -139,7 +141,7 @@ namespace System.Customize.Extension
         /// </summary>
         /// <param name="self">原始字符串</param>
         /// <returns>若给定字符串不为null且非空白字符则返回true，否则返回false</returns>
-        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNotNullOrWhiteSpace(this string self)
         {
             return !self.IsNullOrWhiteSpace();
@@ -151,7 +153,7 @@ namespace System.Customize.Extension
         /// <param name="self">原始字符串</param>
         /// <param name="other">对比字符串</param>
         /// <returns>若两个字符串相等则返回true，否则返回false</returns>
-        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool EqualsIgnoreCase(this string self, string other)
         {
             return self.ToLower().Equals(other?.ToLower());

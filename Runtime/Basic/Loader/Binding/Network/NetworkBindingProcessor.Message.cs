@@ -23,6 +23,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -35,6 +36,7 @@ namespace GameEngine
         /// <param name="targetType">对象类型</param>
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
+        [Preserve]
         [OnNetworkMessageRegisterClassOfTarget(typeof(MessageObjectAttribute))]
         private static void LoadMessageBindCodeType(Type targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
@@ -64,6 +66,7 @@ namespace GameEngine
         /// <summary>
         /// 网络消息类型的全部代码的注销回调函数
         /// </summary>
+        [Preserve]
         [OnNetworkMessageUnregisterClassOfTarget(typeof(MessageObjectAttribute))]
         private static void UnloadAllMessageBindCodeTypes()
         {
@@ -76,6 +79,7 @@ namespace GameEngine
         /// <param name="targetType">对象类型</param>
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
+        [Preserve]
         [OnNetworkMessageRegisterClassOfTarget(typeof(MessageSystemAttribute))]
         private static void LoadMessageCallbackBindCodeType(Type targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
@@ -125,6 +129,7 @@ namespace GameEngine
         /// <summary>
         /// 网络消息类型的全部代码的注销回调函数
         /// </summary>
+        [Preserve]
         [OnNetworkMessageUnregisterClassOfTarget(typeof(MessageSystemAttribute))]
         private static void UnloadAllMessageCallbackBindCodeTypes()
         {

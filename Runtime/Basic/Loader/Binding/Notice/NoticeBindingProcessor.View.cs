@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -36,6 +37,7 @@ namespace GameEngine.Loader
         /// <param name="targetType">对象类型</param>
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
+        [Preserve]
         [OnNoticeDefinitionRegisterClassOfTarget(typeof(NoticeSupportedOnViewAttribute))]
         private static void LoadCallBindCodeType(Type targetType, Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
@@ -69,6 +71,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 通知定义类型的全部代码的注销回调函数
         /// </summary>
+        [Preserve]
         [OnNoticeDefinitionUnregisterClassOfTarget(typeof(NoticeSupportedOnViewAttribute))]
         private static void UnloadAllCallBindCodeTypes()
         {

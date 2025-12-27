@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -36,6 +37,7 @@ namespace GameEngine.Loader
         /// </summary>
         private readonly static IDictionary<string, Structuring.ObjectCodeInfo> _objectCodeInfos = new Dictionary<string, Structuring.ObjectCodeInfo>();
 
+        [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(CObject))]
         private static bool LoadObjectClass(Symboling.SymClass symClass, bool reload)
         {
@@ -115,12 +117,14 @@ namespace GameEngine.Loader
             }
         }
 
+        [Preserve]
         [OnCodeLoaderClassCleanupOfTarget(typeof(CObject))]
         private static void CleanupAllObjectClasses()
         {
             _objectCodeInfos.Clear();
         }
 
+        [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(CObject))]
         private static Structuring.ObjectCodeInfo LookupObjectCodeInfo(Symboling.SymClass symClass)
         {

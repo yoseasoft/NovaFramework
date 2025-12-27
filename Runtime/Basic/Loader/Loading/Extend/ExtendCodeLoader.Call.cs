@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -37,6 +38,7 @@ namespace GameEngine.Loader
         /// </summary>
         private readonly static IDictionary<Type, Structuring.ExtendCallCodeInfo> _extendCallCodeInfos = new Dictionary<Type, Structuring.ExtendCallCodeInfo>();
 
+        [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(ExtendSupportedAttribute))]
         private static bool LoadExtendCallClass(Symboling.SymClass symClass, bool reload)
         {
@@ -267,12 +269,14 @@ namespace GameEngine.Loader
             return true;
         }
 
+        [Preserve]
         [OnCodeLoaderClassCleanupOfTarget(typeof(ExtendSupportedAttribute))]
         private static void CleanupAllExtendCallClasses()
         {
             _extendCallCodeInfos.Clear();
         }
 
+        [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(ExtendSupportedAttribute))]
         private static Structuring.ExtendCallCodeInfo LookupExtendCallCodeInfo(Symboling.SymClass symClass)
         {

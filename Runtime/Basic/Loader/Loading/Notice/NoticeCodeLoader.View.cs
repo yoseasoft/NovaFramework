@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -36,6 +37,7 @@ namespace GameEngine.Loader
         /// </summary>
         private readonly static IDictionary<Type, Structuring.CViewNoticeCallCodeInfo> _viewNoticeCallCodeInfos = new Dictionary<Type, Structuring.CViewNoticeCallCodeInfo>();
 
+        [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(NoticeSupportedOnViewAttribute))]
         private static bool LoadViewNoticeCallClass(Symboling.SymClass symClass, bool reload)
         {
@@ -113,12 +115,14 @@ namespace GameEngine.Loader
             return true;
         }
 
+        [Preserve]
         [OnCodeLoaderClassCleanupOfTarget(typeof(NoticeSupportedOnViewAttribute))]
         private static void CleanupAllViewNoticeCallClasses()
         {
             _viewNoticeCallCodeInfos.Clear();
         }
 
+        [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(NoticeSupportedOnViewAttribute))]
         private static Structuring.CViewNoticeCallCodeInfo LookupViewNoticeCallCodeInfo(Symboling.SymClass symClass)
         {

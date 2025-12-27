@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -35,6 +36,7 @@ namespace GameEngine.Loader
         /// </summary>
         private readonly static IDictionary<string, Structuring.SceneCodeInfo> _sceneCodeInfos = new Dictionary<string, Structuring.SceneCodeInfo>();
 
+        [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(CScene))]
         private static bool LoadSceneClass(Symboling.SymClass symClass, bool reload)
         {
@@ -118,12 +120,14 @@ namespace GameEngine.Loader
             }
         }
 
+        [Preserve]
         [OnCodeLoaderClassCleanupOfTarget(typeof(CScene))]
         private static void CleanupAllSceneClasses()
         {
             _sceneCodeInfos.Clear();
         }
 
+        [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(CScene))]
         private static Structuring.SceneCodeInfo LookupSceneCodeInfo(Symboling.SymClass symClass)
         {

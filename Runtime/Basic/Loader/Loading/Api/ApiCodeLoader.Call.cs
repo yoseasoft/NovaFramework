@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -36,6 +37,7 @@ namespace GameEngine.Loader
         /// </summary>
         private readonly static IDictionary<Type, Structuring.ApiCallCodeInfo> _apiCallCodeInfos = new Dictionary<Type, Structuring.ApiCallCodeInfo>();
 
+        [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(ApiSystemAttribute))]
         private static bool LoadApiCallClass(Symboling.SymClass symClass, bool reload)
         {
@@ -106,12 +108,14 @@ namespace GameEngine.Loader
             return true;
         }
 
+        [Preserve]
         [OnCodeLoaderClassCleanupOfTarget(typeof(ApiSystemAttribute))]
         private static void CleanupAllApiCallClasses()
         {
             _apiCallCodeInfos.Clear();
         }
 
+        [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(ApiSystemAttribute))]
         private static Structuring.ApiCallCodeInfo LookupApiCallCodeInfo(Symboling.SymClass symCLass)
         {

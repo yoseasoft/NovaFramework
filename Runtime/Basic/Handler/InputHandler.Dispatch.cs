@@ -29,6 +29,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -58,7 +59,7 @@ namespace GameEngine
         /// <summary>
         /// 输入回调转发接口初始化回调函数
         /// </summary>
-        [UnityEngine.Scripting.Preserve]
+        [Preserve]
         [OnSubmoduleInitCallback]
         private void OnInputCallDispatchingInitialize()
         {
@@ -73,7 +74,7 @@ namespace GameEngine
         /// <summary>
         /// 输入回调转发接口清理回调函数
         /// </summary>
-        [UnityEngine.Scripting.Preserve]
+        [Preserve]
         [OnSubmoduleCleanupCallback]
         private void OnInputCallDispatchingCleanup()
         {
@@ -93,7 +94,7 @@ namespace GameEngine
         /// <summary>
         /// 输入回调转发接口重载回调函数
         /// </summary>
-        [UnityEngine.Scripting.Preserve]
+        [Preserve]
         [OnSubmoduleReloadCallback]
         private void OnInputCallDispatchingReload()
         {

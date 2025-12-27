@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -36,6 +37,7 @@ namespace GameEngine
         /// <param name="targetType">对象类型</param>
         /// <param name="codeInfo">对象结构信息数据</param>
         /// <param name="reload">重载标识</param>
+        [Preserve]
         [OnApiCallRegisterClassOfTarget(typeof(ApiSystemAttribute))]
         private static void LoadCallBindCodeType(Type targetType, Loader.Structuring.GeneralCodeInfo codeInfo, bool reload)
         {
@@ -71,6 +73,7 @@ namespace GameEngine
         /// <summary>
         /// 编程接口类型的全部代码的注销回调函数
         /// </summary>
+        [Preserve]
         [OnApiCallUnregisterClassOfTarget(typeof(ApiSystemAttribute))]
         private static void UnloadAllCallBindCodeTypes()
         {

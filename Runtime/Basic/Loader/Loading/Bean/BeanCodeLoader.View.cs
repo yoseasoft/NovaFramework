@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -35,6 +36,7 @@ namespace GameEngine.Loader
         /// </summary>
         private readonly static IDictionary<string, Structuring.ViewCodeInfo> _viewCodeInfos = new Dictionary<string, Structuring.ViewCodeInfo>();
 
+        [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(CView))]
         private static bool LoadViewClass(Symboling.SymClass symClass, bool reload)
         {
@@ -122,12 +124,14 @@ namespace GameEngine.Loader
             }
         }
 
+        [Preserve]
         [OnCodeLoaderClassCleanupOfTarget(typeof(CView))]
         private static void CleanupAllViewClasses()
         {
             _viewCodeInfos.Clear();
         }
 
+        [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(CView))]
         private static Structuring.ViewCodeInfo LookupViewCodeInfo(Symboling.SymClass symClass)
         {

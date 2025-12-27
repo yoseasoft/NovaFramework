@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace System.Customize.Extension
 {
     /// <summary>
@@ -36,7 +38,7 @@ namespace System.Customize.Extension
         /// <typeparam name="T">目标类型</typeparam>
         /// <param name="self">源对象实例</param>
         /// <returns>返回转换类型后的对象实例</returns>
-        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ConvertTo<T>(this IConvertible self) where T : IConvertible
         {
             return (T) ConvertTo(self, typeof(T));
@@ -49,7 +51,7 @@ namespace System.Customize.Extension
         /// <param name="self">源对象实例</param>
         /// <param name="defaultValue">默认值</param>
         /// <returns>返回转换类型后的对象实例</returns>
-        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T TryConvertTo<T>(this IConvertible self, T defaultValue = default) where T : IConvertible
         {
             try
@@ -69,7 +71,7 @@ namespace System.Customize.Extension
         /// <param name="self">源对象实例</param>
         /// <param name="result">转换的目标对象实例</param>
         /// <returns>若转换成功返回true，否则返回false</returns>
-        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryConvertTo<T>(this IConvertible self, out T result) where T : IConvertible
         {
             try
@@ -91,7 +93,7 @@ namespace System.Customize.Extension
         /// <param name="type">目标类型</param>
         /// <param name="result">转换的目标对象实例</param>
         /// <returns>若转换成功返回true，否则返回false</returns>
-        [Runtime.CompilerServices.MethodImpl(Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryConvertTo(this IConvertible self, Type type, out object result)
         {
             try

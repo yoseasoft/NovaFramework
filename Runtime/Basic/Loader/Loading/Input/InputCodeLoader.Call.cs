@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -36,6 +37,7 @@ namespace GameEngine.Loader
         /// </summary>
         private readonly static IDictionary<Type, Structuring.InputCallCodeInfo> _inputCallCodeInfos = new Dictionary<Type, Structuring.InputCallCodeInfo>();
 
+        [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(InputSystemAttribute))]
         private static bool LoadInputCallClass(Symboling.SymClass symClass, bool reload)
         {
@@ -160,12 +162,14 @@ namespace GameEngine.Loader
             return true;
         }
 
+        [Preserve]
         [OnCodeLoaderClassCleanupOfTarget(typeof(InputSystemAttribute))]
         private static void CleanupAllInputCallClasses()
         {
             _inputCallCodeInfos.Clear();
         }
 
+        [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(InputSystemAttribute))]
         private static Structuring.InputCallCodeInfo LookupInputCallCodeInfo(Symboling.SymClass symClass)
         {

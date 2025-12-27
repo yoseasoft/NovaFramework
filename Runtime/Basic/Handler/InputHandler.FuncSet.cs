@@ -29,6 +29,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -43,7 +44,7 @@ namespace GameEngine
         /// <summary>
         /// 输入响应绑定接口初始化回调函数
         /// </summary>
-        [UnityEngine.Scripting.Preserve]
+        [Preserve]
         [OnSubmoduleInitCallback]
         private void OnInputResponseBindingInitialize()
         {
@@ -54,7 +55,7 @@ namespace GameEngine
         /// <summary>
         /// 输入响应绑定接口清理回调函数
         /// </summary>
-        [UnityEngine.Scripting.Preserve]
+        [Preserve]
         [OnSubmoduleCleanupCallback]
         private void OnInputResponseBindingCleanup()
         {
@@ -66,7 +67,7 @@ namespace GameEngine
         /// <summary>
         /// 输入响应绑定接口重载回调函数
         /// </summary>
-        [UnityEngine.Scripting.Preserve]
+        [Preserve]
         [OnSubmoduleReloadCallback]
         private void OnInputResponseBindingReload()
         {

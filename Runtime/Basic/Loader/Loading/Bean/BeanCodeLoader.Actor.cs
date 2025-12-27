@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -35,6 +36,7 @@ namespace GameEngine.Loader
         /// </summary>
         private readonly static IDictionary<string, Structuring.ActorCodeInfo> _actorCodeInfos = new Dictionary<string, Structuring.ActorCodeInfo>();
 
+        [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(CActor))]
         private static bool LoadActorClass(Symboling.SymClass symClass, bool reload)
         {
@@ -112,12 +114,14 @@ namespace GameEngine.Loader
             }
         }
 
+        [Preserve]
         [OnCodeLoaderClassCleanupOfTarget(typeof(CActor))]
         private static void CleanupAllActorClasses()
         {
             _actorCodeInfos.Clear();
         }
 
+        [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(CActor))]
         private static Structuring.ActorCodeInfo LookupActorCodeInfo(Symboling.SymClass symClass)
         {

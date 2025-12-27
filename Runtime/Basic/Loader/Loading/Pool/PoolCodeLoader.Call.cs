@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -35,6 +36,7 @@ namespace GameEngine.Loader
         /// </summary>
         private readonly static IDictionary<Type, Structuring.PoolCallCodeInfo> _poolCallCodeInfos = new Dictionary<Type, Structuring.PoolCallCodeInfo>();
 
+        [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(PoolSupportedAttribute))]
         private static bool LoadPoolCallClass(Symboling.SymClass symClass, bool reload)
         {
@@ -67,12 +69,14 @@ namespace GameEngine.Loader
             return true;
         }
 
+        [Preserve]
         [OnCodeLoaderClassCleanupOfTarget(typeof(PoolSupportedAttribute))]
         private static void CleanupAllPoolCallClasses()
         {
             _poolCallCodeInfos.Clear();
         }
 
+        [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(PoolSupportedAttribute))]
         private static Structuring.PoolCallCodeInfo LookupPoolCallCodeInfo(Symboling.SymClass symClass)
         {

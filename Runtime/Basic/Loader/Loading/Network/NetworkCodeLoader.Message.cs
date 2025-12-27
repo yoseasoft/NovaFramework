@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
 {
@@ -35,6 +36,7 @@ namespace GameEngine.Loader
         /// </summary>
         private readonly static IDictionary<int, Structuring.NetworkMessageCodeInfo> _networkMessageCodeInfos = new Dictionary<int, Structuring.NetworkMessageCodeInfo>();
 
+        [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(MessageObjectAttribute))]
         private static bool LoadNetworkMessageClass(Symboling.SymClass symClass, bool reload)
         {
@@ -111,12 +113,14 @@ namespace GameEngine.Loader
             return true;
         }
 
+        [Preserve]
         [OnCodeLoaderClassCleanupOfTarget(typeof(MessageObjectAttribute))]
         private static void CleanupAllNetworkMessageClasses()
         {
             _networkMessageCodeInfos.Clear();
         }
 
+        [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(MessageObjectAttribute))]
         private static Structuring.NetworkMessageCodeInfo LookupNetworkMessageCodeInfo(Symboling.SymClass symClass)
         {
