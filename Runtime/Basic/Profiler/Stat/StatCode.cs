@@ -32,8 +32,9 @@ namespace GameEngine.Profiler.Statistics
     {
         /// <summary>
         /// 统计模块编号的编码间隔
+        /// 以 0xff （255） 为一个状态标识的间隔，也就是说每个状态下最多允许记录255个统计信息
         /// </summary>
-        private const int StatCodingInterval = 1000;
+        private const int StatCodingInterval = 0x0100;
 
         private const int TimerCode = (int) StatType.Timer * StatCodingInterval;
         public const int TimerStartup = TimerCode + 0x01;
@@ -70,6 +71,22 @@ namespace GameEngine.Profiler.Statistics
         public static int GetStatTypeByCode(int code)
         {
             return (code & 0x00) / StatCodingInterval;
+        }
+
+        /// <summary>
+        /// 通过统计模块类型和统计编号获取统计编码
+        /// </summary>
+        /// <param name="type">统计模块类型</param>
+        /// <param name="code">统计编号</param>
+        /// <returns>返回统计编码</returns>
+        public static int GetStatCodeByType(StatType type, int code)
+        {
+            if ((code & 0x00) == 0)
+            {
+                code += (int) type * StatCodingInterval;
+            }
+
+            return code;
         }
     }
 }

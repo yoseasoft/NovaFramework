@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine.Profiler.Statistics
 {
@@ -55,6 +56,7 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         /// <param name="uid">统计信息标识</param>
         /// <returns>返回给定标识对应的统计项信息</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public StatInfo GetStateInfoByUid(int uid)
         {
             return TryGetValue(uid);
@@ -64,6 +66,7 @@ namespace GameEngine.Profiler.Statistics
         /// 获取当前所有视图访问的统计信息
         /// </summary>
         /// <returns>返回所有的操作访问统计信息</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IList<StatInfo> GetAllStatInfos()
         {
             List<StatInfo> results = new List<StatInfo>();

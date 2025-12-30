@@ -92,6 +92,9 @@ namespace GameEngine
             // 实体刷新列表初始化
             _updateEntitiesList = new List<CEntity>();
 
+            // 实体系统接口初始化
+            OnEntitySystemInitialize();
+
             return true;
         }
 
@@ -100,6 +103,9 @@ namespace GameEngine
         /// </summary>
         protected override void OnCleanup()
         {
+            // 实体系统接口清理
+            OnEntitySystemCleanup();
+
             // 移除所有实体对象实例
             RemoveAllEntities();
 
@@ -120,6 +126,8 @@ namespace GameEngine
         /// </summary>
         protected override void OnReload()
         {
+            // 实体系统接口重载
+            OnEntitySystemReload();
         }
 
         /// <summary>

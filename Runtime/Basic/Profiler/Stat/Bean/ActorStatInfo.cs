@@ -36,7 +36,7 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         public string ActorName { get; private set; }
 
-        public ActorStatInfo(int uid, string objectName) : base(uid)
+        internal ActorStatInfo(int uid, string objectName) : base(uid)
         {
             this.ActorName = objectName;
         }

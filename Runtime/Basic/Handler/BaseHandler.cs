@@ -340,8 +340,7 @@ namespace GameEngine
         /// <param name="attrType">属性类型</param>
         private void OnSubmoduleActionCallbackOfTargetAttribute(Type attrType)
         {
-            Delegate callback;
-            if (TryGetSubmoduleBehaviourCallback(attrType, out callback))
+            if (TryGetSubmoduleBehaviourCallback(attrType, out Delegate callback))
             {
                 callback.DynamicInvoke();
             }
@@ -349,11 +348,10 @@ namespace GameEngine
 
         private bool TryGetSubmoduleBehaviourCallback(Type targetType, out Delegate callback)
         {
-            Delegate handler;
-            if (_cachedSubmoduleBehaviourCallbacks.TryGetValue(targetType, out handler))
+            if (_cachedSubmoduleBehaviourCallbacks.TryGetValue(targetType, out Delegate handler))
             {
                 callback = handler;
-                return null == callback ? false : true;
+                return null != callback;
             }
 
             IList<Delegate> list = new List<Delegate>();
@@ -362,7 +360,7 @@ namespace GameEngine
             for (int n = 0; n < methods.Length; ++n)
             {
                 MethodInfo method = methods[n];
-                IEnumerable<Attribute> e = method.GetCustomAttributes();
+                // IEnumerable<Attribute> e = method.GetCustomAttributes();
                 Attribute attr = method.GetCustomAttribute(targetType);
                 if (null != attr)
                 {

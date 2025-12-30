@@ -36,7 +36,7 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         public string ViewName { get; private set; }
 
-        public ViewStatInfo(int uid, string viewName) : base(uid)
+        internal ViewStatInfo(int uid, string viewName) : base(uid)
         {
             this.ViewName = viewName;
         }

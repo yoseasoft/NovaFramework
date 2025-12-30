@@ -25,7 +25,6 @@
 
 using System;
 using System.Collections.Generic;
-using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -56,10 +55,17 @@ namespace GameEngine
         /// <summary>
         /// 实体系统管理接口初始化回调函数
         /// </summary>
-        [Preserve]
-        [OnSubmoduleInitCallback]
+        // [OnSubmoduleInitCallback]
         private void OnEntitySystemInitialize()
         {
+            //
+            // 2025-12-29：
+            // 因为`EntityHandler`为抽象类，且该回调函数为私有访问，
+            // 所以在其可实例化的子类中查找子模块回调接口时，无法查找到该函数。
+            // 除非把该函数的访问权限改为子类可访问的，
+            // 再三考虑，暂且还是手动调用此回调吧。
+            //
+
             // 系统注册列表初始化
             _systems = new List<ISystem>();
             // 系统初始化列表初始化
@@ -75,8 +81,7 @@ namespace GameEngine
         /// <summary>
         /// 实体系统管理接口清理回调函数
         /// </summary>
-        [Preserve]
-        [OnSubmoduleCleanupCallback]
+        // [OnSubmoduleCleanupCallback]
         private void OnEntitySystemCleanup()
         {
             // 移除所有系统对象实例
@@ -92,8 +97,7 @@ namespace GameEngine
         /// <summary>
         /// 实体系统管理接口重载回调函数
         /// </summary>
-        [Preserve]
-        [OnSubmoduleReloadCallback]
+        // [OnSubmoduleReloadCallback]
         private void OnEntitySystemReload()
         {
         }

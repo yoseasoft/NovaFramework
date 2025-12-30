@@ -130,12 +130,22 @@ namespace GameEngine
         /// <param name="url">资源地址(名字或路径)</param>
         public async UniTask<T> LoadAssetAsync<T>(string url) where T : UnityObject
         {
-            GooAsset.Asset asset = ResourceModule.LoadAssetAsync(url, typeof(T));
+            return (T) await LoadAssetAsync(url, typeof(T));
+        }
+
+        /// <summary>
+        /// 异步加载资源
+        /// </summary>
+        /// <param name="url">资源地址(名字或路径)</param>
+        /// <param name="type">资源类型</param>
+        public async UniTask<UnityObject> LoadAssetAsync(string url, Type type)
+        {
+            GooAsset.Asset asset = ResourceModule.LoadAssetAsync(url, type);
             if (asset is null)
                 return null;
 
             await asset.Task;
-            return (T) asset.result;
+            return asset.result;
         }
 
         /// <summary>

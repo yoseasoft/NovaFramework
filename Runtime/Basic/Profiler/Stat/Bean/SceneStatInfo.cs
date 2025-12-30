@@ -36,7 +36,7 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         public string SceneName { get; private set; }
 
-        public SceneStatInfo(int uid, string sceneName) : base(uid)
+        internal SceneStatInfo(int uid, string sceneName) : base(uid)
         {
             this.SceneName = sceneName;
         }
