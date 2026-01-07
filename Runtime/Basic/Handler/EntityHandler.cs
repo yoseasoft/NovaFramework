@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
@@ -229,10 +230,49 @@ namespace GameEngine
         /// 这里返回的列表为克隆出来的，对该列表的操作不影响原数据
         /// </summary>
         /// <returns>返回当前记录的全部实体对象实例列表</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected IList<CEntity> GetAllEntities()
         {
             IList<CEntity> entities = new List<CEntity>(_entities);
             return entities;
+        }
+
+        /// <summary>
+        /// 检测当前的实体对象列表中是否存在指定标识的对象实例
+        /// </summary>
+        /// <param name="beanId">实体标识</param>
+        /// <returns>若存在指定标识的对象实例则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected bool HasEntityById(int beanId)
+        {
+            for (int n = 0; n < _entities.Count; ++n)
+            {
+                if (_entities[n].BeanId == beanId)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 通过指定的实体标识查找对应的实体对象实例
+        /// </summary>
+        /// <param name="beanId">实体标识</param>
+        /// <returns>返回对应的实体对象实例，若该实例不存在则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected CEntity GetEntityById(int beanId)
+        {
+            for (int n = 0; n < _entities.Count; ++n)
+            {
+                if (_entities[n].BeanId == beanId)
+                {
+                    return _entities[n];
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

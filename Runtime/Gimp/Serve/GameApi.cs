@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Cysharp.Threading.Tasks;
 
 namespace GameEngine
@@ -392,6 +393,28 @@ namespace GameEngine
         public static IList<CActor> GetAllActors()
         {
             return ActorHandler.Instance.GetAllActors();
+        }
+
+        /// <summary>
+        /// 检测当前已创建的角色对象列表中是否存在指定标识的对象实例
+        /// </summary>
+        /// <param name="beanId">实体标识</param>
+        /// <returns>若存在指定标识的角色对象实例则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool HasActorById(int beanId)
+        {
+            return ActorHandler.Instance.HasActorById(beanId);
+        }
+
+        /// <summary>
+        /// 通过指定的对象标识查找对应的角色对象实例
+        /// </summary>
+        /// <param name="beanId">实体标识</param>
+        /// <returns>返回对应的角色对象实例，若该实例不存在则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static CActor GetActorById(int beanId)
+        {
+            return ActorHandler.Instance.GetActorById(beanId);
         }
 
         /// <summary>
