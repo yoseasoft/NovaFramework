@@ -155,5 +155,38 @@ namespace NovaEngine
                 }
             }
         }
+
+        #region 获取配置库相关数据对应的接口函数
+
+        /// <summary>
+        /// 获取配置库中指定标签对应的所有可用程序集名称
+        /// </summary>
+        /// <param name="tag">功能标签</param>
+        /// <returns>返回给定标签对应的程序集名称集合</returns>
+        private static IList<string> FindAssemblyNamesByTag(CoreEngine.LibraryTag tag)
+        {
+            return CoreEngine.DynamicLibrary.GetAllPlayableAssemblyNames((info) =>
+            {
+                if (false == info.IsContainsTag(tag))
+                    return false;
+
+                // 对教程模式进行过滤
+                if (false == tutorialMode && info.IsContainsTag(CoreEngine.LibraryTag.Tutorial))
+                    return false;
+
+                return true;
+            });
+        }
+
+        /// <summary>
+        /// 获取配置库中可编译的程序集名称
+        /// </summary>
+        /// <returns>返回对应的程序集名称集合</returns>
+        public static IList<string> GetAllCompilableAssemblyNames()
+        {
+            return FindAssemblyNamesByTag(CoreEngine.LibraryTag.Compile);
+        }
+
+        #endregion
     }
 }
