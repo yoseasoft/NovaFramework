@@ -255,6 +255,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="sceneType">场景类型</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private CScene CreateScene(Type sceneType)
         {
             if (false == _entityClassTypes.Values.Contains(sceneType))
@@ -455,6 +456,7 @@ namespace GameEngine
         /// <summary>
         /// 注销当前句柄实例绑定的所有场景类型
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void UnregisterAllSceneClasses()
         {
             UnregisterAllEntityClasses();

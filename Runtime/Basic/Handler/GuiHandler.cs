@@ -4,7 +4,7 @@
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -625,9 +625,32 @@ namespace GameEngine
         /// 获取当前已创建的全部视图对象实例
         /// </summary>
         /// <returns>返回已创建的全部视图对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IList<CView> GetAllViews()
         {
-            return _views;
+            return NovaEngine.Utility.Collection.CastAndToList<CEntity, CView>(GetAllEntities());
+        }
+
+        /// <summary>
+        /// 检测当前已创建的视图对象列表中是否存在指定标识的对象实例
+        /// </summary>
+        /// <param name="beanId">实体标识</param>
+        /// <returns>若存在指定标识的视图对象实例则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool HasViewById(int beanId)
+        {
+            return HasEntityById(beanId);
+        }
+
+        /// <summary>
+        /// 通过指定的对象标识查找对应的视图对象实例
+        /// </summary>
+        /// <param name="beanId">实体标识</param>
+        /// <returns>返回对应的视图对象实例，若该实例不存在则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public CView GetViewById(int beanId)
+        {
+            return GetEntityById(beanId) as CView;
         }
 
         /// <summary>

@@ -2,7 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+
 using Cysharp.Threading.Tasks;
 
 namespace GameEngine
@@ -165,6 +166,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="objectName">对象名称</param>
         /// <returns>返回基础对象实例列表，若检索失败则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IList<CObject> GetObject(string objectName)
         {
             return ObjectHandler.Instance.GetObject(objectName);
@@ -175,6 +177,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <returns>返回基础对象实例列表，若检索失败则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IList<T> GetObject<T>() where T : CObject
         {
             return ObjectHandler.Instance.GetObject<T>();
@@ -185,6 +188,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>返回基础对象实例列表，若检索失败则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IList<CObject> GetObject(Type objectType)
         {
             return ObjectHandler.Instance.GetObject(objectType);
@@ -194,6 +198,7 @@ namespace GameEngine
         /// 获取当前已创建的全部基础对象实例
         /// </summary>
         /// <returns>返回已创建的全部基础对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IList<CObject> GetAllObjects()
         {
             return ObjectHandler.Instance.GetAllObjects();
@@ -205,6 +210,7 @@ namespace GameEngine
         /// <param name="objectName">对象名称</param>
         /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static CObject CreateObject(string objectName, object userData = null)
         {
             return ObjectHandler.Instance.CreateObject(objectName, userData);
@@ -216,6 +222,7 @@ namespace GameEngine
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T CreateObject<T>(object userData = null) where T : CObject
         {
             return ObjectHandler.Instance.CreateObject<T>(userData);
@@ -227,6 +234,7 @@ namespace GameEngine
         /// <param name="objectType">对象类型</param>
         /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static CObject CreateObject(Type objectType, object userData = null)
         {
             return ObjectHandler.Instance.CreateObject(objectType, userData);
@@ -236,6 +244,7 @@ namespace GameEngine
         /// 从当前对象管理容器中销毁指定的基础对象实例
         /// </summary>
         /// <param name="obj">对象实例</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DestroyObject(CObject obj)
         {
             ObjectHandler.Instance.DestroyObject(obj);
@@ -245,6 +254,7 @@ namespace GameEngine
         /// 从当前对象管理容器中销毁指定名称对应的所有基础对象实例
         /// </summary>
         /// <param name="objectName">对象名称</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DestroyObject(string objectName)
         {
             ObjectHandler.Instance.DestroyObject(objectName);
@@ -254,6 +264,7 @@ namespace GameEngine
         /// 从当前对象管理容器中销毁指定类型对应的所有基础对象实例
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DestroyObject<T>() where T : CObject
         {
             ObjectHandler.Instance.DestroyObject<T>();
@@ -263,6 +274,7 @@ namespace GameEngine
         /// 从当前对象管理容器中销毁指定类型对应的所有基础对象实例
         /// </summary>
         /// <param name="objectType">对象类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DestroyObject(Type objectType)
         {
             ObjectHandler.Instance.DestroyObject(objectType);
@@ -271,6 +283,7 @@ namespace GameEngine
         /// <summary>
         /// 从当前对象管理容器中销毁所有注册的基础对象实例
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DestroyAllObjects()
         {
             ObjectHandler.Instance.DestroyAllObjects();
@@ -284,6 +297,7 @@ namespace GameEngine
         /// 获取当前运行的场景实例
         /// </summary>
         /// <returns>返回当前运行的场景实例，若没有则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static CScene GetCurrentScene()
         {
             return SceneHandler.Instance.GetCurrentScene();
@@ -294,6 +308,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="sceneName">场景名称</param>
         /// <param name="userData">用户数据</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ReplaceScene(string sceneName, object userData = null)
         {
             SceneHandler.Instance.ReplaceScene(sceneName, userData);
@@ -304,6 +319,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">场景类型</typeparam>
         /// <param name="userData">用户数据</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ReplaceScene<T>(object userData = null) where T : CScene
         {
             SceneHandler.Instance.ReplaceScene<T>(userData);
@@ -314,6 +330,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="sceneType">场景类型</param>
         /// <param name="userData">用户数据</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ReplaceScene(Type sceneType, object userData = null)
         {
             SceneHandler.Instance.ReplaceScene(sceneType, userData);
@@ -325,6 +342,7 @@ namespace GameEngine
         /// <param name="sceneName">场景名称</param>
         /// <param name="userData">用户数据</param>
         /// <returns>返回改变的目标场景实例，若切换场景失败返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static CScene ChangeScene(string sceneName, object userData = null)
         {
             return SceneHandler.Instance.ChangeScene(sceneName, userData);
@@ -336,6 +354,7 @@ namespace GameEngine
         /// <typeparam name="T">场景类型</typeparam>
         /// <param name="userData">用户数据</param>
         /// <returns>返回改变的目标场景实例，若切换场景失败返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ChangeScene<T>(object userData = null) where T : CScene
         {
             return SceneHandler.Instance.ChangeScene<T>(userData);
@@ -347,6 +366,7 @@ namespace GameEngine
         /// <param name="sceneType">场景类型</param>
         /// <param name="userData">用户数据</param>
         /// <returns>返回改变的目标场景实例，若切换场景失败返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static CScene ChangeScene(Type sceneType, object userData = null)
         {
             return SceneHandler.Instance.ChangeScene(sceneType, userData);
@@ -361,6 +381,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="actorName">对象名称</param>
         /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IList<CActor> GetActor(string actorName)
         {
             return ActorHandler.Instance.GetActor(actorName);
@@ -371,6 +392,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IList<T> GetActor<T>() where T : CActor
         {
             return ActorHandler.Instance.GetActor<T>();
@@ -381,6 +403,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="actorType">对象类型</param>
         /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IList<CActor> GetActor(Type actorType)
         {
             return ActorHandler.Instance.GetActor(actorType);
@@ -390,6 +413,7 @@ namespace GameEngine
         /// 获取当前已创建的全部角色对象实例
         /// </summary>
         /// <returns>返回已创建的全部角色对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IList<CActor> GetAllActors()
         {
             return ActorHandler.Instance.GetAllActors();
@@ -423,6 +447,7 @@ namespace GameEngine
         /// <param name="actorName">角色名称</param>
         /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static CActor CreateActor(string actorName, object userData = null)
         {
             return ActorHandler.Instance.CreateActor(actorName, userData);
@@ -434,6 +459,7 @@ namespace GameEngine
         /// <typeparam name="T">角色类型</typeparam>
         /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T CreateActor<T>(object userData = null) where T : CActor
         {
             return ActorHandler.Instance.CreateActor<T>(userData);
@@ -445,6 +471,7 @@ namespace GameEngine
         /// <param name="actorType">角色类型</param>
         /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static CActor CreateActor(Type actorType, object userData = null)
         {
             return ActorHandler.Instance.CreateActor(actorType, userData);
@@ -454,6 +481,7 @@ namespace GameEngine
         /// 销毁指定的角色对象实例
         /// </summary>
         /// <param name="actor">角色实例</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DestroyActor(CActor actor)
         {
             ActorHandler.Instance.DestroyActor(actor);
@@ -463,6 +491,7 @@ namespace GameEngine
         /// 销毁指定角色名称对应的所有角色对象实例
         /// </summary>
         /// <param name="actorName">角色名称</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DestroyActor(string actorName)
         {
             ActorHandler.Instance.DestroyActor(actorName);
@@ -472,6 +501,7 @@ namespace GameEngine
         /// 销毁指定角色类型对应的所有角色对象实例
         /// </summary>
         /// <typeparam name="T">角色类型</typeparam>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DestroyActor<T>() where T : CActor
         {
             ActorHandler.Instance.DestroyActor<T>();
@@ -481,6 +511,7 @@ namespace GameEngine
         /// 销毁指定角色类型对应的所有角色对象实例
         /// </summary>
         /// <param name="actorType">角色类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DestroyActor(Type actorType)
         {
             ActorHandler.Instance.DestroyActor(actorType);
@@ -496,6 +527,7 @@ namespace GameEngine
         /// <param name="viewName">视图名称</param>
         /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static async UniTask<CView> OpenUI(string viewName, object userData = null)
         {
             return await GuiHandler.Instance.OpenUI(viewName, userData);
@@ -507,6 +539,7 @@ namespace GameEngine
         /// <typeparam name="T">视图类型</typeparam>
         /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static async UniTask<T> OpenUI<T>(object userData = null) where T : CView
         {
             return await GuiHandler.Instance.OpenUI<T>(userData);
@@ -518,6 +551,7 @@ namespace GameEngine
         /// <param name="viewType">视图类型</param>
         /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static async UniTask<CView> OpenUI(Type viewType, object userData = null)
         {
             return await GuiHandler.Instance.OpenUI(viewType, userData);
@@ -528,6 +562,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewName">视图名称</param>
         /// <returns>若视图处于打开状态则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool HasUI(string viewName)
         {
             return GuiHandler.Instance.HasUI(viewName);
@@ -536,6 +571,7 @@ namespace GameEngine
         /// <summary>
         /// 判断指定类型的视图是否处于打开状态
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool HasUI<T>() where T : CView
         {
             return GuiHandler.Instance.HasUI<T>();
@@ -546,6 +582,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>若视图处于打开状态则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool HasUI(Type viewType)
         {
             return GuiHandler.Instance.HasUI(viewType);
@@ -556,6 +593,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewName">视图名称</param>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static CView FindUI(string viewName)
         {
             return GuiHandler.Instance.FindUI(viewName);
@@ -566,6 +604,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T FindUI<T>() where T : CView
         {
             return GuiHandler.Instance.FindUI<T>();
@@ -576,6 +615,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static CView FindUI(Type viewType)
         {
             return GuiHandler.Instance.FindUI(viewType);
@@ -586,6 +626,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static async UniTask<T> FindUIAsync<T>() where T : CView
         {
             return await GuiHandler.Instance.FindUIAsync<T>();
@@ -596,6 +637,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static async UniTask<CView> FindUIAsync(Type viewType)
         {
             return await GuiHandler.Instance.FindUIAsync(viewType);
@@ -605,6 +647,7 @@ namespace GameEngine
         /// 关闭指定的视图对象实例
         /// </summary>
         /// <param name="view">视图对象实例</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void CloseUI(CView view)
         {
             GuiHandler.Instance.CloseUI(view); 
@@ -614,6 +657,7 @@ namespace GameEngine
         /// 关闭指定的视图名称对应的视图对象实例
         /// </summary>
         /// <param name="viewName">视图名称</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void CloseUI(string viewName)
         {
             GuiHandler.Instance.CloseUI(viewName);
@@ -623,6 +667,7 @@ namespace GameEngine
         /// 关闭指定的视图类型对应的视图对象实例
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void CloseUI<T>() where T : CView
         {
             GuiHandler.Instance.CloseUI<T>();
@@ -632,6 +677,7 @@ namespace GameEngine
         /// 关闭指定的视图类型对应的视图对象实例
         /// </summary>
         /// <param name="viewType">视图类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void CloseUI(Type viewType)
         {
             GuiHandler.Instance.CloseUI(viewType);
@@ -640,9 +686,42 @@ namespace GameEngine
         /// <summary>
         /// 关闭当前环境下所有的视图对象实例
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void CloseAllUI()
         {
             GuiHandler.Instance.CloseAllUI();
+        }
+
+        /// <summary>
+        /// 获取当前已创建的全部视图对象实例
+        /// </summary>
+        /// <returns>返回已创建的全部视图对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IList<CView> GetAllViews()
+        {
+            return GuiHandler.Instance.GetAllViews();
+        }
+
+        /// <summary>
+        /// 检测当前已创建的视图对象列表中是否存在指定标识的对象实例
+        /// </summary>
+        /// <param name="beanId">实体标识</param>
+        /// <returns>若存在指定标识的视图对象实例则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool HasViewById(int beanId)
+        {
+            return GuiHandler.Instance.HasViewById(beanId);
+        }
+
+        /// <summary>
+        /// 通过指定的对象标识查找对应的视图对象实例
+        /// </summary>
+        /// <param name="beanId">实体标识</param>
+        /// <returns>返回对应的视图对象实例，若该实例不存在则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static CView GetViewById(int beanId)
+        {
+            return GuiHandler.Instance.GetViewById(beanId);
         }
 
         #endregion

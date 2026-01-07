@@ -4,6 +4,7 @@
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -172,6 +173,7 @@ namespace GameEngine
         /// <summary>
         /// 注销当前句柄实例绑定的所有角色类型
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void UnregisterAllActorClasses()
         {
             UnregisterAllEntityClasses();
@@ -215,19 +217,16 @@ namespace GameEngine
         /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
         public IList<CActor> GetActor(Type actorType)
         {
-            List<CActor> actors = new List<CActor>();
+            IList<CActor> actors = null;
             for (int n = 0; n < _actors.Count; ++n)
             {
                 CActor actor = _actors[n];
                 if (actor.BeanType == actorType)
                 {
+                    if (null == actors) actors = new List<CActor>();
+
                     actors.Add(actor);
                 }
-            }
-
-            if (actors.Count <= 0)
-            {
-                actors = null;
             }
 
             return actors;
