@@ -43,7 +43,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 按键编码列表
         /// </summary>
-        private Array _keyCodeArray = null;
+        private Array _keyCodeArray;
 
         public InputModule() : base()
         {

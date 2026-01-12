@@ -99,7 +99,7 @@ namespace NovaEngine.Module
         /// 在当前上下文以线程方式运行回调句柄接口
         /// </summary>
         /// <param name="handler">目标回调句柄</param>
-        public static void Run(IRunnable handler)
+        public void Run(IRunnable handler)
         {
             Utility.Thread.DoRun(handler);
         }
@@ -108,7 +108,7 @@ namespace NovaEngine.Module
         /// 在当前上下文以线程方式运行回调函数接口
         /// </summary>
         /// <param name="action">行为函数</param>
-        public static void RunAsync(System.Action action)
+        public void RunAsync(System.Action action)
         {
             Utility.Thread.RunAsync(action);
         }

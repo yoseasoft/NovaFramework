@@ -27,6 +27,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using UnityEngine.SceneManagement;
 
@@ -45,7 +46,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 当前加载的场景实例的管理容器
         /// </summary>
-        private IDictionary<string, SceneRecordInfo> _sceneRecordInfos = null;
+        private IDictionary<string, SceneRecordInfo> _sceneRecordInfos;
 
         /// <summary>
         /// 场景模块事件类型
@@ -204,8 +205,7 @@ namespace NovaEngine.Module
         /// <param name="sceneName">场景名称</param>
         public void UnloadScene(string sceneName)
         {
-            SceneRecordInfo info = null;
-            if (false == _sceneRecordInfos.TryGetValue(sceneName, out info))
+            if (false == _sceneRecordInfos.TryGetValue(sceneName, out SceneRecordInfo info))
             {
                 Logger.Warn("检测到当前世界容器中不存在指定名称为‘{%s}’的场景实例，卸载场景对象操作失败！", sceneName);
                 return;
@@ -239,10 +239,10 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="sceneName">场景名称</param>
         /// <returns>返回给定名称对应的场景运行时信息数据对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public SceneRecordInfo GetSceneRecordInfo(string sceneName)
         {
-            SceneRecordInfo info = null;
-            if (_sceneRecordInfos.TryGetValue (sceneName, out info))
+            if (_sceneRecordInfos.TryGetValue (sceneName, out SceneRecordInfo info))
             {
                 return info;
             }
@@ -254,6 +254,7 @@ namespace NovaEngine.Module
         /// 获取当前激活的主控场景对象实例的名称
         /// </summary>
         /// <returns>返回当前激活的场景名称</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public string GetActiveSceneName()
         {
             Scene scene = SceneManager.GetActiveScene();
@@ -273,8 +274,7 @@ namespace NovaEngine.Module
                 return;
             }
 
-            SceneRecordInfo info = null;
-            if (false == _sceneRecordInfos.TryGetValue(sceneName, out info))
+            if (false == _sceneRecordInfos.TryGetValue(sceneName, out SceneRecordInfo info))
             {
                 Logger.Warn("检测到当前场景容器中不存在名称为‘{0}’的场景实例，激活该场景对象失败！", sceneName);
                 return;

@@ -369,6 +369,7 @@ namespace GameEngine
         /// <param name="assetName">场景资源名称</param>
         /// <param name="url">场景资源路径</param>
         /// <param name="completed">结束回调</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GooAsset.Scene LoadSceneAsset(string assetName, string url, Action<GooAsset.Scene> completed = null)
         {
             return SceneModule.LoadScene(assetName, url, completed);
@@ -379,6 +380,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="assetName">场景资源名称</param>
         /// <param name="url">场景资源路径</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public async UniTask<GooAsset.Scene> LoadSceneAssetAsync(string assetName, string url)
         {
             // string assetName = System.IO.Path.GetFileNameWithoutExtension(assetUrl);
@@ -389,6 +391,7 @@ namespace GameEngine
         /// 卸载指定名称的场景资源对象实例
         /// </summary>
         /// <param name="assetName">场景资源名称</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void UnloadSceneAsset(string assetName)
         {
             SceneModule.UnloadScene(assetName);

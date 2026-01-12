@@ -93,7 +93,7 @@ namespace NovaEngine.Module
         {
             if (_assetScene != null)
             {
-                ModuleObject.GetModule<ResourceModule>().UnloadScene(_assetScene);
+                ModuleController.GetModule<ResourceModule>().UnloadScene(_assetScene);
                 _assetScene = null;
             }
         }

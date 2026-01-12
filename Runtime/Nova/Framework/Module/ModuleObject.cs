@@ -26,6 +26,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace NovaEngine.Module
 {
@@ -35,11 +36,6 @@ namespace NovaEngine.Module
     /// </summary>
     internal abstract partial class ModuleObject
     {
-        /// <summary>
-        /// 模块类型常量定义
-        /// </summary>
-        public static readonly Type CLASS_TYPE = typeof(ModuleObject);
-
         /// <summary>
         /// 模块类的新实例构建接口
         /// </summary>
@@ -159,6 +155,7 @@ namespace NovaEngine.Module
         /// 模块实例发送事件接口，将特定事件标识及其对应的数据实体添加到事件队列中，将在下一帧主线程业务更新时统一处理
         /// </summary>
         /// <param name="e">事件对象</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void SendEvent(ModuleEventArgs e)
         {
             this.SendEvent(e, false);
@@ -169,6 +166,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="e">事件对象</param>
         /// <param name="now">立即执行标识</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void SendEvent(ModuleEventArgs e, bool now)
         {
             ModuleController.SendEvent(this, e, now);
@@ -178,6 +176,7 @@ namespace NovaEngine.Module
         /// 事件订阅接口
         /// </summary>
         /// <param name="eventID">事件标识</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void OnEventSubscribe(int eventID)
         {
             ModuleController.RegisterEventHandler(eventID, OnEventDispatch);
@@ -187,6 +186,7 @@ namespace NovaEngine.Module
         /// 事件取消订阅接口
         /// </summary>
         /// <param name="eventID">事件标识</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void OnEventUnsubscribe(int eventID)
         {
             ModuleController.UnregisterEventHandler(eventID, OnEventDispatch);
@@ -197,6 +197,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="sender">事件发送者</param>
         /// <param name="e">事件对象</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void OnEventDispatch(object sender, ModuleEventArgs e)
         {
             ModuleCommandArgs moduleCommand = ReferencePool.Acquire<ModuleCommandArgs>();
@@ -209,6 +210,7 @@ namespace NovaEngine.Module
         /// 获取当前模块对象的处理优先级
         /// </summary>
         /// <returns>返回模块对象的处理优先级</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GetPriority()
         {
             return EventType;
@@ -219,7 +221,8 @@ namespace NovaEngine.Module
         /// </summary>
         /// <typeparam name="T">模块类型</typeparam>
         /// <returns>返回对应类型的模块对象实例</returns>
-        public static T GetModule<T>() where T : ModuleObject
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T GetModule<T>() where T : ModuleObject
         {
             return ModuleController.GetModule<T>();
         }
@@ -228,7 +231,8 @@ namespace NovaEngine.Module
         /// 在当前主线程下以排队方式执行目标任务逻辑，该逻辑仅可一次性执行完成，不可循环等待
         /// </summary>
         /// <param name="action">目标任务项</param>
-        public static void QueueOnMainThread(Action action)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void QueueOnMainThread(Action action)
         {
             ModuleController.QueueOnMainThread(action);
         }
@@ -238,34 +242,10 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="action">目标任务项</param>
         /// <param name="delay">延迟时间</param>
-        public static void QueueOnMainThread(Action action, float delay)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void QueueOnMainThread(Action action, float delay)
         {
             ModuleController.QueueOnMainThread(action, delay);
-        }
-
-        /// <summary>
-        /// 检查指定对象类型是否为基础模块类型的子类型
-        /// </summary>
-        /// <typeparam name="T">对象类型</typeparam>
-        /// <returns>若对象类型继承自模块类则返回true，否则返回false</returns>
-        public static bool IsInheritanceType<T>()
-        {
-            return IsInheritanceType(typeof(T));
-        }
-
-        /// <summary>
-        /// 检查指定类型名称是否为基础模块类型的子类型名称
-        /// </summary>
-        /// <param name="typeName">类型名称</param>
-        /// <returns>若名称对应类型继承自模块类则返回true，否则返回false</returns>
-        public static bool IsInheritanceType(Type typeName)
-        {
-            if (typeName.IsSubclassOf(CLASS_TYPE))
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }

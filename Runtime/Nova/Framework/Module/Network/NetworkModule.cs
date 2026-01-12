@@ -26,6 +26,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using UnityWebRequest = UnityEngine.Networking.UnityWebRequest;
 
@@ -40,7 +41,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 处理HTTP模式的应用实例，对基于HTTP协议的网络请求进行封装实现
         /// </summary>
-        private Network.HttpClient _httpClient = null;
+        private Network.HttpClient _httpClient;
 
         /// <summary>
         /// 网络模块事件类型
@@ -115,6 +116,7 @@ namespace NovaEngine.Module
         /// <param name="name">网络名称</param>
         /// <param name="url">网络地址</param>
         /// <returns>若网络连接请求发送成功返回对应的通道标识，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Connect(int protocol, string name, string url)
         {
             return NetworkAdapter.Connect(protocol, name, url);
@@ -124,6 +126,7 @@ namespace NovaEngine.Module
         /// 远程终端网络断开请求接口，若断开请求处理成功，<see cref="NetworkModule.OnDisconnection"/>接口将被触发
         /// </summary>
         /// <param name="channelID">当前网络连接唯一标识</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Disconnect(int channelID)
         {
             NetworkAdapter.Disconnect(channelID);
@@ -134,6 +137,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="channelID">网络通道标识</param>
         /// <param name="message">消息字节流</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteMessage(int channelID, byte[] message)
         {
             NetworkAdapter.Send(channelID, message);
@@ -144,6 +148,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="channelID">网络通道标识</param>
         /// <param name="buffer">字符串数据</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteMessage(int channelID, string buffer)
         {
             NetworkAdapter.Send(channelID, buffer);
@@ -251,7 +256,7 @@ namespace NovaEngine.Module
         /// <param name="transmit">传输回调接口实例</param>
         public void Upload(string path, string url, string filename, string args, Network.IHttpTransmit transmit)
         {
-            ThreadModule.RunAsync(delegate ()
+            GetModule<ThreadModule>().RunAsync(delegate ()
             {
                 Network.HttpUploader.Upload(path, url, filename, args, transmit);
             });
@@ -270,7 +275,7 @@ namespace NovaEngine.Module
         public void Upload(string path, string url, string filename, string args,
             Network.HttpUploader.OnHttpUploadHandler progress, Network.HttpUploader.OnHttpUploadHandler succeed, Network.HttpUploader.OnHttpUploadHandler failed)
         {
-            ThreadModule.RunAsync(delegate ()
+            GetModule<ThreadModule>().RunAsync(delegate ()
             {
                 Network.HttpUploader.Upload(path, url, filename, args, progress, succeed, failed);
             });
@@ -290,7 +295,7 @@ namespace NovaEngine.Module
         /// <param name="transmit">传输回调接口实例</param>
         public void Download(string url, string path, long size, int msTime, Network.IHttpTransmit transmit)
         {
-            ThreadModule.RunAsync(delegate ()
+            GetModule<ThreadModule>().RunAsync(delegate ()
             {
                 Network.HttpDownloader.Download(url, path, size, msTime, transmit);
             });
@@ -309,7 +314,7 @@ namespace NovaEngine.Module
         public void Download(string url, string path, long size, int msTime,
             Network.HttpDownloader.OnHttpDownloadHandler progress, Network.HttpDownloader.OnHttpDownloadHandler succeed, Network.HttpDownloader.OnHttpDownloadHandler failed)
         {
-            ThreadModule.RunAsync(delegate ()
+            GetModule<ThreadModule>().RunAsync(delegate ()
             {
                 Network.HttpDownloader.Download(url, path, size, msTime, progress, succeed, failed);
             });

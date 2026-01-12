@@ -49,7 +49,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 当前活动任务实例的管理容器
         /// </summary>
-        private IList<TimerInfo> _activeTaskQueue = null;
+        private IList<TimerInfo> _activeTaskQueue;
 
         /// <summary>
         /// 定时器模块事件类型
