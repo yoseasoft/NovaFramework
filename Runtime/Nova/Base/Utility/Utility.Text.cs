@@ -854,7 +854,7 @@ namespace NovaEngine
                         return callback(getKeyPropertyInfo.GetValue(obj), getValuePropertyInfo.GetValue(obj));
                     }
 
-                    Debugger.Warn("Resolve dictionary value type '{%s}' failed.", GetFullName(targetType));
+                    Logger.Warn("Resolve dictionary value type '{%t}' failed.", targetType);
                     return callback(obj, obj);
                 });
             }

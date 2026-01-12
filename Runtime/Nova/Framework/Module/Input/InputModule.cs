@@ -28,6 +28,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using UnityInput = UnityEngine.Input;
 using UnityKeyCode = UnityEngine.KeyCode;
@@ -247,6 +248,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="code">按键编码</param>
         /// <returns>若目标按键编码为键盘按键信息则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool IsKeyboardCode(UnityKeyCode code)
         {
             if (UnityKeyCode.Menu >= code)
@@ -276,7 +278,7 @@ namespace NovaEngine.Module
             // 上一帧和当前帧之间的变化行为通知的编码信息
             fsb.Append("Changed={{{%s}}},", _keycodeChangedOnPreviousFrame);
 
-            Debugger.Log(fsb.ToString());
+            Logger.Info(fsb.ToString());
         }
     }
 }

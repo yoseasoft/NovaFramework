@@ -75,13 +75,13 @@ namespace NovaEngine.Module
                 Type serviceType = Type.GetType(serviceName);
                 if (null == serviceType)
                 {
-                    Debugger.Info("Could not found any network service class with target name {%s}.", serviceName);
+                    Logger.Info("Could not found any network service class with target name {%s}.", serviceName);
                     continue;
                 }
 
                 if (false == typeof(NetworkService).IsAssignableFrom(serviceType))
                 {
-                    Debugger.Warn("The service type {%s} must be inherited from 'NetworkService' type.", serviceName);
+                    Logger.Warn("The service type {%s} must be inherited from 'NetworkService' type.", serviceName);
                     continue;
                 }
 
@@ -138,7 +138,7 @@ namespace NovaEngine.Module
         {
             if (false == typeof(NetworkService).IsAssignableFrom(serviceType))
             {
-                Debugger.Warn("The service type '{%t}' must be inherited from 'NetworkService' type.", serviceType);
+                Logger.Warn("The service type '{%t}' must be inherited from 'NetworkService' type.", serviceType);
                 return;
             }
 

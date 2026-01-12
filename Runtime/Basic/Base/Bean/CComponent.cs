@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
@@ -121,6 +122,30 @@ namespace GameEngine
         /// </summary>
         public void Destroy()
         { }
+
+        #region 当前组件行为状态检测相关的辅助接口函数
+
+        /// <summary>
+        /// 检测当前组件对象实例是否具有可执行的行为类型
+        /// </summary>
+        /// <returns>若该实例有可执行行为则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected internal bool HasExecutableBehaviourType()
+        {
+            return HasAspectBehaviourType(AspectBehaviourType.Execute) || HasAspectBehaviourType(AspectBehaviourType.LateExecute);
+        }
+
+        /// <summary>
+        /// 检测当前组件对象实例是否具有可刷新的行为类型
+        /// </summary>
+        /// <returns>若该实例有可刷新行为则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected internal bool HasUpdatableBehaviourType()
+        {
+            return HasAspectBehaviourType(AspectBehaviourType.Update) || HasAspectBehaviourType(AspectBehaviourType.LateUpdate);
+        }
+
+        #endregion
 
         #region 当前组件所属实体对象的事件快捷访问操作接口函数
 

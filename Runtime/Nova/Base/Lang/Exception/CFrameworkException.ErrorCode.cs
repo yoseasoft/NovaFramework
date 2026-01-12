@@ -93,7 +93,7 @@ namespace NovaEngine
 
             if (_ExceptionCode.ContainsKey(errorCode))
             {
-                Logger.Error("The error code {0} was already registed, repeat add will be override old type.", errorCode);
+                Logger.Error("The error code {0} was already registered, repeat add will be override old type.", errorCode);
                 _ExceptionCode.Remove(errorCode);
             }
 

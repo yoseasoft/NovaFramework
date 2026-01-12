@@ -97,7 +97,7 @@ namespace GameEngine
                 {
                     if (Convert.ToInt32(enumValue) != Convert.ToInt32(eventType))
                     {
-                        Debugger.Error(LogGroupTag.Module, "The handler class type '{%s}' was not matched module event type '{%i}', registed it failed.", enumName, eventType);
+                        Debugger.Error(LogGroupTag.Module, "The handler class type '{%s}' was not matched module event type '{%i}', registered it failed.", enumName, eventType);
                         continue;
                     }
                 }
@@ -122,13 +122,13 @@ namespace GameEngine
                 IHandler handler = Activator.CreateInstance(handlerType) as IHandler;
                 if (null == handler || false == handler.Initialize())
                 {
-                    Debugger.Error("The handler type {%s} create or init failed.", handlerName);
+                    Debugger.Error(LogGroupTag.Module, "The handler type {%s} create or init failed.", handlerName);
                     continue;
                 }
 
                 (handler as BaseHandler).HandlerType = Convert.ToInt32(enumValue);
 
-                // Debugger.Info("Register new handler {%s} to target class type {%i}.", handlerName, handler.HandlerType);
+                // Debugger.Info(LogGroupTag.Module, "Register new handler {%s} to target class type {%i}.", handlerName, handler.HandlerType);
 
                 // 添加的管理容器
                 _handlerDeclaringTypes.Add(handlerType);
@@ -287,7 +287,7 @@ namespace GameEngine
             LinkedList<IHandler> result = new LinkedList<IHandler>();
 
             LinkedListNode<IHandler> lln;
-            IList<IHandler> all_handlers = NovaEngine.Utility.Collection.ToListForValues<int, IHandler>(_handlerRegisterObjects);
+            IList<IHandler> all_handlers = NovaEngine.Utility.Collection.ToListForValues(_handlerRegisterObjects);
             // foreach (IHandler handler in _handlerSortingList)
             for (int n = 0; n < all_handlers.Count; ++n)
             {
@@ -334,8 +334,7 @@ namespace GameEngine
         /// <returns>返回句柄类型列表</returns>
         internal static IList<Type> GetAllHandlerTypes()
         {
-            IList<Type> result = null;
-            result = NovaEngine.Utility.Collection.ToListForValues<int, Type>(_handlerClassTypes);
+            IList<Type> result = NovaEngine.Utility.Collection.ToListForValues(_handlerClassTypes);
             return result;
         }
 

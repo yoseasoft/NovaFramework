@@ -383,7 +383,7 @@ namespace NovaEngine
                     // 函数返回对象的类型必须可以赋予给函数定义返回值的类型
                     if (null == methodInfo.ReturnType || false == methodInfo.ReturnType.IsAssignableFrom(returnType))
                     {
-                        Debugger.Warn("The target method '{%t}' declared return type '{%t}' cannot matched calc return type '{%t}', created it for delegate failed.",
+                        Logger.Warn("The target method '{%t}' declared return type '{%t}' cannot matched calc return type '{%t}', created it for delegate failed.",
                                 methodInfo, methodInfo.ReturnType, returnType);
                         return false;
                     }
@@ -414,7 +414,7 @@ namespace NovaEngine
                     // 函数传入参数的类型必须可以赋予给函数定义参数的类型
                     if (false == paramInfoType.IsAssignableFrom(parameterTypes[n]))
                     {
-                        Debugger.Warn("The target method '{%t}' parameter info type '{%t}' cannot matched assign param type '{%t}', created it for delegate failed.",
+                        Logger.Warn("The target method '{%t}' parameter info type '{%t}' cannot matched assign param type '{%t}', created it for delegate failed.",
                                 methodInfo, paramInfoType, parameterTypes[n]);
                         return false;
                     }
@@ -480,7 +480,7 @@ namespace NovaEngine
                 Type genericActionType = CreateGenericActionType(paramInfos.Length);
                 if (null == genericActionType)
                 {
-                    Debugger.Warn("No supported generic action type with parameters length '{%d}' for target method '{%t}', created action delegate failed.", paramInfos.Length, methodInfo);
+                    Logger.Warn("No supported generic action type with parameters length '{%d}' for target method '{%t}', created action delegate failed.", paramInfos.Length, methodInfo);
                     return null;
                 }
 
@@ -591,7 +591,7 @@ namespace NovaEngine
                 Type genericFuncType = CreateGenericFuncType(paramInfos.Length);
                 if (null == genericFuncType)
                 {
-                    Debugger.Warn("No supported generic func type with parameters length '{%d}' for target method '{%t}', created func delegate failed.", paramInfos.Length, methodInfo);
+                    Logger.Warn("No supported generic func type with parameters length '{%d}' for target method '{%t}', created func delegate failed.", paramInfos.Length, methodInfo);
                     return null;
                 }
 

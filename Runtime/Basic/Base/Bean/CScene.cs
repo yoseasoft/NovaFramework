@@ -249,7 +249,7 @@ namespace GameEngine
         /// 检测的激活条件包括实体自身和其内部的组件实例
         /// </summary>
         /// <returns>若实体对象激活执行行为则返回true，否则返回false</returns>
-        protected internal override bool IsExecuteActivation()
+        protected internal override sealed bool IsExecuteActivation()
         {
             return true;
         }
@@ -259,7 +259,7 @@ namespace GameEngine
         /// 检测的激活条件包括实体自身和其内部的组件实例
         /// </summary>
         /// <returns>若实体对象激活刷新行为则返回true，否则返回false</returns>
-        protected internal override bool IsUpdateActivation()
+        protected internal override sealed bool IsUpdateActivation()
         {
             return true;
         }

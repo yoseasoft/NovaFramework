@@ -36,7 +36,7 @@ namespace GameEngine
     /// 场景模块封装的句柄对象类
     /// 模块具体功能接口请参考<see cref="NovaEngine.Module.SceneModule"/>类
     /// </summary>
-    public sealed partial class SceneHandler : EntityHandler
+    public sealed partial class SceneHandler : GenericEntityHandler<CScene>
     {
         /// <summary>
         /// 句柄对象锁实例
@@ -147,6 +147,14 @@ namespace GameEngine
                 lock (_lock)
                 {
                     ChangeScene(_waitingSceneType, _waitingSceneContext);
+
+                    // 注意，不能在一个场景实例的启动期间跳转到另一个场景，这将导致用户数据绑定异常
+
+                    // 每次替换场景后，都将待命的场景重置掉
+                    _waitingSceneType = null;
+
+                    // 使用完成后将上下文数据清除
+                    _waitingSceneContext = null;
                 }
             }
 
@@ -182,7 +190,7 @@ namespace GameEngine
                     Debugger.Error("There can only be one valid scene instance in the containers, don't multiple insert.");
                 }
 
-                return Entities[0] as CScene;
+                return Entities[0];
             }
 
             return null;
@@ -319,9 +327,6 @@ namespace GameEngine
                 // 销毁场景对象实例
                 CallEntityDestroyProcess(scene);
 
-                // 清除用户数据
-                scene.UserData = null;
-
                 // 关闭场景对象实例
                 Call(scene, scene.Shutdown, AspectBehaviourType.Shutdown);
 
@@ -335,23 +340,19 @@ namespace GameEngine
             }
 
             scene = CreateScene(sceneType);
+            scene.UserData = userData;
+
             if (null == scene || false == AddEntity(scene))
             {
                 Debugger.Error("Create or register the scene instance '{%t}' failed.", sceneType);
                 return null;
             }
 
+            // 设置当前场景类型
             _currentSceneType = sceneType;
-            // 每次替换场景后，都将待命的场景重置掉
-            _waitingSceneType = null;
 
             // 设置当前场景后再启动场景
             Call(scene, scene.Startup, AspectBehaviourType.Startup);
-
-            // 补充用户数据
-            scene.UserData = _waitingSceneContext;
-            // 使用完成后将上下文数据清除
-            _waitingSceneContext = null;
 
             // 唤醒场景对象实例
             CallEntityAwakeProcess(scene);
@@ -438,17 +439,17 @@ namespace GameEngine
 
             if (false == typeof(CScene).IsAssignableFrom(clsType))
             {
-                Debugger.Warn("The register type '{%t}' must be inherited from 'CScene'.", clsType);
+                Debugger.Warn(LogGroupTag.Module, "The register type '{%t}' must be inherited from 'CScene'.", clsType);
                 return false;
             }
 
             if (false == RegisterEntityClass(sceneName, clsType, priority))
             {
-                Debugger.Warn("The scene class '{%t}' was already registed, repeat added it failed.", clsType);
+                Debugger.Warn(LogGroupTag.Module, "The scene class '{%t}' was already registered, repeat added it failed.", clsType);
                 return false;
             }
 
-            // Debugger.Info("Register new scene class type '{%t}' with target name '{%s}'.", clsType, sceneName);
+            // Debugger.Info(LogGroupTag.Module, "Register new scene class type '{%t}' with target name '{%s}'.", clsType, sceneName);
 
             return true;
         }

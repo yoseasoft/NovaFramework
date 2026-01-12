@@ -46,18 +46,18 @@ namespace GameEngine.Loader
                 return false;
             }
 
-            Structuring.ComponentCodeInfo info = new Structuring.ComponentCodeInfo();
-            info.ClassType = symClass.ClassType;
+            Structuring.ComponentCodeInfo info = new Structuring.ComponentCodeInfo()
+            {
+                ClassType = symClass.ClassType,
+            };
 
             IList<Attribute> attrs = symClass.Attributes;
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
                 Attribute attr = attrs[n];
-                Type attrType = attr.GetType();
-                if (typeof(CComponentClassAttribute) == attrType)
+                if (attr is CComponentClassAttribute componentClassAttribute)
                 {
-                    CComponentClassAttribute _attr = (CComponentClassAttribute) attr;
-                    info.ComponentName = _attr.ComponentName;
+                    info.ComponentName = componentClassAttribute.ComponentName;
                 }
             }
 
@@ -83,7 +83,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The component name '{0}' was already existed, repeat added it failed.", info.ComponentName);
+                    Debugger.Warn("The component name '{%s}' was already existed, repeat added it failed.", info.ComponentName);
                     return false;
                 }
             }

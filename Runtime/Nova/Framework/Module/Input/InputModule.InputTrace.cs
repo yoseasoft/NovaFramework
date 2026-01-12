@@ -23,6 +23,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using UnityKeyCode = UnityEngine.KeyCode;
 
@@ -82,6 +83,7 @@ namespace NovaEngine.Module
         /// 记录当前帧按下操作触发的按键编码信息
         /// </summary>
         /// <param name="code">按键编码</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnKeycodePressed(UnityKeyCode code)
         {
             _keycodePressedOnThisFrame.Add(code);
@@ -91,6 +93,7 @@ namespace NovaEngine.Module
         /// 取消当前帧按下操作触发的按键编码信息
         /// </summary>
         /// <param name="code">按键编码</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnKeycodeUnpressed(UnityKeyCode code)
         {
             _keycodePressedOnThisFrame.Remove(code);
@@ -100,6 +103,7 @@ namespace NovaEngine.Module
         /// 记录当前帧长按操作触发的按键编码信息
         /// </summary>
         /// <param name="code">按键编码</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnKeycodeMoved(UnityKeyCode code)
         {
             _keycodeMovedOnThisFrame.Add(code);
@@ -109,6 +113,7 @@ namespace NovaEngine.Module
         /// 记录当前帧释放操作触发的按键编码信息
         /// </summary>
         /// <param name="code">按键编码</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnKeycodeReleased(UnityKeyCode code)
         {
             _keycodeReleasedOnThisFrame.Add(code);
@@ -118,6 +123,7 @@ namespace NovaEngine.Module
         /// 取消当前帧释放操作触发的按键编码信息
         /// </summary>
         /// <param name="code">按键编码</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnKeycodeUnreleased(UnityKeyCode code)
         {
             _keycodeReleasedOnThisFrame.Remove(code);
@@ -127,6 +133,7 @@ namespace NovaEngine.Module
         /// 记录上一帧和当前帧发生变化的按键编码信息
         /// </summary>
         /// <param name="code">按键编码</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnKeycodeChanged(UnityKeyCode code)
         {
             _keycodeChangedOnPreviousFrame.Add(code);
@@ -136,6 +143,7 @@ namespace NovaEngine.Module
         /// 取消上一帧和当前帧发生变化的按键编码信息
         /// </summary>
         /// <param name="code">按键编码</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnKeycodeUnchanged(UnityKeyCode code)
         {
             _keycodeChangedOnPreviousFrame.Remove(code);
@@ -147,7 +155,8 @@ namespace NovaEngine.Module
         /// 检测当前帧是否触发了任意按键编码的录入操作，包括按下，长按及释放
         /// </summary>
         /// <returns>若触发了任意按键编码的录入操作则返回true，否则返回false</returns>
-        public bool IsAnyKeycodeInputed()
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsAnyKeycodeInputted()
         {
             if (IsAnyKeycodePressed() || IsAnyKeycodeMoved() || IsAnyKeycodeReleased())
             {
@@ -162,7 +171,8 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="code">按键编码</param>
         /// <returns>若触发了给定按键编码的录入操作则返回true，否则返回false</returns>
-        public bool IsKeycodeInputed(UnityKeyCode code)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsKeycodeInputted(UnityKeyCode code)
         {
             if (IsKeycodePressed(code) || IsKeycodeMoved(code) || IsKeycodeReleased(code))
             {
@@ -176,6 +186,7 @@ namespace NovaEngine.Module
         /// 检测当前帧是否触发了任意按键编码的按下操作
         /// </summary>
         /// <returns>若触发了任意按键编码的按下操作则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsAnyKeycodePressed()
         {
             return (_keycodePressedOnThisFrame.Count > 0);
@@ -186,6 +197,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="code">按键编码</param>
         /// <returns>若触发了给定按键编码的按下操作则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsKeycodePressed(UnityKeyCode code)
         {
             return _keycodePressedOnThisFrame.Contains(code);
@@ -195,6 +207,7 @@ namespace NovaEngine.Module
         /// 检测当前帧是否触发了任意按键编码的长按操作
         /// </summary>
         /// <returns>若触发了任意按键编码的长按操作则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsAnyKeycodeMoved()
         {
             return (_keycodeMovedOnThisFrame.Count > 0);
@@ -205,6 +218,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="code">按键编码</param>
         /// <returns>若触发了给定按键编码的长按操作则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsKeycodeMoved(UnityKeyCode code)
         {
             return _keycodeMovedOnThisFrame.Contains(code);
@@ -214,6 +228,7 @@ namespace NovaEngine.Module
         /// 检测当前帧是否触发了任意按键编码的释放操作
         /// </summary>
         /// <returns>若触发了任意按键编码的释放操作则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsAnyKeycodeReleased()
         {
             return (_keycodeReleasedOnThisFrame.Count > 0);
@@ -224,6 +239,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="code">按键编码</param>
         /// <returns>若触发了给定按键编码的释放操作则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsKeycodeReleased(UnityKeyCode code)
         {
             return _keycodeReleasedOnThisFrame.Contains(code);
@@ -233,6 +249,7 @@ namespace NovaEngine.Module
         /// 检测上一帧和当前帧是否触发了任意按键编码的改变操作
         /// </summary>
         /// <returns>若触发了任意按键编码的改变操作则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsAnyKeycodeChanged()
         {
             return (_keycodeChangedOnPreviousFrame.Count > 0);
@@ -243,6 +260,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="code">按键编码</param>
         /// <returns>若触发了给定按键编码的改变操作则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsKeycodeChanged(UnityKeyCode code)
         {
             return _keycodeChangedOnPreviousFrame.Contains(code);
@@ -252,6 +270,7 @@ namespace NovaEngine.Module
         /// 获取当前帧下所有按下的按键编码
         /// </summary>
         /// <returns>返回按键编码列表</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IList<UnityKeyCode> GetAllPressedKeycodes()
         {
             return _keycodePressedOnThisFrame;
@@ -261,6 +280,7 @@ namespace NovaEngine.Module
         /// 获取当前帧下所有长按的按键编码
         /// </summary>
         /// <returns>返回按键编码列表</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IList<UnityKeyCode> GetAllMovedKeycodes()
         {
             return _keycodeMovedOnThisFrame;
@@ -270,6 +290,7 @@ namespace NovaEngine.Module
         /// 获取当前帧下所有释放的按键编码
         /// </summary>
         /// <returns>返回按键编码列表</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IList<UnityKeyCode> GetAllReleasedKeycodes()
         {
             return _keycodeReleasedOnThisFrame;

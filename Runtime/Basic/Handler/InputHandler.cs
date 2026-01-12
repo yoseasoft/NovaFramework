@@ -27,6 +27,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using UnityKeyCode = UnityEngine.KeyCode;
 
@@ -86,7 +87,7 @@ namespace GameEngine
         protected override void OnUpdate()
         {
             // 没有任何按键输入的情况下，无需进行任何转发处理
-            if (false == InputModule.IsAnyKeycodeInputed())
+            if (false == InputModule.IsAnyKeycodeInputted())
             {
                 return;
             }
@@ -143,9 +144,10 @@ namespace GameEngine
         /// 检测当前帧是否触发了任意按键编码的录入操作，包括按下，长按及释放
         /// </summary>
         /// <returns>若触发了任意按键编码的录入操作则返回true，否则返回false</returns>
-        public bool IsAnyKeycodeInputed()
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsAnyKeycodeInputted()
         {
-            return InputModule.IsAnyKeycodeInputed();
+            return InputModule.IsAnyKeycodeInputted();
         }
 
         /// <summary>
@@ -153,15 +155,17 @@ namespace GameEngine
         /// </summary>
         /// <param name="code">按键编码</param>
         /// <returns>若触发了给定按键编码的录入操作则返回true，否则返回false</returns>
-        public bool IsKeycodeInputed(UnityKeyCode code)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsKeycodeInputted(UnityKeyCode code)
         {
-            return InputModule.IsKeycodeInputed(code);
+            return InputModule.IsKeycodeInputted(code);
         }
 
         /// <summary>
         /// 检测当前帧是否触发了任意按键编码的按下操作
         /// </summary>
         /// <returns>若触发了任意按键编码的按下操作则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsAnyKeycodePressed()
         {
             return InputModule.IsAnyKeycodePressed();
@@ -172,6 +176,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="code">按键编码</param>
         /// <returns>若触发了给定按键编码的按下操作则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsKeycodePressed(UnityKeyCode code)
         {
             return InputModule.IsKeycodePressed(code);
@@ -181,6 +186,7 @@ namespace GameEngine
         /// 检测当前帧是否触发了任意按键编码的长按操作
         /// </summary>
         /// <returns>若触发了任意按键编码的长按操作则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsAnyKeycodeMoved()
         {
             return InputModule.IsAnyKeycodeMoved();
@@ -191,6 +197,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="code">按键编码</param>
         /// <returns>若触发了给定按键编码的长按操作则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsKeycodeMoved(UnityKeyCode code)
         {
             return InputModule.IsKeycodeMoved(code);
@@ -200,6 +207,7 @@ namespace GameEngine
         /// 检测当前帧是否触发了任意按键编码的释放操作
         /// </summary>
         /// <returns>若触发了任意按键编码的释放操作则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsAnyKeycodeReleased()
         {
             return InputModule.IsAnyKeycodeReleased();
@@ -210,6 +218,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="code">按键编码</param>
         /// <returns>若触发了给定按键编码的释放操作则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsKeycodeReleased(UnityKeyCode code)
         {
             return InputModule.IsKeycodeReleased(code);

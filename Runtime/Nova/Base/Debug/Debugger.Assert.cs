@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace NovaEngine
 {
     /// 调试器对象工具类
@@ -32,6 +34,7 @@ namespace NovaEngine
         /// 系统断言，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="condition">条件表达式</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(bool condition)
         {
             Instance._assert_empty?.Invoke(condition);
@@ -42,6 +45,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(bool condition, object message)
         {
             Instance._assert_object?.Invoke(condition, message);
@@ -52,6 +56,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(bool condition, string message)
         {
             Instance._assert_string?.Invoke(condition, message);
@@ -63,6 +68,7 @@ namespace NovaEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(bool condition, string format, params object[] args)
         {
             Instance._assert_format_args?.Invoke(condition, format, args);
@@ -72,6 +78,7 @@ namespace NovaEngine
         /// 对象非空的断言检查，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="obj">对象实例</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(object obj)
         {
             Assert(null != obj);
@@ -82,6 +89,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="obj">对象实例</param>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(object obj, object message)
         {
             Assert(null != obj, message);
@@ -92,6 +100,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="obj">对象实例</param>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(object obj, string message)
         {
             Assert(null != obj, message);
@@ -103,6 +112,7 @@ namespace NovaEngine
         /// <param name="obj">对象实例</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(object obj, string format, params object[] args)
         {
             Assert(null != obj, format, args);

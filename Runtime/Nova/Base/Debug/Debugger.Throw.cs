@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace NovaEngine
 {
@@ -33,6 +34,7 @@ namespace NovaEngine
         /// <summary>
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw()
         {
             Instance._throw_empty?.Invoke();
@@ -42,6 +44,7 @@ namespace NovaEngine
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="errorCode">错误码</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(int errorCode)
         {
             Instance._throw_code?.Invoke(errorCode);
@@ -51,6 +54,7 @@ namespace NovaEngine
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(string message)
         {
             Instance._throw_string?.Invoke(message);
@@ -61,6 +65,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(string format, params object[] args)
         {
             Instance._throw_format_args?.Invoke(format, args);
@@ -70,6 +75,7 @@ namespace NovaEngine
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="exception">异常实例</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(Exception exception)
         {
             Instance._throw_exception?.Invoke(exception);
@@ -79,6 +85,7 @@ namespace NovaEngine
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="type">异常类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(Type type)
         {
             Instance._throw_type?.Invoke(type);
@@ -89,6 +96,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="type">异常类型</param>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(Type type, string message)
         {
             Instance._throw_type_string?.Invoke(type, message);
@@ -100,6 +108,7 @@ namespace NovaEngine
         /// <param name="type">异常类型</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(Type type, string format, params object[] args)
         {
             Instance._throw_type_format_args?.Invoke(type, format, args);
@@ -109,6 +118,7 @@ namespace NovaEngine
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
         /// <typeparam name="T">异常类型</typeparam>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>() where T : Exception
         {
             Throw(typeof(T));
@@ -119,6 +129,7 @@ namespace NovaEngine
         /// </summary>
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(string message) where T : Exception
         {
             Throw(typeof(T), message);
@@ -130,6 +141,7 @@ namespace NovaEngine
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(string format, params object[] args) where T : Exception
         {
             Throw(typeof(T), format, args);
@@ -139,6 +151,7 @@ namespace NovaEngine
         /// 对象条件判定的异常检查，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="condition">条件表达式</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition)
         {
             if (condition) Throw();
@@ -149,6 +162,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="errorCode">错误码</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, int errorCode)
         {
             if (condition) Throw(errorCode);
@@ -159,6 +173,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, string message)
         {
             if (condition) Throw(message);
@@ -170,6 +185,7 @@ namespace NovaEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, string format, params object[] args)
         {
             if (condition) Throw(format, args);
@@ -180,6 +196,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="exception">异常实例</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, Exception exception)
         {
             if (condition) Throw(exception);
@@ -190,6 +207,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="type">异常类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, Type type)
         {
             if (condition) Throw(type);
@@ -201,6 +219,7 @@ namespace NovaEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="type">异常类型</param>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, Type type, string message)
         {
             if (condition) Throw(type, message);
@@ -213,6 +232,7 @@ namespace NovaEngine
         /// <param name="type">异常类型</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, Type type, string format, params object[] args)
         {
             if (condition) Throw(type, format, args);
@@ -223,6 +243,7 @@ namespace NovaEngine
         /// </summary>
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="condition">条件表达式</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(bool condition) where T : Exception
         {
             if (condition) Throw<T>();
@@ -234,6 +255,7 @@ namespace NovaEngine
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(bool condition, string message) where T : Exception
         {
             if (condition) Throw<T>(message);
@@ -246,6 +268,7 @@ namespace NovaEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(bool condition, string format, params object[] args) where T : Exception
         {
             if (condition) Throw<T>(format, args);

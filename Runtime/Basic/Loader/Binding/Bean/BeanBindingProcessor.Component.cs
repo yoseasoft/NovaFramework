@@ -27,7 +27,7 @@ using UnityEngine.Scripting;
 
 namespace GameEngine
 {
-    /// 基于ECS模式定义的句柄对象类
+    /// 标准版的ECS模式句柄对象类
     public abstract partial class EntityHandler
     {
         /// <summary>

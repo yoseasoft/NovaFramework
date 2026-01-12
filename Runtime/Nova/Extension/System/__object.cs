@@ -38,8 +38,8 @@ namespace System.Customize.Extension
         /// </summary>
         /// <param name="self">对象实例</param>
         /// <returns>若对象为空返回true，否则返回false</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNull(this object self)
         {
             return null == self;
@@ -50,8 +50,8 @@ namespace System.Customize.Extension
         /// </summary>
         /// <param name="self">对象实例</param>
         /// <returns>若对象不为空返回true，否则返回false</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNotNull(this object self)
         {
             return null != self;
@@ -63,8 +63,8 @@ namespace System.Customize.Extension
         /// <typeparam name="T">目标对象类型</typeparam>
         /// <param name="self">对象实例</param>
         /// <returns>返回转换后的类型实例</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T As<T>(this object self) where T : class
         {
             return self as T;
@@ -76,8 +76,8 @@ namespace System.Customize.Extension
         /// <typeparam name="T">目标对象类型</typeparam>
         /// <param name="self">对象实例</param>
         /// <returns>返回转换后的类型实例</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T CastTo<T>(this object self) where T : class
         {
             return (T) self;

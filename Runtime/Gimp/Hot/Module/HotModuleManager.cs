@@ -94,7 +94,7 @@ namespace GameEngine
 
             if (_hotModules.ContainsKey(type))
             {
-                Debugger.Error("The hot module object '{%t}' was already exists, repeat registed it failed.", type);
+                Debugger.Error("The hot module object '{%t}' was already exists, repeat registered it failed.", type);
                 return;
             }
 
@@ -130,7 +130,7 @@ namespace GameEngine
 
                 if (_hotModulePackTypes.ContainsKey(packName))
                 {
-                    Debugger.Warn("The hot module pack '{%s}' was already exists, repeat registed it will be override old type.", packName);
+                    Debugger.Warn("The hot module pack '{%s}' was already exists, repeat registered it will be override old type.", packName);
                     _hotModulePackTypes.Remove(packName);
                 }
 
@@ -158,7 +158,7 @@ namespace GameEngine
 
             if (false == _hotModules.TryGetValue(type, out IHotModule module))
             {
-                Debugger.Error("Could not found target hot module object with class type '{%t}', unregisted it failed.", type);
+                Debugger.Error("Could not found target hot module object with class type '{%t}', unregistered it failed.", type);
                 return;
             }
 

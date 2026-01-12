@@ -840,11 +840,11 @@ namespace GameEngine
 
             if (_messageClassTypes.ContainsKey(msgType))
             {
-                Debugger.Warn("The message proto object code '{%d}' was already exist, repeat add will be override old handler.", msgType);
+                Debugger.Warn(LogGroupTag.Module, "The message proto object code '{%d}' was already exist, repeat add will be override old handler.", msgType);
                 _messageClassTypes.Remove(msgType);
             }
 
-            // Debugger.Info("Register new message class type '{%t}' with target opcode '{%d}'.", classType, msgType);
+            // Debugger.Info(LogGroupTag.Module, "Register new message class type '{%t}' with target opcode '{%d}'.", classType, msgType);
             _messageClassTypes.Add(msgType, classType);
         }
 
@@ -856,11 +856,11 @@ namespace GameEngine
         {
             if (false == _messageClassTypes.ContainsKey(msgType))
             {
-                Debugger.Warn("Could not found any message class type with target opcode '{%d}', unregisted it failed.", msgType);
+                Debugger.Warn(LogGroupTag.Module, "Could not found any message class type with target opcode '{%d}', unregistered it failed.", msgType);
                 return;
             }
 
-            // Debugger.Info("Unregister message class type with target opcode '{%d}'.", msgType);
+            // Debugger.Info(LogGroupTag.Module, "Unregister message class type with target opcode '{%d}'.", msgType);
             _messageClassTypes.Remove(msgType);
         }
 
@@ -885,7 +885,7 @@ namespace GameEngine
                 return _messageClassTypes[msgType];
             }
 
-            Debugger.Info("Could not found any message class with target type '{%d}'!", msgType);
+            Debugger.Warn(LogGroupTag.Module, "Could not found any message class with target type '{%d}'!", msgType);
             return null;
         }
 

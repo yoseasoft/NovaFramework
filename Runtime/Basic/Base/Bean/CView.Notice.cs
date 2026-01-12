@@ -29,10 +29,8 @@ using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 视图对象抽象类，对用户界面对象上下文进行封装及调度管理
-    /// </summary>
-    public abstract partial class CView : CEntity
+    /// 视图对象抽象类
+    public abstract partial class CView
     {
         /// <summary>
         /// 基础对象内部输入编码的响应回调映射列表

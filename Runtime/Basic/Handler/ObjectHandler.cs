@@ -172,16 +172,17 @@ namespace GameEngine
 
             if (false == typeof(CObject).IsAssignableFrom(clsType))
             {
-                Debugger.Warn("The register type {%t} must be inherited from 'CObject'.", clsType);
+                Debugger.Warn(LogGroupTag.Module, "The register type {%t} must be inherited from 'CObject'.", clsType);
                 return false;
             }
 
             if (_objectClassTypes.ContainsKey(objectName))
             {
-                Debugger.Warn("The object name {%s} was already registered, repeat add will be override old name.", objectName);
+                Debugger.Warn(LogGroupTag.Module, "The object name {%s} was already registered, repeat add will be override old name.", objectName);
                 _objectClassTypes.Remove(objectName);
             }
 
+            // Debugger.Warn(LogGroupTag.Module, "The new object class name {%s} and type {%t} register succeed.", objectName, clsType);
             _objectClassTypes.Add(objectName, clsType);
             if (priority > 0)
             {

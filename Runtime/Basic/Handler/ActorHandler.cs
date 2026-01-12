@@ -37,13 +37,8 @@ namespace GameEngine
     /// 角色模块封装的句柄对象类
     /// 模块具体功能接口请参考<see cref="NovaEngine.Module.ActorModule"/>类
     /// </summary>
-    public sealed partial class ActorHandler : EntityHandler
+    public sealed partial class ActorHandler : GenericEntityHandler<CActor>
     {
-        /// <summary>
-        /// 通过当前模块实例化的对象实例管理容器
-        /// </summary>
-        private IList<CActor> _actors;
-
         /// <summary>
         /// 句柄对象的单例访问获取接口
         /// </summary>
@@ -70,9 +65,6 @@ namespace GameEngine
         protected override bool OnInitialize()
         {
             if (false == base.OnInitialize()) return false;
-
-            // 初始化角色实例容器
-            _actors = new List<CActor>();
 
             return true;
         }
@@ -155,17 +147,17 @@ namespace GameEngine
 
             if (false == typeof(CActor).IsAssignableFrom(clsType))
             {
-                Debugger.Warn("The register type '{%t}' must be inherited from 'CActor'.", clsType);
+                Debugger.Warn(LogGroupTag.Module, "The register type '{%t}' must be inherited from 'CActor'.", clsType);
                 return false;
             }
 
             if (false == RegisterEntityClass(actorName, clsType, priority))
             {
-                Debugger.Warn("The scene class '{%t}' was already registed, repeat added it failed.", clsType);
+                Debugger.Warn(LogGroupTag.Module, "The scene class '{%t}' was already registered, repeat added it failed.", clsType);
                 return false;
             }
 
-            // Debugger.Info("Register new actor class type '{%t}' with target name '{%s}'.", clsType, actorName);
+            // Debugger.Info(LogGroupTag.Module, "Register new actor class type '{%t}' with target name '{%s}'.", clsType, actorName);
 
             return true;
         }
@@ -218,9 +210,9 @@ namespace GameEngine
         public IList<CActor> GetActor(Type actorType)
         {
             IList<CActor> actors = null;
-            for (int n = 0; n < _actors.Count; ++n)
+            for (int n = 0; n < Entities.Count; ++n)
             {
-                CActor actor = _actors[n];
+                CActor actor = Entities[n];
                 if (actor.BeanType == actorType)
                 {
                     if (null == actors) actors = new List<CActor>();
@@ -239,7 +231,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IList<CActor> GetAllActors()
         {
-            return NovaEngine.Utility.Collection.CastAndToList<CEntity, CActor>(GetAllEntities());
+            return GetAllEntities();
         }
 
         /// <summary>
@@ -261,7 +253,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public CActor GetActorById(int beanId)
         {
-            return GetEntityById(beanId) as CActor;
+            return GetEntityById(beanId);
         }
 
         /// <summary>
@@ -335,9 +327,6 @@ namespace GameEngine
                 return null;
             }
 
-            // 添加实例到管理容器中
-            _actors.Add(obj);
-
             // 启动对象实例
             Call(obj, obj.Startup, AspectBehaviourType.Startup);
 
@@ -355,7 +344,7 @@ namespace GameEngine
         /// <param name="actor">对象实例</param>
         internal void RemoveActor(CActor actor)
         {
-            if (false == _actors.Contains(actor))
+            if (false == Entities.Contains(actor))
             {
                 Debugger.Warn("Could not found target actor instance '{%t}' from current container, removed it failed.", actor.BeanType);
                 return;
@@ -368,9 +357,6 @@ namespace GameEngine
 
             // 关闭角色对象实例
             Call(actor, actor.Shutdown, AspectBehaviourType.Shutdown);
-
-            // 从管理容器中移除实例
-            _actors.Remove(actor);
 
             // 移除实例
             RemoveEntity(actor);
@@ -410,7 +396,7 @@ namespace GameEngine
         /// <param name="actorType">对象类型</param>
         internal void RemoveActor(Type actorType)
         {
-            IEnumerable<CActor> actors = NovaEngine.Utility.Collection.Reverse<CActor>(_actors);
+            IEnumerable<CActor> actors = NovaEngine.Utility.Collection.Reverse(Entities);
             foreach (CActor obj in actors)
             {
                 if (obj.BeanType == actorType)
@@ -425,9 +411,9 @@ namespace GameEngine
         /// </summary>
         internal void RemoveAllActors()
         {
-            while (_actors.Count > 0)
+            while (Entities.Count > 0)
             {
-                RemoveActor(_actors[_actors.Count - 1]);
+                RemoveActor(Entities[Entities.Count - 1]);
             }
         }
 
@@ -437,7 +423,7 @@ namespace GameEngine
         /// <param name="actor">对象实例</param>
         public void DestroyActor(CActor actor)
         {
-            if (false == _actors.Contains(actor))
+            if (false == Entities.Contains(actor))
             {
                 Debugger.Warn("Could not found target actor instance '{%t}' from current container, removed it failed.", actor.BeanType);
                 return;
@@ -486,7 +472,7 @@ namespace GameEngine
         /// <param name="actorType">对象类型</param>
         public void DestroyActor(Type actorType)
         {
-            IEnumerable<CActor> actors = NovaEngine.Utility.Collection.Reverse<CActor>(_actors);
+            IEnumerable<CActor> actors = NovaEngine.Utility.Collection.Reverse(Entities);
             foreach (CActor obj in actors)
             {
                 if (obj.BeanType == actorType)
@@ -501,9 +487,9 @@ namespace GameEngine
         /// </summary>
         public void DestroyAllActors()
         {
-            while (_actors.Count > 0)
+            while (Entities.Count > 0)
             {
-                DestroyActor(_actors[_actors.Count - 1]);
+                DestroyActor(Entities[Entities.Count - 1]);
             }
         }
 
@@ -558,21 +544,16 @@ namespace GameEngine
         /// <returns>返回给定类型的全部实例</returns>
         internal IList<CActor> FindAllActorsByType(Type actorType)
         {
-            IList<CActor> result = new List<CActor>();
-            IEnumerator<CActor> e = _actors.GetEnumerator();
+            IList<CActor> result = null;
+            IEnumerator<CActor> e = Entities.GetEnumerator();
             while (e.MoveNext())
             {
                 CActor obj = e.Current;
                 if (actorType.IsAssignableFrom(obj.BeanType))
                 {
+                    if (null == result) result = new List<CActor>();
                     result.Add(obj);
                 }
-            }
-
-            // 如果搜索结果为空，则直接返回null
-            if (result.Count <= 0)
-            {
-                result = null;
             }
 
             return result;

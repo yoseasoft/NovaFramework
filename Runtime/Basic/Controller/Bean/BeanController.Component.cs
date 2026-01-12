@@ -104,15 +104,17 @@ namespace GameEngine
 
             if (false == typeof(CComponent).IsAssignableFrom(clsType))
             {
-                Debugger.Warn("The register type {0} must be inherited from 'CComponent'.", clsType.Name);
+                Debugger.Warn(LogGroupTag.Controller, "The register type {0} must be inherited from 'CComponent'.", clsType.Name);
                 return false;
             }
 
             if (_componentClassTypes.ContainsKey(componentName))
             {
-                Debugger.Warn("The component name '{0}' was already registed, repeat add will be override old name.", componentName);
+                Debugger.Warn(LogGroupTag.Controller, "The component name '{0}' was already registered, repeat add will be override old name.", componentName);
                 _componentClassTypes.RemoveByKey(componentName);
             }
+
+            // Debugger.Info(LogGroupTag.Controller, "Register new component class type '{%t}' with target name '{%s}'.", clsType, componentName);
 
             _componentClassTypes.Add(componentName, clsType);
 
@@ -127,7 +129,7 @@ namespace GameEngine
         {
             if (false == _componentClassTypes.ContainsKey(componentName))
             {
-                Debugger.Warn("Could not found any component with target name '{0}', removed it failed.", componentName);
+                Debugger.Warn(LogGroupTag.Controller, "Could not found any component with target name '{0}', removed it failed.", componentName);
                 return;
             }
 

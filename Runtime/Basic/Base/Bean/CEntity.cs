@@ -54,40 +54,40 @@ namespace GameEngine
         /// <summary>
         /// 实体对象内部组件实例的执行统计列表
         /// </summary>
-        protected IList<CComponent> _componentExecuteList = null;
+        protected IList<CComponent> _componentExecuteList;
         /// <summary>
         /// 实体对象内部组件实例的执行数量
         /// </summary>
-        private int _componentExecuteCount = 0;
+        private int _componentExecuteCount;
 
         /// <summary>
         /// 实体对象内部组件实例的刷新统计列表
         /// </summary>
-        protected IList<CComponent> _componentUpdateList = null;
+        protected IList<CComponent> _componentUpdateList;
         /// <summary>
         /// 实体对象内部组件实例的刷新数量
         /// </summary>
-        private int _componentUpdateCount = 0;
+        private int _componentUpdateCount;
 
         /// <summary>
         /// 实体对象内部组件实例的输入分发列表
         /// </summary>
-        protected IList<CComponent> _componentInputDispatchList = null;
+        protected IList<CComponent> _componentInputDispatchList;
 
         /// <summary>
         /// 实体对象内部组件实例的事件分发列表
         /// </summary>
-        protected IList<CComponent> _componentEventDispatchList = null;
+        protected IList<CComponent> _componentEventDispatchList;
 
         /// <summary>
         /// 实体对象内部组件实例的消息分发列表
         /// </summary>
-        protected IList<CComponent> _componentMessageDispatchList = null;
+        protected IList<CComponent> _componentMessageDispatchList;
 
         /// <summary>
         /// 实体对象内部随机因子管理容器
         /// </summary>
-        protected IDictionary<string, Random> _randoms = null;
+        protected IDictionary<string, Random> _randoms;
 
         /// <summary>
         /// 获取实体对象当前过期状态
@@ -110,8 +110,11 @@ namespace GameEngine
             _components = new Dictionary<string, CComponent>();
             // 组件执行列表初始化
             _componentExecuteList = new List<CComponent>();
+            _componentExecuteCount = 0;
             // 组件刷新列表初始化
             _componentUpdateList = new List<CComponent>();
+            _componentUpdateCount = 0;
+
             // 组件输入分发列表初始化
             _componentInputDispatchList = new List<CComponent>();
             // 组件事件分发列表初始化
@@ -865,7 +868,19 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool HasMoreExecuteComponents()
         {
-            return _componentExecuteCount > 0;
+            // 2026-01-11：
+            // 新添加组件实例后，统计计数在每次该组件实例被`Start`节点调度之后才会累计
+            // 而`Start`节点在某些情况下会被延迟到下一帧调用
+            // 所有使用该计数在组件添加后进行即时检测的结果在某些情况下是不正确的
+            // return _componentExecuteCount > 0;
+
+            foreach (CComponent component in _components.Values)
+            {
+                if (component.HasExecutableBehaviourType())
+                    return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -875,7 +890,19 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool HasMoreUpdateComponents()
         {
-            return _componentUpdateCount > 0;
+            // 2026-01-11：
+            // 新添加组件实例后，统计计数在每次该组件实例被`Start`节点调度之后才会累计
+            // 而`Start`节点在某些情况下会被延迟到下一帧调用
+            // 所有使用该计数在组件添加后进行即时检测的结果在某些情况下是不正确的
+            // return _componentUpdateCount > 0;
+
+            foreach (CComponent component in _components.Values)
+            {
+                if (component.HasUpdatableBehaviourType())
+                    return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -915,7 +942,7 @@ namespace GameEngine
         /// <returns>返回新添加的组件实例，失败则返回null</returns>
         public CComponent AddComponent(Type componentType)
         {
-            CComponent component = EntityHandler.CreateInstance(componentType) as CComponent;
+            CComponent component = BaseHandler.CreateInstance(componentType) as CComponent;
             return AddComponent(component);
         }
 
@@ -1032,8 +1059,7 @@ namespace GameEngine
         /// <returns>若查找组件实例成功则返回对应实例的引用，否则返回null</returns>
         public CComponent GetComponent(string name)
         {
-            CComponent component;
-            if (false == _components.TryGetValue(name, out component))
+            if (false == _components.TryGetValue(name, out CComponent component))
             {
                 return null;
             }
@@ -1136,10 +1162,9 @@ namespace GameEngine
         /// <param name="name">组件名称</param>
         public void RemoveComponent(string name)
         {
-            CComponent component;
-            if (false == _components.TryGetValue(name, out component))
+            if (false == _components.TryGetValue(name, out CComponent component))
             {
-                Debugger.Warn("Could not found any component instance with name '{0}', removed it failed.", name);
+                Debugger.Warn("Could not found any component instance with name '{%s}', removed it failed.", name);
                 return;
             }
 
@@ -1177,7 +1202,7 @@ namespace GameEngine
             Call(component.Cleanup, AspectBehaviourType.Cleanup);
 
             // 回收组件实例
-            EntityHandler.ReleaseInstance(component);
+            BaseHandler.ReleaseInstance(component);
 
             // 通知内部组件被改变
             OnInternalComponentsChanged();
@@ -1252,8 +1277,7 @@ namespace GameEngine
 
             // 2025-10-12：
             // 新增组件执行通知列表
-            if (component.HasAspectBehaviourType(AspectBehaviourType.Execute) ||
-                component.HasAspectBehaviourType(AspectBehaviourType.LateExecute))
+            if (component.HasExecutableBehaviourType())
             {
                 _componentExecuteList.Add(component);
                 _componentExecuteCount = _componentExecuteList.Count;
@@ -1264,8 +1288,7 @@ namespace GameEngine
             // 取消接口标识，转而使用特性标签来检测
             // 这样可以通过符号类在解析过程中动态接入的方式简化标识定义的过程
             // if (typeof(IUpdateActivation).IsAssignableFrom(component.BeanType))
-            if (component.HasAspectBehaviourType(AspectBehaviourType.Update) ||
-                component.HasAspectBehaviourType(AspectBehaviourType.LateUpdate))
+            if (component.HasUpdatableBehaviourType())
             {
                 _componentUpdateList.Add(component);
                 _componentUpdateCount = _componentUpdateList.Count;

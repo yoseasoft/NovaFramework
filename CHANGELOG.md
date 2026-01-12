@@ -4,6 +4,10 @@
 格式基于[保持更改日志](https://keepachangelog.com/en/1.0.0/)  
 该项目遵循[语义版本控制](https://semver.org/spec/v2.0.0.html)  
 
+### 1.0.10
+修复在调度过程中动态添加的组件不能正常执行`Update`的问题（若实体对象原本没有`Update`流程的情况下）；  
+重构实体管理句柄扩展为泛型，为其实现类`CScene`，`CActor`及`CView`等提供通用的实体缓存队列及访问接口；  
+
 ### 1.0.9
 修复实体对象的 BeanName 在`Awake`之后才设置，导致前面的节点中关于 Bean 绑定的组件无法正确注册问题；  
 修复继承自`CSceneClass`，`CActorClass`和`CViewClass`的标签无法正确解析问题；  

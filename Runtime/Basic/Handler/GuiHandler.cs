@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+
 using Cysharp.Threading.Tasks;
 
 namespace GameEngine
@@ -36,13 +37,8 @@ namespace GameEngine
     /// 用户界面模块封装的句柄对象类
     /// 模块具体功能接口请参考<see cref="NovaEngine.Module.GuiModule"/>类
     /// </summary>
-    public sealed partial class GuiHandler : EntityHandler
+    public sealed partial class GuiHandler : GenericEntityHandler<CView>
     {
-        /// <summary>
-        /// 当前环境下所有实例化的视图对象
-        /// </summary>
-        private IList<CView> _views;
-
         /// <summary>
         /// 句柄对象的单例访问获取接口
         /// </summary>
@@ -69,9 +65,6 @@ namespace GameEngine
         protected override bool OnInitialize()
         {
             if (false == base.OnInitialize()) return false;
-
-            // 初始化视图实例容器
-            _views = new List<CView>();
 
             // 启动视图辅助工具类
             FormMaster.Startup();
@@ -163,15 +156,17 @@ namespace GameEngine
 
             if (false == typeof(CView).IsAssignableFrom(clsType))
             {
-                Debugger.Warn("The register type '{%t}' must be inherited from 'CView'.", clsType);
+                Debugger.Warn(LogGroupTag.Module, "The register type '{%t}' must be inherited from 'CView'.", clsType);
                 return false;
             }
 
             if (false == RegisterEntityClass(viewName, clsType, priority))
             {
-                Debugger.Warn("The view class '{%t}' was already registed, repeat added it failed.", clsType);
+                Debugger.Warn(LogGroupTag.Module, "The view class '{%t}' was already registered, repeat added it failed.", clsType);
                 return false;
             }
+
+            // Debugger.Info(LogGroupTag.Module, "Register new view class type '{%t}' with target name '{%s}'.", clsType, viewName);
 
             return true;
         }
@@ -251,6 +246,8 @@ namespace GameEngine
 
             // 视图对象实例化
             view = CreateInstance(viewType) as CView;
+            view.UserData = userData;
+
             if (false == AddEntity(view))
             {
                 Debugger.Warn("The view instance '{%t}' initialization for error, added it failed.", viewType);
@@ -277,9 +274,6 @@ namespace GameEngine
 
             // 启动视图对象
             Call(view, view.Startup, AspectBehaviourType.Startup);
-
-            // 补充用户数据
-            view.UserData = userData;
 
             // 唤醒视图对象
             CallEntityAwakeProcess(view);
@@ -317,7 +311,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasUI<T>() where T : CView
         {
-            return NovaEngine.Utility.Collection.ContainsType<CView, T>(_views);
+            return NovaEngine.Utility.Collection.ContainsType<CView, T>(Entities);
         }
 
         /// <summary>
@@ -327,7 +321,7 @@ namespace GameEngine
         /// <returns>若视图处于打开状态则返回true，否则返回false</returns>
         public bool HasUI(Type viewType)
         {
-            foreach (CView view in _views)
+            foreach (CView view in Entities)
             {
                 if (view.BeanType == viewType)
                 {
@@ -378,7 +372,7 @@ namespace GameEngine
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
         public CView FindUI(Type viewType)
         {
-            foreach (CView view in _views)
+            foreach (CView view in Entities)
             {
                 if (view.BeanType == viewType)
                 {
@@ -419,7 +413,7 @@ namespace GameEngine
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
         public async UniTask<CView> FindUIAsync(Type viewType)
         {
-            foreach (CView view in _views)
+            foreach (CView view in Entities)
             {
                 if (view.BeanType == viewType)
                 {
@@ -442,7 +436,7 @@ namespace GameEngine
         /// <param name="view">视图对象实例</param>
         internal void RemoveUI(CView view)
         {
-            if (false == _views.Contains(view))
+            if (false == Entities.Contains(view))
             {
                 Debugger.Error("Could not found any view reference '{%t}' with manage container, removed it failed.", view.BeanType);
                 return;
@@ -455,9 +449,6 @@ namespace GameEngine
 
                 // 销毁视图对象
                 CallEntityDestroyProcess(view);
-
-                // 清除用户数据
-                view.UserData = null;
 
                 // 关闭视图实例
                 view.__Close();
@@ -478,9 +469,9 @@ namespace GameEngine
         /// </summary>
         internal void RemoveAllUI()
         {
-            while (_views.Count > 0)
+            while (Entities.Count > 0)
             {
-                RemoveUI(_views[0]);
+                RemoveUI(Entities[0]);
             }
         }
 
@@ -490,7 +481,7 @@ namespace GameEngine
         /// <param name="view">视图对象实例</param>
         public void CloseUI(CView view)
         {
-            if (false == _views.Contains(view))
+            if (false == Entities.Contains(view))
             {
                 Debugger.Error("Could not found any view reference '{%t}' with manage container, removed it failed.", view.BeanType);
                 return;
@@ -545,7 +536,7 @@ namespace GameEngine
         /// <param name="viewType">视图类型</param>
         public void CloseUI(Type viewType)
         {
-            foreach (CView view in NovaEngine.Utility.Collection.Reverse<CView>(_views))
+            foreach (CView view in NovaEngine.Utility.Collection.Reverse(Entities))
             {
                 if (view.BeanType == viewType)
                 {
@@ -559,9 +550,9 @@ namespace GameEngine
         /// </summary>
         public void CloseAllUI()
         {
-            for (int n = _views.Count - 1; n >= 0; --n)
+            for (int n = Entities.Count - 1; n >= 0; --n)
             {
-                _views[n].Close();
+                Entities[n].Close();
             }
         }
 
@@ -572,8 +563,6 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnGroupBindingForTargetView(CView view)
         {
-            _views.Add(view);
-
             ViewGroup viewGroup = FindGroupByViewType(view.BeanType);
             viewGroup.OnViewGroupBinding(view);
         }
@@ -587,8 +576,6 @@ namespace GameEngine
         {
             ViewGroup viewGroup = FindGroupByViewType(view.BeanType);
             viewGroup?.OnViewGroupUnbinding(view);
-
-            _views.Remove(view);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -628,7 +615,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IList<CView> GetAllViews()
         {
-            return NovaEngine.Utility.Collection.CastAndToList<CEntity, CView>(GetAllEntities());
+            return GetAllEntities();
         }
 
         /// <summary>
@@ -650,7 +637,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public CView GetViewById(int beanId)
         {
-            return GetEntityById(beanId) as CView;
+            return GetEntityById(beanId);
         }
 
         /// <summary>
@@ -661,21 +648,16 @@ namespace GameEngine
         /// <returns>返回给定类型的全部实例</returns>
         internal IList<CView> FindAllViewsByType(Type viewType)
         {
-            IList<CView> result = new List<CView>();
-            IEnumerator<CView> e = _views.GetEnumerator();
+            IList<CView> result = null;
+            IEnumerator<CView> e = Entities.GetEnumerator();
             while (e.MoveNext())
             {
                 CView view = e.Current;
                 if (viewType.IsAssignableFrom(view.BeanType))
                 {
+                    if (null == result) result = new List<CView>();
                     result.Add(view);
                 }
-            }
-
-            // 如果搜索结果为空，则直接返回null
-            if (result.Count <= 0)
-            {
-                result = null;
             }
 
             return result;

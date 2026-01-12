@@ -28,8 +28,8 @@ using System.Collections.Generic;
 
 namespace GameEngine
 {
-    /// 基于ECS模式定义的句柄对象类
-    public abstract partial class EntityHandler
+    /// 基于ECS模式定义的泛型句柄对象类
+    public abstract partial class GenericEntityHandler<T>
     {
         /// <summary>
         /// 系统对象注册列表容器
@@ -183,7 +183,7 @@ namespace GameEngine
         /// 调用指定实体对象的初始化回调系统接口
         /// </summary>
         /// <param name="entity">实体对象实例</param>
-        protected void CallInitializeForSystem(CEntity entity)
+        protected void CallInitializeForSystem(T entity)
         {
             for (int n = 0; n < _initializeSystems.Count; ++n)
             {
@@ -195,7 +195,7 @@ namespace GameEngine
         /// 调用指定实体对象的清理回调系统接口
         /// </summary>
         /// <param name="entity">实体对象实例</param>
-        protected void CallCleanupForSystem(CEntity entity)
+        protected void CallCleanupForSystem(T entity)
         {
             for (int n = 0; n < _cleanupSystems.Count; ++n)
             {
@@ -207,7 +207,7 @@ namespace GameEngine
         /// 调用指定实体对象的刷新回调系统接口
         /// </summary>
         /// <param name="entity">实体对象实例</param>
-        protected void CallUpdateForSystem(CEntity entity)
+        protected void CallUpdateForSystem(T entity)
         {
             for (int n = 0; n < _updateSystems.Count; ++n)
             {
@@ -219,7 +219,7 @@ namespace GameEngine
         /// 调用指定实体对象的后置刷新回调系统接口
         /// </summary>
         /// <param name="entity">实体对象实例</param>
-        protected void CallLateUpdateForSystem(CEntity entity)
+        protected void CallLateUpdateForSystem(T entity)
         {
             for (int n = 0; n < _lateUpdateSystems.Count; ++n)
             {

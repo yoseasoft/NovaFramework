@@ -22,6 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace NovaEngine
 {
     /// <summary>
@@ -47,6 +49,7 @@ namespace NovaEngine
         /// 基于调试模式下的日志输出接口，参考<see cref="LogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(object message)
         {
             Instance._log_object?.Invoke(message);
@@ -56,6 +59,7 @@ namespace NovaEngine
         /// 基于调试模式下的日志输出接口，参考<see cref="LogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(string message)
         {
             Instance._log_string?.Invoke(message);
@@ -66,6 +70,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(bool condition, string message)
         {
             if (false == condition) Log(message);
@@ -76,6 +81,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(string format, params object[] args)
         {
             Instance._log_format_args?.Invoke(format, args);
@@ -87,6 +93,7 @@ namespace NovaEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(bool condition, string format, params object[] args)
         {
             if (false == condition) Log(format, args);
@@ -96,6 +103,7 @@ namespace NovaEngine
         /// 基于常规模式下的日志输出接口，参考<see cref="LogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(object message)
         {
             Instance._info_object?.Invoke(message);
@@ -105,6 +113,7 @@ namespace NovaEngine
         /// 基于常规模式下的日志输出接口，参考<see cref="LogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(string message)
         {
             Instance._info_string?.Invoke(message);
@@ -115,6 +124,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(bool condition, string message)
         {
             if (false == condition) Info(message);
@@ -125,6 +135,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(string format, params object[] args)
         {
             Instance._info_format_args?.Invoke(format, args);
@@ -136,6 +147,7 @@ namespace NovaEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(bool condition, string format, params object[] args)
         {
             if (false == condition) Info(format, args);
@@ -145,6 +157,7 @@ namespace NovaEngine
         /// 基于警告模式下的日志输出接口，参考<see cref="LogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(object message)
         {
             Instance._warn_object?.Invoke(message);
@@ -154,6 +167,7 @@ namespace NovaEngine
         /// 基于警告模式下的日志输出接口，参考<see cref="LogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(string message)
         {
             Instance._warn_string?.Invoke(message);
@@ -164,6 +178,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(bool condition, string message)
         {
             if (false == condition) Warn(message);
@@ -174,6 +189,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(string format, params object[] args)
         {
             Instance._warn_format_args?.Invoke(format, args);
@@ -185,6 +201,7 @@ namespace NovaEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(bool condition, string format, params object[] args)
         {
             if (false == condition) Warn(format, args);
@@ -194,6 +211,7 @@ namespace NovaEngine
         /// 基于错误模式下的日志输出接口，参考<see cref="LogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(object message)
         {
             Instance._error_object?.Invoke(message);
@@ -203,6 +221,7 @@ namespace NovaEngine
         /// 基于错误模式下的日志输出接口，参考<see cref="LogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(string message)
         {
             Instance._error_string?.Invoke(message);
@@ -213,6 +232,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(bool condition, string message)
         {
             if (false == condition) Error(message);
@@ -223,6 +243,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(string format, params object[] args)
         {
             Instance._error_format_args?.Invoke(format, args);
@@ -234,6 +255,7 @@ namespace NovaEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(bool condition, string format, params object[] args)
         {
             if (false == condition) Error(format, args);
@@ -243,6 +265,7 @@ namespace NovaEngine
         /// 基于崩溃模式下的日志输出接口，参考<see cref="LogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(object message)
         {
             Instance._fatal_object?.Invoke(message);
@@ -252,6 +275,7 @@ namespace NovaEngine
         /// 基于崩溃模式下的日志输出接口，参考<see cref="LogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(string message)
         {
             Instance._fatal_string?.Invoke(message);
@@ -262,6 +286,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(bool condition, string message)
         {
             if (false == condition) Fatal(message);
@@ -272,6 +297,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(string format, params object[] args)
         {
             Instance._fatal_format_args?.Invoke(format, args);
@@ -283,6 +309,7 @@ namespace NovaEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(bool condition, string format, params object[] args)
         {
             if (false == condition) Fatal(format, args);
@@ -293,6 +320,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="level">日志级别</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Output(LogOutputLevelType level, object message)
         {
             Instance._output_object?.Invoke(level, message);
@@ -303,6 +331,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="level">日志级别</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Output(LogOutputLevelType level, string message)
         {
             Instance._output_string?.Invoke(level, message);
@@ -314,6 +343,7 @@ namespace NovaEngine
         /// <param name="level">日志级别</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Output(LogOutputLevelType level, string format, params object[] args)
         {
             Instance._output_format_args?.Invoke(level, format, args);
