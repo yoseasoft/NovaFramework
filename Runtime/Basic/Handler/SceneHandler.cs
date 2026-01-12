@@ -181,6 +181,7 @@ namespace GameEngine
         /// 获取当前运行的场景实例
         /// </summary>
         /// <returns>返回当前运行的场景实例，若没有则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public CScene GetCurrentScene()
         {
             if (Entities.Count > 0)
@@ -422,6 +423,46 @@ namespace GameEngine
 
             return null;
         }
+
+        #region 场景对象类型组件快速访问的便捷接口函数
+
+        /// <summary>
+        /// 通过组件名称在当前场景对象实例中获取对应的组件对象实例
+        /// </summary>
+        /// <param name="name">组件名称</param>
+        /// <returns>若查找组件实例成功则返回对应实例的引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public CComponent GetCurrentSceneComponent(string name)
+        {
+            CScene scene = GetCurrentScene();
+            return scene?.GetComponent(name);
+        }
+
+        /// <summary>
+        /// 通过组件类型在当前场景对象实例中获取对应的组件对象实例
+        /// </summary>
+        /// <typeparam name="T">组件类型</typeparam>
+        /// <returns>若查找组件实例成功则返回对应实例的引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T GetCurrentSceneComponent<T>() where T : CComponent
+        {
+            CScene scene = GetCurrentScene();
+            return scene?.GetComponent<T>();
+        }
+
+        /// <summary>
+        /// 通过组件类型在当前场景对象实例中获取对应的组件对象实例
+        /// </summary>
+        /// <param name="componentType">组件类型</param>
+        /// <returns>若查找组件实例成功则返回对应实例的引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public CComponent GetCurrentSceneComponent(Type componentType)
+        {
+            CScene scene = GetCurrentScene();
+            return scene?.GetComponent(componentType);
+        }
+
+        #endregion
 
         #region 场景对象类型注册绑定相关的接口函数
 

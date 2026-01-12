@@ -49,7 +49,7 @@ namespace GameEngine
         /// <summary>
         /// 实体对象的组件列表容器
         /// </summary>
-        protected IDictionary<string, CComponent> _components = null;
+        protected IDictionary<string, CComponent> _components;
 
         /// <summary>
         /// 实体对象内部组件实例的执行统计列表
@@ -217,7 +217,7 @@ namespace GameEngine
             {
                 if (false == _components.TryGetValue(keys[n], out CComponent component))
                 {
-                    Debugger.Warn("Could not found any component instance with target name '{%s}', awaked it failed.", keys[n]);
+                    Debugger.Warn(LogGroupTag.Bean, "Could not found any component instance with target name '{%s}', awaked it failed.", keys[n]);
                     continue;
                 }
 
@@ -245,7 +245,7 @@ namespace GameEngine
             {
                 if (false == _components.TryGetValue(keys[n], out CComponent component))
                 {
-                    Debugger.Warn("Could not found any component instance with target name '{%s}', started it failed.", keys[n]);
+                    Debugger.Warn(LogGroupTag.Bean, "Could not found any component instance with target name '{%s}', started it failed.", keys[n]);
                     continue;
                 }
 
@@ -270,7 +270,7 @@ namespace GameEngine
             {
                 if (false == _components.TryGetValue(keys[n], out CComponent component))
                 {
-                    Debugger.Warn("Could not found any component instance with target name '{%s}', destroyed it failed.", keys[n]);
+                    Debugger.Warn(LogGroupTag.Bean, "Could not found any component instance with target name '{%s}', destroyed it failed.", keys[n]);
                     continue;
                 }
 
@@ -806,6 +806,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="name">组件名称</param>
         /// <returns>若当前实体已经添加给定名称的组件则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasComponent(string name)
         {
             return _components.ContainsKey(name);
@@ -816,6 +817,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">组件类型</typeparam>
         /// <returns>若当前实体已经添加给定类型的组件则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasComponent<T>() where T : CComponent
         {
             Type componentType = typeof(T);
@@ -828,6 +830,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="componentType">组件类型</param>
         /// <returns>若当前实体已经添加给定类型的组件则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasComponent(Type componentType)
         {
             string componentName = GetComponentNameByType(componentType);
@@ -842,6 +845,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="component">组件对象实例</param>
         /// <returns>若当前实体已经添加给定组件实例则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasComponent(CComponent component)
         {
             IEnumerator<KeyValuePair<string, CComponent>> e = _components.GetEnumerator();
@@ -911,6 +915,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="name">组件名称</param>
         /// <returns>返回新添加的组件实例，失败则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public CComponent AddComponent(string name)
         {
             Type componentType = BeanController.Instance.FindComponentTypeByName(name);
@@ -928,6 +933,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">组件类型</typeparam>
         /// <returns>返回新添加的组件实例，失败则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T AddComponent<T>() where T : CComponent
         {
             Type componentType = typeof(T);
@@ -940,6 +946,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="componentType">组件类型</param>
         /// <returns>返回新添加的组件实例，失败则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public CComponent AddComponent(Type componentType)
         {
             CComponent component = BaseHandler.CreateInstance(componentType) as CComponent;
@@ -958,25 +965,25 @@ namespace GameEngine
         {
             if (null == component)
             {
-                Debugger.Error("The new component instance must be non-null, added it failed.");
+                Debugger.Error(LogGroupTag.Bean, "The new component instance must be non-null, added it failed.");
                 return null;
             }
 
             if (IsOnWorkingStatus())
             {
-                Debugger.Error("The entity instance was working '{%i}' now, cannot added any component at once.", CurrentLifecycleType);
+                Debugger.Error(LogGroupTag.Bean, "The entity instance was working '{%i}' now, cannot added any component at once.", CurrentLifecycleType);
                 return null;
             }
 
             if (IsOnDestroyingStatus())
             {
-                Debugger.Error("The entity instance was destroying now, cannot added any component at once.");
+                Debugger.Error(LogGroupTag.Bean, "The entity instance was destroying now, cannot added any component at once.");
                 return null;
             }
 
             if (IsOnExpired)
             {
-                Debugger.Warn("The entity instance was expired, added component failed.");
+                Debugger.Warn(LogGroupTag.Bean, "The entity instance was expired, added component failed.");
                 return null;
             }
 
@@ -985,14 +992,14 @@ namespace GameEngine
             // 是否有检查的必要呢？
             if (HasComponent(component))
             {
-                Debugger.Warn("The component instance '{%t}' was already registered, repeat added it failed.", component.BeanType);
+                Debugger.Warn(LogGroupTag.Bean, "The component instance '{%t}' was already registered, repeat added it failed.", component.BeanType);
                 return component;
             }
 
             string componentName = GetComponentName(component);
             if (_components.ContainsKey(componentName))
             {
-                Debugger.Warn("The component name '{%s}' was already registered, repeat added it failed.", componentName);
+                Debugger.Warn(LogGroupTag.Bean, "The component name '{%s}' was already registered, repeat added it failed.", componentName);
                 return _components[componentName];
             }
 
@@ -1057,6 +1064,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="name">组件名称</param>
         /// <returns>若查找组件实例成功则返回对应实例的引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public CComponent GetComponent(string name)
         {
             if (false == _components.TryGetValue(name, out CComponent component))
@@ -1072,6 +1080,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">组件类型</typeparam>
         /// <returns>若查找组件实例成功则返回对应实例的引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T GetComponent<T>() where T : CComponent
         {
             Type componentType = typeof(T);
@@ -1084,6 +1093,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="componentType">组件类型</param>
         /// <returns>若查找组件实例成功则返回对应实例的引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public CComponent GetComponent(Type componentType)
         {
             string componentName = GetComponentNameByType(componentType);
@@ -1096,6 +1106,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">组件类型</typeparam>
         /// <returns>若查找组件实例成功则返回对应实例的列表，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IList<T> GetInheritedComponents<T>() where T : CComponent
         {
             Type componentType = typeof(T);
@@ -1128,9 +1139,10 @@ namespace GameEngine
         /// 获取当前实体对象中的所有组件实例
         /// </summary>
         /// <returns>返回实体对象注册的所有组件实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IList<CComponent> GetAllComponents()
         {
-            return NovaEngine.Utility.Collection.ToListForValues<string, CComponent>(_components);
+            return NovaEngine.Utility.Collection.ToListForValues(_components);
         }
 
         /// <summary>
@@ -1138,6 +1150,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="component">组件对象实例</param>
         /// <returns>返回给定组件实例对应的名称</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private string GetComponentName(CComponent component)
         {
             Type componentType = component.BeanType;
@@ -1150,6 +1163,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="componentType">组件类型</param>
         /// <returns>返回给定组件类型对应的名称</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private string GetComponentNameByType(Type componentType)
         {
             return BeanController.Instance.GetComponentNameByType(componentType);
@@ -1164,13 +1178,13 @@ namespace GameEngine
         {
             if (false == _components.TryGetValue(name, out CComponent component))
             {
-                Debugger.Warn("Could not found any component instance with name '{%s}', removed it failed.", name);
+                Debugger.Warn(LogGroupTag.Bean, "Could not found any component instance with name '{%s}', removed it failed.", name);
                 return;
             }
 
             if (IsOnWorkingStatus())
             {
-                // Debugger.Warn("The entity instance was working now, cannot removed any component at once.");
+                // Debugger.Warn(LogGroupTag.Bean, "The entity instance was working now, cannot removed any component at once.");
                 BeanController.Instance.RegBeanLifecycleNotification(AspectBehaviourType.Destroy, component);
                 return;
             }
@@ -1213,6 +1227,7 @@ namespace GameEngine
         /// 我们在进行移除时，会同时对该组件实例进行清理操作
         /// </summary>
         /// <typeparam name="T">组件类型</typeparam>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void RemoveComponent<T>() where T : CComponent
         {
             Type componentType = typeof(T);
@@ -1225,6 +1240,7 @@ namespace GameEngine
         /// 我们在进行移除时，会同时对该组件实例进行清理操作
         /// </summary>
         /// <param name="componentType">组件类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void RemoveComponent(Type componentType)
         {
             string componentName = GetComponentNameByType(componentType);
@@ -1239,6 +1255,7 @@ namespace GameEngine
         /// 所以可能存在相同名称但非同一实例的组件对象存在于列表中，从而被移除掉
         /// </summary>
         /// <param name="component">组件对象实例</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void RemoveComponent(CComponent component)
         {
             string componentName = GetComponentName(component);
@@ -1268,7 +1285,7 @@ namespace GameEngine
         {
             if (false == _components.Values.Contains(component))
             {
-                Debugger.Error("Could not found any added record of the component instance '{%t}', calling start process failed.", component.BeanType);
+                Debugger.Error(LogGroupTag.Bean, "Could not found any added record of the component instance '{%t}', calling start process failed.", component.BeanType);
                 return;
             }
 
@@ -1299,6 +1316,7 @@ namespace GameEngine
         /// 执行当前实体对象中记录的所有组件对象实例<br/>
         /// 您可以关闭实体对象的帧执行标识，然后在子类中根据需要手动调用组件的执行接口
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void ExecuteAllComponents()
         {
             for (int n = 0; n < _componentExecuteCount; ++n)
@@ -1311,6 +1329,7 @@ namespace GameEngine
         /// 后置执行当前实体对象中记录的所有组件对象实例<br/>
         /// 您可以关闭实体对象的帧执行标识，然后在子类中根据需要手动调用组件的执行接口
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void LateExecuteAllComponents()
         {
             for (int n = 0; n < _componentExecuteCount; ++n)
@@ -1323,6 +1342,7 @@ namespace GameEngine
         /// 刷新当前实体对象中记录的所有组件对象实例<br/>
         /// 您可以关闭实体对象的帧刷新标识，然后在子类中根据需要手动调用组件的刷新接口
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void UpdateAllComponents()
         {
             for (int n = 0; n < _componentUpdateCount; ++n)
@@ -1335,6 +1355,7 @@ namespace GameEngine
         /// 后置刷新当前实体对象中记录的所有组件对象实例<br/>
         /// 您可以关闭实体对象的帧刷新标识，然后在子类中根据需要手动调用组件的刷新接口
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void LateUpdateAllComponents()
         {
             for (int n = 0; n < _componentUpdateCount; ++n)
@@ -1372,7 +1393,7 @@ namespace GameEngine
 
             if (_randoms.ContainsKey(name))
             {
-                Debugger.Warn("The random '{%s}' was already exist in entity instance '{%t}', repeated init it will be created new instance.", name, this);
+                Debugger.Warn(LogGroupTag.Bean, "The random '{%s}' was already exist in entity instance '{%t}', repeated init it will be created new instance.", name, this);
                 _randoms.Remove(name);
             }
 
@@ -1400,7 +1421,7 @@ namespace GameEngine
         {
             if (false == _randoms.TryGetValue(name, out Random random))
             {
-                Debugger.Warn("Could not found target random '{%s}' from entity instance '{%t}', getted next value failed.", name, this);
+                Debugger.Warn(LogGroupTag.Bean, "Could not found target random '{%s}' from entity instance '{%t}', getted next value failed.", name, this);
                 return 0;
             }
 
@@ -1427,7 +1448,7 @@ namespace GameEngine
         {
             if (false == _randoms.TryGetValue(name, out Random random))
             {
-                Debugger.Warn("Could not found target random '{%s}' from entity instance '{%t}', getted next value failed.", name, this);
+                Debugger.Warn(LogGroupTag.Bean, "Could not found target random '{%s}' from entity instance '{%t}', getted next value failed.", name, this);
                 return 0;
             }
 
@@ -1456,7 +1477,7 @@ namespace GameEngine
         {
             if (false == _randoms.TryGetValue(name, out Random random))
             {
-                Debugger.Warn("Could not found target random '{%s}' from entity instance '{%t}', getted next value failed.", name, this);
+                Debugger.Warn(LogGroupTag.Bean, "Could not found target random '{%s}' from entity instance '{%t}', getted next value failed.", name, this);
                 return 0;
             }
 

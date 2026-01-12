@@ -372,6 +372,39 @@ namespace GameEngine
             return SceneHandler.Instance.ChangeScene(sceneType, userData);
         }
 
+        /// <summary>
+        /// 通过组件名称在当前场景对象实例中获取对应的组件对象实例
+        /// </summary>
+        /// <param name="name">组件名称</param>
+        /// <returns>若查找组件实例成功则返回对应实例的引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static CComponent GetCurrentSceneComponent(string name)
+        {
+            return SceneHandler.Instance.GetCurrentSceneComponent(name);
+        }
+
+        /// <summary>
+        /// 通过组件类型在当前场景对象实例中获取对应的组件对象实例
+        /// </summary>
+        /// <typeparam name="T">组件类型</typeparam>
+        /// <returns>若查找组件实例成功则返回对应实例的引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetCurrentSceneComponent<T>() where T : CComponent
+        {
+            return SceneHandler.Instance.GetCurrentSceneComponent<T>();
+        }
+
+        /// <summary>
+        /// 通过组件类型在当前场景对象实例中获取对应的组件对象实例
+        /// </summary>
+        /// <param name="componentType">组件类型</param>
+        /// <returns>若查找组件实例成功则返回对应实例的引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static CComponent GetCurrentSceneComponent(Type componentType)
+        {
+            return SceneHandler.Instance.GetCurrentSceneComponent(componentType);
+        }
+
         #endregion
 
         #region 针对“CActor”角色类型业务相关的服务接口函数
