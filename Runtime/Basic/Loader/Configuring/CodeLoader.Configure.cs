@@ -123,7 +123,7 @@ namespace GameEngine.Loader
                 Debugger.Info(LogGroupTag.CodeLoader, "指定的实体配置文件‘{%s}’开始进行进入加载队列中……", path);
                 if (false == callback(path, ms))
                 {
-                    Debugger.Error(LogGroupTag.CodeLoader, "重载Bean配置数据失败：指定路径‘{%s}’下的配置文件加载回调接口执行异常！", path);
+                    Debugger.Error(LogGroupTag.CodeLoader, "载入Bean配置数据失败：指定路径‘{%s}’下的配置文件加载回调接口执行异常！", path);
                     return;
                 }
 
@@ -167,7 +167,7 @@ namespace GameEngine.Loader
                 Debugger.Info(LogGroupTag.CodeLoader, "指定的实体配置文件‘{%s}’开始进行进入加载队列中……", path);
                 if (false == await callback(path, ms))
                 {
-                    Debugger.Error(LogGroupTag.CodeLoader, "重载Bean配置数据失败：指定路径‘{%s}’下的配置文件加载回调接口执行异常！", path);
+                    Debugger.Error(LogGroupTag.CodeLoader, "载入Bean配置数据失败：指定路径‘{%s}’下的配置文件加载回调接口执行异常！", path);
                     return;
                 }
 

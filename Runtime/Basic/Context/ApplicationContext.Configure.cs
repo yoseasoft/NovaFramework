@@ -111,17 +111,17 @@ namespace GameEngine
             string path = url;
             if (null == callback)
             {
-                Debugger.Error(LogGroupTag.CodeLoader, "The configure file load handler must be non-null, reload general configure failed!");
+                Debugger.Error(LogGroupTag.Basic, "The configure file load handler must be non-null, reload general configure failed!");
                 return;
             }
 
             do
             {
                 MemoryStream ms = new MemoryStream();
-                Debugger.Info(LogGroupTag.CodeLoader, "指定的实体配置文件‘{%s}’开始进行进入加载队列中……", path);
+                Debugger.Info(LogGroupTag.Basic, "指定的应用配置文件‘{%s}’开始进行进入加载队列中……", path);
                 if (false == callback(path, ms))
                 {
-                    Debugger.Error(LogGroupTag.CodeLoader, "重载Bean配置数据失败：指定路径‘{%s}’下的配置文件加载回调接口执行异常！", path);
+                    Debugger.Error(LogGroupTag.Basic, "载入Application配置数据失败：指定路径‘{%s}’下的配置文件加载回调接口执行异常！", path);
                     return;
                 }
 
@@ -155,17 +155,17 @@ namespace GameEngine
             string path = url;
             if (null == callback)
             {
-                Debugger.Error(LogGroupTag.CodeLoader, "The configure file load handler must be non-null, reload general configure failed!");
+                Debugger.Error(LogGroupTag.Basic, "The configure file load handler must be non-null, reload general configure failed!");
                 return;
             }
 
             do
             {
                 MemoryStream ms = new MemoryStream();
-                Debugger.Info(LogGroupTag.CodeLoader, "指定的实体配置文件‘{%s}’开始进行进入加载队列中……", path);
+                Debugger.Info(LogGroupTag.Basic, "指定的应用配置文件‘{%s}’开始进行进入加载队列中……", path);
                 if (false == await callback(path, ms))
                 {
-                    Debugger.Error(LogGroupTag.CodeLoader, "重载Bean配置数据失败：指定路径‘{%s}’下的配置文件加载回调接口执行异常！", path);
+                    Debugger.Error(LogGroupTag.Basic, "载入Application配置数据失败：指定路径‘{%s}’下的配置文件加载回调接口执行异常！", path);
                     return;
                 }
 
