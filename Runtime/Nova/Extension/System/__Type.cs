@@ -23,6 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+using UnityEngine.Scripting;
+
 namespace System.Customize.Extension
 {
     /// <summary>
@@ -36,6 +39,8 @@ namespace System.Customize.Extension
         /// <param name="self">源对象类型</param>
         /// <param name="type">目标对象类型</param>
         /// <returns>可以赋值给目标对象类型则返回true，否则返回false</returns>
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsAssignableTo(this Type self, Type type)
         {
             return type.IsAssignableFrom(self);
@@ -47,6 +52,8 @@ namespace System.Customize.Extension
         /// <param name="self">源对象类型</param>
         /// <param name="type">目标对象类型</param>
         /// <returns>可以赋值给目标对象类型则返回true，否则返回false</returns>
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Is(this Type self, Type type)
         {
             return self.IsAssignableTo(type);
@@ -58,6 +65,8 @@ namespace System.Customize.Extension
         /// <typeparam name="T">目标对象类型</typeparam>
         /// <param name="self">源对象类型</param>
         /// <returns>可以赋值给目标对象类型则返回true，否则返回false</returns>
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Is<T>(this Type self)
         {
             return self.IsAssignableTo(typeof(T));
@@ -68,6 +77,7 @@ namespace System.Customize.Extension
         /// </summary>
         /// <param name="self">对象类型</param>
         /// <returns>返回所在程序集的缩略名</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetAssemblyShortName(this Type self)
         {
             return self.Assembly.GetName().Name;

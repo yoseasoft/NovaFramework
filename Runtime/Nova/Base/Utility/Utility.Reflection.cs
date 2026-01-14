@@ -87,11 +87,11 @@ namespace NovaEngine
                 // using Unity.VisualScripting.FullSerializer.Internal;
                 // MethodInfo methodInfo = classType.GetDeclaredMethod(methodName);
 
-                BindingFlags bindingFlags = BindingFlags.NonPublic |
-                                            BindingFlags.Public |
-                                            BindingFlags.Instance |
-                                            BindingFlags.Static |
-                                            BindingFlags.DeclaredOnly;
+                const BindingFlags bindingFlags = BindingFlags.NonPublic |
+                                                  BindingFlags.Public |
+                                                  BindingFlags.Instance |
+                                                  BindingFlags.Static |
+                                                  BindingFlags.DeclaredOnly;
                 MethodInfo methodInfo = classType.GetMethod(methodName, bindingFlags);
 
                 return CallMethod(null, methodInfo, args);
@@ -182,6 +182,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="targetType">目标类型</param>
             /// <returns>若给定类型是一个结构体则返回true，否则返回false</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static bool IsTypeOfStruct(Type targetType)
             {
                 if (null == targetType) return false;
@@ -197,6 +198,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="targetType">目标类型</param>
             /// <returns>若给定类型是一个中间类则返回true，否则返回false</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static bool IsTypeOfCompilerGeneratedClass(Type targetType)
             {
                 Type compilerGeneratedAttribute = typeof(CompilerGeneratedAttribute);
@@ -208,6 +210,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="targetType">目标类型</param>
             /// <returns>若给定类型是一个内部类则返回true，否则返回false</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static bool IsTypeOfInternalClass(Type targetType)
             {
                 if (null == targetType) return false;
@@ -227,6 +230,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="targetType">目标类型</param>
             /// <returns>若给定类型是一个可以实例化的类则返回true，否则返回false</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static bool IsTypeOfInstantiableClass(Type targetType)
             {
                 if (null == targetType) return false;
@@ -249,6 +253,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="targetType">目标类型</param>
             /// <returns>若给定类型是一个静态类则返回true，否则返回false</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static bool IsTypeOfStaticClass(Type targetType)
             {
                 if (null == targetType) return false;
@@ -264,15 +269,13 @@ namespace NovaEngine
             /// </summary>
             /// <param name="targetType">目标类型</param>
             /// <returns>若给定类型是一个Action类型则返回true，否则返回false</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static bool IsTypeOfAction(Type targetType)
             {
                 if (typeof(Action) == targetType)
                 { return true; }
 
-                if (false == targetType.IsGenericType)
-                { return false; }
-
-                if (typeof(Action<>) == targetType.GetGenericTypeDefinition())
+                if (targetType.IsGenericType && typeof(Action<>) == targetType.GetGenericTypeDefinition())
                 { return true; }
 
                 return false;
@@ -283,6 +286,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="targetType">对象类型</param>
             /// <returns>若给定类型是一个扩展类型则返回true，否则返回false</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static bool IsTypeOfExtension(Type targetType)
             {
                 // 扩展类首先必须得是静态类
@@ -299,11 +303,12 @@ namespace NovaEngine
             /// </summary>
             /// <param name="handler">委托句柄</param>
             /// <returns>若给定委托句柄是一个扩展类型则返回true，否则返回false</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static bool IsTypeOfExtension(Delegate handler)
             {
-                if (null == handler) return false;
+                // if (null == handler) return false;
 
-                return IsTypeOfExtension(handler.Method);
+                return IsTypeOfExtension(handler?.Method);
             }
 
             /// <summary>
@@ -311,6 +316,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="method">函数对象</param>
             /// <returns>若给定函数是一个扩展类型则返回true，否则返回false</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static bool IsTypeOfExtension(MethodBase method)
             {
                 Type declaringType = method.DeclaringType;

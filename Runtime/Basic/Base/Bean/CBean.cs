@@ -25,6 +25,8 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Customize.Extension;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
@@ -151,6 +153,7 @@ namespace GameEngine
         /// <param name="featureType">特性类型</param>
         /// <param name="inherited">继承标识</param>
         /// <returns>若当前对象实例具备给定特性类型则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal bool HasFeatureType(Type featureType, bool inherited = false)
         {
             return this.Symbol.HasFeatureType(featureType, inherited);
@@ -161,6 +164,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="interfaceType">接口类型</param>
         /// <returns>若当前对象实例具备给定的接口类型则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal bool HasInterfaceType(Type interfaceType)
         {
             return this.Symbol.HasInterfaceType(interfaceType);
@@ -171,6 +175,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="aspectBehaviourType">切面行为类型</param>
         /// <returns>若当前对象实例具备给定切面行为类型则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal bool HasAspectBehaviourType(AspectBehaviourType aspectBehaviourType)
         {
             return this.Symbol.HasAspectBehaviourType(aspectBehaviourType);
