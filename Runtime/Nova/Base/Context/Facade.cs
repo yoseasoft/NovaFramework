@@ -27,6 +27,7 @@
 
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 using UnityMonoBehaviour = UnityEngine.MonoBehaviour;
 using UnityCoroutine = UnityEngine.Coroutine;
@@ -202,6 +203,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="id">事件标识</param>
         /// <param name="type">事件类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal void SendModuleCommand(int id, int type)
         {
             Module.ModuleController.CallCommand(id, type);
@@ -211,6 +213,7 @@ namespace NovaEngine
         /// 发送模块指令，由当前系统控制器立即执行处理
         /// </summary>
         /// <param name="args">指令参数实例</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal void SendModuleCommand(Module.ModuleCommandArgs args)
         {
             Module.ModuleController.CallCommand(args);

@@ -26,6 +26,7 @@
 
 using System;
 using System.Customize.Extension;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Security.Cryptography;
 
@@ -367,7 +368,7 @@ namespace NovaEngine
             {
                 if (false == Enum.IsDefined(typeof(T), value))
                 {
-                    return default(T);
+                    return default;
                 }
 
                 return (T) Enum.Parse(typeof(T), value);
@@ -384,7 +385,7 @@ namespace NovaEngine
                 object obj = Convert.ChangeType(value, Enum.GetUnderlyingType(typeof(T)));
                 if (false == Enum.IsDefined(typeof(T), obj))
                 {
-                    return default(T);
+                    return default;
                 }
 
                 return (T) Enum.ToObject(typeof(T), obj);
@@ -399,6 +400,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="value">转换的字符串</param>
             /// <returns>返回用于存放结果的字节数组</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static byte[] GetBytes(string value)
             {
                 return GetBytes(value, Encoding.UTF8);
@@ -410,6 +412,7 @@ namespace NovaEngine
             /// <param name="value">转换的字符串</param>
             /// <param name="buffer">用于存放结果的字节数组</param>
             /// <returns>返回实际填充的字节数</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static int GetBytes(string value, byte[] buffer)
             {
                 return GetBytes(value, Encoding.UTF8, buffer, 0);
@@ -422,6 +425,7 @@ namespace NovaEngine
             /// <param name="buffer">用于存放结果的字节数组</param>
             /// <param name="startIndex">数组的起始位置</param>
             /// <returns>返回实际填充的字节数</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static int GetBytes(string value, byte[] buffer, int startIndex)
             {
                 return GetBytes(value, Encoding.UTF8, buffer, startIndex);
@@ -455,6 +459,7 @@ namespace NovaEngine
             /// <param name="encoding">转换使用的编码</param>
             /// <param name="buffer">用于存放结果的字节数组</param>
             /// <returns>返回实际填充的字节数</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static int GetBytes(string value, Encoding encoding, byte[] buffer)
             {
                 return GetBytes(value, encoding, buffer, 0);
@@ -488,6 +493,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="value">字节数组</param>
             /// <returns>返回转换后的字符串</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static string GetString(byte[] value)
             {
                 return GetString(value, Encoding.UTF8);
@@ -521,6 +527,7 @@ namespace NovaEngine
             /// <param name="startIndex">字节数组的起始位置</param>
             /// <param name="length">数据长度</param>
             /// <returns>返回转换后的字符串</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static string GetString(byte[] value, int startIndex, int length)
             {
                 return GetString(value, startIndex, length, Encoding.UTF8);

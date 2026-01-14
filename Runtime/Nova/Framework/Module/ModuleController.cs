@@ -27,6 +27,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace NovaEngine.Module
@@ -523,6 +524,7 @@ namespace NovaEngine.Module
         /// 使用指令管理器转发目标指令参数实例
         /// </summary>
         /// <param name="args">指令参数实例</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void CallCommand(ModuleCommandArgs args)
         {
             if (false == _isRunning)

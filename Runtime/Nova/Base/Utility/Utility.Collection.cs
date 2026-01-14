@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace NovaEngine
 {
@@ -47,6 +48,7 @@ namespace NovaEngine
             /// <typeparam name="TSource">数据类型</typeparam>
             /// <param name="source">枚举列表容器</param>
             /// <returns>返回翻转后的枚举列表数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static IEnumerable<TSource> Reverse<TSource>(IEnumerable<TSource> source)
             {
                 return source.Reverse<TSource>();
@@ -58,6 +60,7 @@ namespace NovaEngine
             /// <typeparam name="TSource">数据类型</typeparam>
             /// <param name="source">枚举列表容器</param>
             /// <returns>若存在有效值则返回true，否则返回false</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static bool Any<TSource>(IEnumerable<TSource> source)
             {
                 return source.Any();
@@ -68,6 +71,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="source">枚举列表容器</param>
             /// <returns>若存在有效值则返回true，否则返回false</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static bool Any(IEnumerable<object> source)
             {
                 return source.Any();
@@ -79,6 +83,7 @@ namespace NovaEngine
             /// <typeparam name="T">数据类型</typeparam>
             /// <param name="source">集合数据容器</param>
             /// <returns>返回转换后的数组类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static T[] ToArray<T>(ICollection<T> source)
             {
                 return source?.ToArray<T>();
@@ -90,6 +95,7 @@ namespace NovaEngine
             /// <typeparam name="T">数据类型</typeparam>
             /// <param name="source">集合数据容器</param>
             /// <returns>返回转换后的数组类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static T[] ToArray<T>(HashSet<T> source)
             {
                 return source?.ToArray();
@@ -102,6 +108,7 @@ namespace NovaEngine
             /// <typeparam name="V">字典的值类型</typeparam>
             /// <param name="dictionary">字典数据容器</param>
             /// <returns>返回转换后的数组类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static K[] ToArrayForKeys<K, V>(IDictionary<K, V> dictionary)
             {
                 return dictionary?.Keys.ToArray<K>();
@@ -114,6 +121,7 @@ namespace NovaEngine
             /// <typeparam name="V">字典的值类型</typeparam>
             /// <param name="dictionary">字典数据容器</param>
             /// <returns>返回转换后的数组类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static V[] ToArrayForValues<K, V>(IDictionary<K, V> dictionary)
             {
                 return dictionary?.Values.ToArray<V>();
@@ -126,6 +134,7 @@ namespace NovaEngine
             /// <typeparam name="TargetType">目标数据类型</typeparam>
             /// <param name="source">集合数据容器</param>
             /// <returns>返回转换后的数组类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static TargetType[] CastAndToArray<SourceType, TargetType>(ICollection<SourceType> source)
             {
                 return source?.Cast<TargetType>().ToArray();
@@ -138,6 +147,7 @@ namespace NovaEngine
             /// <param name="source">集合数据容器</param>
             /// <param name="count">跳过元素数量</param>
             /// <returns>返回转换后的数组类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static TSource[] SkipAndToArray<TSource>(ICollection<TSource> source, int count)
             {
                 return source?.Skip(count).ToArray();
@@ -149,6 +159,7 @@ namespace NovaEngine
             /// <typeparam name="T">数据类型</typeparam>
             /// <param name="source">集合数据容器</param>
             /// <returns>返回转换后的列表类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static IList<T> ToList<T>(ICollection<T> source)
             {
                 return source?.ToList<T>();
@@ -161,6 +172,7 @@ namespace NovaEngine
             /// <typeparam name="V">字典的值类型</typeparam>
             /// <param name="dictionary">字典数据容器</param>
             /// <returns>返回转换后的列表类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static IList<K> ToListForKeys<K, V>(IDictionary<K, V> dictionary)
             {
                 return dictionary?.Keys.ToList<K>();
@@ -173,6 +185,7 @@ namespace NovaEngine
             /// <typeparam name="V">字典的值类型</typeparam>
             /// <param name="dictionary">字典数据容器</param>
             /// <returns>返回转换后的列表类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static IList<K> ToListForKeys<K, V>(IReadOnlyDictionary<K, V> dictionary)
             {
                 return dictionary?.Keys.ToList<K>();
@@ -185,6 +198,7 @@ namespace NovaEngine
             /// <typeparam name="V">字典的值类型</typeparam>
             /// <param name="dictionary">字典数据容器</param>
             /// <returns>返回转换后的列表类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static IList<V> ToListForValues<K, V>(IDictionary<K, V> dictionary)
             {
                 return dictionary?.Values.ToList<V>();
@@ -197,6 +211,7 @@ namespace NovaEngine
             /// <typeparam name="TargetType">目标数据类型</typeparam>
             /// <param name="source">集合数据容器</param>
             /// <returns>返回转换后的列表类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static IList<TargetType> CastAndToList<SourceType, TargetType>(ICollection<SourceType> source)
             {
                 return source?.Cast<TargetType>().ToList();
@@ -216,8 +231,7 @@ namespace NovaEngine
             /// <returns>返回列表中的最小值</returns>
             public static T Min<T, K>(IList<T> array, Func<T, K> handler) where K : IComparable<K>
             {
-                T temp = default(T);
-                temp = array[0];
+                T temp = array[0];
                 foreach (T arr in array)
                 {
                     if (handler(temp).CompareTo(handler(arr)) > 0)
@@ -239,8 +253,7 @@ namespace NovaEngine
             /// <returns>返回列表中的最大值</returns>
             public static T Max<T, K>(IList<T> array, Func<T, K> handler) where K : IComparable<K>
             {
-                T temp = default(T);
-                temp = array[0];
+                T temp = array[0];
                 foreach (T arr in array)
                 {
                     if (handler(temp).CompareTo(handler(arr)) < 0)
@@ -261,8 +274,7 @@ namespace NovaEngine
             /// <returns>返回列表中的最小值</returns>
             public static T Min<T>(IList<T> array, Comparison<T> comparison)
             {
-                T temp = default(T);
-                temp = array[0];
+                T temp = array[0];
                 foreach (T arr in array)
                 {
                     if (comparison(temp, arr) > 0)
@@ -283,8 +295,7 @@ namespace NovaEngine
             /// <returns>返回列表中的最大值</returns>
             public static T Max<T>(IList<T> array, Comparison<T> comparison)
             {
-                T temp = default(T);
-                temp = array[0];
+                T temp = array[0];
                 foreach (T arr in array)
                 {
                     if (comparison(temp, arr) < 0)
@@ -303,6 +314,7 @@ namespace NovaEngine
             /// <typeparam name="TValue">目标数据类型</typeparam>
             /// <param name="array">列表容器</param>
             /// <returns>若存在指定类型的对象实例则返回true，否则返回false</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static bool ContainsType<TSource, TValue>(IList<TSource> array)
             {
                 return array.OfType<TValue>().Any();
@@ -317,7 +329,6 @@ namespace NovaEngine
             /// <returns>返回符合条件的目标对象实例</returns>
             public static T Find<T>(IList<T> array, Predicate<T> handler)
             {
-                T temp = default(T);
                 for (int n = 0; n < array.Count; ++n)
                 {
                     if (handler(array[n]))
@@ -326,7 +337,7 @@ namespace NovaEngine
                     }
                 }
 
-                return temp;
+                return default;
             }
 
             /// <summary>
@@ -360,6 +371,7 @@ namespace NovaEngine
             /// <typeparam name="TValue">值数据类型</typeparam>
             /// <param name="dictionary">字典容器对象实例</param>
             /// <returns>返回字典容器中的第一个元素</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static KeyValuePair<TKey, TValue> First<TKey, TValue>(IDictionary<TKey, TValue> dictionary)
             {
                 return dictionary.First();
@@ -372,6 +384,7 @@ namespace NovaEngine
             /// <typeparam name="TValue">值数据类型</typeparam>
             /// <param name="dictionary">字典容器对象实例</param>
             /// <returns>返回字典容器中的第一个元素的键</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static TKey FirstKey<TKey, TValue>(IDictionary<TKey, TValue> dictionary)
             {
                 return dictionary.First().Key;
@@ -384,6 +397,7 @@ namespace NovaEngine
             /// <typeparam name="TValue">值数据类型</typeparam>
             /// <param name="dictionary">字典容器对象实例</param>
             /// <returns>返回字典容器中的第一个元素的值</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static TValue FirstValue<TKey, TValue>(IDictionary<TKey, TValue> dictionary)
             {
                 return dictionary.First().Value;
@@ -395,6 +409,7 @@ namespace NovaEngine
             /// <typeparam name="T">数据类型</typeparam>
             /// <param name="source">集合容器对象实例</param>
             /// <returns>返回集合容器中的第一个元素</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static T FirstOrDefault<T>(HashSet<T> source)
             {
                 return source.FirstOrDefault();

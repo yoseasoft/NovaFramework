@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace GameEngine
 {
     /// <summary>
@@ -107,6 +109,7 @@ namespace GameEngine
         /// <summary>
         /// 应用程序响应回调处理函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void OnApplicationResponseCallback(NovaEngine.Application.ProtocolType protocolType)
         {
             // Debugger.Log("Call Application Protocol Type: {%s}", protocolType.ToString());

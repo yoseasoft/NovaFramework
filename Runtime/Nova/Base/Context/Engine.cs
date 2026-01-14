@@ -222,11 +222,13 @@ namespace NovaEngine
         // public void FixedExecute() { }
 
         // Execute is called once per frame
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Execute()
         {
         }
 
         // LateExecute is called once per frame, after Execute has finished
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void LateExecute()
         {
         }
@@ -235,12 +237,14 @@ namespace NovaEngine
         // public void FixedUpdate() { }
 
         // Update is called once per frame
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Update()
         {
             _facade.Update();
         }
 
         // LateUpdate is called once per frame, after Update has finished
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void LateUpdate()
         {
             _facade.LateUpdate();
