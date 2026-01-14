@@ -78,7 +78,7 @@ namespace GameEngine
                 _instantiateObjects = new List<UnityObject>();
             }
 
-            Debugger.Assert(_instantiateObjects.Contains(obj), NovaEngine.ErrorText.InvalidArguments);
+            Debugger.Assert(false == _instantiateObjects.Contains(obj), NovaEngine.ErrorText.InvalidArguments);
             _instantiateObjects.Add(obj);
         }
 

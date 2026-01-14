@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
@@ -40,7 +41,7 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLoadOfTarget(typeof(CScene))]
         private static bool LoadSceneClass(Symboling.SymClass symClass, bool reload)
         {
-            if (false == typeof(CScene).IsAssignableFrom(symClass.ClassType))
+            if (false == symClass.ClassType.Is<CScene>())
             {
                 Debugger.Warn("The target class type '{%s}' must be inherited from 'CScene' interface, load it failed.", symClass.FullName);
                 return false;
@@ -59,10 +60,9 @@ namespace GameEngine.Loader
                     info.EntityName = sceneClassAttribute.Name;
                     info.Priority = sceneClassAttribute.Priority;
                 }
-                else if (typeof(SceneAutoDisplayOnTargetViewAttribute) == attrType)
+                else if (attr is SceneAutoDisplayOnTargetViewAttribute sceneAutoDisplayOnTargetViewAttribute)
                 {
-                    SceneAutoDisplayOnTargetViewAttribute _attr = (SceneAutoDisplayOnTargetViewAttribute) attr;
-                    info.AddAutoDisplayViewName(_attr.ViewName);
+                    info.AddAutoDisplayViewName(sceneAutoDisplayOnTargetViewAttribute.ViewName);
                 }
                 else
                 {

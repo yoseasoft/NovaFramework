@@ -71,7 +71,7 @@ namespace NovaEngine
             /// 获取微秒级别的UTC时间戳
             /// </summary>
             /// <returns>返回微秒级别时间戳</returns>
-            public static long MicrosecondTimeStamp()
+            public static long MicrosecondTimestamp()
             {
                 return SystemDateTime.UtcNow.Ticks - EpochTicks;
             }
@@ -111,7 +111,7 @@ namespace NovaEngine
             public static SystemDateTime TimestampToDateTime(long timestamp)
             {
                 int length = (int) Math.Floor(Math.Log10(timestamp));
-                SystemDateTime dateTime = new SystemDateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                SystemDateTime dateTime = Epoch; // new SystemDateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
                 if (length == 9)
                     return dateTime.AddSeconds(timestamp);
                 if (length == 12)
@@ -260,35 +260,22 @@ namespace NovaEngine
             /// <returns>返回该月的天数</returns>
             public static int GetDaysOfMonth(int year, int month)
             {
-                switch (month)
+                return month switch
                 {
-                    case 1:
-                        return 31;
-                    case 2:
-                        return IsLeapYear(year) ? 29 : 28;
-                    case 3:
-                        return 31;
-                    case 4:
-                        return 30;
-                    case 5:
-                        return 31;
-                    case 6:
-                        return 30;
-                    case 7:
-                        return 31;
-                    case 8:
-                        return 31;
-                    case 9:
-                        return 30;
-                    case 10:
-                        return 31;
-                    case 11:
-                        return 30;
-                    case 12:
-                        return 31;
-                    default:
-                        return 0;
-                }
+                    1  => 31,
+                    2  => IsLeapYear(year) ? 29 : 28,
+                    3  => 31,
+                    4  => 30,
+                    5  => 31,
+                    6  => 30,
+                    7  => 31,
+                    8  => 31,
+                    9  => 30,
+                    10 => 31,
+                    11 => 30,
+                    12 => 31,
+                    _  => 0,
+                };
             }
 
             /// <summary>

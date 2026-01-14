@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
@@ -40,7 +41,7 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLoadOfTarget(typeof(CComponent))]
         private static bool LoadComponentClass(Symboling.SymClass symClass, bool reload)
         {
-            if (false == typeof(CComponent).IsAssignableFrom(symClass.ClassType))
+            if (false == symClass.ClassType.Is<CComponent>())
             {
                 Debugger.Warn("The target class type '{%s}' must be inherited from 'CComponent' interface, load it failed.", symClass.ClassName);
                 return false;

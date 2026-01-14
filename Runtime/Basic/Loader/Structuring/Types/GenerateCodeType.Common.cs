@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine.Loader.Structuring
 {
@@ -52,7 +53,7 @@ namespace GameEngine.Loader.Structuring
     /// 函数类型列表容器对象类，用于管理多个函数类型的结构信息对象实例
     /// </summary>
     /// <typeparam name="T">继承自函数类型结构信息的对象类型</typeparam>
-    internal class MethodTypeList<T> where T : MethodTypeCodeInfo
+    internal sealed class MethodTypeList<T> where T : MethodTypeCodeInfo
     {
         /// <summary>
         /// 函数类型列表容器
@@ -92,28 +93,20 @@ namespace GameEngine.Loader.Structuring
         /// 获取当前函数类型结构信息的数量
         /// </summary>
         /// <returns>返回函数类型结构信息的数量</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Count()
         {
-            if (null == _methodTypes)
-            {
-                return 0;
-            }
-
-            return _methodTypes.Count;
+            return _methodTypes?.Count ?? 0;
         }
 
         /// <summary>
         /// 检测当前函数类型结构信息数据容器是否为空
         /// </summary>
         /// <returns>若容器为空则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNullOrEmpty()
         {
-            if (null == _methodTypes || _methodTypes.Count == 0)
-            {
-                return true;
-            }
-
-            return false;
+            return (null == _methodTypes || _methodTypes.Count == 0);
         }
 
         /// <summary>
@@ -121,6 +114,7 @@ namespace GameEngine.Loader.Structuring
         /// </summary>
         /// <param name="index">索引值</param>
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Get(int index)
         {
             if (null == _methodTypes || index < 0 || index >= _methodTypes.Count)
@@ -161,6 +155,7 @@ namespace GameEngine.Loader.Structuring
         /// 获取当前函数类型结构容器中的全部数据实例
         /// </summary>
         /// <returns>返回全部数据实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IList<T> Values()
         {
             return _methodTypes;
@@ -169,6 +164,7 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 移除所有函数类型结构信息对象实例
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Clear()
         {
             _methodTypes?.Clear();

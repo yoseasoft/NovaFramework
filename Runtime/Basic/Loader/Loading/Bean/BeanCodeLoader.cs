@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using System.Reflection;
 using UnityEngine.Scripting;
 
@@ -123,7 +124,7 @@ namespace GameEngine.Loader
             if (null != filterType)
             {
                 // 直接将目标类型替换为过滤类型进行检测即可
-                return typeof(IBean).IsAssignableFrom(filterType);
+                return filterType.Is<IBean>();
             }
 
             // 原型类必须为可实例化的类
@@ -132,7 +133,7 @@ namespace GameEngine.Loader
                 return false;
             }
 
-            if (typeof(IBean).IsAssignableFrom(symClass.ClassType))
+            if (symClass.ClassType.Is<IBean>())
             {
                 return true;
             }
@@ -193,7 +194,7 @@ namespace GameEngine.Loader
             IEnumerator<KeyValuePair<Type, Delegate>> e = container.GetEnumerator();
             while (e.MoveNext())
             {
-                if (e.Current.Key.IsAssignableFrom(targetType) && e.Current.Key != targetType)
+                if (targetType.Is(e.Current.Key) && targetType != e.Current.Key)
                 {
                     callback = e.Current.Value;
                     return true;

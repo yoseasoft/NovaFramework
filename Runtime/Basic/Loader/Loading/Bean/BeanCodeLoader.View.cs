@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
@@ -40,7 +41,7 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLoadOfTarget(typeof(CView))]
         private static bool LoadViewClass(Symboling.SymClass symClass, bool reload)
         {
-            if (false == typeof(CView).IsAssignableFrom(symClass.ClassType))
+            if (false == symClass.ClassType.Is<CView>())
             {
                 Debugger.Warn("The target class type '{%s}' must be inherited from 'CView' interface, load it failed.", symClass.FullName);
                 return false;
@@ -63,10 +64,9 @@ namespace GameEngine.Loader
                 {
                     info.GroupName = viewGroupAttribute.GroupName;
                 }
-                else if (typeof(ViewGroupOfSymbioticRelationshipsAttribute) == attrType)
+                else if (attr is ViewGroupOfSymbioticRelationshipsAttribute viewGroupOfSymbioticRelationshipsAttribute)
                 {
-                    ViewGroupOfSymbioticRelationshipsAttribute _attr = (ViewGroupOfSymbioticRelationshipsAttribute) attr;
-                    info.AddGroupOfSymbioticViewName(_attr.ViewName);
+                    info.AddGroupOfSymbioticViewName(viewGroupOfSymbioticRelationshipsAttribute.ViewName);
                 }
                 else
                 {

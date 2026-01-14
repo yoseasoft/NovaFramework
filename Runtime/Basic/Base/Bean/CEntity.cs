@@ -1016,22 +1016,22 @@ namespace GameEngine
             // 这样可以通过符号类在解析过程中动态接入的方式简化标识定义的过程
 
             // 如果组件激活了输入分发接口，则添加到输入分发队列中
-            // if (typeof(IInputActivation).IsAssignableFrom(component.BeanType))
-            if (component.HasFeatureType(typeof(InputActivationAttribute)))
+            // if (component.BeanType.Is<IInputActivation>())
+            if (component.HasFeatureType(typeof(InputActivationAttribute), true))
             {
                 _componentInputDispatchList.Add(component);
             }
 
             // 如果组件激活了事件分发接口，则添加到事件分发队列中
-            // if (typeof(IEventActivation).IsAssignableFrom(component.BeanType))
-            if (component.HasFeatureType(typeof(EventActivationAttribute)))
+            // if (component.BeanType.Is<IEventActivation>())
+            if (component.HasFeatureType(typeof(EventActivationAttribute), true))
             {
                 _componentEventDispatchList.Add(component);
             }
 
             // 如果组件激活了消息分发接口，则添加到消息分发队列中
-            // if (typeof(IMessageActivation).IsAssignableFrom(component.BeanType))
-            if (component.HasFeatureType(typeof(MessageActivationAttribute)))
+            // if (component.BeanType.Is<IMessageActivation>())
+            if (component.HasFeatureType(typeof(MessageActivationAttribute), true))
             {
                 _componentMessageDispatchList.Add(component);
             }

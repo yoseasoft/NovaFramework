@@ -227,7 +227,7 @@ namespace GameEngine
 
         #endregion
 
-        #region 实体对象相关操作函数合集
+        #region 实体对象元素实例访问相关操作函数合集
 
         /// <summary>
         /// 获取当前记录的全部实体对象实例<br/>

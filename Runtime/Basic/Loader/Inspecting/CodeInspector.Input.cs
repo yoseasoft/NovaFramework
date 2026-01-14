@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Customize.Extension;
 using System.Reflection;
 
 namespace GameEngine.Loader.Inspecting
@@ -62,7 +63,7 @@ namespace GameEngine.Loader.Inspecting
             // 2. static void OnInput(IBean obj);
             if (paramInfos.Length == 1)
             {
-                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType))
+                if (paramInfos[0].ParameterType.Is<IBean>())
                 {
                     return true;
                 }
@@ -73,7 +74,7 @@ namespace GameEngine.Loader.Inspecting
             }
             else if (paramInfos.Length == 2)
             {
-                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) && // 第一个参数为Bean对象
+                if (paramInfos[0].ParameterType.Is<IBean>() && // 第一个参数为Bean对象
                     NovaEngine.Utility.Reflection.IsTypeOfStruct(paramInfos[1].ParameterType)) // 第二个参数为操作数据
                 {
                     return true;
@@ -86,7 +87,7 @@ namespace GameEngine.Loader.Inspecting
             }
             else if (paramInfos.Length == 3)
             {
-                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) && // 第一个参数为Bean对象
+                if (paramInfos[0].ParameterType.Is<IBean>() && // 第一个参数为Bean对象
                     typeof(int) == paramInfos[1].ParameterType && // 第二个参数为键码标识
                     typeof(int) == paramInfos[2].ParameterType) // 第三个参数为输入操作类型
                 {
@@ -115,7 +116,7 @@ namespace GameEngine.Loader.Inspecting
 
             if (paramInfos.Length == 1 && methodInfo.IsStatic) // 无参类型事件如果存在一个参数，那必然是静态函数
             {
-                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType))
+                if (paramInfos[0].ParameterType.Is<IBean>())
                 {
                     return true;
                 }
@@ -157,8 +158,8 @@ namespace GameEngine.Loader.Inspecting
             // 1. static void OnInput(this IBean self);
 
             // 第一个参数必须为原型类的子类，且必须是可实例化的类
-            if (false == typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) ||
-                false == NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(paramInfos[0].ParameterType))
+            if (false == paramInfos[0].ParameterType.Is<IBean>() ||
+                false == paramInfos[0].ParameterType.IsClass)
             {
                 return false;
             }

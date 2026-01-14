@@ -23,6 +23,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Customize.Extension;
 using System.Reflection;
 
 namespace GameEngine.Loader.Inspecting
@@ -63,7 +64,7 @@ namespace GameEngine.Loader.Inspecting
             // 目前接收的目标对象均为消息对象类型
             if (paramInfos.Length == 1)
             {
-                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType))
+                if (paramInfos[0].ParameterType.Is<IBean>())
                 {
                     return true;
                 }
@@ -74,8 +75,8 @@ namespace GameEngine.Loader.Inspecting
             }
             else if (paramInfos.Length == 2)
             {
-                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) && // 第一个参数为Bean对象
-                    NetworkHandler.Instance.GetMessageProtocolType().IsAssignableFrom(paramInfos[1].ParameterType)) // 第二个参数为消息协议类型
+                if (paramInfos[0].ParameterType.Is<IBean>() && // 第一个参数为Bean对象
+                    paramInfos[1].ParameterType.Is(NetworkHandler.Instance.GetMessageProtocolType())) // 第二个参数为消息协议类型
                 {
                     return true;
                 }
@@ -102,7 +103,7 @@ namespace GameEngine.Loader.Inspecting
 
             if (paramInfos.Length == 1 && methodInfo.IsStatic) // 无参类型消息如果存在一个参数，那必然是静态函数
             {
-                if (typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType))
+                if (paramInfos[0].ParameterType.Is<IBean>())
                 {
                     return true;
                 }
@@ -142,7 +143,7 @@ namespace GameEngine.Loader.Inspecting
             // 2. static void OnMessage(this IBean self);
 
             // 第一个参数必须为原型类的子类，且必须是可实例化的类
-            if (false == typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) ||
+            if (false == paramInfos[0].ParameterType.Is<IBean>() ||
                 false == NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(paramInfos[0].ParameterType))
             {
                 return false;
@@ -155,7 +156,7 @@ namespace GameEngine.Loader.Inspecting
             else if (paramInfos.Length == 2)
             {
                 // 目前接收的目标对象均为消息对象类型
-                if (NetworkHandler.Instance.GetMessageProtocolType().IsAssignableFrom(paramInfos[1].ParameterType))
+                if (paramInfos[1].ParameterType.Is(NetworkHandler.Instance.GetMessageProtocolType()))
                 {
                     return true;
                 }

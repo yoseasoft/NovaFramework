@@ -23,6 +23,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Customize.Extension;
 using System.Reflection;
 
 namespace GameEngine.Loader.Inspecting
@@ -59,7 +60,7 @@ namespace GameEngine.Loader.Inspecting
             // static void OnApi(this IBean self, params object[] args);
 
             // 第一个参数必须为原型类的子类，且必须是可实例化的类
-            if (false == typeof(IBean).IsAssignableFrom(paramInfos[0].ParameterType) ||
+            if (false == paramInfos[0].ParameterType.Is<IBean>() ||
                 false == NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(paramInfos[0].ParameterType))
             {
                 return false;

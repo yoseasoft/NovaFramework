@@ -149,10 +149,11 @@ namespace GameEngine
         /// 检测当前对象实例是否具备指定的特性类型
         /// </summary>
         /// <param name="featureType">特性类型</param>
+        /// <param name="inherited">继承标识</param>
         /// <returns>若当前对象实例具备给定特性类型则返回true，否则返回false</returns>
-        protected internal bool HasFeatureType(Type featureType)
+        protected internal bool HasFeatureType(Type featureType, bool inherited = false)
         {
-            return this.Symbol.HasFeatureType(featureType);
+            return this.Symbol.HasFeatureType(featureType, inherited);
         }
 
         /// <summary>

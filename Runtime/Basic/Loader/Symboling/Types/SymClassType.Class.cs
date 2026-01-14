@@ -229,15 +229,32 @@ namespace GameEngine.Loader.Symboling
         /// 检测当前类标记中是否存在指定类型的特性实例
         /// </summary>
         /// <param name="featureType">特性类型</param>
+        /// <param name="inherited">继承标识</param>
         /// <returns>若存在目标特性实例则返回true，否则返回false</returns>
-        public bool HasFeatureType(Type featureType)
+        public bool HasFeatureType(Type featureType, bool inherited = false)
         {
-            if (null == _featureTypes)
+            if (null != _featureTypes && _featureTypes.Contains(featureType))
             {
-                return false;
+                return true;
             }
 
-            return _featureTypes.Contains(featureType);
+            //
+            // 2026-01-14：
+            // 新增检测父类是否具有该特性，若父类中具有该特性，则默认子类同样具备该特性
+            // 这样可以实现通用基类的业务定制
+            // 但此处强制限定具备特性继承能力的基类必须为可实例化的对象类，否则将无法正确处理
+            // 是否真的要强制限定此条件，可以再斟酌
+            //
+            if (inherited)
+            {
+                SymClass baseClass = CodeLoader.GetSymClassByType(_baseType);
+                if (null != baseClass && baseClass.IsInstantiate)
+                {
+                    return baseClass.HasFeatureType(featureType, inherited);
+                }
+            }
+
+            return false;
         }
 
         /// <summary>

@@ -23,6 +23,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Customize.Extension;
 using System.Reflection;
 
 namespace GameEngine.Loader.Inspecting
@@ -51,8 +52,7 @@ namespace GameEngine.Loader.Inspecting
             }
 
             // 目前切面的目标对象均为原型对象类型
-            Type paramType = paramInfos[0].ParameterType;
-            if (typeof(IBean).IsAssignableFrom(paramType))
+            if (paramInfos[0].ParameterType.Is<IBean>())
             {
                 return true;
             }

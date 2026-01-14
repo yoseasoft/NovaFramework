@@ -60,7 +60,7 @@ namespace GameEngine.Loader.Symboling
         /// <param name="symClass">类标记对象</param>
         private static void AutoFillInstantiationClassFeatures(SymClass symClass)
         {
-            // 服务于‘CEntity’的扩展函数解析
+            // 服务于‘CBean’的扩展函数解析
 
             for (int n = 0; n < _instantiationClassResolvers.Count; ++n)
             {

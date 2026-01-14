@@ -3,7 +3,7 @@
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
@@ -34,7 +35,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CRef), AspectBehaviourType.Initialize)]
         private static void CallServiceProcessOfRefInitialize(CRef obj, bool reload)
         {
-            // Debugger.Info("Register ref '{%t}' dispatch call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Initialize);
+            // Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' dispatch call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Initialize);
 
             RegRefDispatchCallByTargetType(obj, AspectBehaviourType.Initialize, reload);
         }
@@ -42,7 +43,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CRef), AspectBehaviourType.Startup)]
         private static void CallServiceProcessOfRefStartup(CRef obj, bool reload)
         {
-            // Debugger.Info("Register ref '{%t}' dispatch call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Startup);
+            // Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' dispatch call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Startup);
 
             RegRefDispatchCallByTargetType(obj, AspectBehaviourType.Startup, reload);
         }
@@ -50,7 +51,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CRef), AspectBehaviourType.Awake)]
         private static void CallServiceProcessOfRefAwake(CRef obj, bool reload)
         {
-            // Debugger.Info("Register ref '{%t}' dispatch call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Awake);
+            // Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' dispatch call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Awake);
 
             RegRefDispatchCallByTargetType(obj, AspectBehaviourType.Awake, reload);
         }
@@ -58,25 +59,29 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CRef), AspectBehaviourType.Start)]
         private static void CallServiceProcessOfRefStart(CRef obj, bool reload)
         {
-            // Debugger.Info("Register ref '{%t}' dispatch call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Start);
+            // Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' dispatch call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Start);
 
             RegRefDispatchCallByTargetType(obj, AspectBehaviourType.Start, reload);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void RegRefDispatchCallByTargetType(CRef obj, AspectBehaviourType behaviourType, bool reload)
         {
-            Type targetType = obj.BeanType;
+            RegRefDispatchCallByTargetType(obj, obj.BeanType, behaviourType, reload);
+        }
+
+        private static void RegRefDispatchCallByTargetType(CRef obj, Type targetType, AspectBehaviourType behaviourType, bool reload)
+        {
             Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CRef));
             if (null == codeInfo)
             {
-                Debugger.Warn("Could not found any aspect call ref service process with target type '{%t}', called it failed.", targetType);
+                Debugger.Warn(LogGroupTag.Controller, "Could not found any aspect call ref service process with target type '{%t}', called it failed.", targetType);
                 return;
             }
 
-            Loader.Structuring.RefCodeInfo refCodeInfo = codeInfo as Loader.Structuring.RefCodeInfo;
-            if (null == refCodeInfo)
+            if (codeInfo is not Loader.Structuring.RefCodeInfo refCodeInfo)
             {
-                Debugger.Warn("The aspect call ref service process getting error code info '{%t}' with target type '{%t}', called it failed.", codeInfo.GetType(), targetType);
+                Debugger.Warn(LogGroupTag.Controller, "The aspect call ref service process getting error code info '{%t}' with target type '{%t}', called it failed.", codeInfo, targetType);
                 return;
             }
 
@@ -171,6 +176,12 @@ namespace GameEngine
 
                     obj.AddMessageListener(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.MessageType, true);
                 }
+            }
+
+            Type baseType = targetType.BaseType;
+            if (NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(baseType))
+            {
+                RegRefDispatchCallByTargetType(obj, baseType, behaviourType, reload);
             }
         }
     }

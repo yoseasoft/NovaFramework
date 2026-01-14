@@ -124,7 +124,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="name">定时器名称</param>
         /// <returns>若存在同名定时器则返回true，否则返回false</returns>
-        public bool IsTimerInfoExistByName(string name)
+        private bool IsTimerInfoExistByName(string name)
         {
             // 名称为空则认定为不存在重复定时器
             if (name.IsNullOrEmpty())
@@ -353,28 +353,12 @@ namespace NovaEngine.Module
             this.SendEvent(e, true);
         }
 
-        #region 基础属性快捷访问操作接口
-
-        /// <summary>
-        /// 获取一个标准时钟滴答数
-        /// </summary>
-        public long Ticks
-        {
-            get
-            {
-                TimeSpan ts = new TimeSpan(DateTime.UtcNow.Ticks - new DateTime(1970, 1, 1, 0, 0, 0).Ticks);
-                return (long) ts.TotalMilliseconds;
-            }
-        }
-
-        #endregion
-
         #region 定时任务的内部定时信息数据对象类声明
 
         /// <summary>
         /// 定时任务对象基础模型，用于管理定时任务对象相关属性，如会话信息，计划任务等，及回调接口
         /// </summary>
-        internal sealed class TimerInfo
+        private sealed class TimerInfo
         {
             /// <summary>
             /// 定时任务对应的会话标识

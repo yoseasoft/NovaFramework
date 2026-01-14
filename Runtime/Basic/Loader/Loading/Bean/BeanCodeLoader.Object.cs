@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
@@ -41,7 +42,7 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLoadOfTarget(typeof(CObject))]
         private static bool LoadObjectClass(Symboling.SymClass symClass, bool reload)
         {
-            if (false == typeof(CObject).IsAssignableFrom(symClass.ClassType))
+            if (false == symClass.ClassType.Is<CObject>())
             {
                 Debugger.Warn("The target class type '{%s}' must be inherited from 'CObject' interface, load it failed.", symClass.FullName);
                 return false;
@@ -54,12 +55,10 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
                 Attribute attr = attrs[n];
-                Type attrType = attr.GetType();
-                if (typeof(CObjectClassAttribute) == attrType)
+                if (attr is CObjectClassAttribute objectClassAttribute)
                 {
-                    CObjectClassAttribute _attr = (CObjectClassAttribute) attr;
-                    info.ObjectName = _attr.ObjectName;
-                    info.Priority = _attr.Priority;
+                    info.ObjectName = objectClassAttribute.ObjectName;
+                    info.Priority = objectClassAttribute.Priority;
                 }
                 else
                 {

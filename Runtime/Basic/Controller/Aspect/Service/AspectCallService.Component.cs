@@ -3,7 +3,7 @@
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
@@ -34,7 +35,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CComponent), AspectBehaviourType.Initialize)]
         private static void CallServiceProcessOfComponentInitialize(CComponent component, bool reload)
         {
-            // Debugger.Info("Register component '{%t}' dispatch call with target behaviour type '{%i}'.", component.BeanType, AspectBehaviourType.Initialize);
+            // Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' dispatch call with target behaviour type '{%i}'.", component.BeanType, AspectBehaviourType.Initialize);
 
             RegComponentDispatchCallByTargetType(component, AspectBehaviourType.Initialize, reload);
         }
@@ -42,7 +43,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CComponent), AspectBehaviourType.Startup)]
         private static void CallServiceProcessOfComponentStartup(CComponent component, bool reload)
         {
-            // Debugger.Info("Register component '{%t}' dispatch call with target behaviour type '{%i}'.", component.BeanType, AspectBehaviourType.Startup);
+            // Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' dispatch call with target behaviour type '{%i}'.", component.BeanType, AspectBehaviourType.Startup);
 
             RegComponentDispatchCallByTargetType(component, AspectBehaviourType.Startup, reload);
         }
@@ -50,7 +51,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CComponent), AspectBehaviourType.Awake)]
         private static void CallServiceProcessOfComponentAwake(CComponent component, bool reload)
         {
-            // Debugger.Info("Register component '{%t}' dispatch call with target behaviour type '{%i}'.", component.BeanType, AspectBehaviourType.Awake);
+            // Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' dispatch call with target behaviour type '{%i}'.", component.BeanType, AspectBehaviourType.Awake);
 
             RegComponentDispatchCallByTargetType(component, AspectBehaviourType.Awake, reload);
         }
@@ -58,25 +59,29 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CComponent), AspectBehaviourType.Start)]
         private static void CallServiceProcessOfComponentStart(CComponent component, bool reload)
         {
-            // Debugger.Info("Register component '{%t}' dispatch call with target behaviour type '{%i}'.", component.BeanType, AspectBehaviourType.Start);
+            // Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' dispatch call with target behaviour type '{%i}'.", component.BeanType, AspectBehaviourType.Start);
 
             RegComponentDispatchCallByTargetType(component, AspectBehaviourType.Start, reload);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void RegComponentDispatchCallByTargetType(CComponent component, AspectBehaviourType behaviourType, bool reload)
         {
-            Type targetType = component.BeanType;
+            RegComponentDispatchCallByTargetType(component, component.BeanType, behaviourType, reload);
+        }
+
+        private static void RegComponentDispatchCallByTargetType(CComponent component, Type targetType, AspectBehaviourType behaviourType, bool reload)
+        {
             Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CComponent));
             if (null == codeInfo)
             {
-                Debugger.Warn("Could not found any aspect call component service process with target type '{%t}', called it failed.", targetType);
+                Debugger.Warn(LogGroupTag.Controller, "Could not found any aspect call component service process with target type '{%t}', called it failed.", targetType);
                 return;
             }
 
-            Loader.Structuring.ComponentCodeInfo componentCodeInfo = codeInfo as Loader.Structuring.ComponentCodeInfo;
-            if (null == componentCodeInfo)
+            if (codeInfo is not Loader.Structuring.ComponentCodeInfo componentCodeInfo)
             {
-                Debugger.Warn("The aspect call component service process getting error code info '{%t}' with target type '{%t}', called it failed.", codeInfo.GetType(), targetType);
+                Debugger.Warn(LogGroupTag.Controller, "The aspect call component service process getting error code info '{%t}' with target type '{%t}', called it failed.", codeInfo, targetType);
                 return;
             }
 
@@ -171,6 +176,12 @@ namespace GameEngine
 
                     component.AddMessageListener(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.MessageType, true);
                 }
+            }
+
+            Type baseType = targetType.BaseType;
+            if (NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(baseType))
+            {
+                RegComponentDispatchCallByTargetType(component, baseType, behaviourType, reload);
             }
         }
     }

@@ -100,7 +100,7 @@ namespace GameEngine.Loader
                 else
                 {
                     // 在重载前已经卸载掉所有的类标记对象，所以此处必定查找不到目标对象
-                    // Debugger.Warn("Could not found any class symbol with target name '{%s}' and type '{%t}', removed it failed.", symbol.TargetName, targetType);
+                    // Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any class symbol with target name '{%s}' and type '{%t}', removed it failed.", symbol.TargetName, targetType);
                 }
             }
 
@@ -175,7 +175,7 @@ namespace GameEngine.Loader
             string beanName = bean.BeanName;
             if (_beanClassMaps.ContainsKey(beanName))
             {
-                Debugger.Warn("The bean object '{%s}' was already exist within class map, repeat added it failed.", beanName);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The bean object '{%s}' was already exist within class map, repeat added it failed.", beanName);
                 return;
             }
 
@@ -195,7 +195,7 @@ namespace GameEngine.Loader
             {
                 if (false == _beanClassMaps.TryGetValue(k, out Symboling.Bean bean))
                 {
-                    Debugger.Warn("无法查找到与指定名字‘{%s}’对应的Bean对象实例！", k);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "无法查找到与指定名字‘{%s}’对应的Bean对象实例！", k);
                     continue;
                 }
 

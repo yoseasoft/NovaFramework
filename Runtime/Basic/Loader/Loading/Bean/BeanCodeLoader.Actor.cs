@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
@@ -40,7 +41,7 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLoadOfTarget(typeof(CActor))]
         private static bool LoadActorClass(Symboling.SymClass symClass, bool reload)
         {
-            if (false == typeof(CActor).IsAssignableFrom(symClass.ClassType))
+            if (false == symClass.ClassType.Is<CActor>())
             {
                 Debugger.Warn("The target class type '{%s}' must be inherited from 'CActor' interface, load it failed.", symClass.FullName);
                 return false;

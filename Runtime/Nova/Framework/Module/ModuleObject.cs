@@ -222,7 +222,7 @@ namespace NovaEngine.Module
         /// <typeparam name="T">模块类型</typeparam>
         /// <returns>返回对应类型的模块对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetModule<T>() where T : ModuleObject
+        protected T GetModule<T>() where T : ModuleObject
         {
             return ModuleController.GetModule<T>();
         }
