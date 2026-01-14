@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -44,6 +45,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="controller">控制器对象实例</param>
         /// <param name="variables">环境参数</param>
+        [Preserve]
         public static void Start(object controller, IReadOnlyDictionary<string, string> variables)
         {
             // 初始化回调接口
@@ -57,6 +59,7 @@ namespace GameEngine
         /// 重载引擎的外部调用接口函数
         /// </summary>
         /// <param name="type">重载类型</param>
+        [Preserve]
         public static void Reload(int type)
         {
             EngineCommandType commandType = NovaEngine.Utility.Convertion.GetEnumFromValue<EngineCommandType>(type);
@@ -73,6 +76,7 @@ namespace GameEngine
         /// <summary>
         /// 停止引擎的外部调用接口函数
         /// </summary>
+        [Preserve]
         public static void Stop()
         {
         }
@@ -82,6 +86,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="assemblies">程序集容器</param>
         /// <param name="reload">重载标识</param>
+        [Preserve]
         public static void OnAssemblyLoaded(IReadOnlyDictionary<string, Assembly> assemblies, bool reload)
         {
             // 重新装载全部程序集

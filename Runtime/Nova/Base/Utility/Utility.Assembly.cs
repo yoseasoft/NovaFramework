@@ -28,7 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Customize.Extension;
-
+using System.Runtime.CompilerServices;
 using SystemAssembly = System.Reflection.Assembly;
 
 namespace NovaEngine
@@ -56,6 +56,7 @@ namespace NovaEngine
             /// 将指定的程序集注册到当前域程序集缓存容器中
             /// </summary>
             /// <param name="assembly">程序集实例</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static void RegisterCurrentDomainAssembly(SystemAssembly assembly)
             {
                 Dictionary<string, SystemAssembly> dictionary = new Dictionary<string, SystemAssembly>();
@@ -129,6 +130,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="assemblyName">程序集名称</param>
             /// <returns>返回该名称对应的程序集实例，若不存在则返回null</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static SystemAssembly GetAssembly(string assemblyName)
             {
                 if (_cachedAssemblies.TryGetValue(assemblyName, out SystemAssembly assembly))
@@ -143,6 +145,7 @@ namespace NovaEngine
             /// 获取已加载的程序集
             /// </summary>
             /// <returns>返回当前加载的程序集列表</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static IList<SystemAssembly> GetAllAssemblies()
             {
                 return Collection.ToListForValues(_cachedAssemblies);
@@ -193,8 +196,7 @@ namespace NovaEngine
                     throw new CFrameworkException("Type name is invalid.");
                 }
 
-                Type type = null;
-                if (_cachedTypes.TryGetValue(typeName, out type))
+                if (_cachedTypes.TryGetValue(typeName, out Type type))
                 {
                     return type;
                 }
