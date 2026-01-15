@@ -45,6 +45,18 @@ namespace GameEngine
         public static InputHandler Instance => HandlerManagement.InputHandler;
 
         /// <summary>
+        /// 句柄对象默认构造函数
+        /// </summary>
+        internal InputHandler() : base()
+        { }
+
+        /// <summary>
+        /// 句柄对象析构函数
+        /// </summary>
+        ~InputHandler()
+        { }
+
+        /// <summary>
         /// 句柄对象内置初始化接口函数
         /// </summary>
         /// <returns>若句柄对象初始化成功则返回true，否则返回false</returns>

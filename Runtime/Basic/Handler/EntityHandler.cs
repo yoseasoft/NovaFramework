@@ -33,15 +33,13 @@ namespace GameEngine
         /// <summary>
         /// 句柄对象默认构造函数
         /// </summary>
-        public EntityHandler()
-        {
-        }
+        protected internal EntityHandler() : base()
+        { }
 
         /// <summary>
         /// 句柄对象析构函数
         /// </summary>
         ~EntityHandler()
-        {
-        }
+        { }
     }
 }

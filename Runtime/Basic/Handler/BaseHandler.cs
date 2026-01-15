@@ -77,19 +77,19 @@ namespace GameEngine
         /// <summary>
         /// 定时器模块的实例引用
         /// </summary>
-        private NovaEngine.Module.TimerModule _timerModule = null;
+        private NovaEngine.Module.TimerModule _timerModule;
         /// <summary>
         /// 线程模块的实例引用
         /// </summary>
-        private NovaEngine.Module.ThreadModule _threadModule = null;
+        private NovaEngine.Module.ThreadModule _threadModule;
         /// <summary>
         /// 任务模块的实例引用
         /// </summary>
-        private NovaEngine.Module.TaskModule _taskModule = null;
+        private NovaEngine.Module.TaskModule _taskModule;
         /// <summary>
         /// 网络模块的实例引用
         /// </summary>
-        private NovaEngine.Module.NetworkModule _networkModule = null;
+        private NovaEngine.Module.NetworkModule _networkModule;
         /// <summary>
         /// 资源模块的实例引用
         /// </summary>
@@ -97,20 +97,20 @@ namespace GameEngine
         /// <summary>
         /// 文件模块的实例引用
         /// </summary>
-        private NovaEngine.Module.FileModule _fileModule = null;
+        private NovaEngine.Module.FileModule _fileModule;
         /// <summary>
         /// 输入模块的实例引用
         /// </summary>
-        private NovaEngine.Module.InputModule _inputModule = null;
+        private NovaEngine.Module.InputModule _inputModule;
         /// <summary>
         /// 场景模块的实例引用
         /// </summary>
-        private NovaEngine.Module.SceneModule _sceneModule = null;
+        private NovaEngine.Module.SceneModule _sceneModule;
 
         /// <summary>
         /// 句柄子模块行为流程回调的缓存队列
         /// </summary>
-        private IDictionary<Type, Delegate> _cachedSubmoduleBehaviourCallbacks = null;
+        private IDictionary<Type, Delegate> _cachedSubmoduleBehaviourCallbacks;
 
         /// <summary>
         /// 设置句柄的类型标识
@@ -154,6 +154,12 @@ namespace GameEngine
         /// 获取场景模块的对象实例
         /// </summary>
         internal NovaEngine.Module.SceneModule SceneModule => _sceneModule;
+
+        protected internal BaseHandler()
+        { }
+
+        ~BaseHandler()
+        { }
 
         /// <summary>
         /// 句柄对象初始化接口函数

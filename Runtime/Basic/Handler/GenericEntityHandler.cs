@@ -69,16 +69,14 @@ namespace GameEngine
         /// <summary>
         /// 句柄对象默认构造函数
         /// </summary>
-        public GenericEntityHandler()
-        {
-        }
+        protected internal GenericEntityHandler() : base()
+        { }
 
         /// <summary>
         /// 句柄对象析构函数
         /// </summary>
         ~GenericEntityHandler()
-        {
-        }
+        { }
 
         /// <summary>
         /// 句柄对象内置初始化接口函数

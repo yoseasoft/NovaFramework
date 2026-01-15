@@ -47,16 +47,14 @@ namespace GameEngine
         /// <summary>
         /// 句柄对象默认构造函数
         /// </summary>
-        public GuiHandler()
-        {
-        }
+        internal GuiHandler() : base()
+        { }
 
         /// <summary>
         /// 句柄对象析构函数
         /// </summary>
         ~GuiHandler()
-        {
-        }
+        { }
 
         /// <summary>
         /// 句柄对象内置初始化接口函数
