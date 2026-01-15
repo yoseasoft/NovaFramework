@@ -110,7 +110,7 @@ namespace GameEngine
         public static void AutoRegisterAllHotModulesOfContextConfigure()
         {
             IList<string> packs = Context.Configuring.ApplicationConfigureInfo.HotModulePacks;
-            for (int n = 0; n < packs.Count; ++n)
+            for (int n = 0; null != packs && n < packs.Count; ++n)
             {
                 string packName = packs[n];
                 IList<Type> founds = NovaEngine.Utility.Assembly.GetTypes(packName, typeof(IHotModule));
@@ -173,7 +173,7 @@ namespace GameEngine
         public static void AutoUnregisterAllHotModulesOfContextConfigure()
         {
             IList<string> packs = Context.Configuring.ApplicationConfigureInfo.HotModulePacks;
-            for (int n = 0; n < packs.Count; ++n)
+            for (int n = 0; null != packs && n < packs.Count; ++n)
             {
                 string packName = packs[n];
 

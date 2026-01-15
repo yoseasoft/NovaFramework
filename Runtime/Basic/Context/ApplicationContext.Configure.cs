@@ -252,7 +252,7 @@ namespace GameEngine
         private static void AutoLoadBeanImportConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
         {
             IList<string> list = Context.Configuring.ApplicationConfigureInfo.BeanUrlPaths;
-            for (int n = 0; n < list.Count; ++n)
+            for (int n = 0; null != list && n < list.Count; ++n)
             {
                 LoadBeanConfigure(list[n], callback);
             }
@@ -267,7 +267,7 @@ namespace GameEngine
         private static async UniTask AutoLoadBeanImportConfigure(NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
         {
             IList<string> list = Context.Configuring.ApplicationConfigureInfo.BeanUrlPaths;
-            for (int n = 0; n < list.Count; ++n)
+            for (int n = 0; null != list && n < list.Count; ++n)
             {
                 await LoadBeanConfigure(list[n], callback);
             }
@@ -282,7 +282,7 @@ namespace GameEngine
         private static void AutoLoadBeanImportConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
         {
             IList<string> list = Context.Configuring.ApplicationConfigureInfo.BeanUrlPaths;
-            for (int n = 0; n < list.Count; ++n)
+            for (int n = 0; null != list && n < list.Count; ++n)
             {
                 LoadBeanConfigure(list[n], callback);
             }
@@ -297,7 +297,7 @@ namespace GameEngine
         private static async UniTask AutoLoadBeanImportConfigure(NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
         {
             IList<string> list = Context.Configuring.ApplicationConfigureInfo.BeanUrlPaths;
-            for (int n = 0; n < list.Count; ++n)
+            for (int n = 0; null != list && n < list.Count; ++n)
             {
                 await LoadBeanConfigure(list[n], callback);
             }
