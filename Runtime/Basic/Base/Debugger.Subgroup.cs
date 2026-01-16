@@ -375,7 +375,7 @@ namespace GameEngine
             /// <returns>若启用给定级别的调试输出返回true，否则返回false</returns>
             private bool IsOutputEnabled(NovaEngine.LogOutputLevelType level)
             {
-                return (level > NovaEngine.LogOutputLevelType.Warning) || (_enabled && GameMacros.DEBUGGING_OUTPUT_GROUP_FILTERING_ENABLED);
+                return (level > NovaEngine.LogOutputLevelType.Warning) || (_enabled && GameMacros.DEBUGGER_OUTPUT_GROUP_FILTERING_ENABLED);
             }
         }
 

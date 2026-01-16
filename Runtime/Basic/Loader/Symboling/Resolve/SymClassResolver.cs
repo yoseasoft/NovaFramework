@@ -68,7 +68,7 @@ namespace GameEngine.Loader.Symboling
             // 
             // if (false == NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(targetType))
             // {
-            //     // Debugger.Info("The target class type '{%t}' must be instantiable type, parsed it failed.", targetType);
+            //     // Debugger.Info(LogGroupTag.CodeLoader, "The target class type '{%t}' must be instantiable type, parsed it failed.", targetType);
             //     return null;
             // }
 
@@ -99,7 +99,7 @@ namespace GameEngine.Loader.Symboling
             {
                 FieldInfo field = fields[n];
 
-                if (false == CodeLoader.SymbolResolvingFullStatus)
+                if (false == CodeLoader.SymbolResolvingOfCompleteClassStructure)
                 {
                     // 仅保留业务部分的字段类型
                     if (EngineDefine.IsCoreScopeClassType(field.DeclaringType))
@@ -108,7 +108,7 @@ namespace GameEngine.Loader.Symboling
 
                 if (false == TryGetSymField(field, out SymField symField))
                 {
-                    Debugger.Warn("Cannot resolve field '{%s}' from target class type '{%s}', added it failed.", field.Name, symbol.FullName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "Cannot resolve field '{%s}' from target class type '{%s}', added it failed.", field.Name, symbol.FullName);
                     continue;
                 }
 
@@ -120,7 +120,7 @@ namespace GameEngine.Loader.Symboling
             {
                 PropertyInfo property = properties[n];
 
-                if (false == CodeLoader.SymbolResolvingFullStatus)
+                if (false == CodeLoader.SymbolResolvingOfCompleteClassStructure)
                 {
                     // 仅保留业务部分的属性类型
                     if (EngineDefine.IsCoreScopeClassType(property.DeclaringType))
@@ -129,7 +129,7 @@ namespace GameEngine.Loader.Symboling
 
                 if (false == TryGetSymProperty(property, out SymProperty symProperty))
                 {
-                    Debugger.Warn("Cannot resolve property '{%s}' from target class type '{%s}', added it failed.", property.Name, symbol.FullName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "Cannot resolve property '{%s}' from target class type '{%s}', added it failed.", property.Name, symbol.FullName);
                     continue;
                 }
 
@@ -141,7 +141,7 @@ namespace GameEngine.Loader.Symboling
             {
                 MethodInfo method = methods[n];
 
-                if (false == CodeLoader.SymbolResolvingFullStatus)
+                if (false == CodeLoader.SymbolResolvingOfCompleteClassStructure)
                 {
                     // 仅保留业务部分的函数类型
                     if (EngineDefine.IsCoreScopeClassType(method.DeclaringType))
@@ -155,9 +155,15 @@ namespace GameEngine.Loader.Symboling
                     continue;
                 }
 
+                // 忽略掉所有泛型函数
+                if (method.IsGenericMethod)
+                {
+                    continue;
+                }
+
                 if (false == TryGetSymMethod(method, out SymMethod symMethod))
                 {
-                    Debugger.Warn("Cannot resolve method '{%s}' from target class type '{%s}', added it failed.", method.Name, symbol.FullName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "Cannot resolve method '{%s}' from target class type '{%s}', added it failed.", method.Name, symbol.FullName);
                     continue;
                 }
 

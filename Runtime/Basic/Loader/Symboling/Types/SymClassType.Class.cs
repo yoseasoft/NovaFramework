@@ -218,7 +218,7 @@ namespace GameEngine.Loader.Symboling
 
             if (_featureTypes.Contains(featureType))
             {
-                // Debugger.Warn("The symbol class '{%t}' feature type '{%t}' was already exist, repeat added it failed.", _classType, featureType);
+                // Debugger.Warn(LogGroupTag.CodeLoader, "The symbol class '{%t}' feature type '{%t}' was already exist, repeat added it failed.", _classType, featureType);
                 return;
             }
 
@@ -270,7 +270,7 @@ namespace GameEngine.Loader.Symboling
 
             if (false == _featureTypes.Contains(featureType))
             {
-                Debugger.Warn("Could not found any feature type '{%t}' from target symbol class '{%t}', removed it failed.", featureType, _classType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any feature type '{%t}' from target symbol class '{%t}', removed it failed.", featureType, _classType);
                 return;
             }
 
@@ -304,7 +304,7 @@ namespace GameEngine.Loader.Symboling
             Type featureType = attribute.GetType();
             if (_featureObjects.ContainsKey(featureType))
             {
-                Debugger.Warn("The symbol class '{%t}' feature object '{%t}' was already exist, repeat added it failed.", _classType, featureType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The symbol class '{%t}' feature object '{%t}' was already exist, repeat added it failed.", _classType, featureType);
                 return;
             }
 
@@ -379,7 +379,7 @@ namespace GameEngine.Loader.Symboling
 
             if (false == _featureObjects.ContainsKey(featureType))
             {
-                Debugger.Warn("Could not found any feature object '{%t}' from target symbol class '{%t}', removed it failed.", featureType, _classType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any feature object '{%t}' from target symbol class '{%t}', removed it failed.", featureType, _classType);
                 return;
             }
 
@@ -415,7 +415,7 @@ namespace GameEngine.Loader.Symboling
 
             if (_interfaceTypes.Contains(interfaceType))
             {
-                Debugger.Warn("The symbol class '{%t}' interface type '{%t}' was already exist, repeat added it failed.", _classType, interfaceType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The symbol class '{%t}' interface type '{%t}' was already exist, repeat added it failed.", _classType, interfaceType);
                 return;
             }
 
@@ -450,7 +450,7 @@ namespace GameEngine.Loader.Symboling
 
             if (false == _interfaceTypes.Contains(interfaceType))
             {
-                Debugger.Warn("Could not found any interface type '{%t}' from target symbol class '{%t}', removed it failed.", interfaceType, _classType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any interface type '{%t}' from target symbol class '{%t}', removed it failed.", interfaceType, _classType);
                 return;
             }
 
@@ -483,11 +483,11 @@ namespace GameEngine.Loader.Symboling
 
             if (_aspectBehaviourTypes.Contains(aspectBehaviourType))
             {
-                // Debugger.Warn("The symbol class '{%t}' aspect behaviour type '{%s}' was already exist, repeat added it failed.", _classType, aspectBehaviourType.ToString());
+                // Debugger.Warn(LogGroupTag.CodeLoader, "The symbol class '{%t}' aspect behaviour type '{%i}' was already exist, repeat added it failed.", _classType, aspectBehaviourType);
                 return;
             }
 
-            // Debugger.Log("新增切面行为类型‘{%i}’到目标对象实例‘{%s}’", aspectBehaviourType, _className);
+            // Debugger.Log(LogGroupTag.CodeLoader, "新增切面行为类型‘{%i}’到目标对象实例‘{%s}’", aspectBehaviourType, _className);
 
             _aspectBehaviourTypes.Add(aspectBehaviourType);
         }
@@ -520,11 +520,11 @@ namespace GameEngine.Loader.Symboling
 
             if (false == _aspectBehaviourTypes.Contains(aspectBehaviourType))
             {
-                Debugger.Warn("Could not found any aspect behaviour type '{%s}' from target symbol class '{%t}', removed it failed.", aspectBehaviourType.ToString(), _classType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any aspect behaviour type '{%i}' from target symbol class '{%t}', removed it failed.", aspectBehaviourType, _classType);
                 return;
             }
 
-            // Debugger.Log("从目标对象实例‘{%s}’中移除切面行为类型‘{%i}’", _className, aspectBehaviourType);
+            // Debugger.Log(LogGroupTag.CodeLoader, "从目标对象实例‘{%s}’中移除切面行为类型‘{%i}’", _className, aspectBehaviourType);
 
             _aspectBehaviourTypes.Remove(aspectBehaviourType);
         }
@@ -555,8 +555,7 @@ namespace GameEngine.Loader.Symboling
 
             if (_fields.ContainsKey(field.FieldName))
             {
-                Debugger.Warn("The symbol class '{0}' field '{1}' was already exist, repeat added it failed.",
-                        NovaEngine.Utility.Text.ToString(_classType), field.FieldName);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The symbol class '{%t}' field '{%s}' was already exist, repeat added it failed.", _classType, field.FieldName);
                 return;
             }
 
@@ -666,8 +665,7 @@ namespace GameEngine.Loader.Symboling
 
             if (false == _fields.ContainsKey(fieldName))
             {
-                Debugger.Warn("Could not found any field instance '{0}' from target symbol class '{1}', removed it failed.",
-                        fieldName, NovaEngine.Utility.Text.ToString(_classType));
+                Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any field instance '{%s}' from target symbol class '{%t}', removed it failed.", fieldName, _classType);
                 return;
             }
 
@@ -700,8 +698,7 @@ namespace GameEngine.Loader.Symboling
 
             if (_properties.ContainsKey(property.PropertyName))
             {
-                Debugger.Warn("The symbol class '{0}' property '{1}' was already exist, repeat added it failed.",
-                        NovaEngine.Utility.Text.ToString(_classType), property.PropertyName);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The symbol class '{%t}' property '{%s}' was already exist, repeat added it failed.", _classType, property.PropertyName);
                 return;
             }
 
@@ -794,8 +791,7 @@ namespace GameEngine.Loader.Symboling
 
             if (false == _properties.ContainsKey(propertyName))
             {
-                Debugger.Warn("Could not found any property instance '{0}' from target symbol class '{1}', removed it failed.",
-                        propertyName, NovaEngine.Utility.Text.ToString(_classType));
+                Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any property instance '{%s}' from target symbol class '{%t}', removed it failed.", propertyName, _classType);
                 return;
             }
 
@@ -828,8 +824,7 @@ namespace GameEngine.Loader.Symboling
 
             if (_methods.ContainsKey(method.FullName))
             {
-                Debugger.Warn("The symbol class '{0}' method '{1}' was already exist, repeat added it failed.",
-                        NovaEngine.Utility.Text.ToString(_classType), method.FullName);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The symbol class '{%t}' method '{%s}' was already exist, repeat added it failed.", _classType, method.FullName);
                 return;
             }
 
@@ -907,8 +902,7 @@ namespace GameEngine.Loader.Symboling
 
             if (false == _methods.ContainsKey(methodName))
             {
-                Debugger.Warn("Could not found any method instance '{0}' from target symbol class '{1}', removed it failed.",
-                        methodName, NovaEngine.Utility.Text.ToString(_classType));
+                Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any method instance '{%s}' from target symbol class '{%t}', removed it failed.", methodName, _classType);
                 return;
             }
 
@@ -946,7 +940,7 @@ namespace GameEngine.Loader.Symboling
 
             if (_beans.ContainsKey(bean.BeanName))
             {
-                Debugger.Warn("The bean object '{%s}' was already exist in symbol class '{%s}', repeat added it will be override old value.", bean.BeanName, _className);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The bean object '{%s}' was already exist in symbol class '{%s}', repeat added it will be override old value.", bean.BeanName, _className);
                 _beans.Remove(bean.BeanName);
             }
 

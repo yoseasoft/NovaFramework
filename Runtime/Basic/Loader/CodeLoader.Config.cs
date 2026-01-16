@@ -29,13 +29,13 @@ namespace GameEngine.Loader
     public static partial class CodeLoader
     {
         /// <summary>
-        /// 符号解析完整状态标识<br/>
-        /// 若打开此开关，<see cref="GameEngine.Loader.Symboling.SymClass"/>将以完整继承结构的方式解析所有内部成员<br/>
-        /// 若开关被关闭，则所有框架层的成语均不会被记录<br/>
+        /// 符号解析完整类结构的状态标识<br/>
+        /// 若打开此开关，<see cref="GameEngine.Loader.Symboling.SymClass"/>将以完整继承结构的方式解析类的所有内部成员<br/>
+        /// 若开关被关闭，则所有框架层的成员均不会被记录<br/>
         /// <br/>
         /// 需要注意的是，该状态标识仅在调试模式下使用<br/>
         /// 在正式发布版本请一定修改为禁用模式，否则会极大影响符号加载性能和内存占用
         /// </summary>
-        internal const bool SymbolResolvingFullStatus = false;
+        internal const bool SymbolResolvingOfCompleteClassStructure = false;
     }
 }

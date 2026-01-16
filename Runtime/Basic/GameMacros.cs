@@ -32,10 +32,10 @@ namespace GameEngine
     public static class GameMacros
     {
         /// <summary>
-        /// 调试模块的输出分组过滤启动状态标识
+        /// 调试器的输出分组过滤启动状态标识
         /// </summary>
         [DisableOnReleaseMode]
-        public static readonly bool DEBUGGING_OUTPUT_GROUP_FILTERING_ENABLED = false;
+        public static readonly bool DEBUGGER_OUTPUT_GROUP_FILTERING_ENABLED = false;
 
         /// <summary>
         /// 调试模式的解析窗口的启动状态标识
