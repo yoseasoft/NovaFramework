@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Customize.Extension;
 
 namespace GameEngine.Loader.Symboling
 {
@@ -36,7 +37,7 @@ namespace GameEngine.Loader.Symboling
         /// <param name="symClass">类标记对象</param>
         private static void AutoFillEntityExtensionMethodFeatures(SymClass symClass, SymMethod symMethod)
         {
-            if (typeof(CView).IsAssignableFrom(symMethod.ExtensionParameterType))
+            if (symMethod.ExtensionParameterType.Is<CView>())
             {
                 AutoFillViewExtensionMethodFeatures(symClass, symMethod);
             }

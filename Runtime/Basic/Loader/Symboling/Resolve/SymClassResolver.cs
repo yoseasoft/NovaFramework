@@ -64,7 +64,7 @@ namespace GameEngine.Loader.Symboling
             SymClass symbol = new SymClass();
 
             // 2024-07-08:
-            // 所有类都进行解析和标记的注册登记
+            // 所有类都进行解析和标记的注册登记，包括抽象基类
             // 
             // if (false == NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(targetType))
             // {
@@ -223,7 +223,7 @@ namespace GameEngine.Loader.Symboling
                 }
                 else
                 {
-                    Debugger.Error("不能正确解析名字为‘{%s}’的Bean文件配置项！", beanConfigureInfo.Name);
+                    Debugger.Error(LogGroupTag.CodeLoader, "不能正确解析名字为‘{%s}’的Bean文件配置项！", beanConfigureInfo.Name);
                     return;
                 }
             }

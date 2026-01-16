@@ -125,7 +125,7 @@ namespace GameEngine.Loader
             string assemblyName = assembly.FullName;
             if (_assemblyLibraryCaches.TryGetValue(assemblyName, out Assembly assemblyVersion))
             {
-                Debugger.Warn("The target assembly '{%s}' was already loaded, repeat load it failed.", assemblyName);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The target assembly '{%s}' was already loaded, repeat load it failed.", assemblyName);
                 return;
             }
 
@@ -441,7 +441,7 @@ namespace GameEngine.Loader
 
             if (handlers.Contains(callback))
             {
-                Debugger.Warn("The class '{%t}' reflect code type loaded callback was already existed, repeat added it failed.", targetType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The class '{%t}' reflect code type loaded callback was already existed, repeat added it failed.", targetType);
                 return;
             }
 
@@ -457,7 +457,7 @@ namespace GameEngine.Loader
         {
             if (false == _codeTypeLoadedCallbacks.TryGetValue(targetType, out LinkedList<OnCodeTypeLoadedHandler> handlers))
             {
-                Debugger.Warn("Could not found any load callback from this type '{%t}', remove it failed.", targetType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any load callback from this type '{%t}', remove it failed.", targetType);
                 return;
             }
 

@@ -63,7 +63,7 @@ namespace GameEngine.Loader.Symboling
 
                     if (null == _attr.ReferenceType)
                     {
-                        Debugger.Warn("Could not found any bean component reference type with target symbol class '{%s}', resolved activation component failed.", symClass.FullName);
+                        Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any bean component reference type with target symbol class '{%s}', resolved activation component failed.", symClass.FullName);
                         continue;
                     }
 
@@ -96,7 +96,7 @@ namespace GameEngine.Loader.Symboling
                             // 如果没有填写引用类型，那么该字段的类型必须是可以实例化的类型
                             if (null == _attr.ReferenceType && NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(symField.FieldType))
                             {
-                                Debugger.Warn("Could not found any reference type or value with target bean field '{%s}', resolved field configure failed.", symField.FieldName);
+                                Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any reference type or value with target bean field '{%s}', resolved field configure failed.", symField.FieldName);
                                 continue;
                             }
 

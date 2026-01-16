@@ -631,7 +631,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回类标记对象的字段列表</returns>
         public IList<SymField> GetAllFields()
         {
-            return NovaEngine.Utility.Collection.ToListForValues<string, SymField>(_fields);
+            return NovaEngine.Utility.Collection.ToListForValues(_fields);
         }
 
         /// <summary>
@@ -757,7 +757,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回类标记对象的属性列表</returns>
         public IList<SymProperty> GetAllProperties()
         {
-            return NovaEngine.Utility.Collection.ToListForValues<string, SymProperty>(_properties);
+            return NovaEngine.Utility.Collection.ToListForValues(_properties);
         }
 
         /// <summary>
@@ -868,7 +868,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回类标记对象的函数列表</returns>
         public IList<SymMethod> GetAllMethods()
         {
-            return NovaEngine.Utility.Collection.ToListForValues<string, SymMethod>(_methods);
+            return NovaEngine.Utility.Collection.ToListForValues(_methods);
         }
 
         /// <summary>
@@ -1007,7 +1007,7 @@ namespace GameEngine.Loader.Symboling
         /// <returns>返回类标记对象的Bean实例列表</returns>
         public IList<Bean> GetAllBeans()
         {
-            return NovaEngine.Utility.Collection.ToListForValues<string, Bean>(_beans);
+            return NovaEngine.Utility.Collection.ToListForValues(_beans);
         }
 
         /// <summary>

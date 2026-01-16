@@ -42,7 +42,7 @@ namespace GameEngine.Loader.Symboling
             // 不可实例化的类类型，不能进行Bean实体的构建
             if (false == symClass.IsInstantiate)
             {
-                Debugger.Warn("创建原型对象配置实例失败：因为发起的目标符号类型‘{%t}’不是一个可实例化的类型，不满足挂载原型对象配置的条件！", symClass.ClassType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "创建原型对象配置实例失败：因为发起的目标符号类型‘{%t}’不是一个可实例化的类型，不满足挂载原型对象配置的条件！", symClass.ClassType);
                 return null;
             }
 
@@ -72,7 +72,7 @@ namespace GameEngine.Loader.Symboling
                     {
                         if (list.Count > 1)
                         {
-                            Debugger.Warn("The bean info '{%s}' has multiple parent object with target type '{%t}', only chosed first bean and used it.",
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The bean info '{%s}' has multiple parent object with target type '{%t}', only chosed first bean and used it.",
                                     parentBeanInfo.Name, parentType);
                         }
                         parentBeanInfo = list[0];
@@ -110,14 +110,14 @@ namespace GameEngine.Loader.Symboling
                     Symboling.SymField symField = symClass.GetFieldByName(configureBeanFieldInfo.FieldName);
                     if (null == symField)
                     {
-                        Debugger.Error("Could not found any symbol field with target name '{%s}', please rechecked your configure bean '{%s}' and repair it.",
+                        Debugger.Error(LogGroupTag.CodeLoader, "Could not found any symbol field with target name '{%s}', please rechecked your configure bean '{%s}' and repair it.",
                                 configureBeanFieldInfo.FieldName, configureBeanInfo.Name);
                         continue;
                     }
 
                     if (bean.HasFieldByName(configureBeanFieldInfo.FieldName))
                     {
-                        Debugger.Warn("The target bean field '{%s}' was already exist within bean object '{%s}', repeat added it failed.",
+                        Debugger.Warn(LogGroupTag.CodeLoader, "The target bean field '{%s}' was already exist within bean object '{%s}', repeat added it failed.",
                                 configureBeanFieldInfo.FieldName, bean.BeanName);
                         continue;
                     }
@@ -138,7 +138,7 @@ namespace GameEngine.Loader.Symboling
                     }
                     else
                     {
-                        Debugger.Warn("The defination reference value cannot be null, setted the field symbol failed.");
+                        Debugger.Warn(LogGroupTag.CodeLoader, "The defination reference value cannot be null, setted the field symbol failed.");
                         continue;
                     }
 
@@ -165,7 +165,7 @@ namespace GameEngine.Loader.Symboling
                 }
                 else
                 {
-                    Debugger.Warn("The defination reference value cannot be null, setted the component info failed.");
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The defination reference value cannot be null, setted the component info failed.");
                     continue;
                 }
 
