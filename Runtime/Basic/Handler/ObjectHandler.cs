@@ -65,7 +65,7 @@ namespace GameEngine
         /// <summary>
         /// 句柄对象默认构造函数
         /// </summary>
-        internal ObjectHandler() : base()
+        public ObjectHandler() : base()
         {
             // 初始化对象类注册容器
             _objectClassTypes = new Dictionary<string, Type>();

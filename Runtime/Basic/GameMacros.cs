@@ -32,10 +32,10 @@ namespace GameEngine
     public static class GameMacros
     {
         /// <summary>
-        /// 调试模块的输出分组策略启动状态标识
+        /// 调试模块的输出分组过滤启动状态标识
         /// </summary>
         [DisableOnReleaseMode]
-        public static readonly bool DEBUGGING_OUTPUT_GROUP_POLICY_ENABLED = true;
+        public static readonly bool DEBUGGING_OUTPUT_GROUP_FILTERING_ENABLED = false;
 
         /// <summary>
         /// 调试模式的解析窗口的启动状态标识
@@ -54,12 +54,6 @@ namespace GameEngine
         /// </summary>
         [DisableOnReleaseMode]
         public static readonly bool EDITOR_COMPILING_CODE_HOTFIX_SUPPORTED = true;
-
-        /// <summary>
-        /// 业务导入流程的调度转发功能启动的状态标识<br/>
-        /// 注意这个标识需手动设置，确定当前项目是否需要接入业务导入流程，从而决定是否需要开启该表示
-        /// </summary>
-        // public static readonly bool GAME_IMPORT_DISPATCHING_FORWARD_ENABLED = true;
 
         #region 引擎内部使用的全局常量定义
 

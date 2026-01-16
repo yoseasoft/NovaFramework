@@ -43,13 +43,13 @@ namespace GameEngine
         public const int Bean = 11;
 
         [Debugger.LogOutputGroup]
-        public const int Module = 12;
+        public const int Module = 21;
 
         [Debugger.LogOutputGroup]
-        public const int Controller = 21;
+        public const int Controller = 22;
 
         [Debugger.LogOutputGroup]
-        public const int CodeLoader = 22;
+        public const int CodeLoader = 31;
 
         /// <summary>
         /// 用户组的分割线
@@ -72,7 +72,7 @@ namespace GameEngine
 
             public bool Enabled => _enabled;
 
-            public LogOutputGroupAttribute() : this(GameMacros.DEBUGGING_OUTPUT_GROUP_POLICY_ENABLED) { }
+            public LogOutputGroupAttribute() : this(true) { }
 
             private LogOutputGroupAttribute(bool enabled) : base()
             {

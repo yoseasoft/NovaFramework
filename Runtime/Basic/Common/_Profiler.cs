@@ -71,10 +71,13 @@ namespace GameEngine
         /// <param name="args">参数列表</param>
         public static void CallStat(int funcType, params object[] args)
         {
-            if (GameMacros.DEBUGGING_PROFILER_STAT_MODULE_ENABLED)
+            if (false == Profiler.Statistics.Statistician.IsOnStarting)
             {
-                Profiler.Statistics.Statistician.Call(funcType, args);
+                Debugger.Warn(LogGroupTag.Basic, "The profiler statistician was not starting, call this stat function '{%d}' failed.", funcType);
+                return;
             }
+
+            Profiler.Statistics.Statistician.Call(funcType, args);
         }
     }
 }

@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine.Profiler.Statistics
 {
@@ -92,6 +93,11 @@ namespace GameEngine.Profiler.Statistics
         private static IDictionary<int, Type> _statCodeTypes;
 
         /// <summary>
+        /// 获取当前统计模块启动状态标识
+        /// </summary>
+        public static bool IsOnStarting => _isOnStarting;
+
+        /// <summary>
         /// 初始化句柄对象的全部统计模块
         /// </summary>
         internal static void Startup()
@@ -110,7 +116,7 @@ namespace GameEngine.Profiler.Statistics
             foreach (KeyValuePair<int, StatCreateHandler> pair in _statCreateCallbacks)
             {
                 // 创建统计模块实例
-                object stat_module = pair.Value(pair.Key);
+                // object stat_module = pair.Value(pair.Key);
 
                 if (false == _statObjects.ContainsKey(pair.Key))
                 {
@@ -354,6 +360,7 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         /// <typeparam name="T">统计模块类型</typeparam>
         /// <returns>返回类型获取对应的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T GetStat<T>() where T : IStat
         {
             return (T) GetStat(typeof(T));
@@ -364,6 +371,7 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         /// <param name="clsType">统计模块类型</param>
         /// <returns>返回类型名称获取对应的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IStat GetStat(Type clsType)
         {
             foreach (KeyValuePair<int, IStat> pair in _statObjects)
@@ -380,6 +388,7 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         /// <param name="statType">统计模块对象类型</param>
         /// <returns>返回类型获取对应的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IStat GetStat(int statType)
         {
             if (_statObjects.ContainsKey(statType))

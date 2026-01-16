@@ -37,7 +37,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器子模块行为流程回调的缓存队列
         /// </summary>
-        private IDictionary<Type, Delegate> _cachedSubmoduleBehaviourCallbacks = null;
+        private IDictionary<Type, Delegate> _cachedSubmoduleBehaviourCallbacks;
 
         /// <summary>
         /// 控制器对象初始化通知接口函数
@@ -81,6 +81,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器对象刷新调度函数接口
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Update()
         {
             OnUpdate();
@@ -92,6 +93,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器对象后置刷新调度函数接口
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void LateUpdate()
         {
             OnLateUpdate();
@@ -103,6 +105,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器对象重载调度函数接口
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Reload()
         {
             OnReload();
@@ -114,6 +117,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器对象倾泻调度函数接口
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Dump()
         {
             OnDump();

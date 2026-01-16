@@ -335,12 +335,10 @@ namespace GameEngine
             /// <param name="message">日志内容</param>
             public void Output(NovaEngine.LogOutputLevelType level, object message)
             {
-                if (false == IsOutputEnabled())
+                if (IsOutputEnabled(level))
                 {
-                    return;
+                    NovaEngine.Debugger.Output(level, $"【{_groupName}】 {message}");
                 }
-
-                NovaEngine.Debugger.Output(level, $"【{_groupName}】 {message}");
             }
 
             /// <summary>
@@ -350,12 +348,10 @@ namespace GameEngine
             /// <param name="message">日志内容</param>
             public void Output(NovaEngine.LogOutputLevelType level, string message)
             {
-                if (false == IsOutputEnabled())
+                if (IsOutputEnabled(level))
                 {
-                    return;
+                    NovaEngine.Debugger.Output(level, $"【{_groupName}】 {message}");
                 }
-
-                NovaEngine.Debugger.Output(level, $"【{_groupName}】 {message}");
             }
 
             /// <summary>
@@ -366,26 +362,20 @@ namespace GameEngine
             /// <param name="args">日志格式化参数</param>
             public void Output(NovaEngine.LogOutputLevelType level, string format, params object[] args)
             {
-                if (false == IsOutputEnabled())
+                if (IsOutputEnabled(level))
                 {
-                    return;
+                    NovaEngine.Debugger.Output(level, $"【{_groupName}】 {format}", args);
                 }
-
-                NovaEngine.Debugger.Output(level, $"【{_groupName}】 {format}", args);
             }
 
             /// <summary>
             /// 检测当前的调试分组是否启用了指定级别的日志输出
             /// </summary>
+            /// <param name="level">日志级别</param>
             /// <returns>若启用给定级别的调试输出返回true，否则返回false</returns>
-            private bool IsOutputEnabled()
+            private bool IsOutputEnabled(NovaEngine.LogOutputLevelType level)
             {
-                if (_enabled)
-                {
-                    return true;
-                }
-
-                return false;
+                return (level > NovaEngine.LogOutputLevelType.Warning) || (_enabled && GameMacros.DEBUGGING_OUTPUT_GROUP_FILTERING_ENABLED);
             }
         }
 
