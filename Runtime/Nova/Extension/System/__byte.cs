@@ -23,6 +23,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Text;
+using System.Runtime.CompilerServices;
+
 namespace System.Customize.Extension
 {
     /// <summary>
@@ -30,6 +33,7 @@ namespace System.Customize.Extension
     /// </summary>
     public static class __byte
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToHexString(this byte self)
         {
             return self.ToString("X2");
@@ -37,7 +41,7 @@ namespace System.Customize.Extension
 
         public static string ToHexString(this byte[] self)
         {
-            Text.StringBuilder stringBuilder = new Text.StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
             foreach (byte b in self)
             {
                 stringBuilder.Append(b.ToString("X2"));
@@ -47,7 +51,7 @@ namespace System.Customize.Extension
 
         public static string ToHexString(this byte[] self, string format)
         {
-            Text.StringBuilder stringBuilder = new Text.StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
             foreach (byte b in self)
             {
                 stringBuilder.Append(b.ToString(format));
@@ -57,7 +61,7 @@ namespace System.Customize.Extension
 
         public static string ToHexString(this byte[] self, int offset, int count)
         {
-            Text.StringBuilder stringBuilder = new Text.StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
             for (int n = offset; n < offset + count; ++n)
             {
                 stringBuilder.Append(self[n].ToString("X2"));
@@ -65,24 +69,28 @@ namespace System.Customize.Extension
             return stringBuilder.ToString();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToTextString(this byte[] self)
         {
-            return Text.Encoding.Default.GetString(self);
+            return Encoding.Default.GetString(self);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToTextString(this byte[] self, int index, int count)
         {
-            return Text.Encoding.Default.GetString(self, index, count);
+            return Encoding.Default.GetString(self, index, count);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToUtf8String(this byte[] self)
         {
-            return Text.Encoding.UTF8.GetString(self);
+            return Encoding.UTF8.GetString(self);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToUtf8String(this byte[] self, int index, int count)
         {
-            return Text.Encoding.UTF8.GetString(self, index, count);
+            return Encoding.UTF8.GetString(self, index, count);
         }
 
         public static short ReadInt16(this byte[] self, int offset)

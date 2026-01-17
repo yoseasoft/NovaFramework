@@ -30,7 +30,7 @@ namespace GameEngine
     /// 消息系统基于对象分发的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    internal class MessageActivationAttribute : Attribute
+    internal sealed class MessageActivationAttribute : Attribute
     {
         public MessageActivationAttribute()
         {
@@ -41,7 +41,7 @@ namespace GameEngine
     /// 消息系统基于全局分发的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class MessageSystemAttribute : Attribute
+    public sealed class MessageSystemAttribute : Attribute
     {
         public MessageSystemAttribute()
         {

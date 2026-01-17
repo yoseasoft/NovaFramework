@@ -45,7 +45,7 @@ namespace GameEngine
         /// 切面处理服务接口注册相关函数的属性定义
         /// </summary>
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        private class OnServiceProcessRegisterOfTargetAttribute : Attribute
+        private sealed class OnServiceProcessRegisterOfTargetAttribute : Attribute
         {
             /// <summary>
             /// 匹配切面服务的目标对象类型
@@ -69,7 +69,7 @@ namespace GameEngine
             {
                 if (false == NovaEngine.Utility.Convertion.IsCorrectedEnumValue<AspectBehaviourType>((int) behaviourType))
                 {
-                    Debugger.Error("Invalid aspect behaviour type ({0}).", behaviourType.ToString());
+                    Debugger.Error("Invalid aspect behaviour type ({%i}).", behaviourType);
                     return;
                 }
 
@@ -82,11 +82,11 @@ namespace GameEngine
         /// 切面服务处理回调的管理容器
         /// </summary>
         // private static IDictionary<Type, IDictionary<string, OnAspectServiceProcessingCallHandler>> _serviceProcessCallInfos = new Dictionary<Type, IDictionary<string, OnAspectServiceProcessingCallHandler>>();
-        private static IDictionary<Type, IDictionary<string, SystemAction_object_bool>> _serviceProcessCallInfos = null;
+        private static IDictionary<Type, IDictionary<string, SystemAction_object_bool>> _serviceProcessCallInfos;
         /// <summary>
         /// 切面服务处理的启用状态标识的管理容器
         /// </summary>
-        private static IDictionary<Type, IDictionary<string, bool>> _serviceProcessCallStatus = null;
+        private static IDictionary<Type, IDictionary<string, bool>> _serviceProcessCallStatus;
 
         /// <summary>
         /// 初始化切面服务处理类声明的全部回调接口
@@ -194,8 +194,7 @@ namespace GameEngine
         /// <param name="handler">回调句柄</param>
         private static void AddServiceProcessingCallHandler(Type targetType, string methodName, SystemAction_object_bool handler)
         {
-            IDictionary<string, SystemAction_object_bool> targetServiceInfos = null;
-            if (false == _serviceProcessCallInfos.TryGetValue(targetType, out targetServiceInfos))
+            if (false == _serviceProcessCallInfos.TryGetValue(targetType, out IDictionary<string, SystemAction_object_bool> targetServiceInfos))
             {
                 targetServiceInfos = new Dictionary<string, SystemAction_object_bool>();
 
@@ -221,8 +220,7 @@ namespace GameEngine
         /// <param name="status">启用状态标识</param>
         private static void AddServiceProcessingCallStatus(Type targetType, string methodName, bool status)
         {
-            IDictionary<string, bool> targetServiceStatus = null;
-            if (false == _serviceProcessCallStatus.TryGetValue(targetType, out targetServiceStatus))
+            if (false == _serviceProcessCallStatus.TryGetValue(targetType, out IDictionary<string, bool> targetServiceStatus))
             {
                 targetServiceStatus = new Dictionary<string, bool>();
 

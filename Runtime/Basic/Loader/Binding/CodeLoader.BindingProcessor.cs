@@ -34,17 +34,17 @@ namespace GameEngine.Loader
         /// <summary>
         /// 初始化绑定处理服务类的函数句柄定义
         /// </summary>
-        public delegate void OnInitAllBindingProcessorClassesHandler();
+        private delegate void OnInitAllBindingProcessorClassesHandler();
         /// <summary>
         /// 清理绑定处理服务类的函数句柄定义
         /// </summary>
-        public delegate void OnCleanupAllBindingProcessorClassesHandler();
+        private delegate void OnCleanupAllBindingProcessorClassesHandler();
 
         /// <summary>
         /// 绑定处理器类初始化函数的属性定义
         /// </summary>
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        internal class OnBindingProcessorInitAttribute : Attribute
+        internal sealed class OnBindingProcessorInitAttribute : Attribute
         {
             public OnBindingProcessorInitAttribute() { }
         }
@@ -53,7 +53,7 @@ namespace GameEngine.Loader
         /// 绑定处理器类清理函数的属性定义
         /// </summary>
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        internal class OnBindingProcessorCleanupAttribute : Attribute
+        internal sealed class OnBindingProcessorCleanupAttribute : Attribute
         {
             public OnBindingProcessorCleanupAttribute() { }
         }
@@ -94,17 +94,17 @@ namespace GameEngine.Loader
                 Type processorType = Type.GetType(processorName);
                 if (null == processorType)
                 {
-                    Debugger.Info("Could not found any code binding processor class with target name {%s}.", processorName);
+                    Debugger.Info(LogGroupTag.CodeLoader, "Could not found any code binding processor class with target name {%s}.", processorName);
                     continue;
                 }
 
                 if (false == processorType.IsAbstract || false == processorType.IsSealed)
                 {
-                    Debugger.Warn("The code binding processor type {%s} must be static class.", processorName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The code binding processor type {%s} must be static class.", processorName);
                     continue;
                 }
 
-                // Debugger.Info("Register new code binding processor {%s} with target type {%s}.", processorName, enumName);
+                // Debugger.Info(LogGroupTag.CodeLoader, "Register new code binding processor {%s} with target type {%s}.", processorName, enumName);
 
                 AddBindingProcessorTypeImplementedClass(processorType);
             }
@@ -155,11 +155,11 @@ namespace GameEngine.Loader
                 foreach (Attribute attr in e)
                 {
                     Type attrType = attr.GetType();
-                    if (typeof(OnBindingProcessorInitAttribute).IsAssignableFrom(attrType))
+                    if (typeof(OnBindingProcessorInitAttribute) == attrType)
                     {
                         initCallback = method.CreateDelegate(typeof(OnInitAllBindingProcessorClassesHandler)) as OnInitAllBindingProcessorClassesHandler;
                     }
-                    else if (typeof(OnBindingProcessorCleanupAttribute).IsAssignableFrom(attrType))
+                    else if (typeof(OnBindingProcessorCleanupAttribute) == attrType)
                     {
                         cleanupCallback = method.CreateDelegate(typeof(OnCleanupAllBindingProcessorClassesHandler)) as OnCleanupAllBindingProcessorClassesHandler;
                     }
@@ -169,7 +169,7 @@ namespace GameEngine.Loader
             // 所有回调接口必须全部实现，该加载器才能正常使用
             if (null == initCallback || null == cleanupCallback)
             {
-                Debugger.Warn("Could not found all callbacks from the incompleted class type '{%t}', added it to loader list failed.", targetType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "Could not found all callbacks from the incompleted class type '{%t}', added it to loader list failed.", targetType);
                 return;
             }
 

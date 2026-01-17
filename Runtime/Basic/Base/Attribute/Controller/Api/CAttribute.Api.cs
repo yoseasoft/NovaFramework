@@ -31,7 +31,7 @@ namespace GameEngine
     /// 编程接口系统基于全局分发的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class ApiSystemAttribute : Attribute
+    public sealed class ApiSystemAttribute : Attribute
     {
         public ApiSystemAttribute() { }
     }

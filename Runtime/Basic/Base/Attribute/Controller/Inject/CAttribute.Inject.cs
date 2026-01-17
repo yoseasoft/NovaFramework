@@ -30,7 +30,7 @@ namespace GameEngine
     /// 目标对象的自动注入功能支持的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class InjectAttribute : Attribute
+    public sealed class InjectAttribute : Attribute
     {
         public InjectAttribute() : base() { }
     }

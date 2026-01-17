@@ -31,7 +31,7 @@ namespace GameEngine
     /// 输入系统基于对象分发的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    internal class InputActivationAttribute : Attribute
+    internal sealed class InputActivationAttribute : Attribute
     {
         public InputActivationAttribute()
         {
@@ -42,7 +42,7 @@ namespace GameEngine
     /// 输入系统基于全局分发的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class InputSystemAttribute : Attribute
+    public sealed class InputSystemAttribute : Attribute
     {
         public InputSystemAttribute()
         {

@@ -30,7 +30,7 @@ namespace GameEngine
     /// 控制器类的子模块初始化回调句柄的声明属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnControllerSubmoduleInitCallbackAttribute : Attribute
+    internal sealed class OnControllerSubmoduleInitCallbackAttribute : Attribute
     {
         public OnControllerSubmoduleInitCallbackAttribute() : base() { }
     }
@@ -39,7 +39,7 @@ namespace GameEngine
     /// 控制器类的子模块清理回调句柄的声明属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnControllerSubmoduleCleanupCallbackAttribute : Attribute
+    internal sealed class OnControllerSubmoduleCleanupCallbackAttribute : Attribute
     {
         public OnControllerSubmoduleCleanupCallbackAttribute() : base() { }
     }
@@ -48,7 +48,7 @@ namespace GameEngine
     /// 控制器类的子模块刷新回调句柄的声明属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnControllerSubmoduleUpdateCallbackAttribute : Attribute
+    internal sealed class OnControllerSubmoduleUpdateCallbackAttribute : Attribute
     {
         public OnControllerSubmoduleUpdateCallbackAttribute() : base() { }
     }
@@ -57,7 +57,7 @@ namespace GameEngine
     /// 控制器类的子模块后置刷新回调句柄的声明属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnControllerSubmoduleLateUpdateCallbackAttribute : Attribute
+    internal sealed class OnControllerSubmoduleLateUpdateCallbackAttribute : Attribute
     {
         public OnControllerSubmoduleLateUpdateCallbackAttribute() : base() { }
     }
@@ -66,7 +66,7 @@ namespace GameEngine
     /// 控制器类的子模块重载回调句柄的声明属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnControllerSubmoduleReloadCallbackAttribute : Attribute
+    internal sealed class OnControllerSubmoduleReloadCallbackAttribute : Attribute
     {
         public OnControllerSubmoduleReloadCallbackAttribute() : base() { }
     }
@@ -75,7 +75,7 @@ namespace GameEngine
     /// 控制器类的子模块倾泻回调句柄的声明属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnControllerSubmoduleDumpCallbackAttribute : Attribute
+    internal sealed class OnControllerSubmoduleDumpCallbackAttribute : Attribute
     {
         public OnControllerSubmoduleDumpCallbackAttribute() : base() { }
     }

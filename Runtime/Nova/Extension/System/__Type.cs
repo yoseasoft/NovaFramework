@@ -43,9 +43,7 @@ namespace System.Customize.Extension
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsAssignableTo(this Type self, Type type)
         {
-            if (null == type) return false;
-
-            return type.IsAssignableFrom(self);
+            return type?.IsAssignableFrom(self) ?? false;
         }
 
         /// <summary>

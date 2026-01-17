@@ -24,6 +24,9 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Customize.Extension;
+using System.Runtime.CompilerServices;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
@@ -44,13 +47,14 @@ namespace GameEngine
         /// <summary>
         /// 世界对象构建函数
         /// </summary>
+        [Preserve]
         public static void OnCreate(object controller, IReadOnlyDictionary<string, string> variables)
         {
             // 初始化环境配置
             EngineConfigure.InitGameConfig(variables);
 
             // 创建程序总控实例
-            if (typeof(UnityEngine.MonoBehaviour).IsAssignableFrom(controller.GetType()))
+            if (controller.GetType().Is<UnityEngine.MonoBehaviour>())
             {
                 NovaEngine.AppEntry.Create(controller as UnityEngine.MonoBehaviour);
             }
@@ -63,6 +67,7 @@ namespace GameEngine
         /// <summary>
         /// 世界对象销毁函数
         /// </summary>
+        [Preserve]
         private static void OnDestroy()
         {
             // 销毁程序总控实例
@@ -76,6 +81,7 @@ namespace GameEngine
         /// 世界对象重载函数
         /// </summary>
         /// <param name="commandType">类型标识</param>
+        [Preserve]
         public static void OnReload(EngineCommandType commandType)
         {
             // 重载业务层模块
@@ -85,6 +91,7 @@ namespace GameEngine
         /// <summary>
         /// 世界对象启动函数
         /// </summary>
+        [Preserve]
         private static void OnStart()
         {
             OnApplicationLaunching();
@@ -115,6 +122,7 @@ namespace GameEngine
         /// <summary>
         /// 世界对象关闭函数
         /// </summary>
+        [Preserve]
         private static void OnShutdown()
         {
             _isRunning = false;
@@ -143,6 +151,7 @@ namespace GameEngine
         /// <summary>
         /// 世界对象固定刷新函数
         /// </summary>
+        [Preserve]
         private static void OnFixedUpdate()
         {
             if (!_isRunning) return;
@@ -153,6 +162,7 @@ namespace GameEngine
         /// <summary>
         /// 世界对象刷新函数
         /// </summary>
+        [Preserve]
         private static void OnUpdate()
         {
             if (!_isRunning) return;
@@ -169,6 +179,7 @@ namespace GameEngine
         /// <summary>
         /// 世界对象延迟刷新函数
         /// </summary>
+        [Preserve]
         private static void OnLateUpdate()
         {
             if (!_isRunning) return;
@@ -292,21 +303,29 @@ namespace GameEngine
 
         #endregion
 
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void OnApplicationFocus(bool focus)
         {
             NovaEngine.CFrameworkController.OnApplicationFocus(focus);
         }
 
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void OnApplicationPause(bool pause)
         {
             NovaEngine.CFrameworkController.OnApplicationPause(pause);
         }
 
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void OnApplicationLaunching()
         {
             NovaEngine.CFrameworkController.OnApplicationLaunching();
         }
 
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void OnApplicationQuit()
         {
             // 引擎实例关闭

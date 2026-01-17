@@ -64,7 +64,7 @@ namespace GameEngine.Loader
         /// 通用类初始化函数的属性定义
         /// </summary>
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        internal class OnGeneralCodeLoaderInitAttribute : Attribute
+        internal sealed class OnGeneralCodeLoaderInitAttribute : Attribute
         {
             public OnGeneralCodeLoaderInitAttribute() { }
         }
@@ -73,7 +73,7 @@ namespace GameEngine.Loader
         /// 通用类清理函数的属性定义
         /// </summary>
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        internal class OnGeneralCodeLoaderCleanupAttribute : Attribute
+        internal sealed class OnGeneralCodeLoaderCleanupAttribute : Attribute
         {
             public OnGeneralCodeLoaderCleanupAttribute() { }
         }
@@ -82,7 +82,7 @@ namespace GameEngine.Loader
         /// 通用类匹配函数的属性定义
         /// </summary>
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        internal class OnGeneralCodeLoaderMatchAttribute : Attribute
+        internal sealed class OnGeneralCodeLoaderMatchAttribute : Attribute
         {
             public OnGeneralCodeLoaderMatchAttribute() { }
         }
@@ -91,7 +91,7 @@ namespace GameEngine.Loader
         /// 通用类加载函数的属性定义
         /// </summary>
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        internal class OnGeneralCodeLoaderLoadAttribute : Attribute
+        internal sealed class OnGeneralCodeLoaderLoadAttribute : Attribute
         {
             public OnGeneralCodeLoaderLoadAttribute() { }
         }
@@ -100,7 +100,7 @@ namespace GameEngine.Loader
         /// 通用类结构信息查找函数的属性定义
         /// </summary>
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        internal class OnGeneralCodeLoaderLookupAttribute : Attribute
+        internal sealed class OnGeneralCodeLoaderLookupAttribute : Attribute
         {
             public OnGeneralCodeLoaderLookupAttribute() { }
         }
@@ -183,17 +183,17 @@ namespace GameEngine.Loader
                 Type loaderType = Type.GetType(loaderName);
                 if (null == loaderType)
                 {
-                    Debugger.Info("Could not found any code loader class with target name {%s}.", loaderName);
+                    Debugger.Info(LogGroupTag.CodeLoader, "Could not found any code loader class with target name {%s}.", loaderName);
                     continue;
                 }
 
                 if (false == loaderType.IsAbstract || false == loaderType.IsSealed)
                 {
-                    Debugger.Warn("The code loader type {%s} must be static class.", loaderName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The code loader type {%s} must be static class.", loaderName);
                     continue;
                 }
 
-                // Debugger.Info("Register new code loader {%s} with target type {%s}.", loaderName, enumName);
+                // Debugger.Info(LogGroupTag.CodeLoader, "Register new code loader {%s} with target type {%s}.", loaderName, enumName);
 
                 AddGeneralTypeImplementedClass(loaderType);
             }
@@ -308,23 +308,23 @@ namespace GameEngine.Loader
                 foreach (Attribute attr in e)
                 {
                     Type attrType = attr.GetType();
-                    if (typeof(OnGeneralCodeLoaderInitAttribute).IsAssignableFrom(attrType))
+                    if (typeof(OnGeneralCodeLoaderInitAttribute) == attrType)
                     {
                         initCallback = method.CreateDelegate(typeof(OnInitAllGeneralCodeLoaderHandler)) as OnInitAllGeneralCodeLoaderHandler;
                     }
-                    else if (typeof(OnGeneralCodeLoaderCleanupAttribute).IsAssignableFrom(attrType))
+                    else if (typeof(OnGeneralCodeLoaderCleanupAttribute) == attrType)
                     {
                         cleanupCallback = method.CreateDelegate(typeof(OnCleanupAllGeneralCodeLoaderHandler)) as OnCleanupAllGeneralCodeLoaderHandler;
                     }
-                    else if (typeof(OnGeneralCodeLoaderMatchAttribute).IsAssignableFrom(attrType))
+                    else if (typeof(OnGeneralCodeLoaderMatchAttribute) == attrType)
                     {
                         matchCallback = method.CreateDelegate(typeof(OnGeneralCodeLoaderMatchHandler)) as OnGeneralCodeLoaderMatchHandler;
                     }
-                    else if (typeof(OnGeneralCodeLoaderLoadAttribute).IsAssignableFrom(attrType))
+                    else if (typeof(OnGeneralCodeLoaderLoadAttribute) == attrType)
                     {
                         loadCallback = method.CreateDelegate(typeof(OnGeneralCodeLoaderLoadHandler)) as OnGeneralCodeLoaderLoadHandler;
                     }
-                    else if (typeof(OnGeneralCodeLoaderLookupAttribute).IsAssignableFrom(attrType))
+                    else if (typeof(OnGeneralCodeLoaderLookupAttribute) == attrType)
                     {
                         lookupCallback = method.CreateDelegate(typeof(OnGeneralCodeLoaderLookupHandler)) as OnGeneralCodeLoaderLookupHandler;
                     }
@@ -338,7 +338,7 @@ namespace GameEngine.Loader
                 null == loadCallback ||
                 null == lookupCallback)
             {
-                Debugger.Warn("Could not found all callbacks from the incompleted class type '{%t}', added it to loader list failed.", targetType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "Could not found all callbacks from the incompleted class type '{%t}', added it to loader list failed.", targetType);
                 return;
             }
 

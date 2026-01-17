@@ -30,7 +30,7 @@ namespace GameEngine
     /// 代码加载类的加载函数的属性定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnCodeLoaderClassLoadOfTargetAttribute : Attribute
+    internal sealed class OnCodeLoaderClassLoadOfTargetAttribute : Attribute
     {
         private readonly Type _classType;
 
@@ -46,7 +46,7 @@ namespace GameEngine
     /// 代码加载类的清理函数的属性定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnCodeLoaderClassCleanupOfTargetAttribute : Attribute
+    internal sealed class OnCodeLoaderClassCleanupOfTargetAttribute : Attribute
     {
         private readonly Type _classType;
 
@@ -62,7 +62,7 @@ namespace GameEngine
     /// 代码加载类的结构信息查找函数的属性定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnCodeLoaderClassLookupOfTargetAttribute : Attribute
+    internal sealed class OnCodeLoaderClassLookupOfTargetAttribute : Attribute
     {
         private readonly Type _classType;
 

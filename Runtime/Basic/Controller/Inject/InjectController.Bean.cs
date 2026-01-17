@@ -23,6 +23,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
@@ -36,6 +37,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <returns>返回对应的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T GetBean<T>() where T : CBean
         {
             return GetBean(typeof(T)) as T;
@@ -78,20 +80,20 @@ namespace GameEngine
             Loader.Symboling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
             if (null == bean)
             {
-                Debugger.Warn("Could not found any bean class with target name '{%s}' from loader, created bean object instance failed.", beanName);
+                Debugger.Warn(LogGroupTag.Controller, "Could not found any bean class with target name '{%s}' from loader, created bean object instance failed.", beanName);
                 return null;
             }
 
             if (false == bean.Singleton)
             {
-                Debugger.Warn("The target bean '{%s}' was multiple mode, please used 'CreateBean' method to build bean instance.", beanName);
+                Debugger.Warn(LogGroupTag.Controller, "The target bean '{%s}' was multiple mode, please used 'CreateBean' method to build bean instance.", beanName);
                 return null;
             }
 
             obj = CreateBeanInstance(bean);
             if (null == obj)
             {
-                Debugger.Warn("Failed to create singleton bean instance with target name '{%s}', please checked the bean configure was correct.", beanName);
+                Debugger.Warn(LogGroupTag.Controller, "Failed to create singleton bean instance with target name '{%s}', please checked the bean configure was correct.", beanName);
                 return null;
             }
 
@@ -108,6 +110,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <returns>返回对应的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T CreateBean<T>() where T : CBase
         {
             return CreateBean(typeof(T)) as T;
@@ -144,20 +147,20 @@ namespace GameEngine
             Loader.Symboling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
             if (null == bean)
             {
-                Debugger.Warn("Could not found any bean class with target name '{%s}' from loader, created bean object instance failed.", beanName);
+                Debugger.Warn(LogGroupTag.Controller, "Could not found any bean class with target name '{%s}' from loader, created bean object instance failed.", beanName);
                 return null;
             }
 
             if (bean.Singleton)
             {
-                Debugger.Warn("The target bean '{%s}' was singleton mode, please used 'GetBean' method to build bean instance.", beanName);
+                Debugger.Warn(LogGroupTag.Controller, "The target bean '{%s}' was singleton mode, please used 'GetBean' method to build bean instance.", beanName);
                 return null;
             }
 
             CBean obj = CreateBeanInstance(bean);
             if (null == obj)
             {
-                Debugger.Warn("Failed to create multiple bean instance with target name '{%s}', please checked the bean configure was correct.", beanName);
+                Debugger.Warn(LogGroupTag.Controller, "Failed to create multiple bean instance with target name '{%s}', please checked the bean configure was correct.", beanName);
                 return null;
             }
 
@@ -176,14 +179,14 @@ namespace GameEngine
             string beanName = bean.BeanName;
             if (string.IsNullOrEmpty(beanName))
             {
-                Debugger.Warn("The target bean name must be non-null, released it failed.");
+                Debugger.Warn(LogGroupTag.Controller, "The target bean name must be non-null, released it failed.");
                 return;
             }
 
             Loader.Symboling.Bean beanClass = Loader.CodeLoader.GetBeanClassByName(beanName);
             if (null == beanClass)
             {
-                Debugger.Warn("Could not found any bean class with target name '{%s}' from loader, created bean object instance failed.", beanName);
+                Debugger.Warn(LogGroupTag.Controller, "Could not found any bean class with target name '{%s}' from loader, created bean object instance failed.", beanName);
                 return;
             }
 
@@ -208,12 +211,13 @@ namespace GameEngine
         /// </summary>
         /// <param name="beanName">实体名称</param>
         /// <returns>返回新创建的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private CBean CreateBeanInstance(string beanName)
         {
             Loader.Symboling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
             if (null == bean)
             {
-                Debugger.Warn("Could not found any bean class struct with target name '{%s}', create bean instance failed.", beanName);
+                Debugger.Warn(LogGroupTag.Controller, "Could not found any bean class struct with target name '{%s}', create bean instance failed.", beanName);
                 return null;
             }
 
@@ -225,12 +229,13 @@ namespace GameEngine
         /// </summary>
         /// <param name="classType">对象类型</param>
         /// <returns>返回新创建的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private CBean CreateBeanInstance(Type classType)
         {
             Loader.Symboling.SymClass symClass = Loader.CodeLoader.GetSymClassByType(classType);
             if (null == symClass)
             {
-                Debugger.Warn("Could not found any bean class struct with target type '{%t}', create bean instance failed.", classType);
+                Debugger.Warn(LogGroupTag.Controller, "Could not found any bean class struct with target type '{%t}', create bean instance failed.", classType);
                 return null;
             }
 
@@ -242,6 +247,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="bean">实体信息</param>
         /// <returns>返回新创建的实体对象实例，若创建失败返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private CBean CreateBeanInstance(Loader.Symboling.Bean bean)
         {
             return InjectBeanService.CreateBeanInstance(bean);
@@ -251,6 +257,7 @@ namespace GameEngine
         /// 释放指定的对象实例
         /// </summary>
         /// <param name="bean">对象实例</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void ReleaseBeanInstance(CBean bean)
         {
             InjectBeanService.ReleaseBeanInstance(bean);

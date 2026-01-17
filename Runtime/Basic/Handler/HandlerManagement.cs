@@ -25,6 +25,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
@@ -41,15 +43,15 @@ namespace GameEngine
         /// <summary>
         /// 句柄定义类型的管理容器
         /// </summary>
-        private static IList<Type> _handlerDeclaringTypes = null;
+        private static IList<Type> _handlerDeclaringTypes;
         /// <summary>
         /// 句柄对象类型的管理容器
         /// </summary>
-        private static IDictionary<int, Type> _handlerClassTypes = null;
+        private static IDictionary<int, Type> _handlerClassTypes;
         /// <summary>
         /// 句柄对象实例的管理容器
         /// </summary>
-        private static IDictionary<int, IHandler> _handlerRegisterObjects = null;
+        private static IDictionary<int, IHandler> _handlerRegisterObjects;
         /// <summary>
         /// 句柄对象实例的排序容器
         /// <br/>
@@ -57,7 +59,7 @@ namespace GameEngine
         /// 将<b>LinkedList</b>类型修改为数组类型
         /// </summary>
         // private static LinkedList<IHandler> _handlerSortingList = null;
-        private static IHandler[] _handlerSortingArray = null;
+        private static IHandler[] _handlerSortingArray;
 
         /// <summary>
         /// 句柄管理器启动状态标识
@@ -112,21 +114,20 @@ namespace GameEngine
                     continue;
                 }
 
-                if (false == typeof(IHandler).IsAssignableFrom(handlerType))
+                if (false == handlerType.Is<IHandler>())
                 {
                     Debugger.Warn(LogGroupTag.Module, "The handler type {%s} must be inherited from 'IHandler' interface.", handlerName);
                     continue;
                 }
 
                 // 创建并初始化实例
-                IHandler handler = Activator.CreateInstance(handlerType) as IHandler;
-                if (null == handler || false == handler.Initialize())
+                if (Activator.CreateInstance(handlerType) is not IHandler handler || false == handler.Initialize())
                 {
                     Debugger.Error(LogGroupTag.Module, "The handler type {%s} create or init failed.", handlerName);
                     continue;
                 }
 
-                (handler as BaseHandler).HandlerType = Convert.ToInt32(enumValue);
+                handler.As<BaseHandler>().HandlerType = Convert.ToInt32(enumValue);
 
                 // Debugger.Info(LogGroupTag.Module, "Register new handler {%s} to target class type {%i}.", handlerName, handler.HandlerType);
 
@@ -230,52 +231,52 @@ namespace GameEngine
         /// <summary>
         /// 句柄管理器执行操作函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Execute()
         {
             // foreach (IHandler handler in _handlerSortingList)
             for (int n = 0; n < _handlerSortingArray.Length; ++n)
             {
-                IHandler handler = _handlerSortingArray[n];
-                handler.Execute();
+                _handlerSortingArray[n].Execute();
             }
         }
 
         /// <summary>
         /// 句柄管理器后置执行操作函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void LateExecute()
         {
             // foreach (IHandler handler in _handlerSortingList)
             for (int n = 0; n < _handlerSortingArray.Length; ++n)
             {
-                IHandler handler = _handlerSortingArray[n];
-                handler.LateExecute();
+                _handlerSortingArray[n].LateExecute();
             }
         }
 
         /// <summary>
         /// 句柄管理器刷新操作函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Update()
         {
             // foreach (IHandler handler in _handlerSortingList)
             for (int n = 0; n < _handlerSortingArray.Length; ++n)
             {
-                IHandler handler = _handlerSortingArray[n];
-                handler.Update();
+                _handlerSortingArray[n].Update();
             }
         }
 
         /// <summary>
         /// 句柄管理器后置刷新操作函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void LateUpdate()
         {
             // foreach (IHandler handler in _handlerSortingList)
             for (int n = 0; n < _handlerSortingArray.Length; ++n)
             {
-                IHandler handler = _handlerSortingArray[n];
-                handler.LateUpdate();
+                _handlerSortingArray[n].LateUpdate();
             }
         }
 
@@ -354,8 +355,7 @@ namespace GameEngine
         /// <returns>返回给定标识对应的句柄类型，若不存在则返回null</returns>
         internal static Type GetHandlerType(int handlerType)
         {
-            Type classType = null;
-            if (false == _handlerClassTypes.TryGetValue(handlerType, out classType))
+            if (false == _handlerClassTypes.TryGetValue(handlerType, out Type classType))
             {
                 return null;
             }
@@ -370,8 +370,7 @@ namespace GameEngine
         /// <returns>返回句柄对象实例，若查找失败则返回null</returns>
         public static IHandler GetHandler(int handlerType)
         {
-            IHandler handler = null;
-            if (false == _handlerRegisterObjects.TryGetValue(handlerType, out handler))
+            if (false == _handlerRegisterObjects.TryGetValue(handlerType, out IHandler handler))
             {
                 return null;
             }
@@ -394,7 +393,7 @@ namespace GameEngine
                     return (T) pair.Value;
             }
 
-            return default(T);
+            return default;
         }
 
         /// <summary>

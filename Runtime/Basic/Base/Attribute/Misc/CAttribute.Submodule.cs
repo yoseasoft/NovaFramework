@@ -31,7 +31,7 @@ namespace GameEngine
     /// 对象类的子模块初始化回调接口的声明属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnClassSubmoduleInitializeCallbackAttribute : Attribute
+    internal sealed class OnClassSubmoduleInitializeCallbackAttribute : Attribute
     {
         public OnClassSubmoduleInitializeCallbackAttribute() : base() { }
     }
@@ -40,7 +40,7 @@ namespace GameEngine
     /// 对象类的子模块清理回调接口的声明属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnClassSubmoduleCleanupCallbackAttribute : Attribute
+    internal sealed class OnClassSubmoduleCleanupCallbackAttribute : Attribute
     {
         public OnClassSubmoduleCleanupCallbackAttribute() : base() { }
     }

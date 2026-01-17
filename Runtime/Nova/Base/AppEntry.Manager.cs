@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -67,7 +68,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool HasManager<T>() where T : IManager
         {
-            Type managerType = GetActualUsageMamagerType(typeof(T));
+            Type managerType = GetActualUsageManagerType(typeof(T));
 
             return HasManager(managerType);
         }
@@ -119,7 +120,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T CreateManager<T>() where T : class
         {
-            Type managerType = GetActualUsageMamagerType(typeof(T));
+            Type managerType = GetActualUsageManagerType(typeof(T));
 
             return CreateManager(managerType) as T;
         }
@@ -137,16 +138,15 @@ namespace NovaEngine
                 if (v.GetType() == managerType) { return v; }
             }
 
-            IManager manager = Activator.CreateInstance(managerType) as IManager;
-            if (null == manager)
+            if (Activator.CreateInstance(managerType) is not IManager manager)
             {
                 throw new CFrameworkException("Cannot create manager '{%t}'.", managerType);
             }
 
             // 管理器实例初始化
-            if (typeof(IInitializable).IsAssignableFrom(manager.GetType()))
+            if (manager.GetType().Is<IInitializable>())
             {
-                (manager as IInitializable).Initialize();
+                manager.As<IInitializable>().Initialize();
             }
 
             // 按优先级排序
@@ -186,12 +186,12 @@ namespace NovaEngine
 
             foreach (IManager manager in _frameworkManagers)
             {
-                if (typeof(IExecutable).IsAssignableFrom(manager.GetType()) && false == IsExpiredManager(manager))
+                if (manager.GetType().Is<IExecutable>() && false == IsExpiredManager(manager))
                 {
                     _executedManagers.AddLast(manager as IExecutable);
                 }
 
-                if (typeof(IUpdatable).IsAssignableFrom(manager.GetType()) && false == IsExpiredManager(manager))
+                if (manager.GetType().Is<IUpdatable>() && false == IsExpiredManager(manager))
                 {
                     _updatedManagers.AddLast(manager as IUpdatable);
                 }
@@ -205,7 +205,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RemoveManager<T>()
         {
-            Type managerType = GetActualUsageMamagerType(typeof(T));
+            Type managerType = GetActualUsageManagerType(typeof(T));
 
             RemoveManager(managerType);
         }
@@ -306,9 +306,9 @@ namespace NovaEngine
         private static void DestroyManager(IManager manager)
         {
             // 清理管理器实例
-            if (typeof(IInitializable).IsAssignableFrom(manager.GetType()))
+            if (manager.GetType().Is<IInitializable>())
             {
-                (manager as IInitializable).Cleanup();
+                manager.As<IInitializable>().Cleanup();
             }
         }
 
@@ -420,7 +420,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="managerType">模块类型</param>
         /// <returns>返回真实应用的模块类型</returns>
-        private static Type GetActualUsageMamagerType(Type managerType)
+        private static Type GetActualUsageManagerType(Type managerType)
         {
             Type actualType = managerType;
             if (actualType.IsInterface)

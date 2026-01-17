@@ -70,37 +70,44 @@ namespace GameEngine
         /// <summary>
         /// 程序固定执行事件转发通知函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void OnDispatchingFixedExecute() { OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.FixedExecute); }
 
         /// <summary>
         /// 程序执行事件转发通知函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void OnDispatchingExecute() { OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.Execute); }
 
         /// <summary>
         /// 程序后置执行事件转发通知函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void OnDispatchingLateExecute() { OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.LateExecute); }
 
         /// <summary>
         /// 程序固定刷新事件转发通知函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void OnDispatchingFixedUpdate() { OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.FixedUpdate); }
 
         /// <summary>
         /// 程序刷新事件转发通知函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void OnDispatchingUpdate() { OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.Update); }
 
         /// <summary>
         /// 程序后置刷新事件转发通知函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void OnDispatchingLateUpdate() { OnApplicationResponseCallback(NovaEngine.Application.ProtocolType.LateUpdate); }
 
         /// <summary>
         /// 关于定时调度事件的转发通知函数
         /// </summary>
         /// <param name="protocolType"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void OnDispatchingForTimeScheduled(NovaEngine.Application.ProtocolType protocolType)
         {
             OnApplicationResponseCallback(protocolType);

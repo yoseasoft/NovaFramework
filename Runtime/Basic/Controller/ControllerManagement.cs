@@ -25,7 +25,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
@@ -87,7 +89,7 @@ namespace GameEngine
                     continue;
                 }
 
-                if (false == typeof(IController).IsAssignableFrom(controllerType))
+                if (false == controllerType.Is<IController>())
                 {
                     Debugger.Warn("The controller type {%s} must be inherited from 'IController' interface.", controllerName);
                     continue;
@@ -153,6 +155,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器管理类执行通知接口函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Execute()
         {
         }
@@ -160,6 +163,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器管理类后置执行通知接口函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void LateExecute()
         {
         }
@@ -167,6 +171,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器管理类刷新通知接口函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Update()
         {
             foreach (KeyValuePair<int, IController> pair in _controllerObjects)
@@ -178,6 +183,7 @@ namespace GameEngine
         /// <summary>
         /// 控制器管理类后置刷新通知接口函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void LateUpdate()
         {
             foreach (KeyValuePair<int, IController> pair in _controllerObjects)

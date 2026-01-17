@@ -195,7 +195,7 @@ namespace GameEngine.Loader
             {
                 if (false == _beanClassMaps.TryGetValue(k, out Symboling.Bean bean))
                 {
-                    Debugger.Warn(LogGroupTag.CodeLoader, "无法查找到与指定名字‘{%s}’对应的Bean对象实例！", k);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any bean object instance with target name '{%s}', removed it failed.", k);
                     continue;
                 }
 

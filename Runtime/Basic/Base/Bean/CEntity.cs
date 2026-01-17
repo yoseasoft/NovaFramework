@@ -1268,8 +1268,7 @@ namespace GameEngine
         /// </summary>
         public void RemoveAllComponents()
         {
-            List<string> keys = new List<string>();
-            keys.AddRange(_components.Keys);
+            IList<string> keys = new List<string>(_components.Keys);
 
             for (int n = keys.Count - 1; n >= 0; --n)
             {
