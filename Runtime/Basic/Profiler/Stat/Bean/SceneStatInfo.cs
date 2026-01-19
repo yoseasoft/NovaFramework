@@ -29,16 +29,10 @@ namespace GameEngine.Profiler.Statistics
     /// <summary>
     /// 场景模块统计项对象类，对场景模块访问记录进行单项统计的数据单元
     /// </summary>
-    public sealed class SceneStatInfo : StatInfo
+    public sealed class SceneStatInfo : EntityStatInfo
     {
-        /// <summary>
-        /// 场景名称
-        /// </summary>
-        public string SceneName { get; private set; }
-
-        internal SceneStatInfo(int uid, string sceneName) : base(uid)
+        internal SceneStatInfo(CScene scene) : base(scene)
         {
-            this.SceneName = sceneName;
         }
     }
 }

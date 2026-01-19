@@ -45,7 +45,7 @@ namespace GameEngine.Profiler.Debugging
 
                 int statType;
                 string statName = string.Empty;
-                IList<Statistics.StatInfo> infos = null;
+                IReadOnlyList<Statistics.StatInfo> infos = null;
                 if (null != stat)
                 {
                     statType = stat.StatType;

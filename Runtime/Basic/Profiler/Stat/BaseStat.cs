@@ -67,12 +67,9 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         /// <returns>返回所有的操作访问统计信息</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IList<StatInfo> GetAllStatInfos()
+        public IReadOnlyList<StatInfo> GetAllStatInfos()
         {
-            List<StatInfo> results = new List<StatInfo>();
-            results.AddRange(TryGetAllValues());
-
-            return results;
+            return TryGetAllValues();
         }
     }
 }

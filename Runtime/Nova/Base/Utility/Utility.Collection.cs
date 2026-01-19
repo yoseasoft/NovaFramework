@@ -166,6 +166,18 @@ namespace NovaEngine
             }
 
             /// <summary>
+            /// 集合类型数据转换为列表类型数据的接口函数
+            /// </summary>
+            /// <typeparam name="T">数据类型</typeparam>
+            /// <param name="source">集合数据容器</param>
+            /// <returns>返回转换后的列表类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static IReadOnlyList<T> ToReadOnlyList<T>(ICollection<T> source)
+            {
+                return source?.ToList<T>().AsReadOnly();
+            }
+
+            /// <summary>
             /// 通过字典类型数据的键信息转换为列表类型数据的接口函数
             /// </summary>
             /// <typeparam name="K">字典的键类型</typeparam>
@@ -186,9 +198,35 @@ namespace NovaEngine
             /// <param name="dictionary">字典数据容器</param>
             /// <returns>返回转换后的列表类型数据容器</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static IReadOnlyList<K> ToReadOnlyListForKeys<K, V>(IDictionary<K, V> dictionary)
+            {
+                return dictionary?.Keys.ToList<K>().AsReadOnly();
+            }
+
+            /// <summary>
+            /// 通过字典类型数据的键信息转换为列表类型数据的接口函数
+            /// </summary>
+            /// <typeparam name="K">字典的键类型</typeparam>
+            /// <typeparam name="V">字典的值类型</typeparam>
+            /// <param name="dictionary">字典数据容器</param>
+            /// <returns>返回转换后的列表类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static IList<K> ToListForKeys<K, V>(IReadOnlyDictionary<K, V> dictionary)
             {
                 return dictionary?.Keys.ToList<K>();
+            }
+
+            /// <summary>
+            /// 通过字典类型数据的键信息转换为列表类型数据的接口函数
+            /// </summary>
+            /// <typeparam name="K">字典的键类型</typeparam>
+            /// <typeparam name="V">字典的值类型</typeparam>
+            /// <param name="dictionary">字典数据容器</param>
+            /// <returns>返回转换后的列表类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static IReadOnlyList<K> ToReadOnlyListForKeys<K, V>(IReadOnlyDictionary<K, V> dictionary)
+            {
+                return dictionary?.Keys.ToList<K>().AsReadOnly();
             }
 
             /// <summary>
@@ -205,6 +243,19 @@ namespace NovaEngine
             }
 
             /// <summary>
+            /// 通过字典类型数据的值信息转换为列表类型数据的接口函数
+            /// </summary>
+            /// <typeparam name="K">字典的键类型</typeparam>
+            /// <typeparam name="V">字典的值类型</typeparam>
+            /// <param name="dictionary">字典数据容器</param>
+            /// <returns>返回转换后的列表类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static IReadOnlyList<V> ToReadOnlyListForValues<K, V>(IDictionary<K, V> dictionary)
+            {
+                return dictionary?.Values.ToList<V>().AsReadOnly();
+            }
+
+            /// <summary>
             /// 集合类型数据进行类型转换后再重构为列表类型数据的接口函数
             /// </summary>
             /// <typeparam name="SourceType">源数据类型</typeparam>
@@ -215,6 +266,19 @@ namespace NovaEngine
             public static IList<TargetType> CastAndToList<SourceType, TargetType>(ICollection<SourceType> source)
             {
                 return source?.Cast<TargetType>().ToList();
+            }
+
+            /// <summary>
+            /// 集合类型数据进行类型转换后再重构为列表类型数据的接口函数
+            /// </summary>
+            /// <typeparam name="SourceType">源数据类型</typeparam>
+            /// <typeparam name="TargetType">目标数据类型</typeparam>
+            /// <param name="source">集合数据容器</param>
+            /// <returns>返回转换后的列表类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static IReadOnlyList<TargetType> CastAndToReadOnlyList<SourceType, TargetType>(ICollection<SourceType> source)
+            {
+                return source?.Cast<TargetType>().ToList().AsReadOnly();
             }
 
             #endregion

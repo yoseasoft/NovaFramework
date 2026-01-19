@@ -30,7 +30,7 @@ namespace GameEngine
     /// 网络消息类型注册函数的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnNetworkMessageRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
+    internal sealed class OnNetworkMessageRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
     {
         public OnNetworkMessageRegisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }
@@ -39,7 +39,7 @@ namespace GameEngine
     /// 网络消息类型注销函数的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnNetworkMessageUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
+    internal sealed class OnNetworkMessageUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
     {
         public OnNetworkMessageUnregisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }

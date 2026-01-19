@@ -24,6 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using UnityEngine.Scripting;
+
 namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
@@ -32,13 +34,15 @@ namespace GameEngine.Profiler.Statistics
     internal sealed class ActorStat : BaseStat<ActorStat, ActorStatInfo>
     {
         [IStat.OnStatFunctionRegister(StatCode.ActorCreate)]
+        [Preserve]
         private void OnActorCreate(CActor obj)
         {
-            ActorStatInfo info = new ActorStatInfo(obj.BeanId, obj.DeclareClassName);
+            ActorStatInfo info = new ActorStatInfo(obj);
             TryAddValue(info);
         }
 
         [IStat.OnStatFunctionRegister(StatCode.ActorRelease)]
+        [Preserve]
         private void OnActorRelease(CActor obj)
         {
             TryCloseValue(obj.BeanId);

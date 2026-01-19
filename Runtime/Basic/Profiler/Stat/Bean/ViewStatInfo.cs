@@ -29,16 +29,10 @@ namespace GameEngine.Profiler.Statistics
     /// <summary>
     /// 视图模块统计项对象类，对视图模块访问记录进行单项统计的数据单元
     /// </summary>
-    public sealed class ViewStatInfo : StatInfo
+    public sealed class ViewStatInfo : EntityStatInfo
     {
-        /// <summary>
-        /// 视图名称
-        /// </summary>
-        public string ViewName { get; private set; }
-
-        internal ViewStatInfo(int uid, string viewName) : base(uid)
+        internal ViewStatInfo(CView view) : base(view)
         {
-            this.ViewName = viewName;
         }
     }
 }

@@ -24,6 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using UnityEngine.Scripting;
+
 namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
@@ -32,13 +34,15 @@ namespace GameEngine.Profiler.Statistics
     internal sealed class ViewStat : BaseStat<ViewStat, ViewStatInfo>
     {
         [IStat.OnStatFunctionRegister(StatCode.ViewCreate)]
+        [Preserve]
         private void OnViewCreate(CView view)
         {
-            ViewStatInfo info = new ViewStatInfo(view.BeanId, view.DeclareClassName);
+            ViewStatInfo info = new ViewStatInfo(view);
             TryAddValue(info);
         }
 
         [IStat.OnStatFunctionRegister(StatCode.ViewClose)]
+        [Preserve]
         private void OnViewClose(CView view)
         {
             TryCloseValue(view.BeanId);

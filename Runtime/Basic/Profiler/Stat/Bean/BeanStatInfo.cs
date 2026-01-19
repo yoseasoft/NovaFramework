@@ -1,7 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
+/// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +24,41 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System;
-
-namespace GameEngine
+namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
-    /// 事件分发类型注册函数的属性类型定义
+    /// Bean模块统计项对象类，对Bean对象实例的访问记录进行单项统计的数据单元
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal sealed class OnEventCallRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
+    public abstract class BeanStatInfo : StatInfo
     {
-        public OnEventCallRegisterClassOfTargetAttribute(Type classType) : base(classType) { }
-    }
+        /// <summary>
+        /// 类型名称
+        /// </summary>
+        private readonly string _className;
+        /// <summary>
+        /// Bean名称
+        /// </summary>
+        private readonly string _beanName;
 
-    /// <summary>
-    /// 事件分发类型注销函数的属性类型定义
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal sealed class OnEventCallUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
-    {
-        public OnEventCallUnregisterClassOfTargetAttribute(Type classType) : base(classType) { }
+        /// <summary>
+        /// 获取Bean唯一标识
+        /// </summary>
+        public int BeanId => Uid;
+
+        /// <summary>
+        /// 获取类型名称
+        /// </summary>
+        public string ClassName => _className;
+
+        /// <summary>
+        /// 获取Bean名称
+        /// </summary>
+        public string BeanName => _beanName;
+
+        protected BeanStatInfo(int uid, string className, string beanName) : base(uid)
+        {
+            _className = className;
+            _beanName = beanName;
+        }
     }
 }

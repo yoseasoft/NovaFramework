@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine.Profiler.Statistics
 {
@@ -248,7 +249,7 @@ namespace GameEngine.Profiler.Statistics
             MethodInfo method = this.GetType().GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             if (null == method)
             {
-                Debugger.Error("Could not found any method info with name '{%s}' in current class '{%t}', register that method info failed.", methodName, this);
+                Debugger.Error(LogGroupTag.Profiler, "Could not found any method info with name '{%s}' in current class '{%t}', register that method info failed.", methodName, this);
                 return;
             }
 
@@ -266,7 +267,7 @@ namespace GameEngine.Profiler.Statistics
 
             if (_regStatMethodTypes.ContainsKey(funcType))
             {
-                Debugger.Warn("The stat method type '{%d}' was already register, repeat do it will be override old value.", funcType);
+                Debugger.Warn(LogGroupTag.Profiler, "The stat method type '{%d}' was already register, repeat do it will be override old value.", funcType);
                 _regStatMethodTypes.Remove(funcType);
             }
 
@@ -288,7 +289,7 @@ namespace GameEngine.Profiler.Statistics
         /// <returns>返回所有统计函数的编码清单</returns>
         private IList<int> GetAllStatMethodTypes()
         {
-            return NovaEngine.Utility.Collection.ToList<int>(_regStatMethodTypes.Keys);
+            return NovaEngine.Utility.Collection.ToList(_regStatMethodTypes.Keys);
         }
 
         #endregion
@@ -302,10 +303,9 @@ namespace GameEngine.Profiler.Statistics
         {
             // if (!IsActivated()) return;
 
-            MethodInfo method = null;
-            if (false == (StatSingleton<TObject, TRecord>._instance as StatSingleton<TObject, TRecord>)._regStatMethodTypes.TryGetValue(funcType, out method))
+            if (false == (StatSingleton<TObject, TRecord>._instance as StatSingleton<TObject, TRecord>)._regStatMethodTypes.TryGetValue(funcType, out MethodInfo method))
             {
-                Debugger.Warn("Could not found any register stat method with type '{%d}', invoke it failed.", funcType);
+                Debugger.Warn(LogGroupTag.Profiler, "Could not found any register stat method with type '{%d}', invoke it failed.", funcType);
                 return;
             }
 
@@ -364,9 +364,10 @@ namespace GameEngine.Profiler.Statistics
         /// 获取当前统计信息对象列表
         /// </summary>
         /// <returns>返回当前统计信息对象列表</returns>
-        protected IList<TRecord> TryGetAllValues()
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected IReadOnlyList<TRecord> TryGetAllValues()
         {
-            return _statInfoRecords;
+            return (List<TRecord>) _statInfoRecords;
         }
 
         /// <summary>

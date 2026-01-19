@@ -31,7 +31,7 @@ namespace GameEngine
     /// 编程接口类型注册函数的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnApiCallRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
+    internal sealed class OnApiCallRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
     {
         public OnApiCallRegisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }
@@ -40,7 +40,7 @@ namespace GameEngine
     /// 编程接口类型注销函数的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnApiCallUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
+    internal sealed class OnApiCallUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
     {
         public OnApiCallUnregisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }

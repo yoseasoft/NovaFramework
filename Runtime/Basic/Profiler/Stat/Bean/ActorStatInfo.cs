@@ -29,16 +29,10 @@ namespace GameEngine.Profiler.Statistics
     /// <summary>
     /// 角色模块统计项对象类，对角色模块访问记录进行单项统计的数据单元
     /// </summary>
-    public sealed class ActorStatInfo : StatInfo
+    public sealed class ActorStatInfo : EntityStatInfo
     {
-        /// <summary>
-        /// 角色名称
-        /// </summary>
-        public string ActorName { get; private set; }
-
-        internal ActorStatInfo(int uid, string objectName) : base(uid)
+        internal ActorStatInfo(CActor actor) : base(actor)
         {
-            this.ActorName = objectName;
         }
     }
 }

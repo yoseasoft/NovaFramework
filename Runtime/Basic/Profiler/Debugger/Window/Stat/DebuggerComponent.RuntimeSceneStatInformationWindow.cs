@@ -50,7 +50,7 @@ namespace GameEngine.Profiler.Debugging
                 Statistics.SceneStatInfo sceneStatInfo = info as Statistics.SceneStatInfo;
 
                 UnityGUILayout.Label(sceneStatInfo.Uid.ToString());
-                UnityGUILayout.Label(sceneStatInfo.SceneName, UnityGUILayout.Width(120f));
+                UnityGUILayout.Label(sceneStatInfo.EntityName, UnityGUILayout.Width(120f));
                 UnityGUILayout.Label(StatDateTimeToString(sceneStatInfo.CreateTime), UnityGUILayout.Width(140f));
                 UnityGUILayout.Label(StatDateTimeToString(sceneStatInfo.ReleaseTime), UnityGUILayout.Width(140f));
                 UnityGUILayout.Label(StatDateTimeToString(sceneStatInfo.AccessTime), UnityGUILayout.Width(140f));

@@ -50,7 +50,7 @@ namespace GameEngine.Profiler.Debugging
                 Statistics.ViewStatInfo viewStatInfo = info as Statistics.ViewStatInfo;
 
                 UnityGUILayout.Label(viewStatInfo.Uid.ToString());
-                UnityGUILayout.Label(viewStatInfo.ViewName, UnityGUILayout.Width(120f));
+                UnityGUILayout.Label(viewStatInfo.EntityName, UnityGUILayout.Width(120f));
                 UnityGUILayout.Label(StatDateTimeToString(viewStatInfo.CreateTime), UnityGUILayout.Width(140f));
                 UnityGUILayout.Label(StatDateTimeToString(viewStatInfo.ReleaseTime), UnityGUILayout.Width(140f));
                 UnityGUILayout.Label(StatDateTimeToString(viewStatInfo.AccessTime), UnityGUILayout.Width(140f));

@@ -24,6 +24,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using UnityEngine.Scripting;
+
 namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
@@ -32,13 +34,15 @@ namespace GameEngine.Profiler.Statistics
     internal sealed class SceneStat : BaseStat<SceneStat, SceneStatInfo>
     {
         [IStat.OnStatFunctionRegister(StatCode.SceneEnter)]
+        [Preserve]
         private void OnSceneEnter(CScene scene)
         {
-            SceneStatInfo info = new SceneStatInfo(scene.BeanId, scene.DeclareClassName);
+            SceneStatInfo info = new SceneStatInfo(scene);
             TryAddValue(info);
         }
 
         [IStat.OnStatFunctionRegister(StatCode.SceneExit)]
+        [Preserve]
         private void OnSceneExit(CScene scene)
         {
             TryCloseValue(scene.BeanId);

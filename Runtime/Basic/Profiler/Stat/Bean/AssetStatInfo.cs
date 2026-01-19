@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,41 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System;
-
-namespace GameEngine
+namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
-    /// 事件分发类型注册函数的属性类型定义
+    /// 资产模块统计项对象类，对资产管理访问记录进行单项统计的数据单元
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal sealed class OnEventCallRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
+    public sealed class AssetStatInfo
     {
-        public OnEventCallRegisterClassOfTargetAttribute(Type classType) : base(classType) { }
-    }
+        /// <summary>
+        /// 资产名称
+        /// </summary>
+        private readonly string _name;
+        /// <summary>
+        /// 资产路径
+        /// </summary>
+        private readonly string _url;
+        /// <summary>
+        /// 资产加载次数
+        /// </summary>
+        private int _loadCount;
+        /// <summary>
+        /// 资产卸载次数
+        /// </summary>
+        private int _unloadCount;
 
-    /// <summary>
-    /// 事件分发类型注销函数的属性类型定义
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal sealed class OnEventCallUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
-    {
-        public OnEventCallUnregisterClassOfTargetAttribute(Type classType) : base(classType) { }
+        public string Name => _name;
+        public string Url => _url;
+        public int LoadCount => _loadCount;
+        public int UnloadCount => _unloadCount;
+
+        internal AssetStatInfo(string name, string url)
+        {
+            _name = name;
+            _url = url;
+            _loadCount = 0;
+            _unloadCount = 0;
+        }
     }
 }

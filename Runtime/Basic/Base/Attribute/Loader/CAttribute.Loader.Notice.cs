@@ -30,7 +30,7 @@ namespace GameEngine
     /// 通知定义类型注册函数的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnNoticeDefinitionRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
+    internal sealed class OnNoticeDefinitionRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
     {
         public OnNoticeDefinitionRegisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }
@@ -39,7 +39,7 @@ namespace GameEngine
     /// 通知定义类型注销函数的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnNoticeDefinitionUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
+    internal sealed class OnNoticeDefinitionUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
     {
         public OnNoticeDefinitionUnregisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }

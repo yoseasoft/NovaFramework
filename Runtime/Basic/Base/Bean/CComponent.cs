@@ -40,6 +40,11 @@ namespace GameEngine
         NovaEngine.IExecutable, NovaEngine.IUpdatable, IBeanLifecycle, IEventDispatch, IMessageDispatch
     {
         /// <summary>
+        /// 获取组件对象的名称
+        /// </summary>
+        public string DeclareClassName => BeanController.Instance.GetComponentNameByType(BeanType);
+
+        /// <summary>
         /// 获取组件对象所属的实体对象实例
         /// </summary>
         public CEntity Entity { get; internal set; }

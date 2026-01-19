@@ -30,7 +30,7 @@ namespace GameEngine
     /// 切面通知类型注册函数的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnAspectCallRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
+    internal sealed class OnAspectCallRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
     {
         public OnAspectCallRegisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }
@@ -39,7 +39,7 @@ namespace GameEngine
     /// 切面通知类型注销函数的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnAspectCallUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
+    internal sealed class OnAspectCallUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
     {
         public OnAspectCallUnregisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }

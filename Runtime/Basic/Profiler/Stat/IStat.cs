@@ -85,6 +85,6 @@ namespace GameEngine.Profiler.Statistics
         /// 获取当前统计模块实例记录的所有统计项信息
         /// </summary>
         /// <returns>返回所有记录的统计项信息</returns>
-        IList<StatInfo> GetAllStatInfos();
+        IReadOnlyList<StatInfo> GetAllStatInfos();
     }
 }

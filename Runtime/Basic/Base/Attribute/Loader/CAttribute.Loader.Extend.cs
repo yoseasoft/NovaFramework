@@ -30,7 +30,7 @@ namespace GameEngine
     /// 扩展定义类型注册函数的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnExtendDefinitionRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
+    internal sealed class OnExtendDefinitionRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
     {
         public OnExtendDefinitionRegisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }
@@ -39,7 +39,7 @@ namespace GameEngine
     /// 扩展定义类型注销函数的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal class OnExtendDefinitionUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
+    internal sealed class OnExtendDefinitionUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
     {
         public OnExtendDefinitionUnregisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }

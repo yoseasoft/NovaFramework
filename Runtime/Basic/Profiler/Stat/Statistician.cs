@@ -120,7 +120,7 @@ namespace GameEngine.Profiler.Statistics
 
                 if (false == _statObjects.ContainsKey(pair.Key))
                 {
-                    Debugger.Warn("Could not found any stat class '{%d}' from manager list, created it failed.", pair.Key);
+                    Debugger.Warn(LogGroupTag.Profiler, "Could not found any stat class '{%d}' from manager list, created it failed.", pair.Key);
 
                     // _statObjects.Add(pair.Key, stat_module as IStat);
                 }
@@ -179,8 +179,8 @@ namespace GameEngine.Profiler.Statistics
                 string enumName = enumType.ToString();
 
                 // 类名反射时需要包含命名空间前缀
-                string statName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, StatClassUnifiedStandardName);
-                string statInfoName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, StatInfoClassUnifiedStandardName);
+                string statName = NovaEngine.FormatString.Format("{%s}.{%s}{%s}", namespaceTag, enumName, StatClassUnifiedStandardName);
+                string statInfoName = NovaEngine.FormatString.Format("{%s}.{%s}{%s}", namespaceTag, enumName, StatInfoClassUnifiedStandardName);
 
                 Type statType = Type.GetType(statName);
                 Type statInfoType = Type.GetType(statInfoName);

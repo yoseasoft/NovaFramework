@@ -26,6 +26,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine.Profiler.Statistics
 {
@@ -61,19 +62,29 @@ namespace GameEngine.Profiler.Statistics
         protected StatInfo(int uid)
         {
             _uid = uid;
-            _createTime = DateTime.Now;
+            _createTime = Now();
             _releaseTime = DateTime.MinValue;
             _accessTime = _createTime;
         }
 
         internal void Release()
         {
-            _releaseTime = DateTime.Now;
+            _releaseTime = Now();
         }
 
         internal void Access()
         {
-            _accessTime = DateTime.Now;
+            _accessTime = Now();
+        }
+
+        /// <summary>
+        /// 获取当前系统时间
+        /// </summary>
+        /// <returns>返回当前系统时间</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected DateTime Now()
+        {
+            return DateTime.UtcNow;
         }
     }
 }
