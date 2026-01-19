@@ -53,6 +53,11 @@ namespace GameEngine
         /// </summary>
         private IDictionary<string, AssetSource> _assetSources;
 
+        /// <summary>
+        /// 获取所属对象实例
+        /// </summary>
+        public CEntity Entity => _entity;
+
         public AssetLoader(CEntity entity)
         {
             _entity = entity;
@@ -248,7 +253,7 @@ namespace GameEngine
 
             if (null == assetSource)
             {
-                Debugger.Warn(LogGroupTag.Bean, "");
+                Debugger.Warn(LogGroupTag.Bean, "Could not found any asset source with target instantiation object '{%t}', destroyed it failed.", obj);
                 return;
             }
 
