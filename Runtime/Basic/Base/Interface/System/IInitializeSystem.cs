@@ -22,7 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine
+namespace GameEngine.Entities
 {
     /// <summary>
     /// 基于ECS模式进行调度的系统接口，该接口主要负责处理实体对象初始化后的回调处理

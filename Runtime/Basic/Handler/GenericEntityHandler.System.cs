@@ -2,7 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 
 namespace GameEngine
 {
@@ -34,23 +35,23 @@ namespace GameEngine
         /// <summary>
         /// 系统对象注册列表容器
         /// </summary>
-        private IList<ISystem> _systems;
+        private IList<Entities.ISystem> _systems;
         /// <summary>
         /// 系统对象初始化回调列表容器
         /// </summary>
-        private IList<IInitializeSystem> _initializeSystems;
+        private IList<Entities.IInitializeSystem> _initializeSystems;
         /// <summary>
         /// 系统对象清理回调列表容器
         /// </summary>
-        private IList<ICleanupSystem> _cleanupSystems;
+        private IList<Entities.ICleanupSystem> _cleanupSystems;
         /// <summary>
         /// 系统对象刷新回调列表容器
         /// </summary>
-        private IList<IUpdateSystem> _updateSystems;
+        private IList<Entities.IUpdateSystem> _updateSystems;
         /// <summary>
         /// 系统对象后置刷新回调列表容器
         /// </summary>
-        private IList<ILateUpdateSystem> _lateUpdateSystems;
+        private IList<Entities.ILateUpdateSystem> _lateUpdateSystems;
 
         /// <summary>
         /// 实体系统管理接口初始化回调函数
@@ -67,15 +68,15 @@ namespace GameEngine
             //
 
             // 系统注册列表初始化
-            _systems = new List<ISystem>();
+            _systems = new List<Entities.ISystem>();
             // 系统初始化列表初始化
-            _initializeSystems = new List<IInitializeSystem>();
+            _initializeSystems = new List<Entities.IInitializeSystem>();
             // 系统清理列表初始化
-            _cleanupSystems = new List<ICleanupSystem>();
+            _cleanupSystems = new List<Entities.ICleanupSystem>();
             // 系统刷新列表初始化
-            _updateSystems = new List<IUpdateSystem>();
+            _updateSystems = new List<Entities.IUpdateSystem>();
             // 系统后置刷新列表初始化
-            _lateUpdateSystems = new List<ILateUpdateSystem>();
+            _lateUpdateSystems = new List<Entities.ILateUpdateSystem>();
         }
 
         /// <summary>
@@ -109,11 +110,11 @@ namespace GameEngine
         /// </summary>
         /// <param name="system">系统对象实例</param>
         /// <returns>若添加系统成功则返回true，否则返回false</returns>
-        public bool AddSystem(ISystem system)
+        public bool AddSystem(Entities.ISystem system)
         {
-            if (_systems.Contains(system))
+            if (null == system || _systems.Contains(system))
             {
-                Debugger.Warn("The system instance was already added, repeat add it failed.");
+                Debugger.Warn(LogGroupTag.Module, "The system instance was already added, repeat add it failed.");
                 return false;
             }
 
@@ -122,27 +123,27 @@ namespace GameEngine
             Type type = system.GetType();
 
             // 注册初始化回调接口
-            if (typeof(IInitializeSystem).IsAssignableFrom(type))
+            if (type.Is<Entities.IInitializeSystem>())
             {
-                _initializeSystems.Add(system as IInitializeSystem);
+                _initializeSystems.Add(system as Entities.IInitializeSystem);
             }
 
             // 注册清理回调接口
-            if (typeof(ICleanupSystem).IsAssignableFrom(type))
+            if (type.Is<Entities.ICleanupSystem>())
             {
-                _cleanupSystems.Add(system as ICleanupSystem);
+                _cleanupSystems.Add(system as Entities.ICleanupSystem);
             }
 
             // 注册刷新回调接口
-            if (typeof(IUpdateSystem).IsAssignableFrom(type))
+            if (type.Is<Entities.IUpdateSystem>())
             {
-                _updateSystems.Add(system as IUpdateSystem);
+                _updateSystems.Add(system as Entities.IUpdateSystem);
             }
 
             // 注册后置刷新回调接口
-            if (typeof(ILateUpdateSystem).IsAssignableFrom(type))
+            if (type.Is<Entities.ILateUpdateSystem>())
             {
-                _lateUpdateSystems.Add(system as ILateUpdateSystem);
+                _lateUpdateSystems.Add(system as Entities.ILateUpdateSystem);
             }
 
             return true;
@@ -152,19 +153,19 @@ namespace GameEngine
         /// 从当前句柄容器中移除指定的系统对象实例
         /// </summary>
         /// <param name="system">系统对象实例</param>
-        public void RemoveSystem(ISystem system)
+        public void RemoveSystem(Entities.ISystem system)
         {
-            if (false == _systems.Contains(system))
+            if (null == system || false == _systems.Contains(system))
             {
-                Debugger.Warn("Could not found any system instance in this container, remove it failed.");
+                Debugger.Warn(LogGroupTag.Module, "Could not found any system instance in this container, remove it failed.");
                 return;
             }
 
             _systems.Remove(system);
-            _initializeSystems.Remove(system as IInitializeSystem);
-            _cleanupSystems.Remove(system as ICleanupSystem);
-            _updateSystems.Remove(system as IUpdateSystem);
-            _lateUpdateSystems.Remove(system as ILateUpdateSystem);
+            _initializeSystems.Remove(system as Entities.IInitializeSystem);
+            _cleanupSystems.Remove(system as Entities.ICleanupSystem);
+            _updateSystems.Remove(system as Entities.IUpdateSystem);
+            _lateUpdateSystems.Remove(system as Entities.ILateUpdateSystem);
         }
 
         /// <summary>

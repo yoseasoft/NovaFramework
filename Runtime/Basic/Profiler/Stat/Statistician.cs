@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -190,13 +191,13 @@ namespace GameEngine.Profiler.Statistics
                     continue;
                 }
 
-                if (false == typeof(IStat).IsAssignableFrom(statType))
+                if (false == statType.Is<IStat>())
                 {
                     Debugger.Warn(LogGroupTag.Profiler, "目标对象类型‘{%s}’为非法统计模块类型，它必须继承自‘IStat’接口。", statName);
                     continue;
                 }
 
-                if (false == typeof(StatInfo).IsAssignableFrom(statInfoType))
+                if (false == statInfoType.Is<StatInfo>())
                 {
                     Debugger.Warn(LogGroupTag.Profiler, "目标对象类型‘{%s}’为非法统计信息类型，它必须继承自‘StatInfo’类。", statInfoName);
                     continue;
@@ -295,7 +296,7 @@ namespace GameEngine.Profiler.Statistics
         /// <param name="targetType">目标对象类型</param>
         private static void RemoveStatCode(Type targetType)
         {
-            IList<int> codes = NovaEngine.Utility.Collection.ToList<int>(_statCodeTypes.Keys);
+            IList<int> codes = NovaEngine.Utility.Collection.ToList(_statCodeTypes.Keys);
             for (int n = 0; n < codes.Count; ++n)
             {
                 int k = codes[n];

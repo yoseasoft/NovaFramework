@@ -22,7 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine
+namespace GameEngine.Entities
 {
     /// <summary>
     /// 基于ECS模式进行调度的系统接口，该接口仅提供类型定义，未实现具体逻辑接口<br/>
