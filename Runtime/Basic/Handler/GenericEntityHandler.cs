@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using System.Runtime.CompilerServices;
 
 namespace GameEngine
@@ -450,14 +451,14 @@ namespace GameEngine
             Call(entity, entity.Start, AspectBehaviourType.Start);
 
             // 激活执行接口的对象实例，放入到执行队列中
-            // if (typeof(IExecuteActivation).IsAssignableFrom(entity.BeanType))
+            // if (entity.BeanType.Is<IExecuteActivation>())
             if (entity.IsExecuteActivation())
             {
                 _executeEntitiesList.Add(entity);
             }
 
             // 激活刷新接口的对象实例，放入到刷新队列中
-            // if (typeof(IUpdateActivation).IsAssignableFrom(entity.BeanType))
+            // if (entity.BeanType.Is<IUpdateActivation>())
             if (entity.IsUpdateActivation())
             {
                 _updateEntitiesList.Add(entity);

@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
@@ -104,6 +105,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="groupID">模块组标识</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(int groupID, object message)
         {
             Output(groupID, NovaEngine.LogOutputLevelType.Debug, message);
@@ -114,9 +116,23 @@ namespace GameEngine
         /// </summary>
         /// <param name="groupID">模块组标识</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(int groupID, string message)
         {
             Output(groupID, NovaEngine.LogOutputLevelType.Debug, message);
+        }
+
+        /// <summary>
+        /// 针对特定模块组开放的调试模式日志输出接口，若模块组处于调试开启状态，则执行<see cref="Debugger.Log(bool, string)"/>接口函数
+        /// </summary>
+        /// <param name="groupID">模块组标识</param>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="message">日志内容</param>
+        //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Log(int groupID, bool condition, string message)
+        {
+            Output(groupID, NovaEngine.LogOutputLevelType.Debug, condition, message);
         }
 
         /// <summary>
@@ -125,9 +141,23 @@ namespace GameEngine
         /// <param name="groupID">模块组标识</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(int groupID, string format, params object[] args)
         {
             Output(groupID, NovaEngine.LogOutputLevelType.Debug, format, args);
+        }
+
+        /// <summary>
+        /// 针对特定模块组开放的调试模式日志输出接口，若模块组处于调试开启状态，则执行<see cref="Debugger.Log(bool, string, object[])"/>接口函数
+        /// </summary>
+        /// <param name="groupID">模块组标识</param>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="format">日志格式内容</param>
+        /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Log(int groupID, bool condition, string format, params object[] args)
+        {
+            Output(groupID, NovaEngine.LogOutputLevelType.Debug, condition, format, args);
         }
 
         /// <summary>
@@ -135,6 +165,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="groupID">模块组标识</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(int groupID, object message)
         {
             Output(groupID, NovaEngine.LogOutputLevelType.Info, message);
@@ -145,9 +176,22 @@ namespace GameEngine
         /// </summary>
         /// <param name="groupID">模块组标识</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(int groupID, string message)
         {
             Output(groupID, NovaEngine.LogOutputLevelType.Info, message);
+        }
+
+        /// <summary>
+        /// 针对特定模块组开放的常规模式日志输出接口，若模块组处于调试开启状态，则执行<see cref="Debugger.Info(bool, string)"/>接口函数
+        /// </summary>
+        /// <param name="groupID">模块组标识</param>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Info(int groupID, bool condition, string message)
+        {
+            Output(groupID, NovaEngine.LogOutputLevelType.Info, condition, message);
         }
 
         /// <summary>
@@ -156,9 +200,23 @@ namespace GameEngine
         /// <param name="groupID">模块组标识</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(int groupID, string format, params object[] args)
         {
             Output(groupID, NovaEngine.LogOutputLevelType.Info, format, args);
+        }
+
+        /// <summary>
+        /// 针对特定模块组开放的常规模式日志输出接口，若模块组处于调试开启状态，则执行<see cref="Debugger.Info(bool, string, object[])"/>接口函数
+        /// </summary>
+        /// <param name="groupID">模块组标识</param>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="format">日志格式内容</param>
+        /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Info(int groupID, bool condition, string format, params object[] args)
+        {
+            Output(groupID, NovaEngine.LogOutputLevelType.Info, condition, format, args);
         }
 
         /// <summary>
@@ -166,6 +224,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="groupID">模块组标识</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(int groupID, object message)
         {
             Output(groupID, NovaEngine.LogOutputLevelType.Warning, message);
@@ -176,9 +235,22 @@ namespace GameEngine
         /// </summary>
         /// <param name="groupID">模块组标识</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(int groupID, string message)
         {
             Output(groupID, NovaEngine.LogOutputLevelType.Warning, message);
+        }
+
+        /// <summary>
+        /// 针对特定模块组开放的警告模式日志输出接口，若模块组处于调试开启状态，则执行<see cref="Debugger.Warn(bool, string)"/>接口函数
+        /// </summary>
+        /// <param name="groupID">模块组标识</param>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Warn(int groupID, bool condition, string message)
+        {
+            Output(groupID, NovaEngine.LogOutputLevelType.Warning, condition, message);
         }
 
         /// <summary>
@@ -187,9 +259,23 @@ namespace GameEngine
         /// <param name="groupID">模块组标识</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(int groupID, string format, params object[] args)
         {
             Output(groupID, NovaEngine.LogOutputLevelType.Warning, format, args);
+        }
+
+        /// <summary>
+        /// 针对特定模块组开放的警告模式日志输出接口，若模块组处于调试开启状态，则执行<see cref="Debugger.Warn(bool, string, object[])"/>接口函数
+        /// </summary>
+        /// <param name="groupID">模块组标识</param>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="format">日志格式内容</param>
+        /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Warn(int groupID, bool condition, string format, params object[] args)
+        {
+            Output(groupID, NovaEngine.LogOutputLevelType.Warning, condition, format, args);
         }
 
         /// <summary>
@@ -197,6 +283,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="groupID">模块组标识</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(int groupID, object message)
         {
             Output(groupID, NovaEngine.LogOutputLevelType.Error, message);
@@ -207,9 +294,22 @@ namespace GameEngine
         /// </summary>
         /// <param name="groupID">模块组标识</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(int groupID, string message)
         {
             Output(groupID, NovaEngine.LogOutputLevelType.Error, message);
+        }
+
+        /// <summary>
+        /// 针对特定模块组开放的错误模式日志输出接口，若模块组处于调试开启状态，则执行<see cref="Debugger.Error(bool, string)"/>接口函数
+        /// </summary>
+        /// <param name="groupID">模块组标识</param>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Error(int groupID, bool condition, string message)
+        {
+            Output(groupID, NovaEngine.LogOutputLevelType.Error, condition, message);
         }
 
         /// <summary>
@@ -218,9 +318,23 @@ namespace GameEngine
         /// <param name="groupID">模块组标识</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(int groupID, string format, params object[] args)
         {
             Output(groupID, NovaEngine.LogOutputLevelType.Error, format, args);
+        }
+
+        /// <summary>
+        /// 针对特定模块组开放的错误模式日志输出接口，若模块组处于调试开启状态，则执行<see cref="Debugger.Error(bool, string, object[])"/>接口函数
+        /// </summary>
+        /// <param name="groupID">模块组标识</param>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="format">日志格式内容</param>
+        /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Error(int groupID, bool condition, string format, params object[] args)
+        {
+            Output(groupID, NovaEngine.LogOutputLevelType.Error, condition, format, args);
         }
 
         /// <summary>
@@ -228,6 +342,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="groupID">模块组标识</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(int groupID, object message)
         {
             Output(groupID, NovaEngine.LogOutputLevelType.Fatal, message);
@@ -238,9 +353,22 @@ namespace GameEngine
         /// </summary>
         /// <param name="groupID">模块组标识</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(int groupID, string message)
         {
             Output(groupID, NovaEngine.LogOutputLevelType.Fatal, message);
+        }
+
+        /// <summary>
+        /// 针对特定模块组开放的崩溃模式日志输出接口，若模块组处于调试开启状态，则执行<see cref="Debugger.Fatal(bool, string)"/>接口函数
+        /// </summary>
+        /// <param name="groupID">模块组标识</param>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Fatal(int groupID, bool condition, string message)
+        {
+            Output(groupID, NovaEngine.LogOutputLevelType.Fatal, condition, message);
         }
 
         /// <summary>
@@ -249,9 +377,23 @@ namespace GameEngine
         /// <param name="groupID">模块组标识</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(int groupID, string format, params object[] args)
         {
             Output(groupID, NovaEngine.LogOutputLevelType.Fatal, format, args);
+        }
+
+        /// <summary>
+        /// 针对特定模块组开放的崩溃模式日志输出接口，若模块组处于调试开启状态，则执行<see cref="Debugger.Fatal(bool, string, object[])"/>接口函数
+        /// </summary>
+        /// <param name="groupID">模块组标识</param>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="format">日志格式内容</param>
+        /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Fatal(int groupID, bool condition, string format, params object[] args)
+        {
+            Output(groupID, NovaEngine.LogOutputLevelType.Fatal, condition, format, args);
         }
 
         /// <summary>
@@ -260,6 +402,7 @@ namespace GameEngine
         /// <param name="groupID">模块组标识</param>
         /// <param name="level">日志级别</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void Output(int groupID, NovaEngine.LogOutputLevelType level, object message)
         {
             if (_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
@@ -273,7 +416,24 @@ namespace GameEngine
         /// </summary>
         /// <param name="groupID">模块组标识</param>
         /// <param name="level">日志级别</param>
+        /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void Output(int groupID, NovaEngine.LogOutputLevelType level, bool condition, object message)
+        {
+            if (!condition && _debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
+            {
+                group.Output(level, message);
+            }
+        }
+
+        /// <summary>
+        /// 针对指定分组和日志级别的通用输出接口函数
+        /// </summary>
+        /// <param name="groupID">模块组标识</param>
+        /// <param name="level">日志级别</param>
+        /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void Output(int groupID, NovaEngine.LogOutputLevelType level, string message)
         {
             if (_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
@@ -287,11 +447,45 @@ namespace GameEngine
         /// </summary>
         /// <param name="groupID">模块组标识</param>
         /// <param name="level">日志级别</param>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void Output(int groupID, NovaEngine.LogOutputLevelType level, bool condition, string message)
+        {
+            if (!condition && _debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
+            {
+                group.Output(level, message);
+            }
+        }
+
+        /// <summary>
+        /// 针对指定分组和日志级别的通用输出接口函数
+        /// </summary>
+        /// <param name="groupID">模块组标识</param>
+        /// <param name="level">日志级别</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void Output(int groupID, NovaEngine.LogOutputLevelType level, string format, params object[] args)
         {
             if (_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
+            {
+                group.Output(level, format, args);
+            }
+        }
+
+        /// <summary>
+        /// 针对指定分组和日志级别的通用输出接口函数
+        /// </summary>
+        /// <param name="groupID">模块组标识</param>
+        /// <param name="level">日志级别</param>
+        /// <param name="condition">条件表达式</param>
+        /// <param name="format">日志格式内容</param>
+        /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void Output(int groupID, NovaEngine.LogOutputLevelType level, bool condition, string format, params object[] args)
+        {
+            if (!condition && _debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
             {
                 group.Output(level, format, args);
             }

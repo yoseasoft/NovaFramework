@@ -25,6 +25,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
@@ -139,10 +140,9 @@ namespace GameEngine
                     // 统计定时事件派发
                     _Profiler.CallStat(Profiler.Statistics.StatCode.TimerDispatched, tea.Session);
 
-                    TimerReportingCallback handler;
-                    if (false == _timerClockingCallbacks.TryGetValue(tea.Session, out handler))
+                    if (false == _timerClockingCallbacks.TryGetValue(tea.Session, out TimerReportingCallback handler))
                     {
-                        Debugger.Error("Could not found any valid timer clocking handler with session id {%d}, dispatched event args failed..", tea.Session);
+                        Debugger.Error(LogGroupTag.Module, "Could not found any valid timer clocking handler with session id {%d}, dispatched event args failed..", tea.Session);
                     }
                     handler?.Invoke(tea.Session);
                 }
@@ -153,19 +153,18 @@ namespace GameEngine
                     _Profiler.CallStat(Profiler.Statistics.StatCode.TimerFinished, tea.Session);
 
                     // 先检查该会话是否需要进行结束回调通知
-                    TimerReportingCallback handler;
-                    if (_timerFinishingCallbacks.TryGetValue(tea.Session, out handler))
+                    if (_timerFinishingCallbacks.TryGetValue(tea.Session, out TimerReportingCallback handler))
                     {
                         handler?.Invoke(tea.Session);
                         _timerFinishingCallbacks.Remove(tea.Session);
                     }
 
-                    // Debugger.Log("Remove timer clocking handler with session id {%d}.", tea.Session);
+                    // Debugger.Log(LogGroupTag.Module, "Remove timer clocking handler with session id {%d}.", tea.Session);
 
                     // 会话合法性检查
                     if (false == _timerClockingCallbacks.ContainsKey(tea.Session))
                     {
-                        Debugger.Error("The timer clocked session id {%d} was not found, remove it failed.", tea.Session);
+                        Debugger.Error(LogGroupTag.Module, "The timer clocked session id {%d} was not found, remove it failed.", tea.Session);
                     }
                     _timerClockingCallbacks.Remove(tea.Session);
                 }
@@ -179,6 +178,7 @@ namespace GameEngine
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
         /// <param name="clocking">到时回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(int interval, TimerReportingHandler clocking)
         {
             return Schedule(interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, clocking);
@@ -190,6 +190,7 @@ namespace GameEngine
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
         /// <param name="clocking">到时回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(int interval, TimerReportingForSessionHandler clocking)
         {
             return Schedule(interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, clocking);
@@ -202,6 +203,7 @@ namespace GameEngine
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
         /// <param name="clocking">到时回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(string name, int interval, TimerReportingHandler clocking)
         {
             return Schedule(name, interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, clocking);
@@ -214,6 +216,7 @@ namespace GameEngine
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
         /// <param name="clocking">到时回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(string name, int interval, TimerReportingForSessionHandler clocking)
         {
             return Schedule(name, interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, clocking);
@@ -227,6 +230,7 @@ namespace GameEngine
         /// <param name="loop">任务循环次数</param>
         /// <param name="clocking">到时回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(int interval, int loop, TimerReportingHandler clocking)
         {
             return Schedule(interval, loop, clocking, (TimerReportingHandler) null);
@@ -240,6 +244,7 @@ namespace GameEngine
         /// <param name="loop">任务循环次数</param>
         /// <param name="clocking">到时回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(int interval, int loop, TimerReportingForSessionHandler clocking)
         {
             return Schedule(interval, loop, clocking, (TimerReportingForSessionHandler) null);
@@ -254,6 +259,7 @@ namespace GameEngine
         /// <param name="loop">任务循环次数</param>
         /// <param name="clocking">到时回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(string name, int interval, int loop, TimerReportingHandler clocking)
         {
             return Schedule(name, interval, loop, clocking, (TimerReportingHandler) null);
@@ -268,6 +274,7 @@ namespace GameEngine
         /// <param name="loop">任务循环次数</param>
         /// <param name="clocking">到时回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(string name, int interval, int loop, TimerReportingForSessionHandler clocking)
         {
             return Schedule(name, interval, loop, clocking, (TimerReportingForSessionHandler) null);
@@ -282,6 +289,7 @@ namespace GameEngine
         /// <param name="clocking">到时回调句柄</param>
         /// <param name="finishing">结束回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(int interval, int loop, TimerReportingHandler clocking, TimerReportingHandler finishing)
         {
             TimerReportingCallback _clocking = null == clocking ? null : new TimerReportingCallback(this, clocking);
@@ -290,6 +298,7 @@ namespace GameEngine
             return Schedule(interval, loop, _clocking, _finishing);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal int Schedule(int interval, int loop, TimerReportingHandler clocking, TimerReportingForSessionHandler finishing)
         {
             TimerReportingCallback _clocking = null == clocking ? null : new TimerReportingCallback(this, clocking);
@@ -308,6 +317,7 @@ namespace GameEngine
         /// <param name="clocking">到时回调句柄</param>
         /// <param name="finishing">结束回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(string name, int interval, int loop, TimerReportingHandler clocking, TimerReportingHandler finishing)
         {
             TimerReportingCallback _clocking = null == clocking ? null : new TimerReportingCallback(this, clocking);
@@ -316,6 +326,7 @@ namespace GameEngine
             return Schedule(name, interval, loop, _clocking, _finishing);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal int Schedule(string name, int interval, int loop, TimerReportingHandler clocking, TimerReportingForSessionHandler finishing)
         {
             TimerReportingCallback _clocking = null == clocking ? null : new TimerReportingCallback(this, clocking);
@@ -333,6 +344,7 @@ namespace GameEngine
         /// <param name="clocking">到时回调句柄</param>
         /// <param name="finishing">结束回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(int interval, int loop, TimerReportingForSessionHandler clocking, TimerReportingHandler finishing)
         {
             TimerReportingCallback _clocking = null == clocking ? null : new TimerReportingCallback(this, clocking);
@@ -341,6 +353,7 @@ namespace GameEngine
             return Schedule(interval, loop, _clocking, _finishing);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(int interval, int loop, TimerReportingForSessionHandler clocking, TimerReportingForSessionHandler finishing)
         {
             TimerReportingCallback _clocking = null == clocking ? null : new TimerReportingCallback(this, clocking);
@@ -359,6 +372,7 @@ namespace GameEngine
         /// <param name="clocking">到时回调句柄</param>
         /// <param name="finishing">结束回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(string name, int interval, int loop, TimerReportingForSessionHandler clocking, TimerReportingHandler finishing)
         {
             TimerReportingCallback _clocking = null == clocking ? null : new TimerReportingCallback(this, clocking);
@@ -367,6 +381,7 @@ namespace GameEngine
             return Schedule(name, interval, loop, _clocking, _finishing);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(string name, int interval, int loop, TimerReportingForSessionHandler clocking, TimerReportingForSessionHandler finishing)
         {
             TimerReportingCallback _clocking = null == clocking ? null : new TimerReportingCallback(this, clocking);
@@ -384,6 +399,7 @@ namespace GameEngine
         /// <param name="clocking">到时回调句柄</param>
         /// <param name="finishing">结束回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private int Schedule(int interval, int loop, TimerReportingCallback clocking, TimerReportingCallback finishing)
         {
             return Schedule(null, interval, loop, clocking, finishing);
@@ -405,13 +421,13 @@ namespace GameEngine
 
             if (sessionID <= 0)
             {
-                Debugger.Error("The target timer '{%s}' processing was occurred exception, scheduled it failed.", name);
+                Debugger.Error(LogGroupTag.Module, "The target timer '{%s}' processing was occurred exception, scheduled it failed.", name);
                 return sessionID;
             }
 
             if (_timerClockingCallbacks.ContainsKey(sessionID))
             {
-                Debugger.Error(false == newly, "The timer clocked session id {%d} was already exist, repeat add will be override old handler.", sessionID);
+                Debugger.Error(LogGroupTag.Module, false == newly, "The timer clocked session id {%d} was already exist, repeat add will be override old handler.", sessionID);
                 _timerClockingCallbacks.Remove(sessionID);
             }
 
@@ -420,13 +436,13 @@ namespace GameEngine
 
             if (_timerFinishingCallbacks.ContainsKey(sessionID))
             {
-                Debugger.Error(false == newly, "The timer finished session id {%d} was already exist, repeat add will be override old handler.", sessionID);
+                Debugger.Error(LogGroupTag.Module, false == newly, "The timer finished session id {%d} was already exist, repeat add will be override old handler.", sessionID);
                 _timerFinishingCallbacks.Remove(sessionID);
             }
 
             if (finishing != null)
             {
-                // Debugger.Log("Add timer finishing handler with session id {%d}.", sessionID);
+                // Debugger.Log(LogGroupTag.Module, "Add timer finishing handler with session id {%d}.", sessionID);
                 _timerFinishingCallbacks.Add(sessionID, finishing);
             }
 
@@ -443,6 +459,7 @@ namespace GameEngine
         /// 停止指定标识对应的定时任务
         /// </summary>
         /// <param name="sessionID">会话标识</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Unschedule(int sessionID)
         {
             TimerModule.Unschedule(sessionID);
@@ -452,6 +469,7 @@ namespace GameEngine
         /// 停止指定名称对应的定时任务
         /// </summary>
         /// <param name="name">任务名称</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Unschedule(string name)
         {
             TimerModule.Unschedule(name);
@@ -460,6 +478,7 @@ namespace GameEngine
         /// <summary>
         /// 停止当前设置的所有定时任务
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void UnscheduleAll()
         {
             TimerModule.UnscheduleAll();
@@ -471,6 +490,7 @@ namespace GameEngine
         /// 如果需要中途关闭定时任务，推荐使用<see cref="GameEngine.TimerHandler.Unschedule(int)"/>接口
         /// </summary>
         /// <param name="session">会话标识</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal void RemoveTimerBySession(int session)
         {
             TimerModule.RemoveTimerInfoBySession(session);
@@ -534,7 +554,7 @@ namespace GameEngine
                 }
                 else
                 {
-                    Debugger.Warn("Could not found any schedule callback with target session '{0}', invoked it failed.", sessionID);
+                    Debugger.Warn(LogGroupTag.Module, "Could not found any schedule callback with target session '{0}', invoked it failed.", sessionID);
                 }
             }
         }

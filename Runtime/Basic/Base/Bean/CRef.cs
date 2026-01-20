@@ -25,6 +25,8 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Customize.Extension;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
@@ -94,7 +96,7 @@ namespace GameEngine
         /// <returns>若引用对象激活执行行为则返回true，否则返回false</returns>
         protected internal virtual bool IsExecuteActivation()
         {
-            if (typeof(IExecuteActivation).IsAssignableFrom(BeanType))
+            if (BeanType.Is<IExecuteActivation>())
             {
                 return true;
             }
@@ -114,7 +116,7 @@ namespace GameEngine
         /// <returns>若引用对象激活刷新行为则返回true，否则返回false</returns>
         protected internal virtual bool IsUpdateActivation()
         {
-            if (typeof(IUpdateActivation).IsAssignableFrom(BeanType))
+            if (BeanType.Is<IUpdateActivation>())
             {
                 return true;
             }
@@ -138,6 +140,7 @@ namespace GameEngine
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
         /// <param name="handler">回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(int interval, TimerHandler.TimerReportingHandler handler)
         {
             return Schedule(interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
@@ -149,6 +152,7 @@ namespace GameEngine
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
         /// <param name="handler">回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(int interval, TimerHandler.TimerReportingForSessionHandler handler)
         {
             return Schedule(interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
@@ -161,9 +165,10 @@ namespace GameEngine
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
         /// <param name="handler">回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(string name, int interval, TimerHandler.TimerReportingHandler handler)
         {
-            return Schedule(interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
+            return Schedule(name, interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
         }
 
         /// <summary>
@@ -173,9 +178,10 @@ namespace GameEngine
         /// <param name="interval">任务延时间隔，以毫秒为单位</param>
         /// <param name="handler">回调句柄</param>
         /// <returns>若任务启动成功，则返回对应的会话值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Schedule(string name, int interval, TimerHandler.TimerReportingForSessionHandler handler)
         {
-            return Schedule(interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
+            return Schedule(name, interval, NovaEngine.Module.TimerModule.SCHEDULE_REPEAT_FOREVER, handler);
         }
 
         /// <summary>
@@ -191,7 +197,7 @@ namespace GameEngine
             int sessionID = TimerHandler.Instance.Schedule(interval, loop, handler, delegate (int v) {
                 if (false == _schedules.Contains(v))
                 {
-                    Debugger.Warn("Could not found target session {%d} scheduled with this object.", v);
+                    Debugger.Warn(LogGroupTag.Bean, "Could not found target session {%d} scheduled with this object.", v);
                     return;
                 }
                 _schedules.Remove(v);
@@ -219,7 +225,7 @@ namespace GameEngine
             int sessionID = TimerHandler.Instance.Schedule(interval, loop, handler, delegate (int v) {
                 if (false == _schedules.Contains(v))
                 {
-                    Debugger.Warn("Could not found target session {%d} scheduled with this object.", v);
+                    Debugger.Warn(LogGroupTag.Bean, "Could not found target session {%d} scheduled with this object.", v);
                     return;
                 }
                 _schedules.Remove(v);
@@ -251,7 +257,7 @@ namespace GameEngine
             int sessionID = TimerHandler.Instance.Schedule(name, interval, loop, handler, delegate (int v) {
                 if (false == _schedules.Contains(v))
                 {
-                    Debugger.Warn("Could not found target session {%d} scheduled with this object.", v);
+                    Debugger.Warn(LogGroupTag.Bean, "Could not found target session {%d} scheduled with this object.", v);
                     return;
                 }
                 _schedules.Remove(v);
@@ -283,7 +289,7 @@ namespace GameEngine
             int sessionID = TimerHandler.Instance.Schedule(name, interval, loop, handler, delegate (int v) {
                 if (false == _schedules.Contains(v))
                 {
-                    Debugger.Warn("Could not found target session {%d} scheduled with this object.", v);
+                    Debugger.Warn(LogGroupTag.Bean, "Could not found target session {%d} scheduled with this object.", v);
                     return;
                 }
                 _schedules.Remove(v);
@@ -302,6 +308,7 @@ namespace GameEngine
         /// 停止当前引用对象指定标识对应的定时任务
         /// </summary>
         /// <param name="sessionID">会话标识</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Unschedule(int sessionID)
         {
             TimerHandler.Instance.Unschedule(sessionID);
@@ -311,6 +318,7 @@ namespace GameEngine
         /// 停止当前引用对象指定名称对应的定时任务
         /// </summary>
         /// <param name="name">任务名称</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Unschedule(string name)
         {
             TimerHandler.Instance.Unschedule(name);
@@ -333,8 +341,7 @@ namespace GameEngine
         private void RemoveAllSchedules()
         {
             // 拷贝一份会话列表
-            List<int> list = new List<int>();
-            list.AddRange(_schedules);
+            IList<int> list = new List<int>(_schedules);
 
             for (int n = 0; n < list.Count; ++n)
             {

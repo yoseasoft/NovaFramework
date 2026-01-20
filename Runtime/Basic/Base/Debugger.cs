@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
@@ -43,6 +44,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="message">日志内容</param>
         //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(object message)
         {
             _logForObject(message);
@@ -53,6 +55,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="message">日志内容</param>
         //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(string message)
         {
             _logForString(message);
@@ -64,6 +67,7 @@ namespace GameEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
         //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(bool condition, string message)
         {
             _logForCondString(condition, message);
@@ -75,6 +79,7 @@ namespace GameEngine
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
         //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(string format, params object[] args)
         {
             _logForFormatArgs(format, args);
@@ -87,6 +92,7 @@ namespace GameEngine
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
         //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(bool condition, string format, params object[] args)
         {
             _logForCondFormatArgs(condition, format, args);
@@ -96,6 +102,7 @@ namespace GameEngine
         /// 基于常规模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(object message)
         {
             _infoForObject(message);
@@ -105,6 +112,7 @@ namespace GameEngine
         /// 基于常规模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(string message)
         {
             _infoForString(message);
@@ -115,6 +123,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(bool condition, string message)
         {
             _infoForCondString(condition, message);
@@ -125,6 +134,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(string format, params object[] args)
         {
             _infoForFormatArgs(format, args);
@@ -136,6 +146,7 @@ namespace GameEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(bool condition, string format, params object[] args)
         {
             _infoForCondFormatArgs(condition, format, args);
@@ -145,6 +156,7 @@ namespace GameEngine
         /// 基于警告模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(object message)
         {
             _warnForObject(message);
@@ -154,6 +166,7 @@ namespace GameEngine
         /// 基于警告模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(string message)
         {
             _warnForString(message);
@@ -164,6 +177,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(bool condition, string message)
         {
             _warnForCondString(condition, message);
@@ -174,6 +188,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(string format, params object[] args)
         {
             _warnForFormatArgs(format, args);
@@ -185,6 +200,7 @@ namespace GameEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(bool condition, string format, params object[] args)
         {
             _warnForCondFormatArgs(condition, format, args);
@@ -194,6 +210,7 @@ namespace GameEngine
         /// 基于错误模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(object message)
         {
             _errorForObject(message);
@@ -203,6 +220,7 @@ namespace GameEngine
         /// 基于错误模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(string message)
         {
             _errorForString(message);
@@ -213,6 +231,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(bool condition, string message)
         {
             _errorForCondString(condition, message);
@@ -223,6 +242,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(string format, params object[] args)
         {
             _errorForFormatArgs(format, args);
@@ -234,6 +254,7 @@ namespace GameEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(bool condition, string format, params object[] args)
         {
             _errorForCondFormatArgs(condition, format, args);
@@ -243,6 +264,7 @@ namespace GameEngine
         /// 基于崩溃模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(object message)
         {
             _fatalForObject(message);
@@ -252,6 +274,7 @@ namespace GameEngine
         /// 基于崩溃模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(string message)
         {
             _fatalForString(message);
@@ -262,6 +285,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(bool condition, string message)
         {
             _fatalForCondString(condition, message);
@@ -272,6 +296,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(string format, params object[] args)
         {
             _fatalForFormatArgs(format, args);
@@ -283,6 +308,7 @@ namespace GameEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(bool condition, string format, params object[] args)
         {
             _fatalForCondFormatArgs(condition, format, args);
@@ -294,6 +320,7 @@ namespace GameEngine
         /// 系统断言，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="condition">条件表达式</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(bool condition)
         {
             NovaEngine.Debugger.Assert(condition);
@@ -304,6 +331,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(bool condition, object message)
         {
             NovaEngine.Debugger.Assert(condition, message);
@@ -314,6 +342,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(bool condition, string message)
         {
             NovaEngine.Debugger.Assert(condition, message);
@@ -325,6 +354,7 @@ namespace GameEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(bool condition, string format, params object[] args)
         {
             NovaEngine.Debugger.Assert(condition, format, args);
@@ -334,6 +364,7 @@ namespace GameEngine
         /// 对象非空的断言检查，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="obj">对象实例</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(object obj)
         {
             NovaEngine.Debugger.Assert(obj);
@@ -344,6 +375,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="obj">对象实例</param>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(object obj, object message)
         {
             NovaEngine.Debugger.Assert(obj, message);
@@ -354,6 +386,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="obj">对象实例</param>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(object obj, string message)
         {
             NovaEngine.Debugger.Assert(obj, message);
@@ -365,6 +398,7 @@ namespace GameEngine
         /// <param name="obj">对象实例</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(object obj, string format, params object[] args)
         {
             NovaEngine.Debugger.Assert(obj, format, args);
@@ -377,6 +411,7 @@ namespace GameEngine
         /// <summary>
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw()
         {
             NovaEngine.Debugger.Throw();
@@ -386,6 +421,7 @@ namespace GameEngine
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="errorCode">错误码</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(int errorCode)
         {
             NovaEngine.Debugger.Throw(errorCode);
@@ -395,6 +431,7 @@ namespace GameEngine
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(string message)
         {
             NovaEngine.Debugger.Throw(message);
@@ -405,6 +442,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(string format, params object[] args)
         {
             NovaEngine.Debugger.Throw(format, args);
@@ -414,6 +452,7 @@ namespace GameEngine
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="exception">异常实例</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(Exception exception)
         {
             NovaEngine.Debugger.Throw(exception);
@@ -423,6 +462,7 @@ namespace GameEngine
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="type">异常类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(Type type)
         {
             NovaEngine.Debugger.Throw(type);
@@ -433,6 +473,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="type">异常类型</param>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(Type type, string message)
         {
             NovaEngine.Debugger.Throw(type, message);
@@ -444,6 +485,7 @@ namespace GameEngine
         /// <param name="type">异常类型</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(Type type, string format, params object[] args)
         {
             NovaEngine.Debugger.Throw(type, format, args);
@@ -453,6 +495,7 @@ namespace GameEngine
         /// 系统异常，仅在调试模式下该函数有效
         /// </summary>
         /// <typeparam name="T">异常类型</typeparam>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>() where T : Exception
         {
             NovaEngine.Debugger.Throw<T>();
@@ -463,6 +506,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(string message) where T : Exception
         {
             NovaEngine.Debugger.Throw<T>(message);
@@ -474,6 +518,7 @@ namespace GameEngine
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(string format, params object[] args) where T : Exception
         {
             NovaEngine.Debugger.Throw<T>(format, args);
@@ -483,6 +528,7 @@ namespace GameEngine
         /// 对象条件判定的异常检查，仅在调试模式下该函数有效
         /// </summary>
         /// <param name="condition">条件表达式</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition)
         {
             NovaEngine.Debugger.Throw(condition);
@@ -493,6 +539,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="errorCode">错误码</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, int errorCode)
         {
             NovaEngine.Debugger.Throw(condition, errorCode);
@@ -503,6 +550,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, string message)
         {
             NovaEngine.Debugger.Throw(condition, message);
@@ -514,6 +562,7 @@ namespace GameEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, string format, params object[] args)
         {
             NovaEngine.Debugger.Throw(condition, format, args);
@@ -524,6 +573,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="exception">异常实例</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, Exception exception)
         {
             NovaEngine.Debugger.Throw(condition, exception);
@@ -534,6 +584,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="type">异常类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, Type type)
         {
             NovaEngine.Debugger.Throw(condition, type);
@@ -545,6 +596,7 @@ namespace GameEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="type">异常类型</param>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, Type type, string message)
         {
             NovaEngine.Debugger.Throw(condition, type, message);
@@ -557,6 +609,7 @@ namespace GameEngine
         /// <param name="type">异常类型</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, Type type, string format, params object[] args)
         {
             NovaEngine.Debugger.Throw(condition, type, format, args);
@@ -567,6 +620,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="condition">条件表达式</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(bool condition) where T : Exception
         {
             NovaEngine.Debugger.Throw<T>(condition);
@@ -578,6 +632,7 @@ namespace GameEngine
         /// <typeparam name="T">异常类型</typeparam>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(bool condition, string message) where T : Exception
         {
             NovaEngine.Debugger.Throw<T>(condition, message);
@@ -590,6 +645,7 @@ namespace GameEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="format">格式内容</param>
         /// <param name="args">消息格式化参数</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(bool condition, string format, params object[] args) where T : Exception
         {
             NovaEngine.Debugger.Throw<T>(condition, format, args);
