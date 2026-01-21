@@ -73,7 +73,7 @@ namespace GameEngine
         {
             if (false == Profiler.Statistics.Statistician.IsOnStarting)
             {
-                Debugger.Warn(LogGroupTag.Basic, "The profiler statistician was not starting, call this stat function '{%d}' failed.", funcType);
+                // Debugger.Info(LogGroupTag.Basic, "The profiler statistician was not starting, call this stat function '{%d}' failed.", funcType);
                 return;
             }
 
