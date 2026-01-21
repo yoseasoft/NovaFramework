@@ -25,9 +25,9 @@
 
 using System;
 using System.Customize.Extension;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Runtime.InteropServices;
 
 namespace NovaEngine
 {
@@ -146,7 +146,7 @@ namespace NovaEngine
 
             StringBuilder sb = new StringBuilder();
             int pos = 0;
-            int index = 0;
+            int index;
             for (index = 0; index < matches.Count; ++index)
             {
                 Match match = matches[index];
@@ -243,66 +243,78 @@ namespace NovaEngine
         /// </summary>
         private static TextFormatConvertionInfo[] _textFormatConvertionInfos = new TextFormatConvertionInfo[(int) TextFormatParameterType.Max]
         {
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.Unknown,
-                                            formatSymbol = Definition.CCharacter.Nil,
-                                            convertionCallback = null,
-                                         },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.Boolean,
-                                            formatSymbol = Placeholder_B,
-                                            convertionCallback = _TextFormatParameterConvertionCallback_Boolean,
-                                         },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.DecimalInteger,
-                                            formatSymbol = Placeholder_D,
-                                            convertionCallback = _TextFormatParameterConvertionCallback_DecimalInteger,
-                                         },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.OctalInteger,
-                                            formatSymbol = Placeholder_O,
-                                            convertionCallback = _TextFormatParameterConvertionCallback_OctalInteger,
-                                         },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.HexadecimalInteger,
-                                            formatSymbol = Placeholder_X,
-                                            convertionCallback = _TextFormatParameterConvertionCallback_HexadecimalInteger,
-                                         },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.CommonFloat,
-                                            formatSymbol = Placeholder_F,
-                                            convertionCallback = _TextFormatParameterConvertionCallback_CommonFloat,
-                                         },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.ScientificNotationFloat,
-                                            formatSymbol = Placeholder_E,
-                                            convertionCallback = _TextFormatParameterConvertionCallback_ScientificNotationFloat,
-                                         },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.Character,
-                                            formatSymbol = Placeholder_C,
-                                            convertionCallback = _TextFormatParameterConvertionCallback_Character,
-                                         },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.String,
-                                            formatSymbol = Placeholder_S,
-                                            convertionCallback = _TextFormatParameterConvertionCallback_String,
-                                         },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.ObjectPointer,
-                                            formatSymbol = Placeholder_P,
-                                            convertionCallback = _TextFormatParameterConvertionCallback_ObjectPointer,
-                                         },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.ObjectType,
-                                            formatSymbol = Placeholder_T,
-                                            convertionCallback = _TextFormatParameterConvertionCallback_ObjectType,
-                                         },
-            new TextFormatConvertionInfo {
-                                            parameterType = TextFormatParameterType.ObjectInfo,
-                                            formatSymbol = Placeholder_I,
-                                            convertionCallback = _TextFormatParameterConvertionCallback_ObjectInfo,
-                                         },
+            new ()
+            {
+                parameterType = TextFormatParameterType.Unknown,
+                formatSymbol = Definition.CCharacter.Nil,
+                convertionCallback = null,
+            },
+            new ()
+            {
+                parameterType = TextFormatParameterType.Boolean,
+                formatSymbol = Placeholder_B,
+                convertionCallback = _TextFormatParameterConvertionCallback_Boolean,
+            },
+            new ()
+            {
+                parameterType = TextFormatParameterType.DecimalInteger,
+                formatSymbol = Placeholder_D,
+                convertionCallback = _TextFormatParameterConvertionCallback_DecimalInteger,
+            },
+            new ()
+            {
+                parameterType = TextFormatParameterType.OctalInteger,
+                formatSymbol = Placeholder_O,
+                convertionCallback = _TextFormatParameterConvertionCallback_OctalInteger,
+            },
+            new ()
+            {
+                parameterType = TextFormatParameterType.HexadecimalInteger,
+                formatSymbol = Placeholder_X,
+                convertionCallback = _TextFormatParameterConvertionCallback_HexadecimalInteger,
+            },
+            new ()
+            {
+                parameterType = TextFormatParameterType.CommonFloat,
+                formatSymbol = Placeholder_F,
+                convertionCallback = _TextFormatParameterConvertionCallback_CommonFloat,
+            },
+            new ()
+            {
+                parameterType = TextFormatParameterType.ScientificNotationFloat,
+                formatSymbol = Placeholder_E,
+                convertionCallback = _TextFormatParameterConvertionCallback_ScientificNotationFloat,
+            },
+            new ()
+            {
+                parameterType = TextFormatParameterType.Character,
+                formatSymbol = Placeholder_C,
+                convertionCallback = _TextFormatParameterConvertionCallback_Character,
+            },
+            new ()
+            {
+                parameterType = TextFormatParameterType.String,
+                formatSymbol = Placeholder_S,
+                convertionCallback = _TextFormatParameterConvertionCallback_String,
+            },
+            new ()
+            {
+                parameterType = TextFormatParameterType.ObjectPointer,
+                formatSymbol = Placeholder_P,
+                convertionCallback = _TextFormatParameterConvertionCallback_ObjectPointer,
+            },
+            new ()
+            {
+                parameterType = TextFormatParameterType.ObjectType,
+                formatSymbol = Placeholder_T,
+                convertionCallback = _TextFormatParameterConvertionCallback_ObjectType,
+            },
+            new ()
+            {
+                parameterType = TextFormatParameterType.ObjectInfo,
+                formatSymbol = Placeholder_I,
+                convertionCallback = _TextFormatParameterConvertionCallback_ObjectInfo,
+            },
         };
 
         private static string _TextFormatParameterConvertionCallback_Boolean(object obj)
