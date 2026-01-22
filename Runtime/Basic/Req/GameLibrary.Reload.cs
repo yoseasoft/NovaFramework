@@ -42,14 +42,14 @@ namespace GameEngine
             ReloadAspectServiceOnTargetEntity(scene);
 
             // 角色重载
-            IList<CActor> actors = ActorHandler.Instance.GetAllActors();
+            IReadOnlyList<CActor> actors = ActorHandler.Instance.GetAllActors();
             for (int n = 0; n < actors.Count; ++n)
             {
                 ReloadAspectServiceOnTargetEntity(actors[n]);
             }
 
             // 视图重载
-            IList<CView> views = GuiHandler.Instance.GetAllViews();
+            IReadOnlyList<CView> views = GuiHandler.Instance.GetAllViews();
             for (int n = 0; n < views.Count; ++n)
             {
                 ReloadAspectServiceOnTargetEntity(views[n]);

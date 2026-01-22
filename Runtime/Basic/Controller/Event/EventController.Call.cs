@@ -100,7 +100,7 @@ namespace GameEngine
                     }
                     else
                     {
-                        IList<IBean> beans = BeanController.Instance.FindAllBeans(info.TargetType);
+                        IReadOnlyList<IBean> beans = BeanController.Instance.FindAllBeans(info.TargetType);
                         if (null != beans)
                         {
                             IEnumerator<IBean> e_bean = beans.GetEnumerator();
@@ -135,7 +135,7 @@ namespace GameEngine
                     }
                     else
                     {
-                        IList<IBean> beans = BeanController.Instance.FindAllBeans(info.TargetType);
+                        IReadOnlyList<IBean> beans = BeanController.Instance.FindAllBeans(info.TargetType);
                         if (null != beans)
                         {
                             IEnumerator<IBean> e_bean = beans.GetEnumerator();
@@ -170,8 +170,7 @@ namespace GameEngine
             }
             else
             {
-                IList<EventCallMethodInfo> list = new List<EventCallMethodInfo>();
-                list.Add(info);
+                IList<EventCallMethodInfo> list = new List<EventCallMethodInfo>() { info };
                 _eventIdDistributeCallInfos.Add(eventID, list);
             }
         }
@@ -196,8 +195,7 @@ namespace GameEngine
             }
             else
             {
-                IList<EventCallMethodInfo> list = new List<EventCallMethodInfo>();
-                list.Add(info);
+                IList<EventCallMethodInfo> list = new List<EventCallMethodInfo>() { info };
                 _eventDataDistributeCallInfos.Add(eventDataType, list);
             }
         }

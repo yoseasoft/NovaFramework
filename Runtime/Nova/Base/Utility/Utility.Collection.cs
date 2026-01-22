@@ -281,6 +281,19 @@ namespace NovaEngine
                 return source?.Cast<TargetType>().ToList().AsReadOnly();
             }
 
+            /// <summary>
+            /// 集合类型数据进行类型转换后再重构为列表类型数据的接口函数
+            /// </summary>
+            /// <typeparam name="SourceType">源数据类型</typeparam>
+            /// <typeparam name="TargetType">目标数据类型</typeparam>
+            /// <param name="source">集合数据容器</param>
+            /// <returns>返回转换后的列表类型数据容器</returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static IReadOnlyList<TargetType> CastAndToReadOnlyList<SourceType, TargetType>(IReadOnlyCollection<SourceType> source)
+            {
+                return source?.Cast<TargetType>().ToList().AsReadOnly();
+            }
+
             #endregion
 
             #region 容器类型查找相关的接口函数

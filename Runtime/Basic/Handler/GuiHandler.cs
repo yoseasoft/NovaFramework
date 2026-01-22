@@ -27,6 +27,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using System.Runtime.CompilerServices;
 
 using Cysharp.Threading.Tasks;
@@ -178,7 +179,7 @@ namespace GameEngine
         {
             if (false == _entityClassTypes.TryGetValue(viewName, out Type viewType))
             {
-                Debugger.Warn("Could not found any correct view class with target name '{%s}', opened view failed.", viewName);
+                Debugger.Warn(LogGroupTag.Module, "Could not found any correct view class with target name '{%s}', opened view failed.", viewName);
                 return null;
             }
 
@@ -198,7 +199,7 @@ namespace GameEngine
             Type viewType = typeof(T);
             if (false == _entityClassTypes.Values.Contains(viewType))
             {
-                Debugger.Error("Could not found any correct view class with target type '{%t}', opened view failed.", viewType);
+                Debugger.Error(LogGroupTag.Module, "Could not found any correct view class with target type '{%t}', opened view failed.", viewType);
                 return null;
             }
 
@@ -217,7 +218,7 @@ namespace GameEngine
             Debugger.Assert(viewType, NovaEngine.ErrorText.InvalidArguments);
             if (false == _entityClassTypes.Values.Contains(viewType))
             {
-                Debugger.Error("Could not found any correct view class with target type '{%t}', opened view failed.", viewType);
+                Debugger.Error(LogGroupTag.Module, "Could not found any correct view class with target type '{%t}', opened view failed.", viewType);
 
                 // return null;
                 throw new NovaEngine.CFrameworkException();
@@ -236,7 +237,7 @@ namespace GameEngine
 
             if (false == AddEntity(view))
             {
-                Debugger.Warn("The view instance '{%t}' initialization for error, added it failed.", viewType);
+                Debugger.Warn(LogGroupTag.Module, "The view instance '{%t}' initialization for error, added it failed.", viewType);
 
                 // return null;
                 throw new NovaEngine.CFrameworkException();
@@ -282,7 +283,7 @@ namespace GameEngine
         {
             if (false == _entityClassTypes.TryGetValue(viewName, out Type viewType))
             {
-                Debugger.Warn("Could not found any correct view class with target name '{%s}', found view failed.", viewName);
+                Debugger.Warn(LogGroupTag.Module, "Could not found any correct view class with target name '{%s}', found view failed.", viewName);
                 return false;
             }
 
@@ -327,7 +328,7 @@ namespace GameEngine
         {
             if (false == _entityClassTypes.TryGetValue(viewName, out Type viewType))
             {
-                Debugger.Warn("Could not found any correct view class with target name '{%s}', found view failed.", viewName);
+                Debugger.Warn(LogGroupTag.Module, "Could not found any correct view class with target name '{%s}', found view failed.", viewName);
                 return null;
             }
 
@@ -344,7 +345,7 @@ namespace GameEngine
             Type viewType = typeof(T);
             if (false == _entityClassTypes.Values.Contains(viewType))
             {
-                Debugger.Error("Could not found any correct view class with target type '{%t}', found view failed.", viewType);
+                Debugger.Error(LogGroupTag.Module, "Could not found any correct view class with target type '{%t}', found view failed.", viewType);
                 return null;
             }
 
@@ -385,7 +386,7 @@ namespace GameEngine
             Type viewType = typeof(T);
             if (false == _entityClassTypes.Values.Contains(viewType))
             {
-                Debugger.Error("Could not found any correct view class with target type '{%t}', found view failed.", viewType);
+                Debugger.Error(LogGroupTag.Module, "Could not found any correct view class with target type '{%t}', found view failed.", viewType);
                 return null;
             }
 
@@ -424,7 +425,7 @@ namespace GameEngine
         {
             if (false == Entities.Contains(view))
             {
-                Debugger.Error("Could not found any view reference '{%t}' with manage container, removed it failed.", view.BeanType);
+                Debugger.Error(LogGroupTag.Module, "Could not found any view reference '{%t}' with manage container, removed it failed.", view.BeanType);
                 return;
             }
 
@@ -469,7 +470,7 @@ namespace GameEngine
         {
             if (false == Entities.Contains(view))
             {
-                Debugger.Error("Could not found any view reference '{%t}' with manage container, removed it failed.", view.BeanType);
+                Debugger.Error(LogGroupTag.Module, "Could not found any view reference '{%t}' with manage container, removed it failed.", view.BeanType);
                 return;
             }
 
@@ -495,7 +496,7 @@ namespace GameEngine
         {
             if (false == _entityClassTypes.TryGetValue(viewName, out Type viewType))
             {
-                Debugger.Warn("Could not found any correct view class with target name '{%s}', closed view failed.", viewName);
+                Debugger.Warn(LogGroupTag.Module, "Could not found any correct view class with target name '{%s}', closed view failed.", viewName);
                 return;
             }
 
@@ -510,9 +511,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void CloseUI<T>() where T : CView
         {
-            Type viewType = typeof(T);
-
-            CloseUI(viewType);
+            CloseUI(typeof(T));
         }
 
         /// <summary>
@@ -571,6 +570,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
         /// <returns>返回对应视图的名称，若视图不存在则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal string GetViewNameForType<T>() where T : CView
         {
             return GetViewNameForType(typeof(T));
@@ -599,7 +599,7 @@ namespace GameEngine
         /// </summary>
         /// <returns>返回已创建的全部视图对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IList<CView> GetAllViews()
+        public IReadOnlyList<CView> GetAllViews()
         {
             return GetAllEntities();
         }
@@ -632,16 +632,16 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回给定类型的全部实例</returns>
-        internal IList<CView> FindAllViewsByType(Type viewType)
+        internal IReadOnlyList<CView> FindAllViewsByType(Type viewType)
         {
-            IList<CView> result = null;
-            IEnumerator<CView> e = Entities.GetEnumerator();
-            while (e.MoveNext())
+            List<CView> result = null;
+            for (int n = 0; n < Entities.Count; ++n)
             {
-                CView view = e.Current;
-                if (viewType.IsAssignableFrom(view.BeanType))
+                CView view = Entities[n];
+                if (view.BeanType.Is(viewType))
                 {
                     if (null == result) result = new List<CView>();
+
                     result.Add(view);
                 }
             }

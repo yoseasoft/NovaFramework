@@ -27,6 +27,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using System.Runtime.CompilerServices;
 
 using UnityGameObject = UnityEngine.GameObject;
@@ -131,7 +132,7 @@ namespace GameEngine
         {
             Debugger.Assert(false == string.IsNullOrEmpty(actorName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
 
-            if (false == typeof(CActor).IsAssignableFrom(clsType))
+            if (false == clsType.Is<CActor>())
             {
                 Debugger.Warn(LogGroupTag.Module, "The register type '{%t}' must be inherited from 'CActor'.", clsType);
                 return false;
@@ -166,7 +167,8 @@ namespace GameEngine
         /// </summary>
         /// <param name="actorName">对象名称</param>
         /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
-        public IList<CActor> GetActor(string actorName)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IReadOnlyList<CActor> GetActor(string actorName)
         {
             if (_entityClassTypes.TryGetValue(actorName, out Type actorType))
             {
@@ -181,11 +183,10 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
-        public IList<T> GetActor<T>() where T : CActor
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IReadOnlyList<T> GetActor<T>() where T : CActor
         {
-            Type actorType = typeof(T);
-
-            return NovaEngine.Utility.Collection.CastAndToList<CActor, T>(GetActor(actorType));
+            return NovaEngine.Utility.Collection.CastAndToReadOnlyList<CActor, T>(GetActor(typeof(T)));
         }
 
         /// <summary>
@@ -193,9 +194,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="actorType">对象类型</param>
         /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
-        public IList<CActor> GetActor(Type actorType)
+        public IReadOnlyList<CActor> GetActor(Type actorType)
         {
-            IList<CActor> actors = null;
+            List<CActor> actors = null;
             for (int n = 0; n < Entities.Count; ++n)
             {
                 CActor actor = Entities[n];
@@ -215,7 +216,7 @@ namespace GameEngine
         /// </summary>
         /// <returns>返回已创建的全部角色对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IList<CActor> GetAllActors()
+        public IReadOnlyList<CActor> GetAllActors()
         {
             return GetAllEntities();
         }
@@ -253,7 +254,7 @@ namespace GameEngine
         {
             if (false == _entityClassTypes.TryGetValue(actorName, out Type actorType))
             {
-                Debugger.Warn("Could not found any correct actor class with target name '{%s}', created actor failed.", actorName);
+                Debugger.Warn(LogGroupTag.Module, "Could not found any correct actor class with target name '{%s}', created actor failed.", actorName);
                 return null;
             }
 
@@ -269,9 +270,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T CreateActor<T>(object userData = null) where T : CActor
         {
-            Type actorType = typeof(T);
-
-            return CreateActor(actorType, userData) as T;
+            return CreateActor(typeof(T), userData) as T;
         }
 
         /// <summary>
@@ -298,7 +297,7 @@ namespace GameEngine
             Debugger.Assert(actorType, NovaEngine.ErrorText.InvalidArguments);
             if (false == _entityClassTypes.Values.Contains(actorType))
             {
-                Debugger.Error("Could not found any correct actor class with target type '{%t}', created actor failed.", actorType);
+                Debugger.Error(LogGroupTag.Module, "Could not found any correct actor class with target type '{%t}', created actor failed.", actorType);
                 return null;
             }
 
@@ -309,7 +308,7 @@ namespace GameEngine
 
             if (false == AddEntity(obj))
             {
-                Debugger.Warn("The actor instance '{%t}' initialization for error, added it failed.", actorType);
+                Debugger.Warn(LogGroupTag.Module, "The actor instance '{%t}' initialization for error, added it failed.", actorType);
                 return null;
             }
 
@@ -332,7 +331,7 @@ namespace GameEngine
         {
             if (false == Entities.Contains(actor))
             {
-                Debugger.Warn("Could not found target actor instance '{%t}' from current container, removed it failed.", actor.BeanType);
+                Debugger.Warn(LogGroupTag.Module, "Could not found target actor instance '{%t}' from current container, removed it failed.", actor.BeanType);
                 return;
             }
 
@@ -371,9 +370,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal void RemoveActor<T>() where T : CActor
         {
-            Type actorType = typeof(T);
-
-            RemoveActor(actorType);
+            RemoveActor(typeof(T));
         }
 
         /// <summary>
@@ -528,16 +525,16 @@ namespace GameEngine
         /// </summary>
         /// <param name="actorType">对象类型</param>
         /// <returns>返回给定类型的全部实例</returns>
-        internal IList<CActor> FindAllActorsByType(Type actorType)
+        internal IReadOnlyList<CActor> FindAllActorsByType(Type actorType)
         {
-            IList<CActor> result = null;
-            IEnumerator<CActor> e = Entities.GetEnumerator();
-            while (e.MoveNext())
+            List<CActor> result = null;
+            for (int n = 0; n < Entities.Count; ++n)
             {
-                CActor obj = e.Current;
-                if (actorType.IsAssignableFrom(obj.BeanType))
+                CActor obj = Entities[n];
+                if (obj.BeanType.Is(actorType))
                 {
                     if (null == result) result = new List<CActor>();
+
                     result.Add(obj);
                 }
             }

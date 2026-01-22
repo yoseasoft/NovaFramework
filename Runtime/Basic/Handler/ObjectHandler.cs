@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using System.Runtime.CompilerServices;
 
 namespace GameEngine
@@ -170,7 +171,7 @@ namespace GameEngine
         {
             Debugger.Assert(false == string.IsNullOrEmpty(objectName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
 
-            if (false == typeof(CObject).IsAssignableFrom(clsType))
+            if (false == clsType.Is<CObject>())
             {
                 Debugger.Warn(LogGroupTag.Module, "The register type {%t} must be inherited from 'CObject'.", clsType);
                 return false;
@@ -211,7 +212,7 @@ namespace GameEngine
         /// <param name="objectName">对象名称</param>
         /// <returns>返回基础对象实例列表，若检索失败则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IList<CObject> GetObject(string objectName)
+        public IReadOnlyList<CObject> GetObject(string objectName)
         {
             if (_objectClassTypes.TryGetValue(objectName, out Type objectType))
             {
@@ -227,11 +228,9 @@ namespace GameEngine
         /// <typeparam name="T">对象类型</typeparam>
         /// <returns>返回基础对象实例列表，若检索失败则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IList<T> GetObject<T>() where T : CObject
+        public IReadOnlyList<T> GetObject<T>() where T : CObject
         {
-            Type objectType = typeof(T);
-
-            return NovaEngine.Utility.Collection.CastAndToList<CObject, T>(GetObject(objectType));
+            return NovaEngine.Utility.Collection.CastAndToReadOnlyList<CObject, T>(GetObject(typeof(T)));
         }
 
         /// <summary>
@@ -239,21 +238,18 @@ namespace GameEngine
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>返回基础对象实例列表，若检索失败则返回null</returns>
-        public IList<CObject> GetObject(Type objectType)
+        public IReadOnlyList<CObject> GetObject(Type objectType)
         {
-            List<CObject> objects = new List<CObject>();
+            List<CObject> objects = null;
             for (int n = 0; n < _objects.Count; ++n)
             {
                 CObject actor = _objects[n];
                 if (actor.BeanType == objectType)
                 {
+                    if (null == objects) objects = new List<CObject>();
+
                     objects.Add(actor);
                 }
-            }
-
-            if (objects.Count <= 0)
-            {
-                objects = null;
             }
 
             return objects;
@@ -264,9 +260,9 @@ namespace GameEngine
         /// </summary>
         /// <returns>返回已创建的全部基础对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IList<CObject> GetAllObjects()
+        public IReadOnlyList<CObject> GetAllObjects()
         {
-            return _objects;
+            return (List<CObject>) _objects;
         }
 
         /// <summary>
@@ -280,7 +276,7 @@ namespace GameEngine
         {
             if (false == _objectClassTypes.TryGetValue(objectName, out Type objectType))
             {
-                Debugger.Warn("Could not found any correct object class with target name '{%s}', created object failed.", objectName);
+                Debugger.Warn(LogGroupTag.Module, "Could not found any correct object class with target name '{%s}', created object failed.", objectName);
                 return null;
             }
 
@@ -296,9 +292,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T CreateObject<T>(object userData = null) where T : CObject
         {
-            Type objectType = typeof(T);
-
-            return CreateObject(objectType) as T;
+            return CreateObject(typeof(T), userData) as T;
         }
 
         /// <summary>
@@ -324,7 +318,7 @@ namespace GameEngine
             Debugger.Assert(objectType, NovaEngine.ErrorText.InvalidArguments);
             if (false == _objectClassTypes.Values.Contains(objectType))
             {
-                Debugger.Error("Could not found any correct object class with target type '{%t}', created object failed.", objectType);
+                Debugger.Error(LogGroupTag.Module, "Could not found any correct object class with target type '{%t}', created object failed.", objectType);
                 return null;
             }
 
@@ -360,7 +354,7 @@ namespace GameEngine
         {
             if (false == _objects.Contains(obj))
             {
-                Debugger.Warn("Could not found target object instance '{%t}' from current container, removed it failed.", obj.BeanType);
+                Debugger.Warn(LogGroupTag.Module, "Could not found target object instance '{%t}' from current container, removed it failed.", obj.BeanType);
                 return;
             }
 
@@ -406,9 +400,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal void RemoveObject<T>() where T : CObject
         {
-            Type objectType = typeof(T);
-
-            RemoveObject(objectType);
+            RemoveObject(typeof(T));
         }
 
         /// <summary>
@@ -417,7 +409,7 @@ namespace GameEngine
         /// <param name="objectType">对象类型</param>
         internal void RemoveObject(Type objectType)
         {
-            IEnumerable<CObject> objects = NovaEngine.Utility.Collection.Reverse<CObject>(_objects);
+            IEnumerable<CObject> objects = NovaEngine.Utility.Collection.Reverse(_objects);
             foreach (CObject obj in objects)
             {
                 if (obj.BeanType == objectType)
@@ -446,7 +438,7 @@ namespace GameEngine
         {
             if (false == _objects.Contains(obj))
             {
-                Debugger.Warn("Could not found target object instance '{%t}' from current container, removed it failed.", obj.BeanType);
+                Debugger.Warn(LogGroupTag.Module, "Could not found target object instance '{%t}' from current container, removed it failed.", obj.BeanType);
                 return;
             }
 
@@ -482,9 +474,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DestroyObject<T>() where T : CObject
         {
-            Type objectType = typeof(T);
-
-            DestroyObject(objectType);
+            DestroyObject(typeof(T));
         }
 
         /// <summary>
@@ -493,7 +483,7 @@ namespace GameEngine
         /// <param name="objectType">对象类型</param>
         public void DestroyObject(Type objectType)
         {
-            IEnumerable<CObject> objects = NovaEngine.Utility.Collection.Reverse<CObject>(_objects);
+            IEnumerable<CObject> objects = NovaEngine.Utility.Collection.Reverse(_objects);
             foreach (CObject obj in objects)
             {
                 if (obj.BeanType == objectType)
@@ -522,7 +512,7 @@ namespace GameEngine
         {
             if (false == _objects.Contains(obj))
             {
-                Debugger.Error("Could not found any added record of the object instance '{%t}', calling start process failed.", obj.BeanType);
+                Debugger.Error(LogGroupTag.Module, "Could not found any added record of the object instance '{%t}', calling start process failed.", obj.BeanType);
                 return;
             }
 
@@ -530,14 +520,14 @@ namespace GameEngine
             Call(obj, obj.Start, AspectBehaviourType.Start);
 
             // 激活执行接口的对象实例，放入到执行队列中
-            //if (typeof(IExecuteActivation).IsAssignableFrom(obj.BeanType))
+            //if (obj.BeanType.Is<IExecuteActivation>())
             if (obj.IsExecuteActivation())
             {
                 _objectExecuteList.Add(obj);
             }
 
             // 激活刷新接口的对象实例，放入到刷新队列中
-            //if (typeof(IUpdateActivation).IsAssignableFrom(obj.BeanType))
+            //if (obj.BeanType.Is<IUpdateActivation>())
             if (obj.IsUpdateActivation())
             {
                 _objectUpdateList.Add(obj);
@@ -553,6 +543,7 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <returns>返回对应对象的名称，若对象不存在则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal string GetObjectNameForType<T>() where T : CObject
         {
             return GetObjectNameForType(typeof(T));
@@ -563,6 +554,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>返回对应对象的名称，若对象不存在则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal string GetObjectNameForType(Type objectType)
         {
             foreach (KeyValuePair<string, Type> pair in _objectClassTypes)
@@ -582,23 +574,18 @@ namespace GameEngine
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>返回给定类型的全部实例</returns>
-        internal IList<CObject> FindAllObjectsByType(Type objectType)
+        internal IReadOnlyList<CObject> FindAllObjectsByType(Type objectType)
         {
-            IList<CObject> result = new List<CObject>();
-            IEnumerator<CObject> e = _objects.GetEnumerator();
-            while (e.MoveNext())
+            List<CObject> result = null;
+            for (int n = 0; n < _objects.Count; ++n)
             {
-                CObject obj = e.Current;
-                if (objectType.IsAssignableFrom(obj.BeanType))
+                CObject obj = _objects[n];
+                if (obj.BeanType.Is(objectType))
                 {
+                    if (null == result) result = new List<CObject>();
+
                     result.Add(obj);
                 }
-            }
-
-            // 如果搜索结果为空，则直接返回null
-            if (result.Count <= 0)
-            {
-                result = null;
             }
 
             return result;

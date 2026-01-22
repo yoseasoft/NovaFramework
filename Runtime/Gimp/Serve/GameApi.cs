@@ -167,7 +167,7 @@ namespace GameEngine
         /// <param name="objectName">对象名称</param>
         /// <returns>返回基础对象实例列表，若检索失败则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IList<CObject> GetObject(string objectName)
+        public static IReadOnlyList<CObject> GetObject(string objectName)
         {
             return ObjectHandler.Instance.GetObject(objectName);
         }
@@ -178,7 +178,7 @@ namespace GameEngine
         /// <typeparam name="T">对象类型</typeparam>
         /// <returns>返回基础对象实例列表，若检索失败则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IList<T> GetObject<T>() where T : CObject
+        public static IReadOnlyList<T> GetObject<T>() where T : CObject
         {
             return ObjectHandler.Instance.GetObject<T>();
         }
@@ -189,7 +189,7 @@ namespace GameEngine
         /// <param name="objectType">对象类型</param>
         /// <returns>返回基础对象实例列表，若检索失败则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IList<CObject> GetObject(Type objectType)
+        public static IReadOnlyList<CObject> GetObject(Type objectType)
         {
             return ObjectHandler.Instance.GetObject(objectType);
         }
@@ -199,7 +199,7 @@ namespace GameEngine
         /// </summary>
         /// <returns>返回已创建的全部基础对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IList<CObject> GetAllObjects()
+        public static IReadOnlyList<CObject> GetAllObjects()
         {
             return ObjectHandler.Instance.GetAllObjects();
         }
@@ -415,7 +415,7 @@ namespace GameEngine
         /// <param name="actorName">对象名称</param>
         /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IList<CActor> GetActor(string actorName)
+        public static IReadOnlyList<CActor> GetActor(string actorName)
         {
             return ActorHandler.Instance.GetActor(actorName);
         }
@@ -426,7 +426,7 @@ namespace GameEngine
         /// <typeparam name="T">对象类型</typeparam>
         /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IList<T> GetActor<T>() where T : CActor
+        public static IReadOnlyList<T> GetActor<T>() where T : CActor
         {
             return ActorHandler.Instance.GetActor<T>();
         }
@@ -437,7 +437,7 @@ namespace GameEngine
         /// <param name="actorType">对象类型</param>
         /// <returns>返回角色对象实例列表，若检索失败则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IList<CActor> GetActor(Type actorType)
+        public static IReadOnlyList<CActor> GetActor(Type actorType)
         {
             return ActorHandler.Instance.GetActor(actorType);
         }
@@ -447,7 +447,7 @@ namespace GameEngine
         /// </summary>
         /// <returns>返回已创建的全部角色对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IList<CActor> GetAllActors()
+        public static IReadOnlyList<CActor> GetAllActors()
         {
             return ActorHandler.Instance.GetAllActors();
         }
@@ -730,7 +730,7 @@ namespace GameEngine
         /// </summary>
         /// <returns>返回已创建的全部视图对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IList<CView> GetAllViews()
+        public static IReadOnlyList<CView> GetAllViews()
         {
             return GuiHandler.Instance.GetAllViews();
         }

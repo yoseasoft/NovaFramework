@@ -24,7 +24,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using UnityEngine.Scripting;
 
 namespace GameEngine
@@ -115,11 +117,10 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">类型标识</typeparam>
         /// <returns>返回给定类型的全部实例</returns>
-        public IList<T> FindAllBeans<T>() where T : IBean
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IReadOnlyList<T> FindAllBeans<T>() where T : IBean
         {
-            Type classType = typeof(T);
-
-            return NovaEngine.Utility.Collection.CastAndToList<IBean, T>(FindAllBeans(classType));
+            return NovaEngine.Utility.Collection.CastAndToReadOnlyList<IBean, T>(FindAllBeans(typeof(T)));
         }
 
         /// <summary>
@@ -128,15 +129,15 @@ namespace GameEngine
         /// </summary>
         /// <param name="classType">类型标识</param>
         /// <returns>返回给定类型的全部实例</returns>
-        public IList<IBean> FindAllBeans(Type classType)
+        public IReadOnlyList<IBean> FindAllBeans(Type classType)
         {
             if (false == TryGetBeanLookupProcessingCallback(classType, out Delegate callback))
             {
-                Debugger.Warn("Could not found any bean lookup processing callback with target type '{%t}', calling lookup process failed.", classType);
+                Debugger.Warn(LogGroupTag.Controller, "Could not found any bean lookup processing callback with target type '{%t}', calling lookup process failed.", classType);
                 return null;
             }
 
-            return callback.DynamicInvoke(classType) as IList<IBean>;
+            return callback.DynamicInvoke(classType) as IReadOnlyList<IBean>;
         }
 
         #region 原型对象查找操作注册绑定接口函数
@@ -153,7 +154,7 @@ namespace GameEngine
 
             foreach (KeyValuePair<Type, Delegate> pair in _beanLookupProcessingCallbacks)
             {
-                if (pair.Key.IsAssignableFrom(targetType))
+                if (targetType.Is(pair.Key))
                 {
                     callback = pair.Value;
                     return true;
@@ -172,7 +173,7 @@ namespace GameEngine
         {
             if (_beanLookupProcessingCallbacks.ContainsKey(targetType))
             {
-                Debugger.Warn("The callback '{%t}' was already exists for target type '{%t}', repeated add it will be override old handler.",
+                Debugger.Warn(LogGroupTag.Controller, "The callback '{%t}' was already exists for target type '{%t}', repeated add it will be override old handler.",
                         callback, targetType);
 
                 _beanLookupProcessingCallbacks.Remove(targetType);
@@ -190,19 +191,19 @@ namespace GameEngine
         /// 返回的实例列表中，包括了该类型及其子类的全部实例
         /// </summary>
         /// <returns>返回实体类型的全部实例</returns>
-        private IList<CEntity> FindAllEntities()
+        private IReadOnlyList<CEntity> FindAllEntities()
         {
             Type entityType = typeof(CEntity);
             List<CEntity> entities = new List<CEntity>();
 
             foreach (KeyValuePair<Type, Delegate> pair in _beanLookupProcessingCallbacks)
             {
-                if (entityType.IsAssignableFrom(pair.Key))
+                if (pair.Key.Is(entityType))
                 {
-                    IList<IBean> list = pair.Value.DynamicInvoke(entityType) as IList<IBean>;
+                    IReadOnlyList<IBean> list = pair.Value.DynamicInvoke(entityType) as IReadOnlyList<IBean>;
                     if (null != list && list.Count > 0)
                     {
-                        entities.AddRange(NovaEngine.Utility.Collection.CastAndToList<IBean, CEntity>(list));
+                        entities.AddRange(NovaEngine.Utility.Collection.CastAndToReadOnlyList<IBean, CEntity>(list));
                     }
                 }
             }
@@ -217,11 +218,11 @@ namespace GameEngine
         /// <param name="classType">对象类型</param>
         /// <returns>返回给定类型的全部实例</returns>
         [OnBeanLookupProcessRegisterOfTarget(typeof(CObject))]
-        private IList<IBean> FindAllObjectsByType(Type classType)
+        private IReadOnlyList<IBean> FindAllObjectsByType(Type classType)
         {
             ObjectHandler handler = ObjectHandler.Instance;
-            IList<CObject> list = handler.FindAllObjectsByType(classType);
-            return NovaEngine.Utility.Collection.CastAndToList<CObject, IBean>(list);
+            IReadOnlyList<CObject> list = handler.FindAllObjectsByType(classType);
+            return NovaEngine.Utility.Collection.CastAndToReadOnlyList<CObject, IBean>(list);
         }
 
         /// <summary>
@@ -254,11 +255,11 @@ namespace GameEngine
         /// <param name="classType">对象类型</param>
         /// <returns>返回给定类型的全部实例</returns>
         [OnBeanLookupProcessRegisterOfTarget(typeof(CActor))]
-        private IList<IBean> FindAllActorsByType(Type classType)
+        private IReadOnlyList<IBean> FindAllActorsByType(Type classType)
         {
             ActorHandler handler = ActorHandler.Instance;
-            IList<CActor> list = handler.FindAllActorsByType(classType);
-            return NovaEngine.Utility.Collection.CastAndToList<CActor, IBean>(list);
+            IReadOnlyList<CActor> list = handler.FindAllActorsByType(classType);
+            return NovaEngine.Utility.Collection.CastAndToReadOnlyList<CActor, IBean>(list);
         }
 
         /// <summary>
@@ -268,11 +269,11 @@ namespace GameEngine
         /// <param name="classType">视图类型</param>
         /// <returns>返回给定类型的全部实例</returns>
         [OnBeanLookupProcessRegisterOfTarget(typeof(CView))]
-        private IList<IBean> FindAllViewsByType(Type classType)
+        private IReadOnlyList<IBean> FindAllViewsByType(Type classType)
         {
             GuiHandler handler = GuiHandler.Instance;
-            IList<CView> list = handler.FindAllViewsByType(classType);
-            return NovaEngine.Utility.Collection.CastAndToList<CView, IBean>(list);
+            IReadOnlyList<CView> list = handler.FindAllViewsByType(classType);
+            return NovaEngine.Utility.Collection.CastAndToReadOnlyList<CView, IBean>(list);
         }
 
         /// <summary>
@@ -282,10 +283,10 @@ namespace GameEngine
         /// <param name="classType">组件类型</param>
         /// <returns>返回给定类型的全部实例</returns>
         [OnBeanLookupProcessRegisterOfTarget(typeof(CComponent))]
-        private IList<IBean> FindAllComponentsByType(Type classType)
+        private IReadOnlyList<IBean> FindAllComponentsByType(Type classType)
         {
-            IList<CEntity> entities = FindAllEntities();
-            IList<IBean> components = new List<IBean>();
+            IReadOnlyList<CEntity> entities = FindAllEntities();
+            List<IBean> components = null;
 
             IEnumerator<CEntity> e = entities.GetEnumerator();
             while (e.MoveNext())
@@ -293,14 +294,10 @@ namespace GameEngine
                 CComponent c = e.Current.GetComponent(classType);
                 if (null != c)
                 {
+                    if (null == components) components = new List<IBean>();
+
                     components.Add(c);
                 }
-            }
-
-            // 如果搜索结果为空，则直接返回null
-            if (components.Count <= 0)
-            {
-                components = null;
             }
 
             return components;

@@ -234,9 +234,9 @@ namespace GameEngine
         /// </summary>
         /// <returns>返回当前记录的全部实体对象实例列表</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected IList<T> GetAllEntities()
+        protected IReadOnlyList<T> GetAllEntities()
         {
-            IList<T> entities = new List<T>(_entities);
+            IReadOnlyList<T> entities = new List<T>(_entities);
             return entities;
         }
 

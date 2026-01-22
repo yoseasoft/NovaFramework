@@ -197,7 +197,7 @@ namespace GameEngine
                     }
                     else
                     {
-                        IList<IBean> beans = BeanController.Instance.FindAllBeans(info.TargetType);
+                        IReadOnlyList<IBean> beans = BeanController.Instance.FindAllBeans(info.TargetType);
                         if (null != beans)
                         {
                             IEnumerator<IBean> e_bean = beans.GetEnumerator();
