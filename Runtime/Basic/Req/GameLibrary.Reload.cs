@@ -72,7 +72,7 @@ namespace GameEngine
             ReloadAspectServiceOfTargetBaseBean(entity);
 
             // 重载组件实例
-            IList<CComponent> components = entity.GetAllComponents();
+            IReadOnlyList<CComponent> components = entity.GetAllComponents();
             for (int n = 0; null != components && n < components.Count; ++n)
             {
                 CComponent component = components[n];

@@ -69,7 +69,7 @@ namespace GameEngine
             {
                 if (false == NovaEngine.Utility.Convertion.IsCorrectedEnumValue<AspectBehaviourType>((int) behaviourType))
                 {
-                    Debugger.Error("Invalid aspect behaviour type ({%i}).", behaviourType);
+                    Debugger.Error(LogGroupTag.Controller, "Invalid aspect behaviour type ({%i}).", behaviourType);
                     return;
                 }
 
@@ -146,8 +146,8 @@ namespace GameEngine
         {
             Type targetType = target.GetType();
 
-            bool ret_status = false, has_status = false;
-            if (TryGetServiceProcessingCallStatus(targetType, methodName, out ret_status))
+            bool has_status = false;
+            if (TryGetServiceProcessingCallStatus(targetType, methodName, out bool ret_status))
             {
                 if (false == ret_status && false == reload)
                 {
@@ -160,8 +160,7 @@ namespace GameEngine
             }
 
             ret_status = false;
-            IList<IDictionary<string, SystemAction_object_bool>> list = null;
-            if (TryGetServiceProcessingCallHandler(targetType, out list))
+            if (TryGetServiceProcessingCallHandler(targetType, out IList<IDictionary<string, SystemAction_object_bool>> list))
             {
                 for (int n = 0; n < list.Count; ++n)
                 {
@@ -203,7 +202,7 @@ namespace GameEngine
 
             if (targetServiceInfos.ContainsKey(methodName))
             {
-                Debugger.Warn("The handler '{%t}' was already exists for target method '{%t}.{%s}', repeated add it will be override old handler.",
+                Debugger.Warn(LogGroupTag.Controller, "The handler '{%t}' was already exists for target method '{%t}.{%s}', repeated add it will be override old handler.",
                         handler, targetType, methodName);
 
                 targetServiceInfos.Remove(methodName);
@@ -229,7 +228,7 @@ namespace GameEngine
 
             if (targetServiceStatus.ContainsKey(methodName))
             {
-                Debugger.Warn("The service processing status '{%b}' was already exists for target method '{%t}.{%s}', repeated add it will be override old handler.",
+                Debugger.Warn(LogGroupTag.Controller, "The service processing status '{%b}' was already exists for target method '{%t}.{%s}', repeated add it will be override old handler.",
                         status, targetType, methodName);
 
                 targetServiceStatus.Remove(methodName);
@@ -246,8 +245,6 @@ namespace GameEngine
         /// <returns>若查找句柄列表成功返回true，否则返回false</returns>
         private static bool TryGetServiceProcessingCallHandler(Type targetType, out IList<IDictionary<string, SystemAction_object_bool>> handlers)
         {
-            handlers = null;
-
             IList<IDictionary<string, SystemAction_object_bool>> list = null;
             IEnumerator<KeyValuePair<Type, IDictionary<string, SystemAction_object_bool>>> e = _serviceProcessCallInfos.GetEnumerator();
             while (e.MoveNext())
@@ -283,6 +280,9 @@ namespace GameEngine
                 return true;
             }
 
+            // 未找到记录的情况下，返回null
+            handlers = null;
+
             return false;
         }
 
@@ -295,10 +295,11 @@ namespace GameEngine
         /// <returns>若查找状态标识成功返回true，否则返回false</returns>
         private static bool TryGetServiceProcessingCallStatus(Type targetType, string methodName, out bool status)
         {
-            status = false;
-
             if (false == _serviceProcessCallStatus.TryGetValue(targetType, out IDictionary<string, bool> targetServiceStatus))
             {
+                // 未找到记录的情况下，标记状态的默认值
+                status = false;
+
                 return false;
             }
 

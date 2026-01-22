@@ -117,7 +117,7 @@ namespace GameEngine.Profiler.Statistics
             foreach (KeyValuePair<int, StatCreateHandler> pair in _statCreateCallbacks)
             {
                 // 创建统计模块实例
-                // object stat_module = pair.Value(pair.Key);
+                /*object stat_module = */pair.Value(pair.Key);
 
                 if (false == _statObjects.ContainsKey(pair.Key))
                 {

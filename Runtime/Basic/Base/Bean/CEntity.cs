@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using System.Runtime.CompilerServices;
 
 namespace GameEngine
@@ -820,9 +821,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasComponent<T>() where T : CComponent
         {
-            Type componentType = typeof(T);
-
-            return HasComponent(componentType);
+            return HasComponent(typeof(T));
         }
 
         /// <summary>
@@ -936,8 +935,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T AddComponent<T>() where T : CComponent
         {
-            Type componentType = typeof(T);
-            return AddComponent(componentType) as T;
+            return AddComponent(typeof(T)) as T;
         }
 
         /// <summary>
@@ -1056,6 +1054,8 @@ namespace GameEngine
             // 通知内部组件被改变
             OnInternalComponentsChanged();
 
+            _Profiler.CallStat(Profiler.Statistics.StatCode.ComponentAdd, component);
+
             return component;
         }
 
@@ -1067,12 +1067,12 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public CComponent GetComponent(string name)
         {
-            if (false == _components.TryGetValue(name, out CComponent component))
+            if (_components.TryGetValue(name, out CComponent component))
             {
-                return null;
+                return component;
             }
 
-            return component;
+            return null;
         }
 
         /// <summary>
@@ -1083,9 +1083,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T GetComponent<T>() where T : CComponent
         {
-            Type componentType = typeof(T);
-
-            return GetComponent(componentType) as T;
+            return GetComponent(typeof(T)) as T;
         }
 
         /// <summary>
@@ -1107,11 +1105,9 @@ namespace GameEngine
         /// <typeparam name="T">组件类型</typeparam>
         /// <returns>若查找组件实例成功则返回对应实例的列表，否则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IList<T> GetInheritedComponents<T>() where T : CComponent
+        public IReadOnlyList<T> GetInheritedComponents<T>() where T : CComponent
         {
-            Type componentType = typeof(T);
-
-            return NovaEngine.Utility.Collection.CastAndToList<CComponent, T>(GetInheritedComponents(componentType));
+            return NovaEngine.Utility.Collection.CastAndToReadOnlyList<CComponent, T>(GetInheritedComponents(typeof(T)));
         }
 
         /// <summary>
@@ -1119,12 +1115,12 @@ namespace GameEngine
         /// </summary>
         /// <param name="componentType">组件类型</param>
         /// <returns>若查找组件实例成功则返回对应实例的列表，否则返回null</returns>
-        public IList<CComponent> GetInheritedComponents(Type componentType)
+        public IReadOnlyList<CComponent> GetInheritedComponents(Type componentType)
         {
-            IList<CComponent> list = null;
+            List<CComponent> list = null;
             foreach (KeyValuePair<string, CComponent> kvp in _components)
             {
-                if (componentType.IsAssignableFrom(kvp.Value.BeanType))
+                if (kvp.Value.BeanType.Is(componentType))
                 {
                     if (null == list) list = new List<CComponent>();
 
@@ -1140,9 +1136,9 @@ namespace GameEngine
         /// </summary>
         /// <returns>返回实体对象注册的所有组件实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IList<CComponent> GetAllComponents()
+        public IReadOnlyList<CComponent> GetAllComponents()
         {
-            return NovaEngine.Utility.Collection.ToListForValues(_components);
+            return NovaEngine.Utility.Collection.ToReadOnlyListForValues(_components);
         }
 
         /// <summary>
@@ -1153,9 +1149,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private string GetComponentName(CComponent component)
         {
-            Type componentType = component.BeanType;
-
-            return GetComponentNameByType(componentType);
+            return GetComponentNameByType(component.BeanType);
         }
 
         /// <summary>
@@ -1188,6 +1182,8 @@ namespace GameEngine
                 BeanController.Instance.RegBeanLifecycleNotification(AspectBehaviourType.Destroy, component);
                 return;
             }
+
+            _Profiler.CallStat(Profiler.Statistics.StatCode.ComponentRemove, component);
 
             BeanController.Instance.UnregBeanLifecycleNotification(component);
 
@@ -1230,9 +1226,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void RemoveComponent<T>() where T : CComponent
         {
-            Type componentType = typeof(T);
-
-            RemoveComponent(componentType);
+            RemoveComponent(typeof(T));
         }
 
         /// <summary>

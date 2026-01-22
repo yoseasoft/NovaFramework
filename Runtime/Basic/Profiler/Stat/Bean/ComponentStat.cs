@@ -1,7 +1,6 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,25 +22,27 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using UnityEngine.Scripting;
+
 namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
-    /// 统计模块类型的枚举定义
+    /// 组件统计模块，对组件模块对象提供数据统计所需的接口函数
     /// </summary>
-    internal enum StatType : byte
+    internal sealed class ComponentStat : BaseStat<ComponentStat, ComponentStatInfo>
     {
-        /// <summary>
-        /// 未知
-        /// </summary>
-        Unknown = 0,
+        [IStat.OnStatFunctionRegister(StatCode.ComponentAdd)]
+        [Preserve]
+        private void OnComponentAdd(CComponent obj)
+        {
+            Debugger.Warn("添加组件 {%t}", obj);
+        }
 
-        Timer,
-        Network,
-        Asset,
-        Object,
-        Component,
-        Scene,
-        Actor,
-        View,
+        [IStat.OnStatFunctionRegister(StatCode.ComponentRemove)]
+        [Preserve]
+        private void OnComponentRemove(CComponent obj)
+        {
+            Debugger.Warn("移除组件 {%t}", obj);
+        }
     }
 }

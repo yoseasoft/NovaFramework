@@ -2,7 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -47,9 +47,17 @@ namespace GameEngine.Profiler.Statistics
         public const int NetworkSend = NetworkCode + 0x03;
         public const int NetworkRecv = NetworkCode + 0x04;
 
+        private const int AssetCode = (int) StatType.Asset * StatCodingInterval;
+        public const int AssetLoad = AssetCode + 0x01;
+        public const int AssetUnload = AssetCode + 0x02;
+
         private const int ObjectCode = (int) StatType.Object * StatCodingInterval;
         public const int ObjectCreate = ObjectCode + 0x01;
         public const int ObjectRelease = ObjectCode + 0x02;
+
+        private const int ComponentCode = (int) StatType.Component * StatCodingInterval;
+        public const int ComponentAdd = ComponentCode + 0x01;
+        public const int ComponentRemove = ComponentCode + 0x02;
 
         private const int SceneCode = (int) StatType.Scene * StatCodingInterval;
         public const int SceneEnter = SceneCode + 0x01;
