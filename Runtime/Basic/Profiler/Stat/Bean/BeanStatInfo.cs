@@ -24,6 +24,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+using System.Runtime.CompilerServices;
+
 namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
@@ -32,6 +35,18 @@ namespace GameEngine.Profiler.Statistics
     public abstract class BeanStatInfo : StatInfo
     {
         /// <summary>
+        /// 实体对象活动状态的枚举类型定义
+        /// </summary>
+        [Flags]
+        public enum ActivityStatusType
+        {
+            Unknown     = 0x00,
+            Active      = 0x01,
+            Inactive    = 0x02,
+            Destroyed   = 0x10,
+        }
+
+        /// <summary>
         /// 类型名称
         /// </summary>
         private readonly string _className;
@@ -39,6 +54,11 @@ namespace GameEngine.Profiler.Statistics
         /// Bean名称
         /// </summary>
         private readonly string _beanName;
+
+        /// <summary>
+        /// 实体对象活动状态类型
+        /// </summary>
+        private ActivityStatusType _statusType;
 
         /// <summary>
         /// 获取Bean唯一标识
@@ -55,10 +75,44 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         public string BeanName => _beanName;
 
-        protected BeanStatInfo(int uid, string className, string beanName) : base(uid)
+        /// <summary>
+        /// 获取实体对象活动状态类型
+        /// </summary>
+        public ActivityStatusType StatusType => _statusType;
+
+        protected BeanStatInfo(CBean bean, string className) : base(bean.BeanId)
         {
             _className = className;
-            _beanName = beanName;
+            _beanName = bean.BeanName;
+
+            _statusType = ActivityStatusType.Unknown;
+        }
+
+        /// <summary>
+        /// 实体激活回调通知
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected internal void OnActive()
+        {
+            _statusType = ActivityStatusType.Active;
+        }
+
+        /// <summary>
+        /// 实体失效回调通知
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected internal void OnInactive()
+        {
+            _statusType = ActivityStatusType.Inactive;
+        }
+
+        /// <summary>
+        /// 实体销毁回调通知
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected internal void OnDestroyed()
+        {
+            _statusType = ActivityStatusType.Destroyed;
         }
     }
 }

@@ -55,10 +55,10 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         public IReadOnlyList<ComponentStatInfo> Components => NovaEngine.Utility.Collection.ToReadOnlyListForValues(_components);
 
-        protected EntityStatInfo(CEntity entity) : this(entity.BeanId, entity.DeclareClassName, entity.BeanName)
+        protected EntityStatInfo(CEntity entity) : this(entity, entity.DeclareClassName)
         { }
 
-        protected EntityStatInfo(int uid, string entityName, string beanName) : base(uid, entityName, beanName)
+        protected EntityStatInfo(CEntity entity, string entityName) : base(entity, entityName)
         {
             _assets = new Dictionary<string, AssetStatInfo>();
             _components = new Dictionary<int, ComponentStatInfo>();
@@ -74,6 +74,8 @@ namespace GameEngine.Profiler.Statistics
 
             ComponentStatInfo info = new ComponentStatInfo(component);
             _components.Add(component.BeanId, info);
+
+            info.OnActive();
         }
 
         /// <summary>
@@ -87,6 +89,28 @@ namespace GameEngine.Profiler.Statistics
                 Debugger.Warn(LogGroupTag.Profiler, "Could not found any component stat info by uid '{%d}', removed it failed.", component.BeanId);
                 return;
             }
+
+            info.OnDestroyed();
+        }
+
+        /// <summary>
+        /// 查找具备指定状态类型的组件数量
+        /// </summary>
+        /// <param name="flags">状态类型标识</param>
+        /// <returns>返回统计后的组件数量</returns>
+        public int GetComponentCountByStatus(ActivityStatusType flags)
+        {
+            int c = 0;
+            for (int n = 0; n < _components.Count; ++n)
+            {
+                ComponentStatInfo info = _components[n];
+                if (info.StatusType.HasFlag(flags))
+                {
+                    ++c;
+                }
+            }
+
+            return c;
         }
     }
 }

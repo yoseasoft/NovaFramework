@@ -400,6 +400,39 @@ namespace GameEngine.Profiler.Statistics
             return null;
         }
 
+        /// <summary>
+        /// 通过实体对象类型获取对应的统计模块对象实例
+        /// </summary>
+        /// <param name="beanType">实体对象类型</param>
+        /// <returns>返回统计模块对象实例</returns>
+        public static IStat GetStatWithBeanType(Type beanType)
+        {
+            int statType;
+
+            if (beanType.Is<CObject>())
+            {
+                statType = (int) Statistics.StatType.Object;
+            }
+            else if (beanType.Is<CScene>())
+            {
+                statType = (int) Statistics.StatType.Scene;
+            }
+            else if (beanType.Is<CActor>())
+            {
+                statType = (int) Statistics.StatType.Actor;
+            }
+            else if (beanType.Is<CView>())
+            {
+                statType = (int) Statistics.StatType.View;
+            }
+            else
+            {
+                return null;
+            }
+
+            return GetStat(statType);
+        }
+
         #endregion
     }
 }

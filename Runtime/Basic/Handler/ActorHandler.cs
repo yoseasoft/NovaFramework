@@ -312,13 +312,13 @@ namespace GameEngine
                 return null;
             }
 
+            _Profiler.CallStat(Profiler.Statistics.StatCode.ActorCreate, obj);
+
             // 启动对象实例
             Call(obj, obj.Startup, AspectBehaviourType.Startup);
 
             // 唤醒对象实例
             CallEntityAwakeProcess(obj);
-
-            _Profiler.CallStat(Profiler.Statistics.StatCode.ActorCreate, obj);
 
             return obj;
         }
@@ -335,13 +335,13 @@ namespace GameEngine
                 return;
             }
 
-            _Profiler.CallStat(Profiler.Statistics.StatCode.ActorRelease, actor);
-
             // 销毁角色对象实例
             CallEntityDestroyProcess(actor);
 
             // 关闭角色对象实例
             Call(actor, actor.Shutdown, AspectBehaviourType.Shutdown);
+
+            _Profiler.CallStat(Profiler.Statistics.StatCode.ActorRelease, actor);
 
             // 移除实例
             RemoveEntity(actor);

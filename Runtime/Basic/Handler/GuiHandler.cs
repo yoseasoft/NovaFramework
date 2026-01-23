@@ -243,6 +243,8 @@ namespace GameEngine
                 throw new NovaEngine.CFrameworkException();
             }
 
+            _Profiler.CallStat(Profiler.Statistics.StatCode.ViewCreate, view);
+
             // 添加实例到管理容器中
             OnGroupBindingForTargetView(view);
 
@@ -268,8 +270,6 @@ namespace GameEngine
             await UniTask.WaitUntil(() => view.IsReady, cancellationToken : view.CancellationTokenSource.Token);
 
             view.ShowWindow();
-
-            _Profiler.CallStat(Profiler.Statistics.StatCode.ViewCreate, view);
 
             return view;
         }
@@ -432,8 +432,6 @@ namespace GameEngine
             // 视图尚未关闭，则先执行视图关闭操作
             if (false == view.IsClosed)
             {
-                _Profiler.CallStat(Profiler.Statistics.StatCode.ViewClose, view);
-
                 // 销毁视图对象
                 CallEntityDestroyProcess(view);
 
@@ -444,6 +442,9 @@ namespace GameEngine
 
             // 从管理容器中移除实例
             OnGroupUnbindingForTargetView(view);
+
+            _Profiler.CallStat(Profiler.Statistics.StatCode.ViewClose, view);
+
             // 移除视图实例
             RemoveEntity(view);
 

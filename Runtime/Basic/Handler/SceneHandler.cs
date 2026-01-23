@@ -309,13 +309,13 @@ namespace GameEngine
                     return null;
                 }
 
-                _Profiler.CallStat(Profiler.Statistics.StatCode.SceneExit, scene);
-
                 // 销毁场景对象实例
                 CallEntityDestroyProcess(scene);
 
                 // 关闭场景对象实例
                 Call(scene, scene.Shutdown, AspectBehaviourType.Shutdown);
+
+                _Profiler.CallStat(Profiler.Statistics.StatCode.SceneExit, scene);
 
                 // 移除实例
                 RemoveEntity(scene);
@@ -335,6 +335,8 @@ namespace GameEngine
                 return null;
             }
 
+            _Profiler.CallStat(Profiler.Statistics.StatCode.SceneEnter, scene);
+
             // 设置当前场景类型
             _currentSceneType = sceneType;
 
@@ -343,8 +345,6 @@ namespace GameEngine
 
             // 唤醒场景对象实例
             CallEntityAwakeProcess(scene);
-
-            _Profiler.CallStat(Profiler.Statistics.StatCode.SceneEnter, scene);
 
             return scene;
         }

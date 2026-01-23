@@ -34,10 +34,10 @@ namespace GameEngine.Profiler.Statistics
         /// </summary>
         public string ComponentName => ClassName;
 
-        internal ComponentStatInfo(CComponent component) : this(component.BeanId, component.DeclareClassName, component.BeanName)
+        internal ComponentStatInfo(CComponent component) : this(component, component.DeclareClassName)
         { }
 
-        internal ComponentStatInfo(int uid, string componentName, string beanName) : base(uid, componentName, beanName)
+        internal ComponentStatInfo(CComponent component, string componentName) : base(component, componentName)
         { }
     }
 }
