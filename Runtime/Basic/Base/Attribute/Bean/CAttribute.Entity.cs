@@ -90,13 +90,11 @@ namespace GameEngine
         /// </summary>
         public AspectBehaviourType ActivationBehaviourType => _activationBehaviourType;
 
-        public CComponentAutomaticActivationOfEntityAttribute(Type referenceType) : this(referenceType, 0, AspectBehaviourType.Initialize)
-        {
-        }
+        public CComponentAutomaticActivationOfEntityAttribute(Type referenceType) : this(referenceType, 0, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyActivatedProcessingNode)
+        { }
 
-        public CComponentAutomaticActivationOfEntityAttribute(Type referenceType, int priority) : this(referenceType, priority, AspectBehaviourType.Initialize)
-        {
-        }
+        public CComponentAutomaticActivationOfEntityAttribute(Type referenceType, int priority) : this(referenceType, priority, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyActivatedProcessingNode)
+        { }
 
         public CComponentAutomaticActivationOfEntityAttribute(Type referenceType, int priority, AspectBehaviourType activationBehaviourType) : base()
         {

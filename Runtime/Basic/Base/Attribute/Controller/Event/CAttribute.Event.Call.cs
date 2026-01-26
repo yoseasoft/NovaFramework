@@ -127,13 +127,13 @@ namespace GameEngine
         public Type EventDataType => _eventDataType;
         public AspectBehaviourType BehaviourType => _behaviourType;
 
-        public EventSubscribeBindingOfTargetAttribute(int eventID) : this(eventID, null, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyInjectedOfBeanExtensionMethod)
+        public EventSubscribeBindingOfTargetAttribute(int eventID) : this(eventID, null, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
         { }
 
         public EventSubscribeBindingOfTargetAttribute(int eventID, AspectBehaviourType behaviourType) : this(eventID, null, behaviourType)
         { }
 
-        public EventSubscribeBindingOfTargetAttribute(Type eventDataType) : this(0, eventDataType, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyInjectedOfBeanExtensionMethod)
+        public EventSubscribeBindingOfTargetAttribute(Type eventDataType) : this(0, eventDataType, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
         { }
 
         public EventSubscribeBindingOfTargetAttribute(Type eventDataType, AspectBehaviourType behaviourType) : this(0, eventDataType, behaviourType)

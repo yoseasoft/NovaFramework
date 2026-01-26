@@ -84,7 +84,7 @@ namespace GameEngine
         public ViewNoticeType NoticeType => _noticeType;
         public AspectBehaviourType BehaviourType => _behaviourType;
 
-        public CViewNoticeCallAttribute(ViewNoticeType noticeType) : this(noticeType, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyInjectedOfBeanExtensionMethod)
+        public CViewNoticeCallAttribute(ViewNoticeType noticeType) : this(noticeType, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
         { }
 
         public CViewNoticeCallAttribute(ViewNoticeType noticeType, AspectBehaviourType behaviourType) : base()

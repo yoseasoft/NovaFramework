@@ -127,13 +127,13 @@ namespace GameEngine
         public Type MessageType => _messageType;
         public AspectBehaviourType BehaviourType => _behaviourType;
 
-        public MessageListenerBindingOfTargetAttribute(int opcode) : this(opcode, null, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyInjectedOfBeanExtensionMethod)
+        public MessageListenerBindingOfTargetAttribute(int opcode) : this(opcode, null, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
         { }
 
         public MessageListenerBindingOfTargetAttribute(int opcode, AspectBehaviourType behaviourType) : this(opcode, null, behaviourType)
         { }
 
-        public MessageListenerBindingOfTargetAttribute(Type messageType) : this(0, messageType, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyInjectedOfBeanExtensionMethod)
+        public MessageListenerBindingOfTargetAttribute(Type messageType) : this(0, messageType, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
         { }
 
         public MessageListenerBindingOfTargetAttribute(Type messageType, AspectBehaviourType behaviourType) : this(0, messageType, behaviourType)

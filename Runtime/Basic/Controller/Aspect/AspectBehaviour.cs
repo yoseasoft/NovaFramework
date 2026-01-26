@@ -31,9 +31,17 @@ namespace GameEngine
     internal static class AspectBehaviour
     {
         /// <summary>
-        /// 原型对象扩展函数自动注入的默认行为类型
+        /// 原型对象自动注入操作处理节点的默认行为类型
         /// </summary>
-        public const AspectBehaviourType DefaultBehaviourTypeForAutomaticallyInjectedOfBeanExtensionMethod = AspectBehaviourType.Initialize;
+        public const AspectBehaviourType DefaultBehaviourTypeForAutomaticallyInjectedProcessingNode = AspectBehaviourType.Initialize;
+        /// <summary>
+        /// 原型对象自动转发操作处理节点的默认行为类型
+        /// </summary>
+        public const AspectBehaviourType DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode = AspectBehaviourType.Initialize;
+        /// <summary>
+        /// 原型对象自动激活操作处理节点的默认行为类型
+        /// </summary>
+        public const AspectBehaviourType DefaultBehaviourTypeForAutomaticallyActivatedProcessingNode = AspectBehaviourType.Startup;
 
         /// <summary>
         /// 检测指定行为类型是否为加载阶段使用的行为类型

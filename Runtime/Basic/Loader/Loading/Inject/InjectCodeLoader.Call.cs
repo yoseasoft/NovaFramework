@@ -48,7 +48,7 @@ namespace GameEngine.Loader
 
             Structuring.InjectCallCodeInfo info = new Structuring.InjectCallCodeInfo();
             info.ClassType = symClass.ClassType;
-            info.BehaviourType = AspectBehaviour.DefaultBehaviourTypeForAutomaticallyInjectedOfBeanExtensionMethod;
+            info.BehaviourType = AspectBehaviour.DefaultBehaviourTypeForAutomaticallyInjectedProcessingNode;
 
             if (_injectCallCodeInfos.ContainsKey(symClass.ClassType))
             {

@@ -35,12 +35,12 @@ namespace GameEngine.Loader
         /// <summary>
         /// 对象类的标记信息管理容器
         /// </summary>
-        private static Symbolling.SymClassMap _symClassMaps = null;
+        private static Symbolling.SymClassMap _symClassMaps;
 
         /// <summary>
         /// 对象类的Bean信息管理容器
         /// </summary>
-        private static IDictionary<string, Symbolling.Bean> _beanClassMaps = null;
+        private static IDictionary<string, Symbolling.Bean> _beanClassMaps;
 
         /// <summary>
         /// 初始化针对所有标记对象类声明的全部绑定回调接口
@@ -243,6 +243,7 @@ namespace GameEngine.Loader
         /// 移除外部实现的可实例化对象类型的符号解析器
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnregisterSymbolResolverOfInstantiationClass<T>() where T : Symbolling.ISymbolResolverOfInstantiationClass
         {
             Symbolling.SymClassResolver.RemoveInstantiationClassResolver<T>();
@@ -252,6 +253,7 @@ namespace GameEngine.Loader
         /// 移除外部实现的可实例化对象类型的符号解析器
         /// </summary>
         /// <param name="classType">对象类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnregisterSymbolResolverOfInstantiationClass(Type classType)
         {
             Symbolling.SymClassResolver.RemoveInstantiationClassResolver(classType);
@@ -261,6 +263,7 @@ namespace GameEngine.Loader
         /// 移除外部实现的可实例化对象类型的符号解析器
         /// </summary>
         /// <param name="resolver">解析对象</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnregisterSymbolResolverOfInstantiationClass(Symbolling.ISymbolResolverOfInstantiationClass resolver)
         {
             Symbolling.SymClassResolver.RemoveInstantiationClassResolver(resolver);
@@ -275,10 +278,7 @@ namespace GameEngine.Loader
         /// <returns>返回对应的标记数据实例，若查找失败返回null</returns>
         public static Symbolling.SymClass GetSymClassByName(string className)
         {
-            if (null == _symClassMaps)
-            {
-                return null;
-            }
+            Debugger.Assert(_symClassMaps, NovaEngine.ErrorText.NullObjectReference);
 
             if (_symClassMaps.TryGetValue(className, out Symbolling.SymClass symbol))
             {
@@ -295,10 +295,7 @@ namespace GameEngine.Loader
         /// <returns>返回对应的标记数据实例，若查找失败返回null</returns>
         public static Symbolling.SymClass GetSymClassByType(Type targetType)
         {
-            if (null == _symClassMaps)
-            {
-                return null;
-            }
+            Debugger.Assert(_symClassMaps, NovaEngine.ErrorText.NullObjectReference);
 
             if (_symClassMaps.TryGetValue(targetType, out Symbolling.SymClass symbol))
             {
@@ -312,10 +309,10 @@ namespace GameEngine.Loader
         /// 通过指定的基础类型获取继承该类型的对象类的标记数据清单
         /// </summary>
         /// <param name="baseType"></param>
-        /// <returns></returns>
-        public static IList<Symbolling.SymClass> FindAllSymClassesInheritedFrom(Type baseType)
+        /// <returns>返回对应的标记数据列表，若查找失败返回null</returns>
+        public static IReadOnlyList<Symbolling.SymClass> FindAllSymClassesInheritedFrom(Type baseType)
         {
-            IList<Symbolling.SymClass> results = null;
+            List<Symbolling.SymClass> results = null;
 
             IEnumerator<Symbolling.SymClass> e = _symClassMaps.GetEnumerator();
             while (e.MoveNext())
@@ -336,9 +333,9 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="featureType">特性类型</param>
         /// <returns>返回对应的标记数据列表，若查找失败返回null</returns>
-        public static IList<Symbolling.SymClass> FindAllSymClassesByFeatureType(Type featureType)
+        public static IReadOnlyList<Symbolling.SymClass> FindAllSymClassesByFeatureType(Type featureType)
         {
-            IList<Symbolling.SymClass> results = null;
+            List<Symbolling.SymClass> results = null;
 
             IEnumerator<Symbolling.SymClass> e = _symClassMaps.GetEnumerator();
             while (e.MoveNext())
@@ -359,9 +356,9 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="interfaceType">接口类型</param>
         /// <returns>返回对应的标记数据列表，若查找失败返回null</returns>
-        public static IList<Symbolling.SymClass> FindAllSymClassesByInterfaceType(Type interfaceType)
+        public static IReadOnlyList<Symbolling.SymClass> FindAllSymClassesByInterfaceType(Type interfaceType)
         {
-            IList<Symbolling.SymClass> results = null;
+            List<Symbolling.SymClass> results = null;
 
             IEnumerator<Symbolling.SymClass> e = _symClassMaps.GetEnumerator();
             while (e.MoveNext())

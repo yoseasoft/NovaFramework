@@ -149,19 +149,19 @@ namespace GameEngine
         public Type InputDataType => _inputDataType;
         public AspectBehaviourType BehaviourType => _behaviourType;
 
-        public InputResponseBindingOfTargetAttribute(int inputCode) : this(inputCode, InputOperationType.Unknown, null, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyInjectedOfBeanExtensionMethod)
+        public InputResponseBindingOfTargetAttribute(int inputCode) : this(inputCode, InputOperationType.Unknown, null, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
         { }
 
         public InputResponseBindingOfTargetAttribute(int inputCode, AspectBehaviourType behaviourType) : this(inputCode, InputOperationType.Unknown, null, behaviourType)
         { }
 
-        public InputResponseBindingOfTargetAttribute(int inputCode, InputOperationType operationType) : this(inputCode, operationType, null, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyInjectedOfBeanExtensionMethod)
+        public InputResponseBindingOfTargetAttribute(int inputCode, InputOperationType operationType) : this(inputCode, operationType, null, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
         { }
 
         public InputResponseBindingOfTargetAttribute(int inputCode, InputOperationType operationType, AspectBehaviourType behaviourType) : this(inputCode, operationType, null, behaviourType)
         { }
 
-        public InputResponseBindingOfTargetAttribute(Type inputDataType) : this(0, InputOperationType.Unknown, inputDataType, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyInjectedOfBeanExtensionMethod)
+        public InputResponseBindingOfTargetAttribute(Type inputDataType) : this(0, InputOperationType.Unknown, inputDataType, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
         { }
 
         public InputResponseBindingOfTargetAttribute(Type inputDataType, AspectBehaviourType behaviourType) : this(0, InputOperationType.Unknown, inputDataType, behaviourType)
