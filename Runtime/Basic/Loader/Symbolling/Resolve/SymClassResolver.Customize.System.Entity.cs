@@ -1,6 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,33 +23,37 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System;
+using System.Collections.Generic;
+using System.Customize.Extension;
 
-namespace GameEngine.Loader.Symboling
+namespace GameEngine.Loader.Symbolling
 {
-    /// <summary>
-    /// 针对特性标签的符号解析接口定义
-    /// </summary>
-    public interface ISymbolResolverOfFeatureAttribute
-    {
-    }
-
-    /// <summary>
-    /// 针对可实例化对象类的符号解析接口定义
-    /// </summary>
-    public interface ISymbolResolverOfInstantiationClass
+    /// 标记对象的解析类
+    internal static partial class SymClassResolver
     {
         /// <summary>
-        /// 检测目标对象类型是否匹配当前解析器
+        /// 自动填充实体类型的系统对象的标记类的特性
         /// </summary>
-        /// <param name="targetType">对象类型</param>
-        /// <returns>若目标对象类型匹配则返回true，否则返回false</returns>
-        bool Matches(Type targetType);
+        /// <param name="symClass">类标记对象</param>
+        private static void AutoFillEntityExtensionMethodFeatures(SymClass symClass, SymMethod symMethod)
+        {
+            if (symMethod.ExtensionParameterType.Is<CView>())
+            {
+                AutoFillViewExtensionMethodFeatures(symClass, symMethod);
+            }
+        }
 
         /// <summary>
-        /// 指定符号对象类的解析函数
+        /// 自动填充视图类型的系统对象的标记类的特性
         /// </summary>
-        /// <param name="symbol">符号对象实例</param>
-        void Resolve(SymClass symbol);
+        /// <param name="symClass">类标记对象</param>
+        private static void AutoFillViewExtensionMethodFeatures(SymClass symClass, SymMethod symMethod)
+        {
+            if (symMethod.HasAttribute(typeof(CViewNoticeCallAttribute)))
+            {
+                // 装配通知支持
+                AutobindFeatureTypeForTargetSymbol(symClass, typeof(NoticeSupportedOnViewAttribute));
+            }
+        }
     }
 }

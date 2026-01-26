@@ -53,7 +53,7 @@ namespace GameEngine
             }
 
             Loader.Structuring.ViewCodeInfo viewCodeInfo = codeInfo as Loader.Structuring.ViewCodeInfo;
-            Debugger.Assert(null != viewCodeInfo, "Invalid view code info.");
+            Debugger.Assert(viewCodeInfo, "Invalid view code info.");
 
             if (reload)
             {

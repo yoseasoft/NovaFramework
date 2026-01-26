@@ -427,7 +427,7 @@ namespace NovaEngine
             {
                 // throw new CException("You must get manager by interface, but '{%t}' is not.", actualType);
 
-                string managerName = Utility.Text.Format("{0}.{1}", actualType.Namespace, actualType.Name.Substring(1));
+                string managerName = FormatString.Format("{%s}.{%s}", actualType.Namespace, actualType.Name.Substring(1));
 
                 Assembly[] _assemblies = AppDomain.CurrentDomain.GetAssemblies();
                 foreach (Assembly assembly in _assemblies)

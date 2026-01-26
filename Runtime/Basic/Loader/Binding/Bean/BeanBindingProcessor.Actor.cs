@@ -53,7 +53,7 @@ namespace GameEngine
             }
 
             Loader.Structuring.ActorCodeInfo actorCodeInfo = codeInfo as Loader.Structuring.ActorCodeInfo;
-            Debugger.Assert(null != actorCodeInfo, "Invalid actor code info.");
+            Debugger.Assert(actorCodeInfo, "Invalid actor code info.");
 
             if (reload)
             {

@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace GameEngine.Loader.Symboling
+namespace GameEngine.Loader.Symbolling
 {
     /// 标记对象的解析类
     internal static partial class SymClassResolver

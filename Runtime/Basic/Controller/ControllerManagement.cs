@@ -80,18 +80,18 @@ namespace GameEngine
                 }
 
                 // 类名反射时需要包含命名空间前缀
-                string controllerName = NovaEngine.Utility.Text.Format("{%s}.{%s}{%s}", namespaceTag, enumName, ControllerClassUnifiedStandardName);
+                string controllerName = NovaEngine.FormatString.Format("{%s}.{%s}{%s}", namespaceTag, enumName, ControllerClassUnifiedStandardName);
 
                 Type controllerType = Type.GetType(controllerName);
                 if (null == controllerType)
                 {
-                    Debugger.Info("Could not found any controller class with target name {%s}.", controllerName);
+                    Debugger.Info(LogGroupTag.Controller, "Could not found any controller class with target name {%s}.", controllerName);
                     continue;
                 }
 
                 if (false == controllerType.Is<IController>())
                 {
-                    Debugger.Warn("The controller type {%s} must be inherited from 'IController' interface.", controllerName);
+                    Debugger.Warn(LogGroupTag.Controller, "The controller type {%s} must be inherited from 'IController' interface.", controllerName);
                     continue;
                 }
 
@@ -120,7 +120,7 @@ namespace GameEngine
                 object controller = pair.Value();
                 if (_controllerObjects.ContainsKey(pair.Key))
                 {
-                    Debugger.Warn("The controller of type '{%d}' was already exist, repeat created it will be removed old type.", pair.Key);
+                    Debugger.Warn(LogGroupTag.Controller, "The controller of type '{%d}' was already exist, repeat created it will be removed old type.", pair.Key);
 
                     _controllerObjects.Remove(pair.Key);
                 }

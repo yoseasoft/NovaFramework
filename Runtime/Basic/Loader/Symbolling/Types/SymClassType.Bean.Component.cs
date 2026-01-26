@@ -25,7 +25,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GameEngine.Loader.Symboling
+namespace GameEngine.Loader.Symbolling
 {
     /// <summary>
     /// Bean对象类的组件数据的结构信息

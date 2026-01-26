@@ -40,11 +40,11 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(CObject))]
-        private static bool LoadObjectClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadObjectClass(Symbolling.SymClass symClass, bool reload)
         {
             if (false == symClass.ClassType.Is<CObject>())
             {
-                Debugger.Warn("The target class type '{%s}' must be inherited from 'CObject' interface, load it failed.", symClass.FullName);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The target class type '{%s}' must be inherited from 'CObject' interface, load it failed.", symClass.FullName);
                 return false;
             }
 
@@ -66,10 +66,10 @@ namespace GameEngine.Loader
                 }
             }
 
-            IList<Symboling.SymMethod> symMethods = symClass.GetAllMethods();
+            IList<Symbolling.SymMethod> symMethods = symClass.GetAllMethods();
             for (int n = 0; null != symMethods && n < symMethods.Count; ++n)
             {
-                Symboling.SymMethod symMethod = symMethods[n];
+                Symbolling.SymMethod symMethod = symMethods[n];
 
                 LoadObjectMethod(symClass, info, symMethod);
             }
@@ -99,7 +99,7 @@ namespace GameEngine.Loader
             return true;
         }
 
-        private static void LoadObjectMethod(Symboling.SymClass symClass, Structuring.ObjectCodeInfo codeInfo, Symboling.SymMethod symMethod)
+        private static void LoadObjectMethod(Symbolling.SymClass symClass, Structuring.ObjectCodeInfo codeInfo, Symbolling.SymMethod symMethod)
         {
             // 静态函数直接忽略
             if (symMethod.IsStatic)
@@ -125,7 +125,7 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(CObject))]
-        private static Structuring.ObjectCodeInfo LookupObjectCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.ObjectCodeInfo LookupObjectCodeInfo(Symbolling.SymClass symClass)
         {
             foreach (KeyValuePair<string, Structuring.ObjectCodeInfo> pair in _objectCodeInfos)
             {

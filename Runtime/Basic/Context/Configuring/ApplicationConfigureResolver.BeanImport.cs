@@ -57,7 +57,7 @@ namespace GameEngine.Context.Configuring
                 return;
             }
 
-            Debugger.Info(LogGroupTag.CodeLoader, "Load bean-import configure url={%s} succeed.", url);
+            Debugger.Info(LogGroupTag.Basic, "Load bean-import configure url '{%s}' succeed.", url);
             ApplicationConfigureInfo.AddBeanUrlPath(url);
         }
     }

@@ -688,7 +688,7 @@ namespace GameEngine
         /// <param name="args">日志格式化参数</param>
         private static void Unity_Output(string format, params object[] args)
         {
-            UnityEngine.Debug.Log(NovaEngine.Utility.Text.Format(format, args));
+            UnityEngine.Debug.Log(NovaEngine.FormatString.Format(format, args));
         }
 
         /// <summary>

@@ -39,10 +39,10 @@ namespace GameEngine.Profiler.Debugging
             protected override void OnDrawStatInfoTitle()
             {
                 UnityGUILayout.Label("<b>Index</b>");
-                UnityGUILayout.Label("<b>Actor Name</b>", UnityGUILayout.Width(120f));
-                UnityGUILayout.Label("<b>Create Time</b>", UnityGUILayout.Width(140f));
-                UnityGUILayout.Label("<b>Release Time</b>", UnityGUILayout.Width(140f));
-                UnityGUILayout.Label("<b>Access Time</b>", UnityGUILayout.Width(140f));
+                UnityGUILayout.Label("<b>Class</b>", UnityGUILayout.Width(150f));
+                UnityGUILayout.Label("<b>Bean</b>", UnityGUILayout.Width(150f));
+                UnityGUILayout.Label("<b>Components</b>", UnityGUILayout.Width(120f));
+                UnityGUILayout.Label("<b>Assets</b>", UnityGUILayout.Width(120f));
             }
 
             protected override void OnDrawStatInfoContent(Statistics.StatInfo info)
@@ -50,10 +50,10 @@ namespace GameEngine.Profiler.Debugging
                 Statistics.ActorStatInfo actorStatInfo = info as Statistics.ActorStatInfo;
 
                 UnityGUILayout.Label(actorStatInfo.Uid.ToString());
-                UnityGUILayout.Label(actorStatInfo.EntityName, UnityGUILayout.Width(120f));
-                UnityGUILayout.Label(StatDateTimeToString(actorStatInfo.CreateTime), UnityGUILayout.Width(140f));
-                UnityGUILayout.Label(StatDateTimeToString(actorStatInfo.ReleaseTime), UnityGUILayout.Width(140f));
-                UnityGUILayout.Label(StatDateTimeToString(actorStatInfo.AccessTime), UnityGUILayout.Width(140f));
+                UnityGUILayout.Label(actorStatInfo.EntityName, UnityGUILayout.Width(150f));
+                UnityGUILayout.Label(actorStatInfo.BeanName, UnityGUILayout.Width(150f));
+                UnityGUILayout.Label(actorStatInfo.Components.Count.ToString(), UnityGUILayout.Width(120f));
+                UnityGUILayout.Label(actorStatInfo.Assets.Count.ToString(), UnityGUILayout.Width(120f));
             }
         }
     }

@@ -39,7 +39,7 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(CActor))]
-        private static bool LoadActorClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadActorClass(Symbolling.SymClass symClass, bool reload)
         {
             if (false == symClass.ClassType.Is<CActor>())
             {
@@ -65,10 +65,10 @@ namespace GameEngine.Loader
                 }
             }
 
-            IList<Symboling.SymMethod> symMethods = symClass.GetAllMethods();
+            IList<Symbolling.SymMethod> symMethods = symClass.GetAllMethods();
             for (int n = 0; null != symMethods && n < symMethods.Count; ++n)
             {
-                Symboling.SymMethod symMethod = symMethods[n];
+                Symbolling.SymMethod symMethod = symMethods[n];
 
                 LoadActorMethod(symClass, info, symMethod);
             }
@@ -98,7 +98,7 @@ namespace GameEngine.Loader
             return true;
         }
 
-        private static void LoadActorMethod(Symboling.SymClass symClass, Structuring.ActorCodeInfo codeInfo, Symboling.SymMethod symMethod)
+        private static void LoadActorMethod(Symbolling.SymClass symClass, Structuring.ActorCodeInfo codeInfo, Symbolling.SymMethod symMethod)
         {
             // 静态函数直接忽略
             if (symMethod.IsStatic)
@@ -124,7 +124,7 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(CActor))]
-        private static Structuring.ActorCodeInfo LookupActorCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.ActorCodeInfo LookupActorCodeInfo(Symbolling.SymClass symClass)
         {
             foreach (KeyValuePair<string, Structuring.ActorCodeInfo> pair in _actorCodeInfos)
             {

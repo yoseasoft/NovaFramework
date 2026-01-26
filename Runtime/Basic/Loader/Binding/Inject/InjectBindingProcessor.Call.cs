@@ -47,13 +47,13 @@ namespace GameEngine
             }
 
             Loader.Structuring.InjectCallCodeInfo injectCodeInfo = codeInfo as Loader.Structuring.InjectCallCodeInfo;
-            Debugger.Assert(null != injectCodeInfo, "Invalid inject call code info.");
+            Debugger.Assert(injectCodeInfo, "Invalid inject call code info.");
 
             /**
              * 2024-08-26：
              * 所有和标记类及Bean对象相关的解析注册逻辑，统一转移到标记解析器中处理
              * 
-             * Loader.Symboling.SymClass symClass = Loader.CodeLoader.GetSymClassByType(targetType);
+             * Loader.Symbolling.SymClass symClass = Loader.CodeLoader.GetSymClassByType(targetType);
              * if (null == symClass)
              * {
              *     Debugger.Warn("Could not found any symbol class with target type '{%t}', loaded inject call failed.", targetType);

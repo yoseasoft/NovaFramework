@@ -94,7 +94,7 @@ namespace GameEngine.Loader
             while (e.MoveNext())
             {
                 CodeLoader.OnCleanupAllCodeTypesHandler handler = e.Current.Value as CodeLoader.OnCleanupAllCodeTypesHandler;
-                Debugger.Assert(null != handler, "Invalid cleanup aspect register class unload callback.");
+                Debugger.Assert(handler, "Invalid cleanup aspect register class unload callback.");
 
                 handler.Invoke();
             }

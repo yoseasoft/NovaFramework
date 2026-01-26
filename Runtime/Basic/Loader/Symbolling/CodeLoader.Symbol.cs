@@ -35,12 +35,12 @@ namespace GameEngine.Loader
         /// <summary>
         /// 对象类的标记信息管理容器
         /// </summary>
-        private static Symboling.SymClassMap _symClassMaps = null;
+        private static Symbolling.SymClassMap _symClassMaps = null;
 
         /// <summary>
         /// 对象类的Bean信息管理容器
         /// </summary>
-        private static IDictionary<string, Symboling.Bean> _beanClassMaps = null;
+        private static IDictionary<string, Symbolling.Bean> _beanClassMaps = null;
 
         /// <summary>
         /// 初始化针对所有标记对象类声明的全部绑定回调接口
@@ -49,12 +49,12 @@ namespace GameEngine.Loader
         private static void InitAllSymClassLoadingCallbacks()
         {
             // 初始化标记数据容器
-            _symClassMaps = new Symboling.SymClassMap();
+            _symClassMaps = new Symbolling.SymClassMap();
             // 初始化Bean数据容器
-            _beanClassMaps = new Dictionary<string, Symboling.Bean>();
+            _beanClassMaps = new Dictionary<string, Symbolling.Bean>();
 
             // 符号解析器初始化
-            Symboling.SymClassResolver.OnInitialize();
+            Symbolling.SymClassResolver.OnInitialize();
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace GameEngine.Loader
         private static void CleanupAllSymClassLoadingCallbacks()
         {
             // 符号解析器清理
-            Symboling.SymClassResolver.OnCleanup();
+            Symbolling.SymClassResolver.OnCleanup();
 
             // 清理标识数据容器
             UnloadAllSymClasses();
@@ -79,9 +79,9 @@ namespace GameEngine.Loader
         /// <param name="targetType">对象类型</param>
         /// <param name="reload">重载状态标识</param>
         /// <returns>若存在给定类型属性通用类库则返回对应处理结果，否则返回false</returns>
-        private static Symboling.SymClass LoadSymClass(Type targetType, bool reload)
+        private static Symbolling.SymClass LoadSymClass(Type targetType, bool reload)
         {
-            Symboling.SymClass symbol = Symboling.SymClassResolver.ResolveSymClass(targetType, reload);
+            Symbolling.SymClass symbol = Symbolling.SymClassResolver.ResolveSymClass(targetType, reload);
             if (null == symbol)
             {
                 // 解析失败，这里直接返回
@@ -135,12 +135,12 @@ namespace GameEngine.Loader
             // 先清理掉Bean对象的缓存
             _beanClassMaps.Clear();
 
-            IList<Symboling.SymClass> symbols = _symClassMaps.Values;
+            IList<Symbolling.SymClass> symbols = _symClassMaps.Values;
             for (int n = 0; null != symbols && n < symbols.Count; ++n)
             {
-                Symboling.SymClass symbol = symbols[n];
+                Symbolling.SymClass symbol = symbols[n];
 
-                Symboling.SymClassResolver.RebuildBeanObjectsWithConfigureFile(symbol);
+                Symbolling.SymClassResolver.RebuildBeanObjectsWithConfigureFile(symbol);
 
                 // 将新的Bean对象添加到缓存中
                 AddBeanObjectFromSymClassToCache(symbol);
@@ -151,15 +151,15 @@ namespace GameEngine.Loader
         /// 将符号对象中所有的Bean实例添加到缓存中
         /// </summary>
         /// <param name="symbol">符号对象实例</param>
-        private static void AddBeanObjectFromSymClassToCache(Symboling.SymClass symbol)
+        private static void AddBeanObjectFromSymClassToCache(Symbolling.SymClass symbol)
         {
             // 添加Bean信息
-            IEnumerator<KeyValuePair<string, Symboling.Bean>> beans = symbol.GetBeanEnumerator();
+            IEnumerator<KeyValuePair<string, Symbolling.Bean>> beans = symbol.GetBeanEnumerator();
             if (null != beans)
             {
                 while (beans.MoveNext())
                 {
-                    Symboling.Bean bean = beans.Current.Value;
+                    Symbolling.Bean bean = beans.Current.Value;
 
                     AddBeanObjectToCache(bean);
                 }
@@ -170,7 +170,7 @@ namespace GameEngine.Loader
         /// 将标记类对应的实体对象配置信息添加到缓存中
         /// </summary>
         /// <param name="bean">实体实例</param>
-        private static void AddBeanObjectToCache(Symboling.Bean bean)
+        private static void AddBeanObjectToCache(Symbolling.Bean bean)
         {
             string beanName = bean.BeanName;
             if (_beanClassMaps.ContainsKey(beanName))
@@ -188,12 +188,12 @@ namespace GameEngine.Loader
         /// 从缓存中移除与指定标识信息关联的所有Bean对象实例
         /// </summary>
         /// <param name="symbol">符号对象实例</param>
-        private static void RemoveBeanObjectsOfTargetSymClassFromCache(Symboling.SymClass symbol)
+        private static void RemoveBeanObjectsOfTargetSymClassFromCache(Symbolling.SymClass symbol)
         {
             ICollection<string> keys = _beanClassMaps.Keys;
             foreach (string k in keys)
             {
-                if (false == _beanClassMaps.TryGetValue(k, out Symboling.Bean bean))
+                if (false == _beanClassMaps.TryGetValue(k, out Symbolling.Bean bean))
                 {
                     Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any bean object instance with target name '{%s}', removed it failed.", k);
                     continue;
@@ -214,9 +214,9 @@ namespace GameEngine.Loader
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void RegisterSymbolResolverOfInstantiationClass<T>() where T : Symboling.ISymbolResolverOfInstantiationClass
+        public static void RegisterSymbolResolverOfInstantiationClass<T>() where T : Symbolling.ISymbolResolverOfInstantiationClass
         {
-            Symboling.SymClassResolver.AddInstantiationClassResolver<T>();
+            Symbolling.SymClassResolver.AddInstantiationClassResolver<T>();
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace GameEngine.Loader
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RegisterSymbolResolverOfInstantiationClass(Type classType)
         {
-            Symboling.SymClassResolver.AddInstantiationClassResolver(classType);
+            Symbolling.SymClassResolver.AddInstantiationClassResolver(classType);
         }
 
         /// <summary>
@@ -234,18 +234,18 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="resolver">解析对象</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void RegisterSymbolResolverOfInstantiationClass(Symboling.ISymbolResolverOfInstantiationClass resolver)
+        public static void RegisterSymbolResolverOfInstantiationClass(Symbolling.ISymbolResolverOfInstantiationClass resolver)
         {
-            Symboling.SymClassResolver.AddInstantiationClassResolver(resolver);
+            Symbolling.SymClassResolver.AddInstantiationClassResolver(resolver);
         }
 
         /// <summary>
         /// 移除外部实现的可实例化对象类型的符号解析器
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
-        public static void UnregisterSymbolResolverOfInstantiationClass<T>() where T : Symboling.ISymbolResolverOfInstantiationClass
+        public static void UnregisterSymbolResolverOfInstantiationClass<T>() where T : Symbolling.ISymbolResolverOfInstantiationClass
         {
-            Symboling.SymClassResolver.RemoveInstantiationClassResolver<T>();
+            Symbolling.SymClassResolver.RemoveInstantiationClassResolver<T>();
         }
 
         /// <summary>
@@ -254,16 +254,16 @@ namespace GameEngine.Loader
         /// <param name="classType">对象类型</param>
         public static void UnregisterSymbolResolverOfInstantiationClass(Type classType)
         {
-            Symboling.SymClassResolver.RemoveInstantiationClassResolver(classType);
+            Symbolling.SymClassResolver.RemoveInstantiationClassResolver(classType);
         }
 
         /// <summary>
         /// 移除外部实现的可实例化对象类型的符号解析器
         /// </summary>
         /// <param name="resolver">解析对象</param>
-        public static void UnregisterSymbolResolverOfInstantiationClass(Symboling.ISymbolResolverOfInstantiationClass resolver)
+        public static void UnregisterSymbolResolverOfInstantiationClass(Symbolling.ISymbolResolverOfInstantiationClass resolver)
         {
-            Symboling.SymClassResolver.RemoveInstantiationClassResolver(resolver);
+            Symbolling.SymClassResolver.RemoveInstantiationClassResolver(resolver);
         }
 
         #endregion
@@ -273,14 +273,14 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="className">对象名称</param>
         /// <returns>返回对应的标记数据实例，若查找失败返回null</returns>
-        public static Symboling.SymClass GetSymClassByName(string className)
+        public static Symbolling.SymClass GetSymClassByName(string className)
         {
             if (null == _symClassMaps)
             {
                 return null;
             }
 
-            if (_symClassMaps.TryGetValue(className, out Symboling.SymClass symbol))
+            if (_symClassMaps.TryGetValue(className, out Symbolling.SymClass symbol))
             {
                 return symbol;
             }
@@ -293,14 +293,14 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <returns>返回对应的标记数据实例，若查找失败返回null</returns>
-        public static Symboling.SymClass GetSymClassByType(Type targetType)
+        public static Symbolling.SymClass GetSymClassByType(Type targetType)
         {
             if (null == _symClassMaps)
             {
                 return null;
             }
 
-            if (_symClassMaps.TryGetValue(targetType, out Symboling.SymClass symbol))
+            if (_symClassMaps.TryGetValue(targetType, out Symbolling.SymClass symbol))
             {
                 return symbol;
             }
@@ -313,16 +313,16 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="baseType"></param>
         /// <returns></returns>
-        public static IList<Symboling.SymClass> FindAllSymClassesInheritedFrom(Type baseType)
+        public static IList<Symbolling.SymClass> FindAllSymClassesInheritedFrom(Type baseType)
         {
-            IList<Symboling.SymClass> results = null;
+            IList<Symbolling.SymClass> results = null;
 
-            IEnumerator<Symboling.SymClass> e = _symClassMaps.GetEnumerator();
+            IEnumerator<Symbolling.SymClass> e = _symClassMaps.GetEnumerator();
             while (e.MoveNext())
             {
                 if (e.Current.IsInheritedFrom(baseType))
                 {
-                    if (null == results) results = new List<Symboling.SymClass>();
+                    if (null == results) results = new List<Symbolling.SymClass>();
 
                     results.Add(e.Current);
                 }
@@ -336,16 +336,16 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="featureType">特性类型</param>
         /// <returns>返回对应的标记数据列表，若查找失败返回null</returns>
-        public static IList<Symboling.SymClass> FindAllSymClassesByFeatureType(Type featureType)
+        public static IList<Symbolling.SymClass> FindAllSymClassesByFeatureType(Type featureType)
         {
-            IList<Symboling.SymClass> results = null;
+            IList<Symbolling.SymClass> results = null;
 
-            IEnumerator<Symboling.SymClass> e = _symClassMaps.GetEnumerator();
+            IEnumerator<Symbolling.SymClass> e = _symClassMaps.GetEnumerator();
             while (e.MoveNext())
             {
                 if (e.Current.HasFeatureType(featureType))
                 {
-                    if (null == results) results = new List<Symboling.SymClass>();
+                    if (null == results) results = new List<Symbolling.SymClass>();
 
                     results.Add(e.Current);
                 }
@@ -359,16 +359,16 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="interfaceType">接口类型</param>
         /// <returns>返回对应的标记数据列表，若查找失败返回null</returns>
-        public static IList<Symboling.SymClass> FindAllSymClassesByInterfaceType(Type interfaceType)
+        public static IList<Symbolling.SymClass> FindAllSymClassesByInterfaceType(Type interfaceType)
         {
-            IList<Symboling.SymClass> results = null;
+            IList<Symbolling.SymClass> results = null;
 
-            IEnumerator<Symboling.SymClass> e = _symClassMaps.GetEnumerator();
+            IEnumerator<Symbolling.SymClass> e = _symClassMaps.GetEnumerator();
             while (e.MoveNext())
             {
                 if (e.Current.HasInterfaceType(interfaceType))
                 {
-                    if (null == results) results = new List<Symboling.SymClass>();
+                    if (null == results) results = new List<Symbolling.SymClass>();
 
                     results.Add(e.Current);
                 }
@@ -382,9 +382,9 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="beanName">对象名称</param>
         /// <returns>返回对应的Bean信息数据实例，若查找失败返回null</returns>
-        public static Symboling.Bean GetBeanClassByName(string beanName)
+        public static Symbolling.Bean GetBeanClassByName(string beanName)
         {
-            if (_beanClassMaps.TryGetValue(beanName, out Symboling.Bean bean))
+            if (_beanClassMaps.TryGetValue(beanName, out Symbolling.Bean bean))
             {
                 return bean;
             }
@@ -397,9 +397,9 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <returns>返回对应的Bean信息数据实例，若查找失败返回null</returns>
-        public static Symboling.Bean GetBeanClassByType(Type targetType)
+        public static Symbolling.Bean GetBeanClassByType(Type targetType)
         {
-            Symboling.SymClass symClass = GetSymClassByType(targetType);
+            Symbolling.SymClass symClass = GetSymClassByType(targetType);
             if (null != symClass)
             {
                 return GetBeanClassByName(symClass.DefaultBeanName);

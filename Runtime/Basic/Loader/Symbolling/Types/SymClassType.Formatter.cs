@@ -28,7 +28,7 @@ namespace GameEngine.Loader
     /// 代码加载器的辅助工具类
     public static partial class CodeLoaderUtils
     {
-        public static string ToString(Symboling.SymClass targetObject)
+        public static string ToString(Symbolling.SymClass targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("SymClass={");
@@ -53,7 +53,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        public static string ToString(Symboling.SymField targetObject)
+        public static string ToString(Symbolling.SymField targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("SymField={");
@@ -66,7 +66,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        public static string ToString(Symboling.SymProperty targetObject)
+        public static string ToString(Symbolling.SymProperty targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("SymProperty={");
@@ -79,7 +79,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        public static string ToString(Symboling.SymMethod targetObject)
+        public static string ToString(Symbolling.SymMethod targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("SymMethod={");
@@ -93,7 +93,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        public static string ToString(Symboling.Bean targetObject)
+        public static string ToString(Symbolling.Bean targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Bean={");
@@ -113,7 +113,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        public static string ToString(Symboling.BeanField targetObject)
+        public static string ToString(Symbolling.BeanField targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("BeanField={");
@@ -125,7 +125,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        public static string ToString(Symboling.BeanProperty targetObject)
+        public static string ToString(Symbolling.BeanProperty targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("BeanProperty={");
@@ -137,7 +137,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        public static string ToString(Symboling.BeanComponent targetObject)
+        public static string ToString(Symbolling.BeanComponent targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("BeanComponent={");

@@ -36,14 +36,14 @@ namespace GameEngine
             Loader.Structuring.GeneralCodeInfo codeInfo = Loader.CodeLoader.LookupGeneralCodeInfo(targetType, typeof(CScene));
             if (null == codeInfo)
             {
-                Debugger.Warn("Could not found any aspect call scene service process with target type '{0}', called it failed.", targetType.FullName);
+                Debugger.Warn("Could not found any aspect call scene service process with target type '{%t}', called it failed.", targetType);
                 return;
             }
 
             Loader.Structuring.SceneCodeInfo sceneCodeInfo = codeInfo as Loader.Structuring.SceneCodeInfo;
             if (null == sceneCodeInfo)
             {
-                Debugger.Warn("The aspect call scene service process getting error code info '{0}' with target type '{1}', called it failed.", codeInfo.GetType().FullName, targetType.FullName);
+                Debugger.Warn("The aspect call scene service process getting error code info '{%t}' with target type '{%t}', called it failed.", codeInfo, targetType);
                 return;
             }
 
@@ -56,7 +56,7 @@ namespace GameEngine
             for (int n = 0; n < sceneCodeInfo.GetAutoDisplayViewNamesCount(); ++n)
             {
                 string viewName = sceneCodeInfo.GetAutoDisplayViewName(n);
-                Debugger.Log("---------------------------------------- open UI '{0}' with target scene '{1}' !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", viewName, targetType.FullName);
+                Debugger.Log("---------------------------------------- open UI '{%s}' with target scene '{%t}' !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", viewName, targetType);
             }
         }
 
@@ -65,7 +65,7 @@ namespace GameEngine
         {
             if (reload)
             {
-                Debugger.Error("The scene shutdown service unsuported reload processing.");
+                Debugger.Error("The scene shutdown service unsupported reload processing.");
                 return;
             }
 

@@ -33,7 +33,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 加载对象类的子模块行为流程回调的缓存队列
         /// </summary>
-        private static IDictionary<Type, Delegate> _cachedSubmoduleActionCallbacks = null;
+        private static IDictionary<Type, Delegate> _cachedSubmoduleActionCallbacks;
 
         #region 加载对象的子模块调度管理接口函数
 

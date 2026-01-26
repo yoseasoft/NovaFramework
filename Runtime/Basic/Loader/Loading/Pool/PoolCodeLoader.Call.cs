@@ -38,14 +38,14 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(PoolSupportedAttribute))]
-        private static bool LoadPoolCallClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadPoolCallClass(Symbolling.SymClass symClass, bool reload)
         {
             Structuring.PoolCallCodeInfo info = new Structuring.PoolCallCodeInfo();
             info.ClassType = symClass.ClassType;
 
             if (false == symClass.IsInstantiate)
             {
-                Debugger.Warn("The pool supported class '{%t}' must be was instantiable, newly added it failed.", info.ClassType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The pool supported class '{%t}' must be was instantiable, newly added it failed.", info.ClassType);
                 return false;
             }
 
@@ -58,7 +58,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The pool call type '{%s}' was already existed, repeat added it failed.", symClass.FullName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The pool call type '{%s}' was already existed, repeat added it failed.", symClass.FullName);
                     return false;
                 }
             }
@@ -78,7 +78,7 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(PoolSupportedAttribute))]
-        private static Structuring.PoolCallCodeInfo LookupPoolCallCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.PoolCallCodeInfo LookupPoolCallCodeInfo(Symbolling.SymClass symClass)
         {
             foreach (KeyValuePair<Type, Structuring.PoolCallCodeInfo> pair in _poolCallCodeInfos)
             {

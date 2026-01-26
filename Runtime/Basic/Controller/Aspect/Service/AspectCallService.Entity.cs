@@ -30,7 +30,7 @@ namespace GameEngine
     /// 提供切面访问接口的服务类
     public static partial class AspectCallService
     {
-        [OnServiceProcessRegisterOfTarget(typeof(CEntity), AspectBehaviourType.Initialize)]
+        [OnServiceProcessRegisterOfTarget(typeof(CEntity), AspectBehaviourType.Startup)]
         private static void CallServiceProcessOfEntityInitialize(CEntity entity, bool reload)
         {
             Type targetType = entity.BeanType;
@@ -55,7 +55,7 @@ namespace GameEngine
             }
 
             string beanName = entity.GetBeanNameOrDefault();
-            Loader.Symboling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
+            Loader.Symbolling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
             if (null == bean)
             {
                 Debugger.Warn("Could not found any bean instance with target object '{%t}' and name '{%s}', please checked the class type resolved process.",
@@ -63,10 +63,10 @@ namespace GameEngine
                 return;
             }
 
-            IList<Loader.Symboling.BeanComponent> beanComponents = bean.Components;
+            IList<Loader.Symbolling.BeanComponent> beanComponents = bean.Components;
             for (int n = 0; null != beanComponents && n < beanComponents.Count; ++n)
             {
-                Loader.Symboling.BeanComponent beanComponent = beanComponents[n];
+                Loader.Symbolling.BeanComponent beanComponent = beanComponents[n];
                 if (null != beanComponent.ReferenceClassType)
                 {
                     entity.AddComponent(beanComponent.ReferenceClassType);

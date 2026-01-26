@@ -27,7 +27,7 @@ namespace GameEngine.Profiler.Statistics
     /// <summary>
     /// 资产模块统计项对象类，对资产管理访问记录进行单项统计的数据单元
     /// </summary>
-    public sealed class AssetStatInfo
+    public sealed class AssetStatInfo : StatInfo
     {
         /// <summary>
         /// 资产名称
@@ -37,26 +37,14 @@ namespace GameEngine.Profiler.Statistics
         /// 资产路径
         /// </summary>
         private readonly string _url;
-        /// <summary>
-        /// 资产加载次数
-        /// </summary>
-        private int _loadCount;
-        /// <summary>
-        /// 资产卸载次数
-        /// </summary>
-        private int _unloadCount;
 
         public string Name => _name;
         public string Url => _url;
-        public int LoadCount => _loadCount;
-        public int UnloadCount => _unloadCount;
 
-        internal AssetStatInfo(string name, string url)
+        internal AssetStatInfo(string name, string url) : base(0)
         {
             _name = name;
             _url = url;
-            _loadCount = 0;
-            _unloadCount = 0;
         }
     }
 }

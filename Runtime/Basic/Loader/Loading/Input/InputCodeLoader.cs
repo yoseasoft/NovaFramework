@@ -118,7 +118,7 @@ namespace GameEngine.Loader
         /// <returns>若给定类型满足匹配规则则返回true，否则返回false</returns>
         [Preserve]
         [CodeLoader.OnGeneralCodeLoaderMatch]
-        private static bool IsInputClassMatched(Symboling.SymClass symClass, Type filterType)
+        private static bool IsInputClassMatched(Symbolling.SymClass symClass, Type filterType)
         {
             // 存在过滤类型，则直接对比过滤类型即可
             if (null != filterType)
@@ -149,7 +149,7 @@ namespace GameEngine.Loader
         /// <returns>若存在给定类型属性消息事件调度类则返回对应处理结果，否则返回false</returns>
         [Preserve]
         [CodeLoader.OnGeneralCodeLoaderLoad]
-        private static bool LoadInputClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadInputClass(Symbolling.SymClass symClass, bool reload)
         {
             // IList<Attribute> attrs = symClass.Attributes;
             IList<Type> attrTypes = symClass.FeatureTypes;
@@ -175,7 +175,7 @@ namespace GameEngine.Loader
         /// <returns>返回类型对应的结构信息</returns>
         [Preserve]
         [CodeLoader.OnGeneralCodeLoaderLookup]
-        private static Structuring.GeneralCodeInfo LookupInputCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.GeneralCodeInfo LookupInputCodeInfo(Symbolling.SymClass symClass)
         {
             // IList<Attribute> attrs = symClass.Attributes;
             IList<Type> attrTypes = symClass.FeatureTypes;

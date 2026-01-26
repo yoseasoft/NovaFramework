@@ -54,7 +54,7 @@ namespace GameEngine
             }
 
             Loader.Structuring.ObjectCodeInfo objectCodeInfo = codeInfo as Loader.Structuring.ObjectCodeInfo;
-            Debugger.Assert(null != objectCodeInfo, "Invalid object code info.");
+            Debugger.Assert(objectCodeInfo, "Invalid object code info.");
 
             if (reload)
             {

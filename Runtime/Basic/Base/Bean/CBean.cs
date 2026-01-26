@@ -55,7 +55,7 @@ namespace GameEngine
         /// <summary>
         /// 实体对象的符号标记
         /// </summary>
-        private Loader.Symboling.SymClass _symbol;
+        private Loader.Symbolling.SymClass _symbol;
 
         /// <summary>
         /// 获取或设置实体对象的标识
@@ -77,14 +77,14 @@ namespace GameEngine
         /// <summary>
         /// 获取实体对象对应的符号对象实例
         /// </summary>
-        public Loader.Symboling.SymClass Symbol
+        public Loader.Symbolling.SymClass Symbol
         {
             get
             {
                 if (null == _symbol)
                 {
                     _symbol = Loader.CodeLoader.GetSymClassByType(BeanType);
-                    Debugger.Assert(null != _symbol, "Invalid bean object type.");
+                    Debugger.Assert(_symbol, "Invalid bean object type.");
                 }
 
                 return _symbol;

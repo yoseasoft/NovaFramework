@@ -70,18 +70,18 @@ namespace NovaEngine.Module
                 }
 
                 // 类名反射时需要包含命名空间前缀
-                string serviceName = Utility.Text.Format("{%s}.{%s}{%s}", namespaceTag, enumName, NetworkServiceClassUnifiedStandardName);
+                string serviceName = FormatString.Format("{%s}.{%s}{%s}", namespaceTag, enumName, NetworkServiceClassUnifiedStandardName);
 
                 Type serviceType = Type.GetType(serviceName);
                 if (null == serviceType)
                 {
-                    Logger.Info("Could not found any network service class with target name {%s}.", serviceName);
+                    Logger.Info("Could not found any network service class with target name '{%s}'.", serviceName);
                     continue;
                 }
 
                 if (false == typeof(NetworkService).IsAssignableFrom(serviceType))
                 {
-                    Logger.Warn("The service type {%s} must be inherited from 'NetworkService' type.", serviceName);
+                    Logger.Warn("The service type '{%s}' must be inherited from 'NetworkService' type.", serviceName);
                     continue;
                 }
 

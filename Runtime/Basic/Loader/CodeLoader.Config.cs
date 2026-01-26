@@ -30,7 +30,7 @@ namespace GameEngine.Loader
     {
         /// <summary>
         /// 符号解析完整类结构的状态标识<br/>
-        /// 若打开此开关，<see cref="GameEngine.Loader.Symboling.SymClass"/>将以完整继承结构的方式解析类的所有内部成员<br/>
+        /// 若打开此开关，<see cref="GameEngine.Loader.Symbolling.SymClass"/>将以完整继承结构的方式解析类的所有内部成员<br/>
         /// 若开关被关闭，则所有框架层的成员均不会被记录<br/>
         /// <br/>
         /// 需要注意的是，该状态标识仅在调试模式下使用<br/>

@@ -45,20 +45,20 @@ namespace GameEngine.Loader
         /// <param name="symClass">对象标记类型</param>
         /// <param name="filterType">过滤对象类型</param>
         /// <returns>若匹配通用类成功则返回true，否则返回false</returns>
-        public delegate bool OnGeneralCodeLoaderMatchHandler(Symboling.SymClass symClass, Type filterType);
+        public delegate bool OnGeneralCodeLoaderMatchHandler(Symbolling.SymClass symClass, Type filterType);
         /// <summary>
         /// 加载通用类的函数句柄定义
         /// </summary>
         /// <param name="symClass">对象标记类型</param>
         /// <param name="reload">重载状态标识</param>
         /// <returns>若加载通用类成功则返回true，否则返回false</returns>
-        public delegate bool OnGeneralCodeLoaderLoadHandler(Symboling.SymClass symClass, bool reload);
+        public delegate bool OnGeneralCodeLoaderLoadHandler(Symbolling.SymClass symClass, bool reload);
         /// <summary>
         /// 查找通用类对应的结构信息的函数句柄定义
         /// </summary>
         /// <param name="symClass">对象标记类型</param>
         /// <returns>返回给定类型对应的结构信息，若查找失败则返回null</returns>
-        public delegate Structuring.GeneralCodeInfo OnGeneralCodeLoaderLookupHandler(Symboling.SymClass symClass);
+        public delegate Structuring.GeneralCodeInfo OnGeneralCodeLoaderLookupHandler(Symbolling.SymClass symClass);
 
         /// <summary>
         /// 通用类初始化函数的属性定义
@@ -178,7 +178,7 @@ namespace GameEngine.Loader
                 }
 
                 // 类名反射时需要包含命名空间前缀
-                string loaderName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, CodeLoaderClassUnifiedStandardName);
+                string loaderName = NovaEngine.FormatString.Format("{%s}.{%s}{%s}", namespaceTag, enumName, CodeLoaderClassUnifiedStandardName);
 
                 Type loaderType = Type.GetType(loaderName);
                 if (null == loaderType)
@@ -226,7 +226,7 @@ namespace GameEngine.Loader
         /// <returns>若存在给定类型属性通用类库则返回对应处理结果，否则返回false</returns>
         private static bool LoadGeneralClass(Type targetType, bool reload)
         {
-            Symboling.SymClass symClass = GetSymClassByType(targetType);
+            Symbolling.SymClass symClass = GetSymClassByType(targetType);
 
             return LoadGeneralClass(symClass, reload);
         }
@@ -237,7 +237,7 @@ namespace GameEngine.Loader
         /// <param name="symClass">标记类型</param>
         /// <param name="reload">重载状态标识</param>
         /// <returns>若存在给定类型属性通用类库则返回对应处理结果，否则返回false</returns>
-        private static bool LoadGeneralClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadGeneralClass(Symbolling.SymClass symClass, bool reload)
         {
             bool result = false;
             for (int n = 0; n < _generalLoaderList.Count; n++)
@@ -263,7 +263,7 @@ namespace GameEngine.Loader
         /// <returns>返回类型对应的结构信息</returns>
         public static Structuring.GeneralCodeInfo LookupGeneralCodeInfo(Type targetType, Type filterType = null)
         {
-            Symboling.SymClass symClass = GetSymClassByType(targetType);
+            Symbolling.SymClass symClass = GetSymClassByType(targetType);
 
             return LookupGeneralCodeInfo(symClass, filterType);
         }
@@ -274,7 +274,7 @@ namespace GameEngine.Loader
         /// <param name="symClass">对象标记类型</param>
         /// <param name="filterType">过滤对象类型</param>
         /// <returns>返回类型对应的结构信息</returns>
-        public static Structuring.GeneralCodeInfo LookupGeneralCodeInfo(Symboling.SymClass symClass, Type filterType = null)
+        public static Structuring.GeneralCodeInfo LookupGeneralCodeInfo(Symbolling.SymClass symClass, Type filterType = null)
         {
             for (int n = 0; n < _generalLoaderList.Count; ++n)
             {

@@ -49,7 +49,7 @@ namespace GameEngine.Loader
             }
 
             Structuring.ExtendCallCodeInfo extendCodeInfo = codeInfo as Structuring.ExtendCallCodeInfo;
-            Debugger.Assert(null != extendCodeInfo, "Invalid extend call code info.");
+            Debugger.Assert(extendCodeInfo, "Invalid extend call code info.");
 
             for (int n = 0; n < extendCodeInfo.GetInputCallMethodTypeCount(); ++n)
             {

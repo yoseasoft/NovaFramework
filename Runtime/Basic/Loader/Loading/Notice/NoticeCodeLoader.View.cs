@@ -39,15 +39,15 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(NoticeSupportedOnViewAttribute))]
-        private static bool LoadViewNoticeCallClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadViewNoticeCallClass(Symbolling.SymClass symClass, bool reload)
         {
             Structuring.CViewNoticeCallCodeInfo info = new Structuring.CViewNoticeCallCodeInfo();
             info.ClassType = symClass.ClassType;
 
-            IList<Symboling.SymMethod> symMethods = symClass.GetAllMethods();
+            IList<Symbolling.SymMethod> symMethods = symClass.GetAllMethods();
             for (int n = 0; null != symMethods && n < symMethods.Count; ++n)
             {
-                Symboling.SymMethod symMethod = symMethods[n];
+                Symbolling.SymMethod symMethod = symMethods[n];
 
                 // 检查函数格式是否合法，通知类型的函数必须为静态类型
                 if (false == symMethod.IsStatic || false == symMethod.IsExtension)
@@ -67,13 +67,13 @@ namespace GameEngine.Loader
                     {
                         if (viewNoticeCallAttribute.NoticeType <= 0)
                         {
-                            Debugger.Warn("The notice method '{%s}' was invalid arguments from class '{%s}', added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The notice method '{%s}' was invalid arguments from class '{%s}', added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
                         if (false == Inspecting.CodeInspector.CheckFunctionFormatOfTargetWithNullParameterType(symMethod.MethodInfo))
                         {
-                            Debugger.Warn("The notice method '{%s}' was invalid format from class '{%s}', added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The notice method '{%s}' was invalid format from class '{%s}', added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
@@ -92,7 +92,7 @@ namespace GameEngine.Loader
 
             if (info.GetMethodTypeCount() <= 0)
             {
-                Debugger.Warn("The notice call method types count must be great than zero, newly added class '{%t}' failed.", info.ClassType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The notice call method types count must be great than zero, newly added class '{%t}' failed.", info.ClassType);
                 return false;
             }
 
@@ -104,7 +104,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The notice call '{%s}' was already existed, repeat added it failed.", symClass.FullName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The notice call '{%s}' was already existed, repeat added it failed.", symClass.FullName);
                     return false;
                 }
             }
@@ -124,7 +124,7 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(NoticeSupportedOnViewAttribute))]
-        private static Structuring.CViewNoticeCallCodeInfo LookupViewNoticeCallCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.CViewNoticeCallCodeInfo LookupViewNoticeCallCodeInfo(Symbolling.SymClass symClass)
         {
             foreach (KeyValuePair<Type, Structuring.CViewNoticeCallCodeInfo> pair in _viewNoticeCallCodeInfos)
             {

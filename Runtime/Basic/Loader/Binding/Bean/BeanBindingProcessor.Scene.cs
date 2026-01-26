@@ -53,7 +53,7 @@ namespace GameEngine
             }
 
             Loader.Structuring.SceneCodeInfo sceneCodeInfo = codeInfo as Loader.Structuring.SceneCodeInfo;
-            Debugger.Assert(null != sceneCodeInfo, "Invalid scene code info.");
+            Debugger.Assert(sceneCodeInfo, "Invalid scene code info.");
 
             if (reload)
             {

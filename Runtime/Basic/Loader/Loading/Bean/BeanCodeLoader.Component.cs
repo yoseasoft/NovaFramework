@@ -39,7 +39,7 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(CComponent))]
-        private static bool LoadComponentClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadComponentClass(Symbolling.SymClass symClass, bool reload)
         {
             if (false == symClass.ClassType.Is<CComponent>())
             {
@@ -62,10 +62,10 @@ namespace GameEngine.Loader
                 }
             }
 
-            IList<Symboling.SymMethod> symMethods = symClass.GetAllMethods();
+            IList<Symbolling.SymMethod> symMethods = symClass.GetAllMethods();
             for (int n = 0; null != symMethods && n < symMethods.Count; ++n)
             {
-                Symboling.SymMethod symMethod = symMethods[n];
+                Symbolling.SymMethod symMethod = symMethods[n];
 
                 LoadComponentMethod(symClass, info, symMethod);
             }
@@ -95,7 +95,7 @@ namespace GameEngine.Loader
             return true;
         }
 
-        private static void LoadComponentMethod(Symboling.SymClass symClass, Structuring.ComponentCodeInfo codeInfo, Symboling.SymMethod symMethod)
+        private static void LoadComponentMethod(Symbolling.SymClass symClass, Structuring.ComponentCodeInfo codeInfo, Symbolling.SymMethod symMethod)
         {
             // 静态函数直接忽略
             if (symMethod.IsStatic)
@@ -121,7 +121,7 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(CComponent))]
-        private static Structuring.ComponentCodeInfo LookupComponentCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.ComponentCodeInfo LookupComponentCodeInfo(Symbolling.SymClass symClass)
         {
             foreach (KeyValuePair<string, Structuring.ComponentCodeInfo> pair in _componentCodeInfos)
             {

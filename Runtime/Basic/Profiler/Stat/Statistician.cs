@@ -407,28 +407,14 @@ namespace GameEngine.Profiler.Statistics
         /// <returns>返回统计模块对象实例</returns>
         public static IStat GetStatWithBeanType(Type beanType)
         {
-            int statType;
-
-            if (beanType.Is<CObject>())
+            int statType = beanType switch
             {
-                statType = (int) Statistics.StatType.Object;
-            }
-            else if (beanType.Is<CScene>())
-            {
-                statType = (int) Statistics.StatType.Scene;
-            }
-            else if (beanType.Is<CActor>())
-            {
-                statType = (int) Statistics.StatType.Actor;
-            }
-            else if (beanType.Is<CView>())
-            {
-                statType = (int) Statistics.StatType.View;
-            }
-            else
-            {
-                return null;
-            }
+                Type _ when beanType.Is<CObject>() => (int) Statistics.StatType.Object,
+                Type _ when beanType.Is<CScene>()  => (int) Statistics.StatType.Scene,
+                Type _ when beanType.Is<CActor>()  => (int) Statistics.StatType.Actor,
+                Type _ when beanType.Is<CView>()   => (int) Statistics.StatType.View,
+                _ => throw new NotImplementedException(),
+            };
 
             return GetStat(statType);
         }

@@ -58,7 +58,7 @@ namespace GameEngine
         /// 2025-10-26：
         /// 将<b>LinkedList</b>类型修改为数组类型
         /// </summary>
-        // private static LinkedList<IHandler> _handlerSortingList = null;
+        // private static LinkedList<IHandler> _handlerSortingList;
         private static IHandler[] _handlerSortingArray;
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace GameEngine
                 }
 
                 // 类名反射时需要包含命名空间前缀
-                string handlerName = NovaEngine.Utility.Text.Format("{0}.{1}{2}", namespaceTag, enumName, HandlerClassUnifiedStandardName);
+                string handlerName = NovaEngine.FormatString.Format("{%s}.{%s}{%s}", namespaceTag, enumName, HandlerClassUnifiedStandardName);
 
                 Type handlerType = Type.GetType(handlerName);
                 if (null == handlerType)
@@ -144,7 +144,7 @@ namespace GameEngine
                 Type baseType = handlerType.BaseType;
                 while (null != baseType)
                 {
-                    if (false == typeof(IHandler).IsAssignableFrom(baseType) || baseType.IsInterface)
+                    if (false == baseType.Is<IHandler>() || baseType.IsInterface)
                     {
                         break;
                     }

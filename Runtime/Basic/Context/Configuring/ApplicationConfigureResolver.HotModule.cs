@@ -57,7 +57,7 @@ namespace GameEngine.Context.Configuring
                 return;
             }
 
-            Debugger.Info(LogGroupTag.CodeLoader, "Load hot-module configure name={%s} succeed.", packName);
+            Debugger.Info(LogGroupTag.Basic, "Load hot-module configure '{%s}' succeed.", packName);
             ApplicationConfigureInfo.AddHotModulePack(packName);
         }
     }

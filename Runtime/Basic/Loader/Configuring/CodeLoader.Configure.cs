@@ -259,7 +259,7 @@ namespace GameEngine.Loader
         /// 获取当前注册的所有配置数据结构信息对象实例
         /// </summary>
         /// <returns>返回当前所有配置数据实例</returns>
-        private static IList<Configuring.BaseConfigureInfo> GetAllConfigureInfos()
+        private static IReadOnlyList<Configuring.BaseConfigureInfo> GetAllConfigureInfos()
         {
             return Configuring.CodeConfigureResolver.GetAllNodeConfigureInfos();
         }

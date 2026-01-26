@@ -106,8 +106,8 @@ namespace GameEngine
                     ParameterInfo[] parameters = methodInfo.GetParameters();
                     if (null != parameters && parameters.Length > 0)
                     {
-                        Debugger.Warn("The method '{%t}.{%s}' has multiple params '{%d}', cannot invoke with current process.",
-                                      obj.GetType(), methodInfo.Name, null == parameters ? 0 : parameters.Length);
+                        Debugger.Warn(LogGroupTag.Controller, "The method '{%t}.{%s}' has multiple params '{%d}', cannot invoke with current process.",
+                                      obj, methodInfo.Name, null == parameters ? 0 : parameters.Length);
                         return;
                     }
 
@@ -116,8 +116,8 @@ namespace GameEngine
                 }
                 else
                 {
-                    Debugger.Warn("The method '{%t}.{%s}' has return value '{%t}', cannot invoke with current process.",
-                                  obj.GetType(), methodInfo.Name, methodInfo.ReturnType);
+                    Debugger.Warn(LogGroupTag.Controller, "The method '{%t}.{%s}' has return value '{%t}', cannot invoke with current process.",
+                                  obj, methodInfo.Name, methodInfo.ReturnType);
                 }
             }
         }

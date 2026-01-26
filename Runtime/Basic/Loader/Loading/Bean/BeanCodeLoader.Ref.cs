@@ -36,7 +36,7 @@ namespace GameEngine.Loader
         /// <param name="symClass">对象标记类型</param>
         /// <param name="codeInfo">对象结构信息</param>
         /// <param name="attribute">属性对象</param>
-        private static void LoadRefClassByAttributeType(Symboling.SymClass symClass, Structuring.RefCodeInfo codeInfo, Attribute attribute)
+        private static void LoadRefClassByAttributeType(Symbolling.SymClass symClass, Structuring.RefCodeInfo codeInfo, Attribute attribute)
         {
             LoadBaseClassByAttributeType(symClass, codeInfo, attribute);
         }
@@ -48,7 +48,7 @@ namespace GameEngine.Loader
         /// <param name="codeInfo">对象结构信息</param>
         /// <param name="symMethod">函数标记对象</param>
         /// <param name="attribute">属性对象</param>
-        private static void LoadRefMethodByAttributeType(Symboling.SymClass symClass, Structuring.RefCodeInfo codeInfo, Symboling.SymMethod symMethod, Attribute attribute)
+        private static void LoadRefMethodByAttributeType(Symbolling.SymClass symClass, Structuring.RefCodeInfo codeInfo, Symbolling.SymMethod symMethod, Attribute attribute)
         {
 
             LoadBaseMethodByAttributeType(symClass, codeInfo, symMethod, attribute);

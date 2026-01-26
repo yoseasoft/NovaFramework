@@ -93,7 +93,8 @@ namespace GameEngine
             // 加载环境参数
             NovaEngine.Environment.Load(variables);
 
-            Debugger.Log("Environment={{{%s}}}, Configuration={{{%s}}}", NovaEngine.Environment.ToCString(), NovaEngine.Configuration.ToCString());
+            Debugger.Log(LogGroupTag.Basic, "Environment={{{%s}}}, Configuration={{{%s}}}",
+                NovaEngine.Environment.ToCString(), NovaEngine.Configuration.ToCString());
         }
 
         #endregion

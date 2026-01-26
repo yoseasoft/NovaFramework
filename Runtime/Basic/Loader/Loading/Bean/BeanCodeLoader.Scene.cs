@@ -39,11 +39,11 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(CScene))]
-        private static bool LoadSceneClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadSceneClass(Symbolling.SymClass symClass, bool reload)
         {
             if (false == symClass.ClassType.Is<CScene>())
             {
-                Debugger.Warn("The target class type '{%s}' must be inherited from 'CScene' interface, load it failed.", symClass.FullName);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The target class type '{%s}' must be inherited from 'CScene' interface, load it failed.", symClass.FullName);
                 return false;
             }
 
@@ -54,7 +54,6 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
                 Attribute attr = attrs[n];
-                Type attrType = attr.GetType();
                 if (attr is CSceneClassAttribute sceneClassAttribute)
                 {
                     info.EntityName = sceneClassAttribute.Name;
@@ -70,10 +69,10 @@ namespace GameEngine.Loader
                 }
             }
 
-            IList<Symboling.SymMethod> symMethods = symClass.GetAllMethods();
+            IList<Symbolling.SymMethod> symMethods = symClass.GetAllMethods();
             for (int n = 0; null != symMethods && n < symMethods.Count; ++n)
             {
-                Symboling.SymMethod symMethod = symMethods[n];
+                Symbolling.SymMethod symMethod = symMethods[n];
 
                 LoadSceneMethod(symClass, info, symMethod);
             }
@@ -92,7 +91,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The scene name '{%s}' was already existed, repeat added it failed.", info.EntityName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The scene name '{%s}' was already existed, repeat added it failed.", info.EntityName);
                     return false;
                 }
             }
@@ -103,7 +102,7 @@ namespace GameEngine.Loader
             return true;
         }
 
-        private static void LoadSceneMethod(Symboling.SymClass symClass, Structuring.SceneCodeInfo codeInfo, Symboling.SymMethod symMethod)
+        private static void LoadSceneMethod(Symbolling.SymClass symClass, Structuring.SceneCodeInfo codeInfo, Symbolling.SymMethod symMethod)
         {
             // 静态函数直接忽略
             if (symMethod.IsStatic)
@@ -129,7 +128,7 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(CScene))]
-        private static Structuring.SceneCodeInfo LookupSceneCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.SceneCodeInfo LookupSceneCodeInfo(Symbolling.SymClass symClass)
         {
             foreach (KeyValuePair<string, Structuring.SceneCodeInfo> pair in _sceneCodeInfos)
             {

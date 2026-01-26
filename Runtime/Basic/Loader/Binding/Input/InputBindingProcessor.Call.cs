@@ -48,7 +48,7 @@ namespace GameEngine
             }
 
             Loader.Structuring.InputCallCodeInfo inputCodeInfo = codeInfo as Loader.Structuring.InputCallCodeInfo;
-            Debugger.Assert(null != inputCodeInfo, "Invalid input call code info.");
+            Debugger.Assert(inputCodeInfo, "Invalid input call code info.");
 
             for (int n = 0; n < inputCodeInfo.GetMethodTypeCount(); ++n)
             {

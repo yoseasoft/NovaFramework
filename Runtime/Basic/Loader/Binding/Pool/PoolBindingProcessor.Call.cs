@@ -47,7 +47,7 @@ namespace GameEngine
             }
 
             Loader.Structuring.PoolCallCodeInfo poolCodeInfo = codeInfo as Loader.Structuring.PoolCallCodeInfo;
-            Debugger.Assert(null != poolCodeInfo, "Invalid pool call code info.");
+            Debugger.Assert(poolCodeInfo, "Invalid pool call code info.");
 
             if (reload)
             {

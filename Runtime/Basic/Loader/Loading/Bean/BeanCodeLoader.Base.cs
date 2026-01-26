@@ -39,7 +39,7 @@ namespace GameEngine.Loader
         /// <param name="symClass">对象标记类型</param>
         /// <param name="codeInfo">对象结构信息</param>
         /// <param name="attribute">属性对象</param>
-        private static void LoadBaseClassByAttributeType(Symboling.SymClass symClass, Structuring.BaseBeanCodeInfo codeInfo, Attribute attribute)
+        private static void LoadBaseClassByAttributeType(Symbolling.SymClass symClass, Structuring.BaseBeanCodeInfo codeInfo, Attribute attribute)
         {
         }
 
@@ -50,7 +50,7 @@ namespace GameEngine.Loader
         /// <param name="codeInfo">对象结构信息</param>
         /// <param name="symMethod">函数对象</param>
         /// <param name="attribute">属性对象</param>
-        private static void LoadBaseMethodByAttributeType(Symboling.SymClass symClass, Structuring.BaseBeanCodeInfo codeInfo, Symboling.SymMethod symMethod, Attribute attribute)
+        private static void LoadBaseMethodByAttributeType(Symbolling.SymClass symClass, Structuring.BaseBeanCodeInfo codeInfo, Symbolling.SymMethod symMethod, Attribute attribute)
         {
             if (attribute is InputResponseBindingOfTargetAttribute)
             {

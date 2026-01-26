@@ -40,15 +40,15 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(ExtendSupportedAttribute))]
-        private static bool LoadExtendCallClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadExtendCallClass(Symbolling.SymClass symClass, bool reload)
         {
             Structuring.ExtendCallCodeInfo info = new Structuring.ExtendCallCodeInfo();
             info.ClassType = symClass.ClassType;
 
-            IList<Symboling.SymMethod> symMethods = symClass.GetAllMethods();
+            IList<Symbolling.SymMethod> symMethods = symClass.GetAllMethods();
             for (int n = 0; null != symMethods && n < symMethods.Count; ++n)
             {
-                Symboling.SymMethod symMethod = symMethods[n];
+                Symbolling.SymMethod symMethod = symMethods[n];
 
                 // 检查函数格式是否合法，扩展类型的函数必须为静态类型
                 if (false == symMethod.IsStatic || false == symMethod.IsExtension)
@@ -70,13 +70,13 @@ namespace GameEngine.Loader
 
                         if (_attr.InputCode <= 0 && null == _attr.InputDataType)
                         {
-                            Debugger.Warn("The extend input response method '{%s}.{%s}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend input response method '{%s}.{%s}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
                         if (false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithBeanExtensionType(symMethod.MethodInfo))
                         {
-                            Debugger.Warn("The extend input response method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend input response method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
@@ -116,7 +116,7 @@ namespace GameEngine.Loader
                             // 校验失败
                             if (false == verificated)
                             {
-                                Debugger.Error("Cannot verificated from method info '{%s}' to extend input responsing call, loaded this method failed.", symMethod.MethodName);
+                                Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to extend input responsing call, loaded this method failed.", symMethod.MethodName);
                                 continue;
                             }
                         }
@@ -129,13 +129,13 @@ namespace GameEngine.Loader
 
                         if (_attr.EventID <= 0 && null == _attr.EventDataType)
                         {
-                            Debugger.Warn("The extend event subscribe method '{%s}.{%s}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend event subscribe method '{%s}.{%s}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
                         if (false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithBeanExtensionType(symMethod.MethodInfo))
                         {
-                            Debugger.Warn("The extend event subscribe method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend event subscribe method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
@@ -174,7 +174,7 @@ namespace GameEngine.Loader
                             // 校验失败
                             if (false == verificated)
                             {
-                                Debugger.Error("Cannot verificated from method info '{%s}' to extend event subscribing call, loaded this method failed.", symMethod.MethodName);
+                                Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to extend event subscribing call, loaded this method failed.", symMethod.MethodName);
                                 continue;
                             }
                         }
@@ -187,13 +187,13 @@ namespace GameEngine.Loader
 
                         if (_attr.Opcode <= 0 && null == _attr.MessageType)
                         {
-                            Debugger.Warn("The extend message listener method '{%s}.{%s}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend message listener method '{%s}.{%s}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
                         if (false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithBeanExtensionType(symMethod.MethodInfo))
                         {
-                            Debugger.Warn("The extend message recv method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend message recv method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
@@ -232,7 +232,7 @@ namespace GameEngine.Loader
                             // 校验失败
                             if (false == verificated)
                             {
-                                Debugger.Error("Cannot verificated from method info '{%s}' to extend message binding call, loaded this method failed.", symMethod.MethodName);
+                                Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to extend message binding call, loaded this method failed.", symMethod.MethodName);
                                 continue;
                             }
                         }
@@ -246,7 +246,7 @@ namespace GameEngine.Loader
                 info.GetEventCallMethodTypeCount() <= 0 &&
                 info.GetMessageCallMethodTypeCount() <= 0)
             {
-                Debugger.Warn("The extend call method types count must be great than zero, newly added class '{%t}' failed.", info.ClassType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The extend call method types count must be great than zero, newly added class '{%t}' failed.", info.ClassType);
                 return false;
             }
 
@@ -258,7 +258,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The extend call '{%s}' was already existed, repeat added it failed.", symClass.FullName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The extend call '{%s}' was already existed, repeat added it failed.", symClass.FullName);
                     return false;
                 }
             }
@@ -278,7 +278,7 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(ExtendSupportedAttribute))]
-        private static Structuring.ExtendCallCodeInfo LookupExtendCallCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.ExtendCallCodeInfo LookupExtendCallCodeInfo(Symbolling.SymClass symClass)
         {
             foreach (KeyValuePair<Type, Structuring.ExtendCallCodeInfo> pair in _extendCallCodeInfos)
             {

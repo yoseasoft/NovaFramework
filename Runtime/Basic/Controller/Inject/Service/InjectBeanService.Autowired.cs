@@ -36,23 +36,23 @@ namespace GameEngine
         /// <returns>若目标对象装配成功返回true，否则返回false</returns>
         public static bool AutowiredProcessingOnCreateTargetObject(CBean obj)
         {
-            Loader.Symboling.SymClass symClass = obj.Symbol;
+            Loader.Symbolling.SymClass symClass = obj.Symbol;
             if (null == symClass)
             {
                 Debugger.Warn("Could not found any bean class info with target type '{%t}', processed it autowired failed.", obj.BeanType);
                 return false;
             }
 
-            Loader.Symboling.Bean bean = symClass.GetBean(obj.BeanName);
+            Loader.Symbolling.Bean bean = symClass.GetBean(obj.BeanName);
             // Debugger.Info("find bean name '{%s}' and field count '{%d}' with target object '{%t}' !!!", obj.BeanName, bean.GetFieldCount(), obj.BeanType);
 
-            IEnumerator<KeyValuePair<string, Loader.Symboling.BeanField>> e_beanField = bean.GetFieldEnumerator();
+            IEnumerator<KeyValuePair<string, Loader.Symbolling.BeanField>> e_beanField = bean.GetFieldEnumerator();
             if (null != e_beanField)
             {
                 while (e_beanField.MoveNext())
                 {
-                    Loader.Symboling.BeanField beanField = e_beanField.Current.Value;
-                    Loader.Symboling.SymField symField = beanField.SymField;
+                    Loader.Symbolling.BeanField beanField = e_beanField.Current.Value;
+                    Loader.Symbolling.SymField symField = beanField.SymField;
 
                     // Debugger.Warn("create field '{%s}' with target object '{%t}' !!!", beanField.FieldName, obj.BeanType);
 
@@ -92,11 +92,11 @@ namespace GameEngine
             return true;
         }
 
-        private static object __CreateAutowiredObjectForClassType(Loader.Symboling.BeanField beanField)
+        private static object __CreateAutowiredObjectForClassType(Loader.Symbolling.BeanField beanField)
         {
             if (false == string.IsNullOrEmpty(beanField.ReferenceBeanName))
             {
-                Loader.Symboling.Bean referenceBean = Loader.CodeLoader.GetBeanClassByName(beanField.ReferenceBeanName);
+                Loader.Symbolling.Bean referenceBean = Loader.CodeLoader.GetBeanClassByName(beanField.ReferenceBeanName);
                 if (null == referenceBean)
                 {
                     Debugger.Warn("Could not found any reference bean class with reference name '{%s}' from target field '{%s}', setting this field value failed.",
@@ -117,7 +117,7 @@ namespace GameEngine
             return null;
         }
 
-        private static object __CreateAutowiredObjectFromConstantType(Loader.Symboling.BeanField beanField)
+        private static object __CreateAutowiredObjectFromConstantType(Loader.Symbolling.BeanField beanField)
         {
             return null;
         }
@@ -128,7 +128,7 @@ namespace GameEngine
         /// <param name="obj">目标对象实例</param>
         public static void AutowiredProcessingOnReleaseTargetObject(CBean obj)
         {
-            Loader.Symboling.SymClass symClass = obj.Symbol;
+            Loader.Symbolling.SymClass symClass = obj.Symbol;
             // InjectController.BeanClass beanClass = InjectController.Instance.FindGenericBeanClassByType(obj.BeanType);
             if (null == symClass)
             {
@@ -136,15 +136,15 @@ namespace GameEngine
                 return;
             }
 
-            Loader.Symboling.Bean bean = symClass.GetBean(obj.BeanName);
+            Loader.Symbolling.Bean bean = symClass.GetBean(obj.BeanName);
 
-            IEnumerator<KeyValuePair<string, Loader.Symboling.BeanField>> e_beanField = bean.GetFieldEnumerator();
+            IEnumerator<KeyValuePair<string, Loader.Symbolling.BeanField>> e_beanField = bean.GetFieldEnumerator();
             if (null != e_beanField)
             {
                 while (e_beanField.MoveNext())
                 {
-                    Loader.Symboling.BeanField beanField = e_beanField.Current.Value;
-                    Loader.Symboling.SymField symField = beanField.SymField;
+                    Loader.Symbolling.BeanField beanField = e_beanField.Current.Value;
+                    Loader.Symbolling.SymField symField = beanField.SymField;
 
                     if (null == symField)
                     {

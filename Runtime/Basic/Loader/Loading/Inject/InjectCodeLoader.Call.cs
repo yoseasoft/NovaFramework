@@ -38,11 +38,11 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(InjectAttribute))]
-        private static bool LoadInjectCallClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadInjectCallClass(Symbolling.SymClass symClass, bool reload)
         {
             if (false == symClass.IsInstantiate)
             {
-                Debugger.Error("The inject call class '{%s}' must be instantiable class, loaded it failed.", symClass.FullName);
+                Debugger.Error(LogGroupTag.CodeLoader, "The inject call class '{%s}' must be instantiable class, loaded it failed.", symClass.FullName);
                 return false;
             }
 
@@ -58,7 +58,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The inject call '{%s}' was already existed, repeat added it failed.", symClass.FullName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The inject call '{%s}' was already existed, repeat added it failed.", symClass.FullName);
                     return false;
                 }
             }
@@ -78,7 +78,7 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(InjectAttribute))]
-        private static Structuring.InjectCallCodeInfo LookupInjectCallCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.InjectCallCodeInfo LookupInjectCallCodeInfo(Symbolling.SymClass symClass)
         {
             foreach (KeyValuePair<Type, Structuring.InjectCallCodeInfo> pair in _injectCallCodeInfos)
             {

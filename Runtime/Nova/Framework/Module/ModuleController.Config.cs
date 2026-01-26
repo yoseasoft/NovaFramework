@@ -105,22 +105,22 @@ namespace NovaEngine.Module
 
                     string enumName = enumValue.ToString();
                     // 类名反射时需要包含命名空间前缀
-                    string moduleName = Utility.Text.Format("{0}.{1}{2}", namespace_tag, enumName, ModuleClassUnifiedStandardName);
+                    string moduleName = FormatString.Format("{%s}.{%s}{%s}", namespace_tag, enumName, ModuleClassUnifiedStandardName);
 
                     Type moduleType = Type.GetType(moduleName);
                     if (null == moduleType)
                     {
-                        Logger.Info("Could not found any module class with target name {0}.", moduleName);
+                        Logger.Info("Could not found any module class with target name '{%s}'.", moduleName);
                         continue;
                     }
 
                     if (false == typeof(ModuleObject).IsAssignableFrom(moduleType))
                     {
-                        Logger.Warn("The module type {0} must be inherited from 'ModuleObject' class.", moduleName);
+                        Logger.Warn("The module type '{%s}' must be inherited from 'ModuleObject' class.", moduleName);
                         continue;
                     }
 
-                    // Logger.Info("Register new module class {0} to target type {1}.", moduleName, enumName);
+                    // Logger.Info("Register new module class '{%s}' to target type '{%s}'.", moduleName, enumName);
 
                     RegModuleConfigureInfo(enumValue, moduleType);
                 }

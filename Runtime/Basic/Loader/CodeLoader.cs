@@ -139,7 +139,7 @@ namespace GameEngine.Loader
             for (int n = 0; null != allTypes && n < allTypes.Length; ++n)
             {
                 Type type = allTypes[n];
-                Debugger.Assert(false == _assemblyClassTypes.Contains(type), "Invalid class type {0}.", type.FullName);
+                Debugger.Assert(false == _assemblyClassTypes.Contains(type), "Invalid class type {%t}.", type);
                 _assemblyClassTypes.Add(type);
 
                 // 过滤忽略加载的目标对象类型
@@ -157,11 +157,11 @@ namespace GameEngine.Loader
                     continue;
                 }
 
-                Symboling.SymClass symClass = LoadSymClass(type, reload);
+                Symbolling.SymClass symClass = LoadSymClass(type, reload);
                 // 加载对象类型的标记信息
                 if (null == symClass)
                 {
-                    Debugger.Warn("Load class symbole from target type '{%t}' failed.", type);
+                    Debugger.Warn("Load class symbol from target type '{%t}' failed.", type);
                     continue;
                 }
 
@@ -184,7 +184,7 @@ namespace GameEngine.Loader
                 */
 
                 // 新版本支持同一个对象类进行多次不同类型的解析处理
-                if (TryGetAllMathcedCodeTypeLoadedHandlerWithTargetClassType(type, out handlers))
+                if (TryGetAllMatchedCodeTypeLoadedHandlerWithTargetClassType(type, out handlers))
                 {
                     Structuring.GeneralCodeInfo info = null;
                     foreach (KeyValuePair<Type, IList<OnCodeTypeLoadedHandler>> pair in handlers)
@@ -273,7 +273,7 @@ namespace GameEngine.Loader
         {
             handler = null;
 
-            Symboling.SymClass symClass = GetSymClassByType(targetType);
+            Symbolling.SymClass symClass = GetSymClassByType(targetType);
             IEnumerator<KeyValuePair<Type, LinkedList<OnCodeTypeLoadedHandler>>> e = _codeTypeLoadedCallbacks.GetEnumerator();
             while (e.MoveNext())
             {
@@ -316,13 +316,13 @@ namespace GameEngine.Loader
         /// <param name="targetType">对象类型</param>
         /// <param name="handlers">句柄列表</param>
         /// <returns>若查找句柄列表成功返回true，否则返回false</returns>
-        private static bool TryGetAllMathcedCodeTypeLoadedHandlerWithTargetClassType(Type targetType, out IDictionary<Type, IList<OnCodeTypeLoadedHandler>> handlers)
+        private static bool TryGetAllMatchedCodeTypeLoadedHandlerWithTargetClassType(Type targetType, out IDictionary<Type, IList<OnCodeTypeLoadedHandler>> handlers)
         {
             bool result = false;
 
             IDictionary<Type, IList<OnCodeTypeLoadedHandler>> dict = null;
 
-            Symboling.SymClass symClass = GetSymClassByType(targetType);
+            Symbolling.SymClass symClass = GetSymClassByType(targetType);
             IEnumerator<KeyValuePair<Type, LinkedList<OnCodeTypeLoadedHandler>>> e = _codeTypeLoadedCallbacks.GetEnumerator();
             while (e.MoveNext())
             {

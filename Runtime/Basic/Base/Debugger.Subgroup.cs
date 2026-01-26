@@ -45,7 +45,7 @@ namespace GameEngine
         {
             if (false == _debuggingOutputGroupInfos.ContainsKey(groupID))
             {
-                Warn("Could not found any output group with target ID '{0}', setted it enabled failed.", groupID);
+                Warn("Could not found any output group with target ID '{%d}', set it enabled failed.", groupID);
                 return;
             }
 
@@ -85,7 +85,7 @@ namespace GameEngine
         {
             if (false == _debuggingOutputGroupInfos.ContainsKey(groupID))
             {
-                Warn("Could not found any output group with target ID '{0}', removed it failed.", groupID);
+                Warn("Could not found any output group with target ID '{%d}', removed it failed.", groupID);
                 return;
             }
 

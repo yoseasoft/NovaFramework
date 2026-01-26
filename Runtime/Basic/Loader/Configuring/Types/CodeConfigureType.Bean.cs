@@ -96,7 +96,7 @@ namespace GameEngine.Loader.Configuring
             }
             else if (_fields.ContainsKey(fieldInfo.FieldName))
             {
-                Debugger.Warn("The bean '{%t}' class's field '{%s}' was already exist, repeat added it will be override old value.", _classType, fieldInfo.FieldName);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The bean '{%t}' class's field '{%s}' was already exist, repeat added it will be override old value.", _classType, fieldInfo.FieldName);
                 _fields.Remove(fieldInfo.FieldName);
             }
 
@@ -152,7 +152,7 @@ namespace GameEngine.Loader.Configuring
             }
             else if (_properties.ContainsKey(propertyInfo.PropertyName))
             {
-                Debugger.Warn("The bean '{%t}' class's property '{%s}' was already exist, repeat added it will be override old value.", _classType, propertyInfo.PropertyName);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The bean '{%t}' class's property '{%s}' was already exist, repeat added it will be override old value.", _classType, propertyInfo.PropertyName);
                 _properties.Remove(propertyInfo.PropertyName);
             }
 
@@ -208,7 +208,7 @@ namespace GameEngine.Loader.Configuring
             }
             else if (_components.Contains(componentInfo))
             {
-                Debugger.Warn("The bean '{%t}' class's component '{%i}' was already exist, repeat added it will be override old value.", _classType, componentInfo);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The bean '{%t}' class's component '{%i}' was already exist, repeat added it will be override old value.", _classType, componentInfo);
                 _components.Remove(componentInfo);
             }
 
@@ -248,7 +248,7 @@ namespace GameEngine.Loader.Configuring
         {
             if (null == _components || index < 0 || index >= _components.Count)
             {
-                Debugger.Warn("Invalid index ({%d}) for configure bean component info list.", index);
+                Debugger.Warn(LogGroupTag.CodeLoader, "Invalid index ({%d}) for configure bean component info list.", index);
                 return null;
             }
 

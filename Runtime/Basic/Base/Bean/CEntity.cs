@@ -1034,6 +1034,8 @@ namespace GameEngine
                 _componentMessageDispatchList.Add(component);
             }
 
+            _Profiler.CallStat(Profiler.Statistics.StatCode.ComponentAdd, component);
+
             // 启动组件实例
             Call(component.Startup, AspectBehaviourType.Startup);
 
@@ -1053,8 +1055,6 @@ namespace GameEngine
 
             // 通知内部组件被改变
             OnInternalComponentsChanged();
-
-            _Profiler.CallStat(Profiler.Statistics.StatCode.ComponentAdd, component);
 
             return component;
         }
@@ -1183,8 +1183,6 @@ namespace GameEngine
                 return;
             }
 
-            _Profiler.CallStat(Profiler.Statistics.StatCode.ComponentRemove, component);
-
             BeanController.Instance.UnregBeanLifecycleNotification(component);
 
             // 仅在组件对象被唤醒成功后才处理该流程
@@ -1202,6 +1200,8 @@ namespace GameEngine
 
             // 关闭组件实例
             Call(component.Shutdown, AspectBehaviourType.Shutdown);
+
+            _Profiler.CallStat(Profiler.Statistics.StatCode.ComponentRemove, component);
 
             _componentInputDispatchList.Remove(component);
             _componentEventDispatchList.Remove(component);

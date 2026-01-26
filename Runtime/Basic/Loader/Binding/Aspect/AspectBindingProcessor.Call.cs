@@ -47,7 +47,7 @@ namespace GameEngine
             }
 
             Loader.Structuring.AspectCallCodeInfo aspectCodeInfo = codeInfo as Loader.Structuring.AspectCallCodeInfo;
-            Debugger.Assert(null != aspectCodeInfo, "Invalid aspect call code info.");
+            Debugger.Assert(aspectCodeInfo, "Invalid aspect call code info.");
 
             for (int n = 0; n < aspectCodeInfo.GetMethodTypeCount(); ++n)
             {

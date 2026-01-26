@@ -56,15 +56,15 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="targetType">目标对象类型</param>
         /// <returns>返回配置数据实例集合，若查找失败返回null</returns>
-        internal static IList<Configuring.BeanConfigureInfo> GetBeanConfigureByType(Type targetType)
+        internal static IReadOnlyList<Configuring.BeanConfigureInfo> GetBeanConfigureByType(Type targetType)
         {
             if (null == targetType)
             {
                 return null;
             }
 
-            IList<Configuring.BeanConfigureInfo> result = null;
-            IList<Configuring.BaseConfigureInfo> list = GetAllConfigureInfos();
+            List<Configuring.BeanConfigureInfo> result = null;
+            IReadOnlyList<Configuring.BaseConfigureInfo> list = GetAllConfigureInfos();
             for (int n = 0; null != list && n < list.Count; ++n)
             {
                 Configuring.BaseConfigureInfo baseConfigureInfo = list[n];

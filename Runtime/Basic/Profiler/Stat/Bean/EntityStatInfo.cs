@@ -64,6 +64,8 @@ namespace GameEngine.Profiler.Statistics
             _components = new Dictionary<int, ComponentStatInfo>();
         }
 
+        #region 实体对象内部的组件元素变化通知回调接口函数
+
         /// <summary>
         /// 组件对象实例添加回调函数
         /// </summary>
@@ -86,7 +88,7 @@ namespace GameEngine.Profiler.Statistics
         {
             if (false == _components.TryGetValue(component.BeanId, out ComponentStatInfo info))
             {
-                Debugger.Warn(LogGroupTag.Profiler, "Could not found any component stat info by uid '{%d}', removed it failed.", component.BeanId);
+                Debugger.Warn(LogGroupTag.Profiler, "Could not found any component stat info by uid '{%d}' from entity '{%d}', removed it failed.", component.BeanId, component.Entity.BeanId);
                 return;
             }
 
@@ -112,5 +114,43 @@ namespace GameEngine.Profiler.Statistics
 
             return c;
         }
+
+        #endregion
+
+        #region 实体对象内部的资产元素变化通知回调接口函数
+
+        /// <summary>
+        /// 资产对象实例加载回调函数
+        /// </summary>
+        /// <param name="entity">实体对象</param>
+        /// <param name="name">资产名称</param>
+        /// <param name="url">资产地址</param>
+        internal void OnAssetLoaded(CEntity entity, string name, string url)
+        {
+            if (_assets.ContainsKey(name))
+            {
+                // 资产记录已存在
+                return;
+            }
+
+            AssetStatInfo info = new AssetStatInfo(name ,url);
+            _assets.Add(name, info);
+        }
+
+        /// <summary>
+        /// 资产对象实例卸载回调函数
+        /// </summary>
+        /// <param name="entity">实体对象</param>
+        /// <param name="name">资产名称</param>
+        internal void OnAssetUnloaded(CEntity entity, string name)
+        {
+            if (false == _assets.TryGetValue(name, out AssetStatInfo info))
+            {
+                Debugger.Warn(LogGroupTag.Profiler, "Could not found any asset stat info by name '{%s}' from entity '{%d}', unloaded it failed.", name, entity.BeanId);
+                return;
+            }
+        }
+
+        #endregion
     }
 }

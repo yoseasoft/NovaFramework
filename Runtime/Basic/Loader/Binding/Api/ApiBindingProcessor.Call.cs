@@ -43,12 +43,12 @@ namespace GameEngine
         {
             if (null == codeInfo)
             {
-                Debugger.Warn("The load code info '{0}' must be non-null, recv arguments invalid.", targetType.FullName);
+                Debugger.Warn("The load code info '{%t}' must be non-null, recv arguments invalid.", targetType);
                 return;
             }
 
             Loader.Structuring.ApiCallCodeInfo apiCodeInfo = codeInfo as Loader.Structuring.ApiCallCodeInfo;
-            Debugger.Assert(null != apiCodeInfo, "Invalid api call code info.");
+            Debugger.Assert(apiCodeInfo, "Invalid api call code info.");
 
             for (int n = 0; n < apiCodeInfo.GetMethodTypeCount(); ++n)
             {

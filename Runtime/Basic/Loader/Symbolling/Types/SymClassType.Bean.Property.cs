@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,64 +25,64 @@
 
 using System;
 
-namespace GameEngine.Loader.Symboling
+namespace GameEngine.Loader.Symbolling
 {
     /// <summary>
-    /// Bean对象类的字段数据的结构信息
+    /// Bean对象类的属性数据的结构信息
     /// </summary>
-    public class BeanField : BeanMember, IEquatable<BeanField>
+    public class BeanProperty : BeanMember, IEquatable<BeanProperty>
     {
         /// <summary>
-        /// 字段对象的名称
+        /// 属性对象的名称
         /// </summary>
-        private string _fieldName;
+        private string _propertyName;
         /// <summary>
-        /// 字段引用的实例类型
+        /// 属性引用的实例类型
         /// </summary>
         private Type _referenceClassType;
         /// <summary>
-        /// 字段引用的实例名称
+        /// 属性引用的实例名称
         /// </summary>
         private string _referenceBeanName;
         /// <summary>
-        /// 字段引用的对象实例
+        /// 属性引用的对象实例
         /// </summary>
         private object _referenceValue;
 
-        public string FieldName { get { return _fieldName; } internal set { _fieldName = value; } }
+        public string PropertyName { get { return _propertyName; } internal set { _propertyName = value; } }
         public Type ReferenceClassType { get { return _referenceClassType; } internal set { _referenceClassType = value; } }
         public string ReferenceBeanName { get { return _referenceBeanName; } internal set { _referenceBeanName = value; } }
         public object ReferenceValue { get { return _referenceValue; } internal set { _referenceValue = value; } }
 
         /// <summary>
-        /// 获取字段配置对应的字段标记实例
+        /// 获取属性配置对应的属性标记实例
         /// </summary>
-        public SymField SymField
+        public SymProperty SymProperty
         {
             get
             {
                 Debugger.Assert(null != this.BeanObject && null != this.BeanObject.Symbol, "The bean object instance must be non-null.");
 
-                return this.BeanObject.Symbol.GetFieldByName(_fieldName);
+                return this.BeanObject.Symbol.GetPropertyByName(_propertyName);
             }
         }
 
-        public BeanField(Bean beanObject) : base(beanObject)
+        public BeanProperty(Bean beanObject) : base(beanObject)
         { }
 
-        ~BeanField()
+        ~BeanProperty()
         { }
 
         public override bool Equals(object obj)
         {
-            if (obj is BeanField) { return Equals((BeanField) obj); }
+            if (obj is BeanProperty) { return Equals((BeanProperty) obj); }
 
             return false;
         }
 
-        public bool Equals(BeanField other)
+        public bool Equals(BeanProperty other)
         {
-            return null != _fieldName && _fieldName == other._fieldName;
+            return null != _propertyName && _propertyName == other._propertyName;
         }
 
         public override int GetHashCode()
@@ -90,7 +90,7 @@ namespace GameEngine.Loader.Symboling
             unchecked
             {
                 int hash = 17;
-                hash = hash * 23 + _fieldName?.GetHashCode() ?? 0;
+                hash = hash * 23 + _propertyName?.GetHashCode() ?? 0;
                 hash = hash * 23 + _referenceBeanName?.GetHashCode() ?? 0;
                 hash = hash * 23 + _referenceClassType?.GetHashCode() ?? 0;
                 hash = hash * 23 + _referenceValue?.GetHashCode() ?? 0;

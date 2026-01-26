@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 
 namespace GameEngine
 {
@@ -33,7 +34,7 @@ namespace GameEngine
         /// <summary>
         /// 注入实体对象的信息管理容器
         /// </summary>
-        private static IDictionary<Type, IDictionary<string, GeneralInstantiateGenerator>> _beanInstanceInfos = null;
+        private static IDictionary<Type, IDictionary<string, GeneralInstantiateGenerator>> _beanInstanceInfos;
 
         /// <summary>
         /// 实体对象实例的管理信息初始化接口函数
@@ -63,7 +64,7 @@ namespace GameEngine
         /// <returns>返回新创建的对象实例</returns>
         public static object CreateObjectInstance(Type classType)
         {
-            if (typeof(CBean).IsAssignableFrom(classType))
+            if (classType.Is<CBean>())
             {
                 return CreateBeanInstance(classType);
             }
@@ -78,7 +79,7 @@ namespace GameEngine
         /// <returns>返回新创建的对象实例</returns>
         public static CBean CreateBeanInstance(string beanName)
         {
-            Loader.Symboling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
+            Loader.Symbolling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
             if (null == bean)
             {
                 Debugger.Warn("Could not found any bean class struct with target name '{%s}', create bean instance failed.", beanName);
@@ -95,7 +96,7 @@ namespace GameEngine
         /// <returns>返回新创建的对象实例</returns>
         public static CBean CreateBeanInstance(Type classType)
         {
-            Loader.Symboling.SymClass symClass = Loader.CodeLoader.GetSymClassByType(classType);
+            Loader.Symbolling.SymClass symClass = Loader.CodeLoader.GetSymClassByType(classType);
             if (null == symClass)
             {
                 Debugger.Warn("Could not found any bean class struct with target type '{%t}', create bean instance failed.", classType);
@@ -111,9 +112,9 @@ namespace GameEngine
         /// <param name="symClass">标记对象</param>
         /// <param name="beanName">实体名称</param>
         /// <returns>返回新创建的实体对象实例，若创建失败返回null</returns>
-        internal static CBean CreateBeanInstance(Loader.Symboling.SymClass symClass, string beanName)
+        internal static CBean CreateBeanInstance(Loader.Symbolling.SymClass symClass, string beanName)
         {
-            Loader.Symboling.Bean bean = symClass.GetBean(beanName);
+            Loader.Symbolling.Bean bean = symClass.GetBean(beanName);
 
             return CreateBeanInstance(bean);
         }
@@ -123,7 +124,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="bean">实体结构信息</param>
         /// <returns>返回新创建的实体对象实例，若创建失败返回null</returns>
-        internal static CBean CreateBeanInstance(Loader.Symboling.Bean bean)
+        internal static CBean CreateBeanInstance(Loader.Symbolling.Bean bean)
         {
             Type classType = bean.Symbol.ClassType;
             string beanName = bean.BeanName;
@@ -161,7 +162,7 @@ namespace GameEngine
         {
             Type classType = obj.GetType();
 
-            if (typeof(CBean).IsAssignableFrom(classType))
+            if (classType.Is<CBean>())
             {
                 ReleaseBeanInstance(obj as CBean);
             }
@@ -209,11 +210,11 @@ namespace GameEngine
             /// <summary>
             /// 对象类型声明
             /// </summary>
-            protected Type _classType = null;
+            protected readonly Type _classType;
             /// <summary>
             /// 对象实体名称
             /// </summary>
-            protected string _beanName = null;
+            protected readonly string _beanName;
 
             /// <summary>
             /// 对象是否为单例模式的状态标识
@@ -222,7 +223,7 @@ namespace GameEngine
 
             protected GeneralInstantiateGenerator(Type classType, string beanName)
             {
-                Debugger.Assert(typeof(CBean).IsAssignableFrom(classType), NovaEngine.ErrorText.InvalidArguments);
+                Debugger.Assert(classType.Is<CBean>(), NovaEngine.ErrorText.InvalidArguments);
 
                 _classType = classType;
                 _beanName = beanName;
@@ -253,16 +254,16 @@ namespace GameEngine
             {
                 CBean obj = null;
 
-                if (typeof(CScene).IsAssignableFrom(_classType))
+                if (_classType.Is<CScene>())
                 {
                     // obj = SceneHandler.Instance.CreateScene(m_classType);
                     throw new ArgumentException();
                 }
-                else if (typeof(CActor).IsAssignableFrom(_classType))
+                else if (_classType.Is<CActor>())
                 {
                     obj = ActorHandler.Instance.CreateActor(_classType, _beanName);
                 }
-                else if (typeof(CObject).IsAssignableFrom(_classType))
+                else if (_classType.Is<CObject>())
                 {
                     obj = ObjectHandler.Instance.CreateObject(_classType, _beanName);
                 }
@@ -293,15 +294,15 @@ namespace GameEngine
                 // 卸载待销毁的对象实例
                 AutowiredProcessingOnReleaseTargetObject(obj);
 
-                if (typeof(CScene).IsAssignableFrom(_classType))
+                if (_classType.Is<CScene>())
                 {
                     throw new ArgumentException();
                 }
-                else if (typeof(CActor).IsAssignableFrom(_classType))
+                else if (_classType.Is<CActor>())
                 {
                     ActorHandler.Instance.DestroyActor(obj as CActor);
                 }
-                else if (typeof(CObject).IsAssignableFrom(_classType))
+                else if (_classType.Is<CObject>())
                 {
                     ObjectHandler.Instance.DestroyObject(obj as CObject);
                 }
@@ -345,7 +346,7 @@ namespace GameEngine
             public override CBean Alloc()
             {
                 CBean obj = CreateInstance();
-                Debugger.Assert(null != obj, "Invalid class type {0}.", NovaEngine.Utility.Text.ToString(_classType));
+                Debugger.Assert(obj, "Invalid class type {%t}.", _classType);
 
                 _objects.Add(obj);
 
@@ -417,7 +418,7 @@ namespace GameEngine
                 if (null == _instance)
                 {
                     _instance = CreateInstance();
-                    Debugger.Assert(null != _instance, "Invalid class type {0}.", NovaEngine.Utility.Text.ToString(_classType));
+                    Debugger.Assert(_instance, "Invalid class type {%t}.", _classType);
                 }
 
                 ++_referenceCount;

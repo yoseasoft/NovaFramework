@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.Customize.Extension;
 using System.Reflection;
 
-namespace GameEngine.Loader.Symboling
+namespace GameEngine.Loader.Symbolling
 {
     /// <summary>
     /// 标记对象的解析类，对基础对象类的注入标记进行解析和构建
@@ -212,7 +212,7 @@ namespace GameEngine.Loader.Symboling
             Type targetType = symbol.ClassType;
 
             // 读取配置数据
-            IList< Configuring.BeanConfigureInfo> beanConfigureInfos = CodeLoader.GetBeanConfigureByType(targetType);
+            IReadOnlyList< Configuring.BeanConfigureInfo> beanConfigureInfos = CodeLoader.GetBeanConfigureByType(targetType);
             for (int n = 0; null != beanConfigureInfos && n < beanConfigureInfos.Count; ++n)
             {
                 Configuring.BeanConfigureInfo beanConfigureInfo = beanConfigureInfos[n];

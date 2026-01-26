@@ -28,59 +28,46 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace GameEngine.Loader.Symboling
+namespace GameEngine.Loader.Symbolling
 {
     /// <summary>
-    /// 通用对象属性的标记数据的结构信息
+    /// 通用对象字段的标记数据的结构信息
     /// </summary>
-    public class SymProperty : SymBase
+    public class SymField : SymBase
     {
         /// <summary>
-        /// 属性的名称
+        /// 字段的名称
         /// </summary>
-        private string _propertyName;
+        private string _fieldName;
         /// <summary>
-        /// 属性的类型
+        /// 字段的类型
         /// </summary>
-        private Type _propertyType;
+        private Type _fieldType;
         /// <summary>
-        /// 属性的获取接口函数
+        /// 字段对象实例
         /// </summary>
-        private MethodInfo _getMethodInfo;
-        /// <summary>
-        /// 属性的设置接口函数
-        /// </summary>
-        private MethodInfo _setMethodInfo;
-        /// <summary>
-        /// 属性对象实例
-        /// </summary>
-        private PropertyInfo _propertyInfo;
+        private FieldInfo _fieldInfo;
 
-        public PropertyInfo PropertyInfo
+        public FieldInfo FieldInfo
         {
-            get { return _propertyInfo; }
+            get { return _fieldInfo; }
             internal set
             {
-                _propertyInfo = value;
+                _fieldInfo = value;
 
-                _propertyName = _propertyInfo.Name;
-                _propertyType = _propertyInfo.PropertyType;
-
-                _getMethodInfo = _propertyInfo.GetGetMethod();
-                _setMethodInfo = _propertyInfo.GetSetMethod();
+                _fieldName = _fieldInfo.Name;
+                _fieldType = _fieldInfo.FieldType;
             }
         }
 
-        public string PropertyName => _propertyName;
-        public Type PropertyType => _propertyType;
-        public MethodInfo GetMethodInfo => _getMethodInfo;
-        public MethodInfo SetMethodInfo => _setMethodInfo;
+        public string FieldName => _fieldName;
+        public Type FieldType => _fieldType;
 
-        public SymProperty() : base() { }
+        public SymField() : base() { }
 
-        ~SymProperty()
+        ~SymField()
         {
-            _propertyInfo = null;
+            _fieldInfo = null;
         }
     }
 }

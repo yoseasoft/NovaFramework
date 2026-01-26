@@ -38,7 +38,7 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(MessageObjectAttribute))]
-        private static bool LoadNetworkMessageClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadNetworkMessageClass(Symbolling.SymClass symClass, bool reload)
         {
             if (false == NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(symClass.ClassType))
             {
@@ -90,7 +90,7 @@ namespace GameEngine.Loader
 
             if (info.Opcode <= 0)
             {
-                Debugger.Warn("The network message opcode '{%d}' was invalid, newly added class '{%s}' failed.", info.Opcode, symClass.FullName);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The network message opcode '{%d}' was invalid, newly added class '{%s}' failed.", info.Opcode, symClass.FullName);
                 return false;
             }
 
@@ -102,7 +102,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The network message opcode '{%d}' was already existed, repeat added it failed.", info.Opcode);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The network message opcode '{%d}' was already existed, repeat added it failed.", info.Opcode);
                     return false;
                 }
             }
@@ -122,7 +122,7 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(MessageObjectAttribute))]
-        private static Structuring.NetworkMessageCodeInfo LookupNetworkMessageCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.NetworkMessageCodeInfo LookupNetworkMessageCodeInfo(Symbolling.SymClass symClass)
         {
             foreach (KeyValuePair<int, Structuring.NetworkMessageCodeInfo> pair in _networkMessageCodeInfos)
             {

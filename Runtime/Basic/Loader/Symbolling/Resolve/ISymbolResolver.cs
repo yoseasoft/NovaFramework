@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -24,41 +24,31 @@
 
 using System;
 
-namespace GameEngine.Loader.Symboling
+namespace GameEngine.Loader.Symbolling
 {
     /// <summary>
-    /// 通用对象类的标记数据的集合类型<br/>
-    /// 该类型是针对标记对象封装的映射容器，提供两种键的快速访问，可以提高访问效率
+    /// 针对特性标签的符号解析接口定义
     /// </summary>
-    public sealed class SymClassMap : NovaEngine.CompositeKeyMap<Type, string, SymClass>
+    public interface ISymbolResolverOfFeatureAttribute
+    {
+    }
+
+    /// <summary>
+    /// 针对可实例化对象类的符号解析接口定义
+    /// </summary>
+    public interface ISymbolResolverOfInstantiationClass
     {
         /// <summary>
-        /// 新增指定的标记对象实例到当前映射容器中
+        /// 检测目标对象类型是否匹配当前解析器
         /// </summary>
-        /// <param name="symbol">标记对象实例</param>
-        /// <returns>若新增实例成功返回true，否则返回false</returns>
-        public bool Add(SymClass symbol)
-        {
-            return Add(symbol.ClassType, symbol.ClassName, symbol);
-        }
+        /// <param name="targetType">对象类型</param>
+        /// <returns>若目标对象类型匹配则返回true，否则返回false</returns>
+        bool Matches(Type targetType);
 
         /// <summary>
-        /// 从当前映射容器中移除指定的标记对象实例
+        /// 指定符号对象类的解析函数
         /// </summary>
-        /// <param name="symbol">标记对象实例</param>
-        public void Remove(SymClass symbol)
-        {
-            Remove(symbol.ClassType);
-        }
-
-        /// <summary>
-        /// 检测当前映射容器中是否存在指定的标记对象实例
-        /// </summary>
-        /// <param name="symbol">标记对象实例</param>
-        /// <returns>若存在指定标记对象实例则返回true，否则返回false</returns>
-        public bool Contains(SymClass symbol)
-        {
-            return ContainsKey(symbol.ClassType);
-        }
+        /// <param name="symbol">符号对象实例</param>
+        void Resolve(SymClass symbol);
     }
 }

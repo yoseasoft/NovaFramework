@@ -39,15 +39,15 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(InputSystemAttribute))]
-        private static bool LoadInputCallClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadInputCallClass(Symbolling.SymClass symClass, bool reload)
         {
             Structuring.InputCallCodeInfo info = new Structuring.InputCallCodeInfo();
             info.ClassType = symClass.ClassType;
 
-            IList<Symboling.SymMethod> symMethods = symClass.GetAllMethods();
+            IList<Symbolling.SymMethod> symMethods = symClass.GetAllMethods();
             for (int n = 0; null != symMethods && n < symMethods.Count; ++n)
             {
-                Symboling.SymMethod symMethod = symMethods[n];
+                Symbolling.SymMethod symMethod = symMethods[n];
 
                 // 检查函数格式是否合法
                 if (false == symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCall(symMethod.MethodInfo))
@@ -124,13 +124,13 @@ namespace GameEngine.Loader
                             // 校验失败
                             if (false == verificated)
                             {
-                                Debugger.Error("Cannot verificated from method info '{%s}' to input listener call, loaded this method failed.", symMethod.FullName);
+                                Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to input listener call, loaded this method failed.", symMethod.FullName);
                                 continue;
                             }
                         }
 
                         // if (false == method.IsStatic)
-                        // { Debugger.Warn("The input call method '{%s}.{%s}' must be static type, loaded it failed.", symClass.FullName, symMethod.MethodName); continue; }
+                        // { Debugger.Warn(LogGroupTag.CodeLoader, "The input call method '{%s}.{%s}' must be static type, loaded it failed.", symClass.FullName, symMethod.MethodName); continue; }
 
                         info.AddMethodType(callMethodInfo);
                     }
@@ -139,7 +139,7 @@ namespace GameEngine.Loader
 
             if (info.GetMethodTypeCount() <= 0)
             {
-                Debugger.Warn("The input call method types count must be great than zero, newly added class '{%t}' failed.", info.ClassType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The input call method types count must be great than zero, newly added class '{%t}' failed.", info.ClassType);
                 return false;
             }
 
@@ -151,7 +151,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The input call '{%s}' was already existed, repeat added it failed.", symClass.FullName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The input call '{%s}' was already existed, repeat added it failed.", symClass.FullName);
                     return false;
                 }
             }
@@ -171,7 +171,7 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(InputSystemAttribute))]
-        private static Structuring.InputCallCodeInfo LookupInputCallCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.InputCallCodeInfo LookupInputCallCodeInfo(Symbolling.SymClass symClass)
         {
             foreach (KeyValuePair<Type, Structuring.InputCallCodeInfo> pair in _inputCallCodeInfos)
             {

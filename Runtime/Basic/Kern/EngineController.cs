@@ -116,14 +116,14 @@ namespace GameEngine
                     MethodInfo methodInfo = launcherType.GetMethod(fieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
                     if (null == methodInfo)
                     {
-                        Debugger.Warn("Could not found any launcher method with name '{0}', initialized controller callback property '{1}' failed.", fieldName, fieldInfo.Name);
+                        Debugger.Warn(LogGroupTag.Basic, "Could not found any launcher method with name '{0}', initialized controller callback property '{1}' failed.", fieldName, fieldInfo.Name);
                         continue;
                     }
 
                     Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(methodInfo);
                     if (null == callback)
                     {
-                        Debugger.Warn("Cannot generic action delegate with target method '{0}', initialized controller callback property '{1}' failed.", methodInfo.Name, fieldInfo.Name);
+                        Debugger.Warn(LogGroupTag.Basic, "Cannot generic action delegate with target method '{0}', initialized controller callback property '{1}' failed.", methodInfo.Name, fieldInfo.Name);
                         continue;
                     }
 

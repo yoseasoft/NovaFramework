@@ -57,7 +57,7 @@ namespace GameEngine.Context.Configuring
                 return;
             }
 
-            Debugger.Info(LogGroupTag.CodeLoader, "Load file configure path '{%s}' succeed.", filePath);
+            Debugger.Info(LogGroupTag.Basic, "Load file configure path '{%s}' succeed.", filePath);
             ApplicationConfigureInfo.AddConfigureFilePath(filePath);
         }
     }

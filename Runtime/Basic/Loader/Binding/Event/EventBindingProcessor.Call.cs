@@ -47,7 +47,7 @@ namespace GameEngine
             }
 
             Loader.Structuring.EventCallCodeInfo eventCodeInfo = codeInfo as Loader.Structuring.EventCallCodeInfo;
-            Debugger.Assert(null != eventCodeInfo, "Invalid event call code info.");
+            Debugger.Assert(eventCodeInfo, "Invalid event call code info.");
 
             for (int n = 0; n < eventCodeInfo.GetMethodTypeCount(); ++n)
             {

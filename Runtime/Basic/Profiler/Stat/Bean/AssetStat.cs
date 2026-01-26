@@ -27,54 +27,50 @@ using UnityEngine.Scripting;
 namespace GameEngine.Profiler.Statistics
 {
     /// <summary>
-    /// 组件统计模块，对组件模块对象提供数据统计所需的接口函数
+    /// 资产统计模块，对资产模块对象提供数据统计所需的接口函数
     /// </summary>
-    internal sealed class ComponentStat : BaseStat<ComponentStat, ComponentStatInfo>
+    internal sealed class AssetStat : BaseStat<AssetStat, AssetStatInfo>
     {
-        [IStat.OnStatFunctionRegister(StatCode.ComponentAdd)]
+        [IStat.OnStatFunctionRegister(StatCode.AssetLoad)]
         [Preserve]
-        private void OnComponentAdd(CComponent obj)
+        private void OnAssetLoad(CEntity entity, string name, string url)
         {
-            CEntity entity = obj.Entity;
-
             IStat stat = Statistician.GetStatWithBeanType(entity.BeanType);
             if (null == stat)
             {
-                Debugger.Warn(LogGroupTag.Profiler, "Could not found any 'IStat' type with target class '{%t}', the component added failed.", entity.BeanType);
+                Debugger.Warn(LogGroupTag.Profiler, "Could not found any 'IStat' type with target class '{%t}', the asset loaded failed.", entity.BeanType);
                 return;
             }
 
             EntityStatInfo statInfo = stat.GetStateInfoByUid(entity.BeanId) as EntityStatInfo;
             if (null == statInfo)
             {
-                Debugger.Warn(LogGroupTag.Profiler, "Could not found any 'EntityStatInfo' object with target bean id '{%d}', notify component added failed.", entity.BeanId);
+                Debugger.Warn(LogGroupTag.Profiler, "Could not found any 'EntityStatInfo' object with target bean id '{%d}', notify asset loaded failed.", entity.BeanId);
                 return;
             }
 
-            statInfo.OnComponentAdded(obj);
+            statInfo.OnAssetLoaded(entity, name, url);
         }
 
-        [IStat.OnStatFunctionRegister(StatCode.ComponentRemove)]
+        [IStat.OnStatFunctionRegister(StatCode.AssetUnload)]
         [Preserve]
-        private void OnComponentRemove(CComponent obj)
+        private void OnAssetUnload(CEntity entity, string name)
         {
-            CEntity entity = obj.Entity;
-
             IStat stat = Statistician.GetStatWithBeanType(entity.BeanType);
             if (null == stat)
             {
-                Debugger.Warn(LogGroupTag.Profiler, "Could not found any 'IStat' type with target class '{%t}', the component removed failed.", entity.BeanType);
+                Debugger.Warn(LogGroupTag.Profiler, "Could not found any 'IStat' type with target class '{%t}', the asset unloaded failed.", entity.BeanType);
                 return;
             }
 
             EntityStatInfo statInfo = stat.GetStateInfoByUid(entity.BeanId) as EntityStatInfo;
             if (null == statInfo)
             {
-                Debugger.Warn(LogGroupTag.Profiler, "Could not found any 'EntityStatInfo' object with target bean id '{%d}', notify component removed failed.", entity.BeanId);
+                Debugger.Warn(LogGroupTag.Profiler, "Could not found any 'EntityStatInfo' object with target bean id '{%d}', notify asset unloaded failed.", entity.BeanId);
                 return;
             }
 
-            statInfo.OnComponentRemoved(obj);
+            statInfo.OnAssetUnloaded(entity, name);
         }
     }
 }

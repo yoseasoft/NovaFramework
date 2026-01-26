@@ -39,15 +39,15 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLoadOfTarget(typeof(ApiSystemAttribute))]
-        private static bool LoadApiCallClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadApiCallClass(Symbolling.SymClass symClass, bool reload)
         {
             Structuring.ApiCallCodeInfo info = new Structuring.ApiCallCodeInfo();
             info.ClassType = symClass.ClassType;
 
-            IList<Symboling.SymMethod> symMethods = symClass.GetAllMethods();
+            IList<Symbolling.SymMethod> symMethods = symClass.GetAllMethods();
             for (int n = 0; null != symMethods && n < symMethods.Count; ++n)
             {
-                Symboling.SymMethod symMethod = symMethods[n];
+                Symbolling.SymMethod symMethod = symMethods[n];
 
                 // 非静态方法直接跳过
                 if (false == symMethod.IsStatic)
@@ -117,7 +117,7 @@ namespace GameEngine.Loader
 
         [Preserve]
         [OnCodeLoaderClassLookupOfTarget(typeof(ApiSystemAttribute))]
-        private static Structuring.ApiCallCodeInfo LookupApiCallCodeInfo(Symboling.SymClass symCLass)
+        private static Structuring.ApiCallCodeInfo LookupApiCallCodeInfo(Symbolling.SymClass symCLass)
         {
             foreach (KeyValuePair<Type, Structuring.ApiCallCodeInfo> pair in _apiCallCodeInfos)
             {

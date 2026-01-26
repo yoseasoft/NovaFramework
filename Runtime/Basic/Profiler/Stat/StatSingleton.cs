@@ -39,6 +39,11 @@ namespace GameEngine.Profiler.Statistics
         where TObject : class, IStat, new() // IStat<TRecord>
         where TRecord : StatInfo
     {
+        /// <summary>
+        /// 统计信息对象实例的缓存最大容量
+        /// </summary>
+        private const int StatInfoObjectCachesMaxSize = 100;
+
         private static TObject _instance = null;
 
         /// <summary>
@@ -321,7 +326,7 @@ namespace GameEngine.Profiler.Statistics
         /// <param name="targetObject">统计信息实例</param>
         protected void TryAddValue(TRecord targetObject)
         {
-            while (_statInfoRecords.Count > 100)
+            while (_statInfoRecords.Count > StatInfoObjectCachesMaxSize)
             {
                 _statInfoRecords.RemoveAt(0);
             }

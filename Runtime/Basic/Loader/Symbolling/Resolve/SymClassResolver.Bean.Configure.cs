@@ -26,7 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace GameEngine.Loader.Symboling
+namespace GameEngine.Loader.Symbolling
 {
     /// 标记对象的解析类
     internal static partial class SymClassResolver
@@ -67,12 +67,12 @@ namespace GameEngine.Loader.Symboling
                 else
                 {
                     parentBeanInfo = null; // 重置
-                    IList<Configuring.BeanConfigureInfo> list = CodeLoader.GetBeanConfigureByType(parentType);
+                    IReadOnlyList<Configuring.BeanConfigureInfo> list = CodeLoader.GetBeanConfigureByType(parentType);
                     if (null != list && list.Count > 0)
                     {
                         if (list.Count > 1)
                         {
-                            Debugger.Warn(LogGroupTag.CodeLoader, "The bean info '{%s}' has multiple parent object with target type '{%t}', only chosed first bean and used it.",
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The bean info '{%s}' has multiple parent object with target type '{%t}', only chose first bean and used it.",
                                     parentBeanInfo.Name, parentType);
                         }
                         parentBeanInfo = list[0];
@@ -107,7 +107,7 @@ namespace GameEngine.Loader.Symboling
                 {
                     Configuring.BeanFieldConfigureInfo configureBeanFieldInfo = fieldInfoEnumerator.Current.Value;
 
-                    Symboling.SymField symField = symClass.GetFieldByName(configureBeanFieldInfo.FieldName);
+                    Symbolling.SymField symField = symClass.GetFieldByName(configureBeanFieldInfo.FieldName);
                     if (null == symField)
                     {
                         Debugger.Error(LogGroupTag.CodeLoader, "Could not found any symbol field with target name '{%s}', please rechecked your configure bean '{%s}' and repair it.",
@@ -138,7 +138,7 @@ namespace GameEngine.Loader.Symboling
                     }
                     else
                     {
-                        Debugger.Warn(LogGroupTag.CodeLoader, "The defination reference value cannot be null, setted the field symbol failed.");
+                        Debugger.Warn(LogGroupTag.CodeLoader, "The definition reference value cannot be null, set the field symbol failed.");
                         continue;
                     }
 
@@ -165,7 +165,7 @@ namespace GameEngine.Loader.Symboling
                 }
                 else
                 {
-                    Debugger.Warn(LogGroupTag.CodeLoader, "The defination reference value cannot be null, setted the component info failed.");
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The definition reference value cannot be null, set the component info failed.");
                     continue;
                 }
 

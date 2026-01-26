@@ -118,7 +118,7 @@ namespace GameEngine.Loader
         /// <returns>若给定类型满足匹配规则则返回true，否则返回false</returns>
         [Preserve]
         [CodeLoader.OnGeneralCodeLoaderMatch]
-        private static bool IsBeanClassMatched(Symboling.SymClass symClass, Type filterType)
+        private static bool IsBeanClassMatched(Symbolling.SymClass symClass, Type filterType)
         {
             // 存在过滤类型，则直接对比过滤类型即可
             if (null != filterType)
@@ -149,7 +149,7 @@ namespace GameEngine.Loader
         /// <returns>若存在给定类型属性原型类则返回对应处理结果，否则返回false</returns>
         [Preserve]
         [CodeLoader.OnGeneralCodeLoaderLoad]
-        private static bool LoadBeanClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadBeanClass(Symbolling.SymClass symClass, bool reload)
         {
             if (TryGetBeanClassCallbackForTargetContainer(symClass.ClassType, out Delegate callback, _classLoadCallbacks))
             {
@@ -168,7 +168,7 @@ namespace GameEngine.Loader
         /// <returns>返回类型对应的结构信息</returns>
         [Preserve]
         [CodeLoader.OnGeneralCodeLoaderLookup]
-        private static Structuring.GeneralCodeInfo LookupBeanCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.GeneralCodeInfo LookupBeanCodeInfo(Symbolling.SymClass symClass)
         {
             if (TryGetBeanClassCallbackForTargetContainer(symClass.ClassType, out Delegate callback, _codeInfoLookupCallbacks))
             {

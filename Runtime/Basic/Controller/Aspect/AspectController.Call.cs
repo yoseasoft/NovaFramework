@@ -37,28 +37,28 @@ namespace GameEngine
         /// <summary>
         /// 切面调用的数据信息类
         /// </summary>
-        private class AspectCallInfo
+        private sealed class AspectCallInfo
         {
             /// <summary>
             /// 切面调用类的完整名称
             /// </summary>
-            public string Fullname { get; set; }
+            public string Fullname;
             /// <summary>
             /// 切面调用类的目标对象类型
             /// </summary>
-            public Type TargetType { get; set; }
+            public Type TargetType;
             /// <summary>
             /// 切面调用类的目标函数名称
             /// </summary>
-            public string MethodName { get; set; }
+            public string MethodName;
             /// <summary>
             /// 切面调用类的接入访问方式
             /// </summary>
-            public AspectAccessType AccessType { get; set; }
+            public AspectAccessType AccessType;
             /// <summary>
             /// 切面调用类的回调函数句柄
             /// </summary>
-            public SystemAction_object Callback { get; set; }
+            public SystemAction_object Callback;
         }
 
         /// <summary>
@@ -110,9 +110,7 @@ namespace GameEngine
         /// <param name="methodName">函数名称</param>
         private void CallExtend(object obj, string methodName)
         {
-            Type targetType = obj.GetType();
-
-            if (TryGetAspectCallback(targetType, methodName, AspectAccessType.Extend, out SystemAction_object callback))
+            if (TryGetAspectCallback(obj.GetType(), methodName, AspectAccessType.Extend, out SystemAction_object callback))
             {
                 callback.Invoke(obj);
             }
@@ -125,9 +123,7 @@ namespace GameEngine
         /// <param name="methodName">函数名称</param>
         private void CallBefore(object obj, string methodName)
         {
-            Type targetType = obj.GetType();
-
-            if (TryGetAspectCallback(targetType, methodName, AspectAccessType.Before, out SystemAction_object callback))
+            if (TryGetAspectCallback(obj.GetType(), methodName, AspectAccessType.Before, out SystemAction_object callback))
             {
                 callback.Invoke(obj);
             }
@@ -176,9 +172,7 @@ namespace GameEngine
         /// <returns>若存在可执行的环绕回调函数则返回true，否则返回false</returns>
         private bool CallAround(object obj, string methodName)
         {
-            Type targetType = obj.GetType();
-
-            if (TryGetAspectCallback(targetType, methodName, AspectAccessType.Around, out SystemAction_object callback))
+            if (TryGetAspectCallback(obj.GetType(), methodName, AspectAccessType.Around, out SystemAction_object callback))
             {
                 callback.Invoke(obj);
 
@@ -333,8 +327,7 @@ namespace GameEngine
             if (null == container)
             {
                 // 正常情况下缓存容器不可能为null
-                Debugger.Warn("Could not found any cached container with target class type '{0}', aspect call service running failed.",
-                        NovaEngine.Utility.Text.ToString(targetType));
+                Debugger.Warn(LogGroupTag.Controller, "Could not found any cached container with target class type '{%t}', aspect call service running failed.", targetType);
 
                 // 获取缓存容器失败
                 return result;
@@ -408,7 +401,7 @@ namespace GameEngine
 
                 if (container.ContainsKey(enumValue))
                 {
-                    Debugger.Warn("The aspect access type '{%i}' was already exist within call status, repeat added it will be override old value.", enumValue);
+                    Debugger.Warn(LogGroupTag.Controller, "The aspect access type '{%i}' was already exist within call status, repeat added it will be override old value.", enumValue);
                     container.Remove(enumValue);
                 }
 

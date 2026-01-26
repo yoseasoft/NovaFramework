@@ -117,7 +117,7 @@ namespace GameEngine.Loader
         /// <returns>若给定类型满足匹配规则则返回true，否则返回false</returns>
         [Preserve]
         [CodeLoader.OnGeneralCodeLoaderMatch]
-        private static bool IsPoolClassMatched(Symboling.SymClass symClass, Type filterType)
+        private static bool IsPoolClassMatched(Symbolling.SymClass symClass, Type filterType)
         {
             // 存在过滤类型，则直接对比过滤类型即可
             if (null != filterType)
@@ -146,7 +146,7 @@ namespace GameEngine.Loader
         /// <returns>若存在给定类型属性对象池管理类则返回对应处理结果，否则返回false</returns>
         [Preserve]
         [CodeLoader.OnGeneralCodeLoaderLoad]
-        private static bool LoadPoolClass(Symboling.SymClass symClass, bool reload)
+        private static bool LoadPoolClass(Symbolling.SymClass symClass, bool reload)
         {
             IList<Attribute> attrs = symClass.Attributes;
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
@@ -170,7 +170,7 @@ namespace GameEngine.Loader
         /// <returns>返回类型对应的结构信息</returns>
         [Preserve]
         [CodeLoader.OnGeneralCodeLoaderLookup]
-        private static Structuring.GeneralCodeInfo LookupPoolCodeInfo(Symboling.SymClass symClass)
+        private static Structuring.GeneralCodeInfo LookupPoolCodeInfo(Symbolling.SymClass symClass)
         {
             IList<Attribute> attrs = symClass.Attributes;
             for (int n = 0; null != attrs && n < attrs.Count; ++n)

@@ -44,17 +44,17 @@ namespace GameEngine.Loader.Configuring
         /// <summary>
         /// 配置解析回调句柄管理容器
         /// </summary>
-        private static IDictionary<XmlNodeType, IDictionary<string, OnConfigureObjectLoadingHandler>> _codeConfigureResolveCallbacks = null;
+        private static IDictionary<XmlNodeType, IDictionary<string, OnConfigureObjectLoadingHandler>> _codeConfigureResolveCallbacks;
 
         /// <summary>
         /// 配置基础对象类管理容器
         /// </summary>
-        private static IDictionary<string, BaseConfigureInfo> _nodeConfigureInfos = null;
+        private static IDictionary<string, BaseConfigureInfo> _nodeConfigureInfos;
 
         /// <summary>
         /// 配置文件清单管理容器
         /// </summary>
-        private static IList<string> _configureFilePaths = null;
+        private static IList<string> _configureFilePaths;
 
         /// <summary>
         /// 配置解析类的初始化函数
@@ -77,7 +77,7 @@ namespace GameEngine.Loader.Configuring
                     OnXmlConfigureResolvingCallbackAttribute _attr = (OnXmlConfigureResolvingCallbackAttribute) attr;
 
                     OnConfigureObjectLoadingHandler callback = method.CreateDelegate(typeof(OnConfigureObjectLoadingHandler)) as OnConfigureObjectLoadingHandler;
-                    Debugger.Assert(null != callback, "Invalid configure resolve callback.");
+                    Debugger.Assert(callback, "Invalid configure resolve callback.");
 
                     AddConfigureResolveCallback(_attr.NodeType, _attr.NodeName, callback);
                 }
@@ -169,9 +169,9 @@ namespace GameEngine.Loader.Configuring
         /// </summary>
         /// <returns>返回当前所有配置数据实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IList<BaseConfigureInfo> GetAllNodeConfigureInfos()
+        public static IReadOnlyList<BaseConfigureInfo> GetAllNodeConfigureInfos()
         {
-            return NovaEngine.Utility.Collection.ToListForValues(_nodeConfigureInfos);
+            return NovaEngine.Utility.Collection.ToReadOnlyListForValues(_nodeConfigureInfos);
         }
 
         #region 配置解析回调句柄注册绑定接口函数

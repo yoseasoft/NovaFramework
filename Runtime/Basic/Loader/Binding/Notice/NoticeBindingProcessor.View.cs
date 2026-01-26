@@ -48,7 +48,7 @@ namespace GameEngine.Loader
             }
 
             Structuring.CViewNoticeCallCodeInfo noticeCodeInfo = codeInfo as Structuring.CViewNoticeCallCodeInfo;
-            Debugger.Assert(null != noticeCodeInfo, "Invalid notice call code info.");
+            Debugger.Assert(noticeCodeInfo, "Invalid notice call code info.");
 
             for (int n = 0; n < noticeCodeInfo.GetMethodTypeCount(); ++n)
             {

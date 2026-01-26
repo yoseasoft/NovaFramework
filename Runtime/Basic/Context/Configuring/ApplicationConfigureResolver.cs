@@ -99,13 +99,13 @@ namespace GameEngine.Context.Configuring
 
             if (false == _applicationConfigureResolveCallbacks.TryGetValue(nodeType, out IDictionary<string, OnConfigureObjectLoadingHandler> callbacks))
             {
-                Debugger.Error("Could not resolve target node type '{%i}', loaded content failed.", nodeType);
+                Debugger.Error(LogGroupTag.Basic, "Could not resolve target node type '{%i}', loaded content failed.", nodeType);
                 return;
             }
 
             if (false == callbacks.TryGetValue(nodeName, out OnConfigureObjectLoadingHandler callback))
             {
-                Debugger.Error("Could not found any node name '{%s}' from current resolve process, loaded it failed.", nodeName);
+                Debugger.Error(LogGroupTag.Basic, "Could not found any node name '{%s}' from current resolve process, loaded it failed.", nodeName);
                 return;
             }
 
@@ -141,8 +141,7 @@ namespace GameEngine.Context.Configuring
         /// <param name="callback">解析回调句柄</param>
         private static void AddConfigureResolveCallback(XmlNodeType nodeType, string nodeName, OnConfigureObjectLoadingHandler callback)
         {
-            IDictionary<string, OnConfigureObjectLoadingHandler> callbacks;
-            if (false == _applicationConfigureResolveCallbacks.TryGetValue(nodeType, out callbacks))
+            if (false == _applicationConfigureResolveCallbacks.TryGetValue(nodeType, out IDictionary<string, OnConfigureObjectLoadingHandler> callbacks))
             {
                 callbacks = new Dictionary<string, OnConfigureObjectLoadingHandler>();
                 _applicationConfigureResolveCallbacks.Add(nodeType, callbacks);
@@ -150,7 +149,7 @@ namespace GameEngine.Context.Configuring
 
             if (callbacks.ContainsKey(nodeName))
             {
-                Debugger.Warn("The configure node name '{%s}' was already exist, repeat added it will be override old value.", nodeName);
+                Debugger.Warn(LogGroupTag.Basic, "The configure node name '{%s}' was already exist, repeat added it will be override old value.", nodeName);
                 callbacks.Remove(nodeName);
             }
 

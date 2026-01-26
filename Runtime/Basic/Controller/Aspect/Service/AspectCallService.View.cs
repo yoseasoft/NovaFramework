@@ -24,12 +24,14 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using UnityEngine.Scripting;
 
 namespace GameEngine
 {
     /// 提供切面访问接口的服务类
     public static partial class AspectCallService
     {
+        [Preserve]
         [OnServiceProcessRegisterOfTarget(typeof(CView), AspectBehaviourType.Initialize)]
         private static void CallServiceProcessOfViewInitialize(CView obj, bool reload)
         {
@@ -38,6 +40,7 @@ namespace GameEngine
             RegViewNoticeCallByTargetType(obj, AspectBehaviourType.Initialize, reload);
         }
 
+        [Preserve]
         [OnServiceProcessRegisterOfTarget(typeof(CView), AspectBehaviourType.Startup)]
         private static void CallServiceProcessOfViewStartup(CView obj, bool reload)
         {
@@ -46,6 +49,7 @@ namespace GameEngine
             RegViewNoticeCallByTargetType(obj, AspectBehaviourType.Startup, reload);
         }
 
+        [Preserve]
         [OnServiceProcessRegisterOfTarget(typeof(CView), AspectBehaviourType.Awake)]
         private static void CallServiceProcessOfViewAwake(CView obj, bool reload)
         {
@@ -54,6 +58,7 @@ namespace GameEngine
             RegViewNoticeCallByTargetType(obj, AspectBehaviourType.Awake, reload);
         }
 
+        [Preserve]
         [OnServiceProcessRegisterOfTarget(typeof(CView), AspectBehaviourType.Start)]
         private static void CallServiceProcessOfViewStart(CView obj, bool reload)
         {
@@ -92,7 +97,7 @@ namespace GameEngine
                 }
 
                 // Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
-                // Debugger.Assert(null != callback, "Invalid method type.");
+                // Debugger.Assert(callback, "Invalid method type.");
 
                 Debugger.Info(LogGroupTag.Controller, "Register view '{%t}' notice call with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);
 

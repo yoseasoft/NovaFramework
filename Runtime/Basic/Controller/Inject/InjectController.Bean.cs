@@ -52,7 +52,7 @@ namespace GameEngine
         /// <returns>返回对应的对象实例</returns>
         public CBean GetBean(Type classType)
         {
-            Loader.Symboling.SymClass symbol = Loader.CodeLoader.GetSymClassByType(classType);
+            Loader.Symbolling.SymClass symbol = Loader.CodeLoader.GetSymClassByType(classType);
             if (null != symbol)
             {
                 // 获取默认Bean实例
@@ -77,7 +77,7 @@ namespace GameEngine
                 return obj;
             }
 
-            Loader.Symboling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
+            Loader.Symbolling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
             if (null == bean)
             {
                 Debugger.Warn(LogGroupTag.Controller, "Could not found any bean class with target name '{%s}' from loader, created bean object instance failed.", beanName);
@@ -125,7 +125,7 @@ namespace GameEngine
         /// <returns>返回对应的对象实例</returns>
         public CBean CreateBean(Type classType)
         {
-            Loader.Symboling.SymClass symbol = Loader.CodeLoader.GetSymClassByType(classType);
+            Loader.Symbolling.SymClass symbol = Loader.CodeLoader.GetSymClassByType(classType);
             if (null != symbol)
             {
                 // 获取默认Bean实例
@@ -144,7 +144,7 @@ namespace GameEngine
         /// <returns>返回对应的对象实例</returns>
         public CBean CreateBean(string beanName)
         {
-            Loader.Symboling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
+            Loader.Symbolling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
             if (null == bean)
             {
                 Debugger.Warn(LogGroupTag.Controller, "Could not found any bean class with target name '{%s}' from loader, created bean object instance failed.", beanName);
@@ -183,7 +183,7 @@ namespace GameEngine
                 return;
             }
 
-            Loader.Symboling.Bean beanClass = Loader.CodeLoader.GetBeanClassByName(beanName);
+            Loader.Symbolling.Bean beanClass = Loader.CodeLoader.GetBeanClassByName(beanName);
             if (null == beanClass)
             {
                 Debugger.Warn(LogGroupTag.Controller, "Could not found any bean class with target name '{%s}' from loader, created bean object instance failed.", beanName);
@@ -214,7 +214,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private CBean CreateBeanInstance(string beanName)
         {
-            Loader.Symboling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
+            Loader.Symbolling.Bean bean = Loader.CodeLoader.GetBeanClassByName(beanName);
             if (null == bean)
             {
                 Debugger.Warn(LogGroupTag.Controller, "Could not found any bean class struct with target name '{%s}', create bean instance failed.", beanName);
@@ -232,7 +232,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private CBean CreateBeanInstance(Type classType)
         {
-            Loader.Symboling.SymClass symClass = Loader.CodeLoader.GetSymClassByType(classType);
+            Loader.Symbolling.SymClass symClass = Loader.CodeLoader.GetSymClassByType(classType);
             if (null == symClass)
             {
                 Debugger.Warn(LogGroupTag.Controller, "Could not found any bean class struct with target type '{%t}', create bean instance failed.", classType);
@@ -248,7 +248,7 @@ namespace GameEngine
         /// <param name="bean">实体信息</param>
         /// <returns>返回新创建的实体对象实例，若创建失败返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private CBean CreateBeanInstance(Loader.Symboling.Bean bean)
+        private CBean CreateBeanInstance(Loader.Symbolling.Bean bean)
         {
             return InjectBeanService.CreateBeanInstance(bean);
         }

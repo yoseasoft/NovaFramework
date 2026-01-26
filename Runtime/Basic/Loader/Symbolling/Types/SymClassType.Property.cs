@@ -1,6 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
@@ -23,37 +24,63 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-using System.Customize.Extension;
+using System.Reflection;
 
-namespace GameEngine.Loader.Symboling
+namespace GameEngine.Loader.Symbolling
 {
-    /// 标记对象的解析类
-    internal static partial class SymClassResolver
+    /// <summary>
+    /// 通用对象属性的标记数据的结构信息
+    /// </summary>
+    public class SymProperty : SymBase
     {
         /// <summary>
-        /// 自动填充实体类型的系统对象的标记类的特性
+        /// 属性的名称
         /// </summary>
-        /// <param name="symClass">类标记对象</param>
-        private static void AutoFillEntityExtensionMethodFeatures(SymClass symClass, SymMethod symMethod)
+        private string _propertyName;
+        /// <summary>
+        /// 属性的类型
+        /// </summary>
+        private Type _propertyType;
+        /// <summary>
+        /// 属性的获取接口函数
+        /// </summary>
+        private MethodInfo _getMethodInfo;
+        /// <summary>
+        /// 属性的设置接口函数
+        /// </summary>
+        private MethodInfo _setMethodInfo;
+        /// <summary>
+        /// 属性对象实例
+        /// </summary>
+        private PropertyInfo _propertyInfo;
+
+        public PropertyInfo PropertyInfo
         {
-            if (symMethod.ExtensionParameterType.Is<CView>())
+            get { return _propertyInfo; }
+            internal set
             {
-                AutoFillViewExtensionMethodFeatures(symClass, symMethod);
+                _propertyInfo = value;
+
+                _propertyName = _propertyInfo.Name;
+                _propertyType = _propertyInfo.PropertyType;
+
+                _getMethodInfo = _propertyInfo.GetGetMethod();
+                _setMethodInfo = _propertyInfo.GetSetMethod();
             }
         }
 
-        /// <summary>
-        /// 自动填充视图类型的系统对象的标记类的特性
-        /// </summary>
-        /// <param name="symClass">类标记对象</param>
-        private static void AutoFillViewExtensionMethodFeatures(SymClass symClass, SymMethod symMethod)
+        public string PropertyName => _propertyName;
+        public Type PropertyType => _propertyType;
+        public MethodInfo GetMethodInfo => _getMethodInfo;
+        public MethodInfo SetMethodInfo => _setMethodInfo;
+
+        public SymProperty() : base() { }
+
+        ~SymProperty()
         {
-            if (symMethod.HasAttribute(typeof(CViewNoticeCallAttribute)))
-            {
-                // 装配通知支持
-                AutobindFeatureTypeForTargetSymbol(symClass, typeof(NoticeSupportedOnViewAttribute));
-            }
+            _propertyInfo = null;
         }
     }
 }

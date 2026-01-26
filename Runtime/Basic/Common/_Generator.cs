@@ -24,9 +24,10 @@
 /// -------------------------------------------------------------------------------
 
 using System;
-using System.Text;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace GameEngine
 {
@@ -43,6 +44,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="typeInfo">对象类型信息</param>
         /// <returns>返回通过对象类型信息生成的数字序列</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static long GenUniqueId(Type typeInfo)
         {
             return NovaEngine.Utility.Convertion.GuidToLong(typeInfo.GUID);
@@ -53,6 +55,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="typeInfo">对象类型信息</param>
         /// <returns>返回通过对象类型信息生成的名字标签</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GenUniqueName(Type typeInfo)
         {
             return NovaEngine.Utility.Text.GetFullName(typeInfo);
@@ -63,6 +66,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="methodInfo">函数对象信息</param>
         /// <returns>返回通过函数信息生成的名字标签</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GenUniqueName(MethodInfo methodInfo)
         {
             return NovaEngine.Utility.Text.GetFullName(methodInfo);

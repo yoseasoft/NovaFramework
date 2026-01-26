@@ -2,8 +2,6 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,49 +23,42 @@
 /// -------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Reflection;
 
-namespace GameEngine.Loader.Symboling
+namespace GameEngine.Loader.Symbolling
 {
     /// <summary>
-    /// 通用对象字段的标记数据的结构信息
+    /// 通用对象类的标记数据的集合类型<br/>
+    /// 该类型是针对标记对象封装的映射容器，提供两种键的快速访问，可以提高访问效率
     /// </summary>
-    public class SymField : SymBase
+    public sealed class SymClassMap : NovaEngine.CompositeKeyMap<Type, string, SymClass>
     {
         /// <summary>
-        /// 字段的名称
+        /// 新增指定的标记对象实例到当前映射容器中
         /// </summary>
-        private string _fieldName;
-        /// <summary>
-        /// 字段的类型
-        /// </summary>
-        private Type _fieldType;
-        /// <summary>
-        /// 字段对象实例
-        /// </summary>
-        private FieldInfo _fieldInfo;
-
-        public FieldInfo FieldInfo
+        /// <param name="symbol">标记对象实例</param>
+        /// <returns>若新增实例成功返回true，否则返回false</returns>
+        public bool Add(SymClass symbol)
         {
-            get { return _fieldInfo; }
-            internal set
-            {
-                _fieldInfo = value;
-
-                _fieldName = _fieldInfo.Name;
-                _fieldType = _fieldInfo.FieldType;
-            }
+            return Add(symbol.ClassType, symbol.ClassName, symbol);
         }
 
-        public string FieldName => _fieldName;
-        public Type FieldType => _fieldType;
-
-        public SymField() : base() { }
-
-        ~SymField()
+        /// <summary>
+        /// 从当前映射容器中移除指定的标记对象实例
+        /// </summary>
+        /// <param name="symbol">标记对象实例</param>
+        public void Remove(SymClass symbol)
         {
-            _fieldInfo = null;
+            Remove(symbol.ClassType);
+        }
+
+        /// <summary>
+        /// 检测当前映射容器中是否存在指定的标记对象实例
+        /// </summary>
+        /// <param name="symbol">标记对象实例</param>
+        /// <returns>若存在指定标记对象实例则返回true，否则返回false</returns>
+        public bool Contains(SymClass symbol)
+        {
+            return ContainsKey(symbol.ClassType);
         }
     }
 }

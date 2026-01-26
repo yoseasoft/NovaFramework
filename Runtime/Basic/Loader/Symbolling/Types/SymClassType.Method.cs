@@ -28,7 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace GameEngine.Loader.Symboling
+namespace GameEngine.Loader.Symbolling
 {
     /// <summary>
     /// 通用对象函数的标记数据的结构信息
