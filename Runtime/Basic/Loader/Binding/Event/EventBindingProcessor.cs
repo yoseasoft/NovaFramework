@@ -90,10 +90,9 @@ namespace GameEngine.Loader
         [CodeLoader.OnBindingProcessorCleanup]
         private static void CleanupAllCodeBindingCallbacks()
         {
-            IEnumerator<KeyValuePair<Type, Delegate>> e = _registerClassUnloadCallbacks.GetEnumerator();
-            while (e.MoveNext())
+            foreach (Delegate callback in _registerClassUnloadCallbacks.Values)
             {
-                CodeLoader.OnCleanupAllCodeTypesHandler handler = e.Current.Value as CodeLoader.OnCleanupAllCodeTypesHandler;
+                CodeLoader.OnCleanupAllCodeTypesHandler handler = callback as CodeLoader.OnCleanupAllCodeTypesHandler;
                 Debugger.Assert(handler, "Invalid cleanup event register class unload callback.");
 
                 handler.Invoke();
