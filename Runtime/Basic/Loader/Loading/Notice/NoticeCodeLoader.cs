@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using System.Reflection;
 using UnityEngine.Scripting;
 
@@ -96,11 +97,10 @@ namespace GameEngine.Loader
         [CodeLoader.OnGeneralCodeLoaderCleanup]
         private static void CleanupAllNoticeClassLoadingCallbacks()
         {
-            IEnumerator<KeyValuePair<Type, Delegate>> e = _classCleanupCallbacks.GetEnumerator();
-            while (e.MoveNext())
+            foreach (Delegate callback in _classCleanupCallbacks.Values)
             {
-                CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = e.Current.Value as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
-                Debugger.Assert(null != handler, "Invalid notice class cleanup handler.");
+                CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = callback as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
+                Debugger.Assert(handler, "Invalid notice class cleanup handler.");
 
                 handler.Invoke();
             }
@@ -166,7 +166,7 @@ namespace GameEngine.Loader
                 if (TryGetNoticeClassCallbackForTargetContainer(attrType, out Delegate callback, _classLoadCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
-                    Debugger.Assert(null != handler, "Invalid notice class load handler.");
+                    Debugger.Assert(handler, "Invalid notice class load handler.");
                     return handler.Invoke(symClass, reload);
                 }
             }
@@ -192,7 +192,7 @@ namespace GameEngine.Loader
                 if (TryGetNoticeClassCallbackForTargetContainer(attrType, out Delegate callback, _codeInfoLookupCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;
-                    Debugger.Assert(null != handler, "Invalid notice class lookup handler.");
+                    Debugger.Assert(handler, "Invalid notice class lookup handler.");
                     return handler.Invoke(symClass);
                 }
             }
@@ -207,11 +207,10 @@ namespace GameEngine.Loader
         /// <returns>若存在给定类型对应的回调句柄则返回true，否则返回false</returns>
         private static bool IsNoticeClassCallbackExist(Type targetType)
         {
-            IEnumerator<KeyValuePair<Type, Delegate>> e = _classLoadCallbacks.GetEnumerator();
-            while (e.MoveNext())
+            foreach (Type classType in _classLoadCallbacks.Keys)
             {
                 // 这里的属性类型允许继承，因此不能直接作相等比较
-                if (e.Current.Key.IsAssignableFrom(targetType))
+                if (targetType.Is(classType))
                 {
                     return true;
                 }
@@ -229,18 +228,18 @@ namespace GameEngine.Loader
         /// <returns>返回通过给定类型查找的回调句柄实例，若不存在则返回null</returns>
         private static bool TryGetNoticeClassCallbackForTargetContainer(Type targetType, out Delegate callback, IDictionary<Type, Delegate> container)
         {
-            callback = null;
-
-            IEnumerator<KeyValuePair<Type, Delegate>> e = container.GetEnumerator();
-            while (e.MoveNext())
+            foreach (KeyValuePair<Type, Delegate> kvp in container)
             {
                 // 这里的属性类型允许继承，因此不能直接作相等比较
-                if (e.Current.Key.IsAssignableFrom(targetType))
+                if (targetType.Is(kvp.Key))
                 {
-                    callback = e.Current.Value;
+                    callback = kvp.Value;
                     return true;
                 }
             }
+
+            // 未找到对应的回调句柄，也需要赋于空值
+            callback = null;
 
             return false;
         }

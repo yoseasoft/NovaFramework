@@ -96,11 +96,10 @@ namespace GameEngine.Loader
         [CodeLoader.OnGeneralCodeLoaderCleanup]
         private static void CleanupAllBeanClassLoadingCallbacks()
         {
-            IEnumerator<KeyValuePair<Type, Delegate>> e = _classCleanupCallbacks.GetEnumerator();
-            while (e.MoveNext())
+            foreach (Delegate callback in _classCleanupCallbacks.Values)
             {
-                CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = e.Current.Value as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
-                Debugger.Assert(null != handler, "Invalid bean class cleanup handler.");
+                CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = callback as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
+                Debugger.Assert(handler, "Invalid bean class cleanup handler.");
 
                 handler.Invoke();
             }
@@ -154,7 +153,7 @@ namespace GameEngine.Loader
             if (TryGetBeanClassCallbackForTargetContainer(symClass.ClassType, out Delegate callback, _classLoadCallbacks))
             {
                 CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
-                Debugger.Assert(null != handler, "Invalid bean class load handler.");
+                Debugger.Assert(handler, "Invalid bean class load handler.");
                 return handler.Invoke(symClass, reload);
             }
 
@@ -173,7 +172,7 @@ namespace GameEngine.Loader
             if (TryGetBeanClassCallbackForTargetContainer(symClass.ClassType, out Delegate callback, _codeInfoLookupCallbacks))
             {
                 CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;
-                Debugger.Assert(null != handler, "Invalid bean class lookup handler.");
+                Debugger.Assert(handler, "Invalid bean class lookup handler.");
                 return handler.Invoke(symClass);
             }
 
@@ -189,17 +188,17 @@ namespace GameEngine.Loader
         /// <returns>返回通过给定类型查找的回调句柄实例，若不存在则返回null</returns>
         private static bool TryGetBeanClassCallbackForTargetContainer(Type targetType, out Delegate callback, IDictionary<Type, Delegate> container)
         {
-            callback = null;
-
-            IEnumerator<KeyValuePair<Type, Delegate>> e = container.GetEnumerator();
-            while (e.MoveNext())
+            foreach (KeyValuePair<Type, Delegate> kvp in container)
             {
-                if (targetType.Is(e.Current.Key) && targetType != e.Current.Key)
+                if (targetType.Is(kvp.Key) && targetType != kvp.Key)
                 {
-                    callback = e.Current.Value;
+                    callback = kvp.Value;
                     return true;
                 }
             }
+
+            // 未找到对应的回调句柄，也需要赋于空值
+            callback = null;
 
             return false;
         }

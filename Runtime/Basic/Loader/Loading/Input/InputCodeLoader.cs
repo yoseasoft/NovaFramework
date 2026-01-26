@@ -96,11 +96,10 @@ namespace GameEngine.Loader
         [CodeLoader.OnGeneralCodeLoaderCleanup]
         private static void CleanupAllInputClassLoadingCallbacks()
         {
-            IEnumerator<KeyValuePair<Type, Delegate>> e = _classCleanupCallbacks.GetEnumerator();
-            while (e.MoveNext())
+            foreach (Delegate callback in _classCleanupCallbacks.Values)
             {
-                CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = e.Current.Value as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
-                Debugger.Assert(null != handler, "Invalid input class cleanup handler.");
+                CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = callback as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
+                Debugger.Assert(handler, "Invalid input class cleanup handler.");
 
                 handler.Invoke();
             }
@@ -160,7 +159,7 @@ namespace GameEngine.Loader
                 if (TryGetInputClassCallbackForTargetContainer(attrType, out Delegate callback, _classLoadCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
-                    Debugger.Assert(null != handler, "Invalid input class load handler.");
+                    Debugger.Assert(handler, "Invalid input class load handler.");
                     return handler.Invoke(symClass, reload);
                 }
             }
@@ -186,7 +185,7 @@ namespace GameEngine.Loader
                 if (TryGetInputClassCallbackForTargetContainer(attrType, out Delegate callback, _codeInfoLookupCallbacks))
                 {
                     CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;
-                    Debugger.Assert(null != handler, "Invalid input class lookup handler.");
+                    Debugger.Assert(handler, "Invalid input class lookup handler.");
                     return handler.Invoke(symClass);
                 }
             }
@@ -201,11 +200,10 @@ namespace GameEngine.Loader
         /// <returns>若存在给定类型对应的回调句柄则返回true，否则返回false</returns>
         private static bool IsInputClassCallbackExist(Type targetType)
         {
-            IEnumerator<KeyValuePair<Type, Delegate>> e = _classLoadCallbacks.GetEnumerator();
-            while (e.MoveNext())
+            foreach (Type classType in _classLoadCallbacks.Keys)
             {
                 // 这里的类型为属性定义的类型，因此直接作相等比较即可
-                if (e.Current.Key == targetType)
+                if (classType == targetType)
                 {
                     return true;
                 }
@@ -223,18 +221,18 @@ namespace GameEngine.Loader
         /// <returns>返回通过给定类型查找的回调句柄实例，若不存在则返回null</returns>
         private static bool TryGetInputClassCallbackForTargetContainer(Type targetType, out Delegate callback, IDictionary<Type, Delegate> container)
         {
-            callback = null;
-
-            IEnumerator<KeyValuePair<Type, Delegate>> e = container.GetEnumerator();
-            while (e.MoveNext())
+            foreach (KeyValuePair<Type, Delegate> kvp in container)
             {
                 // 这里的类型为属性定义的类型，因此直接作相等比较即可
-                if (e.Current.Key == targetType)
+                if (kvp.Key == targetType)
                 {
-                    callback = e.Current.Value;
+                    callback = kvp.Value;
                     return true;
                 }
             }
+
+            // 未找到对应的回调句柄，也需要赋于空值
+            callback = null;
 
             return false;
         }

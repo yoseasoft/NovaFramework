@@ -41,8 +41,7 @@ namespace GameEngine
                 return;
             }
 
-            Loader.Structuring.EntityCodeInfo entityCodeInfo = codeInfo as Loader.Structuring.EntityCodeInfo;
-            if (null == entityCodeInfo)
+            if (codeInfo is not Loader.Structuring.EntityCodeInfo)
             {
                 Debugger.Warn("The aspect call entity service process getting error code info '{%t}' with target type '{%t}', called it failed.", codeInfo, targetType);
                 return;

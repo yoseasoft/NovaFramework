@@ -32,6 +32,7 @@ namespace NovaEngine
     /// <summary>
     /// 通用变量抽象类定义
     /// </summary>
+    [Serializable]
     public abstract partial class Variable
     {
         /// <summary>
@@ -72,6 +73,7 @@ namespace NovaEngine
     /// <summary>
     /// 通用泛型变量类定义
     /// </summary>
+    [Serializable]
     public abstract class Variable<T> : Variable
     {
         private T _value;
@@ -82,7 +84,7 @@ namespace NovaEngine
         [Preserve]
         protected Variable()
         {
-            _value = default(T);
+            _value = default;
         }
 
         /// <summary>
@@ -149,7 +151,7 @@ namespace NovaEngine
         [Preserve]
         public override void Clear()
         {
-            _value = default(T);
+            _value = default;
         }
 
         /// <summary>

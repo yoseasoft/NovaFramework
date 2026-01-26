@@ -82,7 +82,7 @@ namespace GameEngine.Loader.Symbolling
                         {
                             if (false == NovaEngine.Utility.Reflection.IsTypeOfInstantiableClass(method.ExtensionParameterType))
                             {
-                                IList<SymClass> extensionTargetClasses = CodeLoader.FindAllSymClassesByInterfaceType(method.ExtensionParameterType);
+                                IReadOnlyList<SymClass> extensionTargetClasses = CodeLoader.FindAllSymClassesByInterfaceType(method.ExtensionParameterType);
 
                                 for (int k = 0; null != extensionTargetClasses && k < extensionTargetClasses.Count; ++k)
                                 {
