@@ -1,11 +1,11 @@
 {
-    "name": "Nova.Editor",
+    "name": "NovaEngine.Editor",
     "rootNamespace": "",
     "references": [
         "NovaEditor.Common",
         "NovaFramework.Configure",
-        "Nova.Engine",
-        "Nova.Basic"
+        "NovaEngine.Kernel",
+        "NovaEngine.Basic"
     ],
     "includePlatforms": [
         "Editor"

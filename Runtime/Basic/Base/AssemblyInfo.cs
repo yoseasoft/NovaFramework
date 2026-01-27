@@ -28,4 +28,4 @@ using System.Runtime.CompilerServices;
 // 外部友元
 // [assembly: InternalsVisibleTo("Assembly-CSharp")]
 // [assembly: InternalsVisibleTo("Assembly-CSharp-Editor")]
-[assembly: InternalsVisibleTo("Nova.Import")]
+[assembly: InternalsVisibleTo("NovaEngine.Import")]

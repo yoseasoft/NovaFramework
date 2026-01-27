@@ -1,20 +1,14 @@
 {
-    "name": "Nova.Import",
+    "name": "NovaEngine.Library",
     "rootNamespace": "",
-    "references": [
-        "Nova.Engine",
-        "Nova.Basic",
-        "Nova.UniTask"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": false,
-    "defineConstraints": [
-        "GAME_COMPILE || UNITY_EDITOR"
-    ],
+    "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false
 }

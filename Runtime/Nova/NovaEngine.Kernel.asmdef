@@ -1,11 +1,11 @@
 {
-    "name": "Nova.Basic",
+    "name": "NovaEngine.Kernel",
     "rootNamespace": "",
     "references": [
         "GooAsset",
-        "Nova.Library",
-        "Nova.Engine",
-        "Nova.UniTask"
+        "NovaFramework.UniTask",
+        "NovaFramework.Configure",
+        "NovaEngine.Library"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

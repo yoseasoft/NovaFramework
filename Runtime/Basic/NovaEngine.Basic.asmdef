@@ -1,14 +1,21 @@
 {
-    "name": "Nova.Library",
+    "name": "NovaEngine.Basic",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GooAsset",
+        "NovaFramework.UniTask",
+        "NovaEngine.Library",
+        "NovaEngine.Kernel"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": false,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "GAME_COMPILE || UNITY_EDITOR"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }
