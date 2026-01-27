@@ -3,7 +3,7 @@
     "rootNamespace": "",
     "references": [
         "GooAsset",
-        "Nova.Configure",
+        "NovaFramework.Configure",
         "Nova.Library",
         "Nova.UniTask"
     ],
