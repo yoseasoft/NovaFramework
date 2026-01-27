@@ -1,11 +1,22 @@
 /// -------------------------------------------------------------------------------
-/// NovaEngine Framework
-///
 /// Copyright (C) 2017 - 2020, Shanghai Tommon Network Technology Co., Ltd.
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+///
+/// NovaFramework organization and its derivative projects' copyrights, trademarks, patents, and related rights
+/// are protected by the laws of the People's Republic of China and relevant international regulations.
+///
+/// Usage of this project must strictly comply with applicable laws, regulations, and open-source licenses.
+///
+/// This project is dual-licensed under the MIT License and Apache License 2.0,
+/// please refer to the LICENSE file in the root directory of the source code for the full license text.
+///
+/// It is prohibited to use this project to engage in any activities that endanger national security, disrupt social order,
+/// or infringe upon the legitimate rights and interests of others, as prohibited by laws and regulations!
+/// Any legal disputes and liabilities arising from secondary development based on this project
+/// shall be borne solely by the developer; the project organization and contributors assume no responsibility.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal

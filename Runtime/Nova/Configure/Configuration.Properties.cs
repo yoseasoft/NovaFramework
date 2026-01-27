@@ -163,15 +163,15 @@ namespace NovaEngine
         /// </summary>
         /// <param name="tag">功能标签</param>
         /// <returns>返回给定标签对应的程序集名称集合</returns>
-        private static IList<string> FindAssemblyNamesByTag(CoreEngine.LibraryTag tag)
+        private static IList<string> FindAssemblyNamesByTag(NovaFramework.LibraryTag tag)
         {
-            return CoreEngine.DynamicLibrary.GetAllPlayableAssemblyNames((info) =>
+            return NovaFramework.DynamicLibrary.GetAllPlayableAssemblyNames((info) =>
             {
                 if (false == info.IsContainsTag(tag))
                     return false;
 
                 // 对教程模式进行过滤
-                if (false == tutorialMode && info.IsContainsTag(CoreEngine.LibraryTag.Tutorial))
+                if (false == tutorialMode && info.IsContainsTag(NovaFramework.LibraryTag.Tutorial))
                     return false;
 
                 return true;
@@ -184,7 +184,7 @@ namespace NovaEngine
         /// <returns>返回对应的程序集名称集合</returns>
         public static IList<string> GetAllCompilableAssemblyNames()
         {
-            return FindAssemblyNamesByTag(CoreEngine.LibraryTag.Compile);
+            return FindAssemblyNamesByTag(NovaFramework.LibraryTag.Compile);
         }
 
         #endregion

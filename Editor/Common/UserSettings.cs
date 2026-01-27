@@ -38,7 +38,7 @@ namespace NovaEngine.Editor
         /// <param name="value">记录值</param>
         public static void SetString(string key, string value)
         {
-            CoreEngine.Editor.UserSettings.SetString(key, value);
+            NovaFramework.Editor.UserSettings.SetString(key, value);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace NovaEngine.Editor
         /// <returns>若存在指定键对应的记录信息，则返回其值</returns>
         public static string GetString(string key)
         {
-            return CoreEngine.Editor.UserSettings.GetString(key);
+            return NovaFramework.Editor.UserSettings.GetString(key);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace NovaEngine.Editor
         /// <param name="value">记录值</param>
         public static void SetBool(string key, bool value)
         {
-            CoreEngine.Editor.UserSettings.SetBool(key, value);
+            NovaFramework.Editor.UserSettings.SetBool(key, value);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace NovaEngine.Editor
         /// <returns>若存在指定键对应的记录信息，则返回其值</returns>
         public static bool GetBool(string key)
         {
-            return CoreEngine.Editor.UserSettings.GetBool(key);
+            return NovaFramework.Editor.UserSettings.GetBool(key);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace NovaEngine.Editor
         /// <param name="value">记录值</param>
         public static void SetInt(string key, int value)
         {
-            CoreEngine.Editor.UserSettings.SetInt(key, value);
+            NovaFramework.Editor.UserSettings.SetInt(key, value);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace NovaEngine.Editor
         /// <returns>若存在指定键对应的记录信息，则返回其值</returns>
         public static int GetInt(string key)
         {
-            return CoreEngine.Editor.UserSettings.GetInt(key);
+            return NovaFramework.Editor.UserSettings.GetInt(key);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace NovaEngine.Editor
         /// <param name="value">记录值</param>
         public static void SetLong(string key, long value)
         {
-            CoreEngine.Editor.UserSettings.SetLong(key, value);
+            NovaFramework.Editor.UserSettings.SetLong(key, value);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace NovaEngine.Editor
         /// <returns>若存在指定键对应的记录信息，则返回其值</returns>
         public static long GetLong(string key)
         {
-            return CoreEngine.Editor.UserSettings.GetLong(key);
+            return NovaFramework.Editor.UserSettings.GetLong(key);
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace NovaEngine.Editor
         /// <param name="value">记录值</param>
         public static void SetFloat(string key, float value)
         {
-            CoreEngine.Editor.UserSettings.SetFloat(key, value);
+            NovaFramework.Editor.UserSettings.SetFloat(key, value);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace NovaEngine.Editor
         /// <returns>若存在指定键对应的记录信息，则返回其值</returns>
         public static float GetFloat(string key)
         {
-            return CoreEngine.Editor.UserSettings.GetFloat(key);
+            return NovaFramework.Editor.UserSettings.GetFloat(key);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace NovaEngine.Editor
         /// <param name="value">记录值</param>
         public static void SetDateTime(string key, DateTime dateTime)
         {
-            CoreEngine.Editor.UserSettings.SetDateTime(key, dateTime);
+            NovaFramework.Editor.UserSettings.SetDateTime(key, dateTime);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace NovaEngine.Editor
         /// <returns>若存在指定键对应的记录信息，则返回其值</returns>
         public static DateTime GetDateTime(string key)
         {
-            return CoreEngine.Editor.UserSettings.GetDateTime(key);
+            return NovaFramework.Editor.UserSettings.GetDateTime(key);
         }
     }
 }
