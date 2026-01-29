@@ -31,30 +31,6 @@ namespace GameEngine
     /// </summary>
     public static class GameMacros
     {
-        /// <summary>
-        /// 调试器的输出分组过滤启动状态标识
-        /// </summary>
-        [DisableOnReleaseMode]
-        public static readonly bool DEBUGGER_OUTPUT_GROUP_FILTERING_ENABLED = false;
-
-        /// <summary>
-        /// 调试模式的解析窗口的启动状态标识
-        /// </summary>
-        [DisableOnReleaseMode]
-        public static readonly bool DEBUGGING_PROFILER_ONLINE_WINDOW_ENABLED = false;
-
-        /// <summary>
-        /// 调试模式的统计模块的启动状态标识
-        /// </summary>
-        [DisableOnReleaseMode]
-        public static readonly bool DEBUGGING_PROFILER_STAT_MODULE_ENABLED = false;
-
-        /// <summary>
-        /// 编辑器环境下的编译代码支持补丁热重载功能
-        /// </summary>
-        [DisableOnReleaseMode]
-        public static readonly bool EDITOR_COMPILING_CODE_HOTFIX_SUPPORTED = true;
-
         #region 引擎内部使用的全局常量定义
 
         /// <summary>

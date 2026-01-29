@@ -23,6 +23,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace GameEngine
 {
     /// <summary>
@@ -37,12 +39,12 @@ namespace GameEngine
         /// </summary>
         public static void Startup()
         {
-            if (GameMacros.DEBUGGING_PROFILER_ONLINE_WINDOW_ENABLED)
+            if (NovaEngine.Configuration.debuggerWindowMode)
             {
                 NovaEngine.AppEntry.RegisterComponent<Profiler.Debugging.DebuggerComponent>(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
             }
 
-            if (GameMacros.DEBUGGING_PROFILER_STAT_MODULE_ENABLED)
+            if (NovaEngine.Configuration.autoStatisticsMode)
             {
                 Profiler.Statistics.Statistician.Startup();
             }
@@ -53,12 +55,12 @@ namespace GameEngine
         /// </summary>
         public static void Shutdown()
         {
-            if (GameMacros.DEBUGGING_PROFILER_STAT_MODULE_ENABLED)
+            if (NovaEngine.Configuration.autoStatisticsMode)
             {
                 Profiler.Statistics.Statistician.Shutdown();
             }
 
-            if (GameMacros.DEBUGGING_PROFILER_ONLINE_WINDOW_ENABLED)
+            if (NovaEngine.Configuration.debuggerWindowMode)
             {
                 NovaEngine.AppEntry.UnregisterComponent(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
             }
@@ -69,15 +71,11 @@ namespace GameEngine
         /// </summary>
         /// <param name="funcType">功能类型</param>
         /// <param name="args">参数列表</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void CallStat(int funcType, params object[] args)
         {
-            if (false == Profiler.Statistics.Statistician.IsOnStarting)
-            {
-                // Debugger.Info(LogGroupTag.Basic, "The profiler statistician was not starting, call this stat function '{%d}' failed.", funcType);
-                return;
-            }
-
-            Profiler.Statistics.Statistician.Call(funcType, args);
+            if (Profiler.Statistics.Statistician.IsOnStarting)
+                Profiler.Statistics.Statistician.Call(funcType, args);
         }
     }
 }

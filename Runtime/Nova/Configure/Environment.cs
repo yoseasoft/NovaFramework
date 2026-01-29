@@ -6,7 +6,7 @@
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -89,6 +89,14 @@ namespace NovaEngine
         public static readonly bool dylinkMode = false;
 
         /// <summary>
+        /// 热重载模式，用于开启业务逻辑的热重载功能<br/>
+        /// 这要求业务模块严格遵循数据与逻辑剥离的原则，并将无状态的业务逻辑单独封装为独立的程序集<br/>
+        /// 然后针对该程序集，进行热重载处理<br/>
+        /// 该模式建议在开发环境下开启，如需部署在发布环境中，请谨慎判断您的逻辑层是否可能因为脏数据的存在导致未知的异常行为<br/>
+        /// </summary>
+        public static readonly bool hotfixMode = false;
+
+        /// <summary>
         /// 程序名称，此处可设置为标识，通过本地化文件显示程序实际别名
         /// </summary>
         public static readonly string applicationName = "unknown";
@@ -124,6 +132,11 @@ namespace NovaEngine
         private static readonly IDictionary<string, string> _variables = new Dictionary<string, string>();
 
         /// <summary>
+        /// 环境变量在类的内部的字段绑定类型定义
+        /// </summary>
+        const BindingFlags InternelFieldBindingType = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+
+        /// <summary>
         /// 设置环境成员属性的值，通过查找与指定字符串相匹配的成员属性设定其对应值
         /// </summary>
         /// <param name="fieldName">属性名称</param>
@@ -131,7 +144,7 @@ namespace NovaEngine
         public static void SetProperty(string fieldName, object fieldValue)
         {
             Type type = typeof(Environment);
-            FieldInfo field = type.GetField(fieldName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+            FieldInfo field = type.GetField(fieldName, InternelFieldBindingType);
             if (null == field)
             {
                 Logger.Error("Could not found Environment field name '{%s}', set target property value failed.", fieldName);
@@ -149,7 +162,7 @@ namespace NovaEngine
         public static object GetProperty(string fieldName)
         {
             Type type = typeof(Environment);
-            FieldInfo field = type.GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+            FieldInfo field = type.GetField(fieldName, InternelFieldBindingType);
             if (null == field)
             {
                 Logger.Error("Could not found Environment field name '{%s}', get target property value failed.", fieldName);
@@ -167,7 +180,7 @@ namespace NovaEngine
         public static bool IsPropertyExists(string fieldName)
         {
             Type type = typeof(Environment);
-            FieldInfo field = type.GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+            FieldInfo field = type.GetField(fieldName, InternelFieldBindingType);
             return (null != field);
         }
 
@@ -302,7 +315,7 @@ namespace NovaEngine
             Type type = typeof(Environment);
             foreach (KeyValuePair<string, string> pair in conf)
             {
-                FieldInfo field = type.GetField(pair.Key, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                FieldInfo field = type.GetField(pair.Key, InternelFieldBindingType);
                 if (null == field)
                 {
                     // 非预定义属性直接放入全局配置参数表中
@@ -339,6 +352,7 @@ namespace NovaEngine
             SetProperty(nameof(cryptMode), false);
             SetProperty(nameof(offlineMode), false);
             SetProperty(nameof(dylinkMode), false);
+            SetProperty(nameof(hotfixMode), false);
             SetProperty(nameof(applicationName), "unknown");
             SetProperty(nameof(applicationCode), 0);
             SetProperty(nameof(frameRate), 0);
@@ -357,7 +371,7 @@ namespace NovaEngine
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("PROPERTIES={");
-            FieldInfo[] fields = typeof(Environment).GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+            FieldInfo[] fields = typeof(Environment).GetFields(InternelFieldBindingType);
             for (int n = 0; n < fields.Length; ++n)
             {
                 FieldInfo field = fields[n];

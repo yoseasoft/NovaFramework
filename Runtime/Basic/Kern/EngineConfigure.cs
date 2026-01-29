@@ -58,9 +58,6 @@ namespace GameEngine
             // 加载配置
             LoadEnvironmentAndConfigureSettings(variables);
 
-            // 重置宏参数
-            RefreshMacroConfigurationParameters();
-
             // 初始化平台
             InitPlatform();
 
@@ -95,61 +92,6 @@ namespace GameEngine
 
             Debugger.Log(LogGroupTag.Basic, "Environment={{{%s}}}, Configuration={{{%s}}}",
                 NovaEngine.Environment.ToCString(), NovaEngine.Configuration.ToCString());
-        }
-
-        #endregion
-
-        #region 内部的宏定义配置数据调整刷新接口函数
-
-        /// <summary>
-        /// 针对环境参数对配置数据进行复位设置的接口函数<br/>
-        /// 调用该方法前，需要进行环境参数的加载，然后该方法将根据环境参数对部分属性进行调整<br/>
-        /// 目的是确保在项目正式发布时，避免因人为遗漏导致部分开发参数应用到正式环境中
-        /// </summary>
-        private static void RefreshMacroConfigurationParameters()
-        {
-            // 调试模式直接返回
-            if (NovaEngine.Environment.debugMode)
-            {
-                return;
-            }
-
-            // 正式环境中的参数调整
-            // 将仅在调试模式中开启的标识关闭
-            Type classType = typeof(GameMacros);
-            FieldInfo[] fieldInfos = classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-            for (int n = 0; n < fieldInfos.Length; ++n)
-            {
-                FieldInfo fieldInfo = fieldInfos[n];
-                IEnumerable<Attribute> attrs = fieldInfo.GetCustomAttributes();
-                foreach (Attribute attr in attrs)
-                {
-                    Type attrType = attr.GetType();
-                    if (typeof(EnableOnReleaseModeAttribute) == attrType)
-                    {
-                        // 非调试模式下，该属性标识的字段直接设置为true
-                        fieldInfo.SetValue(null, true);
-                    }
-                    else if (typeof(DisableOnReleaseModeAttribute) == attrType)
-                    {
-                        // 非调试模式下，该属性标识的字段直接设置为false
-                        fieldInfo.SetValue(null, false);
-                    }
-                    else if (typeof(AssignableOnReleaseModeAttribute) == attrType)
-                    {
-                        AssignableOnReleaseModeAttribute _attr = (AssignableOnReleaseModeAttribute) attr;
-                        if (false == fieldInfo.FieldType.IsAssignableFrom(_attr.Value.GetType()))
-                        {
-                            Debugger.Error("Invalid configure value type '{0}' will be assigned to target field value type '{1}', reconfigured it failed.",
-                                    NovaEngine.Utility.Text.ToString(_attr.Value.GetType()), NovaEngine.Utility.Text.ToString(fieldInfo.FieldType));
-                        }
-                        else
-                        {
-                            fieldInfo.SetValue(null, _attr.Value);
-                        }
-                    }
-                }
-            }
         }
 
         #endregion

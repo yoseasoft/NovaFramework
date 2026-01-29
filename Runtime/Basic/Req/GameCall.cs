@@ -84,7 +84,7 @@ namespace GameEngine
         /// </summary>
         static void ReloadHotfix()
         {
-            if (false == GameMacros.EDITOR_COMPILING_CODE_HOTFIX_SUPPORTED)
+            if (false == NovaEngine.Environment.hotfixMode)
             {
                 // 禁用热重载功能
                 Debugger.Error("Not supported compiling code hotfix with current running mode, restarted game context failed.");

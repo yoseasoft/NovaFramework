@@ -163,7 +163,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="tag">功能标签</param>
         /// <returns>返回给定标签对应的程序集名称集合</returns>
-        private static IList<string> FindAssemblyNamesByTag(NovaFramework.LibraryTag tag)
+        private static IReadOnlyList<string> FindAssemblyNamesByTag(NovaFramework.LibraryTag tag)
         {
             return NovaFramework.DynamicLibrary.GetAllPlayableAssemblyNames((info) =>
             {
@@ -182,7 +182,7 @@ namespace NovaEngine
         /// 获取配置库中可编译的程序集名称
         /// </summary>
         /// <returns>返回对应的程序集名称集合</returns>
-        public static IList<string> GetAllCompilableAssemblyNames()
+        public static IReadOnlyList<string> GetAllCompilableAssemblyNames()
         {
             return FindAssemblyNamesByTag(NovaFramework.LibraryTag.Compile);
         }

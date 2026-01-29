@@ -5,7 +5,7 @@
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -66,6 +66,27 @@ namespace NovaEngine
         /// 日志文本在编辑模式下使用系统颜色的开启状态标识
         /// </summary>
         public readonly static bool logUsingSystemColor = false;
+
+        /// <summary>
+        /// 日志文本使用分组过滤的开启状态标识
+        /// </summary>
+        public readonly static bool logUsingGroupFilter = false;
+
+        /// <summary>
+        /// 调试窗口模式的开启状态标识<br/>
+        /// 该模式启用后，将自动在程序的运行窗口挂载一个调试器入口，可以通过该入口打开调试器窗口<br/>
+        /// 在开发模式下建议打开该窗口，对运行时各项指标进行分析，优化性能<br/>
+        /// 在发布模式下严禁启用该标识，因为发布环境下因包体的裁剪优化，可能导致调试窗口不能正常显示
+        /// </summary>
+        public readonly static bool debuggerWindowMode = false;
+
+        /// <summary>
+        /// 自动统计模式的开启状态标识<br/>
+        /// 打开该模式后，程序将对所有实体对象及其运行时数据进行统计，并在调试器窗口中显示<br/>
+        /// 因此，需要同时打开调试窗口模式才能正常观察数据分析的结果<br/>
+        /// 发布模式下需要关闭该标识，以提高运行时的性能
+        /// </summary>
+        public readonly static bool autoStatisticsMode = false;
 
         /// <summary>
         /// 教程模式，打开该选项后，将跳转至框架示例环境，执行教程代码<br/>

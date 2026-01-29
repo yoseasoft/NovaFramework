@@ -60,12 +60,12 @@ namespace NovaEngine
         /// <summary>
         /// 修订版本号，功能扩充或BUG修复时更改该值
         /// </summary>
-        public const int Revision = 11;
+        public const int Revision = 12;
 
         /// <summary>
         /// 编译版本号，每次重新编译版本时更改该值
         /// </summary>
-        public const int Build = 202601141;
+        public const int Build = 202601291;
 
         /// <summary>
         /// 字母版本号，用于标识当前软件所属的开发阶段
