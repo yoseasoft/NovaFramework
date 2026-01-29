@@ -86,9 +86,9 @@ namespace NovaEngine
             protected override void Initialize()
             {
                 // 自定义颜色
-                _usingCustomColor = Configuration.logUsingCustomColor;
+                _usingCustomColor = Configuration.LogUsingCustomColor;
                 // 系统颜色
-                _usingSystemColor = Configuration.logUsingSystemColor;
+                _usingSystemColor = Configuration.LogUsingSystemColor;
             }
 
             /// <summary>

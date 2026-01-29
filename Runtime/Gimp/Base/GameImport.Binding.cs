@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Customize.Extension;
 
 namespace GameEngine
 {
@@ -70,8 +71,8 @@ namespace GameEngine
         /// <param name="args">函数参数列表</param>
         private static void CallGameFunc(string methodName, params object[] args)
         {
-            string targetName = NovaEngine.Configuration.gameEntryName; // GameConfig.GAME_MODULE_EXTERNAL_GATEWAY_NAME;
-            Debugger.Assert(targetName, NovaEngine.ErrorText.NullObjectReference);
+            string targetName = NovaEngine.Configuration.GameEntryName; // GameConfig.GAME_MODULE_EXTERNAL_GATEWAY_NAME;
+            Debugger.Assert(targetName.IsNotNullOrEmpty(), NovaEngine.ErrorText.NullObjectReference);
 
             // 可能存在开启了教程模式，但是忘记配置具体案例类型的情况
             //
@@ -84,7 +85,7 @@ namespace GameEngine
             // }
 
             Type type = NovaEngine.Utility.Assembly.GetType(targetName);
-            if (type == null)
+            if (null == type)
             {
                 Debugger.Error("Could not found '{%s}' class type with current assemblies list, call that function '{%s}' failed.", targetName, methodName);
                 return;

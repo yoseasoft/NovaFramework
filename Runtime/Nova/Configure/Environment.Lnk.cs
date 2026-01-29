@@ -37,7 +37,7 @@ namespace NovaEngine
         public static bool IsEditorMode()
         {
             // 理论上当editorMode为true时，IsEditor()函数的返回值也必定为true
-            if (Application.IsEditor() || editorMode)
+            if (Application.IsEditor() || EditorMode)
             {
                 return true;
             }
@@ -53,7 +53,7 @@ namespace NovaEngine
         public static bool IsDevelopmentState()
         {
             // 理论上当editorMode为true时，IsEditor()函数的返回值也必定为true
-            if (Application.IsEditor() || editorMode || debugMode)
+            if (Application.IsEditor() || EditorMode || DebugMode)
             {
                 return true;
             }

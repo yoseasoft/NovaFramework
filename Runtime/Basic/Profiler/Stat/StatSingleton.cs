@@ -106,7 +106,7 @@ namespace GameEngine.Profiler.Statistics
         internal static TObject Create(int statType)
         {
             // 仅在调试模式下才创建统计模块实例
-            if (NovaEngine.Environment.debugMode)
+            if (NovaEngine.Environment.DebugMode)
             {
                 if (null == StatSingleton<TObject, TRecord>._instance)
                 {

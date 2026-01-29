@@ -62,7 +62,7 @@ namespace GameEngine
         {
             NovaEngine.Debugger.Instance.LoadConfig();
 
-            if (NovaEngine.Environment.debugMode)
+            if (NovaEngine.Environment.DebugMode)
             {
                 NovaEngine.Debugger.Instance.IsClassTypeVerificationEnabled = true;
                 NovaEngine.Debugger.Instance.IsMethodInfoVerificationEnabled = true;

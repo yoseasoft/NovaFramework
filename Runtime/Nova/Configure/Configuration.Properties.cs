@@ -171,7 +171,7 @@ namespace NovaEngine
                     return false;
 
                 // 对教程模式进行过滤
-                if (false == tutorialMode && info.IsContainsTag(NovaFramework.LibraryTag.Tutorial))
+                if (false == TutorialMode && info.IsContainsTag(NovaFramework.LibraryTag.Tutorial))
                     return false;
 
                 return true;

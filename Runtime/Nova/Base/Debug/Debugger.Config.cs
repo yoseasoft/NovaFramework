@@ -33,10 +33,10 @@ namespace NovaEngine
         /// </summary>
         public void LoadConfig()
         {
-            int lv = Environment.debugLevel;
+            int lv = Environment.DebugLevel;
 
             // 未开启调试模式的情况下，调试级别设置为错误级
-            if (!Environment.debugMode) lv = (int) LogOutputLevelType.Error;
+            if (!Environment.DebugMode) lv = (int) LogOutputLevelType.Error;
 
             // 重新绑定为空置模式
             RebindingBlankOutputHandler();
@@ -63,7 +63,7 @@ namespace NovaEngine
             Throw_type_format_args = Logger.__Throw_ImplementedOnSystem;
 
             // 非调试模式下，断言和异常都作为崩溃输出处理
-            if (!Environment.debugMode)
+            if (!Environment.DebugMode)
             {
                 Assert_empty = Logger.__Assert_ImplementedOnOutput;
                 Assert_object = Logger.__Assert_ImplementedOnOutput;

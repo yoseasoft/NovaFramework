@@ -44,14 +44,14 @@ namespace NovaEngine
         /// 在编辑器模式下，资源访问路径可以允许优先从Resource目录读取，若读取失败则从打包目录下读取，并且引擎默认选用编辑器配置参数<br/>
         /// 非编辑器模式直接从打包目录读取，不考虑Resource目录，并且引擎默认选用本地配置文件设置参数<br/>
         /// </summary>
-        public static readonly bool editorMode = false;
+        public static readonly bool EditorMode = false;
 
         /// <summary>
         /// 调试模式，用于项目内部测试<br/>
         /// 在调试模式下，默认打开全部日志输入级别，同时开放全部第三方调试插件<br/>
         /// 非调试模式下所有第三方调试插件将全部关闭<br/>
         /// </summary>
-        public static readonly bool debugMode = false;
+        public static readonly bool DebugMode = false;
 
         /// <summary>
         /// 调试级别，用于项目内部测试<br/>
@@ -65,28 +65,28 @@ namespace NovaEngine
         /// - 3：提供错误和致命级别的日志追踪输出，警告级别的日志标准输出<br/>
         /// - 4：仅提供错误和致命级别的日志标准输出<br/>
         /// </summary>
-        public static readonly int debugLevel = 0;
+        public static readonly int DebugLevel = 0;
 
         /// <summary>
         /// 加密模式，项目发布阶段打开该选项，打包加密资源以避免数据泄露<br/>
         /// 在加密模式下，对本地资源及网络协议进行加密/解密处理（Resource目录资源除外）<br/>
         /// 在非加密模式下，所有资源及协议均直接访问，不考虑加密情况<br/>
         /// </summary>
-        public static readonly bool cryptMode = false;
+        public static readonly bool CryptMode = false;
 
         /// <summary>
         /// 离线模式，项目发布阶段默认关闭该选项，以便启用在线更新流程，若本地代码开启了链接模式，则将同步更新代码<br/>
         /// 在离线模式下，直接装载本地资源，跳过更新检测环节<br/>
         /// 在非离线模式下，将对本地资源进行版本检测及更新<br/>
         /// </summary>
-        public static readonly bool offlineMode = false;
+        public static readonly bool OfflineMode = false;
 
         /// <summary>
         /// 动态链接模式，项目发布阶段打开该选项，代码将以DLL形式进行打包，需要注意的是，更新模式下必须开启该模式<br/>
         /// 在链接模式下，对本地代码将分别把不同模块以DLL形式进行编译<br/>
         /// 在非链接模式下，所有代码被统一打包进本地代码中<br/>
         /// </summary>
-        public static readonly bool dylinkMode = false;
+        public static readonly bool DylinkMode = false;
 
         /// <summary>
         /// 热重载模式，用于开启业务逻辑的热重载功能<br/>
@@ -94,37 +94,37 @@ namespace NovaEngine
         /// 然后针对该程序集，进行热重载处理<br/>
         /// 该模式建议在开发环境下开启，如需部署在发布环境中，请谨慎判断您的逻辑层是否可能因为脏数据的存在导致未知的异常行为<br/>
         /// </summary>
-        public static readonly bool hotfixMode = false;
+        public static readonly bool HotfixMode = false;
 
         /// <summary>
         /// 程序名称，此处可设置为标识，通过本地化文件显示程序实际别名
         /// </summary>
-        public static readonly string applicationName = "unknown";
+        public static readonly string ApplicationName = "unknown";
 
         /// <summary>
         /// 程序编码，对应程序名称在应用平台上的唯一标识
         /// </summary>
-        public static readonly int applicationCode = 0;
+        public static readonly int ApplicationCode = 0;
 
         /// <summary>
         /// 程序预设的逻辑帧速率
         /// </summary>
-        public readonly static int frameRate = 0;
+        public readonly static int FrameRate = 0;
 
         /// <summary>
         /// 程序预设的动画帧速率
         /// </summary>
-        public readonly static int animationRate = 0;
+        public readonly static int AnimationRate = 0;
 
         /// <summary>
         /// 程序初始设计的分辨率宽度
         /// </summary>
-        public readonly static int designResolutionWidth = 0;
+        public readonly static int DesignResolutionWidth = 0;
 
         /// <summary>
         /// 程序初始设计的分辨率高度
         /// </summary>
-        public readonly static int designResolutionHeight = 0;
+        public readonly static int DesignResolutionHeight = 0;
 
         /// <summary>
         /// 全局环境参数映射表
@@ -346,19 +346,19 @@ namespace NovaEngine
         /// </summary>
         public static void Unload()
         {
-            SetProperty(nameof(editorMode), false);
-            SetProperty(nameof(debugMode), false);
-            SetProperty(nameof(debugLevel), 0);
-            SetProperty(nameof(cryptMode), false);
-            SetProperty(nameof(offlineMode), false);
-            SetProperty(nameof(dylinkMode), false);
-            SetProperty(nameof(hotfixMode), false);
-            SetProperty(nameof(applicationName), "unknown");
-            SetProperty(nameof(applicationCode), 0);
-            SetProperty(nameof(frameRate), 0);
-            SetProperty(nameof(animationRate), 0);
-            SetProperty(nameof(designResolutionWidth), 0);
-            SetProperty(nameof(designResolutionHeight), 0);
+            SetProperty(nameof(EditorMode), false);
+            SetProperty(nameof(DebugMode), false);
+            SetProperty(nameof(DebugLevel), 0);
+            SetProperty(nameof(CryptMode), false);
+            SetProperty(nameof(OfflineMode), false);
+            SetProperty(nameof(DylinkMode), false);
+            SetProperty(nameof(HotfixMode), false);
+            SetProperty(nameof(ApplicationName), "unknown");
+            SetProperty(nameof(ApplicationCode), 0);
+            SetProperty(nameof(FrameRate), 0);
+            SetProperty(nameof(AnimationRate), 0);
+            SetProperty(nameof(DesignResolutionWidth), 0);
+            SetProperty(nameof(DesignResolutionHeight), 0);
 
             CleanupAllVariables();
         }

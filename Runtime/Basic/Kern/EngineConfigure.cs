@@ -42,7 +42,7 @@ namespace GameEngine
         private static void InitPlatform()
         {
             // 引擎帧率设置
-            UnityEngine.Application.targetFrameRate = NovaEngine.Environment.animationRate;
+            UnityEngine.Application.targetFrameRate = NovaEngine.Environment.AnimationRate;
 
             NovaEngine.Application.Instance.AddProtocolTransformationHandler(EngineDispatcher.OnApplicationResponseCallback);
 
@@ -90,7 +90,7 @@ namespace GameEngine
             // 加载环境参数
             NovaEngine.Environment.Load(variables);
 
-            Debugger.Log(LogGroupTag.Basic, "Environment={{{%s}}}, Configuration={{{%s}}}",
+            Debugger.Log("Environment={{{%s}}}, Configuration={{{%s}}}",
                 NovaEngine.Environment.ToCString(), NovaEngine.Configuration.ToCString());
         }
 

@@ -39,12 +39,12 @@ namespace GameEngine
         /// </summary>
         public static void Startup()
         {
-            if (NovaEngine.Configuration.debuggerWindowMode)
+            if (NovaEngine.Configuration.DebuggerWindowMode)
             {
                 NovaEngine.AppEntry.RegisterComponent<Profiler.Debugging.DebuggerComponent>(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
             }
 
-            if (NovaEngine.Configuration.autoStatisticsMode)
+            if (NovaEngine.Configuration.AutoStatisticsMode)
             {
                 Profiler.Statistics.Statistician.Startup();
             }
@@ -55,12 +55,12 @@ namespace GameEngine
         /// </summary>
         public static void Shutdown()
         {
-            if (NovaEngine.Configuration.autoStatisticsMode)
+            if (NovaEngine.Configuration.AutoStatisticsMode)
             {
                 Profiler.Statistics.Statistician.Shutdown();
             }
 
-            if (NovaEngine.Configuration.debuggerWindowMode)
+            if (NovaEngine.Configuration.DebuggerWindowMode)
             {
                 NovaEngine.AppEntry.UnregisterComponent(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
             }

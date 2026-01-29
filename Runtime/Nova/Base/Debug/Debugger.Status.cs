@@ -77,7 +77,7 @@ namespace NovaEngine
         /// <returns>若调试校验模式已激活则返回true，否则返回false</returns>
         public bool IsOnDebuggingVerificationActivated()
         {
-            if (Environment.debugMode)
+            if (Environment.DebugMode)
             {
                 return true;
             }

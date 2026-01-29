@@ -91,13 +91,13 @@ namespace NovaEngine
         /// </summary>
         public static void Startup()
         {
-            if (Environment.frameRate <= 0)
+            if (Environment.FrameRate <= 0)
             {
                 // 如果当前引擎没有配置逻辑帧率，则不启动工作台进行逻辑调度
                 return;
             }
 
-            _frameRate = Environment.frameRate;
+            _frameRate = Environment.FrameRate;
             _frameInterval = 1f / (float) _frameRate;
 
             _subworks = new List<Subwork>();

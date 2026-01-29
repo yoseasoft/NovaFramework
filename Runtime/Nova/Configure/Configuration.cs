@@ -40,37 +40,37 @@ namespace NovaEngine
         /// <summary>
         /// 游戏业务层访问入口名称
         /// </summary>
-        public readonly static string gameEntryName = null;
+        public readonly static string GameEntryName = null;
 
         /// <summary>
         /// 屏幕禁止休眠模式启用开关
         /// </summary>
-        public readonly static bool screenNeverSleep = false;
+        public readonly static bool ScreenNeverSleep = false;
 
         /// <summary>
         /// 网络消息包头长度配置
         /// </summary>
-        public readonly static int networkMessageHeaderSize = 0;
+        public readonly static int NetworkMessageHeaderSize = 0;
 
         /// <summary>
         /// 自动开启的日志通道类型标识
         /// </summary>
-        public readonly static int logChannel = 0;
+        public readonly static int LogChannel = 0;
 
         /// <summary>
         /// 日志文本在编辑模式下使用自定义颜色的开启状态标识
         /// </summary>
-        public readonly static bool logUsingCustomColor = false;
+        public readonly static bool LogUsingCustomColor = false;
 
         /// <summary>
         /// 日志文本在编辑模式下使用系统颜色的开启状态标识
         /// </summary>
-        public readonly static bool logUsingSystemColor = false;
+        public readonly static bool LogUsingSystemColor = false;
 
         /// <summary>
         /// 日志文本使用分组过滤的开启状态标识
         /// </summary>
-        public readonly static bool logUsingGroupFilter = false;
+        public readonly static bool LogUsingGroupFilter = false;
 
         /// <summary>
         /// 调试窗口模式的开启状态标识<br/>
@@ -78,7 +78,7 @@ namespace NovaEngine
         /// 在开发模式下建议打开该窗口，对运行时各项指标进行分析，优化性能<br/>
         /// 在发布模式下严禁启用该标识，因为发布环境下因包体的裁剪优化，可能导致调试窗口不能正常显示
         /// </summary>
-        public readonly static bool debuggerWindowMode = false;
+        public readonly static bool DebuggerWindowMode = false;
 
         /// <summary>
         /// 自动统计模式的开启状态标识<br/>
@@ -86,19 +86,19 @@ namespace NovaEngine
         /// 因此，需要同时打开调试窗口模式才能正常观察数据分析的结果<br/>
         /// 发布模式下需要关闭该标识，以提高运行时的性能
         /// </summary>
-        public readonly static bool autoStatisticsMode = false;
+        public readonly static bool AutoStatisticsMode = false;
 
         /// <summary>
         /// 教程模式，打开该选项后，将跳转至框架示例环境，执行教程代码<br/>
         /// 在正式版本中，该标识将默认关闭，仅在开发环境中有效
         /// </summary>
-        public readonly static bool tutorialMode = false;
+        public readonly static bool TutorialMode = false;
 
         /// <summary>
         /// 教程案例类型，通过该类型引导跳转到具体的示例代码环境<br/>
         /// 在正式版本中，该类型将默认置空，仅在开发环境中有效
         /// </summary>
-        public readonly static string tutorialSampleType = null;
+        public readonly static string TutorialSampleType = null;
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
 
