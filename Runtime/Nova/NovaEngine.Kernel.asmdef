@@ -4,6 +4,7 @@
     "references": [
         "GooAsset",
         "NovaFramework.UniTask",
+        "NovaFramework.Common",
         "NovaFramework.Configure",
         "NovaEngine.Library"
     ],

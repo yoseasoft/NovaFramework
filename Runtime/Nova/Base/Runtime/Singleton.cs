@@ -104,6 +104,15 @@ namespace NovaEngine
         }
 
         /// <summary>
+        /// 判断指定类型的单例是否为非空
+        /// </summary>
+        /// <returns>若该类型的单例为非空则返回true，否则返回false</returns>
+        public static bool IsNotNull()
+        {
+            return (null != Singleton<T>._instance);
+        }
+
+        /// <summary>
         /// 单例类初始化回调接口
         /// </summary>
         protected abstract void Initialize();

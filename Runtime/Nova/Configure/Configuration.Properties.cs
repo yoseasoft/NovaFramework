@@ -89,12 +89,7 @@ namespace NovaEngine
         /// <returns>若存在对应属性值则返回true，否则返回false</returns>
         public static bool HasValue(string key)
         {
-            if (_variables.ContainsKey(key))
-            {
-                return true;
-            }
-
-            return false;
+            return _variables.ContainsKey(key);
         }
 
         /// <summary>
@@ -165,7 +160,7 @@ namespace NovaEngine
         /// <returns>返回给定标签对应的程序集名称集合</returns>
         private static IReadOnlyList<string> FindAssemblyNamesByTag(NovaFramework.LibraryTag tag)
         {
-            return NovaFramework.DynamicLibrary.GetAllPlayableAssemblyNames((info) =>
+            return NovaFramework.DynamicLibrary.Instance.GetAllPlayableAssemblyNames((info) =>
             {
                 if (false == info.IsContainsTag(tag))
                     return false;
