@@ -2,7 +2,7 @@
 /// NovaEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+
 using UnityEngine.Scripting;
 
 namespace NovaEngine
@@ -50,153 +53,233 @@ namespace NovaEngine
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format(System.Array array, System.Func<object, string> callback)
+        public static string Format(Array array, Func<object, string> callback)
         { return Utility.Text.ToString(array, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format(System.Array array, System.Func<int, object, string> callback = null)
+        public static string Format(Array array, Func<int, object, string> callback = null)
         { return Utility.Text.ToString(array, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format(string format, System.Array array, System.Func<object, string> callback)
+        public static string Format(string format, Array array, Func<object, string> callback)
         { return Utility.Text.Format(format, Utility.Text.ToString(array, callback)); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format(string format, System.Array array, System.Func<int, object, string> callback = null)
+        public static string Format(string format, Array array, Func<int, object, string> callback = null)
         { return Utility.Text.Format(format, Utility.Text.ToString(array, callback)); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format<T>(T[] array, System.Func<T, string> callback)
-        { return Utility.Text.ToString<T>(array, callback); }
+        public static string Format<T>(T[] array, Func<T, string> callback)
+        { return Utility.Text.ToString(array, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format<T>(T[] array, System.Func<int, T, string> callback = null)
-        { return Utility.Text.ToString<T>(array, callback); }
+        public static string Format<T>(T[] array, Func<int, T, string> callback = null)
+        { return Utility.Text.ToString(array, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format<T>(string format, T[] array, System.Func<T, string> callback)
-        { return Utility.Text.Format(format, Utility.Text.ToString<T>(array, callback)); }
+        public static string Format<T>(string format, T[] array, Func<T, string> callback)
+        { return Utility.Text.Format(format, Utility.Text.ToString(array, callback)); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format<T>(string format, T[] array, System.Func<int, T, string> callback = null)
-        { return Utility.Text.Format(format, Utility.Text.ToString<T>(array, callback)); }
+        public static string Format<T>(string format, T[] array, Func<int, T, string> callback = null)
+        { return Utility.Text.Format(format, Utility.Text.ToString(array, callback)); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format(System.Collections.ICollection collection, System.Func<object, string> callback)
+        public static string Format(ICollection collection, Func<object, string> callback)
         { return Utility.Text.ToString(collection, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format(System.Collections.ICollection collection, System.Func<int, object, string> callback = null)
+        public static string Format(ICollection collection, Func<int, object, string> callback = null)
         { return Utility.Text.ToString(collection, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format(string format, System.Collections.ICollection collection, System.Func<object, string> callback)
+        public static string Format(string format, ICollection collection, Func<object, string> callback)
         { return Utility.Text.Format(format, Utility.Text.ToString(collection, callback)); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format(string format, System.Collections.ICollection collection, System.Func<int, object, string> callback = null)
+        public static string Format(string format, ICollection collection, Func<int, object, string> callback = null)
         { return Utility.Text.Format(format, Utility.Text.ToString(collection, callback)); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format<T>(ICollection<T> collection, System.Func<T, string> callback)
-        { return Utility.Text.ToString<T>(collection, callback); }
+        public static string Format<T>(ICollection<T> collection, Func<T, string> callback)
+        { return Utility.Text.ToString(collection, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format<T>(ICollection<T> collection, System.Func<int, T, string> callback = null)
-        { return Utility.Text.ToString<T>(collection, callback); }
+        public static string Format<T>(IReadOnlyCollection<T> collection, Func<T, string> callback)
+        { return Utility.Text.ToString(collection, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format<T>(string format, ICollection<T> collection, System.Func<T, string> callback)
-        { return Utility.Text.Format(format, Utility.Text.ToString<T>(collection, callback)); }
+        public static string Format<T>(ICollection<T> collection, Func<int, T, string> callback = null)
+        { return Utility.Text.ToString(collection, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format<T>(string format, ICollection<T> collection, System.Func<int, T, string> callback = null)
-        { return Utility.Text.Format(format, Utility.Text.ToString<T>(collection, callback)); }
+        public static string Format<T>(IReadOnlyCollection<T> collection, Func<int, T, string> callback = null)
+        { return Utility.Text.ToString(collection, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format<K, V>(ICollection<KeyValuePair<K, V>> collection, System.Func<K, V, string> callback = null)
-        { return Utility.Text.ToString<K, V>(collection, callback); }
+        public static string Format<T>(string format, ICollection<T> collection, Func<T, string> callback)
+        { return Utility.Text.Format(format, Utility.Text.ToString(collection, callback)); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format<K, V>(string format, ICollection<KeyValuePair<K, V>> collection, System.Func<K, V, string> callback = null)
-        { return Utility.Text.Format(format, Utility.Text.ToString<K, V>(collection, callback)); }
+        public static string Format<T>(string format, IReadOnlyCollection<T> collection, Func<T, string> callback)
+        { return Utility.Text.Format(format, Utility.Text.ToString(collection, callback)); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format(System.Collections.IList list, System.Func<object, string> callback)
+        public static string Format<T>(string format, ICollection<T> collection, Func<int, T, string> callback = null)
+        { return Utility.Text.Format(format, Utility.Text.ToString(collection, callback)); }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Format<T>(string format, IReadOnlyCollection<T> collection, Func<int, T, string> callback = null)
+        { return Utility.Text.Format(format, Utility.Text.ToString(collection, callback)); }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Format<K, V>(ICollection<KeyValuePair<K, V>> collection, Func<K, V, string> callback = null)
+        { return Utility.Text.ToString(collection, callback); }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Format<K, V>(IReadOnlyCollection<KeyValuePair<K, V>> collection, Func<K, V, string> callback = null)
+        { return Utility.Text.ToString(collection, callback); }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Format<K, V>(string format, ICollection<KeyValuePair<K, V>> collection, Func<K, V, string> callback = null)
+        { return Utility.Text.Format(format, Utility.Text.ToString(collection, callback)); }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Format<K, V>(string format, IReadOnlyCollection<KeyValuePair<K, V>> collection, Func<K, V, string> callback = null)
+        { return Utility.Text.Format(format, Utility.Text.ToString(collection, callback)); }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Format(IList list, Func<object, string> callback)
         { return Utility.Text.ToString(list, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format(System.Collections.IList list, System.Func<int, object, string> callback = null)
+        public static string Format(IList list, Func<int, object, string> callback = null)
         { return Utility.Text.ToString(list, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format(string format, System.Collections.IList list, System.Func<object, string> callback)
+        public static string Format(string format, IList list, Func<object, string> callback)
         { return Utility.Text.Format(format, Utility.Text.ToString(list, callback)); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format(string format, System.Collections.IList list, System.Func<int, object, string> callback = null)
+        public static string Format(string format, IList list, Func<int, object, string> callback = null)
         { return Utility.Text.Format(format, Utility.Text.ToString(list, callback)); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format<T>(IList<T> list, System.Func<T, string> callback)
-        { return Utility.Text.ToString<T>(list, callback); }
+        public static string Format<T>(IList<T> list, Func<T, string> callback)
+        { return Utility.Text.ToString(list, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format<T>(IList<T> list, System.Func<int, T, string> callback = null)
-        { return Utility.Text.ToString<T>(list, callback); }
+        public static string Format<T>(IReadOnlyList<T> list, Func<T, string> callback)
+        { return Utility.Text.ToString(list, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format<T>(string format, IList<T> list, System.Func<T, string> callback)
-        { return Utility.Text.Format(format, Utility.Text.ToString<T>(list, callback)); }
+        public static string Format<T>(IList<T> list, Func<int, T, string> callback = null)
+        { return Utility.Text.ToString(list, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format<T>(string format, IList<T> list, System.Func<int, T, string> callback = null)
-        { return Utility.Text.Format(format, Utility.Text.ToString<T>(list, callback)); }
+        public static string Format<T>(IReadOnlyList<T> list, Func<int, T, string> callback = null)
+        { return Utility.Text.ToString(list, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format(System.Collections.IDictionary dictionary, System.Func<object, object, string> callback = null)
+        public static string Format<T>(string format, IList<T> list, Func<T, string> callback)
+        { return Utility.Text.Format(format, Utility.Text.ToString(list, callback)); }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Format<T>(string format, IReadOnlyList<T> list, Func<T, string> callback)
+        { return Utility.Text.Format(format, Utility.Text.ToString(list, callback)); }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Format<T>(string format, IList<T> list, Func<int, T, string> callback = null)
+        { return Utility.Text.Format(format, Utility.Text.ToString(list, callback)); }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Format<T>(string format, IReadOnlyList<T> list, Func<int, T, string> callback = null)
+        { return Utility.Text.Format(format, Utility.Text.ToString(list, callback)); }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Format<T>(ISet<T> set, Func<T, string> callback)
+        { return Utility.Text.ToString(set, callback); }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Format<T>(ISet<T> set, Func<int, T, string> callback = null)
+        { return Utility.Text.ToString(set, callback); }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Format<T>(string format, ISet<T> set, Func<T, string> callback)
+        { return Utility.Text.Format(format, Utility.Text.ToString(set, callback)); }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Format<T>(string format, ISet<T> set, Func<int, T, string> callback = null)
+        { return Utility.Text.Format(format, Utility.Text.ToString(set, callback)); }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Format(IDictionary dictionary, Func<object, object, string> callback = null)
         { return Utility.Text.ToString(dictionary, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format(string format, System.Collections.IDictionary dictionary, System.Func<object, object, string> callback = null)
+        public static string Format(string format, IDictionary dictionary, Func<object, object, string> callback = null)
         { return Utility.Text.Format(format, Utility.Text.ToString(dictionary, callback)); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format<K, V>(IDictionary<K, V> dictionary, System.Func<K, V, string> callback = null)
-        { return Utility.Text.ToString<K, V>(dictionary, callback); }
+        public static string Format<K, V>(IDictionary<K, V> dictionary, Func<K, V, string> callback = null)
+        { return Utility.Text.ToString(dictionary, callback); }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Format<K, V>(string format, IDictionary<K, V> dictionary, System.Func<K, V, string> callback = null)
-        { return Utility.Text.Format(format, Utility.Text.ToString<K, V>(dictionary, callback)); }
+        public static string Format<K, V>(IReadOnlyDictionary<K, V> dictionary, Func<K, V, string> callback = null)
+        { return Utility.Text.ToString(dictionary, callback); }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Format<K, V>(string format, IDictionary<K, V> dictionary, Func<K, V, string> callback = null)
+        { return Utility.Text.Format(format, Utility.Text.ToString(dictionary, callback)); }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Format<K, V>(string format, IReadOnlyDictionary<K, V> dictionary, Func<K, V, string> callback = null)
+        { return Utility.Text.Format(format, Utility.Text.ToString(dictionary, callback)); }
 
         #endregion
     }

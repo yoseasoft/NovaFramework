@@ -2,7 +2,7 @@
 /// NovaEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,12 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Runtime.CompilerServices;
+using System.Text;
+
 using UnityEngine.Scripting;
 
 namespace NovaEngine
@@ -136,153 +139,234 @@ namespace NovaEngine
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append(System.Array array, System.Func<object, string> callback)
+        public FormatStringBuilder Append(Array array, Func<object, string> callback)
         { _sb.Append(Utility.Text.ToString(array, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append(System.Array array, System.Func<int, object, string> callback = null)
+        public FormatStringBuilder Append(Array array, Func<int, object, string> callback = null)
         { _sb.Append(Utility.Text.ToString(array, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append(string format, System.Array array, System.Func<object, string> callback)
+        public FormatStringBuilder Append(string format, Array array, Func<object, string> callback)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(array, callback))); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append(string format, System.Array array, System.Func<int, object, string> callback = null)
+        public FormatStringBuilder Append(string format, Array array, Func<int, object, string> callback = null)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(array, callback))); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append<T>(T[] array, System.Func<T, string> callback)
-        { _sb.Append(Utility.Text.ToString<T>(array, callback)); return this; }
+        public FormatStringBuilder Append<T>(T[] array, Func<T, string> callback)
+        { _sb.Append(Utility.Text.ToString(array, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append<T>(T[] array, System.Func<int, T, string> callback = null)
-        { _sb.Append(Utility.Text.ToString<T>(array, callback)); return this; }
+        public FormatStringBuilder Append<T>(T[] array, Func<int, T, string> callback = null)
+        { _sb.Append(Utility.Text.ToString(array, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append<T>(string format, T[] array, System.Func<T, string> callback)
-        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString<T>(array, callback))); return this; }
+        public FormatStringBuilder Append<T>(string format, T[] array, Func<T, string> callback)
+        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(array, callback))); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append<T>(string format, T[] array, System.Func<int, T, string> callback = null)
-        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString<T>(array, callback))); return this; }
+        public FormatStringBuilder Append<T>(string format, T[] array, Func<int, T, string> callback = null)
+        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(array, callback))); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append(System.Collections.ICollection collection, System.Func<object, string> callback)
+        public FormatStringBuilder Append(ICollection collection, Func<object, string> callback)
         { _sb.Append(Utility.Text.ToString(collection, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append(System.Collections.ICollection collection, System.Func<int, object, string> callback = null)
+        public FormatStringBuilder Append(ICollection collection, Func<int, object, string> callback = null)
         { _sb.Append(Utility.Text.ToString(collection, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append(string format, System.Collections.ICollection collection, System.Func<object, string> callback)
+        public FormatStringBuilder Append(string format, ICollection collection, Func<object, string> callback)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(collection, callback))); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append(string format, System.Collections.ICollection collection, System.Func<int, object, string> callback = null)
+        public FormatStringBuilder Append(string format, ICollection collection, Func<int, object, string> callback = null)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(collection, callback))); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append<T>(ICollection<T> collection, System.Func<T, string> callback)
-        { _sb.Append(Utility.Text.ToString<T>(collection, callback)); return this; }
+        public FormatStringBuilder Append<T>(ICollection<T> collection, Func<T, string> callback)
+        { _sb.Append(Utility.Text.ToString(collection, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append<T>(ICollection<T> collection, System.Func<int, T, string> callback = null)
-        { _sb.Append(Utility.Text.ToString<T>(collection, callback)); return this; }
+        public FormatStringBuilder Append<T>(IReadOnlyCollection<T> collection, Func<T, string> callback)
+        { _sb.Append(Utility.Text.ToString(collection, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append<T>(string format, ICollection<T> collection, System.Func<T, string> callback)
-        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString<T>(collection, callback))); return this; }
+        public FormatStringBuilder Append<T>(ICollection<T> collection, Func<int, T, string> callback = null)
+        { _sb.Append(Utility.Text.ToString(collection, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append<T>(string format, ICollection<T> collection, System.Func<int, T, string> callback = null)
-        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString<T>(collection, callback))); return this; }
+        public FormatStringBuilder Append<T>(IReadOnlyCollection<T> collection, Func<int, T, string> callback = null)
+        { _sb.Append(Utility.Text.ToString(collection, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append<K, V>(ICollection<KeyValuePair<K, V>> collection, System.Func<K, V, string> callback = null)
-        { _sb.Append(Utility.Text.ToString<K, V>(collection, callback)); return this; }
+        public FormatStringBuilder Append<T>(string format, ICollection<T> collection, Func<T, string> callback)
+        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(collection, callback))); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append<K, V>(string format, ICollection<KeyValuePair<K, V>> collection, System.Func<K, V, string> callback = null)
-        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString<K, V>(collection, callback))); return this; }
+        public FormatStringBuilder Append<T>(string format, IReadOnlyCollection<T> collection, Func<T, string> callback)
+        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(collection, callback))); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append(System.Collections.IList list, System.Func<object, string> callback)
+        public FormatStringBuilder Append<T>(string format, ICollection<T> collection, Func<int, T, string> callback = null)
+        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(collection, callback))); return this; }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FormatStringBuilder Append<T>(string format, IReadOnlyCollection<T> collection, Func<int, T, string> callback = null)
+        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(collection, callback))); return this; }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FormatStringBuilder Append<K, V>(ICollection<KeyValuePair<K, V>> collection, Func<K, V, string> callback = null)
+        { _sb.Append(Utility.Text.ToString(collection, callback)); return this; }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FormatStringBuilder Append<K, V>(IReadOnlyCollection<KeyValuePair<K, V>> collection, Func<K, V, string> callback = null)
+        { _sb.Append(Utility.Text.ToString(collection, callback)); return this; }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FormatStringBuilder Append<K, V>(string format, ICollection<KeyValuePair<K, V>> collection, Func<K, V, string> callback = null)
+        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(collection, callback))); return this; }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FormatStringBuilder Append<K, V>(string format, IReadOnlyCollection<KeyValuePair<K, V>> collection, Func<K, V, string> callback = null)
+        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(collection, callback))); return this; }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FormatStringBuilder Append(IList list, Func<object, string> callback)
         { _sb.Append(Utility.Text.ToString(list, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append(System.Collections.IList list, System.Func<int, object, string> callback = null)
+        public FormatStringBuilder Append(IList list, Func<int, object, string> callback = null)
         { _sb.Append(Utility.Text.ToString(list, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append(string format, System.Collections.IList list, System.Func<object, string> callback)
+        public FormatStringBuilder Append(string format, IList list, Func<object, string> callback)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(list, callback))); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append(string format, System.Collections.IList list, System.Func<int, object, string> callback = null)
+        public FormatStringBuilder Append(string format, IList list, Func<int, object, string> callback = null)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(list, callback))); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append<T>(IList<T> list, System.Func<T, string> callback)
-        { _sb.Append(Utility.Text.ToString<T>(list, callback)); return this; }
+        public FormatStringBuilder Append<T>(IList<T> list, Func<T, string> callback)
+        { _sb.Append(Utility.Text.ToString(list, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append<T>(IList<T> list, System.Func<int, T, string> callback = null)
-        { _sb.Append(Utility.Text.ToString<T>(list, callback)); return this; }
+        public FormatStringBuilder Append<T>(IReadOnlyList<T> list, Func<T, string> callback)
+        { _sb.Append(Utility.Text.ToString(list, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append<T>(string format, IList<T> list, System.Func<T, string> callback)
-        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString<T>(list, callback))); return this; }
+        public FormatStringBuilder Append<T>(IList<T> list, Func<int, T, string> callback = null)
+        { _sb.Append(Utility.Text.ToString(list, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append<T>(string format, IList<T> list, System.Func<int, T, string> callback = null)
-        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString<T>(list, callback))); return this; }
+        public FormatStringBuilder Append<T>(IReadOnlyList<T> list, Func<int, T, string> callback = null)
+        { _sb.Append(Utility.Text.ToString(list, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append(System.Collections.IDictionary dictionary, System.Func<object, object, string> callback = null)
+        public FormatStringBuilder Append<T>(string format, IList<T> list, Func<T, string> callback)
+        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(list, callback))); return this; }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FormatStringBuilder Append<T>(string format, IReadOnlyList<T> list, Func<T, string> callback)
+        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(list, callback))); return this; }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FormatStringBuilder Append<T>(string format, IList<T> list, Func<int, T, string> callback = null)
+        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(list, callback))); return this; }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FormatStringBuilder Append<T>(string format, IReadOnlyList<T> list, Func<int, T, string> callback = null)
+        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(list, callback))); return this; }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FormatStringBuilder Append<T>(ISet<T> set, Func<T, string> callback)
+        { _sb.Append(Utility.Text.ToString(set, callback)); return this; }
+
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FormatStringBuilder Append<T>(ISet<T> set, Func<int, T, string> callback = null)
+        { _sb.Append(Utility.Text.ToString(set, callback)); return this; }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FormatStringBuilder Append<T>(string format, ISet<T> set, Func<T, string> callback)
+        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(set, callback))); return this; }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FormatStringBuilder Append<T>(string format, ISet<T> set, Func<int, T, string> callback = null)
+        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(set, callback))); return this; }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FormatStringBuilder Append(IDictionary dictionary, Func<object, object, string> callback = null)
         { _sb.Append(Utility.Text.ToString(dictionary, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append(string format, System.Collections.IDictionary dictionary, System.Func<object, object, string> callback = null)
+        public FormatStringBuilder Append(string format, IDictionary dictionary, Func<object, object, string> callback = null)
         { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(dictionary, callback))); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append<K, V>(IDictionary<K, V> dictionary, System.Func<K, V, string> callback = null)
-        { _sb.Append(Utility.Text.ToString<K, V>(dictionary, callback)); return this; }
+        public FormatStringBuilder Append<K, V>(IDictionary<K, V> dictionary, Func<K, V, string> callback = null)
+        { _sb.Append(Utility.Text.ToString(dictionary, callback)); return this; }
 
         [Preserve]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FormatStringBuilder Append<K, V>(string format, IDictionary<K, V> dictionary, System.Func<K, V, string> callback = null)
-        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString<K, V>(dictionary, callback))); return this; }
+        public FormatStringBuilder Append<K, V>(IReadOnlyDictionary<K, V> dictionary, Func<K, V, string> callback = null)
+        { _sb.Append(Utility.Text.ToString(dictionary, callback)); return this; }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FormatStringBuilder Append<K, V>(string format, IDictionary<K, V> dictionary, Func<K, V, string> callback = null)
+        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(dictionary, callback))); return this; }
+
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FormatStringBuilder Append<K, V>(string format, IReadOnlyDictionary<K, V> dictionary, Func<K, V, string> callback = null)
+        { _sb.Append(Utility.Text.Format(format, Utility.Text.ToString(dictionary, callback))); return this; }
 
         #endregion
 

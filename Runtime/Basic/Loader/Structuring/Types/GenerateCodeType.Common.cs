@@ -156,9 +156,9 @@ namespace GameEngine.Loader.Structuring
         /// </summary>
         /// <returns>返回全部数据实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IList<T> Values()
+        public IReadOnlyList<T> Values()
         {
-            return _methodTypes;
+            return (List<T>) _methodTypes;
         }
 
         /// <summary>

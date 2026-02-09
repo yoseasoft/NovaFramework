@@ -583,10 +583,7 @@ namespace NovaEngine
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static string ToString(ICollection collection, Func<object, string> callback)
             {
-                return ToString(collection, (n, obj) =>
-                {
-                    return $"{n}={{{callback(obj)}}}";
-                });
+                return ToString(collection?.GetEnumerator(), callback);
             }
 
             /// <summary>
@@ -596,9 +593,38 @@ namespace NovaEngine
             /// <param name="callback">输出回调句柄</param>
             /// <returns>返回集合容器对应的字符串输出结果</returns>
             [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static string ToString(ICollection collection, Func<int, object, string> callback = null)
             {
-                if (null == collection)
+                return ToString(collection?.GetEnumerator(), callback);
+            }
+
+            /// <summary>
+            /// 迭代器的字符串描述输出函数
+            /// </summary>
+            /// <param name="enumerator">迭代器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回迭代器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString(IEnumerator enumerator, Func<object, string> callback)
+            {
+                return ToString(enumerator, (n, obj) =>
+                {
+                    return $"{n}={{{callback(obj)}}}";
+                });
+            }
+
+            /// <summary>
+            /// 迭代器的字符串描述输出函数
+            /// </summary>
+            /// <param name="enumerator">迭代器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回迭代器对应的字符串输出结果</returns>
+            [Preserve]
+            public static string ToString(IEnumerator enumerator, Func<int, object, string> callback = null)
+            {
+                if (null == enumerator)
                 {
                     return Definition.CString.Null;
                 }
@@ -606,25 +632,24 @@ namespace NovaEngine
                 StringBuilder sb = new StringBuilder();
 
                 int n = 0;
-                IEnumerator e = collection.GetEnumerator();
-                while (e.MoveNext())
+                while (enumerator.MoveNext())
                 {
                     if (n > 0) sb.Append(Definition.CCharacter.Comma);
 
                     if (null == callback)
                     {
-                        if (e.Current is DictionaryEntry entry)
+                        if (enumerator.Current is DictionaryEntry entry)
                         {
                             sb.AppendFormat("{0}={1}", entry.Key.ToString(), entry.Value.ToString());
                         }
                         else
                         {
-                            sb.AppendFormat("{0}={1}", n, e.Current.ToString());
+                            sb.AppendFormat("{0}={1}", n, enumerator.Current.ToString());
                         }
                     }
                     else
                     {
-                        sb.Append(callback(n, e.Current));
+                        sb.Append(callback(n, enumerator.Current));
                     }
                     n++;
                 }
@@ -643,10 +668,21 @@ namespace NovaEngine
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static string ToString<T>(ICollection<T> collection, Func<T, string> callback)
             {
-                return ToString<T>(collection, (n, obj) =>
-                {
-                    return $"{n}={{{callback(obj)}}}";
-                });
+                return ToString(collection?.GetEnumerator(), callback);
+            }
+
+            /// <summary>
+            /// 只读集合容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">数据值类型</typeparam>
+            /// <param name="collection">只读集合容器对象实例</param>
+            /// <param name="callback">回调句柄</param>
+            /// <returns>返回只读集合容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<T>(IReadOnlyCollection<T> collection, Func<T, string> callback)
+            {
+                return ToString(collection?.GetEnumerator(), callback);
             }
 
             /// <summary>
@@ -657,9 +693,54 @@ namespace NovaEngine
             /// <param name="callback">回调句柄</param>
             /// <returns>返回集合容器对应的字符串输出结果</returns>
             [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static string ToString<T>(ICollection<T> collection, Func<int, T, string> callback = null)
             {
-                if (null == collection)
+                return ToString(collection?.GetEnumerator(), callback);
+            }
+
+            /// <summary>
+            /// 只读集合容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">数据值类型</typeparam>
+            /// <param name="collection">只读集合容器对象实例</param>
+            /// <param name="callback">回调句柄</param>
+            /// <returns>返回只读集合容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<T>(IReadOnlyCollection<T> collection, Func<int, T, string> callback = null)
+            {
+                return ToString(collection?.GetEnumerator(), callback);
+            }
+
+            /// <summary>
+            /// 迭代器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">数据值类型</typeparam>
+            /// <param name="enumerator">迭代器对象实例</param>
+            /// <param name="callback">回调句柄</param>
+            /// <returns>返回迭代器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<T>(IEnumerator<T> enumerator, Func<T, string> callback)
+            {
+                return ToString(enumerator, (n, obj) =>
+                {
+                    return $"{n}={{{callback(obj)}}}";
+                });
+            }
+
+            /// <summary>
+            /// 迭代器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">数据值类型</typeparam>
+            /// <param name="enumerator">迭代器对象实例</param>
+            /// <param name="callback">回调句柄</param>
+            /// <returns>返回迭代器对应的字符串输出结果</returns>
+            [Preserve]
+            public static string ToString<T>(IEnumerator<T> enumerator, Func<int, T, string> callback = null)
+            {
+                if (null == enumerator)
                 {
                     return Definition.CString.Null;
                 }
@@ -667,18 +748,17 @@ namespace NovaEngine
                 StringBuilder sb = new StringBuilder();
 
                 int n = 0;
-                IEnumerator<T> e = collection.GetEnumerator();
-                while (e.MoveNext())
+                while (enumerator.MoveNext())
                 {
                     if (n > 0) sb.Append(Definition.CCharacter.Comma);
 
                     if (null == callback)
                     {
-                        sb.AppendFormat("{0}={1}", n, e.Current.ToString());
+                        sb.AppendFormat("{0}={1}", n, enumerator.Current.ToString());
                     }
                     else
                     {
-                        sb.Append(callback(n, e.Current));
+                        sb.Append(callback(n, enumerator.Current));
 
                     }
                     n++;
@@ -696,9 +776,39 @@ namespace NovaEngine
             /// <param name="callback">回调句柄</param>
             /// <returns>返回集合容器对应的字符串输出结果</returns>
             [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static string ToString<K, V>(ICollection<KeyValuePair<K, V>> collection, Func<K, V, string> callback = null)
             {
-                if (null == collection)
+                return ToString(collection?.GetEnumerator(), callback);
+            }
+
+            /// <summary>
+            /// 集合容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="K">数据键类型</typeparam>
+            /// <typeparam name="V">数据值类型</typeparam>
+            /// <param name="collection">集合容器对象实例</param>
+            /// <param name="callback">回调句柄</param>
+            /// <returns>返回集合容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<K, V>(IReadOnlyCollection<KeyValuePair<K, V>> collection, Func<K, V, string> callback = null)
+            {
+                return ToString(collection?.GetEnumerator(), callback);
+            }
+
+            /// <summary>
+            /// 迭代器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="K">数据键类型</typeparam>
+            /// <typeparam name="V">数据值类型</typeparam>
+            /// <param name="enumerator">迭代器对象实例</param>
+            /// <param name="callback">回调句柄</param>
+            /// <returns>返回迭代器对应的字符串输出结果</returns>
+            [Preserve]
+            public static string ToString<K, V>(IEnumerator<KeyValuePair<K, V>> enumerator, Func<K, V, string> callback = null)
+            {
+                if (null == enumerator)
                 {
                     return Definition.CString.Null;
                 }
@@ -706,18 +816,17 @@ namespace NovaEngine
                 StringBuilder sb = new StringBuilder();
 
                 int n = 0;
-                IEnumerator<KeyValuePair<K, V>> e = collection.GetEnumerator();
-                while (e.MoveNext())
+                while (enumerator.MoveNext())
                 {
                     if (n > 0) sb.Append(Definition.CCharacter.Comma);
 
                     if (null == callback)
                     {
-                        sb.AppendFormat("{0}={1}", e.Current.Key.ToString(), e.Current.Value.ToString());
+                        sb.AppendFormat("{0}={1}", enumerator.Current.Key.ToString(), enumerator.Current.Value.ToString());
                     }
                     else
                     {
-                        sb.Append(callback(e.Current.Key, e.Current.Value));
+                        sb.Append(callback(enumerator.Current.Key, enumerator.Current.Value));
 
                     }
                     n++;
@@ -767,6 +876,20 @@ namespace NovaEngine
             }
 
             /// <summary>
+            /// 只读列表容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">容器内的元素类型</typeparam>
+            /// <param name="list">只读列表容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回只读列表容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<T>(IReadOnlyList<T> list, Func<T, string> callback)
+            {
+                return ToString(list as IReadOnlyCollection<T>, callback);
+            }
+
+            /// <summary>
             /// 列表容器的字符串描述输出函数
             /// </summary>
             /// <typeparam name="T">容器内的元素类型</typeparam>
@@ -781,6 +904,48 @@ namespace NovaEngine
             }
 
             /// <summary>
+            /// 只读列表容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">容器内的元素类型</typeparam>
+            /// <param name="list">只读列表容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回只读列表容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<T>(IReadOnlyList<T> list, Func<int, T, string> callback = null)
+            {
+                return ToString(list as IReadOnlyCollection<T>, callback);
+            }
+
+            /// <summary>
+            /// 集合容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">容器内的元素类型</typeparam>
+            /// <param name="set">集合容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回集合容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<T>(ISet<T> set, Func<T, string> callback)
+            {
+                return ToString(set as ICollection<T>, callback);
+            }
+
+            /// <summary>
+            /// 集合容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">容器内的元素类型</typeparam>
+            /// <param name="set">集合容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回集合容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<T>(ISet<T> set, Func<int, T, string> callback = null)
+            {
+                return ToString(set as ICollection<T>, callback);
+            }
+
+            /// <summary>
             /// 列表容器的字符串描述输出函数
             /// </summary>
             /// <param name="list">列表容器对象实例</param>
@@ -789,6 +954,19 @@ namespace NovaEngine
             [Preserve]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static string ToString(IList<int> list, Func<int, string> callback)
+            {
+                return ToString<int>(list, callback);
+            }
+
+            /// <summary>
+            /// 只读列表容器的字符串描述输出函数
+            /// </summary>
+            /// <param name="list">只读列表容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回只读列表容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString(IReadOnlyList<int> list, Func<int, string> callback)
             {
                 return ToString<int>(list, callback);
             }
@@ -807,6 +985,19 @@ namespace NovaEngine
             }
 
             /// <summary>
+            /// 只读列表容器的字符串描述输出函数
+            /// </summary>
+            /// <param name="list">只读列表容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回只读列表容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString(IReadOnlyList<int> list, Func<int, int, string> callback = null)
+            {
+                return ToString<int>(list, callback);
+            }
+
+            /// <summary>
             /// 列表容器的字符串描述输出函数
             /// </summary>
             /// <param name="list">列表容器对象实例</param>
@@ -820,6 +1011,19 @@ namespace NovaEngine
             }
 
             /// <summary>
+            /// 只读列表容器的字符串描述输出函数
+            /// </summary>
+            /// <param name="list">只读列表容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回只读列表容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString(IReadOnlyList<string> list, Func<string, string> callback)
+            {
+                return ToString<string>(list, callback);
+            }
+
+            /// <summary>
             /// 列表容器的字符串描述输出函数
             /// </summary>
             /// <param name="list">列表容器对象实例</param>
@@ -828,6 +1032,19 @@ namespace NovaEngine
             [Preserve]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static string ToString(IList<string> list, Func<int, string, string> callback = null)
+            {
+                return ToString<string>(list, callback);
+            }
+
+            /// <summary>
+            /// 只读列表容器的字符串描述输出函数
+            /// </summary>
+            /// <param name="list">只读列表容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回只读列表容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString(IReadOnlyList<string> list, Func<int, string, string> callback = null)
             {
                 return ToString<string>(list, callback);
             }
@@ -882,6 +1099,150 @@ namespace NovaEngine
             public static string ToString<K, V>(IDictionary<K, V> dictionary, Func<K, V, string> callback = null)
             {
                 return ToString(dictionary as ICollection<KeyValuePair<K, V>>, callback);
+            }
+
+            /// <summary>
+            /// 只读字典容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="K">字典映射的键类型</typeparam>
+            /// <typeparam name="V">字典映射的值类型</typeparam>
+            /// <param name="dictionary">只读字典容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回只读字典容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<K, V>(IReadOnlyDictionary<K, V> dictionary, Func<K, V, string> callback = null)
+            {
+                return ToString(dictionary as IReadOnlyCollection<KeyValuePair<K, V>>, callback);
+            }
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            /// <summary>
+            /// 列表容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">容器内的元素类型</typeparam>
+            /// <param name="list">列表容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回列表容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<T>(List<T> list, Func<T, string> callback)
+            {
+                return ToString((IReadOnlyList<T>) list, callback);
+            }
+
+            /// <summary>
+            /// 列表容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">容器内的元素类型</typeparam>
+            /// <param name="list">列表容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回列表容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<T>(List<T> list, Func<int, T, string> callback = null)
+            {
+                return ToString((IReadOnlyList<T>) list, callback);
+            }
+
+            /// <summary>
+            /// 集合容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">容器内的元素类型</typeparam>
+            /// <param name="set">集合容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回集合容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<T>(HashSet<T> set, Func<T, string> callback)
+            {
+                return ToString((IReadOnlyCollection<T>) set, callback);
+            }
+
+            /// <summary>
+            /// 集合容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">容器内的元素类型</typeparam>
+            /// <param name="set">集合容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回集合容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<T>(HashSet<T> set, Func<int, T, string> callback = null)
+            {
+                return ToString((IReadOnlyCollection<T>) set, callback);
+            }
+
+            /// <summary>
+            /// 队列容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">容器内的元素类型</typeparam>
+            /// <param name="queue">队列容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回队列容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<T>(Queue<T> queue, Func<T, string> callback)
+            {
+                return ToString((IReadOnlyCollection<T>) queue, callback);
+            }
+
+            /// <summary>
+            /// 队列容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">容器内的元素类型</typeparam>
+            /// <param name="queue">队列容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回队列容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<T>(Queue<T> queue, Func<int, T, string> callback = null)
+            {
+                return ToString((IReadOnlyCollection<T>) queue, callback);
+            }
+
+            /// <summary>
+            /// 堆栈容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">数据值类型</typeparam>
+            /// <param name="stack">堆栈容器对象实例</param>
+            /// <param name="callback">回调句柄</param>
+            /// <returns>返回堆栈容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<T>(Stack<T> stack, Func<T, string> callback)
+            {
+                return ToString((IReadOnlyCollection<T>) stack, callback);
+            }
+
+            /// <summary>
+            /// 堆栈容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="T">数据值类型</typeparam>
+            /// <param name="stack">堆栈容器对象实例</param>
+            /// <param name="callback">回调句柄</param>
+            /// <returns>返回堆栈容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<T>(Stack<T> stack, Func<int, T, string> callback = null)
+            {
+                return ToString((IReadOnlyCollection<T>) stack, callback);
+            }
+
+            /// <summary>
+            /// 字典容器的字符串描述输出函数
+            /// </summary>
+            /// <typeparam name="K">字典映射的键类型</typeparam>
+            /// <typeparam name="V">字典映射的值类型</typeparam>
+            /// <param name="dictionary">字典容器对象实例</param>
+            /// <param name="callback">输出回调句柄</param>
+            /// <returns>返回字典容器对应的字符串输出结果</returns>
+            [Preserve]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static string ToString<K, V>(Dictionary<K, V> dictionary, Func<K, V, string> callback)
+            {
+                return ToString((IReadOnlyDictionary<K, V>) dictionary, callback);
             }
 
             #endregion
