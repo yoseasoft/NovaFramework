@@ -379,6 +379,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="beanName">对象名称</param>
         /// <returns>返回对应的Bean信息数据实例，若查找失败返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Symbolling.Bean GetBeanClassByName(string beanName)
         {
             if (_beanClassMaps.TryGetValue(beanName, out Symbolling.Bean bean))
@@ -394,6 +395,7 @@ namespace GameEngine.Loader
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <returns>返回对应的Bean信息数据实例，若查找失败返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Symbolling.Bean GetBeanClassByType(Type targetType)
         {
             Symbolling.SymClass symClass = GetSymClassByType(targetType);

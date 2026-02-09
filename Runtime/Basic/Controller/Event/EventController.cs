@@ -183,8 +183,7 @@ namespace GameEngine
             // 事件分发调度
             OnEventDistributeCallDispatched(eventID, args);
 
-            IList<IEventDispatch> listeners;
-            if (_eventListenersForId.TryGetValue(eventID, out listeners))
+            if (_eventListenersForId.TryGetValue(eventID, out IList<IEventDispatch> listeners))
             {
                 // 2024-06-22:
                 // 因为网络消息处理逻辑中存在删除对象对象的情况，
@@ -193,8 +192,7 @@ namespace GameEngine
                 IList<IEventDispatch> list;
                 if (listeners.Count > 1)
                 {
-                    list = new List<IEventDispatch>();
-                    ((List<IEventDispatch>) list).AddRange(listeners);
+                    list = new List<IEventDispatch>(listeners);
                 }
                 else
                 {
@@ -206,8 +204,6 @@ namespace GameEngine
                     IEventDispatch listener = list[n];
                     listener.OnEventDispatchForId(eventID, args);
                 }
-
-                list = null;
             }
         }
 
@@ -220,8 +216,7 @@ namespace GameEngine
             // 事件分发调度
             OnEventDistributeCallDispatched(eventData);
 
-            IList<IEventDispatch> listeners;
-            if (_eventListenersForType.TryGetValue(eventData.GetType(), out listeners))
+            if (_eventListenersForType.TryGetValue(eventData.GetType(), out IList<IEventDispatch> listeners))
             {
                 // 2024-06-22:
                 // 因为网络消息处理逻辑中存在删除对象对象的情况，
@@ -230,8 +225,7 @@ namespace GameEngine
                 IList<IEventDispatch> list;
                 if (listeners.Count > 1)
                 {
-                    list = new List<IEventDispatch>();
-                    ((List<IEventDispatch>) list).AddRange(listeners);
+                    list = new List<IEventDispatch>(listeners);
                 }
                 else
                 {
@@ -243,8 +237,6 @@ namespace GameEngine
                     IEventDispatch listener = list[n];
                     listener.OnEventDispatchForType(eventData);
                 }
-
-                list = null;
             }
         }
 
@@ -258,11 +250,9 @@ namespace GameEngine
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
         public bool Subscribe(int eventID, IEventDispatch listener)
         {
-            IList<IEventDispatch> list;
-            if (false == _eventListenersForId.TryGetValue(eventID, out list))
+            if (false == _eventListenersForId.TryGetValue(eventID, out IList<IEventDispatch> list))
             {
-                list = new List<IEventDispatch>();
-                list.Add(listener);
+                list = new List<IEventDispatch>() { listener };
 
                 _eventListenersForId.Add(eventID, list);
                 return true;
@@ -271,7 +261,7 @@ namespace GameEngine
             // 检查是否重复订阅
             if (list.Contains(listener))
             {
-                Debugger.Warn("The listener for target event '{%d}' was already subscribed, cannot repeat do it.", eventID);
+                Debugger.Warn(LogGroupTag.Controller, "The listener for target event '{%d}' was already subscribed, cannot repeat do it.", eventID);
                 return false;
             }
 
@@ -288,11 +278,9 @@ namespace GameEngine
         /// <returns>若事件订阅成功则返回true，否则返回false</returns>
         public bool Subscribe(Type eventType, IEventDispatch listener)
         {
-            IList<IEventDispatch> list;
-            if (false == _eventListenersForType.TryGetValue(eventType, out list))
+            if (false == _eventListenersForType.TryGetValue(eventType, out IList<IEventDispatch> list))
             {
-                list = new List<IEventDispatch>();
-                list.Add(listener);
+                list = new List<IEventDispatch>() { listener };
 
                 _eventListenersForType.Add(eventType, list);
                 return true;
@@ -301,7 +289,7 @@ namespace GameEngine
             // 检查是否重复订阅
             if (list.Contains(listener))
             {
-                Debugger.Warn("The listener for target event '{%t}' was already subscribed, cannot repeat do it.", eventType);
+                Debugger.Warn(LogGroupTag.Controller, "The listener for target event '{%t}' was already subscribed, cannot repeat do it.", eventType);
                 return false;
             }
 
@@ -317,10 +305,9 @@ namespace GameEngine
         /// <param name="listener">事件监听回调接口</param>
         public void Unsubscribe(int eventID, IEventDispatch listener)
         {
-            IList<IEventDispatch> list;
-            if (false == _eventListenersForId.TryGetValue(eventID, out list))
+            if (false == _eventListenersForId.TryGetValue(eventID, out IList<IEventDispatch> list))
             {
-                Debugger.Warn("Could not found any listener for target event '{%d}' with on subscribed, do unsubscribe failed.", eventID);
+                Debugger.Warn(LogGroupTag.Controller, "Could not found any listener for target event '{%d}' with on subscribed, do unsubscribe failed.", eventID);
                 return;
             }
 
@@ -339,10 +326,9 @@ namespace GameEngine
         /// <param name="listener">事件监听回调接口</param>
         public void Unsubscribe(Type eventType, IEventDispatch listener)
         {
-            IList<IEventDispatch> list;
-            if (false == _eventListenersForType.TryGetValue(eventType, out list))
+            if (false == _eventListenersForType.TryGetValue(eventType, out IList<IEventDispatch> list))
             {
-                Debugger.Warn("Could not found any listener for target event '{%t}' with on subscribed, do unsubscribe failed.", eventType);
+                Debugger.Warn(LogGroupTag.Controller, "Could not found any listener for target event '{%t}' with on subscribed, do unsubscribe failed.", eventType);
                 return;
             }
 
@@ -359,13 +345,13 @@ namespace GameEngine
         /// </summary>
         public void UnsubscribeAll(IEventDispatch listener)
         {
-            IList<int> ids = NovaEngine.Utility.Collection.ToListForKeys<int, IList<IEventDispatch>>(_eventListenersForId);
+            IList<int> ids = NovaEngine.Utility.Collection.ToListForKeys(_eventListenersForId);
             for (int n = 0; null != ids && n < ids.Count; ++n)
             {
                 Unsubscribe(ids[n], listener);
             }
 
-            IList<Type> types = NovaEngine.Utility.Collection.ToListForKeys<Type, IList<IEventDispatch>>(_eventListenersForType);
+            IList<Type> types = NovaEngine.Utility.Collection.ToListForKeys(_eventListenersForType);
             for (int n = 0; null != types && n < types.Count; ++n)
             {
                 Unsubscribe(types[n], listener);

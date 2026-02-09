@@ -26,14 +26,14 @@
 namespace GameEngine.Loader.Configuring
 {
     /// <summary>
-    /// 通用Bean配置的有效性验证检测接口
+    /// 通用Bean配置的验证检测接口
     /// </summary>
-    public interface ICodeConfigureEffectivateVerification
+    public interface ICodeConfigureVerification
     {
         /// <summary>
         /// 该配置对象是否有效的检测接口函数
         /// </summary>
         /// <returns>若配置有效则返回true，否则返回false</returns>
-        bool IsEffectivationCodeConfigure();
+        bool IsEffectiveOfCodeConfigure();
     }
 }

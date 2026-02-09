@@ -47,10 +47,17 @@ namespace GameEngine.Loader.Structuring
         /// </summary>
         private MethodTypeList<MessageBindingMethodTypeCodeInfo> _messageBindingMethodTypes;
 
+        /// <summary>
+        /// 获取输入响应函数列表
+        /// </summary>
         internal MethodTypeList<InputResponsingMethodTypeCodeInfo> InputResponsingMethodTypes => _inputResponsingMethodTypes;
-
+        /// <summary>
+        /// 获取事件订阅函数列表
+        /// </summary>
         internal MethodTypeList<EventSubscribingMethodTypeCodeInfo> EventSubscribingMethodTypes => _eventSubscribingMethodTypes;
-
+        /// <summary>
+        /// 获取消息绑定函数列表
+        /// </summary>
         internal MethodTypeList<MessageBindingMethodTypeCodeInfo> MessageBindingMethodTypes => _messageBindingMethodTypes;
 
         #region 输入响应类结构信息操作函数

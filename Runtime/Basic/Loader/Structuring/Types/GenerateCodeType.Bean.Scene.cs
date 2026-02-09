@@ -51,7 +51,7 @@ namespace GameEngine.Loader.Structuring
 
             if (_autoDisplayViewNames.Contains(viewName))
             {
-                Debugger.Warn("The auto display view name '{0}' was already existed, repeat added it failed.", viewName);
+                Debugger.Warn("The auto display view name '{%s}' was already existed, repeat added it failed.", viewName);
                 return;
             }
 
@@ -105,7 +105,7 @@ namespace GameEngine.Loader.Structuring
         {
             if (null == _autoDisplayViewNames || index < 0 || index >= _autoDisplayViewNames.Count)
             {
-                Debugger.Warn("Invalid index ({0}) for auto display view name list.", index);
+                Debugger.Warn("Invalid index ({%d}) for auto display view name list.", index);
                 return null;
             }
 

@@ -41,7 +41,7 @@ namespace GameEngine
         /// </summary>
         [Preserve]
         [OnControllerSubmoduleInitCallback]
-        private void InitInjectObjectStatuss()
+        private void InitInjectObjectStatus()
         {
             // 对象激活状态管理容器初始化
             _objectActivationStatus = new Dictionary<Type, AspectBehaviourType>();
@@ -71,7 +71,7 @@ namespace GameEngine
         {
             if (_objectActivationStatus.ContainsKey(targetType))
             {
-                Debugger.Warn("The target object status '{%t}' was already exist, repeat added it will be override old value.", targetType);
+                Debugger.Warn(LogGroupTag.Controller, "The target object status '{%t}' was already exist, repeat added it will be override old value.", targetType);
 
                 _objectActivationStatus.Remove(targetType);
             }
@@ -102,7 +102,7 @@ namespace GameEngine
         {
             if (false == _objectActivationStatus.ContainsKey(targetType))
             {
-                Debugger.Warn("Could not found any activation status with target type '{%t}', removed it failed.", targetType);
+                Debugger.Warn(LogGroupTag.Controller, "Could not found any activation status with target type '{%t}', removed it failed.", targetType);
                 return;
             }
 

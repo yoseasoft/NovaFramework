@@ -35,12 +35,12 @@ namespace GameEngine
         /// <summary>
         /// 池对象类型统计列表
         /// </summary>
-        private IList<Type> _poolObjectTypes = null;
+        private IList<Type> _poolObjectTypes;
 
         /// <summary>
         /// 池对象处理信息管理列表
         /// </summary>
-        private IDictionary<Type, PoolObjectProcessInfo> _poolObjectProcessInfos = null;
+        private IDictionary<Type, PoolObjectProcessInfo> _poolObjectProcessInfos;
 
         /// <summary>
         /// 池管理对象初始化通知接口函数
@@ -127,7 +127,7 @@ namespace GameEngine
                 return info.ObjectCreateCallback.DynamicInvoke(classType);
             }
 
-            Debugger.Warn("Unsupported create object with target type '{%t}' from pool controller, created instance failed.", classType);
+            Debugger.Warn(LogGroupTag.Controller, "Unsupported create object with target type '{%t}' from pool controller, created instance failed.", classType);
             return null;
         }
 
@@ -139,7 +139,7 @@ namespace GameEngine
         {
             if (null == obj)
             {
-                Debugger.Warn("The target object to be released must be non-null.");
+                Debugger.Warn(LogGroupTag.Controller, "The target object to be released must be non-null.");
                 return;
             }
 
@@ -157,7 +157,7 @@ namespace GameEngine
                 return;
             }
 
-            Debugger.Warn("Unsupported release object with target type '{%t}' from pool controller, released instance failed.", obj);
+            Debugger.Warn(LogGroupTag.Controller, "Unsupported release object with target type '{%t}' from pool controller, released instance failed.", obj);
         }
 
         #region 池对象类型注册/注销操作接口函数
@@ -189,7 +189,7 @@ namespace GameEngine
         {
             if (_poolObjectTypes.Contains(targetType))
             {
-                Debugger.Warn("The target object type '{%t}' was already exist within pool controller, repeat added it failed.", targetType);
+                Debugger.Warn(LogGroupTag.Controller, "The target object type '{%t}' was already exist within pool controller, repeat added it failed.", targetType);
                 return;
             }
 
@@ -244,7 +244,7 @@ namespace GameEngine
         {
             if (_poolObjectProcessInfos.ContainsKey(targetType))
             {
-                Debugger.Warn("The target object type '{%t}' was already exist within pool controller's processing map, repeat added it failed.", targetType);
+                Debugger.Warn(LogGroupTag.Controller, "The target object type '{%t}' was already exist within pool controller's processing map, repeat added it failed.", targetType);
                 return;
             }
 

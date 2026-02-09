@@ -30,7 +30,7 @@ namespace GameEngine.Loader.Configuring
     /// <summary>
     /// 通用Bean的属性配置类型的结构信息
     /// </summary>
-    public sealed class BeanPropertyConfigureInfo : ICodeConfigureEffectivateVerification
+    public sealed class BeanPropertyConfigureInfo : ICodeConfigureVerification
     {
         /// <summary>
         /// 节点属性的完整名称
@@ -58,19 +58,19 @@ namespace GameEngine.Loader.Configuring
         /// 该配置对象是否有效的检测接口函数
         /// </summary>
         /// <returns>若配置有效则返回true，否则返回false</returns>
-        public bool IsEffectivationCodeConfigure()
+        public bool IsEffectiveOfCodeConfigure()
         {
             int c = 0;
 
             // 属性的引用名称，引用类型或引用值，必须要配置一项
 
-            if (null == _referenceName)
+            if (null != _referenceName)
                 ++c;
 
             if (null != _referenceType)
                 ++c;
 
-            if (null == _referenceValue)
+            if (null != _referenceValue)
                 ++c;
 
             if (c <= 0 || c > 1)
