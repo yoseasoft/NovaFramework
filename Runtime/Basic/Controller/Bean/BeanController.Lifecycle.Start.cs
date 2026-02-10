@@ -82,13 +82,13 @@ namespace GameEngine
         {
             if (null == bean)
             {
-                Debugger.Error("The register start notification bean object must be non-null.");
+                Debugger.Error(LogGroupTag.Controller, "The register start notification bean object must be non-null.");
                 return;
             }
 
             if (_beanStartNotificationList.Contains(bean))
             {
-                Debugger.Warn("The register start notification bean object '{%t}' was already exist, repeat added it failed.", bean.BeanType);
+                Debugger.Warn(LogGroupTag.Controller, "The register start notification bean object '{%t}' was already exist, repeat added it failed.", bean.BeanType);
                 return;
             }
 
@@ -104,7 +104,7 @@ namespace GameEngine
         {
             if (null == bean)
             {
-                Debugger.Error("The unregister start notification bean object must be non-null.");
+                Debugger.Error(LogGroupTag.Controller, "The unregister start notification bean object must be non-null.");
                 return;
             }
 
@@ -130,7 +130,7 @@ namespace GameEngine
 
                 if (false == TryGetBeanLifecycleProcessingCallback(bean.BeanType, AspectBehaviourType.Start, out OnBeanLifecycleProcessingHandler callback))
                 {
-                    Debugger.Warn("Could not found any bean start processing callback with target type '{%t}', calling start process failed.", bean.BeanType);
+                    Debugger.Warn(LogGroupTag.Controller, "Could not found any bean start processing callback with target type '{%t}', calling start process failed.", bean.BeanType);
                     continue;
                 }
 
@@ -183,7 +183,7 @@ namespace GameEngine
             if (false == component.Entity.IsOnStartingStatus())
             {
                 // 宿主实体对象尚未进入开始阶段或已经进入销毁阶段，组件实例跳过开始处理逻辑
-                Debugger.Warn("The component parent entity '{%t}' instance doesnot entry starting status, started component failed.", component.Entity.BeanType);
+                Debugger.Warn(LogGroupTag.Controller, "The component parent entity '{%t}' instance doesnot entry starting status, started component failed.", component.Entity.BeanType);
                 return;
             }
 

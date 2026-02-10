@@ -210,7 +210,7 @@ namespace GameEngine
         {
             if (_beanLifecycleRegisterCallbacks.ContainsKey(behaviourType))
             {
-                Debugger.Warn("The bean lifecycle register callback for target behaviour type '{%i}' was already exist, repeat added it will be override old value.", behaviourType);
+                Debugger.Warn(LogGroupTag.Controller, "The bean lifecycle register callback for target behaviour type '{%i}' was already exist, repeat added it will be override old value.", behaviourType);
                 _beanLifecycleRegisterCallbacks.Remove(behaviourType);
             }
 
@@ -226,7 +226,7 @@ namespace GameEngine
         {
             if (_beanLifecycleUnregisterCallbacks.ContainsKey(behaviourType))
             {
-                Debugger.Warn("The bean lifecycle unregister callback for target behaviour type '{%i}' was already exist, repeat added it will be override old value.", behaviourType);
+                Debugger.Warn(LogGroupTag.Controller, "The bean lifecycle unregister callback for target behaviour type '{%i}' was already exist, repeat added it will be override old value.", behaviourType);
                 _beanLifecycleUnregisterCallbacks.Remove(behaviourType);
             }
 
@@ -242,7 +242,7 @@ namespace GameEngine
         {
             if (false == _beanLifecycleRegisterCallbacks.TryGetValue(behaviourType, out OnBeanLifecycleProcessingHandler callback))
             {
-                Debugger.Error("Could not found any lifecycle notfication callback with target behaviour type '{%i}', register bean lifecycle notification failed.", behaviourType);
+                Debugger.Error(LogGroupTag.Controller, "Could not found any lifecycle notfication callback with target behaviour type '{%i}', register bean lifecycle notification failed.", behaviourType);
                 return;
             }
 
@@ -354,7 +354,7 @@ namespace GameEngine
 
             if (dict.ContainsKey(behaviourType))
             {
-                Debugger.Warn("The callback '{%t}' was already exists for target type '{%t} - {%i}', repeated add it will be override old handler.",
+                Debugger.Warn(LogGroupTag.Controller, "The callback '{%t}' was already exists for target type '{%t} - {%i}', repeated add it will be override old handler.",
                         callback, targetType, behaviourType);
 
                 dict.Remove(behaviourType);

@@ -90,7 +90,7 @@ namespace GameEngine
 
                 if (null == expression)
                 {
-                    Debugger.Warn("通过指定的配置数据‘{%s}’未能正确构建表达式对象实例，请检查配置数据是否存在非法格式！", text);
+                    Debugger.Warn(LogGroupTag.Controller, "通过指定的配置数据‘{%s}’未能正确构建表达式对象实例，请检查配置数据是否存在非法格式！", text);
                     return;
                 }
 
@@ -158,7 +158,7 @@ namespace GameEngine
                             line, strParameterArray?.Length, call_info.ParameterTypes?.Count);
                     for (int n = 0; n < call_info.ParameterTypes.Count; ++n)
                     {
-                        Debugger.Warn("参数‘{%d}’的类型为‘{%t}’", n, call_info.ParameterTypes[n]);
+                        Debugger.Warn(LogGroupTag.Controller, "参数‘{%d}’的类型为‘{%t}’", n, call_info.ParameterTypes[n]);
                     }
                     continue;
                 }

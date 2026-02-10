@@ -159,7 +159,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 通用类加载器类的反射管理容器列表
         /// </summary>
-        private static IList<GeneralLoaderClassReflectionHolder> _generalLoaderList = new List<GeneralLoaderClassReflectionHolder>();
+        private readonly static IList<GeneralLoaderClassReflectionHolder> _generalLoaderList = new List<GeneralLoaderClassReflectionHolder>();
 
         /// <summary>
         /// 初始化针对所有标准核心类声明的全部绑定回调接口

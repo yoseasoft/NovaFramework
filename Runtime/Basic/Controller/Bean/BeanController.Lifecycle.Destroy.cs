@@ -83,13 +83,13 @@ namespace GameEngine
         {
             if (null == bean)
             {
-                Debugger.Error("The register destroy notification bean object must be non-null.");
+                Debugger.Error(LogGroupTag.Controller, "The register destroy notification bean object must be non-null.");
                 return;
             }
 
             if (_beanDestroyNotificationList.Contains(bean))
             {
-                Debugger.Warn("The register destroy notification bean object '{%t}' was already exist, repeat added it failed.", bean.BeanType);
+                Debugger.Warn(LogGroupTag.Controller, "The register destroy notification bean object '{%t}' was already exist, repeat added it failed.", bean.BeanType);
                 return;
             }
 
@@ -125,7 +125,7 @@ namespace GameEngine
         {
             if (null == bean)
             {
-                Debugger.Error("The unregister destroy notification bean object must be non-null.");
+                Debugger.Error(LogGroupTag.Controller, "The unregister destroy notification bean object must be non-null.");
                 return;
             }
 
@@ -149,7 +149,7 @@ namespace GameEngine
 
                 if (false == TryGetBeanLifecycleProcessingCallback(bean.BeanType, AspectBehaviourType.Destroy, out OnBeanLifecycleProcessingHandler callback))
                 {
-                    Debugger.Error("Could not found any bean destroy processing callback with target type '{%t}', calling destroy process failed.", bean.BeanType);
+                    Debugger.Error(LogGroupTag.Controller, "Could not found any bean destroy processing callback with target type '{%t}', calling destroy process failed.", bean.BeanType);
                     continue;
                 }
 

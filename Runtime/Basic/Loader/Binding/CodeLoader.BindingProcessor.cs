@@ -66,11 +66,11 @@ namespace GameEngine.Loader
         /// <summary>
         /// 初始化绑定处理服务类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<Type, Delegate> _codeBindingProcessorInitCallbacks = new Dictionary<Type, Delegate>();
+        private readonly static IDictionary<Type, Delegate> _codeBindingProcessorInitCallbacks = new Dictionary<Type, Delegate>();
         /// <summary>
         /// 清理绑定处理服务类相关回调函数的管理容器
         /// </summary>
-        private static IDictionary<Type, Delegate> _codeBindingProcessorCleanupCallbacks = new Dictionary<Type, Delegate>();
+        private readonly static IDictionary<Type, Delegate> _codeBindingProcessorCleanupCallbacks = new Dictionary<Type, Delegate>();
 
         /// <summary>
         /// 初始化针对所有绑定处理类声明的全部绑定回调接口
