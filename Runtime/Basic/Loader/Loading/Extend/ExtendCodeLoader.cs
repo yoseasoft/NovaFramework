@@ -27,7 +27,6 @@
 using System;
 using System.Collections.Generic;
 using System.Customize.Extension;
-using System.Reflection;
 using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
@@ -38,17 +37,9 @@ namespace GameEngine.Loader
     internal static partial class ExtendCodeLoader
     {
         /// <summary>
-        /// 加载扩展定义类相关回调函数的管理容器
+        /// 装配对象池管理类相关回调函数的管理容器
         /// </summary>
-        private readonly static IDictionary<Type, Delegate> _classLoadCallbacks = new Dictionary<Type, Delegate>();
-        /// <summary>
-        /// 清理扩展定义类相关回调函数的管理容器
-        /// </summary>
-        private readonly static IDictionary<Type, Delegate> _classCleanupCallbacks = new Dictionary<Type, Delegate>();
-        /// <summary>
-        /// 查找扩展定义类结构信息相关回调函数的管理容器
-        /// </summary>
-        private readonly static IDictionary<Type, Delegate> _codeInfoLookupCallbacks = new Dictionary<Type, Delegate>();
+        private static readonly LoadingObjectCallbackCollector _collector = new LoadingObjectCallbackCollector();
 
         /// <summary>
         /// 初始化针对所有扩展定义类声明的全部绑定回调接口
@@ -57,38 +48,7 @@ namespace GameEngine.Loader
         [CodeLoader.OnGeneralCodeLoaderInit]
         private static void InitAllExtendClassLoadingCallbacks()
         {
-            Type classType = typeof(ExtendCodeLoader);
-            MethodInfo[] methods = classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-            for (int n = 0; n < methods.Length; ++n)
-            {
-                MethodInfo method = methods[n];
-                IEnumerable<Attribute> e = method.GetCustomAttributes();
-                foreach (Attribute attr in e)
-                {
-                    Type attrType = attr.GetType();
-                    if (typeof(OnCodeLoaderClassLoadOfTargetAttribute) == attrType)
-                    {
-                        OnCodeLoaderClassLoadOfTargetAttribute _attr = (OnCodeLoaderClassLoadOfTargetAttribute) attr;
-
-                        Debugger.Assert(!_classLoadCallbacks.ContainsKey(_attr.ClassType), "Invalid extend class load type");
-                        _classLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLoadHandler)));
-                    }
-                    else if (typeof(OnCodeLoaderClassCleanupOfTargetAttribute) == attrType)
-                    {
-                        OnCodeLoaderClassCleanupOfTargetAttribute _attr = (OnCodeLoaderClassCleanupOfTargetAttribute) attr;
-
-                        Debugger.Assert(!_classCleanupCallbacks.ContainsKey(_attr.ClassType), "Invalid extend class cleanup type");
-                        _classCleanupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllGeneralCodeLoaderHandler)));
-                    }
-                    else if (typeof(OnCodeLoaderClassLookupOfTargetAttribute) == attrType)
-                    {
-                        OnCodeLoaderClassLookupOfTargetAttribute _attr = (OnCodeLoaderClassLookupOfTargetAttribute) attr;
-
-                        Debugger.Assert(!_codeInfoLookupCallbacks.ContainsKey(_attr.ClassType), "Invalid extend class lookup type");
-                        _codeInfoLookupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLookupHandler)));
-                    }
-                }
-            }
+            _collector.OnInitializeContext(typeof(ExtendCodeLoader));
         }
 
         /// <summary>
@@ -98,17 +58,7 @@ namespace GameEngine.Loader
         [CodeLoader.OnGeneralCodeLoaderCleanup]
         private static void CleanupAllExtendClassLoadingCallbacks()
         {
-            foreach (Delegate callback in _classCleanupCallbacks.Values)
-            {
-                CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = callback as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
-                Debugger.Assert(handler, "Invalid extend class cleanup handler.");
-
-                handler.Invoke();
-            }
-
-            _classLoadCallbacks.Clear();
-            _classCleanupCallbacks.Clear();
-            _codeInfoLookupCallbacks.Clear();
+            _collector.OnCleanupContext();
         }
 
         /// <summary>
@@ -163,12 +113,10 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
                 Type attrType = attrTypes[n];
-                // if (TryGetExtendClassCallbackForTargetContainer(attr.GetType(), out Delegate callback, _classLoadCallbacks))
-                if (TryGetExtendClassCallbackForTargetContainer(attrType, out Delegate callback, _classLoadCallbacks))
+                // if (_collector.TryLoadClass(IsMatchedExtendClassFromTargetType, attr.GetType(), symClass, reload, out bool succeed))
+                if (_collector.TryLoadClass(IsMatchedExtendClassFromTargetType, attrType, symClass, reload, out bool succeed))
                 {
-                    CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
-                    Debugger.Assert(handler, "Invalid extend class load handler.");
-                    return handler.Invoke(symClass, reload);
+                    return succeed;
                 }
             }
 
@@ -189,12 +137,10 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrTypes && n < attrTypes.Count; ++n)
             {
                 Type attrType = attrTypes[n];
-                // if (TryGetExtendClassCallbackForTargetContainer(attr.GetType(), out Delegate callback, _codeInfoLookupCallbacks))
-                if (TryGetExtendClassCallbackForTargetContainer(attrType, out Delegate callback, _codeInfoLookupCallbacks))
+                // if (_collector.TryLookupCodeInfo(IsMatchedExtendClassFromTargetType, attr.GetType(), symClass, out Structuring.GeneralCodeInfo codeInfo))
+                if (_collector.TryLookupCodeInfo(IsMatchedExtendClassFromTargetType, attrType, symClass, out Structuring.GeneralCodeInfo codeInfo))
                 {
-                    CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;
-                    Debugger.Assert(handler, "Invalid extend class lookup handler.");
-                    return handler.Invoke(symClass);
+                    return codeInfo;
                 }
             }
 
@@ -208,10 +154,9 @@ namespace GameEngine.Loader
         /// <returns>若存在给定类型对应的回调句柄则返回true，否则返回false</returns>
         private static bool IsExtendClassCallbackExist(Type targetType)
         {
-            foreach (Type classType in _classLoadCallbacks.Keys)
+            foreach (Type classType in _collector.RelevanceTypes)
             {
-                // 这里的属性类型允许继承，因此不能直接作相等比较
-                if (targetType.Is(classType))
+                if (IsMatchedExtendClassFromTargetType(targetType, classType))
                 {
                     return true;
                 }
@@ -221,26 +166,18 @@ namespace GameEngine.Loader
         }
 
         /// <summary>
-        /// 通过指定的类型从扩展定义类的回调管理容器中查找对应的回调句柄实例
+        /// 检查目标类型与指定的对象类型是否匹配
         /// </summary>
-        /// <param name="targetType">对象类型</param>
-        /// <param name="callback">回调句柄</param>
-        /// <param name="container">句柄列表容器</param>
-        /// <returns>返回通过给定类型查找的回调句柄实例，若不存在则返回null</returns>
-        private static bool TryGetExtendClassCallbackForTargetContainer(Type targetType, out Delegate callback, IDictionary<Type, Delegate> container)
+        /// <param name="targetType">目标类型</param>
+        /// <param name="classType">对象类型</param>
+        /// <returns>若对象类型匹配则返回true，否则返回false</returns>
+        private static bool IsMatchedExtendClassFromTargetType(Type targetType, Type classType)
         {
-            foreach (KeyValuePair<Type, Delegate> kvp in container)
+            // 这里的属性类型允许继承，因此不能直接作相等比较
+            if (targetType.Is(classType))
             {
-                // 这里的属性类型允许继承，因此不能直接作相等比较
-                if (targetType.Is(kvp.Key))
-                {
-                    callback = kvp.Value;
-                    return true;
-                }
+                return true;
             }
-
-            // 未找到对应的回调句柄，也需要赋于空值
-            callback = null;
 
             return false;
         }

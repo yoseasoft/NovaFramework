@@ -22,9 +22,6 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
@@ -35,13 +32,9 @@ namespace GameEngine.Loader
     internal static class InjectBindingProcessor
     {
         /// <summary>
-        /// 加载注入控制类相关回调函数的管理容器
+        /// 绑定对象池管理类相关回调函数的管理容器
         /// </summary>
-        private readonly static IDictionary<Type, Delegate> _registerClassLoadCallbacks = new Dictionary<Type, Delegate>();
-        /// <summary>
-        /// 清理注入控制类相关回调函数的管理容器
-        /// </summary>
-        private readonly static IDictionary<Type, Delegate> _registerClassUnloadCallbacks = new Dictionary<Type, Delegate>();
+        private readonly static BindingObjectCallbackCollector _collector = new BindingObjectCallbackCollector();
 
         /// <summary>
         /// 初始化针对绑定类声明的全部回调接口
@@ -50,37 +43,7 @@ namespace GameEngine.Loader
         [CodeLoader.OnBindingProcessorInit]
         private static void InitAllCodeBindingCallbacks()
         {
-            Type classType = typeof(InjectController);
-            MethodInfo[] methods = classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
-            for (int n = 0; n < methods.Length; ++n)
-            {
-                MethodInfo method = methods[n];
-                IEnumerable<Attribute> e = method.GetCustomAttributes();
-                foreach (Attribute attr in e)
-                {
-                    Type attrType = attr.GetType();
-                    if (typeof(OnInjectOfControlRegisterClassOfTargetAttribute) == attrType)
-                    {
-                        Debugger.Assert(method.IsStatic);
-
-                        OnInjectOfControlRegisterClassOfTargetAttribute _attr = (OnInjectOfControlRegisterClassOfTargetAttribute) attr;
-
-                        Delegate callback = method.CreateDelegate(typeof(CodeLoader.OnCodeTypeLoadedHandler));
-                        _registerClassLoadCallbacks.Add(_attr.ClassType, callback);
-
-                        CodeLoader.AddCodeTypeLoadedCallback(_attr.ClassType, callback as CodeLoader.OnCodeTypeLoadedHandler);
-                    }
-                    else if (typeof(OnInjectOfControlUnregisterClassOfTargetAttribute) == attrType)
-                    {
-                        Debugger.Assert(method.IsStatic);
-
-                        OnInjectOfControlUnregisterClassOfTargetAttribute _attr = (OnInjectOfControlUnregisterClassOfTargetAttribute) attr;
-
-                        Delegate callback = method.CreateDelegate(typeof(CodeLoader.OnCleanupAllCodeTypesHandler));
-                        _registerClassUnloadCallbacks.Add(_attr.ClassType, callback);
-                    }
-                }
-            }
+            _collector.OnInitializeContext<OnInjectOfControlRegisterClassOfTargetAttribute, OnInjectOfControlUnregisterClassOfTargetAttribute>(typeof(InjectController));
         }
 
         /// <summary>
@@ -90,16 +53,7 @@ namespace GameEngine.Loader
         [CodeLoader.OnBindingProcessorCleanup]
         private static void CleanupAllCodeBindingCallbacks()
         {
-            foreach (Delegate callback in _registerClassUnloadCallbacks.Values)
-            {
-                CodeLoader.OnCleanupAllCodeTypesHandler handler = callback as CodeLoader.OnCleanupAllCodeTypesHandler;
-                Debugger.Assert(handler, "Invalid cleanup inject register class unload callback.");
-
-                handler.Invoke();
-            }
-
-            _registerClassLoadCallbacks.Clear();
-            _registerClassUnloadCallbacks.Clear();
+            _collector.OnCleanupContext();
         }
     }
 }

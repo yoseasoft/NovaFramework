@@ -24,7 +24,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine.Scripting;
 
 namespace GameEngine.Loader
@@ -35,17 +34,9 @@ namespace GameEngine.Loader
     internal static partial class PoolCodeLoader
     {
         /// <summary>
-        /// 加载对象池管理类相关回调函数的管理容器
+        /// 装配对象池管理类相关回调函数的管理容器
         /// </summary>
-        private readonly static IDictionary<Type, Delegate> _classLoadCallbacks = new Dictionary<Type, Delegate>();
-        /// <summary>
-        /// 清理对象池管理类相关回调函数的管理容器
-        /// </summary>
-        private readonly static IDictionary<Type, Delegate> _classCleanupCallbacks = new Dictionary<Type, Delegate>();
-        /// <summary>
-        /// 查找对象池管理类结构信息相关回调函数的管理容器
-        /// </summary>
-        private readonly static IDictionary<Type, Delegate> _codeInfoLookupCallbacks = new Dictionary<Type, Delegate>();
+        private static readonly LoadingObjectCallbackCollector _collector = new LoadingObjectCallbackCollector();
 
         /// <summary>
         /// 初始化针对所有对象池管理类声明的全部绑定回调接口
@@ -54,38 +45,7 @@ namespace GameEngine.Loader
         [CodeLoader.OnGeneralCodeLoaderInit]
         private static void InitAllPoolClassLoadingCallbacks()
         {
-            Type classType = typeof(PoolCodeLoader);
-            MethodInfo[] methods = classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-            for (int n = 0; n < methods.Length; ++n)
-            {
-                MethodInfo method = methods[n];
-                IEnumerable<Attribute> e = method.GetCustomAttributes();
-                foreach (Attribute attr in e)
-                {
-                    Type attrType = attr.GetType();
-                    if (typeof(OnCodeLoaderClassLoadOfTargetAttribute) == attrType)
-                    {
-                        OnCodeLoaderClassLoadOfTargetAttribute _attr = (OnCodeLoaderClassLoadOfTargetAttribute) attr;
-
-                        Debugger.Assert(!_classLoadCallbacks.ContainsKey(_attr.ClassType), "Invalid pool class load type");
-                        _classLoadCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLoadHandler)));
-                    }
-                    else if (typeof(OnCodeLoaderClassCleanupOfTargetAttribute) == attrType)
-                    {
-                        OnCodeLoaderClassCleanupOfTargetAttribute _attr = (OnCodeLoaderClassCleanupOfTargetAttribute) attr;
-
-                        Debugger.Assert(!_classCleanupCallbacks.ContainsKey(_attr.ClassType), "Invalid pool class cleanup type");
-                        _classCleanupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnCleanupAllGeneralCodeLoaderHandler)));
-                    }
-                    else if (typeof(OnCodeLoaderClassLookupOfTargetAttribute) == attrType)
-                    {
-                        OnCodeLoaderClassLookupOfTargetAttribute _attr = (OnCodeLoaderClassLookupOfTargetAttribute) attr;
-
-                        Debugger.Assert(!_codeInfoLookupCallbacks.ContainsKey(_attr.ClassType), "Invalid pool class lookup type");
-                        _codeInfoLookupCallbacks.Add(_attr.ClassType, method.CreateDelegate(typeof(CodeLoader.OnGeneralCodeLoaderLookupHandler)));
-                    }
-                }
-            }
+            _collector.OnInitializeContext(typeof(PoolCodeLoader));
         }
 
         /// <summary>
@@ -95,17 +55,7 @@ namespace GameEngine.Loader
         [CodeLoader.OnGeneralCodeLoaderCleanup]
         private static void CleanupAllPoolClassLoadingCallbacks()
         {
-            foreach (Delegate callback in _classCleanupCallbacks.Values)
-            {
-                CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = callback as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
-                Debugger.Assert(handler, "Invalid pool class cleanup handler.");
-
-                handler.Invoke();
-            }
-
-            _classLoadCallbacks.Clear();
-            _classCleanupCallbacks.Clear();
-            _codeInfoLookupCallbacks.Clear();
+            _collector.OnCleanupContext();
         }
 
         /// <summary>
@@ -151,11 +101,9 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
                 Attribute attr = attrs[n];
-                if (TryGetPoolClassCallbackForTargetContainer(attr.GetType(), out Delegate callback, _classLoadCallbacks))
+                if (_collector.TryLoadClass(IsMatchedPoolClassFromTargetType, attr.GetType(), symClass, reload, out bool succeed))
                 {
-                    CodeLoader.OnGeneralCodeLoaderLoadHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLoadHandler;
-                    Debugger.Assert(handler, "Invalid pool class load handler.");
-                    return handler.Invoke(symClass, reload);
+                    return succeed;
                 }
             }
 
@@ -175,11 +123,9 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
                 Attribute attr = attrs[n];
-                if (TryGetPoolClassCallbackForTargetContainer(attr.GetType(), out Delegate callback, _codeInfoLookupCallbacks))
+                if (_collector.TryLookupCodeInfo(IsMatchedPoolClassFromTargetType, attr.GetType(), symClass, out Structuring.GeneralCodeInfo codeInfo))
                 {
-                    CodeLoader.OnGeneralCodeLoaderLookupHandler handler = callback as CodeLoader.OnGeneralCodeLoaderLookupHandler;
-                    Debugger.Assert(handler, "Invalid pool class lookup handler.");
-                    return handler.Invoke(symClass);
+                    return codeInfo;
                 }
             }
 
@@ -193,10 +139,9 @@ namespace GameEngine.Loader
         /// <returns>若存在给定类型对应的回调句柄则返回true，否则返回false</returns>
         private static bool IsPoolClassCallbackExist(Type targetType)
         {
-            foreach (Type classType in _classLoadCallbacks.Keys)
+            foreach (Type classType in _collector.RelevanceTypes)
             {
-                // 这里的类型为属性定义的类型，因此直接作相等比较即可
-                if (classType == targetType)
+                if (IsMatchedPoolClassFromTargetType(targetType, classType))
                 {
                     return true;
                 }
@@ -206,26 +151,18 @@ namespace GameEngine.Loader
         }
 
         /// <summary>
-        /// 通过指定的类型从对象池管理类的回调管理容器中查找对应的回调句柄实例
+        /// 检查目标类型与指定的对象类型是否匹配
         /// </summary>
-        /// <param name="targetType">对象类型</param>
-        /// <param name="callback">回调句柄</param>
-        /// <param name="container">句柄列表容器</param>
-        /// <returns>返回通过给定类型查找的回调句柄实例，若不存在则返回null</returns>
-        private static bool TryGetPoolClassCallbackForTargetContainer(Type targetType, out Delegate callback, IDictionary<Type, Delegate> container)
+        /// <param name="targetType">目标类型</param>
+        /// <param name="classType">对象类型</param>
+        /// <returns>若对象类型匹配则返回true，否则返回false</returns>
+        private static bool IsMatchedPoolClassFromTargetType(Type targetType, Type classType)
         {
-            foreach (KeyValuePair<Type, Delegate> kvp in container)
+            // 这里的类型为属性定义的类型，因此直接作相等比较即可
+            if (classType == targetType)
             {
-                // 这里的类型为属性定义的类型，因此直接作相等比较即可
-                if (kvp.Key == targetType)
-                {
-                    callback = kvp.Value;
-                    return true;
-                }
+                return true;
             }
-
-            // 未找到对应的回调句柄，也需要赋于空值
-            callback = null;
 
             return false;
         }
