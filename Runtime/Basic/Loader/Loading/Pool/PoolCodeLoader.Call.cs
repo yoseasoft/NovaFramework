@@ -80,12 +80,9 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLookupOfTarget(typeof(PoolSupportedAttribute))]
         private static Structuring.PoolCallCodeInfo LookupPoolCallCodeInfo(Symbolling.SymClass symClass)
         {
-            foreach (KeyValuePair<Type, Structuring.PoolCallCodeInfo> pair in _poolCallCodeInfos)
+            if (_poolCallCodeInfos.TryGetValue(symClass.ClassType, out Structuring.PoolCallCodeInfo codeInfo))
             {
-                if (pair.Value.ClassType == symClass.ClassType)
-                {
-                    return pair.Value;
-                }
+                return codeInfo;
             }
 
             return null;

@@ -280,12 +280,9 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLookupOfTarget(typeof(ExtendSupportedAttribute))]
         private static Structuring.ExtendCallCodeInfo LookupExtendCallCodeInfo(Symbolling.SymClass symClass)
         {
-            foreach (KeyValuePair<Type, Structuring.ExtendCallCodeInfo> pair in _extendCallCodeInfos)
+            if (_extendCallCodeInfos.TryGetValue(symClass.ClassType, out Structuring.ExtendCallCodeInfo codeInfo))
             {
-                if (pair.Value.ClassType == symClass.ClassType)
-                {
-                    return pair.Value;
-                }
+                return codeInfo;
             }
 
             return null;

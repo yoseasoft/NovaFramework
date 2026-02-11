@@ -80,12 +80,9 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLookupOfTarget(typeof(InjectAttribute))]
         private static Structuring.InjectCallCodeInfo LookupInjectCallCodeInfo(Symbolling.SymClass symClass)
         {
-            foreach (KeyValuePair<Type, Structuring.InjectCallCodeInfo> pair in _injectCallCodeInfos)
+            if (_injectCallCodeInfos.TryGetValue(symClass.ClassType, out Structuring.InjectCallCodeInfo codeInfo))
             {
-                if (pair.Value.ClassType == symClass.ClassType)
-                {
-                    return pair.Value;
-                }
+                return codeInfo;
             }
 
             return null;

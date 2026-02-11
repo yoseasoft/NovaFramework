@@ -150,12 +150,9 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLookupOfTarget(typeof(AspectAttribute))]
         private static Structuring.AspectCallCodeInfo LookupAspectCallCodeInfo(Symbolling.SymClass symCLass)
         {
-            foreach (KeyValuePair<Type, Structuring.AspectCallCodeInfo> pair in _aspectCallCodeInfos)
+            if (_aspectCallCodeInfos.TryGetValue(symCLass.ClassType, out Structuring.AspectCallCodeInfo codeInfo))
             {
-                if (pair.Value.ClassType == symCLass.ClassType)
-                {
-                    return pair.Value;
-                }
+                return codeInfo;
             }
 
             return null;

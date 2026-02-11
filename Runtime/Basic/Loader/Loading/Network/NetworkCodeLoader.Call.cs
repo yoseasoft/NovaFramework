@@ -169,12 +169,9 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLookupOfTarget(typeof(MessageSystemAttribute))]
         private static Structuring.MessageCallCodeInfo LookupMessageCallCodeInfo(Symbolling.SymClass symClass)
         {
-            foreach (KeyValuePair<Type, Structuring.MessageCallCodeInfo> pair in _messageCallCodeInfos)
+            if (_messageCallCodeInfos.TryGetValue(symClass.ClassType, out Structuring.MessageCallCodeInfo codeInfo))
             {
-                if (pair.Key == symClass.ClassType)
-                {
-                    return pair.Value;
-                }
+                return codeInfo;
             }
 
             return null;

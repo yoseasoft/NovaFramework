@@ -126,12 +126,9 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLookupOfTarget(typeof(NoticeSupportedOnViewAttribute))]
         private static Structuring.CViewNoticeCallCodeInfo LookupViewNoticeCallCodeInfo(Symbolling.SymClass symClass)
         {
-            foreach (KeyValuePair<Type, Structuring.CViewNoticeCallCodeInfo> pair in _viewNoticeCallCodeInfos)
+            if (_viewNoticeCallCodeInfos.TryGetValue(symClass.ClassType, out Structuring.CViewNoticeCallCodeInfo codeInfo))
             {
-                if (pair.Value.ClassType == symClass.ClassType)
-                {
-                    return pair.Value;
-                }
+                return codeInfo;
             }
 
             return null;

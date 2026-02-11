@@ -119,12 +119,9 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLookupOfTarget(typeof(ApiSystemAttribute))]
         private static Structuring.ApiCallCodeInfo LookupApiCallCodeInfo(Symbolling.SymClass symCLass)
         {
-            foreach (KeyValuePair<Type, Structuring.ApiCallCodeInfo> pair in _apiCallCodeInfos)
+            if (_apiCallCodeInfos.TryGetValue(symCLass.ClassType, out Structuring.ApiCallCodeInfo codeInfo))
             {
-                if (pair.Value.ClassType == symCLass.ClassType)
-                {
-                    return pair.Value;
-                }
+                return codeInfo;
             }
 
             return null;

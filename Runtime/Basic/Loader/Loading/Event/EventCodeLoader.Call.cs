@@ -173,12 +173,9 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLookupOfTarget(typeof(EventSystemAttribute))]
         private static Structuring.EventCallCodeInfo LookupEventCallCodeInfo(Symbolling.SymClass symClass)
         {
-            foreach (KeyValuePair<Type, Structuring.EventCallCodeInfo> pair in _eventCallCodeInfos)
+            if (_eventCallCodeInfos.TryGetValue(symClass.ClassType, out Structuring.EventCallCodeInfo codeInfo))
             {
-                if (pair.Value.ClassType == symClass.ClassType)
-                {
-                    return pair.Value;
-                }
+                return codeInfo;
             }
 
             return null;

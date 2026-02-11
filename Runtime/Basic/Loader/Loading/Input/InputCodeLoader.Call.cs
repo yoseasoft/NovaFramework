@@ -173,12 +173,9 @@ namespace GameEngine.Loader
         [OnCodeLoaderClassLookupOfTarget(typeof(InputSystemAttribute))]
         private static Structuring.InputCallCodeInfo LookupInputCallCodeInfo(Symbolling.SymClass symClass)
         {
-            foreach (KeyValuePair<Type, Structuring.InputCallCodeInfo> pair in _inputCallCodeInfos)
+            if (_inputCallCodeInfos.TryGetValue(symClass.ClassType, out Structuring.InputCallCodeInfo codeInfo))
             {
-                if (pair.Value.ClassType == symClass.ClassType)
-                {
-                    return pair.Value;
-                }
+                return codeInfo;
             }
 
             return null;
