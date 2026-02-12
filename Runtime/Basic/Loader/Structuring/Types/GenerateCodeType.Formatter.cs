@@ -213,6 +213,19 @@ namespace GameEngine.Loader
 
         #endregion
 
+        #region 数据同步模块相关的编码信息结构类型对象“ToString”封装
+
+        internal static string ToString(Structuring.ReplicateBeanCodeInfo targetObject)
+        {
+            NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
+            fsb.Append("ReplicateBean={");
+            fsb.Append("ClassType={%t},", targetObject.ClassType);
+            fsb.Append("}");
+            return fsb.ToString();
+        }
+
+        #endregion
+
         #region 原型对象模块相关的编码信息结构类型对象“ToString”封装
 
         private static string ToString(Structuring.BaseBeanCodeInfo targetObject)

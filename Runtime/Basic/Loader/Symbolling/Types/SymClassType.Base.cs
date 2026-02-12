@@ -25,7 +25,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace GameEngine.Loader.Symbolling
 {
@@ -63,7 +62,10 @@ namespace GameEngine.Loader.Symbolling
         /// </summary>
         public int AttributeCount => _attributeCount;
 
-        protected SymBase() { }
+        protected SymBase()
+        {
+            _uid = _Generator.GenSymbolId();
+        }
 
         ~SymBase()
         {

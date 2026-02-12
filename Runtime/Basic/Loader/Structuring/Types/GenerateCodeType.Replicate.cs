@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,21 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System;
+using System.Collections;
+using System.Collections.Generic;
 
-namespace GameEngine
+namespace GameEngine.Loader.Structuring
 {
     /// <summary>
-    /// 对象池回调管理类型注册函数的属性类型定义
+    /// 数据同步模块的编码结构信息对象类
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal sealed class OnPoolCallRegisterClassOfTargetAttribute : OnProcessRegisterClassOfTargetAttribute
-    {
-        public OnPoolCallRegisterClassOfTargetAttribute(Type classType) : base(classType) { }
-    }
+    internal abstract class ReplicateCodeInfo : GeneralCodeInfo
+    { }
 
     /// <summary>
-    /// 对象池回调管理类型注销函数的属性类型定义
+    /// 实体对象同步模块的编码结构信息
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal sealed class OnPoolCallUnregisterClassOfTargetAttribute : OnProcessUnregisterClassOfTargetAttribute
+    internal sealed class ReplicateBeanCodeInfo : ReplicateCodeInfo
     {
-        public OnPoolCallUnregisterClassOfTargetAttribute(Type classType) : base(classType) { }
     }
 }

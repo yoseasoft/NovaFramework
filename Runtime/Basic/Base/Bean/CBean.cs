@@ -104,7 +104,7 @@ namespace GameEngine
         /// </summary>
         public virtual void Initialize()
         {
-            _beanId = NovaEngine.Session.NextSession(1001);
+            _beanId = _Generator.GenBeanId();
             // _beanType = GetType();
         }
 

@@ -37,7 +37,7 @@ namespace GameEngine
     /// 注意：这里所谓的唯一键并非全局唯一，而是依托于一个目标元素，在不同元素类型的情况下唯一<br/>
     /// 一般使用目标元素类型即可达到目的，这里统一转成字符串考虑到后期通过配置控制的情况
     /// </summary>
-    internal static class _Generator
+    internal static partial class _Generator
     {
         /// <summary>
         /// 根据对象类型信息生成唯一的数字序列
