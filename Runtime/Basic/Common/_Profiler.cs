@@ -32,7 +32,7 @@ namespace GameEngine
     /// <br/>
     /// 注意：当正式版发布时，将忽略所有的统计信息
     /// </summary>
-    internal static class _Profiler
+    static class _Profiler
     {
         /// <summary>
         /// 统计模块启动函数

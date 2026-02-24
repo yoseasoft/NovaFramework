@@ -94,12 +94,6 @@ namespace NovaEngine
         /// </summary>
         public readonly static bool TutorialMode = false;
 
-        /// <summary>
-        /// 教程案例类型，通过该类型引导跳转到具体的示例代码环境<br/>
-        /// 在正式版本中，该类型将默认置空，仅在开发环境中有效
-        /// </summary>
-        public readonly static string TutorialSampleType = null;
-
         ///////////////////////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>

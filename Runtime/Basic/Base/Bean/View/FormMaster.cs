@@ -30,7 +30,7 @@ namespace GameEngine
     /// <summary>
     /// GUI的窗口对象的主控制器类
     /// </summary>
-    internal static class FormMaster
+    static class FormMaster
     {
         /// <summary>
         /// 工具类启动状态标识
@@ -42,7 +42,7 @@ namespace GameEngine
         /// <summary>
         /// 工具类启动函数
         /// </summary>
-        internal static void Startup()
+        public static void Startup()
         {
             _isOnStartup = true;
 
@@ -58,7 +58,7 @@ namespace GameEngine
         /// <summary>
         /// 工具类关闭函数
         /// </summary>
-        internal static void Shutdown()
+        public static void Shutdown()
         {
             // 此处添加该代码的原因与上面 Startup() 函数的添加原因一样
             if (null != _formManager)
@@ -72,7 +72,7 @@ namespace GameEngine
         /// <summary>
         /// 工具类刷新函数
         /// </summary>
-        internal static void Update()
+        public static void Update()
         {
             Debugger.Assert(_isOnStartup, "Invalid status.");
 
@@ -89,7 +89,7 @@ namespace GameEngine
         /// <param name="formType">窗口类型标识</param>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回窗口对象实例</returns>
-        internal static Form CreateForm(Type viewType)
+        public static Form CreateForm(Type viewType)
         {
             Debugger.Assert(_formManager, NovaEngine.ErrorText.NullObjectReference);
 

@@ -30,7 +30,7 @@ using System.Runtime.CompilerServices;
 namespace GameEngine
 {
     /// 用于框架内部的生成工具
-    internal static partial class _Generator
+    static partial class _Generator
     {
         /// <summary>
         /// 生成实体类型对象实例的唯一会话标识
