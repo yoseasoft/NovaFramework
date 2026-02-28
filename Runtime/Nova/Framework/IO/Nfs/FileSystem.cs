@@ -50,7 +50,7 @@ namespace NovaEngine.IO.FileSystem
         private readonly FileSystemStream _stream;
         private readonly Dictionary<string, int> _fileDatas;
         private readonly List<BlockData> _blockDatas;
-        private readonly MultiDictionary<int, int> _freeBlockIndexes;
+        private readonly MultiValueDictionary<int, int> _freeBlockIndexes;
         private readonly SortedDictionary<int, StringData> _stringDatas;
         private readonly Queue<KeyValuePair<int, StringData>> _freeStringDatas;
 
@@ -87,7 +87,7 @@ namespace NovaEngine.IO.FileSystem
             this._stream = stream;
             this._fileDatas = new Dictionary<string, int>(StringComparer.Ordinal);
             this._blockDatas = new List<BlockData>();
-            this._freeBlockIndexes = new MultiDictionary<int, int>();
+            this._freeBlockIndexes = new MultiValueDictionary<int, int>();
             this._stringDatas = new SortedDictionary<int, StringData>();
             this._freeStringDatas = new Queue<KeyValuePair<int, StringData>>();
 

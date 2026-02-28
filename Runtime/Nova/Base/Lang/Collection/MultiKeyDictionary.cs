@@ -35,7 +35,7 @@ namespace NovaEngine
     /// <typeparam name="TFirstKey">第一种键类型</typeparam>
     /// <typeparam name="TSecondKey">第二种键类型</typeparam>
     /// <typeparam name="TValue">字典的值类型</typeparam>
-    public class CompositeKeyMap<TFirstKey, TSecondKey, TValue> : IEnumerable<TValue>, IEnumerable
+    public class MultiKeyDictionary<TFirstKey, TSecondKey, TValue> : IEnumerable<TValue>, IEnumerable
     {
         private readonly DoubleMap<TFirstKey, TSecondKey> _keyMap;
         private readonly Dictionary<TFirstKey, TValue>  _firstKeyValueMap;
@@ -44,7 +44,7 @@ namespace NovaEngine
         /// <summary>
         /// 复合键映射字典的新实例构造函数
         /// </summary>
-        public CompositeKeyMap()
+        public MultiKeyDictionary()
         {
             _keyMap = new DoubleMap<TFirstKey, TSecondKey>();
             _firstKeyValueMap = new Dictionary<TFirstKey, TValue>();
@@ -54,7 +54,7 @@ namespace NovaEngine
         /// <summary>
         /// 复合键映射字典的新实例析构函数
         /// </summary>
-        ~CompositeKeyMap()
+        ~MultiKeyDictionary()
         {
             Clear();
         }

@@ -34,7 +34,7 @@ namespace NovaEngine
     /// <typeparam name="T">事件类型</typeparam>
     internal sealed partial class EventPool<T> where T : EventArgs
     {
-        private readonly MultiDictionary<int, EventHandler<T>> _eventHandlers;
+        private readonly MultiValueDictionary<int, EventHandler<T>> _eventHandlers;
         private readonly Queue<Event> _events;
         private readonly Dictionary<object, LinkedListNode<EventHandler<T>>> _cachedNodes;
         private readonly Dictionary<object, LinkedListNode<EventHandler<T>>> _tempNodes;
@@ -48,7 +48,7 @@ namespace NovaEngine
         /// <param name="mode">事件池模式</param>
         public EventPool(AllowHandlerType mode)
         {
-            _eventHandlers = new MultiDictionary<int, EventHandler<T>>();
+            _eventHandlers = new MultiValueDictionary<int, EventHandler<T>>();
             _events = new Queue<Event>();
             _cachedNodes = new Dictionary<object, LinkedListNode<EventHandler<T>>>();
             _tempNodes = new Dictionary<object, LinkedListNode<EventHandler<T>>>();

@@ -34,7 +34,7 @@ namespace NovaEngine
     /// </summary>
     /// <typeparam name="TKey">指定多值字典的主键类型</typeparam>
     /// <typeparam name="TValue">指定多值字典的值类型</typeparam>
-    public sealed class MultiDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, DoubleLinkedList<TValue>>>, IEnumerable
+    public sealed class MultiValueDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, DoubleLinkedList<TValue>>>, IEnumerable
     {
         private readonly CacheLinkedList<TValue> _linkedList;
         private readonly Dictionary<TKey, DoubleLinkedList<TValue>> _dictionary;
@@ -42,7 +42,7 @@ namespace NovaEngine
         /// <summary>
         /// 多值字典的新实例构造函数
         /// </summary>
-        public MultiDictionary()
+        public MultiValueDictionary()
         {
             _linkedList = new CacheLinkedList<TValue>();
             _dictionary = new Dictionary<TKey, DoubleLinkedList<TValue>>();
@@ -51,7 +51,7 @@ namespace NovaEngine
         /// <summary>
         /// 多值字典的新实例析构函数
         /// </summary>
-        ~MultiDictionary()
+        ~MultiValueDictionary()
         {
             Clear();
         }
