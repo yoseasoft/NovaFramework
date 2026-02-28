@@ -30,7 +30,7 @@ namespace GameEngine
     /// <summary>
     /// 引擎转发调度管理器类
     /// </summary>
-    internal static class EngineDispatcher
+    static class EngineDispatcher
     {
         /// <summary>
         /// 应用程序响应回调句柄函数委托实例

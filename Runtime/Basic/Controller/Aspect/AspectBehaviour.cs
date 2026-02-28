@@ -28,7 +28,7 @@ namespace GameEngine
     /// <summary>
     /// 切面行为辅助工具类，针对引擎所有回调接口的切面行为进行统一配置管理
     /// </summary>
-    internal static class AspectBehaviour
+    static class AspectBehaviour
     {
         /// <summary>
         /// 原型对象自动注入操作处理节点的默认行为类型

@@ -33,7 +33,7 @@ namespace GameEngine
     /// <summary>
     /// 游戏世界总控管理器对象类
     /// </summary>
-    internal static class EngineLauncher
+    static class EngineLauncher
     {
         /// <summary>
         /// 总控管理器运行状态

@@ -27,7 +27,7 @@ namespace GameEngine.Context.Configuring
     /// <summary>
     /// 应用配置数据的节点标签命名
     /// </summary>
-    internal static class ApplicationConfigureNodeName
+    static class ApplicationConfigureNodeName
     {
         public const string Comment = "#comment";
         public const string File = "file";
@@ -38,7 +38,7 @@ namespace GameEngine.Context.Configuring
     /// <summary>
     /// 应用配置数据的语法标签定义
     /// </summary>
-    internal static class ApplicationConfigureAttributeName
+    static class ApplicationConfigureAttributeName
     {
         public const string Url = "url";
         public const string Include = "include";

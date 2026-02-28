@@ -34,7 +34,7 @@ namespace GameEngine
     /// <summary>
     /// 游戏层配置封装管理类
     /// </summary>
-    internal static class EngineConfigure
+    static class EngineConfigure
     {
         /// <summary>
         /// 初始化平台环境及相关接口

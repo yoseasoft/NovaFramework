@@ -30,7 +30,7 @@ namespace GameEngine
     /// <summary>
     /// 引擎通用参数定义类
     /// </summary>
-    internal static class EngineDefine
+    static class EngineDefine
     {
         /// <summary>
         /// 核心作用域的命名空间列表

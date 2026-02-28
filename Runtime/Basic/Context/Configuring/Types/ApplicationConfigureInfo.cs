@@ -30,7 +30,7 @@ namespace GameEngine.Context.Configuring
     /// <summary>
     /// 应用配置信息的对象类，用于存放加载的应用配置信息，并提供对外访问操作接口
     /// </summary>
-    internal static class ApplicationConfigureInfo
+    static class ApplicationConfigureInfo
     {
         /// <summary>
         /// 热加载模块包列表
