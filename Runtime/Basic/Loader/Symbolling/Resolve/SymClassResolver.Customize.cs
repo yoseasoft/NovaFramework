@@ -2,7 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine.Loader.Symbolling
 {
@@ -79,12 +80,25 @@ namespace GameEngine.Loader.Symbolling
 
         /// <summary>
         /// 给目标符号类绑定指定的特性标签
+        /// 内部调用的为<see cref="AutobindFeatureTypeForTargetSymbol(Type, Type)"/>方法
+        /// </summary>
+        /// <typeparam name="T">特性类型</typeparam>
+        /// <param name="targetType">符号类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void AutobindFeatureTypeForTargetSymbol<T>(Type targetType) where T : Attribute
+        {
+            AutobindFeatureTypeForTargetSymbol(targetType, typeof(T));
+        }
+
+        /// <summary>
+        /// 给目标符号类绑定指定的特性标签
         /// 与<see cref="AutobindFeatureTypeForTargetSymbol(SymClass, Type)"/>接口的区别在于，
         /// 该接口是针对目标符号的类型进行特性绑定的，此类型并不一定是特定的符号类，也可能是某个抽象父类或接口。
         /// 当传入类型不是一个可实例化的类型时，将对该类型的所有子类或实现类进行特性绑定
         /// </summary>
         /// <param name="targetType">符号类型</param>
         /// <param name="featureType">特性类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void AutobindFeatureTypeForTargetSymbol(Type targetType, Type featureType)
         {
             // 通过目标类型，获取到对应的符号类实例
@@ -97,8 +111,20 @@ namespace GameEngine.Loader.Symbolling
         /// <summary>
         /// 给目标符号类绑定指定的特性标签
         /// </summary>
+        /// <typeparam name="T">特性类型</typeparam>
+        /// <param name="symClass">符号实例</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void AutobindFeatureTypeForTargetSymbol<T>(SymClass symClass) where T : Attribute
+        {
+            AutobindFeatureTypeForTargetSymbol(symClass, typeof(T));
+        }
+
+        /// <summary>
+        /// 给目标符号类绑定指定的特性标签
+        /// </summary>
         /// <param name="symClass">符号实例</param>
         /// <param name="featureType">特性类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void AutobindFeatureTypeForTargetSymbol(SymClass symClass, Type featureType)
         {
             Debugger.Log(LogGroupTag.CodeLoader, "对象类型解析：目标符号类型‘{%s}’动态绑定新的特性‘{%t}’成功。", symClass.ClassName, featureType);

@@ -73,6 +73,32 @@ namespace System.Customize.Extension
         }
 
         /// <summary>
+        /// 检查当前对象类型是否不能对指定类型进行赋值
+        /// </summary>
+        /// <param name="self">源对象类型</param>
+        /// <param name="type">目标对象类型</param>
+        /// <returns>不能赋值给目标对象类型则返回true，否则返回false</returns>
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNot(this Type self, Type type)
+        {
+            return !self.IsAssignableTo(type);
+        }
+
+        /// <summary>
+        /// 检查当前对象类型是否不能对指定类型进行赋值
+        /// </summary>
+        /// <typeparam name="T">目标对象类型</typeparam>
+        /// <param name="self">源对象类型</param>
+        /// <returns>不能赋值给目标对象类型则返回true，否则返回false</returns>
+        [Preserve]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNot<T>(this Type self)
+        {
+            return !self.IsAssignableTo(typeof(T));
+        }
+
+        /// <summary>
         /// 获取当前对象类型所在程序集的缩略名
         /// </summary>
         /// <param name="self">对象类型</param>

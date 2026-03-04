@@ -2,7 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -73,6 +73,17 @@ namespace GameEngine.Loader.Symbolling
         }
 
         #region 标记对象的属性列表相关访问接口函数
+
+        /// <summary>
+        /// 检测标记的属性列表中是否包含指定类型的属性实例
+        /// </summary>
+        /// <typeparam name="T">属性类型</typeparam>
+        /// <param name="inherit">继承模式</param>
+        /// <returns>若属性列表中存在给定类型的实例则返回true，否则返回false</returns>
+        public bool HasAttribute<T>(bool inherit = false) where T : Attribute
+        {
+            return HasAttribute(typeof(T), inherit);
+        }
 
         /// <summary>
         /// 检测标记的属性列表中是否包含指定类型的属性实例

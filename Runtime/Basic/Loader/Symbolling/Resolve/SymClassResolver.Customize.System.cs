@@ -2,7 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Customize.Extension;
 
 namespace GameEngine.Loader.Symbolling
 {
@@ -110,26 +111,26 @@ namespace GameEngine.Loader.Symbolling
                         on_aspect_supported = true;
                     }
 
-                    else if (method.HasAttribute(typeof(InputResponseBindingOfTargetAttribute), true))
+                    else if (method.HasAttribute<InputResponseBindingOfTargetAttribute>(true))
                     {
                         // 激活扩展的目标类型的输入转发特性
-                        AutobindFeatureTypeForTargetSymbol(method.ExtensionParameterType, typeof(InputActivationAttribute));
+                        AutobindFeatureTypeForTargetSymbol<InputActivationAttribute>(method.ExtensionParameterType);
 
                         on_extend_supported = true;
                     }
 
-                    else if (method.HasAttribute(typeof(EventSubscribeBindingOfTargetAttribute), true))
+                    else if (method.HasAttribute<EventSubscribeBindingOfTargetAttribute>(true))
                     {
                         // 激活扩展的目标类型的事件转发特性
-                        AutobindFeatureTypeForTargetSymbol(method.ExtensionParameterType, typeof(EventActivationAttribute));
+                        AutobindFeatureTypeForTargetSymbol<EventActivationAttribute>(method.ExtensionParameterType);
 
                         on_extend_supported = true;
                     }
 
-                    else if (method.HasAttribute(typeof(MessageListenerBindingOfTargetAttribute), true))
+                    else if (method.HasAttribute<MessageListenerBindingOfTargetAttribute>(true))
                     {
                         // 激活扩展的目标类型的消息转发特性
-                        AutobindFeatureTypeForTargetSymbol(method.ExtensionParameterType, typeof(MessageActivationAttribute));
+                        AutobindFeatureTypeForTargetSymbol<MessageActivationAttribute>(method.ExtensionParameterType);
 
                         on_extend_supported = true;
                     }
@@ -143,61 +144,61 @@ namespace GameEngine.Loader.Symbolling
                 {
                     if (!on_input_system)
                     {
-                        on_input_system |= method.HasAttribute(typeof(OnInputDispatchCallAttribute), true);
+                        on_input_system |= method.HasAttribute<OnInputDispatchCallAttribute>(true);
                     }
 
                     if (!on_event_system)
                     {
-                        on_event_system |= method.HasAttribute(typeof(OnEventDispatchCallAttribute), true);
+                        on_event_system |= method.HasAttribute<OnEventDispatchCallAttribute>(true);
                     }
 
                     if (!on_message_system)
                     {
-                        on_message_system |= method.HasAttribute(typeof(OnMessageDispatchCallAttribute), true);
+                        on_message_system |= method.HasAttribute<OnMessageDispatchCallAttribute>(true);
                     }
                 }
 
                 if (!on_api_system)
                 {
-                    on_api_system |= method.HasAttribute(typeof(OnApiDispatchCallAttribute), true);
-                    // on_api_system |= method.HasAttribute(typeof(ApiFunctionBindingOfTargetAttribute), true);
+                    on_api_system |= method.HasAttribute<OnApiDispatchCallAttribute>(true);
+                    // on_api_system |= method.HasAttribute<ApiFunctionBindingOfTargetAttribute>(true);
                 }
             }
 
             if (on_aspect_supported)
             {
                 // 装配切面支持
-                AutobindFeatureTypeForTargetSymbol(symClass, typeof(AspectAttribute));
+                AutobindFeatureTypeForTargetSymbol<AspectAttribute>(symClass);
             }
 
             if (on_extend_supported)
             {
                 // 装配扩展支持
-                AutobindFeatureTypeForTargetSymbol(symClass, typeof(ExtendSupportedAttribute));
+                AutobindFeatureTypeForTargetSymbol<ExtendSupportedAttribute>(symClass);
             }
 
             if (on_input_system)
             {
                 // 装配输入系统
-                AutobindFeatureTypeForTargetSymbol(symClass, typeof(InputSystemAttribute));
+                AutobindFeatureTypeForTargetSymbol<InputSystemAttribute>(symClass);
             }
 
             if (on_event_system)
             {
                 // 装配事件系统
-                AutobindFeatureTypeForTargetSymbol(symClass, typeof(EventSystemAttribute));
+                AutobindFeatureTypeForTargetSymbol<EventSystemAttribute>(symClass);
             }
 
             if (on_message_system)
             {
                 // 装配消息系统
-                AutobindFeatureTypeForTargetSymbol(symClass, typeof(MessageSystemAttribute));
+                AutobindFeatureTypeForTargetSymbol<MessageSystemAttribute>(symClass);
             }
 
             if (on_api_system)
             {
                 // 装配API调度系统
-                AutobindFeatureTypeForTargetSymbol(symClass, typeof(ApiSystemAttribute));
+                AutobindFeatureTypeForTargetSymbol<ApiSystemAttribute>(symClass);
             }
         }
 
@@ -214,7 +215,7 @@ namespace GameEngine.Loader.Symbolling
             }
 
             // 服务于‘CEntity’的扩展函数解析
-            if (typeof(CEntity).IsAssignableFrom(symMethod.ExtensionParameterType))
+            if (symMethod.ExtensionParameterType.Is<CEntity>())
             {
                 AutoFillEntityExtensionMethodFeatures(symClass, symMethod);
             }

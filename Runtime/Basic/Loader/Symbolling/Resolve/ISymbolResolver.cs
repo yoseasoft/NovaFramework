@@ -43,7 +43,7 @@ namespace GameEngine.Loader.Symbolling
         /// </summary>
         /// <param name="targetType">对象类型</param>
         /// <returns>若目标对象类型匹配则返回true，否则返回false</returns>
-        bool Matches(Type targetType);
+        bool IsMatched(Type targetType);
 
         /// <summary>
         /// 指定符号对象类的解析函数

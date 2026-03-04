@@ -38,7 +38,7 @@ namespace NovaEngine.ObjectPool
         /// <typeparam name="T"></typeparam>
         private sealed class ObjectPool<T> : ObjectPoolBase, IObjectPool<T> where T : ObjectBase
         {
-            private readonly MultiValueDictionary<string, Object<T>> _objects;
+            private readonly MultivalueDictionary<string, Object<T>> _objects;
             private readonly Dictionary<object, Object<T>> _objectMap;
             private readonly ReleaseObjectFilterCallback<T> _defaultReleaseObjectFilterCallback;
             private readonly IList<T> _cachedCanReleaseObjects;
@@ -153,7 +153,7 @@ namespace NovaEngine.ObjectPool
             public ObjectPool(string name, bool allowMultiSpawn, float autoReleaseInterval, int capacity, float expireTime, int priority)
                 : base(name)
             {
-                _objects = new MultiValueDictionary<string, Object<T>>();
+                _objects = new MultivalueDictionary<string, Object<T>>();
                 _objectMap = new Dictionary<object, Object<T>>();
                 _defaultReleaseObjectFilterCallback = DefaultReleaseObjectFilterCallback;
                 _cachedCanReleaseObjects = new List<T>();
