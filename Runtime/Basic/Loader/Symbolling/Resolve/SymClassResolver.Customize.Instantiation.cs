@@ -2,7 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using System.Runtime.CompilerServices;
 
 namespace GameEngine.Loader.Symbolling
@@ -61,11 +62,15 @@ namespace GameEngine.Loader.Symbolling
         private static void AutoFillInstantiationClassFeatures(SymClass symClass)
         {
             // 服务于‘CBean’的扩展函数解析
+            if (symClass.ClassType.Is<IBean>())
+            {
+                AutoFillBeanObjectClassFeatures(symClass);
+            }
 
             for (int n = 0; n < _instantiationClassResolvers.Count; ++n)
             {
                 ISymbolResolverOfInstantiationClass resolver = _instantiationClassResolvers[n];
-                if (resolver.Matches(symClass.ClassType))
+                if (resolver.IsMatched(symClass.ClassType))
                 {
                     resolver.Resolve(symClass);
                 }
@@ -91,7 +96,7 @@ namespace GameEngine.Loader.Symbolling
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AddInstantiationClassResolver(Type classType)
         {
-            if (false == typeof(ISymbolResolverOfInstantiationClass).IsAssignableFrom(classType))
+            if (classType.IsNot<ISymbolResolverOfInstantiationClass>())
             {
                 Debugger.Error(LogGroupTag.CodeLoader, "The symbol resolver '{%t}' must be inherited from 'ISymbolResolverOfInstantiationClass' interface.", classType);
                 return;
@@ -133,7 +138,7 @@ namespace GameEngine.Loader.Symbolling
         /// <param name="classType">对象类型</param>
         public static void RemoveInstantiationClassResolver(Type classType)
         {
-            if (false == typeof(ISymbolResolverOfInstantiationClass).IsAssignableFrom(classType))
+            if (classType.IsNot<ISymbolResolverOfInstantiationClass>())
             {
                 Debugger.Error(LogGroupTag.CodeLoader, "The symbol resolver '{%t}' must be inherited from 'ISymbolResolverOfInstantiationClass' interface.", classType);
                 return;

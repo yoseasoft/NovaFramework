@@ -26,7 +26,7 @@
 namespace GameEngine.Loader
 {
     /// 代码加载器的辅助工具类
-    public static partial class CodeLoaderUtils
+    static partial class CodeLoaderUtils
     {
         private static string ToString(Configuring.BaseConfigureInfo targetObject)
         {
@@ -36,7 +36,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        internal static string ToString(Configuring.BeanConfigureInfo targetObject)
+        public static string ToString(Configuring.BeanConfigureInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Bean={");

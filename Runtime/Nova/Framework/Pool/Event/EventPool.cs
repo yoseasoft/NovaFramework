@@ -164,7 +164,7 @@ namespace NovaEngine
                 throw new CFrameworkException("Event handler is invalid.");
             }
 
-            if (false == _eventHandlers.Contains(id))
+            if (false == _eventHandlers.ContainsKey(id))
             {
                 _eventHandlers.Add(id, handler);
             }

@@ -26,7 +26,7 @@
 namespace GameEngine.Loader
 {
     /// 代码加载器的辅助工具类
-    public static partial class CodeLoaderUtils
+    static partial class CodeLoaderUtils
     {
         public static string ToString(Symbolling.SymClass targetObject)
         {

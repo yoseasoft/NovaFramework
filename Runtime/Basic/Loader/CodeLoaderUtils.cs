@@ -29,7 +29,7 @@ namespace GameEngine.Loader
     /// 针对分析处理对象的格式化辅助工具类。
     /// 您可以通过该类提供的方式，查看加载对象内部具体的数据信息。
     /// </summary>
-    public static partial class CodeLoaderUtils
+    static partial class CodeLoaderUtils
     {
     }
 }

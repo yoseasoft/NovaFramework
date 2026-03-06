@@ -69,7 +69,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="key">要检查的主键</param>
         /// <returns>若多值字典中包含指定主键则返回true，否则返回false</returns>
-        public bool Contains(TKey key)
+        public bool ContainsKey(TKey key)
         {
             return _dictionary.ContainsKey(key);
         }
@@ -109,8 +109,7 @@ namespace NovaEngine
         /// <param name="value">指定的值</param>
         public void Add(TKey key, TValue value)
         {
-            DoubleLinkedList<TValue> range = default(DoubleLinkedList<TValue>);
-            if (_dictionary.TryGetValue(key, out range))
+            if (_dictionary.TryGetValue(key, out DoubleLinkedList<TValue> range))
             {
                 _linkedList.AddBefore(range.Terminal, value);
             }

@@ -2,7 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 namespace GameEngine.Loader
 {
     /// 代码加载器的辅助工具类
-    public static partial class CodeLoaderUtils
+    static partial class CodeLoaderUtils
     {
         private static string ToString(Structuring.MethodTypeCodeInfo targetObject)
         {
@@ -39,7 +39,7 @@ namespace GameEngine.Loader
 
         #region 输入回调模块相关的编码信息结构类型对象“ToString”封装
 
-        internal static string ToString(Structuring.InputCallCodeInfo targetObject)
+        public static string ToString(Structuring.InputCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("InputCall={");
@@ -70,7 +70,7 @@ namespace GameEngine.Loader
 
         #region 事件回调模块相关的编码信息结构类型对象“ToString”封装
 
-        internal static string ToString(Structuring.EventCallCodeInfo targetObject)
+        public static string ToString(Structuring.EventCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("EventCall={");
@@ -101,7 +101,7 @@ namespace GameEngine.Loader
 
         #region 消息回调模块相关的编码信息结构类型对象“ToString”封装
 
-        internal static string ToString(Structuring.NetworkMessageCodeInfo targetObject)
+        public static string ToString(Structuring.NetworkMessageCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("NetworkMessage={");
@@ -112,7 +112,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        internal static string ToString(Structuring.MessageCallCodeInfo targetObject)
+        public static string ToString(Structuring.MessageCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("MessageCall={");
@@ -143,7 +143,7 @@ namespace GameEngine.Loader
 
         #region API回调模块相关的编码信息结构类型对象“ToString”封装
 
-        internal static string ToString(Structuring.ApiCallCodeInfo targetObject)
+        public static string ToString(Structuring.ApiCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("ApiCall={");
@@ -165,7 +165,7 @@ namespace GameEngine.Loader
 
         #region 切面回调模块相关的编码信息结构类型对象“ToString”封装
 
-        internal static string ToString(Structuring.AspectCallCodeInfo targetObject)
+        public static string ToString(Structuring.AspectCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("AspectCall={");
@@ -188,7 +188,7 @@ namespace GameEngine.Loader
 
         #region 注入回调模块相关的编码信息结构类型对象“ToString”封装
 
-        internal static string ToString(Structuring.InjectCallCodeInfo targetObject)
+        public static string ToString(Structuring.InjectCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("InjectCall={");
@@ -202,7 +202,7 @@ namespace GameEngine.Loader
 
         #region 缓存回调模块相关的编码信息结构类型对象“ToString”封装
 
-        internal static string ToString(Structuring.PoolCallCodeInfo targetObject)
+        public static string ToString(Structuring.PoolCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("PoolCall={");
@@ -215,11 +215,25 @@ namespace GameEngine.Loader
 
         #region 数据同步模块相关的编码信息结构类型对象“ToString”封装
 
-        internal static string ToString(Structuring.ReplicateBeanCodeInfo targetObject)
+        public static string ToString(Structuring.ReplicateBeanCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("ReplicateBean={");
             fsb.Append("ClassType={%t},", targetObject.ClassType);
+            fsb.Append("SymbolId={%d},", targetObject.SymbolId);
+            fsb.Append("Members={%s},", targetObject.Members, ToString);
+            fsb.Append("}");
+            return fsb.ToString();
+        }
+
+        private static string ToString(Structuring.ReplicateBeanMemberCodeInfo targetObject)
+        {
+            NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
+            fsb.Append("ReplicateBeanMember={");
+            fsb.Append("SymbolId={%d},", targetObject.SymbolId);
+            fsb.Append("MemberName={%s},", targetObject.MemberName);
+            fsb.Append("IsProperty={%b},", targetObject.IsProperty);
+            fsb.Append("DataLabel={%s},", targetObject.DataLabel);
             fsb.Append("}");
             return fsb.ToString();
         }
@@ -245,7 +259,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        internal static string ToString(Structuring.ObjectCodeInfo targetObject)
+        public static string ToString(Structuring.ObjectCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Object={");
@@ -256,7 +270,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        internal static string ToString(Structuring.ComponentCodeInfo targetObject)
+        public static string ToString(Structuring.ComponentCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Component={");
@@ -275,7 +289,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        internal static string ToString(Structuring.ActorCodeInfo targetObject)
+        public static string ToString(Structuring.ActorCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Actor={");
@@ -284,7 +298,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        internal static string ToString(Structuring.SceneCodeInfo targetObject)
+        public static string ToString(Structuring.SceneCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("Scene={");
@@ -294,7 +308,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        internal static string ToString(Structuring.ViewCodeInfo targetObject)
+        public static string ToString(Structuring.ViewCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("View={");
@@ -310,7 +324,7 @@ namespace GameEngine.Loader
 
         #region 原型对象模块通知接口相关的编码信息结构类型对象“ToString”封装
 
-        internal static string ToString(Structuring.CViewNoticeCallCodeInfo targetObject)
+        public static string ToString(Structuring.CViewNoticeCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("CViewNoticeCall={");
@@ -333,7 +347,7 @@ namespace GameEngine.Loader
 
         #region 扩展定义模块相关的编码信息结构类型对象“ToString”封装
 
-        internal static string ToString(Structuring.ExtendCallCodeInfo targetObject)
+        public static string ToString(Structuring.ExtendCallCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("ExtendCall={");

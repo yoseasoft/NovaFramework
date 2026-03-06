@@ -98,7 +98,7 @@ namespace NovaEngine
         /// <returns>若复合字典中包含指定主键则返回true，否则返回false</returns>
         public bool ContainsKey(TFirstKey key)
         {
-            return _keyMap.ContainsKey(key);
+            return _firstKeyValueMap.ContainsKey(key);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace NovaEngine
         /// <returns>若复合字典中包含指定主键则返回true，否则返回false</returns>
         public bool ContainsKey(TSecondKey key)
         {
-            return _keyMap.ContainsValue(key);
+            return _secondKeyValueMap.ContainsKey(key);
         }
 
         /// <summary>

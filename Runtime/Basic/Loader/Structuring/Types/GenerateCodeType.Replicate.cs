@@ -22,6 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -30,13 +31,102 @@ namespace GameEngine.Loader.Structuring
     /// <summary>
     /// 数据同步模块的编码结构信息对象类
     /// </summary>
-    internal abstract class ReplicateCodeInfo : GeneralCodeInfo
+    abstract class ReplicateCodeInfo : GeneralCodeInfo
     { }
 
     /// <summary>
     /// 实体对象同步模块的编码结构信息
     /// </summary>
-    internal sealed class ReplicateBeanCodeInfo : ReplicateCodeInfo
+    sealed class ReplicateBeanCodeInfo : ReplicateCodeInfo
     {
+        /// <summary>
+        /// 实体对象成员数据同步结构的列表容器
+        /// </summary>
+        private IList<ReplicateBeanMemberCodeInfo> _members;
+
+        /// <summary>
+        /// 符号对象类型的唯一标识
+        /// </summary>
+        public int SymbolId { get; internal set; }
+        /// <summary>
+        /// 实体对象的数据标签
+        /// </summary>
+        public string DataLabel { get; internal set; }
+
+        /// <summary>
+        /// 获取当前成员数据同步结构信息容器
+        /// </summary>
+        public IList<ReplicateBeanMemberCodeInfo> Members => _members;
+
+        /// <summary>
+        /// 新增指定成员的数据同步相关的结构信息
+        /// </summary>
+        /// <param name="codeInfo">成员的结构信息</param>
+        public void AddMember(ReplicateBeanMemberCodeInfo codeInfo)
+        {
+            if (null == _members)
+            {
+                _members = new List<ReplicateBeanMemberCodeInfo>();
+            }
+
+            _members.Add(codeInfo);
+        }
+
+        /// <summary>
+        /// 移除所有成员的数据同步相关的结构信息
+        /// </summary>
+        public void RemoveAllMembers()
+        {
+            _members?.Clear();
+            _members = null;
+        }
+
+        /// <summary>
+        /// 获取当前成员数据同步的结构信息数量
+        /// </summary>
+        /// <returns>返回成员数据同步的结构信息数量</returns>
+        public int GetMemberCount()
+        {
+            return _members?.Count ?? 0;
+        }
+
+        /// <summary>
+        /// 获取当前成员数据同步的结构信息容器中指索引对应的实例
+        /// </summary>
+        /// <param name="index">索引值</param>
+        /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
+        public ReplicateBeanMemberCodeInfo GetMember(int index)
+        {
+            if (null == _members || index < 0 || index >= _members.Count)
+            {
+                Debugger.Warn(LogGroupTag.CodeLoader, "当前传入的索引值‘{%d}’超出了目标成员类型数据列表容器的可读范围，访问列表元素失败！", index);
+                return null;
+            }
+
+            return _members[index];
+        }
+    }
+
+    /// <summary>
+    /// 实体对象同步模块成员相关的编码结构信息
+    /// </summary>
+    sealed class ReplicateBeanMemberCodeInfo
+    {
+        /// <summary>
+        /// 符号对象成员的唯一标识
+        /// </summary>
+        public int SymbolId { get; internal set; }
+        /// <summary>
+        /// 需要数据同步的成员名称
+        /// </summary>
+        public string MemberName { get; internal set; }
+        /// <summary>
+        /// 成员是否为属性的状态标识
+        /// </summary>
+        public bool IsProperty { get; internal set; }
+        /// <summary>
+        /// 成员对应的数据标签
+        /// </summary>
+        public string DataLabel { get; internal set; }
     }
 }
