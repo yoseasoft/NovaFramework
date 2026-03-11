@@ -86,6 +86,11 @@ namespace GameEngine
         protected IList<CComponent> _componentMessageDispatchList;
 
         /// <summary>
+        /// 实体对象内部组件实例的消息分发列表
+        /// </summary>
+        protected IList<CComponent> _componentReplicateDispatchList;
+
+        /// <summary>
         /// 实体对象内部随机因子管理容器
         /// </summary>
         protected IDictionary<string, Random> _randoms;
@@ -122,6 +127,8 @@ namespace GameEngine
             _componentEventDispatchList = new List<CComponent>();
             // 组件消息分发列表初始化
             _componentMessageDispatchList = new List<CComponent>();
+            // 组件同步分发列表初始化
+            _componentReplicateDispatchList = new List<CComponent>();
 
             // 随机因子管理容器初始化
             _randoms = new Dictionary<string, Random>();
@@ -155,6 +162,7 @@ namespace GameEngine
             _componentInputDispatchList = null;
             _componentEventDispatchList = null;
             _componentMessageDispatchList = null;
+            _componentReplicateDispatchList = null;
 
             base.Cleanup();
         }
@@ -800,6 +808,83 @@ namespace GameEngine
 
         #endregion
 
+        #region 实体对象同步传输相关操作函数合集
+
+        /// <summary>
+        /// 实体对象的同步通讯的监听回调函数<br/>
+        /// 该函数针对同步转发接口的标准实现，禁止子类重写该函数<br/>
+        /// 若子类需要根据需要自行解析输入数据，可以通过重写<see cref="GameEngine.CEntity.OnReplicate(string, ReplicateAnnounceType)"/>实现同步的自定义处理逻辑
+        /// </summary>
+        /// <param name="tags">数据标签</param>
+        /// <param name="announceType">数据播报类型</param>
+        public override sealed void OnReplicateDispatchForTag(string tags, ReplicateAnnounceType announceType)
+        {
+            base.OnReplicateDispatchForTag(tags, announceType);
+
+            for (int n = 0; null != _componentReplicateDispatchList && n < _componentReplicateDispatchList.Count; ++n)
+            {
+                CComponent component = _componentReplicateDispatchList[n];
+                if (component.IsOnAwakingStatus())
+                {
+                    component.OnReplicateDispatchForTag(tags, announceType);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 检测当前实体对象是否连接了目标数据标签
+        /// </summary>
+        /// <param name="tags">数据标签</param>
+        /// <param name="announceType">数据播报类型</param>
+        /// <returns>若连接了给定数据标签则返回true，否则返回false</returns>
+        protected internal override sealed bool IsReplicateCommunicatedOfTargetTag(string tags, ReplicateAnnounceType announceType)
+        {
+            if (base.IsReplicateCommunicatedOfTargetTag(tags, announceType))
+            {
+                return true;
+            }
+
+            for (int n = 0; n < _componentReplicateDispatchList.Count; ++n)
+            {
+                CComponent component = _componentInputDispatchList[n];
+                if (component.IsReplicateCommunicatedOfTargetTag(tags, announceType))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 当前实体对象的组件实例进行的同步传输行为通知
+        /// </summary>
+        /// <param name="tags">数据标签</param>
+        /// <param name="announceType">数据播报类型</param>
+        /// <returns>若同步传输成功则返回true，否则返回false</returns>
+        protected internal bool AddReplicateCommunicateFromComponent(string tags, ReplicateAnnounceType announceType)
+        {
+            return AddReplicateCommunicate(tags, announceType);
+        }
+
+        /// <summary>
+        /// 当前实体对象的组件实例进行的取消同步传输行为通知
+        /// </summary>
+        /// <param name="tags">数据标签</param>
+        /// <param name="announceType">数据播报类型</param>
+        protected internal void RemoveReplicateCommunicateFromComponent(string tags, ReplicateAnnounceType announceType)
+        {
+            if (IsReplicateCommunicatedOfTargetTag(tags, announceType))
+            {
+                return;
+            }
+
+            // 实体对象没有任何通讯回调，移除该同步的连接
+            RemoveReplicateCommunicate(tags, announceType);
+        }
+
+        #endregion
+
         #region 实体对象组件相关操作函数合集
 
         /// <summary>
@@ -1034,6 +1119,13 @@ namespace GameEngine
                 _componentMessageDispatchList.Add(component);
             }
 
+            // 如果组件激活了同步分发接口，则添加到同步分发队列中
+            // if (component.BeanType.Is<IReplicateActivation>())
+            if (component.HasFeatureType(typeof(ReplicateActivationAttribute), true))
+            {
+                _componentReplicateDispatchList.Add(component);
+            }
+
             _Profiler.CallStat(Profiler.Statistics.StatCode.ComponentAdd, component);
 
             // 启动组件实例
@@ -1206,6 +1298,7 @@ namespace GameEngine
             _componentInputDispatchList.Remove(component);
             _componentEventDispatchList.Remove(component);
             _componentMessageDispatchList.Remove(component);
+            _componentReplicateDispatchList.Remove(component);
             _components.Remove(name);
 
             // 清理组件实例

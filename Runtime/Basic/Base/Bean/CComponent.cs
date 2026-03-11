@@ -494,5 +494,38 @@ namespace GameEngine
         }
 
         #endregion
+
+        #region 组件对象同步传输相关操作函数合集
+
+        /// <summary>
+        /// 用户自定义的同步处理函数，您可以通过重写该函数处理自定义同步行为
+        /// </summary>
+        /// <param name="tags">数据标签</param>
+        /// <param name="announceType">数据播报类型</param>
+        protected override void OnReplicate(string tags, ReplicateAnnounceType announceType) { }
+
+        /// <summary>
+        /// 针对指定数据标签新增同步传输的后处理程序
+        /// </summary>
+        /// <param name="tags">数据标签</param>
+        /// <param name="announceType">数据播报类型</param>
+        /// <returns>返回后处理的操作结果</returns>
+        protected override bool OnReplicateCommunicateAddedActionPostProcess(string tags, ReplicateAnnounceType announceType)
+        {
+            return Entity.AddReplicateCommunicateFromComponent(tags, announceType);
+        }
+
+        /// <summary>
+        /// 针对指定输入编码移除同步传输的后处理程序
+        /// </summary>
+        /// <param name="tags">数据标签</param>
+        /// <param name="announceType">数据播报类型</param>
+        protected override void OnReplicateCommunicateRemovedActionPostProcess(string tags, ReplicateAnnounceType announceType)
+        {
+            // 移除实体中对应的同步传输
+            Entity?.RemoveReplicateCommunicateFromComponent(tags, announceType);
+        }
+
+        #endregion
     }
 }

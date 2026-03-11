@@ -35,13 +35,13 @@ namespace GameEngine
         /// </summary>
         /// <param name="tags">数据标签</param>
         /// <param name="announceType">数据播报类型</param>
-        // public delegate void ReplicateDispatchingListener(string tags, ReplicateAnnounceType announceType);
+        // public delegate void ReplicateDispatchingListenerForTag(string tags, ReplicateAnnounceType announceType);
 
         /// <summary>
         /// 接收监听指定标签的数据的回调接口函数
         /// </summary>
         /// <param name="tags">数据标签</param>
         /// <param name="announceType">数据播报类型</param>
-        void OnReplicateDispatch(string tags, ReplicateAnnounceType announceType);
+        void OnReplicateDispatchForTag(string tags, ReplicateAnnounceType announceType);
     }
 }

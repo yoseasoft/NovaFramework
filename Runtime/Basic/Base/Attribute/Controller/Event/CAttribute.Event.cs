@@ -32,7 +32,7 @@ namespace GameEngine
     /// 输入系统基于对象分发的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    internal sealed class EventActivationAttribute : Attribute
+    public sealed class EventActivationAttribute : Attribute
     {
         public EventActivationAttribute() { }
     }

@@ -42,6 +42,7 @@ namespace GameEngine
             OnInputResponseCallInitialize();
             OnEventSubscribeCallInitialize();
             OnMessageListenerCallInitialize();
+            OnReplicateCommunicateCallInitialize();
         }
 
         /// <summary>
@@ -53,6 +54,7 @@ namespace GameEngine
             OnInputResponseCallCleanup();
             OnEventSubscribeCallCleanup();
             OnMessageListenerCallCleanup();
+            OnReplicateCommunicateCallCleanup();
         }
 
         /// <summary>
@@ -65,6 +67,7 @@ namespace GameEngine
             RemoveAllAutomaticallyInputResponses();
             UnsubscribeAllAutomaticallyEvents();
             RemoveAllAutomaticallyMessageListeners();
+            RemoveAllAutomaticallyReplicateCommunicates();
         }
 
         /// <summary>

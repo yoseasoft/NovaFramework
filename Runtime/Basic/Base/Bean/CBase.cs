@@ -33,7 +33,7 @@ namespace GameEngine
     /// 基础对象抽象类，对需要进行对象定义的场景提供一个通用的基类
     /// </summary>
     public abstract partial class CBase : CBean,
-            NovaEngine.IReference, NovaEngine.ILaunchable, IInputDispatch, IEventDispatch, IMessageDispatch
+            NovaEngine.IReference, NovaEngine.ILaunchable, IInputDispatch, IEventDispatch, IMessageDispatch, IReplicateDispatch
     {
         /// <summary>
         /// 对象当前生命周期类型

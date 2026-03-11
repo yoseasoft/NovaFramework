@@ -42,26 +42,26 @@ namespace GameEngine
 
         #region 为静态回调函数构建委托句柄的构造函数
 
-        public ReplicateCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo)
-            : this(fullname, targetType, methodInfo, false)
+        public ReplicateCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, string tags, ReplicateAnnounceType announceType)
+            : this(fullname, targetType, methodInfo, tags, announceType, false)
         { }
 
-        public ReplicateCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, bool automatically)
-            : this(null, fullname, targetType, methodInfo, automatically)
+        public ReplicateCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, string tags, ReplicateAnnounceType announceType, bool automatically)
+            : this(null, fullname, targetType, methodInfo, tags, announceType, automatically)
         { }
 
         #endregion
 
         #region 为普通回调函数构建委托句柄的构造函数
 
-        public ReplicateCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo)
-            : this(targetObject, fullname, targetType, methodInfo, false)
+        public ReplicateCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, string tags, ReplicateAnnounceType announceType)
+            : this(targetObject, fullname, targetType, methodInfo, tags, announceType, false)
         { }
 
-        public ReplicateCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, bool automatically)
+        public ReplicateCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, string tags, ReplicateAnnounceType announceType, bool automatically)
             : base(targetObject, fullname, targetType, methodInfo, automatically)
         {
-            _announceTypes = new Dictionary<string, ReplicateAnnounceType>();
+            _announceTypes = new Dictionary<string, ReplicateAnnounceType>() { { tags, announceType }, };
         }
 
         #endregion
@@ -116,6 +116,8 @@ namespace GameEngine
         {
             if (_announceTypes.ContainsKey(tags))
             {
+                Debugger.Warn(LogGroupTag.Module, "The replicate tag '{%s}' was already exists, multiple settings will incorporate announce values.", tags);
+
                 _announceTypes[tags] |= announceType;
             }
             else
