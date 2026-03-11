@@ -136,7 +136,7 @@ namespace GameEngine.Loader.Symbolling
                         on_extend_supported = true;
                     }
 
-                    else if (method.HasAttribute<ReplicateAnnounceBindingOfTargetAttribute>(true))
+                    else if (method.HasAttribute<ReplicateCommunicateBindingOfTargetAttribute>(true))
                     {
                         // 激活扩展的目标类型的同步转发特性
                         AutobindFeatureTypeForTargetSymbol<ReplicateActivationAttribute>(method.ExtensionParameterType);

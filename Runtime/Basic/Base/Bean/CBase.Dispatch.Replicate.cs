@@ -90,7 +90,7 @@ namespace GameEngine
 
         #endregion
 
-        #region 基础对象同步播报相关回调函数的操作接口定义
+        #region 基础对象同步传输相关回调函数的操作接口定义
 
         /// <summary>
         /// 基础对象的同步通讯的监听回调函数<br/>

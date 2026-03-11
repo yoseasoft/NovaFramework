@@ -103,21 +103,21 @@ namespace GameEngine
     }
 
     /// <summary>
-    /// 同步播报绑定函数的属性类型定义
+    /// 同步传输绑定函数的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public sealed class ReplicateAnnounceBindingOfTargetAttribute : Attribute
+    public sealed class ReplicateCommunicateBindingOfTargetAttribute : Attribute
     {
         /// <summary>
-        /// 播报绑定的数据标签链条
+        /// 同步绑定的数据标签链条
         /// </summary>
         private readonly string _tags;
         /// <summary>
-        /// 播报绑定的分发类型
+        /// 同步绑定的分发类型
         /// </summary>
         private readonly ReplicateAnnounceType _announceType;
         /// <summary>
-        /// 播报绑定的观察行为类型
+        /// 同步绑定的观察行为类型
         /// </summary>
         private readonly AspectBehaviourType _behaviourType;
 
@@ -125,15 +125,15 @@ namespace GameEngine
         public ReplicateAnnounceType AnnounceType => _announceType;
         public AspectBehaviourType BehaviourType => _behaviourType;
 
-        public ReplicateAnnounceBindingOfTargetAttribute(string tags)
+        public ReplicateCommunicateBindingOfTargetAttribute(string tags)
             : this(tags, ReplicateAnnounceType.All)
         { }
 
-        public ReplicateAnnounceBindingOfTargetAttribute(string tags, ReplicateAnnounceType announceType)
+        public ReplicateCommunicateBindingOfTargetAttribute(string tags, ReplicateAnnounceType announceType)
             : this(tags, announceType, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
         { }
 
-        public ReplicateAnnounceBindingOfTargetAttribute(string tags, ReplicateAnnounceType announceType, AspectBehaviourType behaviourType) : base()
+        public ReplicateCommunicateBindingOfTargetAttribute(string tags, ReplicateAnnounceType announceType, AspectBehaviourType behaviourType) : base()
         {
             _tags = tags;
             _announceType = announceType;
@@ -151,7 +151,7 @@ namespace GameEngine
             if (obj is null || this.GetType() != obj.GetType()) return false;
 
             // 3. 转换为当前类型后，比较所有关键字段的值
-            ReplicateAnnounceBindingOfTargetAttribute other = (ReplicateAnnounceBindingOfTargetAttribute) obj;
+            ReplicateCommunicateBindingOfTargetAttribute other = (ReplicateCommunicateBindingOfTargetAttribute) obj;
             return _tags.EqualsIgnoreCase(other._tags) &&
                    _announceType == other._announceType; // && _behaviourType == other._behaviourType;
         }

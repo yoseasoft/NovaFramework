@@ -31,7 +31,7 @@ namespace GameEngine
     public interface IReplicateDispatch : IListener
     {
         /// <summary>
-        /// 对象内部同步播报的监听回调接口，通过该类型函数对指定标签数据进行监听处理
+        /// 对象内部同步传输的监听回调接口，通过该类型函数对指定标签数据进行监听处理
         /// </summary>
         /// <param name="tags">数据标签</param>
         /// <param name="announceType">数据播报类型</param>

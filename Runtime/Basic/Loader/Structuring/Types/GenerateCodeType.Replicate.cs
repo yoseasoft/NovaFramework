@@ -131,7 +131,7 @@ namespace GameEngine.Loader.Structuring
     }
 
     /// <summary>
-    /// 同步播报模块的编码结构信息对象类
+    /// 同步传输模块的编码结构信息对象类
     /// </summary>
     internal sealed class ReplicateCallCodeInfo : ReplicateCodeInfo
     {

@@ -118,7 +118,7 @@ namespace GameEngine
 
         #endregion
 
-        #region 同步播报相关的服务接口函数
+        #region 同步传输相关的服务接口函数
 
         /// <summary>
         /// 发送指定的数据标签到分发调度中等待派发

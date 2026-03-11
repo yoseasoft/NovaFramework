@@ -89,7 +89,7 @@ namespace GameEngine
                 // 校验失败
                 if (false == verificated)
                 {
-                    Debugger.Error(LogGroupTag.Controller, "目标对象类型‘{%t}’的‘{%s}’函数判定为非法格式的同步播报绑定回调函数，添加回调绑定操作失败！", _targetType, _fullname);
+                    Debugger.Error(LogGroupTag.Controller, "目标对象类型‘{%t}’的‘{%s}’函数判定为非法格式的同步传输绑定回调函数，添加回调绑定操作失败！", _targetType, _fullname);
                     return true;
                 }
             }
