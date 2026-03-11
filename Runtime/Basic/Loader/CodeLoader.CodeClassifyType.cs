@@ -2,7 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -60,14 +60,19 @@ namespace GameEngine.Loader
             Bean = 11,
 
             /// <summary>
+            /// 同步类型
+            /// </summary>
+            Replicate = 12,
+
+            /// <summary>
             /// 扩展类型
             /// </summary>
-            Extend = 12,
+            Extend = 13,
 
             /// <summary>
             /// 通知类型
             /// </summary>
-            Notice = 13,
+            Notice = 14,
 
             /// <summary>
             /// 切面类型

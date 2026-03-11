@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,29 +22,38 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace GameEngine
+using UnityEngine.Scripting;
+
+namespace GameEngine.Loader
 {
     /// <summary>
-    /// 消息监听接口类，用于定义接收监听消息的函数接口
+    /// 数据同步的绑定回调管理服务类，对数据同步模块的回调接口绑定/注销操作进行统一定义管理
     /// </summary>
-    public interface IMessageDispatch : IListener
+    internal static class ReplicateBindingProcessor
     {
         /// <summary>
-        /// 对象内部消息通知的监听回调接口，通过该类型函数对指定消息进行监听处理
+        /// 绑定对象池管理类相关回调函数的管理容器
         /// </summary>
-        // public delegate void MessageDispatchingListenerForNullParameter();
+        private readonly static BindingObjectCallbackCollector _collector = new BindingObjectCallbackCollector();
 
         /// <summary>
-        /// 对象内部消息通知的监听回调接口，通过该类型函数对指定类型消息进行监听处理
+        /// 初始化针对绑定类声明的全部回调接口
         /// </summary>
-        /// <param name="message">消息对象实例</param>
-        // public delegate void MessageDispatchingListener(object message);
+        [Preserve]
+        [CodeLoader.OnBindingProcessorInit]
+        private static void InitAllCodeBindingCallbacks()
+        {
+            _collector.OnInitializeContext<OnReplicateBeanRegisterClassOfTargetAttribute, OnReplicateBeanUnregisterClassOfTargetAttribute>(typeof(ReplicateController));
+        }
 
         /// <summary>
-        /// 接收监听指定类型的消息的回调接口函数
+        /// 清理针对绑定类声明的全部回调接口
         /// </summary>
-        /// <param name="opcode">协议操作码</param>
-        /// <param name="message">消息对象实例</param>
-        void OnMessageDispatch(int opcode, object message);
+        [Preserve]
+        [CodeLoader.OnBindingProcessorCleanup]
+        private static void CleanupAllCodeBindingCallbacks()
+        {
+            _collector.OnCleanupContext();
+        }
     }
 }

@@ -27,68 +27,29 @@ using System;
 namespace GameEngine
 {
     /// <summary>
-    /// 对象的数据同步功能支持的属性类型定义
+    /// 对象的数据同步配置功能的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public sealed class ReplicateSupportedAttribute : Attribute
+    public sealed class ReplicateConfigureAttribute : Attribute
     {
-        public ReplicateSupportedAttribute() : base() { }
+        public ReplicateConfigureAttribute() : base() { }
     }
 
     /// <summary>
-    /// 数据同步的目标实体对象启用标记的属性类型定义
+    /// 数据同步系统基于对象分发的属性类型定义
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public sealed class OnReplicateObjectAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public sealed class ReplicateActivationAttribute : Attribute
     {
-        /// <summary>
-        /// 同步数据的关联标签
-        /// </summary>
-        private readonly string _tag;
-
-        /// <summary>
-        /// 获取同步数据的关联标签
-        /// </summary>
-        public string Tag => _tag;
-
-        public OnReplicateObjectAttribute() : this(null) { }
-
-        public OnReplicateObjectAttribute(string tag) : base()
-        {
-            _tag = tag;
-        }
+        public ReplicateActivationAttribute() : base() { }
     }
 
     /// <summary>
-    /// 数据同步的目标实体对象唯一标识的属性类型定义
+    /// 数据同步系统基于全局分发的属性类型定义
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class OnReplicateIdAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public sealed class ReplicateSystemAttribute : Attribute
     {
-        public OnReplicateIdAttribute() : base() { }
-    }
-
-    /// <summary>
-    /// 数据同步的目标对象字段启用标记的属性类型定义
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class OnReplicateFieldAttribute : Attribute
-    {
-        /// <summary>
-        /// 同步数据的关联标签
-        /// </summary>
-        private readonly string _tag;
-
-        /// <summary>
-        /// 获取同步数据的关联标签
-        /// </summary>
-        public string Tag => _tag;
-
-        public OnReplicateFieldAttribute() : this(null) { }
-
-        public OnReplicateFieldAttribute(string tag) : base()
-        {
-            _tag = tag;
-        }
+        public ReplicateSystemAttribute() : base() { }
     }
 }

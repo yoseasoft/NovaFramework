@@ -3,7 +3,7 @@
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,31 @@ namespace GameEngine.Loader
     internal static partial class BeanCodeLoader
     {
         /// <summary>
-        /// 引用对象指定类型的属性解析接口
+        /// 搜索对象嵌套类型所使用的绑定标识
+        /// </summary>
+        const BindingFlags SearchBindingFlagsOfClassNestedTypes = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+
+        /// <summary>
+        /// 基础对象的对象类型解析接口
+        /// </summary>
+        /// <param name="symClass">对象标记类型</param>
+        /// <param name="codeInfo">对象结构信息</param>
+        private static void LoadBaseClass(Symbolling.SymClass symClass, Structuring.BaseBeanCodeInfo codeInfo)
+        {
+            Type targetType = symClass.ClassType;
+            Type[] nestedTypes = targetType.GetNestedTypes(SearchBindingFlagsOfClassNestedTypes);
+            if (null != nestedTypes && nestedTypes.Length > 0)
+            {
+                for (int n = 0; n < nestedTypes.Length; ++n)
+                {
+                    Type nestedType = nestedTypes[n];
+                    // do anything ...
+                }
+            }
+        }
+
+        /// <summary>
+        /// 基础对象指定类型的属性解析接口
         /// </summary>
         /// <param name="symClass">对象标记类型</param>
         /// <param name="codeInfo">对象结构信息</param>
@@ -44,7 +68,7 @@ namespace GameEngine.Loader
         }
 
         /// <summary>
-        /// 引用对象指定函数的属性解析接口
+        /// 基础对象指定函数的属性解析接口
         /// </summary>
         /// <param name="symClass">对象标记类型</param>
         /// <param name="codeInfo">对象结构信息</param>

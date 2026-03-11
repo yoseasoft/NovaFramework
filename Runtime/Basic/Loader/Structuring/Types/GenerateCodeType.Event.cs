@@ -35,7 +35,7 @@ namespace GameEngine.Loader.Structuring
     /// <summary>
     /// 事件调用模块的编码结构信息对象类
     /// </summary>
-    internal class EventCallCodeInfo : EventCodeInfo
+    internal sealed class EventCallCodeInfo : EventCodeInfo
     {
         /// <summary>
         /// 事件调用模块的数据引用对象
@@ -47,15 +47,15 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 新增指定函数的回调句柄相关的结构信息
         /// </summary>
-        /// <param name="invoke">函数的结构信息</param>
-        public void AddMethodType(EventCallMethodTypeCodeInfo invoke)
+        /// <param name="codeInfo">函数的结构信息</param>
+        public void AddMethodType(EventCallMethodTypeCodeInfo codeInfo)
         {
             if (null == _methodTypes)
             {
                 _methodTypes = new MethodTypeList<EventCallMethodTypeCodeInfo>();
             }
 
-            _methodTypes.Add(invoke);
+            _methodTypes.Add(codeInfo);
         }
 
         /// <summary>

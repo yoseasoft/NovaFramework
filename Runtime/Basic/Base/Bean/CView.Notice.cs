@@ -148,8 +148,7 @@ namespace GameEngine
             if (false == _noticeCalls.TryGetValue(noticeType, out IList<string> calls))
             {
                 // 创建回调列表
-                calls = new List<string>();
-                calls.Add(fullname);
+                calls = new List<string>() { fullname };
 
                 _noticeCalls.Add(noticeType, calls);
 
@@ -158,7 +157,7 @@ namespace GameEngine
 
             if (calls.Contains(fullname))
             {
-                Debugger.Warn("The '{%t}' instance's notice '{%i}' was already add same process by name '{%s}', repeat do it failed.",
+                Debugger.Warn(LogGroupTag.Bean, "The '{%t}' instance's notice '{%i}' was already add same process by name '{%s}', repeat do it failed.",
                         BeanType, noticeType, fullname);
                 return false;
             }

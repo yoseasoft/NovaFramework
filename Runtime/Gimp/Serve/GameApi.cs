@@ -118,6 +118,30 @@ namespace GameEngine
 
         #endregion
 
+        #region 同步播报相关的服务接口函数
+
+        /// <summary>
+        /// 发送指定的数据标签到分发调度中等待派发
+        /// </summary>
+        /// <param name="tags">数据标签</param>
+        /// <param name="announceType">数据播报类型</param>
+        public static void Post(string tags, ReplicateAnnounceType announceType)
+        {
+            ReplicateController.Instance.Post(tags, announceType);
+        }
+
+        /// <summary>
+        /// 立即推送指定的数据标签到分发调度中
+        /// </summary>
+        /// <param name="tags">数据标签</param>
+        /// <param name="announceType">数据播报类型</param>
+        public static void Push(string tags, ReplicateAnnounceType announceType)
+        {
+            ReplicateController.Instance.Push(tags, announceType);
+        }
+
+        #endregion
+
         #region 编程接口相关的服务接口函数
 
         /// <summary>

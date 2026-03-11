@@ -44,6 +44,7 @@ namespace GameEngine.Loader.Symbolling
             bool on_input_system = false;
             bool on_event_system = false;
             bool on_message_system = false;
+            bool on_replicate_system = false;
             bool on_api_system = false;
 
             IList<SymMethod> methods = symClass.GetAllMethods();
@@ -135,6 +136,14 @@ namespace GameEngine.Loader.Symbolling
                         on_extend_supported = true;
                     }
 
+                    else if (method.HasAttribute<ReplicateAnnounceBindingOfTargetAttribute>(true))
+                    {
+                        // 激活扩展的目标类型的同步转发特性
+                        AutobindFeatureTypeForTargetSymbol<ReplicateActivationAttribute>(method.ExtensionParameterType);
+
+                        on_extend_supported = true;
+                    }
+
                     else
                     {
                         AutoFillOtherExtensionMethodFeatures(symClass, method);
@@ -155,6 +164,11 @@ namespace GameEngine.Loader.Symbolling
                     if (!on_message_system)
                     {
                         on_message_system |= method.HasAttribute<OnMessageDispatchCallAttribute>(true);
+                    }
+
+                    if (!on_replicate_system)
+                    {
+                        on_replicate_system |= method.HasAttribute<OnReplicateDispatchCallAttribute>(true);
                     }
                 }
 
@@ -193,6 +207,12 @@ namespace GameEngine.Loader.Symbolling
             {
                 // 装配消息系统
                 AutobindFeatureTypeForTargetSymbol<MessageSystemAttribute>(symClass);
+            }
+
+            if (on_replicate_system)
+            {
+                // 装配同步系统
+                AutobindFeatureTypeForTargetSymbol<ReplicateSystemAttribute>(symClass);
             }
 
             if (on_api_system)

@@ -1,8 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyright (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -23,63 +23,25 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System;
-
 namespace GameEngine
 {
-    /// 控制器的管理对象类
-    public static partial class ControllerManagement
+    /// <summary>
+    /// 同步监听接口类，用于定义接收监听同步的函数接口
+    /// </summary>
+    public interface IReplicateDispatch : IListener
     {
         /// <summary>
-        /// 控制器的模块分类类型的枚举定义
+        /// 对象内部同步播报的监听回调接口，通过该类型函数对指定标签数据进行监听处理
         /// </summary>
-        [Flags]
-        private enum ModuleType : uint
-        {
-            /// <summary>
-            /// 未知类型
-            /// </summary>
-            Unknown = 0x00,
+        /// <param name="tags">数据标签</param>
+        /// <param name="announceType">数据播报类型</param>
+        // public delegate void ReplicateDispatchingListener(string tags, ReplicateAnnounceType announceType);
 
-            /// <summary>
-            /// 实体类型
-            /// </summary>
-            Bean = 0x02,
-
-            /// <summary>
-            /// 同步类型
-            /// </summary>
-            Replicate = 0x04,
-
-            /// <summary>
-            /// 切面类型
-            /// </summary>
-            Aspect = 0x08,
-
-            /// <summary>
-            /// 注入类型
-            /// </summary>
-            Inject = 0x10,
-
-            /// <summary>
-            /// 事件类型
-            /// </summary>
-            Event = 0x20,
-
-            /// <summary>
-            /// 对象池类型
-            /// </summary>
-            Pool = 0x0100,
-
-            /// <summary>
-            /// 接口类型
-            /// </summary>
-            Api = 0x0200,
-
-            /// <summary>
-            /// 状态类型
-            /// </summary>
-            Hfsm = 0x0400,
-        }
+        /// <summary>
+        /// 接收监听指定标签的数据的回调接口函数
+        /// </summary>
+        /// <param name="tags">数据标签</param>
+        /// <param name="announceType">数据播报类型</param>
+        void OnReplicateDispatch(string tags, ReplicateAnnounceType announceType);
     }
 }

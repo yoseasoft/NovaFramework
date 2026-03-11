@@ -159,8 +159,7 @@ namespace GameEngine
         {
             if (/*_operationType == 0 ||*/ (_operationType & operationType) == 0)
             {
-                // ignore
-                return;
+                return; // ignore
             }
 
             if (_isNullParameterType)
@@ -186,8 +185,7 @@ namespace GameEngine
 
             if (/*_operationType == 0 ||*/ (_operationType & operationType) == 0)
             {
-                // ignore
-                return;
+                return; // ignore
             }
 
             if (_isNullParameterType)

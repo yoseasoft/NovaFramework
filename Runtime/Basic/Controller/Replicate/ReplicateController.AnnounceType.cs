@@ -1,8 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyright (C) 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -27,59 +26,46 @@ using System;
 
 namespace GameEngine
 {
-    /// 控制器的管理对象类
-    public static partial class ControllerManagement
+    /// <summary>
+    /// 数据同步播报方式的枚举类型定义
+    /// </summary>
+    [Flags]
+    public enum ReplicateAnnounceType : byte
     {
         /// <summary>
-        /// 控制器的模块分类类型的枚举定义
+        /// 空白
         /// </summary>
-        [Flags]
-        private enum ModuleType : uint
-        {
-            /// <summary>
-            /// 未知类型
-            /// </summary>
-            Unknown = 0x00,
+        None = 0,
 
-            /// <summary>
-            /// 实体类型
-            /// </summary>
-            Bean = 0x02,
+        /// <summary>
+        /// 创建类型
+        /// </summary>
+        Created = 0x01,
+        /// <summary>
+        /// 删除类型
+        /// </summary>
+        Deleted = 0x02,
+        /// <summary>
+        /// 修改类型
+        /// </summary>
+        Changed = 0x04,
 
-            /// <summary>
-            /// 同步类型
-            /// </summary>
-            Replicate = 0x04,
+        /// <summary>
+        /// 创建和删除类型
+        /// </summary>
+        CreatedAndDeleted = Created | Deleted,
+        /// <summary>
+        /// 创建和修改类型
+        /// </summary>
+        CreatedAndChanged = Created | Changed,
+        /// <summary>
+        /// 删除和修改类型
+        /// </summary>
+        DeletedAndChanged = Deleted | Changed,
 
-            /// <summary>
-            /// 切面类型
-            /// </summary>
-            Aspect = 0x08,
-
-            /// <summary>
-            /// 注入类型
-            /// </summary>
-            Inject = 0x10,
-
-            /// <summary>
-            /// 事件类型
-            /// </summary>
-            Event = 0x20,
-
-            /// <summary>
-            /// 对象池类型
-            /// </summary>
-            Pool = 0x0100,
-
-            /// <summary>
-            /// 接口类型
-            /// </summary>
-            Api = 0x0200,
-
-            /// <summary>
-            /// 状态类型
-            /// </summary>
-            Hfsm = 0x0400,
-        }
+        /// <summary>
+        /// 创建、删除和修改类型
+        /// </summary>
+        All = Created | Deleted | Changed,
     }
 }

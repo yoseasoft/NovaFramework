@@ -238,6 +238,33 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
+        public static string ToString(Structuring.ReplicateCallCodeInfo targetObject)
+        {
+            NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
+            fsb.Append("ReplicateCall={");
+            fsb.Append("ClassType={%t},", targetObject.ClassType);
+            fsb.Append("MethodTypes={{{%s}}},", targetObject.MethodTypes?.Values(), ToString);
+            fsb.Append("}");
+            return fsb.ToString();
+        }
+
+        private static string ToString(Structuring.ReplicateCallMethodTypeCodeInfo targetObject)
+        {
+            NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
+            fsb.Append(ToString((Structuring.MethodTypeCodeInfo) targetObject));
+            fsb.Append("Tags={%s},", targetObject.Tags);
+            fsb.Append("AnnounceType={%i},", targetObject.AnnounceType);
+            return fsb.ToString();
+        }
+
+        private static string ToString(Structuring.ReplicateAnnouncingMethodTypeCodeInfo targetObject)
+        {
+            NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
+            fsb.Append(ToString((Structuring.ReplicateCallMethodTypeCodeInfo) targetObject));
+            fsb.Append("BehaviourType={%i},", targetObject.BehaviourType);
+            return fsb.ToString();
+        }
+
         #endregion
 
         #region 原型对象模块相关的编码信息结构类型对象“ToString”封装

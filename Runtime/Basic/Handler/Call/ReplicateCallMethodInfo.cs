@@ -1,0 +1,176 @@
+/// -------------------------------------------------------------------------------
+/// GameEngine Framework
+///
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to deal
+/// in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in
+/// all copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+/// THE SOFTWARE.
+/// -------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
+namespace GameEngine
+{
+    /// <summary>
+    /// 同步调用函数信息封装对象类
+    /// </summary>
+    internal sealed class ReplicateCallMethodInfo : BaseCallMethodInfo
+    {
+        /// <summary>
+        /// 同步回调绑定的数据标签
+        /// </summary>
+        private readonly IDictionary<string, ReplicateAnnounceType> _announceTypes;
+
+        #region 为静态回调函数构建委托句柄的构造函数
+
+        public ReplicateCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo)
+            : this(fullname, targetType, methodInfo, false)
+        { }
+
+        public ReplicateCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, bool automatically)
+            : this(null, fullname, targetType, methodInfo, automatically)
+        { }
+
+        #endregion
+
+        #region 为普通回调函数构建委托句柄的构造函数
+
+        public ReplicateCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo)
+            : this(targetObject, fullname, targetType, methodInfo, false)
+        { }
+
+        public ReplicateCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, bool automatically)
+            : base(targetObject, fullname, targetType, methodInfo, automatically)
+        {
+            _announceTypes = new Dictionary<string, ReplicateAnnounceType>();
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 检测目标函数是否为无效的格式类型
+        /// </summary>
+        /// <param name="methodInfo">函数对象</param>
+        /// <returns>若为无效格式类型则返回true，否则返回false</returns>
+        protected override sealed bool CheckFunctionFormatWasInvalidType(MethodInfo methodInfo)
+        {
+            // 函数格式校验
+            if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+            {
+                bool verificated = false;
+                if (NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))
+                {
+                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCallWithBeanExtensionType(methodInfo);
+                }
+                else
+                {
+                    verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCall(methodInfo);
+                }
+
+                // 校验失败
+                if (false == verificated)
+                {
+                    Debugger.Error(LogGroupTag.Controller, "目标对象类型‘{%t}’的‘{%s}’函数判定为非法格式的同步播报绑定回调函数，添加回调绑定操作失败！", _targetType, _fullname);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 检测目标函数是否符合当前调用类型的无参格式要求
+        /// </summary>
+        /// <param name="methodInfo">函数对象</param>
+        /// <returns>若符合无参格式则返回true，否则返回false</returns>
+        protected override sealed bool CheckFunctionFormatWasNullParameterType(MethodInfo methodInfo)
+        {
+            return Loader.Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCallWithNullParameterType(methodInfo);
+        }
+
+        /// <summary>
+        /// 注册指定数据标签的播报类型
+        /// </summary>
+        /// <param name="tags">数据标签</param>
+        /// <param name="announceType">数据播报类型</param>
+        public void RegisterAnnounceType(string tags, ReplicateAnnounceType announceType)
+        {
+            if (_announceTypes.ContainsKey(tags))
+            {
+                _announceTypes[tags] |= announceType;
+            }
+            else
+            {
+                _announceTypes.Add(tags, announceType);
+            }
+        }
+
+        /// <summary>
+        /// 同步回调的调度函数
+        /// </summary>
+        /// <param name="tags">数据标签</param>
+        /// <param name="announceType">数据播报类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Invoke(string tags, ReplicateAnnounceType announceType)
+        {
+            if ((_announceTypes[tags] & announceType) == 0)
+            {
+                return; // ignore
+            }
+
+            if (_isNullParameterType)
+            {
+                _callback.DynamicInvoke();
+            }
+            else
+            {
+                _callback.DynamicInvoke(tags, announceType);
+            }
+        }
+
+        /// <summary>
+        /// 同步回调的调度函数
+        /// </summary>
+        /// <param name="targetObject">对象实例</param>
+        /// <param name="tags">数据标签</param>
+        /// <param name="announceType">数据播报类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Invoke(IBean targetObject, string tags, ReplicateAnnounceType announceType)
+        {
+            Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
+
+            if ((_announceTypes[tags] & announceType) == 0)
+            {
+                return; // ignore
+            }
+
+            if (_isNullParameterType)
+            {
+                _callback.DynamicInvoke(targetObject);
+            }
+            else
+            {
+                _callback.DynamicInvoke(targetObject, tags, announceType);
+            }
+        }
+    }
+}

@@ -32,9 +32,8 @@ namespace GameEngine
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     internal sealed class MessageActivationAttribute : Attribute
     {
-        public MessageActivationAttribute()
-        {
-        }
+        public MessageActivationAttribute() : base()
+        { }
     }
 
     /// <summary>
@@ -43,9 +42,8 @@ namespace GameEngine
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public sealed class MessageSystemAttribute : Attribute
     {
-        public MessageSystemAttribute()
-        {
-        }
+        public MessageSystemAttribute() : base()
+        { }
     }
 
     /// <summary>
