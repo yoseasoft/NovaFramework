@@ -43,9 +43,14 @@ namespace GameEngine.Loader.Structuring
         private MethodTypeList<EventSubscribingMethodTypeCodeInfo> _eventSubscribingMethodTypes;
 
         /// <summary>
-        /// 消息绑定类的函数结构信息管理容器
+        /// 消息监听类的函数结构信息管理容器
         /// </summary>
-        private MethodTypeList<MessageBindingMethodTypeCodeInfo> _messageBindingMethodTypes;
+        private MethodTypeList<MessageListeningMethodTypeCodeInfo> _messageListeningMethodTypes;
+
+        /// <summary>
+        /// 同步传输类的函数结构信息管理容器
+        /// </summary>
+        private MethodTypeList<ReplicateCommunicatingMethodTypeCodeInfo> _replicateCommunicatingMethodTypes;
 
         /// <summary>
         /// 获取输入响应函数列表
@@ -56,9 +61,13 @@ namespace GameEngine.Loader.Structuring
         /// </summary>
         internal MethodTypeList<EventSubscribingMethodTypeCodeInfo> EventSubscribingMethodTypes => _eventSubscribingMethodTypes;
         /// <summary>
-        /// 获取消息绑定函数列表
+        /// 获取消息监听函数列表
         /// </summary>
-        internal MethodTypeList<MessageBindingMethodTypeCodeInfo> MessageBindingMethodTypes => _messageBindingMethodTypes;
+        internal MethodTypeList<MessageListeningMethodTypeCodeInfo> MessageListeningMethodTypes => _messageListeningMethodTypes;
+        /// <summary>
+        /// 获取同步传输函数列表
+        /// </summary>
+        internal MethodTypeList<ReplicateCommunicatingMethodTypeCodeInfo> ReplicateCommunicatingMethodTypes => _replicateCommunicatingMethodTypes;
 
         #region 输入响应类结构信息操作函数
 
@@ -152,51 +161,96 @@ namespace GameEngine.Loader.Structuring
 
         #endregion
 
-        #region 消息绑定类结构信息操作函数
+        #region 消息监听类结构信息操作函数
 
         /// <summary>
-        /// 新增指定消息绑定函数的回调句柄相关的结构信息
+        /// 新增指定消息监听函数的回调句柄相关的结构信息
         /// </summary>
         /// <param name="codeInfo">函数的结构信息</param>
-        public void AddMessageBindingMethodType(MessageBindingMethodTypeCodeInfo codeInfo)
+        public void AddMessageListeningMethodType(MessageListeningMethodTypeCodeInfo codeInfo)
         {
-            if (null == _messageBindingMethodTypes)
+            if (null == _messageListeningMethodTypes)
             {
-                _messageBindingMethodTypes = new MethodTypeList<MessageBindingMethodTypeCodeInfo>();
+                _messageListeningMethodTypes = new MethodTypeList<MessageListeningMethodTypeCodeInfo>();
             }
 
-            _messageBindingMethodTypes.Add(codeInfo);
+            _messageListeningMethodTypes.Add(codeInfo);
         }
 
         /// <summary>
-        /// 移除所有消息绑定函数的回调句柄相关的结构信息
+        /// 移除所有消息监听函数的回调句柄相关的结构信息
         /// </summary>
-        public void RemoveAllMessageBindingMethodTypes()
+        public void RemoveAllMessageListeningMethodTypes()
         {
-            _messageBindingMethodTypes?.Clear();
-            _messageBindingMethodTypes = null;
+            _messageListeningMethodTypes?.Clear();
+            _messageListeningMethodTypes = null;
         }
 
         /// <summary>
-        /// 获取当前消息绑定函数回调句柄的结构信息数量
+        /// 获取当前消息监听函数回调句柄的结构信息数量
         /// </summary>
         /// <returns>返回函数回调句柄的结构信息数量</returns>
-        public int GetMessageBindingMethodTypeCount()
+        public int GetMessageListeningMethodTypeCount()
         {
-            return _messageBindingMethodTypes?.Count() ?? 0;
+            return _messageListeningMethodTypes?.Count() ?? 0;
         }
 
         /// <summary>
-        /// 获取当前消息绑定函数回调句柄的结构信息容器中指索引对应的实例
+        /// 获取当前消息监听函数回调句柄的结构信息容器中指索引对应的实例
         /// </summary>
         /// <param name="index">索引值</param>
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
-        public MessageBindingMethodTypeCodeInfo GetMessageBindingMethodType(int index)
+        public MessageListeningMethodTypeCodeInfo GetMessageListeningMethodType(int index)
         {
-            return _messageBindingMethodTypes?.Get(index);
+            return _messageListeningMethodTypes?.Get(index);
         }
 
         #endregion
 
+        #region 同步传输类结构信息操作函数
+
+        /// <summary>
+        /// 新增指定同步传输函数的回调句柄相关的结构信息
+        /// </summary>
+        /// <param name="codeInfo">函数的结构信息</param>
+        public void AddReplicateCommunicatingMethodType(ReplicateCommunicatingMethodTypeCodeInfo codeInfo)
+        {
+            if (null == _replicateCommunicatingMethodTypes)
+            {
+                _replicateCommunicatingMethodTypes = new MethodTypeList<ReplicateCommunicatingMethodTypeCodeInfo>();
+            }
+
+            _replicateCommunicatingMethodTypes.Add(codeInfo);
+        }
+
+        /// <summary>
+        /// 移除所有同步传输函数的回调句柄相关的结构信息
+        /// </summary>
+        public void RemoveAllReplicateCommunicatingMethodTypes()
+        {
+            _replicateCommunicatingMethodTypes?.Clear();
+            _replicateCommunicatingMethodTypes = null;
+        }
+
+        /// <summary>
+        /// 获取当前同步传输函数回调句柄的结构信息数量
+        /// </summary>
+        /// <returns>返回函数回调句柄的结构信息数量</returns>
+        public int GetReplicateCommunicatingMethodTypeCount()
+        {
+            return _replicateCommunicatingMethodTypes?.Count() ?? 0;
+        }
+
+        /// <summary>
+        /// 获取当前同步传输函数回调句柄的结构信息容器中指索引对应的实例
+        /// </summary>
+        /// <param name="index">索引值</param>
+        /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
+        public ReplicateCommunicatingMethodTypeCodeInfo GetReplicateCommunicatingMethodType(int index)
+        {
+            return _replicateCommunicatingMethodTypes?.Get(index);
+        }
+
+        #endregion
     }
 }

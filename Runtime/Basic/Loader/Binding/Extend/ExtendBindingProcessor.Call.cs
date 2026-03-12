@@ -87,18 +87,35 @@ namespace GameEngine.Loader
 
             for (int n = 0; n < extendCodeInfo.GetMessageCallMethodTypeCount(); ++n)
             {
-                Structuring.MessageBindingMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetMessageCallMethodType(n);
+                Structuring.MessageListeningMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetMessageCallMethodType(n);
 
                 Debugger.Info(LogGroupTag.CodeLoader, "Load extend message call {%t} with target class type {%t}.", callMethodInfo.Method, callMethodInfo.TargetType);
 
                 Structuring.GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
                 if (_lookupCodeInfo is Structuring.BaseBeanCodeInfo baseCodeInfo)
                 {
-                    baseCodeInfo.AddMessageBindingMethodType(callMethodInfo);
+                    baseCodeInfo.AddMessageListeningMethodType(callMethodInfo);
                 }
                 else
                 {
                     Debugger.Warn("Could not found any general code info with target type '{%t}', binded message call failed.", callMethodInfo.TargetType);
+                }
+            }
+
+            for (int n = 0; n < extendCodeInfo.GetReplicateCallMethodTypeCount(); ++n)
+            {
+                Structuring.ReplicateCommunicatingMethodTypeCodeInfo callMethodInfo = extendCodeInfo.GetReplicateCallMethodType(n);
+
+                Debugger.Info(LogGroupTag.CodeLoader, "Load extend replicate call {%t} with target class type {%t}.", callMethodInfo.Method, callMethodInfo.TargetType);
+
+                Structuring.GeneralCodeInfo _lookupCodeInfo = CodeLoader.LookupGeneralCodeInfo(callMethodInfo.TargetType, typeof(IBean));
+                if (_lookupCodeInfo is Structuring.BaseBeanCodeInfo baseCodeInfo)
+                {
+                    baseCodeInfo.AddReplicateCommunicatingMethodType(callMethodInfo);
+                }
+                else
+                {
+                    Debugger.Warn("Could not found any general code info with target type '{%t}', binded replicate call failed.", callMethodInfo.TargetType);
                 }
             }
         }

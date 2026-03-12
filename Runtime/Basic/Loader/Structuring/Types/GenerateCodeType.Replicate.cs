@@ -201,12 +201,12 @@ namespace GameEngine.Loader.Structuring
     }
 
     /// <summary>
-    /// 切面管理的播报同步函数结构信息
+    /// 切面管理的同步传输函数结构信息
     /// </summary>
-    internal sealed class ReplicateAnnouncingMethodTypeCodeInfo : ReplicateCallMethodTypeCodeInfo
+    internal sealed class ReplicateCommunicatingMethodTypeCodeInfo : ReplicateCallMethodTypeCodeInfo
     {
         /// <summary>
-        /// 播报绑定的观察行为类型
+        /// 同步绑定的观察行为类型
         /// </summary>
         public AspectBehaviourType BehaviourType { get; internal set; }
     }

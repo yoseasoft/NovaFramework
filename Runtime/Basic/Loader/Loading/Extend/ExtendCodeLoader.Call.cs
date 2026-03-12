@@ -193,11 +193,11 @@ namespace GameEngine.Loader
 
                         if (false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithBeanExtensionType(symMethod.MethodInfo))
                         {
-                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend message recv method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend message listener method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
-                        Structuring.MessageBindingMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.MessageBindingMethodTypeCodeInfo();
+                        Structuring.MessageListeningMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.MessageListeningMethodTypeCodeInfo();
                         methodTypeCodeInfo.TargetType = extendClassType;
                         methodTypeCodeInfo.Opcode = _attr.Opcode;
                         methodTypeCodeInfo.MessageType = _attr.MessageType;
@@ -232,19 +232,70 @@ namespace GameEngine.Loader
                             // 校验失败
                             if (false == verificated)
                             {
-                                Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to extend message binding call, loaded this method failed.", symMethod.MethodName);
+                                Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to extend message listening call, loaded this method failed.", symMethod.MethodName);
                                 continue;
                             }
                         }
 
                         info.AddMessageCallMethodType(methodTypeCodeInfo);
                     }
+                    else if (attr is ReplicateCommunicateBindingOfTargetAttribute)
+                    {
+                        ReplicateCommunicateBindingOfTargetAttribute _attr = (ReplicateCommunicateBindingOfTargetAttribute) attr;
+
+                        if (string.IsNullOrEmpty(_attr.Tags) || ReplicateAnnounceType.None == _attr.AnnounceType)
+                        {
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend replicate communicate method '{%s}.{%s}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
+                            continue;
+                        }
+
+                        if (false == Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCallWithBeanExtensionType(symMethod.MethodInfo))
+                        {
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend replicate communicate method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                            continue;
+                        }
+
+                        Structuring.ReplicateCommunicatingMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.ReplicateCommunicatingMethodTypeCodeInfo();
+                        methodTypeCodeInfo.TargetType = extendClassType;
+                        methodTypeCodeInfo.Tags = _attr.Tags;
+                        methodTypeCodeInfo.AnnounceType = _attr.AnnounceType;
+                        methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                        methodTypeCodeInfo.Fullname = symMethod.FullName;
+                        methodTypeCodeInfo.Method = symMethod.MethodInfo;
+
+                        // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
+                        if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+                        {
+                            bool verificated;
+
+                            if (Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCallWithNullParameterType(symMethod.MethodInfo))
+                            {
+                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
+                            }
+                            else
+                            {
+                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType, typeof(string), typeof(ReplicateAnnounceType));
+                            }
+
+                            // 校验失败
+                            if (false == verificated)
+                            {
+                                Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to extend replicate communicating call, loaded this method failed.", symMethod.MethodName);
+                                continue;
+                            }
+                        }
+
+                        info.AddReplicateCallMethodType(methodTypeCodeInfo);
+                    }
                 }
             }
 
             if (info.GetInputCallMethodTypeCount() <= 0 &&
                 info.GetEventCallMethodTypeCount() <= 0 &&
-                info.GetMessageCallMethodTypeCount() <= 0)
+                info.GetMessageCallMethodTypeCount() <= 0 &&
+                info.GetReplicateCallMethodTypeCount() <= 0)
             {
                 Debugger.Warn(LogGroupTag.CodeLoader, "The extend call method types count must be great than zero, newly added class '{%t}' failed.", info.ClassType);
                 return false;

@@ -56,15 +56,15 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 新增指定函数的回调句柄相关的结构信息
         /// </summary>
-        /// <param name="invoke">函数的结构信息</param>
-        public void AddNoticeMethodType(CViewNoticeMethodTypeCodeInfo invoke)
+        /// <param name="codeInfo">函数的结构信息</param>
+        public void AddNoticeMethodType(CViewNoticeMethodTypeCodeInfo codeInfo)
         {
             if (null == _noticeMethodTypes)
             {
                 _noticeMethodTypes = new MethodTypeList<CViewNoticeMethodTypeCodeInfo>();
             }
 
-            _noticeMethodTypes.Add(invoke);
+            _noticeMethodTypes.Add(codeInfo);
         }
 
         /// <summary>

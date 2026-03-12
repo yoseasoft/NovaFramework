@@ -40,6 +40,7 @@ namespace GameEngine
             OnInputResponseProcessingInitialize();
             OnEventSubscribeProcessingInitialize();
             OnMessageListenerProcessingInitialize();
+            OnReplicateCommunicateProcessingInitialize();
         }
 
         /// <summary>
@@ -51,6 +52,7 @@ namespace GameEngine
             OnInputResponseProcessingCleanup();
             OnEventSubscribeProcessingCleanup();
             OnMessageListenerProcessingCleanup();
+            OnReplicateCommunicateProcessingCleanup();
         }
     }
 }

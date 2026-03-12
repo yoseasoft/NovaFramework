@@ -48,9 +48,14 @@ namespace GameEngine.Loader.Structuring
         private MethodTypeList<EventSubscribingMethodTypeCodeInfo> _eventCallMethodTypes;
 
         /// <summary>
-        /// 原型对象消息处理的扩展定义调用模块的数据管理容器
+        /// 原型对象消息监听的扩展定义调用模块的数据管理容器
         /// </summary>
-        private MethodTypeList<MessageBindingMethodTypeCodeInfo> _messageCallMethodTypes;
+        private MethodTypeList<MessageListeningMethodTypeCodeInfo> _messageCallMethodTypes;
+
+        /// <summary>
+        /// 原型对象同步传输的扩展定义调用模块的数据管理容器
+        /// </summary>
+        private MethodTypeList<ReplicateCommunicatingMethodTypeCodeInfo> _replicateCallMethodTypes;
 
         /// <summary>
         /// 获取原型对象输入响应函数列表
@@ -61,24 +66,28 @@ namespace GameEngine.Loader.Structuring
         /// </summary>
         internal MethodTypeList<EventSubscribingMethodTypeCodeInfo> EventCallMethodTypes => _eventCallMethodTypes;
         /// <summary>
-        /// 获取原型对象消息处理函数列表
+        /// 获取原型对象消息监听函数列表
         /// </summary>
-        internal MethodTypeList<MessageBindingMethodTypeCodeInfo> MessageCallMethodTypes => _messageCallMethodTypes;
+        internal MethodTypeList<MessageListeningMethodTypeCodeInfo> MessageCallMethodTypes => _messageCallMethodTypes;
+        /// <summary>
+        /// 获取原型对象同步传输函数列表
+        /// </summary>
+        internal MethodTypeList<ReplicateCommunicatingMethodTypeCodeInfo> ReplicateCallMethodTypes => _replicateCallMethodTypes;
 
         #region 扩展输入调用模块结构信息操作函数
 
         /// <summary>
         /// 新增指定函数的回调句柄相关的结构信息
         /// </summary>
-        /// <param name="invoke">函数的结构信息</param>
-        public void AddInputCallMethodType(InputResponsingMethodTypeCodeInfo invoke)
+        /// <param name="codeInfo">函数的结构信息</param>
+        public void AddInputCallMethodType(InputResponsingMethodTypeCodeInfo codeInfo)
         {
             if (null == _inputCallMethodTypes)
             {
                 _inputCallMethodTypes = new MethodTypeList<InputResponsingMethodTypeCodeInfo>();
             }
 
-            _inputCallMethodTypes.Add(invoke);
+            _inputCallMethodTypes.Add(codeInfo);
         }
 
         /// <summary>
@@ -116,15 +125,15 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 新增指定函数的回调句柄相关的结构信息
         /// </summary>
-        /// <param name="invoke">函数的结构信息</param>
-        public void AddEventCallMethodType(EventSubscribingMethodTypeCodeInfo invoke)
+        /// <param name="codeInfo">函数的结构信息</param>
+        public void AddEventCallMethodType(EventSubscribingMethodTypeCodeInfo codeInfo)
         {
             if (null == _eventCallMethodTypes)
             {
                 _eventCallMethodTypes = new MethodTypeList<EventSubscribingMethodTypeCodeInfo>();
             }
 
-            _eventCallMethodTypes.Add(invoke);
+            _eventCallMethodTypes.Add(codeInfo);
         }
 
         /// <summary>
@@ -162,15 +171,15 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 新增指定函数的回调句柄相关的结构信息
         /// </summary>
-        /// <param name="invoke">函数的结构信息</param>
-        public void AddMessageCallMethodType(MessageBindingMethodTypeCodeInfo invoke)
+        /// <param name="codeInfo">函数的结构信息</param>
+        public void AddMessageCallMethodType(MessageListeningMethodTypeCodeInfo codeInfo)
         {
             if (null == _messageCallMethodTypes)
             {
-                _messageCallMethodTypes = new MethodTypeList<MessageBindingMethodTypeCodeInfo>();
+                _messageCallMethodTypes = new MethodTypeList<MessageListeningMethodTypeCodeInfo>();
             }
 
-            _messageCallMethodTypes.Add(invoke);
+            _messageCallMethodTypes.Add(codeInfo);
         }
 
         /// <summary>
@@ -196,12 +205,57 @@ namespace GameEngine.Loader.Structuring
         /// </summary>
         /// <param name="index">索引值</param>
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
-        public MessageBindingMethodTypeCodeInfo GetMessageCallMethodType(int index)
+        public MessageListeningMethodTypeCodeInfo GetMessageCallMethodType(int index)
         {
             return _messageCallMethodTypes?.Get(index);
         }
 
         #endregion
 
+        #region 扩展同步调用模块结构信息操作函数
+
+        /// <summary>
+        /// 新增指定函数的回调句柄相关的结构信息
+        /// </summary>
+        /// <param name="codeInfo">函数的结构信息</param>
+        public void AddReplicateCallMethodType(ReplicateCommunicatingMethodTypeCodeInfo codeInfo)
+        {
+            if (null == _replicateCallMethodTypes)
+            {
+                _replicateCallMethodTypes = new MethodTypeList<ReplicateCommunicatingMethodTypeCodeInfo>();
+            }
+
+            _replicateCallMethodTypes.Add(codeInfo);
+        }
+
+        /// <summary>
+        /// 移除所有函数的回调句柄相关的结构信息
+        /// </summary>
+        public void RemoveAllReplicateCallMethodTypes()
+        {
+            _replicateCallMethodTypes?.Clear();
+            _replicateCallMethodTypes = null;
+        }
+
+        /// <summary>
+        /// 获取当前函数回调句柄的结构信息数量
+        /// </summary>
+        /// <returns>返回函数回调句柄的结构信息数量</returns>
+        public int GetReplicateCallMethodTypeCount()
+        {
+            return _replicateCallMethodTypes?.Count() ?? 0;
+        }
+
+        /// <summary>
+        /// 获取当前函数回调句柄的结构信息容器中指索引对应的实例
+        /// </summary>
+        /// <param name="index">索引值</param>
+        /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
+        public ReplicateCommunicatingMethodTypeCodeInfo GetReplicateCallMethodType(int index)
+        {
+            return _replicateCallMethodTypes?.Get(index);
+        }
+
+        #endregion
     }
 }

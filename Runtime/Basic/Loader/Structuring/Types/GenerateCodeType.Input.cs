@@ -48,15 +48,15 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 新增指定函数的回调句柄相关的结构信息
         /// </summary>
-        /// <param name="invoke">函数的结构信息</param>
-        public void AddMethodType(InputCallMethodTypeCodeInfo invoke)
+        /// <param name="codeInfo">函数的结构信息</param>
+        public void AddMethodType(InputCallMethodTypeCodeInfo codeInfo)
         {
             if (null == _methodTypes)
             {
                 _methodTypes = new MethodTypeList<InputCallMethodTypeCodeInfo>();
             }
 
-            _methodTypes.Add(invoke);
+            _methodTypes.Add(codeInfo);
         }
 
         /// <summary>

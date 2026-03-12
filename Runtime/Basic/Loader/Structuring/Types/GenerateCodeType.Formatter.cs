@@ -131,7 +131,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        private static string ToString(Structuring.MessageBindingMethodTypeCodeInfo targetObject)
+        private static string ToString(Structuring.MessageListeningMethodTypeCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append(ToString((Structuring.MessageCallMethodTypeCodeInfo) targetObject));
@@ -257,7 +257,7 @@ namespace GameEngine.Loader
             return fsb.ToString();
         }
 
-        private static string ToString(Structuring.ReplicateAnnouncingMethodTypeCodeInfo targetObject)
+        private static string ToString(Structuring.ReplicateCommunicatingMethodTypeCodeInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append(ToString((Structuring.ReplicateCallMethodTypeCodeInfo) targetObject));
@@ -275,7 +275,7 @@ namespace GameEngine.Loader
             fsb.Append("ClassType={%t},", targetObject.ClassType);
             fsb.Append("InputResponsingMethodTypes={{{%s}}},", targetObject.InputResponsingMethodTypes?.Values(), ToString);
             fsb.Append("EventSubscribingMethodTypes={{{%s}}},", targetObject.EventSubscribingMethodTypes?.Values(), ToString);
-            fsb.Append("MessageBindingMethodTypes={{{%s}}},", targetObject.MessageBindingMethodTypes?.Values(), ToString);
+            fsb.Append("MessageListeningMethodTypes={{{%s}}},", targetObject.MessageListeningMethodTypes?.Values(), ToString);
             return fsb.ToString();
         }
 
@@ -379,9 +379,10 @@ namespace GameEngine.Loader
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("ExtendCall={");
             fsb.Append("ClassType={%t},", targetObject.ClassType);
-            fsb.Append("InputCallMethodTypes={{{%s}}},", targetObject.InputCallMethodTypes?.Values(), ToString);
-            fsb.Append("EventCallMethodTypes={{{%s}}},", targetObject.EventCallMethodTypes?.Values(), ToString);
-            fsb.Append("MessageCallMethodTypes={{{%s}}},", targetObject.MessageCallMethodTypes?.Values(), ToString);
+            fsb.Append("InputCalls={{{%s}}},", targetObject.InputCallMethodTypes?.Values(), ToString);
+            fsb.Append("EventCalls={{{%s}}},", targetObject.EventCallMethodTypes?.Values(), ToString);
+            fsb.Append("MessageCalls={{{%s}}},", targetObject.MessageCallMethodTypes?.Values(), ToString);
+            fsb.Append("ReplicateCalls={{{%s}}},", targetObject.ReplicateCallMethodTypes?.Values(), ToString);
             fsb.Append("}");
             return fsb.ToString();
         }

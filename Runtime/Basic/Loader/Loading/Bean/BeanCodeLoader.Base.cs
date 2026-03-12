@@ -187,7 +187,7 @@ namespace GameEngine.Loader
                     return;
                 }
 
-                Structuring.MessageBindingMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.MessageBindingMethodTypeCodeInfo();
+                Structuring.MessageListeningMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.MessageListeningMethodTypeCodeInfo();
                 methodTypeCodeInfo.Opcode = _attr.Opcode;
                 methodTypeCodeInfo.MessageType = _attr.MessageType;
                 methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
@@ -225,7 +225,51 @@ namespace GameEngine.Loader
                     }
                 }
 
-                codeInfo.AddMessageBindingMethodType(methodTypeCodeInfo);
+                codeInfo.AddMessageListeningMethodType(methodTypeCodeInfo);
+            }
+            else if (attribute is ReplicateCommunicateBindingOfTargetAttribute)
+            {
+                ReplicateCommunicateBindingOfTargetAttribute _attr = (ReplicateCommunicateBindingOfTargetAttribute) attribute;
+
+                if (symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCall(symMethod.MethodInfo))
+                {
+                    Debugger.Warn("The replicate communicating method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    return;
+                }
+
+                Structuring.ReplicateCommunicatingMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.ReplicateCommunicatingMethodTypeCodeInfo();
+                methodTypeCodeInfo.Tags = _attr.Tags;
+                methodTypeCodeInfo.AnnounceType = _attr.AnnounceType;
+                methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                methodTypeCodeInfo.Fullname = symMethod.FullName;
+                methodTypeCodeInfo.Method = symMethod.MethodInfo;
+
+                // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
+                if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+                {
+                    bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                            Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCallWithNullParameterType(symMethod.MethodInfo), symMethod.MethodInfo);
+
+                    if (Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCallWithNullParameterType(symMethod.MethodInfo))
+                    {
+                        // null parameter type, skip other check process
+                    }
+                    else
+                    {
+                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                            false == Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCallWithNullParameterType(symMethod.MethodInfo),
+                                            symMethod.MethodInfo, typeof(string), typeof(ReplicateAnnounceType));
+                    }
+
+                    // 校验失败
+                    if (false == verificated)
+                    {
+                        Debugger.Error("Cannot verificated from method info '{%s}' to replicate communicating call, loaded this method failed.", symMethod.FullName);
+                        return;
+                    }
+                }
+
+                codeInfo.AddReplicateCommunicatingMethodType(methodTypeCodeInfo);
             }
         }
     }

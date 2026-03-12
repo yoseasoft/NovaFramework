@@ -148,9 +148,9 @@ namespace GameEngine
             }
 
             // 消息派发信息
-            for (int n = 0; n < refCodeInfo.GetMessageBindingMethodTypeCount(); ++n)
+            for (int n = 0; n < refCodeInfo.GetMessageListeningMethodTypeCount(); ++n)
             {
-                Loader.Structuring.MessageBindingMethodTypeCodeInfo methodTypeCodeInfo = refCodeInfo.GetMessageBindingMethodType(n);
+                Loader.Structuring.MessageListeningMethodTypeCodeInfo methodTypeCodeInfo = refCodeInfo.GetMessageListeningMethodType(n);
                 if (methodTypeCodeInfo.BehaviourType != behaviourType) continue;
 
                 if (false == NovaEngine.Utility.Reflection.IsTypeOfExtension(methodTypeCodeInfo.Method) && reload)
@@ -176,6 +176,28 @@ namespace GameEngine
 
                     obj.AddMessageListener(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.MessageType, true);
                 }
+            }
+
+            // 同步传输信息
+            for (int n = 0; n < refCodeInfo.GetReplicateCommunicatingMethodTypeCount(); ++n)
+            {
+                Loader.Structuring.ReplicateCommunicatingMethodTypeCodeInfo methodTypeCodeInfo = refCodeInfo.GetReplicateCommunicatingMethodType(n);
+                if (methodTypeCodeInfo.BehaviourType != behaviourType) continue;
+
+                if (false == NovaEngine.Utility.Reflection.IsTypeOfExtension(methodTypeCodeInfo.Method) && reload)
+                {
+                    // 针对对象内部的成员函数，在重载模式下不能对其撤销后再次注册
+                    continue;
+                }
+
+                // Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
+                // Debugger.Assert(callback, "Invalid method type.");
+
+                Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' replicate listener with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);
+
+                // if (reload) { obj.RemoveReplicateCommunicate(methodTypeCodeInfo.Method, methodTypeCodeInfo.Tags, methodTypeCodeInfo.AnnounceType); }
+
+                obj.AddReplicateCommunicate(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.Tags, methodTypeCodeInfo.AnnounceType, true);
             }
 
             Type baseType = targetType.BaseType;

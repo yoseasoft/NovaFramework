@@ -120,12 +120,12 @@ namespace GameEngine.Loader.Structuring
     }
 
     /// <summary>
-    /// 切面管理的消息绑定函数结构信息
+    /// 切面管理的消息监听函数结构信息
     /// </summary>
-    internal sealed class MessageBindingMethodTypeCodeInfo : MessageCallMethodTypeCodeInfo
+    internal sealed class MessageListeningMethodTypeCodeInfo : MessageCallMethodTypeCodeInfo
     {
         /// <summary>
-        /// 消息绑定的观察行为类型
+        /// 消息监听的观察行为类型
         /// </summary>
         public AspectBehaviourType BehaviourType { get; internal set; }
     }
