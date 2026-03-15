@@ -31,7 +31,7 @@ namespace GameEngine
     /// 同步分发类型注册函数的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public sealed class OnReplicateDispatchCallAttribute : Attribute
+    public class OnReplicateDispatchCallAttribute : Attribute
     {
         /// <summary>
         /// 派发同步的目标对象类型
@@ -106,7 +106,7 @@ namespace GameEngine
     /// 同步传输绑定函数的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public sealed class ReplicateCommunicateBindingOfTargetAttribute : Attribute
+    public class ReplicateCommunicateBindingOfTargetAttribute : Attribute
     {
         /// <summary>
         /// 同步绑定的数据标签链条
@@ -127,6 +127,10 @@ namespace GameEngine
 
         public ReplicateCommunicateBindingOfTargetAttribute(string tags)
             : this(tags, ReplicateAnnounceType.All)
+        { }
+
+        public ReplicateCommunicateBindingOfTargetAttribute(string tags, AspectBehaviourType behaviourType)
+            : this(tags, ReplicateAnnounceType.All, behaviourType)
         { }
 
         public ReplicateCommunicateBindingOfTargetAttribute(string tags, ReplicateAnnounceType announceType)

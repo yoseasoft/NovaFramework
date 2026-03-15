@@ -184,6 +184,17 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 获取当前运行的场景实例
+        /// </summary>
+        /// <typeparam name="T">场景类型</typeparam>
+        /// <returns>返回当前运行的场景实例，若没有则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T GetCurrentScene<T>() where T : CScene
+        {
+            return GetCurrentScene() as T;
+        }
+
+        /// <summary>
         /// 替换管理器中当前的场景实例
         /// 注意，替换操作并非立即执行，而是在下一次更新前进行替换
         /// 若在此之前多次进行替换操作，将只保留最后一次作为最终的场景

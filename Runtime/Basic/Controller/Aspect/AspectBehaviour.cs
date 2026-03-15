@@ -37,7 +37,7 @@ namespace GameEngine
         /// <summary>
         /// 原型对象自动转发操作处理节点的默认行为类型
         /// </summary>
-        public const AspectBehaviourType DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode = AspectBehaviourType.Initialize;
+        public const AspectBehaviourType DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode = AspectBehaviourType.Startup;
         /// <summary>
         /// 原型对象自动激活操作处理节点的默认行为类型
         /// </summary>

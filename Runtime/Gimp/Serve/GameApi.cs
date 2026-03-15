@@ -328,6 +328,17 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 获取当前运行的场景实例
+        /// </summary>
+        /// <typeparam name="T">场景类型</typeparam>
+        /// <returns>返回当前运行的场景实例，若没有则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetCurrentScene<T>() where T : CScene
+        {
+            return SceneHandler.Instance.GetCurrentScene<T>();
+        }
+
+        /// <summary>
         /// 根据指定的场景名称替换当前的场景实例
         /// </summary>
         /// <param name="sceneName">场景名称</param>
