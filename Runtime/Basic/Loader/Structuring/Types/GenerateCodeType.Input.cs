@@ -2,7 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ namespace GameEngine.Loader.Structuring
     /// <summary>
     /// 输入调用模块的结构信息
     /// </summary>
-    internal class InputCallCodeInfo : InputCodeInfo
+    internal sealed class InputCallCodeInfo : InputCodeInfo
     {
         /// <summary>
         /// 输入调用模块的函数类型集合
@@ -91,29 +91,22 @@ namespace GameEngine.Loader.Structuring
     /// <summary>
     /// 输入调用模块的函数结构信息
     /// </summary>
-    internal class InputCallMethodTypeCodeInfo : MethodTypeCodeInfo
+    internal sealed class InputCallMethodTypeCodeInfo : MethodTypeCodeInfo
     {
         /// <summary>
-        /// 输入调用模块的监听键码标识
+        /// 输入调用模块的按键编码标识
         /// </summary>
         public int InputCode { get; internal set; }
         /// <summary>
-        /// 输入调用模块的监听操作数据类型
+        /// 输入调用模块的按键操作类型
         /// </summary>
         public InputOperationType OperationType { get; internal set; }
         /// <summary>
-        /// 输入调用模块的监听键码集合数据类型
+        /// 输入调用模块的操作数据类型
         /// </summary>
         public Type InputDataType { get; internal set; }
-    }
-
-    /// <summary>
-    /// 切面管理的输入响应函数结构信息
-    /// </summary>
-    internal sealed class InputResponsingMethodTypeCodeInfo : InputCallMethodTypeCodeInfo
-    {
         /// <summary>
-        /// 响应绑定的观察行为类型
+        /// 输入调用模块的观察行为类型
         /// </summary>
         public AspectBehaviourType BehaviourType { get; internal set; }
     }

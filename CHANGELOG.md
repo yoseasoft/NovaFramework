@@ -4,6 +4,17 @@
 格式基于[保持更改日志](https://keepachangelog.com/en/1.0.0/)  
 该项目遵循[语义版本控制](https://semver.org/spec/v2.0.0.html)  
 
+### 1.0.15
+简化数据处理相关的标签定义：  
+| 新标签 | 原标签 | 描述 |
+|-------|-------|-----|
+| `OnInput` | `OnGlobalInput` 及 `OnBeanInput` | 合并全局和实体对象的输入绑定方式 |
+| `OnEvent` | `OnGlobalEvent` 及 `OnBeanEvent` | 合并全局和实体对象的事件绑定方式 |
+| `OnMessage` | `OnGlobalMessage` 及 `OnBeanMessage` | 合并全局和实体对象的消息绑定方式 |
+| `OnReplicate` | `OnGlobalReplicate` 及 `OnBeanReplicate` | 合并全局和实体对象同步绑定方式 |
+
+合并后将极大简化数据处理标签定义的理解成本，方便开发人员快速上手；  
+
 ### 1.0.13
 新增数据同步控制模组，用于实现实体对象属性和数据源的数据自动同步的功能；  
 通过在实体对象或成员属性上添加`Replicate`标签，实现该属性与其关联的数据源自动进行同步，

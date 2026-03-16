@@ -188,7 +188,7 @@ namespace GameEngine.Loader.Structuring
     /// <summary>
     /// 同步调用模块的函数结构信息
     /// </summary>
-    internal class ReplicateCallMethodTypeCodeInfo : MethodTypeCodeInfo
+    internal sealed class ReplicateCallMethodTypeCodeInfo : MethodTypeCodeInfo
     {
         /// <summary>
         /// 同步调用模块的数据标签
@@ -198,15 +198,8 @@ namespace GameEngine.Loader.Structuring
         /// 同步调用模块的数据播报方式
         /// </summary>
         public ReplicateAnnounceType AnnounceType { get; internal set; }
-    }
-
-    /// <summary>
-    /// 切面管理的同步传输函数结构信息
-    /// </summary>
-    internal sealed class ReplicateCommunicatingMethodTypeCodeInfo : ReplicateCallMethodTypeCodeInfo
-    {
         /// <summary>
-        /// 同步绑定的观察行为类型
+        /// 同步调用模块的观察行为类型
         /// </summary>
         public AspectBehaviourType BehaviourType { get; internal set; }
     }

@@ -76,200 +76,189 @@ namespace GameEngine.Loader
         /// <param name="attribute">属性对象</param>
         private static void LoadBaseMethodByAttributeType(Symbolling.SymClass symClass, Structuring.BaseBeanCodeInfo codeInfo, Symbolling.SymMethod symMethod, Attribute attribute)
         {
-            if (attribute is InputResponseBindingOfTargetAttribute)
+            if (attribute is OnInputDispatchCallAttribute inputDispatchCallAttribute)
             {
-                InputResponseBindingOfTargetAttribute _attr = (InputResponseBindingOfTargetAttribute) attribute;
-
                 if (symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCall(symMethod.MethodInfo))
                 {
-                    Debugger.Warn("The input responsing method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    Debugger.Warn("The input dispatching method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     return;
                 }
 
-                Structuring.InputResponsingMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.InputResponsingMethodTypeCodeInfo();
-                methodTypeCodeInfo.InputCode = _attr.InputCode;
-                methodTypeCodeInfo.OperationType = _attr.OperationType;
-                methodTypeCodeInfo.InputDataType = _attr.InputDataType;
-                methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                Structuring.InputCallMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.InputCallMethodTypeCodeInfo();
+                methodTypeCodeInfo.TargetType = inputDispatchCallAttribute.ClassType;
+                methodTypeCodeInfo.InputCode = inputDispatchCallAttribute.InputCode;
+                methodTypeCodeInfo.OperationType = inputDispatchCallAttribute.OperationType;
+                methodTypeCodeInfo.InputDataType = inputDispatchCallAttribute.InputDataType;
+                methodTypeCodeInfo.BehaviourType = inputDispatchCallAttribute.BehaviourType;
                 methodTypeCodeInfo.Fullname = symMethod.FullName;
                 methodTypeCodeInfo.Method = symMethod.MethodInfo;
+                Debugger.Assert(null == methodTypeCodeInfo.TargetType, "Cannot assigned any values to target type if current was member function.");
 
                 // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                 if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                 {
-                    bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo), symMethod.MethodInfo);
+                    bool verificated;
 
                     if (Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo))
                     {
-                        // null parameter type, skip other check process
+                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
                     }
                     else if (methodTypeCodeInfo.InputCode > 0)
                     {
                         verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo),
                                             symMethod.MethodInfo, typeof(int), typeof(int));
                     }
                     else
                     {
                         verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo),
                                             symMethod.MethodInfo, methodTypeCodeInfo.InputDataType);
                     }
 
                     // 校验失败
                     if (false == verificated)
                     {
-                        Debugger.Error("Cannot verificated from method info '{%s}' to input responsing call, loaded this method failed.", symMethod.FullName);
+                        Debugger.Error("Cannot verificated from method info '{%s}' to input dispatching call, loaded this method failed.", symMethod.FullName);
                         return;
                     }
                 }
 
-                codeInfo.AddInputResponsingMethodType(methodTypeCodeInfo);
+                codeInfo.AddInputDispatchingMethodType(methodTypeCodeInfo);
             }
-            else if (attribute is EventSubscribeBindingOfTargetAttribute)
+            else if (attribute is OnEventDispatchCallAttribute eventDispatchCallAttribute)
             {
-                EventSubscribeBindingOfTargetAttribute _attr = (EventSubscribeBindingOfTargetAttribute) attribute;
-
                 if (symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCall(symMethod.MethodInfo))
                 {
-                    Debugger.Warn("The event subscribing method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    Debugger.Warn("The event dispatching method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     return;
                 }
 
-                Structuring.EventSubscribingMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.EventSubscribingMethodTypeCodeInfo();
-                methodTypeCodeInfo.EventID = _attr.EventID;
-                methodTypeCodeInfo.EventDataType = _attr.EventDataType;
-                methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                Structuring.EventCallMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.EventCallMethodTypeCodeInfo();
+                methodTypeCodeInfo.TargetType = eventDispatchCallAttribute.ClassType;
+                methodTypeCodeInfo.EventID = eventDispatchCallAttribute.EventID;
+                methodTypeCodeInfo.EventDataType = eventDispatchCallAttribute.EventDataType;
+                methodTypeCodeInfo.BehaviourType = eventDispatchCallAttribute.BehaviourType;
                 methodTypeCodeInfo.Fullname = symMethod.FullName;
                 methodTypeCodeInfo.Method = symMethod.MethodInfo;
+                Debugger.Assert(null == methodTypeCodeInfo.TargetType, "Cannot assigned any values to target type if current was member function.");
 
                 // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                 if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                 {
-                    bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo), symMethod.MethodInfo);
+                    bool verificated;
 
                     if (Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo))
                     {
-                        // null parameter type, skip other check process
+                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
                     }
                     else if (methodTypeCodeInfo.EventID > 0)
                     {
                         verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo),
                                             symMethod.MethodInfo, typeof(int), typeof(object[]));
                     }
                     else
                     {
                         verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo),
                                             symMethod.MethodInfo, methodTypeCodeInfo.EventDataType);
                     }
 
                     // 校验失败
                     if (false == verificated)
                     {
-                        Debugger.Error("Cannot verificated from method info '{%s}' to event subscribing call, loaded this method failed.", symMethod.FullName);
+                        Debugger.Error("Cannot verificated from method info '{%s}' to event dispatching call, loaded this method failed.", symMethod.FullName);
                         return;
                     }
                 }
 
-                codeInfo.AddEventSubscribingMethodType(methodTypeCodeInfo);
+                codeInfo.AddEventDispatchingMethodType(methodTypeCodeInfo);
             }
-            else if (attribute is MessageListenerBindingOfTargetAttribute)
+            else if (attribute is OnMessageDispatchCallAttribute messageDispatchCallAttribute)
             {
-                MessageListenerBindingOfTargetAttribute _attr = (MessageListenerBindingOfTargetAttribute) attribute;
-
                 if (symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCall(symMethod.MethodInfo))
                 {
-                    Debugger.Warn("The message binding method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    Debugger.Warn("The message dispatching method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     return;
                 }
 
-                Structuring.MessageListeningMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.MessageListeningMethodTypeCodeInfo();
-                methodTypeCodeInfo.Opcode = _attr.Opcode;
-                methodTypeCodeInfo.MessageType = _attr.MessageType;
-                methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                Structuring.MessageCallMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.MessageCallMethodTypeCodeInfo();
+                methodTypeCodeInfo.TargetType = messageDispatchCallAttribute.ClassType;
+                methodTypeCodeInfo.Opcode = messageDispatchCallAttribute.Opcode;
+                methodTypeCodeInfo.MessageType = messageDispatchCallAttribute.MessageType;
+                methodTypeCodeInfo.BehaviourType = messageDispatchCallAttribute.BehaviourType;
                 methodTypeCodeInfo.Fullname = symMethod.FullName;
                 methodTypeCodeInfo.Method = symMethod.MethodInfo;
+                Debugger.Assert(null == methodTypeCodeInfo.TargetType, "Cannot assigned any values to target type if current was member function.");
 
                 // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                 if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                 {
-                    bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo), symMethod.MethodInfo);
+                    bool verificated;
 
                     if (Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo))
                     {
-                        // null parameter type, skip other check process
+                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
                     }
                     else if (methodTypeCodeInfo.Opcode > 0)
                     {
                         verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo),
                                             symMethod.MethodInfo, typeof(object));
                     }
                     else
                     {
                         verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo),
                                             symMethod.MethodInfo, methodTypeCodeInfo.MessageType);
                     }
 
                     // 校验失败
                     if (false == verificated)
                     {
-                        Debugger.Error("Cannot verificated from method info '{%s}' to message binding call, loaded this method failed.", symMethod.FullName);
+                        Debugger.Error("Cannot verificated from method info '{%s}' to message dispatching call, loaded this method failed.", symMethod.FullName);
                         return;
                     }
                 }
 
-                codeInfo.AddMessageListeningMethodType(methodTypeCodeInfo);
+                codeInfo.AddMessageDispatchingMethodType(methodTypeCodeInfo);
             }
-            else if (attribute is ReplicateCommunicateBindingOfTargetAttribute)
+            else if (attribute is OnReplicateDispatchCallAttribute replicateDispatchCallAttribute)
             {
-                ReplicateCommunicateBindingOfTargetAttribute _attr = (ReplicateCommunicateBindingOfTargetAttribute) attribute;
-
                 if (symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCall(symMethod.MethodInfo))
                 {
-                    Debugger.Warn("The replicate communicating method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    Debugger.Warn("The replicate dispatching method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     return;
                 }
 
-                Structuring.ReplicateCommunicatingMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.ReplicateCommunicatingMethodTypeCodeInfo();
-                methodTypeCodeInfo.Tags = _attr.Tags;
-                methodTypeCodeInfo.AnnounceType = _attr.AnnounceType;
-                methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                Structuring.ReplicateCallMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.ReplicateCallMethodTypeCodeInfo();
+                methodTypeCodeInfo.TargetType = replicateDispatchCallAttribute.ClassType;
+                methodTypeCodeInfo.Tags = replicateDispatchCallAttribute.Tags;
+                methodTypeCodeInfo.AnnounceType = replicateDispatchCallAttribute.AnnounceType;
+                methodTypeCodeInfo.BehaviourType = replicateDispatchCallAttribute.BehaviourType;
                 methodTypeCodeInfo.Fullname = symMethod.FullName;
                 methodTypeCodeInfo.Method = symMethod.MethodInfo;
+                Debugger.Assert(null == methodTypeCodeInfo.TargetType, "Cannot assigned any values to target type if current was member function.");
 
                 // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                 if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                 {
-                    bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCallWithNullParameterType(symMethod.MethodInfo), symMethod.MethodInfo);
+                    bool verificated;
 
                     if (Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCallWithNullParameterType(symMethod.MethodInfo))
                     {
-                        // null parameter type, skip other check process
+                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
                     }
                     else
                     {
                         verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            false == Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCallWithNullParameterType(symMethod.MethodInfo),
                                             symMethod.MethodInfo, typeof(string), typeof(ReplicateAnnounceType));
                     }
 
                     // 校验失败
                     if (false == verificated)
                     {
-                        Debugger.Error("Cannot verificated from method info '{%s}' to replicate communicating call, loaded this method failed.", symMethod.FullName);
+                        Debugger.Error("Cannot verificated from method info '{%s}' to replicate dispatching call, loaded this method failed.", symMethod.FullName);
                         return;
                     }
                 }
 
-                codeInfo.AddReplicateCommunicatingMethodType(methodTypeCodeInfo);
+                codeInfo.AddReplicateDispatchingMethodType(methodTypeCodeInfo);
             }
         }
     }

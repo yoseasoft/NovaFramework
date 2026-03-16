@@ -85,10 +85,10 @@ namespace GameEngine
                 return;
             }
 
-            // 输入响应信息
-            for (int n = 0; n < componentCodeInfo.GetInputResponsingMethodTypeCount(); ++n)
+            // 输入转发信息
+            for (int n = 0; n < componentCodeInfo.GetInputDispatchingMethodTypeCount(); ++n)
             {
-                Loader.Structuring.InputResponsingMethodTypeCodeInfo methodTypeCodeInfo = componentCodeInfo.GetInputResponsingMethodType(n);
+                Loader.Structuring.InputCallMethodTypeCodeInfo methodTypeCodeInfo = componentCodeInfo.GetInputDispatchingMethodType(n);
                 if (methodTypeCodeInfo.BehaviourType != behaviourType) continue;
 
                 if (false == NovaEngine.Utility.Reflection.IsTypeOfExtension(methodTypeCodeInfo.Method) && reload)
@@ -116,10 +116,10 @@ namespace GameEngine
                 }
             }
 
-            // 订阅事件信息
-            for (int n = 0; n < componentCodeInfo.GetEventSubscribingMethodTypeCount(); ++n)
+            // 事件转发信息
+            for (int n = 0; n < componentCodeInfo.GetEventDispatchingMethodTypeCount(); ++n)
             {
-                Loader.Structuring.EventSubscribingMethodTypeCodeInfo methodTypeCodeInfo = componentCodeInfo.GetEventSubscribingMethodType(n);
+                Loader.Structuring.EventCallMethodTypeCodeInfo methodTypeCodeInfo = componentCodeInfo.GetEventDispatchingMethodType(n);
                 if (methodTypeCodeInfo.BehaviourType != behaviourType) continue;
 
                 if (false == NovaEngine.Utility.Reflection.IsTypeOfExtension(methodTypeCodeInfo.Method) && reload)
@@ -147,10 +147,10 @@ namespace GameEngine
                 }
             }
 
-            // 消息派发信息
-            for (int n = 0; n < componentCodeInfo.GetMessageListeningMethodTypeCount(); ++n)
+            // 消息转发信息
+            for (int n = 0; n < componentCodeInfo.GetMessageDispatchingMethodTypeCount(); ++n)
             {
-                Loader.Structuring.MessageListeningMethodTypeCodeInfo methodTypeCodeInfo = componentCodeInfo.GetMessageListeningMethodType(n);
+                Loader.Structuring.MessageCallMethodTypeCodeInfo methodTypeCodeInfo = componentCodeInfo.GetMessageDispatchingMethodType(n);
                 if (methodTypeCodeInfo.BehaviourType != behaviourType) continue;
 
                 if (false == NovaEngine.Utility.Reflection.IsTypeOfExtension(methodTypeCodeInfo.Method) && reload)
@@ -178,10 +178,10 @@ namespace GameEngine
                 }
             }
 
-            // 同步传输信息
-            for (int n = 0; n < componentCodeInfo.GetReplicateCommunicatingMethodTypeCount(); ++n)
+            // 同步转发信息
+            for (int n = 0; n < componentCodeInfo.GetReplicateDispatchingMethodTypeCount(); ++n)
             {
-                Loader.Structuring.ReplicateCommunicatingMethodTypeCodeInfo methodTypeCodeInfo = componentCodeInfo.GetReplicateCommunicatingMethodType(n);
+                Loader.Structuring.ReplicateCallMethodTypeCodeInfo methodTypeCodeInfo = componentCodeInfo.GetReplicateDispatchingMethodType(n);
                 if (methodTypeCodeInfo.BehaviourType != behaviourType) continue;
 
                 if (false == NovaEngine.Utility.Reflection.IsTypeOfExtension(methodTypeCodeInfo.Method) && reload)

@@ -3,7 +3,7 @@
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -105,27 +105,20 @@ namespace GameEngine.Loader.Structuring
     }
 
     /// <summary>
-    /// 消息接收模块的结构信息
+    /// 消息调用模块的结构信息
     /// </summary>
-    internal class MessageCallMethodTypeCodeInfo : MethodTypeCodeInfo
+    internal sealed class MessageCallMethodTypeCodeInfo : MethodTypeCodeInfo
     {
         /// <summary>
-        /// 消息处理模块的协议编码
+        /// 消息调用模块的协议编码
         /// </summary>
         public int Opcode { get; internal set; }
         /// <summary>
-        /// 消息处理模块的消息对象类型
+        /// 消息调用模块的消息对象类型
         /// </summary>
         public Type MessageType { get; internal set; }
-    }
-
-    /// <summary>
-    /// 切面管理的消息监听函数结构信息
-    /// </summary>
-    internal sealed class MessageListeningMethodTypeCodeInfo : MessageCallMethodTypeCodeInfo
-    {
         /// <summary>
-        /// 消息监听的观察行为类型
+        /// 消息调用模块的观察行为类型
         /// </summary>
         public AspectBehaviourType BehaviourType { get; internal set; }
     }

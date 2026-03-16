@@ -3,7 +3,7 @@
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -64,204 +64,191 @@ namespace GameEngine.Loader
                 {
                     Attribute attr = attrs[m];
 
-                    if (attr is InputResponseBindingOfTargetAttribute)
+                    if (attr is OnInputDispatchCallAttribute inputDispatchCallAttribute)
                     {
-                        InputResponseBindingOfTargetAttribute _attr = (InputResponseBindingOfTargetAttribute) attr;
-
-                        if (_attr.InputCode <= 0 && null == _attr.InputDataType)
+                        if (inputDispatchCallAttribute.InputCode <= 0 && null == inputDispatchCallAttribute.InputDataType)
                         {
-                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend input response method '{%s}.{%s}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend input dispatch method '{%s}.{%s}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
                         if (false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithBeanExtensionType(symMethod.MethodInfo))
                         {
-                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend input response method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend input dispatch method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
-                        Structuring.InputResponsingMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.InputResponsingMethodTypeCodeInfo();
+                        Structuring.InputCallMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.InputCallMethodTypeCodeInfo();
                         methodTypeCodeInfo.TargetType = extendClassType;
-                        methodTypeCodeInfo.InputCode = _attr.InputCode;
-                        methodTypeCodeInfo.OperationType = _attr.OperationType;
-                        methodTypeCodeInfo.InputDataType = _attr.InputDataType;
-                        methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                        methodTypeCodeInfo.InputCode = inputDispatchCallAttribute.InputCode;
+                        methodTypeCodeInfo.OperationType = inputDispatchCallAttribute.OperationType;
+                        methodTypeCodeInfo.InputDataType = inputDispatchCallAttribute.InputDataType;
+                        methodTypeCodeInfo.BehaviourType = inputDispatchCallAttribute.BehaviourType;
                         methodTypeCodeInfo.Fullname = symMethod.FullName;
                         methodTypeCodeInfo.Method = symMethod.MethodInfo;
+                        Debugger.Assert(null == inputDispatchCallAttribute.ClassType, "Cannot assigned any values to target type if current was extension function.");
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                         if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                         {
-                            bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo),
-                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
+                            bool verificated;
 
                             if (Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo))
                             {
-                                // null parameter type, skip other check process
+                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
                             }
                             else if (methodTypeCodeInfo.InputCode > 0)
                             {
                                 verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo),
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, typeof(int), typeof(int));
                             }
                             else
                             {
                                 verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo),
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, methodTypeCodeInfo.InputDataType);
                             }
 
                             // 校验失败
                             if (false == verificated)
                             {
-                                Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to extend input responsing call, loaded this method failed.", symMethod.MethodName);
+                                Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to extend input dispatch call, loaded this method failed.", symMethod.MethodName);
                                 continue;
                             }
                         }
 
                         info.AddInputCallMethodType(methodTypeCodeInfo);
                     }
-                    else if (attr is EventSubscribeBindingOfTargetAttribute)
+                    else if (attr is OnEventDispatchCallAttribute eventDispatchCallAttribute)
                     {
-                        EventSubscribeBindingOfTargetAttribute _attr = (EventSubscribeBindingOfTargetAttribute) attr;
-
-                        if (_attr.EventID <= 0 && null == _attr.EventDataType)
+                        if (eventDispatchCallAttribute.EventID <= 0 && null == eventDispatchCallAttribute.EventDataType)
                         {
-                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend event subscribe method '{%s}.{%s}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend event dispatch method '{%s}.{%s}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
                         if (false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithBeanExtensionType(symMethod.MethodInfo))
                         {
-                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend event subscribe method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend event dispatch method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
-                        Structuring.EventSubscribingMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.EventSubscribingMethodTypeCodeInfo();
+                        Structuring.EventCallMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.EventCallMethodTypeCodeInfo();
                         methodTypeCodeInfo.TargetType = extendClassType;
-                        methodTypeCodeInfo.EventID = _attr.EventID;
-                        methodTypeCodeInfo.EventDataType = _attr.EventDataType;
-                        methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                        methodTypeCodeInfo.EventID = eventDispatchCallAttribute.EventID;
+                        methodTypeCodeInfo.EventDataType = eventDispatchCallAttribute.EventDataType;
+                        methodTypeCodeInfo.BehaviourType = eventDispatchCallAttribute.BehaviourType;
                         methodTypeCodeInfo.Fullname = symMethod.FullName;
                         methodTypeCodeInfo.Method = symMethod.MethodInfo;
+                        Debugger.Assert(null == eventDispatchCallAttribute.ClassType, "Cannot assigned any values to target type if current was extension function.");
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                         if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                         {
-                            bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo),
-                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
+                            bool verificated;
 
                             if (Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo))
                             {
-                                // null parameter type, skip other check process
+                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
                             }
                             else if (methodTypeCodeInfo.EventID > 0)
                             {
                                 verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo),
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, typeof(int), typeof(object[]));
                             }
                             else
                             {
                                 verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo),
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, methodTypeCodeInfo.EventDataType);
                             }
 
                             // 校验失败
                             if (false == verificated)
                             {
-                                Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to extend event subscribing call, loaded this method failed.", symMethod.MethodName);
+                                Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to extend event dispatch call, loaded this method failed.", symMethod.MethodName);
                                 continue;
                             }
                         }
 
                         info.AddEventCallMethodType(methodTypeCodeInfo);
                     }
-                    else if (attr is MessageListenerBindingOfTargetAttribute)
+                    else if (attr is OnMessageDispatchCallAttribute messageDispatchCallAttribute)
                     {
-                        MessageListenerBindingOfTargetAttribute _attr = (MessageListenerBindingOfTargetAttribute) attr;
-
-                        if (_attr.Opcode <= 0 && null == _attr.MessageType)
+                        if (messageDispatchCallAttribute.Opcode <= 0 && null == messageDispatchCallAttribute.MessageType)
                         {
-                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend message listener method '{%s}.{%s}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend message dispatch method '{%s}.{%s}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
                         if (false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithBeanExtensionType(symMethod.MethodInfo))
                         {
-                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend message listener method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend message dispatch method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
-                        Structuring.MessageListeningMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.MessageListeningMethodTypeCodeInfo();
+                        Structuring.MessageCallMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.MessageCallMethodTypeCodeInfo();
                         methodTypeCodeInfo.TargetType = extendClassType;
-                        methodTypeCodeInfo.Opcode = _attr.Opcode;
-                        methodTypeCodeInfo.MessageType = _attr.MessageType;
-                        methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                        methodTypeCodeInfo.Opcode = messageDispatchCallAttribute.Opcode;
+                        methodTypeCodeInfo.MessageType = messageDispatchCallAttribute.MessageType;
+                        methodTypeCodeInfo.BehaviourType = messageDispatchCallAttribute.BehaviourType;
                         methodTypeCodeInfo.Fullname = symMethod.FullName;
                         methodTypeCodeInfo.Method = symMethod.MethodInfo;
+                        Debugger.Assert(null == messageDispatchCallAttribute.ClassType, "Cannot assigned any values to target type if current was extension function.");
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                         if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
                         {
-                            bool verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo),
-                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
+                            bool verificated;
 
                             if (Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo))
                             {
-                                // null parameter type, skip other check process
+                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
                             }
                             else if (methodTypeCodeInfo.Opcode > 0)
                             {
                                 verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo),
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, NetworkHandler.Instance.GetMessageProtocolType());
                             }
                             else
                             {
                                 verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo),
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, methodTypeCodeInfo.MessageType);
                             }
 
                             // 校验失败
                             if (false == verificated)
                             {
-                                Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to extend message listening call, loaded this method failed.", symMethod.MethodName);
+                                Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to extend message dispatch call, loaded this method failed.", symMethod.MethodName);
                                 continue;
                             }
                         }
 
                         info.AddMessageCallMethodType(methodTypeCodeInfo);
                     }
-                    else if (attr is ReplicateCommunicateBindingOfTargetAttribute)
+                    else if (attr is OnReplicateDispatchCallAttribute replicateDispatchCallAttribute)
                     {
-                        ReplicateCommunicateBindingOfTargetAttribute _attr = (ReplicateCommunicateBindingOfTargetAttribute) attr;
-
-                        if (string.IsNullOrEmpty(_attr.Tags) || ReplicateAnnounceType.None == _attr.AnnounceType)
+                        if (string.IsNullOrEmpty(replicateDispatchCallAttribute.Tags) || ReplicateAnnounceType.None == replicateDispatchCallAttribute.AnnounceType)
                         {
-                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend replicate communicate method '{%s}.{%s}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend replicate dispatch method '{%s}.{%s}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
                         if (false == Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCallWithBeanExtensionType(symMethod.MethodInfo))
                         {
-                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend replicate communicate method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                            Debugger.Warn(LogGroupTag.CodeLoader, "The extend replicate dispatch method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
                         }
 
-                        Structuring.ReplicateCommunicatingMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.ReplicateCommunicatingMethodTypeCodeInfo();
+                        Structuring.ReplicateCallMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.ReplicateCallMethodTypeCodeInfo();
                         methodTypeCodeInfo.TargetType = extendClassType;
-                        methodTypeCodeInfo.Tags = _attr.Tags;
-                        methodTypeCodeInfo.AnnounceType = _attr.AnnounceType;
-                        methodTypeCodeInfo.BehaviourType = _attr.BehaviourType;
+                        methodTypeCodeInfo.Tags = replicateDispatchCallAttribute.Tags;
+                        methodTypeCodeInfo.AnnounceType = replicateDispatchCallAttribute.AnnounceType;
+                        methodTypeCodeInfo.BehaviourType = replicateDispatchCallAttribute.BehaviourType;
                         methodTypeCodeInfo.Fullname = symMethod.FullName;
                         methodTypeCodeInfo.Method = symMethod.MethodInfo;
+                        Debugger.Assert(null == replicateDispatchCallAttribute.ClassType, "Cannot assigned any values to target type if current was extension function.");
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                         if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
@@ -282,7 +269,7 @@ namespace GameEngine.Loader
                             // 校验失败
                             if (false == verificated)
                             {
-                                Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to extend replicate communicating call, loaded this method failed.", symMethod.MethodName);
+                                Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to extend replicate dispatch call, loaded this method failed.", symMethod.MethodName);
                                 continue;
                             }
                         }

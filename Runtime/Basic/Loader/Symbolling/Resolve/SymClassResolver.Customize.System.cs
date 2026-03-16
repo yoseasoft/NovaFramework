@@ -112,15 +112,15 @@ namespace GameEngine.Loader.Symbolling
                         on_aspect_supported = true;
                     }
 
-                    else if (method.HasAttribute<InputResponseBindingOfTargetAttribute>(true))
+                    else if (method.HasAttribute<OnInputDispatchCallAttribute>(true))
                     {
                         // 激活扩展的目标类型的输入转发特性
-                        AutobindFeatureTypeForTargetSymbol<InputActivationAttribute>(method.ExtensionParameterType);
+                        AutobindFeatureTypeForTargetSymbol<OnInputDispatchCallAttribute>(method.ExtensionParameterType);
 
                         on_extend_supported = true;
                     }
 
-                    else if (method.HasAttribute<EventSubscribeBindingOfTargetAttribute>(true))
+                    else if (method.HasAttribute<OnEventDispatchCallAttribute>(true))
                     {
                         // 激活扩展的目标类型的事件转发特性
                         AutobindFeatureTypeForTargetSymbol<EventActivationAttribute>(method.ExtensionParameterType);
@@ -128,7 +128,7 @@ namespace GameEngine.Loader.Symbolling
                         on_extend_supported = true;
                     }
 
-                    else if (method.HasAttribute<MessageListenerBindingOfTargetAttribute>(true))
+                    else if (method.HasAttribute<OnMessageDispatchCallAttribute>(true))
                     {
                         // 激活扩展的目标类型的消息转发特性
                         AutobindFeatureTypeForTargetSymbol<MessageActivationAttribute>(method.ExtensionParameterType);
@@ -136,7 +136,7 @@ namespace GameEngine.Loader.Symbolling
                         on_extend_supported = true;
                     }
 
-                    else if (method.HasAttribute<ReplicateCommunicateBindingOfTargetAttribute>(true))
+                    else if (method.HasAttribute<OnReplicateDispatchCallAttribute>(true))
                     {
                         // 激活扩展的目标类型的同步转发特性
                         AutobindFeatureTypeForTargetSymbol<ReplicateActivationAttribute>(method.ExtensionParameterType);
@@ -149,7 +149,7 @@ namespace GameEngine.Loader.Symbolling
                         AutoFillOtherExtensionMethodFeatures(symClass, method);
                     }
                 } // method.IsExtension
-                else
+                else // 普通静态函数
                 {
                     if (!on_input_system)
                     {

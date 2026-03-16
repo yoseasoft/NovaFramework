@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -90,7 +91,7 @@ namespace GameEngine.Loader.Structuring
     /// <summary>
     /// 事件调用模块的函数结构信息
     /// </summary>
-    internal class EventCallMethodTypeCodeInfo : MethodTypeCodeInfo
+    internal sealed class EventCallMethodTypeCodeInfo : MethodTypeCodeInfo
     {
         /// <summary>
         /// 事件调用模块的监听事件标识
@@ -100,15 +101,8 @@ namespace GameEngine.Loader.Structuring
         /// 事件调用模块的监听事件数据类型
         /// </summary>
         public Type EventDataType { get; internal set; }
-    }
-
-    /// <summary>
-    /// 切面管理的订阅事件函数结构信息
-    /// </summary>
-    internal sealed class EventSubscribingMethodTypeCodeInfo : EventCallMethodTypeCodeInfo
-    {
         /// <summary>
-        /// 订阅绑定的观察行为类型
+        /// 事件调用模块的观察行为类型
         /// </summary>
         public AspectBehaviourType BehaviourType { get; internal set; }
     }

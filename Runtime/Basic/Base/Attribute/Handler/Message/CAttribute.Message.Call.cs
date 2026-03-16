@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -27,23 +28,27 @@ using System;
 namespace GameEngine
 {
     /// <summary>
-    /// 消息分发类型注册函数的属性类型定义
+    /// 消息转发类型注册函数的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     public class OnMessageDispatchCallAttribute : Attribute
     {
         /// <summary>
-        /// 派发消息的目标对象类型
+        /// 接收消息的目标对象类型
         /// </summary>
         private readonly Type _classType;
         /// <summary>
-        /// 消息操作码标识
+        /// 接收的消息操作码标识
         /// </summary>
         private readonly int _opcode;
         /// <summary>
-        /// 消息对象类型
+        /// 接收的消息对象类型
         /// </summary>
         private readonly Type _messageType;
+        /// <summary>
+        /// 接收消息的观察行为类型
+        /// </summary>
+        private readonly AspectBehaviourType _behaviourType;
 
         /// <summary>
         /// 目标对象类型获取函数
@@ -57,90 +62,38 @@ namespace GameEngine
         /// 消息对象类型获取函数
         /// </summary>
         public Type MessageType => _messageType;
-
-        public OnMessageDispatchCallAttribute(int opcode) : this(null, opcode)
-        { }
-
-        public OnMessageDispatchCallAttribute(Type messageType) : this(null, messageType)
-        { }
-
-        public OnMessageDispatchCallAttribute(Type classType, int opcode) : this(classType, opcode, null)
-        { }
-
-        public OnMessageDispatchCallAttribute(Type classType, Type messageType) : this(classType, 0, messageType)
-        { }
-
-        private OnMessageDispatchCallAttribute(Type classType, int opcode, Type messageType) : base()
-        {
-            _classType = classType;
-            _opcode = opcode;
-            _messageType = messageType;
-        }
-
         /// <summary>
-        /// 重写 Equals 方法，基于值进行比较
+        /// 消息观察行为类型获取函数
         /// </summary>
-        public override bool Equals(object obj)
-        {
-            // 1. 检查是否为同一个对象（引用相等）
-            if (ReferenceEquals(this, obj)) return true;
-            // 2. 检查对象是否为 null 或类型不同
-            if (obj is null || this.GetType() != obj.GetType()) return false;
-
-            // 3. 转换为当前类型后，比较所有关键字段的值
-            OnMessageDispatchCallAttribute other = (OnMessageDispatchCallAttribute) obj;
-            return _classType == other._classType &&
-                   _opcode == other._opcode &&
-                   _messageType == other._messageType;
-        }
-
-        /// <summary>
-        /// 重写 GetHashCode 方法，必须与 Equals 逻辑保持一致
-        /// </summary>
-        public override int GetHashCode()
-        {
-            // 使用 HashCode.Combine 来组合多个字段的哈希值，这是一个推荐的做法
-            return HashCode.Combine(_classType, _opcode, _messageType);
-        }
-    }
-
-    /// <summary>
-    /// 消息监听绑定函数的属性类型定义
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class MessageListenerBindingOfTargetAttribute : Attribute
-    {
-        /// <summary>
-        /// 消息操作码标识
-        /// </summary>
-        private readonly int _opcode;
-        /// <summary>
-        /// 消息对象类型
-        /// </summary>
-        private readonly Type _messageType;
-        /// <summary>
-        /// 监听绑定的观察行为类型
-        /// </summary>
-        private readonly AspectBehaviourType _behaviourType;
-
-        public int Opcode => _opcode;
-        public Type MessageType => _messageType;
         public AspectBehaviourType BehaviourType => _behaviourType;
 
-        public MessageListenerBindingOfTargetAttribute(int opcode) : this(opcode, null, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
+        public OnMessageDispatchCallAttribute(int opcode)
+            : this(opcode, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
         { }
 
-        public MessageListenerBindingOfTargetAttribute(int opcode, AspectBehaviourType behaviourType) : this(opcode, null, behaviourType)
+        public OnMessageDispatchCallAttribute(int opcode, AspectBehaviourType behaviourType)
+            : this(null, opcode, null, behaviourType)
         { }
 
-        public MessageListenerBindingOfTargetAttribute(Type messageType) : this(0, messageType, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
+        public OnMessageDispatchCallAttribute(Type messageType)
+            : this(messageType, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
         { }
 
-        public MessageListenerBindingOfTargetAttribute(Type messageType, AspectBehaviourType behaviourType) : this(0, messageType, behaviourType)
+        public OnMessageDispatchCallAttribute(Type messageType, AspectBehaviourType behaviourType)
+            : this(null, 0, messageType, behaviourType)
         { }
 
-        private MessageListenerBindingOfTargetAttribute(int opcode, Type messageType, AspectBehaviourType behaviourType) : base()
+        public OnMessageDispatchCallAttribute(Type classType, int opcode)
+            : this(classType, opcode, null, AspectBehaviourType.Unknown)
+        { }
+
+        public OnMessageDispatchCallAttribute(Type classType, Type messageType)
+            : this(classType, 0, messageType, AspectBehaviourType.Unknown)
+        { }
+
+        private OnMessageDispatchCallAttribute(Type classType, int opcode, Type messageType, AspectBehaviourType behaviourType) : base()
         {
+            _classType = classType;
             _opcode = opcode;
             _messageType = messageType;
             _behaviourType = behaviourType;
@@ -157,8 +110,9 @@ namespace GameEngine
             if (obj is null || this.GetType() != obj.GetType()) return false;
 
             // 3. 转换为当前类型后，比较所有关键字段的值
-            MessageListenerBindingOfTargetAttribute other = (MessageListenerBindingOfTargetAttribute) obj;
-            return _opcode == other._opcode &&
+            OnMessageDispatchCallAttribute other = (OnMessageDispatchCallAttribute) obj;
+            return _classType == other._classType &&
+                   _opcode == other._opcode &&
                    _messageType == other._messageType; // && _behaviourType == other._behaviourType;
         }
 
@@ -168,7 +122,7 @@ namespace GameEngine
         public override int GetHashCode()
         {
             // 使用 HashCode.Combine 来组合多个字段的哈希值，这是一个推荐的做法
-            return HashCode.Combine(_opcode, _messageType); // , _behaviourType);
+            return HashCode.Combine(_classType, _opcode, _messageType); // , _behaviourType);
         }
     }
 }

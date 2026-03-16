@@ -33,222 +33,222 @@ namespace GameEngine.Loader.Structuring
     internal abstract class BaseBeanCodeInfo : BeanCodeInfo
     {
         /// <summary>
-        /// 输入响应类的函数结构信息管理容器
+        /// 输入转发类的函数结构信息管理容器
         /// </summary>
-        private MethodTypeList<InputResponsingMethodTypeCodeInfo> _inputResponsingMethodTypes;
+        private MethodTypeList<InputCallMethodTypeCodeInfo> _inputDispatchingMethodTypes;
 
         /// <summary>
-        /// 事件订阅类的函数结构信息管理容器
+        /// 事件转发类的函数结构信息管理容器
         /// </summary>
-        private MethodTypeList<EventSubscribingMethodTypeCodeInfo> _eventSubscribingMethodTypes;
+        private MethodTypeList<EventCallMethodTypeCodeInfo> _eventDispatchingMethodTypes;
 
         /// <summary>
-        /// 消息监听类的函数结构信息管理容器
+        /// 消息转发类的函数结构信息管理容器
         /// </summary>
-        private MethodTypeList<MessageListeningMethodTypeCodeInfo> _messageListeningMethodTypes;
+        private MethodTypeList<MessageCallMethodTypeCodeInfo> _messageDispatchingMethodTypes;
 
         /// <summary>
-        /// 同步传输类的函数结构信息管理容器
+        /// 同步转发类的函数结构信息管理容器
         /// </summary>
-        private MethodTypeList<ReplicateCommunicatingMethodTypeCodeInfo> _replicateCommunicatingMethodTypes;
+        private MethodTypeList<ReplicateCallMethodTypeCodeInfo> _replicateDispatchingMethodTypes;
 
         /// <summary>
-        /// 获取输入响应函数列表
+        /// 获取输入转发函数列表
         /// </summary>
-        internal MethodTypeList<InputResponsingMethodTypeCodeInfo> InputResponsingMethodTypes => _inputResponsingMethodTypes;
+        internal MethodTypeList<InputCallMethodTypeCodeInfo> InputDispatchingMethodTypes => _inputDispatchingMethodTypes;
         /// <summary>
-        /// 获取事件订阅函数列表
+        /// 获取事件转发函数列表
         /// </summary>
-        internal MethodTypeList<EventSubscribingMethodTypeCodeInfo> EventSubscribingMethodTypes => _eventSubscribingMethodTypes;
+        internal MethodTypeList<EventCallMethodTypeCodeInfo> EventDispatchingMethodTypes => _eventDispatchingMethodTypes;
         /// <summary>
-        /// 获取消息监听函数列表
+        /// 获取消息转发函数列表
         /// </summary>
-        internal MethodTypeList<MessageListeningMethodTypeCodeInfo> MessageListeningMethodTypes => _messageListeningMethodTypes;
+        internal MethodTypeList<MessageCallMethodTypeCodeInfo> MessageDispatchingMethodTypes => _messageDispatchingMethodTypes;
         /// <summary>
-        /// 获取同步传输函数列表
+        /// 获取同步转发函数列表
         /// </summary>
-        internal MethodTypeList<ReplicateCommunicatingMethodTypeCodeInfo> ReplicateCommunicatingMethodTypes => _replicateCommunicatingMethodTypes;
+        internal MethodTypeList<ReplicateCallMethodTypeCodeInfo> ReplicateDispatchingMethodTypes => _replicateDispatchingMethodTypes;
 
-        #region 输入响应类结构信息操作函数
+        #region 输入转发类结构信息操作函数
 
         /// <summary>
-        /// 新增指定响应输入函数的回调句柄相关的结构信息
+        /// 新增指定输入转发函数的回调句柄相关的结构信息
         /// </summary>
         /// <param name="codeInfo">函数的结构信息</param>
-        public void AddInputResponsingMethodType(InputResponsingMethodTypeCodeInfo codeInfo)
+        public void AddInputDispatchingMethodType(InputCallMethodTypeCodeInfo codeInfo)
         {
-            if (null == _inputResponsingMethodTypes)
+            if (null == _inputDispatchingMethodTypes)
             {
-                _inputResponsingMethodTypes = new MethodTypeList<InputResponsingMethodTypeCodeInfo>();
+                _inputDispatchingMethodTypes = new MethodTypeList<InputCallMethodTypeCodeInfo>();
             }
 
-            _inputResponsingMethodTypes.Add(codeInfo);
+            _inputDispatchingMethodTypes.Add(codeInfo);
         }
 
         /// <summary>
-        /// 移除所有响应输入函数的回调句柄相关的结构信息
+        /// 移除所有输入转发函数的回调句柄相关的结构信息
         /// </summary>
-        public void RemoveAllInputResponsingMethodTypes()
+        public void RemoveAllInputDispatchingMethodTypes()
         {
-            _inputResponsingMethodTypes?.Clear();
-            _inputResponsingMethodTypes = null;
+            _inputDispatchingMethodTypes?.Clear();
+            _inputDispatchingMethodTypes = null;
         }
 
         /// <summary>
-        /// 获取当前响应输入函数回调句柄的结构信息数量
+        /// 获取当前输入转发函数回调句柄的结构信息数量
         /// </summary>
         /// <returns>返回函数回调句柄的结构信息数量</returns>
-        public int GetInputResponsingMethodTypeCount()
+        public int GetInputDispatchingMethodTypeCount()
         {
-            return _inputResponsingMethodTypes?.Count() ?? 0;
+            return _inputDispatchingMethodTypes?.Count() ?? 0;
         }
 
         /// <summary>
-        /// 获取当前响应输入函数回调句柄的结构信息容器中指索引对应的实例
+        /// 获取当前输入转发函数回调句柄的结构信息容器中指索引对应的实例
         /// </summary>
         /// <param name="index">索引值</param>
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
-        public InputResponsingMethodTypeCodeInfo GetInputResponsingMethodType(int index)
+        public InputCallMethodTypeCodeInfo GetInputDispatchingMethodType(int index)
         {
-            return _inputResponsingMethodTypes?.Get(index);
+            return _inputDispatchingMethodTypes?.Get(index);
         }
 
         #endregion
 
-        #region 事件订阅类结构信息操作函数
+        #region 事件转发类结构信息操作函数
 
         /// <summary>
-        /// 新增指定订阅事件函数的回调句柄相关的结构信息
+        /// 新增指定事件转发函数的回调句柄相关的结构信息
         /// </summary>
         /// <param name="codeInfo">函数的结构信息</param>
-        public void AddEventSubscribingMethodType(EventSubscribingMethodTypeCodeInfo codeInfo)
+        public void AddEventDispatchingMethodType(EventCallMethodTypeCodeInfo codeInfo)
         {
-            if (null == _eventSubscribingMethodTypes)
+            if (null == _eventDispatchingMethodTypes)
             {
-                _eventSubscribingMethodTypes = new MethodTypeList<EventSubscribingMethodTypeCodeInfo>();
+                _eventDispatchingMethodTypes = new MethodTypeList<EventCallMethodTypeCodeInfo>();
             }
 
-            _eventSubscribingMethodTypes.Add(codeInfo);
+            _eventDispatchingMethodTypes.Add(codeInfo);
         }
 
         /// <summary>
-        /// 移除所有订阅事件函数的回调句柄相关的结构信息
+        /// 移除所有事件转发函数的回调句柄相关的结构信息
         /// </summary>
-        public void RemoveAllEventSubscribingMethodTypes()
+        public void RemoveAllEventDispatchingMethodTypes()
         {
-            _eventSubscribingMethodTypes?.Clear();
-            _eventSubscribingMethodTypes = null;
+            _eventDispatchingMethodTypes?.Clear();
+            _eventDispatchingMethodTypes = null;
         }
 
         /// <summary>
-        /// 获取当前订阅事件函数回调句柄的结构信息数量
+        /// 获取当前事件转发函数回调句柄的结构信息数量
         /// </summary>
         /// <returns>返回函数回调句柄的结构信息数量</returns>
-        public int GetEventSubscribingMethodTypeCount()
+        public int GetEventDispatchingMethodTypeCount()
         {
-            return _eventSubscribingMethodTypes?.Count() ?? 0;
+            return _eventDispatchingMethodTypes?.Count() ?? 0;
         }
 
         /// <summary>
-        /// 获取当前订阅事件函数回调句柄的结构信息容器中指索引对应的实例
+        /// 获取当前事件转发函数回调句柄的结构信息容器中指索引对应的实例
         /// </summary>
         /// <param name="index">索引值</param>
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
-        public EventSubscribingMethodTypeCodeInfo GetEventSubscribingMethodType(int index)
+        public EventCallMethodTypeCodeInfo GetEventDispatchingMethodType(int index)
         {
-            return _eventSubscribingMethodTypes?.Get(index);
+            return _eventDispatchingMethodTypes?.Get(index);
         }
 
         #endregion
 
-        #region 消息监听类结构信息操作函数
+        #region 消息转发类结构信息操作函数
 
         /// <summary>
-        /// 新增指定消息监听函数的回调句柄相关的结构信息
+        /// 新增指定消息转发函数的回调句柄相关的结构信息
         /// </summary>
         /// <param name="codeInfo">函数的结构信息</param>
-        public void AddMessageListeningMethodType(MessageListeningMethodTypeCodeInfo codeInfo)
+        public void AddMessageDispatchingMethodType(MessageCallMethodTypeCodeInfo codeInfo)
         {
-            if (null == _messageListeningMethodTypes)
+            if (null == _messageDispatchingMethodTypes)
             {
-                _messageListeningMethodTypes = new MethodTypeList<MessageListeningMethodTypeCodeInfo>();
+                _messageDispatchingMethodTypes = new MethodTypeList<MessageCallMethodTypeCodeInfo>();
             }
 
-            _messageListeningMethodTypes.Add(codeInfo);
+            _messageDispatchingMethodTypes.Add(codeInfo);
         }
 
         /// <summary>
-        /// 移除所有消息监听函数的回调句柄相关的结构信息
+        /// 移除所有消息转发函数的回调句柄相关的结构信息
         /// </summary>
-        public void RemoveAllMessageListeningMethodTypes()
+        public void RemoveAllMessageDispatchingMethodTypes()
         {
-            _messageListeningMethodTypes?.Clear();
-            _messageListeningMethodTypes = null;
+            _messageDispatchingMethodTypes?.Clear();
+            _messageDispatchingMethodTypes = null;
         }
 
         /// <summary>
-        /// 获取当前消息监听函数回调句柄的结构信息数量
+        /// 获取当前消息转发函数回调句柄的结构信息数量
         /// </summary>
         /// <returns>返回函数回调句柄的结构信息数量</returns>
-        public int GetMessageListeningMethodTypeCount()
+        public int GetMessageDispatchingMethodTypeCount()
         {
-            return _messageListeningMethodTypes?.Count() ?? 0;
+            return _messageDispatchingMethodTypes?.Count() ?? 0;
         }
 
         /// <summary>
-        /// 获取当前消息监听函数回调句柄的结构信息容器中指索引对应的实例
+        /// 获取当前消息转发函数回调句柄的结构信息容器中指索引对应的实例
         /// </summary>
         /// <param name="index">索引值</param>
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
-        public MessageListeningMethodTypeCodeInfo GetMessageListeningMethodType(int index)
+        public MessageCallMethodTypeCodeInfo GetMessageDispatchingMethodType(int index)
         {
-            return _messageListeningMethodTypes?.Get(index);
+            return _messageDispatchingMethodTypes?.Get(index);
         }
 
         #endregion
 
-        #region 同步传输类结构信息操作函数
+        #region 同步转发类结构信息操作函数
 
         /// <summary>
-        /// 新增指定同步传输函数的回调句柄相关的结构信息
+        /// 新增指定同步转发函数的回调句柄相关的结构信息
         /// </summary>
         /// <param name="codeInfo">函数的结构信息</param>
-        public void AddReplicateCommunicatingMethodType(ReplicateCommunicatingMethodTypeCodeInfo codeInfo)
+        public void AddReplicateDispatchingMethodType(ReplicateCallMethodTypeCodeInfo codeInfo)
         {
-            if (null == _replicateCommunicatingMethodTypes)
+            if (null == _replicateDispatchingMethodTypes)
             {
-                _replicateCommunicatingMethodTypes = new MethodTypeList<ReplicateCommunicatingMethodTypeCodeInfo>();
+                _replicateDispatchingMethodTypes = new MethodTypeList<ReplicateCallMethodTypeCodeInfo>();
             }
 
-            _replicateCommunicatingMethodTypes.Add(codeInfo);
+            _replicateDispatchingMethodTypes.Add(codeInfo);
         }
 
         /// <summary>
-        /// 移除所有同步传输函数的回调句柄相关的结构信息
+        /// 移除所有同步转发函数的回调句柄相关的结构信息
         /// </summary>
-        public void RemoveAllReplicateCommunicatingMethodTypes()
+        public void RemoveAllReplicateDispatchingMethodTypes()
         {
-            _replicateCommunicatingMethodTypes?.Clear();
-            _replicateCommunicatingMethodTypes = null;
+            _replicateDispatchingMethodTypes?.Clear();
+            _replicateDispatchingMethodTypes = null;
         }
 
         /// <summary>
-        /// 获取当前同步传输函数回调句柄的结构信息数量
+        /// 获取当前同步转发函数回调句柄的结构信息数量
         /// </summary>
         /// <returns>返回函数回调句柄的结构信息数量</returns>
-        public int GetReplicateCommunicatingMethodTypeCount()
+        public int GetReplicateDispatchingMethodTypeCount()
         {
-            return _replicateCommunicatingMethodTypes?.Count() ?? 0;
+            return _replicateDispatchingMethodTypes?.Count() ?? 0;
         }
 
         /// <summary>
-        /// 获取当前同步传输函数回调句柄的结构信息容器中指索引对应的实例
+        /// 获取当前同步转发函数回调句柄的结构信息容器中指索引对应的实例
         /// </summary>
         /// <param name="index">索引值</param>
         /// <returns>返回给定索引值对应的实例，若不存在对应实例则返回null</returns>
-        public ReplicateCommunicatingMethodTypeCodeInfo GetReplicateCommunicatingMethodType(int index)
+        public ReplicateCallMethodTypeCodeInfo GetReplicateDispatchingMethodType(int index)
         {
-            return _replicateCommunicatingMethodTypes?.Get(index);
+            return _replicateDispatchingMethodTypes?.Get(index);
         }
 
         #endregion
