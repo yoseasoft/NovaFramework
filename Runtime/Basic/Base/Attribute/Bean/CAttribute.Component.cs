@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -51,13 +52,14 @@ namespace GameEngine
         /// </summary>
         public int Priority => _priority;
 
+        public CComponentClassAttribute() : this(null, 0)
+        { }
+
         public CComponentClassAttribute(string componentName) : this(componentName, 0)
-        {
-        }
+        { }
 
         public CComponentClassAttribute(int priority) : this(null, priority)
-        {
-        }
+        { }
 
         public CComponentClassAttribute(string componentName, int priority) : base()
         {

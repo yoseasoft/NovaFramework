@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +33,9 @@ namespace GameEngine
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class CActorClassAttribute : CEntityDeclareClassAttribute
     {
+        public CActorClassAttribute() : this(null, 0)
+        { }
+
         public CActorClassAttribute(string actorName) : this(actorName, 0)
         { }
 

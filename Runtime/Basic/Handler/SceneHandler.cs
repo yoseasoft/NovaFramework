@@ -326,7 +326,7 @@ namespace GameEngine
                 // 关闭场景对象实例
                 Call(scene, scene.Shutdown, AspectBehaviourType.Shutdown);
 
-                _Profiler.CallStat(Profiler.Statistics.StatCode.SceneExit, scene);
+                CProfiler.CallStat(Profiler.Statistics.StatCode.SceneExit, scene);
 
                 // 移除实例
                 RemoveEntity(scene);
@@ -346,7 +346,7 @@ namespace GameEngine
                 return null;
             }
 
-            _Profiler.CallStat(Profiler.Statistics.StatCode.SceneEnter, scene);
+            CProfiler.CallStat(Profiler.Statistics.StatCode.SceneEnter, scene);
 
             // 设置当前场景类型
             _currentSceneType = sceneType;

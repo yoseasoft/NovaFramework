@@ -435,7 +435,7 @@ namespace GameEngine
         /// <param name="inputType">输入类型</param>
         public void RemoveInputResponse(MethodInfo methodInfo, Type inputType)
         {
-            string fullname = _Generator.GenUniqueName(methodInfo);
+            string fullname = CGenerator.GenUniqueName(methodInfo);
 
             RemoveInputResponse(fullname, inputType);
         }

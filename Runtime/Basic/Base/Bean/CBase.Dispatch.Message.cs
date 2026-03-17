@@ -275,7 +275,7 @@ namespace GameEngine
         /// <param name="opcode">协议操作码</param>
         protected internal void RemoveMessageListener(MethodInfo methodInfo, int opcode)
         {
-            string fullname = _Generator.GenUniqueName(methodInfo);
+            string fullname = CGenerator.GenUniqueName(methodInfo);
 
             RemoveMessageListener(fullname, opcode);
         }

@@ -243,7 +243,7 @@ namespace GameEngine
                 throw new NovaEngine.CFrameworkException();
             }
 
-            _Profiler.CallStat(Profiler.Statistics.StatCode.ViewCreate, view);
+            CProfiler.CallStat(Profiler.Statistics.StatCode.ViewCreate, view);
 
             // 添加实例到管理容器中
             OnGroupBindingForTargetView(view);
@@ -443,7 +443,7 @@ namespace GameEngine
             // 从管理容器中移除实例
             OnGroupUnbindingForTargetView(view);
 
-            _Profiler.CallStat(Profiler.Statistics.StatCode.ViewClose, view);
+            CProfiler.CallStat(Profiler.Statistics.StatCode.ViewClose, view);
 
             // 移除视图实例
             RemoveEntity(view);

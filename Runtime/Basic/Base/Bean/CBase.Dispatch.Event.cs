@@ -391,7 +391,7 @@ namespace GameEngine
         /// <param name="eventID">事件标识</param>
         public void Unsubscribe(MethodInfo methodInfo, int eventID)
         {
-            string fullname = _Generator.GenUniqueName(methodInfo);
+            string fullname = CGenerator.GenUniqueName(methodInfo);
 
             Unsubscribe(fullname, eventID);
         }
@@ -462,7 +462,7 @@ namespace GameEngine
         /// <param name="eventType">事件类型</param>
         public void Unsubscribe(MethodInfo methodInfo, Type eventType)
         {
-            string fullname = _Generator.GenUniqueName(methodInfo);
+            string fullname = CGenerator.GenUniqueName(methodInfo);
 
             Unsubscribe(fullname, eventType);
         }

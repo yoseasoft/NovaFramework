@@ -1126,7 +1126,7 @@ namespace GameEngine
                 _componentReplicateDispatchList.Add(component);
             }
 
-            _Profiler.CallStat(Profiler.Statistics.StatCode.ComponentAdd, component);
+            CProfiler.CallStat(Profiler.Statistics.StatCode.ComponentAdd, component);
 
             // 启动组件实例
             Call(component.Startup, AspectBehaviourType.Startup);
@@ -1293,7 +1293,7 @@ namespace GameEngine
             // 关闭组件实例
             Call(component.Shutdown, AspectBehaviourType.Shutdown);
 
-            _Profiler.CallStat(Profiler.Statistics.StatCode.ComponentRemove, component);
+            CProfiler.CallStat(Profiler.Statistics.StatCode.ComponentRemove, component);
 
             _componentInputDispatchList.Remove(component);
             _componentEventDispatchList.Remove(component);

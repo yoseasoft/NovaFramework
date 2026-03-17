@@ -33,7 +33,7 @@ namespace GameEngine
         private static void BeforeRunGame()
         {
             // 启动分析器
-            _Profiler.Startup();
+            CProfiler.Startup();
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace GameEngine
         private static void AfterStopGame()
         {
             // 关闭分析器
-            _Profiler.Shutdown();
+            CProfiler.Shutdown();
         }
     }
 }

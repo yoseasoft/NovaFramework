@@ -64,7 +64,7 @@ namespace GameEngine.Loader.Symbolling
 
         protected SymBase()
         {
-            _uid = _Generator.GenSymbolId();
+            _uid = CGenerator.GenSymbolId();
         }
 
         ~SymBase()

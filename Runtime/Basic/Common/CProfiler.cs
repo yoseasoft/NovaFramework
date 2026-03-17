@@ -2,7 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -23,43 +23,59 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
-    /// 用于框架内部的生成工具
-    static partial class _Generator
+    /// <summary>
+    /// 用于框架内部的统计调用，集中控制业务统计相关的调度转发流程<br/>
+    /// <br/>
+    /// 注意：当正式版发布时，将忽略所有的统计信息
+    /// </summary>
+    static class CProfiler
     {
         /// <summary>
-        /// 生成实体类型对象实例的唯一会话标识
+        /// 统计模块启动函数
         /// </summary>
-        /// <returns>返回唯一会话标识</returns>
-        public static int GenBeanId()
+        public static void Startup()
         {
-            return GenSessionId("GameEngine.Bean");
+            if (NovaEngine.Configuration.DebuggerWindowMode)
+            {
+                NovaEngine.AppEntry.RegisterComponent<Profiler.Debugging.DebuggerComponent>(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
+            }
+
+            if (NovaEngine.Configuration.AutoStatisticsMode)
+            {
+                Profiler.Statistics.Statistician.Startup();
+            }
         }
 
         /// <summary>
-        /// 生成标记类型对象实例的唯一会话标识
+        /// 统计模块关闭函数
         /// </summary>
-        /// <returns>返回唯一会话标识</returns>
-        public static int GenSymbolId()
+        public static void Shutdown()
         {
-            return GenSessionId("GameEngine.Symbol");
+            if (NovaEngine.Configuration.AutoStatisticsMode)
+            {
+                Profiler.Statistics.Statistician.Shutdown();
+            }
+
+            if (NovaEngine.Configuration.DebuggerWindowMode)
+            {
+                NovaEngine.AppEntry.UnregisterComponent(Profiler.Debugging.DebuggerComponent.MOUNTING_GAMEOBJECT_NAME);
+            }
         }
 
         /// <summary>
-        /// 生成唯一会话标识<br/>
-        /// 该方法为非安全模式，适用于主线程逻辑调度
+        /// 统计模块处理调用函数
         /// </summary>
-        /// <param name="name">标识名称</param>
-        /// <returns>返回唯一会话标识</returns>
+        /// <param name="funcType">功能类型</param>
+        /// <param name="args">参数列表</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int GenSessionId(string name)
+        public static void CallStat(int funcType, params object[] args)
         {
-            return NovaEngine.Session.UnsafeNextSession(name);
+            if (Profiler.Statistics.Statistician.IsOnStarting)
+                Profiler.Statistics.Statistician.Call(funcType, args);
         }
     }
 }

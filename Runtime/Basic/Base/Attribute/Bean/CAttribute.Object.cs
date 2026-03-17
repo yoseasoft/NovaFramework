@@ -52,13 +52,14 @@ namespace GameEngine
         /// </summary>
         public int Priority => _priority;
 
+        public CObjectClassAttribute() : this(null, 0)
+        { }
+
         public CObjectClassAttribute(string objectName) : this(objectName, 0)
-        {
-        }
+        { }
 
         public CObjectClassAttribute(int priority) : this(null, priority)
-        {
-        }
+        { }
 
         public CObjectClassAttribute(string objectName, int priority) : base()
         {

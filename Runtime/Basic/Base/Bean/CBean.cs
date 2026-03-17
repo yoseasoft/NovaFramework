@@ -104,7 +104,7 @@ namespace GameEngine
         /// </summary>
         public virtual void Initialize()
         {
-            _beanId = _Generator.GenBeanId();
+            _beanId = CGenerator.GenBeanId();
             // _beanType = GetType();
         }
 

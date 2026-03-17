@@ -341,7 +341,7 @@ namespace GameEngine
 
             BeanController.Instance.RegBeanLifecycleNotification(AspectBehaviourType.Start, obj);
 
-            _Profiler.CallStat(Profiler.Statistics.StatCode.ObjectCreate, obj);
+            CProfiler.CallStat(Profiler.Statistics.StatCode.ObjectCreate, obj);
 
             return obj;
         }
@@ -358,7 +358,7 @@ namespace GameEngine
                 return;
             }
 
-            _Profiler.CallStat(Profiler.Statistics.StatCode.ObjectRelease, obj);
+            CProfiler.CallStat(Profiler.Statistics.StatCode.ObjectRelease, obj);
 
             BeanController.Instance.UnregBeanLifecycleNotification(obj);
 
