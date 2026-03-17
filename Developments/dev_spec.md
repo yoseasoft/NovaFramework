@@ -185,23 +185,24 @@ public class AttributeComponent : GameEngine.CComponent
 static void OnRecvClickEvent(int eventId, params object[] args)
 { ... }
 
-// 接收 LevelupNotify 的事件通知
+// 接收 LevelupNotify 类型的事件通知
 [OnEvent(typeof(AttributeComponent.LevelupNotify))]
 static void OnRecvLevelupNotify(AttributeComponent.LevelupNotify eventData)
 { ... }
 
-// 针对指定实体对象类型的事件数据转发
-[OnGlobalEvent(typeof(MainScene), typeof(LoginClickEvent))]
+// 所有 MainScene 实体对象实例将接收到 LoginClickEvent 类型的事件通知
+[OnEvent(typeof(MainScene), typeof(LoginClickEvent))]
 static void OnRecvClickEvent(MainScene mainScene, LoginClickEvent eventData)
 { ... }
 
-// 针对指定实体对象实例的事件数据转发
-[OnBeanInput(1001)]
+// 通过 MainScene 实体对象的扩展函数实现其实例接收到 1001 的事件通知
+[OnEvent(1001)]
 static void OnRecvClickEvent(this MainScene self, int eventId, params object[] args)
 { ... }
 ```
 
-当业务层输入行为被触发后（`Unity`捕获到输入按键或通过框架的模拟按键主动发送），将自动触发绑定了相关按键信息的接口函数执行；  
+当业务层发送指定事件时，所有绑定了相关事件类型的接口函数将自动触发执行；  
+如何发送不同类型数据的事件，请参考`API`文档中关于事件发送相关的接口定义。  
 
 #### 3.2.3 消息通知接口定义
 ```csharp
