@@ -1,6 +1,6 @@
-# NovaFramework 开发规范指南
+# `NovaFramework`开发规范指南
 
-> 该文档是开发助手指南，指导如何在`NovaFramework`框架中进行业务开发；  
+> 本文档是开发助手指南，指导如何在`NovaFramework`框架中进行业务开发。  
 
 ## 目录
 
@@ -122,7 +122,23 @@ static class PlayerSystem
 
 ---
 
-### 3.2 数据推送
+### 3.2 `CEntity`、`CComponent`和`System`之间的关系
+
+`CEntity`是一个实体标识类，用于唯一标识游戏世界中的一个对象（如角色，场景，UI等），
+其自身只包含标识性数据，和少量多业务整合处理的逻辑，大部分情况下仅作为`CComponent`的容器使用。  
+通过在`CEntity`中定义`ReplicateId`特性标签来绑定该类型实体对象的唯一区分标识，从而达到不同实例间数据绑定的目的；  
+
+`CComponent`是一个组件标识类，用于描述`CEntity`的某一方面属性或状态（如位置，生命，速度等），
+也可以表示某一种业务流程，而没有任何数据定义。  
+在同一个`CEntity`实例中，同类型的组件对象只允许存在一个实例，当`CEntity`对象加载了某个组件类型，
+就同时具备了该组件所负责的具体业务的能力，所有向该实体对象转发的数据，也都会被转发给该实体对象下的所有组件。  
+
+`System`是一个负责具体业务逻辑处理的类，它必须依附于一个实体对象或组件，提供具体业务的逻辑服务；
+每一个`System`类，都单独服务一个指定的`CBean`对象类，包括但不限于生命周期调度，及数据通知处理等。  
+
+---
+
+### 3.3 数据推送
 
 框架的驱动是以数据为核心，引擎将数据分为以下四类：
 - 输入数据：设备IO传入的数据，如键盘、鼠标等；
@@ -133,13 +149,13 @@ static class PlayerSystem
 在业务系统中，可以通过绑定标签的方式，来接收数据的通知。  
 不同模块的业务系统之间，正是通过上述数据的通知来进行联动的。  
 
-#### 3.2.1 输入通知接口定义
+#### 3.3.1 输入通知接口定义
 
 输入数据分为两种类型：
 - 按键编码：采集`UnityEngine.KeyCode`按键信息及按键状态（按下、释放、移动或双击等）
 - 自定义数据结构：将摇杆、触屏点击等信息封装后的数据结构
 
-在业务逻辑中，通过定义接收函数及对应的输入标签，来捕获对应的输入数据通知
+在业务逻辑中，通过定义接收函数及输入标签，来捕获对应的输入数据通知
 ```csharp
 // 接收空格和返回按键的释放信息
 [OnInput((int) UnityEngine.KeyCode.Space, GameEngine.InputOperationType.Released)]
@@ -160,7 +176,7 @@ static void OnRecvSpacePressed(this MainScene self, int keyCode, int operationTy
 
 当输入行为被触发后（`Unity`捕获到输入按键或通过框架的模拟按键主动发送），将自动触发绑定了相关按键信息的接口函数执行；  
 
-#### 3.2.2 事件通知接口定义
+#### 3.3.2 事件通知接口定义
 
 事件数据分为两种类型：
 - 事件标识：全局唯一的`int`类型标识，用于区分不同的事件通知
@@ -177,7 +193,7 @@ public class AttributeComponent : GameEngine.CComponent
 }
 ```
 
-在业务逻辑中，通过定义接收函数及对应的事件标签，来捕获对应的事件数据通知
+在业务逻辑中，通过定义接收函数及事件标签，来捕获对应的事件数据通知
 ```csharp
 // 接收 1001 和 1002 的事件通知
 [OnEvent(1001)]
@@ -204,23 +220,46 @@ static void OnRecvClickEvent(this MainScene self, int eventId, params object[] a
 当业务层发送指定事件时，所有绑定了相关事件类型的接口函数将自动触发执行；  
 如何发送不同类型数据的事件，请参考`API`文档中关于事件发送相关的接口定义。  
 
-#### 3.2.3 消息通知接口定义
+#### 3.3.3 消息通知接口定义
+
+消息数据分为两种类型：
+- 操作码：区分不同消息对象的唯一编码标识，一般在定义消息对象是会同步定义该编码
+- 消息对象：消息对象类型，根据当前所使用的协议类型来定义
 ```csharp
-// 针对全局的消息数据转发
-[OnGlobalMessage(typeof(PlayerLevelup)]
-static void OnRecvLevelupMessage(PlayerLevelup message)
+[ProtoContract]
+[Message(ProtoOpcode.EnterWorldResp)] // 此处为当前消息的操作码
+public partial class EnterWorldResp : Object, IMessage // 消息对象
+{
+    [ProtoMember(1)]
+    public int Code { get; set; }
+    ...
+}
+```
+
+在业务逻辑中，通过定义接收函数及消息标签，来捕获对应的消息数据通知
+```csharp
+// 接收指定操作码的消息通知
+[OnMessage(ProtoOpcode.EnterMapResp)]
+[OnMessage(ProtoOpcode.LeaveMapResp)]
+static void OnRecvEnterMapMessage(ProtoBuf.Extension.IMessage msg) // 用 protobuf 协议进行演示
 { ... }
 
-// 针对指定实体对象类型的消息数据转发
-[OnGlobalMessage(typeof(MainScene), typeof(PlayerLevelup))]
-static void OnRecvClickEvent(MainScene mainScene, PlayerLevelup message)
+// 所有 MainScene 实体对象实例将接收到 EnterMapResp 类型的消息通知
+[OnMessage(typeof(MainScene), typeof(EnterMapResp))]
+static void OnRecvClickEvent(MainScene mainScene, EnterMapResp message)
 { ... }
 
-// 针对指定实体对象实例的消息数据转发
-[OnBeanMessage(typeof(PlayerLevelup))]
-static void OnRecvClickEvent(this MainScene self, PlayerLevelup message)
+// 通过 MainScene 实体对象的扩展函数实现其实例接收到 EnterMapResp 的消息通知
+[OnMessage(typeof(EnterMapResp))]
+static void OnRecvClickEvent(this MainScene self, EnterMapResp message)
 { ... }
 ```
+
+通常情况下，业务层打通网络连接后就可以正常接收到服务端下行的消息数据，也可以通过模拟接口自行发送消息数据进行测试；  
+
+#### 3.3.4 同步通知接口定义
+
+暂无，后续再行补充。
 
 ---
 
@@ -228,12 +267,14 @@ static void OnRecvClickEvent(this MainScene self, PlayerLevelup message)
 
 | 类型 | 规范 | 示例 |
 |------|-----|------|
-| 文件 | 小写字母 + 下划线 | `basic.lua`, `mail_sys.lua` |
-| 函数 | 驼峰命名 | `encodeInfo()`, `sendMail()` |
-| 变量 | 驼峰命名 | `playerName`, `itemList` |
-| 私有变量 | 下划线前缀 | `_privateVar`, `__data` |
+| 文件 | 帕斯卡命名 | `MainScene.cs`, `MainSys.cs` |
+| 类/结构 | 帕斯卡命名 | `MainScene`, `MailSys` |
+| 枚举 | 帕斯卡命名 | `UserState`, `InputCode` |
+| 函数 | 帕斯卡命名 | `EnterWorld()`, `SendMail()` |
+| 属性 | 帕斯卡命名 | `PlayerName`, `ItemList` |
+| 字段/变量 | 驼峰命名 | `playerName`, `itemList` |
+| 私有字段 | 下划线前缀 | `_privateVar`, `__data` |
 | 常量 | 全大写 + 下划线 | `MAX_RETRY_TIMES` |
-| 类/类型 | 帕斯卡命名 | `BasicCom`, `MailSys` |
 
 ---
 
