@@ -4,6 +4,11 @@
 
 ## 目录
 
+1. [项目概览](#1-项目概览)
+1. [目录结构](#2-目录结构)
+1. [核心概念](#3-核心概念)
+1. [命名规范](#4-命名规范)
+
 ---
 
 ## 1. 项目概览
@@ -20,7 +25,7 @@
 
 ---
 
-## 2. 目录规范
+## 2. 目录结构
 
 业务系统开发的推荐目录结构如下：
 
@@ -182,7 +187,8 @@ static void OnRecvSpacePressed(this MainScene self, int keyCode, int operationTy
 - 事件标识：全局唯一的`int`类型标识，用于区分不同的事件通知
 - 自定义数据结构：`struct`类型的对象，可以定义在实体对象类的内部，但访问权限必须是公有的
 ```csharp
-public class AttributeComponent : GameEngine.CComponent
+[CComponentClass("AttributeComponent")]
+public class AttributeComponent : GameEngine.CComponent // 定义一个名称为 AttributeComponent 的组件对象
 {
     ...
     // 针对属性业务的自定义事件的数据结构
