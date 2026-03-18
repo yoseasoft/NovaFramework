@@ -187,3 +187,61 @@ AttributeComponent comp = GameEngine.GameApi.GetCurrentSceneComponent("Attribute
 
 ### 1.2.2 角色对象
 
+我们可以通过框架提供的`API`来获取当前已创建的所有角色对象实例：
+```csharp
+IReadOnlyList<CActor> actors = GameEngine.GameApi.GetAllActors();
+```
+
+也可以通过指定类型来获取当前已创建的角色对象实例：
+```csharp
+IReadOnlyList<Player> players = GameEngine.GameApi.GetActor<Player>();
+```
+
+或者通过指定名称来获取当前已创建的角色对象实例：
+```csharp
+IReadOnlyList<CActor> players = GameEngine.GameApi.GetActor("LocalPlayer");
+```
+
+### 1.2.3 视图对象
+
+因为框架限定了相同类型的视图对象只允许同时存在一个实例，所以我们可以通过指定的视图类型来获取对应的视图对象实例：
+```csharp
+LoginPanel panel = GameEngine.GameApi.FindUI<LoginPanel>();
+```
+
+或者通过指定的视图名称来获取对应的视图对象实例：
+```csharp
+LoginPanel panel = GameEngine.GameApi.FindUI("GameLoginPanel") as LoginPanel;
+```
+
+由于视图在创建过程中需要异步加载资源，所以上述接口返回的视图对象实例可能尚未启动完成，无法在业务层直接使用。
+因此，我们也提供了一套异步查询接口，用于确保获取到的视图对象实例是完整可用的。  
+与常规获取函数类似，通过指定的视图类型以异步的方式来获取对应的视图对象实例：
+```csharp
+LoginPanel panel = await GameEngine.GameApi.AsyncFindUI<LoginPanel>();
+```
+
+也可以通过指定的视图名称以异步的方式来获取对应的视图对象实例：
+```csharp
+LoginPanel panel = await GameEngine.GameApi.AsyncFindUI("GameLoginPanel") as LoginPanel;
+```
+
+### 1.2.4 常规对象
+
+我们可以通过框架提供的`API`来获取当前已创建的所有常规对象实例：
+```csharp
+IReadOnlyList<CObject> objects = GameEngine.GameApi.GetAllObjects();
+```
+
+也可以通过指定类型来获取当前已创建的常规对象实例：
+```csharp
+IReadOnlyList<MonthlyCardActivityObject> players = GameEngine.GameApi.GetObject<MonthlyCardActivityObject>();
+```
+
+或者通过指定名称来获取当前已创建的常规对象实例：
+```csharp
+IReadOnlyList<CObject> objects = GameEngine.GameApi.GetObject("MonthlyCardActivity");
+```
+
+### 1.2.5 组件对象
+
