@@ -1,13 +1,13 @@
-# Nova Framework
+# `NovaFramework`
 
 ## 简介
 
-Nova Framework 是一个基于Unity引擎打造的游戏开发框架；  
-该框架是一个完整的，集API封装，驱动管理，统筹调度，数据推送等功能于一体的引擎框架；  
+`NovaFramework`是一个基于`Unity`引擎打造的游戏开发框架；  
+该框架是一个完整的，集`API`封装，驱动管理，统筹调度，数据推送等功能于一体的引擎框架；  
 您可以基于该框架，非常轻松的搭建一个稳定的游戏项目；  
 
-该框架主要提供一种新的编程模式 ECP （Entity-Component-Presenter），  
-它集合了 MVC ， ECS 等以数据驱动为核心的设计模式中的优势，所构建的以业务并发调度为目标的开发框架。  
+该框架主要提供一种新的编程模式`ECMS`（`Entity-Component-Micro-System`），  
+它集合了`MVC`，`ECS`等以数据驱动为核心的设计模式中的优势，所构建的以业务并发调度为目标的开发框架。  
 其内部自定义了一组实体生命周期调度节点，并围绕这些节点进行自动流程注入的运行模式。  
 
 关于具体的功能模块，可以前往[说明文档](Documents/index.md)查阅了解。
@@ -28,7 +28,7 @@ git clone https://github.com/yoseasoft/NovaFramework.git
 
 ### 也可以
 
-在 Unity 包管理器中，使用 Git URL 添加 NovaFramework 核心包。
+在`Unity`包管理器中，使用`Git URL`添加`NovaFramework`核心包。
 
 1. 打开 Unity Editor
 

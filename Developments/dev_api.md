@@ -245,3 +245,18 @@ IReadOnlyList<CObject> objects = GameEngine.GameApi.GetObject("MonthlyCardActivi
 
 ### 1.2.5 组件对象
 
+组件对象实例通常依附于某个实体对象实例而存在，因此，我们需要通过实体对象实例才能获取到它内部加载的组件对象实例。  
+我们可以通过框架提供的`API`来获取目标实体对象实例中所有组件对象实例：
+```csharp
+IReadOnlyList<CComponent> components = player.GetAllComponents();
+```
+
+也可以通过指定的组件类型来获取目标实体对象实例中对应的组件对象实例：
+```csharp
+AttributeComponent comp = player.GetComponent<AttributeComponent>();
+```
+
+或者通过指定的组件名称来获取目标实体对象实例中对应的组件对象实例：
+```csharp
+AttributeComponent comp = player.GetComponent("AttributeComp") as AttributeComponent;
+```
