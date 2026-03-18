@@ -173,9 +173,42 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewName">视图名称</param>
         /// <param name="userData">用户数据</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void OpenUI(string viewName, object userData = null)
+        {
+            AsyncOpenUI(viewName, userData).Forget();
+        }
+
+        /// <summary>
+        /// 通过指定的视图类型动态创建一个对应的视图对象实例
+        /// </summary>
+        /// <typeparam name="T">视图类型</typeparam>
+        /// <param name="userData">用户数据</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void OpenUI<T>(object userData = null) where T : CView
+        {
+            AsyncOpenUI<T>(userData).Forget();
+        }
+
+        /// <summary>
+        /// 通过指定的视图类型动态创建一个对应的视图对象实例
+        /// </summary>
+        /// <param name="viewType">视图类型</param>
+        /// <param name="userData">用户数据</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void OpenUI(Type viewType, object userData = null)
+        {
+            AsyncOpenUI(viewType, userData).Forget();
+        }
+
+        /// <summary>
+        /// 通过指定的视图名称异步动态创建一个对应的视图对象实例
+        /// </summary>
+        /// <param name="viewName">视图名称</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<CView> OpenUI(string viewName, object userData = null)
+        public async UniTask<CView> AsyncOpenUI(string viewName, object userData = null)
         {
             if (false == _entityClassTypes.TryGetValue(viewName, out Type viewType))
             {
@@ -184,17 +217,17 @@ namespace GameEngine
             }
 
             // 视图对象实例化
-            return await OpenUI(viewType, userData);
+            return await AsyncOpenUI(viewType, userData);
         }
 
         /// <summary>
-        /// 通过指定的视图类型动态创建一个对应的视图对象实例
+        /// 通过指定的视图类型异步动态创建一个对应的视图对象实例
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
         /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<T> OpenUI<T>(object userData = null) where T : CView
+        public async UniTask<T> AsyncOpenUI<T>(object userData = null) where T : CView
         {
             Type viewType = typeof(T);
             if (false == _entityClassTypes.Values.Contains(viewType))
@@ -204,16 +237,16 @@ namespace GameEngine
             }
 
             // 视图对象实例化
-            return await OpenUI(viewType, userData) as T;
+            return await AsyncOpenUI(viewType, userData) as T;
         }
 
         /// <summary>
-        /// 通过指定的视图类型动态创建一个对应的视图对象实例
+        /// 通过指定的视图类型异步动态创建一个对应的视图对象实例
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
-        public async UniTask<CView> OpenUI(Type viewType, object userData = null)
+        public async UniTask<CView> AsyncOpenUI(Type viewType, object userData = null)
         {
             Debugger.Assert(viewType, NovaEngine.ErrorText.InvalidArguments);
             if (false == _entityClassTypes.Values.Contains(viewType))
@@ -225,7 +258,7 @@ namespace GameEngine
             }
 
             // 不允许重复创建
-            CView view = await FindUIAsync(viewType);
+            CView view = await AsyncFindUI(viewType);
             if (null != view)
             {
                 return view;
@@ -377,11 +410,11 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 通过指定的视图类型获取对应的视图对象实例
+        /// 通过指定的视图类型异步查找对应的视图对象实例
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
-        public async UniTask<T> FindUIAsync<T>() where T : CView
+        public async UniTask<T> AsyncFindUI<T>() where T : CView
         {
             Type viewType = typeof(T);
             if (false == _entityClassTypes.Values.Contains(viewType))
@@ -390,15 +423,15 @@ namespace GameEngine
                 return null;
             }
 
-            return await FindUIAsync(viewType) as T;
+            return await AsyncFindUI(viewType) as T;
         }
 
         /// <summary>
-        /// 通过指定的视图类型查找对应的视图对象实例
+        /// 通过指定的视图类型异步查找对应的视图对象实例
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
-        public async UniTask<CView> FindUIAsync(Type viewType)
+        public async UniTask<CView> AsyncFindUI(Type viewType)
         {
             foreach (CView view in Entities)
             {

@@ -594,11 +594,10 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewName">视图名称</param>
         /// <param name="userData">用户数据</param>
-        /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async UniTask<CView> OpenUI(string viewName, object userData = null)
+        public static void OpenUI(string viewName, object userData = null)
         {
-            return await GuiHandler.Instance.OpenUI(viewName, userData);
+            GuiHandler.Instance.OpenUI(viewName, userData);
         }
 
         /// <summary>
@@ -606,11 +605,10 @@ namespace GameEngine
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
         /// <param name="userData">用户数据</param>
-        /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async UniTask<T> OpenUI<T>(object userData = null) where T : CView
+        public static void OpenUI<T>(object userData = null) where T : CView
         {
-            return await GuiHandler.Instance.OpenUI<T>(userData);
+            GuiHandler.Instance.OpenUI<T>(userData);
         }
 
         /// <summary>
@@ -618,11 +616,46 @@ namespace GameEngine
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <param name="userData">用户数据</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void OpenUI(Type viewType, object userData = null)
+        {
+            GuiHandler.Instance.OpenUI(viewType, userData);
+        }
+
+        /// <summary>
+        /// 根据指定的视图名称异步动态创建一个对应的视图对象实例
+        /// </summary>
+        /// <param name="viewName">视图名称</param>
+        /// <param name="userData">用户数据</param>
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async UniTask<CView> OpenUI(Type viewType, object userData = null)
+        public static async UniTask<CView> AsyncOpenUI(string viewName, object userData = null)
         {
-            return await GuiHandler.Instance.OpenUI(viewType, userData);
+            return await GuiHandler.Instance.AsyncOpenUI(viewName, userData);
+        }
+
+        /// <summary>
+        /// 根据指定的视图类型异步动态创建一个对应的视图对象实例
+        /// </summary>
+        /// <typeparam name="T">视图类型</typeparam>
+        /// <param name="userData">用户数据</param>
+        /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static async UniTask<T> AsyncOpenUI<T>(object userData = null) where T : CView
+        {
+            return await GuiHandler.Instance.AsyncOpenUI<T>(userData);
+        }
+
+        /// <summary>
+        /// 根据指定的视图类型异步动态创建一个对应的视图对象实例
+        /// </summary>
+        /// <param name="viewType">视图类型</param>
+        /// <param name="userData">用户数据</param>
+        /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static async UniTask<CView> AsyncOpenUI(Type viewType, object userData = null)
+        {
+            return await GuiHandler.Instance.AsyncOpenUI(viewType, userData);
         }
 
         /// <summary>
@@ -690,25 +723,25 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 根据指定的视图类型获取对应的视图对象实例
+        /// 根据指定的视图类型异步查找对应的视图对象实例
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async UniTask<T> FindUIAsync<T>() where T : CView
+        public static async UniTask<T> AsyncFindUI<T>() where T : CView
         {
-            return await GuiHandler.Instance.FindUIAsync<T>();
+            return await GuiHandler.Instance.AsyncFindUI<T>();
         }
 
         /// <summary>
-        /// 通过指定的视图类型查找对应的视图对象实例
+        /// 通过指定的视图类型异步查找对应的视图对象实例
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回查找到的视图对象实例，若查找失败则返回null</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async UniTask<CView> FindUIAsync(Type viewType)
+        public static async UniTask<CView> AsyncFindUI(Type viewType)
         {
-            return await GuiHandler.Instance.FindUIAsync(viewType);
+            return await GuiHandler.Instance.AsyncFindUI(viewType);
         }
 
         /// <summary>

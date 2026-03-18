@@ -7,7 +7,7 @@
 ### 1.1 实体对象创建/销毁函数
 
 基于`CBean`实现的实体对象类型，不能通过`new`关键字创建及`GC`自动垃圾回收，只能通过框架提供的`API`函数创建和销毁。
-实体对象包括场景对象、角色对象、视图对象、组件对象和普通对象几种类型，分别提供对应的`API`进行相应类型对象实例的创建与销毁。  
+实体对象包括场景对象、角色对象、视图对象、组件对象和常规对象几种类型，分别提供对应的`API`进行相应类型对象实例的创建与销毁。  
 
 ### 1.1.1 场景对象
 
@@ -31,12 +31,12 @@ GameEngine.GameApi.ReplaceScene("Login");
 上述接口是延迟切换场景，它会确保在所有实体对象被刷新前执行切换操作，若当前实体对象正在刷新，则切换操作会在下一帧开始处执行。  
 你也可以选择立即切换场景，它将在调用函数后被立即执行，但这是不安全的，我们不推荐这样做。  
 
-我们可以通过指定类型立即切换当前场景：
+同样，我们可以通过指定类型来立即切换当前场景：
 ```csharp
 LoginScene scene = GameEngine.GameApi.ChangeScene<LoginScene>();
 ```
 
-也可以通过指定名称立即切换当前场景：
+也可以通过指定名称来立即切换当前场景：
 ```csharp
 LoginScene scene = GameEngine.GameApi.ChangeScene("Login");
 ```
@@ -54,7 +54,7 @@ LoginScene scene = GameEngine.GameApi.GetCurrentScene() as LoginScene;
 public class Player : GameEngine.CActor { ... }
 ```
 
-我们可以通过指定类型创建对应的角色对象实例：
+现在，我们可以通过指定类型创建对应的角色对象实例：
 ```csharp
 Player player = GameEngine.GameApi.CreateActor<Player>();
 ```
@@ -67,4 +67,97 @@ Player player = GameEngine.GameApi.CreateActor("LocalPlayer") as Player;
 最后，当角色对象不再使用时，需要手动销毁角色对象实例：
 ```csharp
 GameEngine.GameApi.DestroyActor(player);
+```
+
+### 1.1.3 视图对象
+
+首先需要一个名称为`LoginPanel`的UI资源（可以是`FairyGUI`或`UGUI`类型），再根据该资源名称声明一个对应的视图对象：
+```csharp
+[CViewClass("GameLoginPanel")]
+public class LoginPanel : GameEngine.CView { ... }
+```
+
+现在，我们可以通过指定类型创建对应的视图对象实例：
+```csharp
+GameEngine.GameApi.OpenUI<LoginPanel>();
+```
+
+也可以通过指定名称创建对应的视图对象实例：
+```csharp
+GameEngine.GameApi.OpenUI("GameLoginPanel");
+```
+
+视图对象是在UI资源加载完成后才启动（进入`Startup`生命周期节点）的，所以在正常创建流程中我们无法直接获取视图对象实例。  
+但是框架提供的异步创建接口来解决这个问题，虽然通常我们不推荐这么使用它。  
+
+以异步方式通过指定类型创建视图对象实例：
+```csharp
+LoginPanel panel = await GameEngine.GameApi.AsyncOpenUI<LoginPanel>();
+```
+
+也可以通过指定名称来异步创建视图对象实例，不过此接口返回的是`CView`类型，需要进行类型转换：
+```csharp
+LoginPanel panel = await GameEngine.GameApi.AsyncOpenUI("GameLoginPanel") as LoginPanel;
+```
+
+最后，当视图对象不再使用时，需要手动销毁视图对象实例：
+```csharp
+GameEngine.GameApi.CloseUI(panel);
+```
+
+### 1.1.4 常规对象
+
+常规对象在实际业务中应用较少，一般针对业务流程单一，且严格依赖生命周期流程控制，
+同时与常规角色对象存在明显差异，无需组件服务时才会进行使用。  
+
+在此，可以定义一个名称为`MonthlyCardActivity`的常规对象：
+```csharp
+[CObjectClass("MonthlyCardActivity")]
+public class MonthlyCardActivityObject : GameEngine.CObject { ... }
+```
+
+现在，我们可以通过指定类型创建对应的常规对象实例：
+```csharp
+MonthlyCardActivityObject obj = GameEngine.GameApi.CreateObject<MonthlyCardActivityObject>();
+```
+
+也可以通过指定名称创建对应的常规对象实例，不过此接口返回的是`CObject`类型，需要进行类型转换：
+```csharp
+MonthlyCardActivityObject obj = GameEngine.GameApi.CreateObject("MonthlyCardActivity") as MonthlyCardActivityObject;
+```
+
+最后，当常规对象不再使用时，需要手动销毁常规对象实例：
+```csharp
+GameEngine.GameApi.DestroyObject(obj);
+```
+
+### 1.1.5 组件对象
+
+通常情况下，我们不能直接创建组件对象实例，它必须依附于某个实体对象实例而存在，
+所以我们通常使用实体对象提供的`API`来管理组件对象实例。  
+
+首先声明一个名称为`AttributeComponent`的组件对象：
+```csharp
+[CComponentClass("AttributeComp")]
+public class AttributeComponent : GameEngine.CComponent { ... }
+```
+
+现在，我们可以使用之前创建的角色对象实例，通过指定类型创建对应的组件对象实例：
+```csharp
+player.AddComponent<AttributeComponent>();
+```
+
+也可以通过指定名称创建对应的组件对象实例：
+```csharp
+player.AddComponent("AttributeComp");
+```
+
+最后，当组件对象不再使用时，需要手动从角色对象实例中销毁组件对象实例，可以指定组件类型进行销毁：
+```csharp
+player.RemoveComponent<AttributeComponent>();
+```
+
+也可以指定组件名称进行销毁：
+```csharp
+player.RemoveComponent("AttributeComp");
 ```
