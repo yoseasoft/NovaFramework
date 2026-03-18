@@ -41,10 +41,8 @@ LoginScene scene = GameEngine.GameApi.ChangeScene<LoginScene>();
 LoginScene scene = GameEngine.GameApi.ChangeScene("Login");
 ```
 
-最后，你可以通过以下方式获取当前场景对象实例：
-```csharp
-LoginScene scene = GameEngine.GameApi.GetCurrentScene() as LoginScene;
-```
+由于场景对象在运行时，会有且仅有一个实例，所以对于场景对象实例不需要手动销毁，
+在我们切换到下一个新场景时，会自动将当前场景销毁。
 
 ### 1.1.2 角色对象
 
@@ -161,3 +159,31 @@ player.RemoveComponent<AttributeComponent>();
 ```csharp
 player.RemoveComponent("AttributeComp");
 ```
+
+### 1.2 实体对象查询函数
+
+### 1.2.1 场景对象
+
+获取当前场景对象实例，此接口返回的是`CScene`类型：
+```csharp
+LoginScene scene = GameEngine.GameApi.GetCurrentScene() as LoginScene;
+```
+
+也可以通过指定类型来获取当前场景对象实例，若当前场景与指定类型不一致，则返回`null`：
+```csharp
+LoginScene scene = GameEngine.GameApi.GetCurrentScene<LoginScene>();
+```
+
+由于场景对象在运行时，有且仅有一个实例的特殊情况，所以对于场景对象实例提供了专用的组件访问接口。  
+我们可以通过指定组件类型来获取当前场景的组件对象实例：
+```csharp
+AttributeComponent comp = GameEngine.GameApi.GetCurrentSceneComponent<AttributeComponent>();
+```
+
+或者通过指定组件名称来获取当前场景的组件对象实例：
+```csharp
+AttributeComponent comp = GameEngine.GameApi.GetCurrentSceneComponent("AttributeComp") as AttributeComponent;
+```
+
+### 1.2.2 角色对象
+
