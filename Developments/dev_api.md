@@ -265,9 +265,84 @@ AttributeComponent comp = player.GetComponent("AttributeComp") as AttributeCompo
 
 暂无，待补充。
 
-## 2 资源访问
+---
 
-### 2.1 配置数据
+## 2 数据通知与转发
+
+### 2.1 输入类型的数据通知
+
+此类型的数据一般由引擎底层接收到输入操作后自动进行通知转发，业务层只需要关注接收操作即可。  
+同时，框架也提供了模拟输入操作的接口函数，用于业务测试或某些特殊情况下使用：
+```csharp
+GameEngine.GameApi.OnInputSimulation(UnityEngine.KeyCode.A, GameEngine.InputOperationType.Released);
+```
+
+或者模拟结构类型的输入数据通知：
+```csharp
+GameEngine.GameApi.OnInputSimulation(new JoystickData() { x = 1f, y = 0.5f });
+```
+
+### 2.2 事件类型的数据通知
+
+框架提供了基于事件类型的数据通知机制，用于实现不同业务模块之间的通讯。  
+我们可以通过使用全局事件`API`接口函数来实现指定事件标识及参数的派发：
+```csharp
+GameEngine.GameApi.Send(1001, "hurley", 520, "ECMS");
+```
+
+同时也提供了基于结构类型的广播接口：
+```csharp
+GameEngine.GameApi.Send(new JoinMapNotify() { roleId = 1001, type = 1, bean = "goblin" });
+```
+
+这里的`Send`函数在调用后并不会立即进行事件的派发，而是推送到事件缓存容器中，在游戏下一帧的开始处进行统一派发。
+如果业务逻辑需要在当前帧监听此事件的业务逻辑立即被触发，则需要使用`Fire`函数进行派发：
+```csharp
+GameEngine.GameApi.Fire(1001, "hurley", 520, "ECMS");
+```
+
+同样，对于基于结构类型的事件，也提供了基于实体对象实例的专有`API`进行派发：
+```csharp
+player.Fire(1001, "hurley", 520, "ECMS");
+```
+
+以上主要针对全局的事件通知，如果希望该事件只能被指定的实体对象实例所接收，也提供的专用的`API`来进行派发：
+```csharp
+player.Send(1001, "hurley", 520, "ECMS");
+```
+
+或者针对基于结构类型的事件进行派发：
+```csharp
+player.Send(new JoinMapNotify() { roleId = 1001, type = 1, bean = "goblin" });
+```
+
+如果当前的实体对象实例也需要立即接收并处理该事件，也同样提供了`Fire`函数进行派发：
+```csharp
+player.Fire(1001, "hurley", 520, "ECMS");
+```
+
+对于基于结构类型消息，也可以用如下方式进行派发：
+```csharp
+player.Fire(new JoinMapNotify() { roleId = 1001, type = 1, bean = "goblin" });
+```
+
+### 2.3 消息类型的数据通知
+
+此类型的数据一般在成功进行网络连接后，由引擎底层接收到服务端下行数据后自动进行通知转发，业务层只需要关注接收操作即可。  
+同时，框架也提供了模拟操作的接口函数，用于业务测试或某些特殊情况下使用：
+```csharp
+GameEngine.GameApi.OnMessageSimulation(new EnterWorldResp() { Code = 1, Name = "hurley" });
+```
+
+### 2.4 同步类型的数据通知
+
+暂无，待补充。
+
+---
+
+## 3 资源访问
+
+### 3.1 配置数据
 
 如果外部已定义一个角色配置文件`actor`，并导出如下格式的数据类型：
 | 字段名称 | 字段类型 | 字段描述 |
@@ -285,12 +360,17 @@ Config.ActorConfig actorConfig = Config.ActorConfigTable.Get(actorId);
 Console.WriteLine(actorConfig.name); // 输出标识为 actorId 的角色名称
 ```
 
-### 2.2 上下文配置文件
+### 3.2 上下文配置文件
 
-### 2.3 场景资源访问
+暂无，待补充。
 
-### 2.4 模型资源访问
+### 3.3 场景资源访问
 
-### 2.5 视图资源访问
+我们可以通过框架提供的全局`API`来加载场景资源：
 
-框架提供了一套用于实体对象进行资源访问的接口，让实体对象便捷的进行资源加载及管理。
+### 3.4 模型资源访问
+
+### 3.5 视图资源访问
+
+---
+

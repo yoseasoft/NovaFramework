@@ -549,7 +549,7 @@ namespace GameEngine
         /// 因此，我们建议外部业务代码仅在测试情况下使用该接口，且完成测试后尽快移除相关逻辑
         /// </summary>
         /// <param name="message">消息对象实例</param>
-        public void OnSimulationReceiveMessage(object message)
+        public void OnMessageSimulation(object message)
         {
             if (false == NovaEngine.Environment.IsDevelopmentState())
             {

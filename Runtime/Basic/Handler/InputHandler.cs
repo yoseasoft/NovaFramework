@@ -229,18 +229,18 @@ namespace GameEngine
         /// <summary>
         /// 通过模拟输入操作的方式发送自定义按键编码的接口函数
         /// </summary>
-        /// <param name="inputCode">按键编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">按键操作类型</param>
-        public void OnSimulationInputOperation(int inputCode, int operationType)
+        public void OnInputSimulation(UnityEngine.KeyCode keyCode, InputOperationType operationType)
         {
-            OnInputDispatched(inputCode, operationType);
+            OnInputDispatched((int) keyCode, (int) operationType);
         }
 
         /// <summary>
         /// 通过模拟输入操作的方式发送自定义数据的接口函数
         /// </summary>
         /// <param name="inputData">输入数据</param>
-        public void OnSimulationInputOperation(object inputData)
+        public void OnInputSimulation(object inputData)
         {
             OnInputDispatched(inputData);
         }

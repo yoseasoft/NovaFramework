@@ -293,6 +293,8 @@ static void OnRecvClickEvent(this MainScene self, EnterMapResp message)
 
 ## 4. 命名规范
 
+### 4.1 通用编码命名规范
+
 | 类型 | 规范 | 示例 |
 |:------:|:-----:|:------:|
 | 文件 | 帕斯卡命名 | `MainScene.cs`, `MainSys.cs` |
@@ -303,6 +305,29 @@ static void OnRecvClickEvent(this MainScene self, EnterMapResp message)
 | 字段/变量 | 驼峰命名 | `playerName`, `itemList` |
 | 私有字段 | 下划线前缀 | `_privateVar`, `__data` |
 | 常量 | 全大写 + 下划线 | `MAX_RETRY_TIMES` |
+
+### 4.2 `CBean`对象类型命名规范
+
+#### 4.2.1 场景对象类型命名规范
+
+命名格式为：`<业务名称>Scene`，例如登录场景命名格式为：`LoginScene`。  
+
+#### 4.2.2 角色对象类型命名规范
+
+命名格式为：`<业务名称>`，例如玩家角色命名格式为：`Player`。
+
+#### 4.2.3 视图对象类型命名规范
+
+命名与资源名一致，格式为：`<资源名称>`，例如登录界面命资源名称为：`LoginPanel`，则视图命名格式为：`LoginPanel`。
+
+#### 4.2.4 组件对象类型命名规范
+
+命名格式为：`<业务名称>Component`，例如属性组件命名格式为：`AttributeComponent`。
+
+#### 4.3 系统对象类型命名规范
+
+由于`System`类是完全依附于特定的实体对象类的，因此`System`类的命名也需与其依附的实体对象类相关联，
+命名的格式为：`<实体对象类名><功能描述>System`，若当前`System`未明显描述其功能，则命名格式为：`<实体对象类名>System`。  
 
 ---
 

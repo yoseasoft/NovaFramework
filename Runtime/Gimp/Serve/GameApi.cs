@@ -45,20 +45,20 @@ namespace GameEngine
         /// <summary>
         /// 通过模拟输入操作的方式发送自定义按键编码的接口函数
         /// </summary>
-        /// <param name="inputCode">按键编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">按键操作类型</param>
-        public static void OnSimulationInputOperation(int inputCode, int operationType)
+        public static void OnInputSimulation(UnityEngine.KeyCode keyCode, GameEngine.InputOperationType operationType)
         {
-            InputHandler.Instance.OnSimulationInputOperation(inputCode, operationType);
+            InputHandler.Instance.OnInputSimulation(keyCode, operationType);
         }
 
         /// <summary>
         /// 通过模拟输入操作的方式发送自定义数据的接口函数
         /// </summary>
         /// <param name="inputData">输入数据</param>
-        public static void OnSimulationInputOperation(object inputData)
+        public static void OnInputSimulation(object inputData)
         {
-            InputHandler.Instance.OnSimulationInputOperation(inputData);
+            InputHandler.Instance.OnInputSimulation(inputData);
         }
 
         #endregion
@@ -111,9 +111,9 @@ namespace GameEngine
         /// 通过模拟的方式接收特定格式协议构建的网络消息的接口函数
         /// </summary>
         /// <param name="message">消息对象实例</param>
-        public static void OnSimulationReceiveMessage(object message)
+        public static void OnMessageSimulation(object message)
         {
-            NetworkHandler.Instance.OnSimulationReceiveMessage(message);
+            NetworkHandler.Instance.OnMessageSimulation(message);
         }
 
         #endregion
