@@ -30,7 +30,7 @@
 业务系统开发的推荐目录结构如下：
 
 ```text
-Assets/Sources
+Assets
 ├── _Resources             # 资源目录
 │   ├── Aot                # 元数据集存放目录
 │   ├── Code               # 模组程序集存放目录
