@@ -23,9 +23,11 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using Cysharp.Threading.Tasks;
 using System;
 using System.Runtime.CompilerServices;
+
+using Cysharp.Threading.Tasks;
+
 using UnityObject = UnityEngine.Object;
 
 namespace GameEngine
