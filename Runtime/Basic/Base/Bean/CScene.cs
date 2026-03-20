@@ -218,9 +218,9 @@ namespace GameEngine
         /// <param name="assetName">场景资源名称</param>
         /// <param name="assetUrl">场景资源路径</param>
         /// <param name="completed">结束回调</param>
-        public GooAsset.Scene LoadSceneAsset(string assetName, string assetUrl, Action<GooAsset.Scene> completed = null)
+        public GooAsset.Scene LoadAssetScene(string assetName, string assetUrl, Action<GooAsset.Scene> completed = null)
         {
-            return SceneHandler.LoadSceneAsset(assetName, assetUrl, completed);
+            return SceneHandler.LoadAssetScene(assetName, assetUrl, completed);
         }
 
         /// <summary>
@@ -228,18 +228,18 @@ namespace GameEngine
         /// </summary>
         /// <param name="assetName">资源名称</param>
         /// <param name="assetUrl">资源路径</param>
-        public async UniTask<GooAsset.Scene> LoadSceneAssetAsync(string assetName, string assetUrl)
+        public async UniTask<GooAsset.Scene> AsyncLoadAssetScene(string assetName, string assetUrl)
         {
-            return await SceneHandler.LoadSceneAssetAsync(assetName, assetUrl);
+            return await SceneHandler.AsyncLoadAssetScene(assetName, assetUrl);
         }
 
         /// <summary>
         /// 卸载场景资源的接口函数
         /// </summary>
         /// <param name="assetName">资源名称</param>
-        public void UnloadSceneAsset(string assetName)
+        public void UnloadAssetScene(string assetName)
         {
-            SceneHandler.UnloadSceneAsset(assetName);
+            SceneHandler.UnloadAssetScene(assetName);
         }
 
         #region 场景对象功能检测相关接口函数合集

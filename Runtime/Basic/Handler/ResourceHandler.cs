@@ -4,6 +4,7 @@
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -119,18 +120,18 @@ namespace GameEngine
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="completed">加载完成回调</param>
-        public GooAsset.Asset LoadAssetAsync<T>(string url, Action<UnityObject> completed) where T : UnityObject
+        public GooAsset.Asset AsyncLoadAsset<T>(string url, Action<UnityObject> completed) where T : UnityObject
         {
-            return ResourceModule.LoadAssetAsync(url, typeof(T), completed);
+            return ResourceModule.AsyncLoadAsset(url, typeof(T), completed);
         }
 
         /// <summary>
         /// 异步加载资源
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
-        public async UniTask<T> LoadAssetAsync<T>(string url) where T : UnityObject
+        public async UniTask<T> AsyncLoadAsset<T>(string url) where T : UnityObject
         {
-            return (T) await LoadAssetAsync(url, typeof(T));
+            return (T) await AsyncLoadAsset(url, typeof(T));
         }
 
         /// <summary>
@@ -138,9 +139,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="type">资源类型</param>
-        public async UniTask<UnityObject> LoadAssetAsync(string url, Type type)
+        public async UniTask<UnityObject> AsyncLoadAsset(string url, Type type)
         {
-            GooAsset.Asset asset = ResourceModule.LoadAssetAsync(url, type);
+            GooAsset.Asset asset = ResourceModule.AsyncLoadAsset(url, type);
             if (asset is null)
                 return null;
 
@@ -194,9 +195,9 @@ namespace GameEngine
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="isAdditive">是否使用叠加方式加载</param>
         /// <param name="completed">加载完成回调</param>
-        public GooAsset.Scene LoadSceneAsync(string url, bool isAdditive, Action<GooAsset.Scene> completed)
+        public GooAsset.Scene AsyncLoadScene(string url, bool isAdditive, Action<GooAsset.Scene> completed)
         {
-            return ResourceModule.LoadSceneAsync(url, isAdditive, completed);
+            return ResourceModule.AsyncLoadScene(url, isAdditive, completed);
         }
 
         /// <summary>
@@ -204,9 +205,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="url">资源地址(名字或路径)</param>
         /// <param name="isAdditive">是否使用叠加方式加载</param>
-        public async UniTask<GooAsset.Scene> LoadSceneAsync(string url, bool isAdditive = false)
+        public async UniTask<GooAsset.Scene> AsyncLoadScene(string url, bool isAdditive = false)
         {
-            GooAsset.Scene scene = ResourceModule.LoadSceneAsync(url, isAdditive);
+            GooAsset.Scene scene = ResourceModule.AsyncLoadScene(url, isAdditive);
             await scene.Task;
             return scene;
         }
@@ -237,18 +238,18 @@ namespace GameEngine
         /// 异步加载原始流式文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
         /// </summary>
         /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
-        public GooAsset.RawFile LoadRawFileAsync(string url, Action<GooAsset.RawFile> completed)
+        public GooAsset.RawFile AsyncLoadRawFile(string url, Action<GooAsset.RawFile> completed)
         {
-            return ResourceModule.LoadRawFileAsync(url, completed);
+            return ResourceModule.AsyncLoadRawFile(url, completed);
         }
 
         /// <summary>
         /// 异步加载原始流式文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
         /// </summary>
-        /// <param name="address">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
-        public async UniTask<GooAsset.RawFile> LoadRawFileAsync(string address)
+        /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
+        public async UniTask<GooAsset.RawFile> AsyncLoadRawFile(string url)
         {
-            GooAsset.RawFile rawFile = ResourceModule.LoadRawFileAsync(address);
+            GooAsset.RawFile rawFile = ResourceModule.AsyncLoadRawFile(url);
             await rawFile.Task;
             return rawFile;
         }

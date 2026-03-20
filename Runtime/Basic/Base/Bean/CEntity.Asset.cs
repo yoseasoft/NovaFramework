@@ -82,9 +82,9 @@ namespace GameEngine
         /// <param name="name">资源名称</param>
         /// <param name="url">资源地址</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<T> LoadAssetAsync<T>(string name, string url) where T : UnityObject
+        public async UniTask<T> AsyncLoadAsset<T>(string name, string url) where T : UnityObject
         {
-            AssetSource assetSource = await _assetLoader.LoadAssetAsync<T>(name, url);
+            AssetSource assetSource = await _assetLoader.AsyncLoadAsset<T>(name, url);
             return assetSource.Original as T;
         }
 
@@ -155,7 +155,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
         {
-            return await _assetLoader.InstantiateAsync<T>(name, url, position, rotation);
+            return await _assetLoader.AsyncInstantiate<T>(name, url, position, rotation);
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
         {
-            return await _assetLoader.InstantiateAsync<T>(name, url, position, rotation, parent);
+            return await _assetLoader.AsyncInstantiate<T>(name, url, position, rotation, parent);
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityTransform parent) where T : UnityObject
         {
-            return await _assetLoader.InstantiateAsync<T>(name, url, parent);
+            return await _assetLoader.AsyncInstantiate<T>(name, url, parent);
         }
 
         /// <summary>

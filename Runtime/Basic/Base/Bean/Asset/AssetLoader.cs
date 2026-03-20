@@ -2,7 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -112,7 +112,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="name">资源名称</param>
         /// <param name="url">资源地址</param>
-        public async UniTask<AssetSource> LoadAssetAsync<T>(string name, string url) where T : UnityObject
+        public async UniTask<AssetSource> AsyncLoadAsset<T>(string name, string url) where T : UnityObject
         {
             if (TryGetAssetSource(name, out AssetSource assetSource))
             {
@@ -120,7 +120,7 @@ namespace GameEngine
                 return assetSource;
             }
 
-            T obj = await ResourceHandler.Instance.LoadAssetAsync<T>(url);
+            T obj = await ResourceHandler.Instance.AsyncLoadAsset<T>(url);
             return CacheTargetAssetObject(name, url, typeof(T), obj);
         }
 
@@ -197,9 +197,9 @@ namespace GameEngine
         /// <param name="rotation">旋转</param>
         /// <returns>返回实例化的对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
+        public async UniTask<T> AsyncInstantiate<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
         {
-            AssetSource assetSource = await LoadAssetAsync<T>(name, url);
+            AssetSource assetSource = await AsyncLoadAsset<T>(name, url);
             return assetSource.Instantiate<T>(position, rotation);
         }
 
@@ -214,9 +214,9 @@ namespace GameEngine
         /// <param name="parent">父对象实例</param>
         /// <returns>返回实例化的对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
+        public async UniTask<T> AsyncInstantiate<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
         {
-            AssetSource assetSource = await LoadAssetAsync<T>(name, url);
+            AssetSource assetSource = await AsyncLoadAsset<T>(name, url);
             return assetSource.Instantiate<T>(position, rotation, parent);
         }
 
@@ -229,9 +229,9 @@ namespace GameEngine
         /// <param name="parent">父对象实例</param>
         /// <returns>返回实例化的对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityTransform parent) where T : UnityObject
+        public async UniTask<T> AsyncInstantiate<T>(string name, string url, UnityTransform parent) where T : UnityObject
         {
-            AssetSource assetSource = await LoadAssetAsync<T>(name, url);
+            AssetSource assetSource = await AsyncLoadAsset<T>(name, url);
             return assetSource.Instantiate<T>(parent);
         }
 

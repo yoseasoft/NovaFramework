@@ -7,7 +7,7 @@
 ### 1.1 实体对象创建/销毁函数
 
 基于`CBean`实现的实体对象类型，不能通过`new`关键字创建及`GC`自动垃圾回收，只能通过框架提供的`API`函数创建和销毁。
-实体对象包括场景对象、角色对象、视图对象、组件对象和常规对象几种类型，分别提供对应的`API`进行相应类型对象实例的创建与销毁。  
+实体对象包括场景对象、角色对象、视图对象、组件对象和通用对象几种类型，分别提供对应的`API`进行相应类型对象实例的创建与销毁。  
 
 #### 1.1.1 场景对象
 
@@ -103,28 +103,28 @@ LoginPanel panel = await GameEngine.GameApi.AsyncOpenUI("GameLoginPanel") as Log
 GameEngine.GameApi.CloseUI(panel);
 ```
 
-#### 1.1.4 常规对象
+#### 1.1.4 通用对象
 
-常规对象在实际业务中应用较少，一般针对业务流程单一，且严格依赖生命周期流程控制，
-同时与常规角色对象存在明显差异，无需组件服务时才会进行使用。  
+通用对象在实际业务中应用较少，一般针对业务流程单一，且严格依赖生命周期流程控制，
+与角色对象类型也存在着明显差异，无需组件服务时才会进行使用。  
 
-在此，可以定义一个名称为`MonthlyCardActivity`的常规对象：
+在此，可以定义一个名称为`MonthlyCardActivity`的通用对象：
 ```csharp
 [CObjectClass("MonthlyCardActivity")]
 public class MonthlyCardActivityObject : GameEngine.CObject { ... }
 ```
 
-现在，我们可以通过指定类型创建对应的常规对象实例：
+现在，我们可以通过指定类型创建对应的通用对象实例：
 ```csharp
 MonthlyCardActivityObject obj = GameEngine.GameApi.CreateObject<MonthlyCardActivityObject>();
 ```
 
-也可以通过指定名称创建对应的常规对象实例，不过此接口返回的是`CObject`类型，需要进行类型转换：
+也可以通过指定名称创建对应的通用对象实例，不过此接口返回的是`CObject`类型，需要进行类型转换：
 ```csharp
 MonthlyCardActivityObject obj = GameEngine.GameApi.CreateObject("MonthlyCardActivity") as MonthlyCardActivityObject;
 ```
 
-最后，当常规对象不再使用时，需要手动销毁常规对象实例：
+最后，当通用对象不再使用时，需要手动销毁通用对象实例：
 ```csharp
 GameEngine.GameApi.DestroyObject(obj);
 ```
@@ -226,19 +226,19 @@ LoginPanel panel = await GameEngine.GameApi.AsyncFindUI<LoginPanel>();
 LoginPanel panel = await GameEngine.GameApi.AsyncFindUI("GameLoginPanel") as LoginPanel;
 ```
 
-#### 1.2.4 常规对象
+#### 1.2.4 通用对象
 
-我们可以通过框架提供的`API`来获取当前已创建的所有常规对象实例：
+我们可以通过框架提供的`API`来获取当前已创建的所有通用对象实例：
 ```csharp
 IReadOnlyList<CObject> objects = GameEngine.GameApi.GetAllObjects();
 ```
 
-也可以通过指定类型来获取当前已创建的常规对象实例：
+也可以通过指定类型来获取当前已创建的通用对象实例：
 ```csharp
 IReadOnlyList<MonthlyCardActivityObject> players = GameEngine.GameApi.GetObject<MonthlyCardActivityObject>();
 ```
 
-或者通过指定名称来获取当前已创建的常规对象实例：
+或者通过指定名称来获取当前已创建的通用对象实例：
 ```csharp
 IReadOnlyList<CObject> objects = GameEngine.GameApi.GetObject("MonthlyCardActivity");
 ```
@@ -364,13 +364,41 @@ Console.WriteLine(actorConfig.name); // 输出标识为 actorId 的角色名称
 
 暂无，待补充。
 
-### 3.3 场景资源访问
+### 3.3 通用类型资源访问
+
+我们可以通过框架提供的全局`API`来加载通用资源：
+```csharp
+UnityEngine.Object obj = GameEngine.GameApi.LoadAsset("Assets/_Resources/Gui/LoginPanel_fgui.bytes", typeof(UnityEngine.TextAsset));
+```
+
+也可以用异步的方式来加载通用资源：
+```csharp
+UnityEngine.TextAsset textAsset = await GameEngine.GameApi.AsyncLoadAsset<UnityEngine.TextAsset>("Assets/_Resources/Gui/LoginPanel_fgui.bytes");
+...
+UnityEngine.GameObject go = await GameEngine.GameApi.AsyncLoadAsset<UnityEngine.GameObject>("Assets/Gui/LoginPanel/Main.prefab");
+```
+
+通过主动调用的方式加载的资源，我们也需要通过手动的方式来释放资源：
+```csharp
+GameEngine.GameApi.UnloadAsset(textAsset);
+GameEngine.GameApi.UnloadAsset(go);
+```
+
+### 3.3 场景类型资源访问
 
 我们可以通过框架提供的全局`API`来加载场景资源：
+```csharp
+GooAsset.Scene asset = GameEngine.GameApi.LoadAssetScene("101", "Assets/_Resources/Scene/101.unity");
+```
 
-### 3.4 模型资源访问
+在场景资源使用完成后，同样需要以手动的方式来释放场景资源：
+```csharp
+GameEngine.GameApi.UnloadAssetScene(asset);
+```
 
-### 3.5 视图资源访问
+### 3.5 原始文件类型资源访问
+
+暂无，待补充。
 
 ---
 

@@ -168,7 +168,7 @@ namespace NovaEngine.Module
                 info = null;
             }
 
-            GooAsset.Scene assetScene = GetModule<ResourceModule>().LoadSceneAsync(sceneAddress, true, completed);
+            GooAsset.Scene assetScene = GetModule<ResourceModule>().AsyncLoadScene(sceneAddress, true, completed);
             info = SceneRecordInfo.Create(sceneName);
             info.StateType = SceneRecordInfo.SceneStateType.Loading;
             info.AssetScene = assetScene;

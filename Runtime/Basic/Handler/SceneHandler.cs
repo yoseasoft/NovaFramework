@@ -4,6 +4,7 @@
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -367,7 +368,7 @@ namespace GameEngine
         /// <param name="url">场景资源路径</param>
         /// <param name="completed">结束回调</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GooAsset.Scene LoadSceneAsset(string assetName, string url, Action<GooAsset.Scene> completed = null)
+        public GooAsset.Scene LoadAssetScene(string assetName, string url, Action<GooAsset.Scene> completed = null)
         {
             return SceneModule.LoadScene(assetName, url, completed);
         }
@@ -378,7 +379,7 @@ namespace GameEngine
         /// <param name="assetName">场景资源名称</param>
         /// <param name="url">场景资源路径</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<GooAsset.Scene> LoadSceneAssetAsync(string assetName, string url)
+        public async UniTask<GooAsset.Scene> AsyncLoadAssetScene(string assetName, string url)
         {
             // string assetName = System.IO.Path.GetFileNameWithoutExtension(assetUrl);
             return await SceneModule.LoadScene(assetName, url).Task;
@@ -389,7 +390,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="assetName">场景资源名称</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void UnloadSceneAsset(string assetName)
+        public void UnloadAssetScene(string assetName)
         {
             SceneModule.UnloadScene(assetName);
         }

@@ -2,7 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -104,11 +104,11 @@ namespace GameEngine
         /// <param name="name">资源名称</param>
         /// <param name="url">资源地址</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<T> LoadAssetAsync<T>(string name, string url) where T : UnityObject
+        public async UniTask<T> AsyncLoadAsset<T>(string name, string url) where T : UnityObject
         {
             Debugger.Assert(Entity, NovaEngine.ErrorText.NullObjectReference);
 
-            return await Entity.LoadAssetAsync<T>(name, url);
+            return await Entity.AsyncLoadAsset<T>(name, url);
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace GameEngine
         /// <param name="rotation">旋转</param>
         /// <returns>返回实例化的对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
+        public async UniTask<T> AsyncInstantiate<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
         {
             Debugger.Assert(Entity, NovaEngine.ErrorText.NullObjectReference);
 
@@ -222,7 +222,7 @@ namespace GameEngine
         /// <param name="parent">父对象实例</param>
         /// <returns>返回实例化的对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
+        public async UniTask<T> AsyncInstantiate<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
         {
             Debugger.Assert(Entity, NovaEngine.ErrorText.NullObjectReference);
 
@@ -243,7 +243,7 @@ namespace GameEngine
         /// <param name="parent">父对象实例</param>
         /// <returns>返回实例化的对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityTransform parent) where T : UnityObject
+        public async UniTask<T> AsyncInstantiate<T>(string name, string url, UnityTransform parent) where T : UnityObject
         {
             Debugger.Assert(Entity, NovaEngine.ErrorText.NullObjectReference);
 
