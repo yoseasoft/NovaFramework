@@ -86,7 +86,7 @@ namespace GameEngine.Loader
 
                 Structuring.InputCallMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.InputCallMethodTypeCodeInfo();
                 methodTypeCodeInfo.TargetType = inputDispatchCallAttribute.ClassType;
-                methodTypeCodeInfo.InputCode = inputDispatchCallAttribute.InputCode;
+                methodTypeCodeInfo.KeyCode = inputDispatchCallAttribute.KeyCode;
                 methodTypeCodeInfo.OperationType = inputDispatchCallAttribute.OperationType;
                 methodTypeCodeInfo.InputDataType = inputDispatchCallAttribute.InputDataType;
                 methodTypeCodeInfo.BehaviourType = inputDispatchCallAttribute.BehaviourType;
@@ -103,10 +103,10 @@ namespace GameEngine.Loader
                     {
                         verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
                     }
-                    else if (methodTypeCodeInfo.InputCode > 0)
+                    else if (methodTypeCodeInfo.KeyCode > VirtualKeyCode.None)
                     {
                         verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                            symMethod.MethodInfo, typeof(int), typeof(int));
+                                            symMethod.MethodInfo, typeof(VirtualKeyCode), typeof(InputOperationType));
                     }
                     else
                     {

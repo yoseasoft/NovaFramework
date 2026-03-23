@@ -25,6 +25,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine.Scripting;
 
 namespace GameEngine
@@ -85,7 +86,13 @@ namespace GameEngine
             while (keycode_enumerator.MoveNext())
             {
                 UnityEngine.KeyCode keyCode = (UnityEngine.KeyCode) keycode_enumerator.Current;
-                if (false == Enum.TryParse(keyCode.ToString(), out VirtualKeyCode virtualKeyCode))
+                if (_inputVirtualMapTables.ContainsKey(keyCode))
+                {
+                    // Debugger.Warn("目标按键{%i}已存在于虚拟按键的映射表中，不可对相同按键进行多次重复映射！", keyCode);
+                    continue;
+                }
+
+                if (Enum.TryParse(keyCode.ToString(), out VirtualKeyCode virtualKeyCode))
                 {
                     _inputVirtualMapTables.Add(keyCode, virtualKeyCode);
                 }
@@ -97,9 +104,22 @@ namespace GameEngine
         /// </summary>
         /// <param name="keyCode">按键编码</param>
         /// <returns>返回对应的虚拟按键，若查找失败则返回空值</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private VirtualKeyCode GetVirtualKey(UnityEngine.KeyCode keyCode)
         {
             return _inputVirtualMapTables.TryGetValue(keyCode, out VirtualKeyCode virtualKeyCode) ? virtualKeyCode : VirtualKeyCode.None;
+        }
+
+        /// <summary>
+        /// 通过指定的输入按键获取对应的虚拟按键
+        /// </summary>
+        /// <param name="keyCode">按键编码</param>
+        /// <param name="virtualKeyCode">虚拟按键码</param>
+        /// <returns>返回是否查找成功</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool TryGetVirtualKey(UnityEngine.KeyCode keyCode, out VirtualKeyCode virtualKeyCode)
+        {
+            return _inputVirtualMapTables.TryGetValue(keyCode, out virtualKeyCode);
         }
 
         /// <summary>

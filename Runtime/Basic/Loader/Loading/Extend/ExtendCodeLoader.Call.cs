@@ -66,7 +66,7 @@ namespace GameEngine.Loader
 
                     if (attr is OnInputDispatchCallAttribute inputDispatchCallAttribute)
                     {
-                        if (inputDispatchCallAttribute.InputCode <= 0 && null == inputDispatchCallAttribute.InputDataType)
+                        if (inputDispatchCallAttribute.KeyCode <= VirtualKeyCode.None && null == inputDispatchCallAttribute.InputDataType)
                         {
                             Debugger.Warn(LogGroupTag.CodeLoader, "The extend input dispatch method '{%s}.{%s}' was invalid arguments, added it failed.", symClass.FullName, symMethod.MethodName);
                             continue;
@@ -80,7 +80,7 @@ namespace GameEngine.Loader
 
                         Structuring.InputCallMethodTypeCodeInfo methodTypeCodeInfo = new Structuring.InputCallMethodTypeCodeInfo();
                         methodTypeCodeInfo.TargetType = extendClassType;
-                        methodTypeCodeInfo.InputCode = inputDispatchCallAttribute.InputCode;
+                        methodTypeCodeInfo.KeyCode = inputDispatchCallAttribute.KeyCode;
                         methodTypeCodeInfo.OperationType = inputDispatchCallAttribute.OperationType;
                         methodTypeCodeInfo.InputDataType = inputDispatchCallAttribute.InputDataType;
                         methodTypeCodeInfo.BehaviourType = inputDispatchCallAttribute.BehaviourType;
@@ -98,10 +98,10 @@ namespace GameEngine.Loader
                                 verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
                             }
-                            else if (methodTypeCodeInfo.InputCode > 0)
+                            else if (methodTypeCodeInfo.KeyCode > VirtualKeyCode.None)
                             {
                                 verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
-                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType, typeof(int), typeof(int));
+                                                    symMethod.MethodInfo, methodTypeCodeInfo.TargetType, typeof(VirtualKeyCode), typeof(InputOperationType));
                             }
                             else
                             {

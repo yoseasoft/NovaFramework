@@ -65,11 +65,11 @@ namespace GameEngine.Loader
                     {
                         Structuring.InputCallMethodTypeCodeInfo callMethodInfo = new Structuring.InputCallMethodTypeCodeInfo();
                         callMethodInfo.TargetType = onInputDispatchCallAttribute.ClassType;
-                        callMethodInfo.InputCode = onInputDispatchCallAttribute.InputCode;
+                        callMethodInfo.KeyCode = onInputDispatchCallAttribute.KeyCode;
                         callMethodInfo.OperationType = onInputDispatchCallAttribute.OperationType;
                         callMethodInfo.InputDataType = onInputDispatchCallAttribute.InputDataType;
 
-                        if (callMethodInfo.InputCode <= 0 && callMethodInfo.OperationType <= 0 && null == callMethodInfo.InputDataType)
+                        if (callMethodInfo.KeyCode <= VirtualKeyCode.None && callMethodInfo.OperationType <= InputOperationType.Unknown && null == callMethodInfo.InputDataType)
                         {
                             // 未进行合法标识的函数忽略它
                             continue;
@@ -91,10 +91,10 @@ namespace GameEngine.Loader
                                     // 无参类型的输入响应函数
                                     verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
                                 }
-                                else if (callMethodInfo.InputCode > 0)
+                                else if (callMethodInfo.KeyCode > VirtualKeyCode.None)
                                 {
                                     // 输入键码和操作类型派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, typeof(int), typeof(int));
+                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, typeof(VirtualKeyCode), typeof(InputOperationType));
                                 }
                                 else
                                 {
@@ -109,10 +109,10 @@ namespace GameEngine.Loader
                                     // 无参类型的输入响应函数
                                     verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType);
                                 }
-                                else if (callMethodInfo.InputCode > 0)
+                                else if (callMethodInfo.KeyCode > VirtualKeyCode.None)
                                 {
                                     // 输入键码和操作类型派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType, typeof(int), typeof(int));
+                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType, typeof(VirtualKeyCode), typeof(InputOperationType));
                                 }
                                 else
                                 {

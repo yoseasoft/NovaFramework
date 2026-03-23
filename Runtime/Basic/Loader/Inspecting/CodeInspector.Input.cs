@@ -53,9 +53,9 @@ namespace GameEngine.Loader.Inspecting
             }
 
             // 输入响应函数有两种格式:
-            // 1. [static] void OnInput(int inputCode, int operationType);
+            // 1. [static] void OnInput(VirtualKeyCode keyCode, InputOperationType operationType);
             // 2. [static] void OnInput(object inputData);
-            // 3. static void OnInput(IBean obj, int inputCode, int operationType);
+            // 3. static void OnInput(IBean obj, VirtualKeyCode keyCode, InputOperationType operationType);
             // 4. static void OnInput(IBean obj, object inputData);
             //
             // 无参类型的输入响应函数接口格式:
@@ -79,8 +79,8 @@ namespace GameEngine.Loader.Inspecting
                 {
                     return true;
                 }
-                else if (typeof(int) == paramInfos[0].ParameterType && // 第一个参数为键码标识
-                         typeof(int) == paramInfos[1].ParameterType) // 第二个参数为输入操作类型
+                else if (paramInfos[0].ParameterType.Is<VirtualKeyCode>() && // 第一个参数为键码标识
+                         paramInfos[1].ParameterType.Is<InputOperationType>()) // 第二个参数为输入操作类型
                 {
                     return true;
                 }
@@ -88,8 +88,8 @@ namespace GameEngine.Loader.Inspecting
             else if (paramInfos.Length == 3)
             {
                 if (paramInfos[0].ParameterType.Is<IBean>() && // 第一个参数为Bean对象
-                    typeof(int) == paramInfos[1].ParameterType && // 第二个参数为键码标识
-                    typeof(int) == paramInfos[2].ParameterType) // 第三个参数为输入操作类型
+                    paramInfos[1].ParameterType.Is<VirtualKeyCode>() && // 第二个参数为键码标识
+                    paramInfos[2].ParameterType.Is<InputOperationType>()) // 第三个参数为输入操作类型
                 {
                     return true;
                 }
@@ -151,7 +151,7 @@ namespace GameEngine.Loader.Inspecting
             }
 
             // 输入响应函数的格式:
-            // 1. static void OnInput(this IBean self, int inputCode, int operationType);
+            // 1. static void OnInput(this IBean self, VirtualKeyCode keyCode, InputOperationType operationType);
             // 2. static void OnInput(this IBean self, object inputData);
             //
             // 无参类型的输入响应函数接口格式:
@@ -177,8 +177,8 @@ namespace GameEngine.Loader.Inspecting
             }
             else if (paramInfos.Length == 3)
             {
-                if (typeof(int) == paramInfos[1].ParameterType && // 第二个参数为键码标识
-                    typeof(int) == paramInfos[2].ParameterType) // 第三个参数为输入操作类型
+                if (paramInfos[1].ParameterType.Is<VirtualKeyCode>() && // 第二个参数为键码标识
+                    paramInfos[2].ParameterType.Is<InputOperationType>()) // 第三个参数为输入操作类型
                 {
                     return true;
                 }

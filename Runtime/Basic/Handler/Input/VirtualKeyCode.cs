@@ -547,7 +547,7 @@ namespace GameEngine
         // Summary:
         //     Maps to left Windows key or left Command key if physical keys are enabled in
         //     Input Manager settings, otherwise maps to left Command key only.
-        LeftMeta = UnityEngine.KeyCode.LeftMeta,
+        // LeftMeta = UnityEngine.KeyCode.LeftMeta,
         //
         // Summary:
         //     Left Command key.
@@ -555,7 +555,7 @@ namespace GameEngine
         //
         // Summary:
         //     Left Command key.
-        LeftApple = UnityEngine.KeyCode.LeftApple,
+        // LeftApple = UnityEngine.KeyCode.LeftApple,
         //
         // Summary:
         //     Left Windows key. Deprecated if "Use Physical Keys" is enabled in instead.
@@ -564,7 +564,7 @@ namespace GameEngine
         // Summary:
         //     Maps to right Windows key or right Command key if physical keys are enabled in
         //     Input Manager settings, otherwise maps to right Command key only.
-        RightMeta = UnityEngine.KeyCode.RightMeta,
+        // RightMeta = UnityEngine.KeyCode.RightMeta,
         //
         // Summary:
         //     Right Command key.
@@ -572,7 +572,7 @@ namespace GameEngine
         //
         // Summary:
         //     Right Command key.
-        RightApple = UnityEngine.KeyCode.RightApple,
+        // RightApple = UnityEngine.KeyCode.RightApple,
         //
         // Summary:
         //     Right Windows key. Deprecated if "Use Physical Keys" is enabled in instead.

@@ -5,7 +5,7 @@
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -100,7 +100,7 @@ namespace GameEngine
                 list = InputModule.GetAllPressedKeycodes();
                 for (int n = 0; n < list.Count; ++n)
                 {
-                    OnInputDispatched((int) list[n], (int) InputOperationType.Pressed);
+                    OnInputDispatched(list[n], InputOperationType.Pressed);
                 }
             }
 
@@ -110,7 +110,7 @@ namespace GameEngine
                 list = InputModule.GetAllMovedKeycodes();
                 for (int n = 0; n < list.Count; ++n)
                 {
-                    OnInputDispatched((int) list[n], (int) InputOperationType.Moved);
+                    OnInputDispatched(list[n], InputOperationType.Moved);
                 }
             }
 
@@ -120,7 +120,7 @@ namespace GameEngine
                 list = InputModule.GetAllReleasedKeycodes();
                 for (int n = 0; n < list.Count; ++n)
                 {
-                    OnInputDispatched((int) list[n], (int) InputOperationType.Released);
+                    OnInputDispatched(list[n], InputOperationType.Released);
                 }
             }
         }
@@ -231,9 +231,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">按键操作类型</param>
-        public void OnInputSimulation(UnityEngine.KeyCode keyCode, InputOperationType operationType)
+        public void OnInputSimulation(VirtualKeyCode keyCode, InputOperationType operationType)
         {
-            OnInputDispatched((int) keyCode, (int) operationType);
+            OnInputDispatched(keyCode, operationType);
         }
 
         /// <summary>
@@ -246,16 +246,30 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 针对按键编码进行响应分发的调度入口函数
+        /// 针对按键编码（原始输入按键）进行响应分发的调度入口函数
         /// </summary>
-        /// <param name="inputCode">按键编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">按键操作类型</param>
-        private void OnInputDispatched(int inputCode, int operationType)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void OnInputDispatched(UnityKeyCode keyCode, InputOperationType operationType)
+        {
+            if (TryGetVirtualKey(keyCode, out VirtualKeyCode vk))
+            {
+                OnInputDispatched(vk, operationType);
+            }
+        }
+
+        /// <summary>
+        /// 针对按键编码（虚拟按键）进行响应分发的调度入口函数
+        /// </summary>
+        /// <param name="keyCode">按键编码</param>
+        /// <param name="operationType">按键操作类型</param>
+        private void OnInputDispatched(VirtualKeyCode keyCode, InputOperationType operationType)
         {
             // 输入分发调度
-            OnInputDistributeCallDispatched(inputCode, operationType);
+            OnInputDistributeCallDispatched(keyCode, operationType);
 
-            if (_inputListenersForCode.TryGetValue(inputCode, out IList<IInputDispatch> listeners))
+            if (_inputListenersForCode.TryGetValue(keyCode, out IList<IInputDispatch> listeners))
             {
                 IList<IInputDispatch> list;
                 if (listeners.Count > 1)
@@ -271,7 +285,7 @@ namespace GameEngine
                 for (int n = 0; n < list.Count; ++n)
                 {
                     IInputDispatch listener = list[n];
-                    listener.OnInputDispatchForCode(inputCode, operationType);
+                    listener.OnInputDispatchForCode(keyCode, operationType);
                 }
 
                 list = null;

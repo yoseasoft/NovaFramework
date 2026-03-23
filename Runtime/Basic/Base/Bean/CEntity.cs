@@ -371,20 +371,20 @@ namespace GameEngine
         /// <summary>
         /// 实体对象的响应输入的监听回调函数<br/>
         /// 该函数针对输入转发接口的标准实现，禁止子类重写该函数<br/>
-        /// 若子类需要根据需要自行解析输入数据，可以通过重写<see cref="GameEngine.CEntity.OnInput(int, int)"/>实现输入的自定义处理逻辑
+        /// 若子类需要根据需要自行解析输入数据，可以通过重写<see cref="GameEngine.CEntity.OnInput(VirtualKeyCode, InputOperationType)"/>实现输入的自定义处理逻辑
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
-        public override sealed void OnInputDispatchForCode(int inputCode, int operationType)
+        public override sealed void OnInputDispatchForCode(VirtualKeyCode keyCode, InputOperationType operationType)
         {
-            base.OnInputDispatchForCode(inputCode, operationType);
+            base.OnInputDispatchForCode(keyCode, operationType);
 
             for (int n = 0; null != _componentInputDispatchList && n < _componentInputDispatchList.Count; ++n)
             {
                 CComponent component = _componentInputDispatchList[n];
                 if (component.IsOnAwakingStatus())
                 {
-                    component.OnInputDispatchForCode(inputCode, operationType);
+                    component.OnInputDispatchForCode(keyCode, operationType);
                 }
             }
         }
@@ -412,12 +412,12 @@ namespace GameEngine
         /// <summary>
         /// 检测当前实体对象是否响应了目标输入编码
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
         /// <returns>若响应了给定输入编码则返回true，否则返回false</returns>
-        protected internal override sealed bool IsInputResponsedOfTargetCode(int inputCode, int operationType)
+        protected internal override sealed bool IsInputResponsedOfTargetCode(VirtualKeyCode keyCode, InputOperationType operationType)
         {
-            if (base.IsInputResponsedOfTargetCode(inputCode, operationType))
+            if (base.IsInputResponsedOfTargetCode(keyCode, operationType))
             {
                 return true;
             }
@@ -425,7 +425,7 @@ namespace GameEngine
             for (int n = 0; n < _componentInputDispatchList.Count; ++n)
             {
                 CComponent component = _componentInputDispatchList[n];
-                if (component.IsInputResponsedOfTargetCode(inputCode, operationType))
+                if (component.IsInputResponsedOfTargetCode(keyCode, operationType))
                 {
                     return true;
                 }
@@ -461,12 +461,12 @@ namespace GameEngine
         /// <summary>
         /// 当前实体对象的组件实例进行的输入响应行为通知
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        protected internal bool AddInputResponseFromComponent(int inputCode, int operationType)
+        protected internal bool AddInputResponseFromComponent(VirtualKeyCode keyCode, InputOperationType operationType)
         {
-            return AddInputResponse(inputCode, operationType);
+            return AddInputResponse(keyCode, operationType);
         }
 
         /// <summary>
@@ -492,17 +492,17 @@ namespace GameEngine
         /// <summary>
         /// 当前实体对象的组件实例进行的取消输入响应行为通知
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
-        protected internal void RemoveInputResponseFromComponent(int inputCode, int operationType)
+        protected internal void RemoveInputResponseFromComponent(VirtualKeyCode keyCode, InputOperationType operationType)
         {
-            if (IsInputResponsedOfTargetCode(inputCode, operationType))
+            if (IsInputResponsedOfTargetCode(keyCode, operationType))
             {
                 return;
             }
 
             // 实体对象没有任何响应回调，移除该输入的响应
-            RemoveInputResponse(inputCode, operationType);
+            RemoveInputResponse(keyCode, operationType);
         }
 
         /// <summary>

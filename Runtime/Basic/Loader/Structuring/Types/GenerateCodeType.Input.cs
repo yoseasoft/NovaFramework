@@ -96,7 +96,7 @@ namespace GameEngine.Loader.Structuring
         /// <summary>
         /// 输入调用模块的按键编码标识
         /// </summary>
-        public int InputCode { get; internal set; }
+        public VirtualKeyCode KeyCode { get; internal set; }
         /// <summary>
         /// 输入调用模块的按键操作类型
         /// </summary>

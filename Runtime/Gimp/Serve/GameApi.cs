@@ -47,7 +47,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">按键操作类型</param>
-        public static void OnInputSimulation(UnityEngine.KeyCode keyCode, GameEngine.InputOperationType operationType)
+        public static void OnInputSimulation(VirtualKeyCode keyCode, InputOperationType operationType)
         {
             InputHandler.Instance.OnInputSimulation(keyCode, operationType);
         }

@@ -38,9 +38,9 @@ namespace GameEngine
         /// </summary>
         private readonly Type _classType;
         /// <summary>
-        /// 输入响应的目标操作编码
+        /// 输入响应的目标按键编码
         /// </summary>
-        private readonly int _inputCode;
+        private readonly VirtualKeyCode _keyCode;
         /// <summary>
         /// 输入响应的目标操作类型
         /// </summary>
@@ -59,9 +59,9 @@ namespace GameEngine
         /// </summary>
         public Type ClassType => _classType;
         /// <summary>
-        /// 输入编码获取函数
+        /// 输入按键编码获取函数
         /// </summary>
-        public int InputCode => _inputCode;
+        public VirtualKeyCode KeyCode => _keyCode;
         /// <summary>
         /// 输入操作类型获取函数
         /// </summary>
@@ -75,20 +75,20 @@ namespace GameEngine
         /// </summary>
         public AspectBehaviourType BehaviourType => _behaviourType;
 
-        public OnInputDispatchCallAttribute(int inputCode)
-            : this(inputCode, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
+        public OnInputDispatchCallAttribute(VirtualKeyCode keyCode)
+            : this(keyCode, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
         { }
 
-        public OnInputDispatchCallAttribute(int inputCode, AspectBehaviourType behaviourType)
-            : this(null, inputCode, InputOperationType.Unknown, null, behaviourType)
+        public OnInputDispatchCallAttribute(VirtualKeyCode keyCode, AspectBehaviourType behaviourType)
+            : this(null, keyCode, InputOperationType.Unknown, null, behaviourType)
         { }
 
-        public OnInputDispatchCallAttribute(int inputCode, InputOperationType operationType)
-            : this(inputCode, operationType, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
+        public OnInputDispatchCallAttribute(VirtualKeyCode keyCode, InputOperationType operationType)
+            : this(keyCode, operationType, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyDispatchedProcessingNode)
         { }
 
-        public OnInputDispatchCallAttribute(int inputCode, InputOperationType operationType, AspectBehaviourType behaviourType)
-            : this(null, inputCode, operationType, null, behaviourType)
+        public OnInputDispatchCallAttribute(VirtualKeyCode keyCode, InputOperationType operationType, AspectBehaviourType behaviourType)
+            : this(null, keyCode, operationType, null, behaviourType)
         { }
 
         public OnInputDispatchCallAttribute(Type inputDataType)
@@ -96,29 +96,29 @@ namespace GameEngine
         { }
 
         public OnInputDispatchCallAttribute(Type inputDataType, AspectBehaviourType behaviourType)
-            : this(null, 0, InputOperationType.Unknown, inputDataType, behaviourType)
+            : this(null, VirtualKeyCode.None, InputOperationType.Unknown, inputDataType, behaviourType)
         { }
 
-        public OnInputDispatchCallAttribute(Type classType, int inputCode)
-            : this(classType, inputCode, InputOperationType.Unknown, null, AspectBehaviourType.Unknown)
+        public OnInputDispatchCallAttribute(Type classType, VirtualKeyCode keyCode)
+            : this(classType, keyCode, InputOperationType.Unknown, null, AspectBehaviourType.Unknown)
         { }
 
-        public OnInputDispatchCallAttribute(Type classType, int inputCode, InputOperationType operationType)
-            : this(classType, inputCode, operationType, null, AspectBehaviourType.Unknown)
+        public OnInputDispatchCallAttribute(Type classType, VirtualKeyCode keyCode, InputOperationType operationType)
+            : this(classType, keyCode, operationType, null, AspectBehaviourType.Unknown)
         { }
 
         public OnInputDispatchCallAttribute(Type classType, Type inputDataType)
-            : this(classType, 0, InputOperationType.Unknown, inputDataType, AspectBehaviourType.Unknown)
+            : this(classType, VirtualKeyCode.None, InputOperationType.Unknown, inputDataType, AspectBehaviourType.Unknown)
         { }
 
         private OnInputDispatchCallAttribute(Type classType,
-                                             int inputCode,
+                                             VirtualKeyCode keyCode,
                                              InputOperationType operationType,
                                              Type inputDataType,
                                              AspectBehaviourType behaviourType) : base()
         {
             _classType = classType;
-            _inputCode = inputCode;
+            _keyCode = keyCode;
             _operationType = operationType;
             _inputDataType = inputDataType;
             _behaviourType = behaviourType;
@@ -137,7 +137,7 @@ namespace GameEngine
             // 3. 转换为当前类型后，比较所有关键字段的值
             OnInputDispatchCallAttribute other = (OnInputDispatchCallAttribute) obj;
             return _classType == other._classType &&
-                   _inputCode == other._inputCode &&
+                   _keyCode == other._keyCode &&
                    _operationType == other._operationType &&
                    _inputDataType == other._inputDataType; // && _behaviourType == other._behaviourType;
         }
@@ -148,7 +148,7 @@ namespace GameEngine
         public override int GetHashCode()
         {
             // 使用 HashCode.Combine 来组合多个字段的哈希值，这是一个推荐的做法
-            return HashCode.Combine(_classType, _inputCode, _operationType, _inputDataType); // , _behaviourType);
+            return HashCode.Combine(_classType, _keyCode, _operationType, _inputDataType); // , _behaviourType);
         }
     }
 }

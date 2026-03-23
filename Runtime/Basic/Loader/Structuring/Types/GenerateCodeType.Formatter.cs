@@ -52,7 +52,7 @@ namespace GameEngine.Loader
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append(ToString((Structuring.MethodTypeCodeInfo) targetObject));
-            fsb.Append("InputCode={%d},", targetObject.InputCode);
+            fsb.Append("KeyCode={%i},", targetObject.KeyCode);
             fsb.Append("OperationType={%i},", targetObject.OperationType);
             fsb.Append("InputDataType={%t},", targetObject.InputDataType);
             fsb.Append("BehaviourType={%i},", targetObject.BehaviourType);

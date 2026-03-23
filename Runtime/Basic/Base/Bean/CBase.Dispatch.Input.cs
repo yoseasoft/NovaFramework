@@ -36,7 +36,7 @@ namespace GameEngine
         /// <summary>
         /// 基础对象内部输入编码的响应回调映射列表
         /// </summary>
-        private IDictionary<int, IDictionary<string, bool>> _inputResponseCallsForCode;
+        private IDictionary<VirtualKeyCode, IDictionary<string, bool>> _inputResponseCallsForCode;
         /// <summary>
         /// 基础对象内部输入类型的响应回调映射列表
         /// </summary>
@@ -53,7 +53,7 @@ namespace GameEngine
         private void OnInputResponseCallInitialize()
         {
             // 输入响应回调映射容器初始化
-            _inputResponseCallsForCode = new Dictionary<int, IDictionary<string, bool>>();
+            _inputResponseCallsForCode = new Dictionary<VirtualKeyCode, IDictionary<string, bool>>();
             _inputResponseCallsForType = new Dictionary<Type, IDictionary<string, bool>>();
         }
 
@@ -78,22 +78,22 @@ namespace GameEngine
         /// <summary>
         /// 基础对象的输入编码的监听回调函数<br/>
         /// 该函数针对输入响应接口的标准实现，禁止子类重写该函数<br/>
-        /// 若子类需要根据需要自行解析输入编码，可以通过重写<see cref="GameEngine.CBase.OnInput(int, int)"/>实现输入编码的自定义处理逻辑
+        /// 若子类需要根据需要自行解析输入编码，可以通过重写<see cref="GameEngine.CBase.OnInput(VirtualKeyCode, InputOperationType)"/>实现输入编码的自定义处理逻辑
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
-        public virtual void OnInputDispatchForCode(int inputCode, int operationType)
+        public virtual void OnInputDispatchForCode(VirtualKeyCode keyCode, InputOperationType operationType)
         {
-            if (_inputResponseCallsForCode.TryGetValue(inputCode, out IDictionary<string, bool> calls))
+            if (_inputResponseCallsForCode.TryGetValue(keyCode, out IDictionary<string, bool> calls))
             {
                 foreach (KeyValuePair<string, bool> kvp in calls)
                 {
-                    // InputHandler.Instance.InvokeInputResponseBindingCall(this, kvp.Key, BeanType, inputCode, operationType);
-                    InvokeInputCall(kvp.Key, inputCode, operationType);
+                    // InputHandler.Instance.InvokeInputResponseBindingCall(this, kvp.Key, BeanType, keyCode, operationType);
+                    InvokeInputCall(kvp.Key, keyCode, operationType);
                 }
             }
 
-            OnInput(inputCode, operationType);
+            OnInput(keyCode, operationType);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace GameEngine
         /// 该函数针对输入响应接口的标准实现，禁止子类重写该函数<br/>
         /// 若子类需要根据需要自行解析输入编码，可以通过重写<see cref="GameEngine.CBase.OnInput(object)"/>实现输入编码的自定义处理逻辑
         /// </summary>
-        /// <param name="inputData">事件数据</param>
+        /// <param name="inputData">输入数据类型</param>
         public virtual void OnInputDispatchForType(object inputData)
         {
             if (_inputResponseCallsForType.TryGetValue(inputData.GetType(), out IDictionary<string, bool> calls))
@@ -119,50 +119,50 @@ namespace GameEngine
         /// <summary>
         /// 用户自定义的输入处理函数，您可以通过重写该函数处理自定义输入行为
         /// </summary>
-        /// <param name="inputCode">事件标识</param>
-        /// <param name="operationType">事件数据参数</param>
-        protected abstract void OnInput(int inputCode, int operationType);
+        /// <param name="keyCode">按键编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        protected abstract void OnInput(VirtualKeyCode keyCode, InputOperationType operationType);
 
         /// <summary>
         /// 用户自定义的输入处理函数，您可以通过重写该函数处理自定义输入行为
         /// </summary>
-        /// <param name="inputData">事件数据</param>
+        /// <param name="inputData">输入数据类型</param>
         protected abstract void OnInput(object inputData);
 
         /// <summary>
         /// 针对指定编码标识新增输入监听的后处理程序
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
-        /// <param name="operationType">事件数据参数</param>
+        /// <param name="keyCode">按键编码</param>
+        /// <param name="operationType">输入操作类型</param>
         /// <returns>返回后处理的操作结果</returns>
-        protected abstract bool OnInputResponseAddedActionPostProcess(int inputCode, int operationType);
+        protected abstract bool OnInputResponseAddedActionPostProcess(VirtualKeyCode keyCode, InputOperationType operationType);
         /// <summary>
         /// 针对指定编码类型新增输入监听的后处理程序
         /// </summary>
-        /// <param name="inputType">输入类型</param>
+        /// <param name="inputType">输入数据类型</param>
         /// <returns>返回后处理的操作结果</returns>
         protected abstract bool OnInputResponseAddedActionPostProcess(Type inputType);
         /// <summary>
         /// 针对指定编码标识移除输入监听的后处理程序
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
-        /// <param name="operationType">事件数据参数</param>
-        protected abstract void OnInputResponseRemovedActionPostProcess(int inputCode, int operationType);
+        /// <param name="keyCode">按键编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        protected abstract void OnInputResponseRemovedActionPostProcess(VirtualKeyCode keyCode, InputOperationType operationType);
         /// <summary>
         /// 针对指定编码类型移除输入监听的后处理程序
         /// </summary>
-        /// <param name="inputType">输入类型</param>
+        /// <param name="inputType">输入数据类型</param>
         protected abstract void OnInputResponseRemovedActionPostProcess(Type inputType);
 
         /// <summary>
         /// 检测当前基础对象是否响应了目标输入标识
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
         /// <returns>若响应了给定编码标识则返回true，否则返回false</returns>
-        protected internal virtual bool IsInputResponsedOfTargetCode(int inputCode, int operationType)
+        protected internal virtual bool IsInputResponsedOfTargetCode(VirtualKeyCode keyCode, InputOperationType operationType)
         {
-            if (_inputResponseCallsForCode.ContainsKey(inputCode) && _inputResponseCallsForCode[inputCode].Count > 0)
+            if (_inputResponseCallsForCode.ContainsKey(keyCode) && _inputResponseCallsForCode[keyCode].Count > 0)
             {
                 return true;
             }
@@ -173,7 +173,7 @@ namespace GameEngine
         /// <summary>
         /// 检测当前基础对象是否响应了目标输入类型
         /// </summary>
-        /// <param name="inputType">输入类型</param>
+        /// <param name="inputType">输入数据类型</param>
         /// <returns>若响应了给定输入类型则返回true，否则返回false</returns>
         protected internal virtual bool IsInputResponsedOfTargetType(Type inputType)
         {
@@ -188,10 +188,10 @@ namespace GameEngine
         /// <summary>
         /// 基础对象的输入响应函数接口，对一个指定的编码进行响应监听
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        protected internal virtual bool AddInputResponse(int inputCode, int operationType)
+        protected internal virtual bool AddInputResponse(VirtualKeyCode keyCode, InputOperationType operationType)
         {
             throw new NotImplementedException();
         }
@@ -201,12 +201,12 @@ namespace GameEngine
         /// </summary>
         /// <param name="fullname">函数名称</param>
         /// <param name="methodInfo">监听回调函数</param>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        public bool AddInputResponse(string fullname, MethodInfo methodInfo, int inputCode, int operationType)
+        public bool AddInputResponse(string fullname, MethodInfo methodInfo, VirtualKeyCode keyCode, InputOperationType operationType)
         {
-            return AddInputResponse(fullname, methodInfo, inputCode, operationType, false);
+            return AddInputResponse(fullname, methodInfo, keyCode, operationType, false);
         }
 
         /// <summary>
@@ -214,33 +214,32 @@ namespace GameEngine
         /// </summary>
         /// <param name="fullname">函数名称</param>
         /// <param name="methodInfo">监听回调函数</param>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
         /// <param name="automatically">自动装载状态标识</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        protected internal bool AddInputResponse(string fullname, MethodInfo methodInfo, int inputCode, int operationType, bool automatically)
+        protected internal bool AddInputResponse(string fullname, MethodInfo methodInfo, VirtualKeyCode keyCode, InputOperationType operationType, bool automatically)
         {
             // 2025-11-30：
             // 针对普通函数采用对象自身构建的方式
-            // InputHandler.Instance.AddInputResponseBindingCallInfo(fullname, BeanType, methodInfo, inputCode, operationType, automatically);
-            AddInputCallDelegateHandler(fullname, methodInfo, inputCode, operationType, automatically);
+            // InputHandler.Instance.AddInputResponseBindingCallInfo(fullname, BeanType, methodInfo, keyCode, operationType, automatically);
+            AddInputCallDelegateHandler(fullname, methodInfo, keyCode, operationType, automatically);
 
-            if (false == _inputResponseCallsForCode.TryGetValue(inputCode, out IDictionary<string, bool> calls))
+            if (false == _inputResponseCallsForCode.TryGetValue(keyCode, out IDictionary<string, bool> calls))
             {
                 // 创建回调列表
-                calls = new Dictionary<string, bool>();
-                calls.Add(fullname, automatically);
+                calls = new Dictionary<string, bool>() { { fullname, automatically } };
 
-                _inputResponseCallsForCode.Add(inputCode, calls);
+                _inputResponseCallsForCode.Add(keyCode, calls);
 
                 // 新增输入响应的后处理程序
-                return OnInputResponseAddedActionPostProcess(inputCode, operationType);
+                return OnInputResponseAddedActionPostProcess(keyCode, operationType);
             }
 
             if (calls.ContainsKey(fullname))
             {
-                Debugger.Warn("The '{%t}' instance's input '{%d}' was already add same listener by name '{%s}', repeat do it failed.",
-                        BeanType, inputCode, fullname);
+                Debugger.Warn("The '{%t}' instance's input '{%i}' was already add same listener by name '{%s}', repeat do it failed.",
+                        BeanType, keyCode, fullname);
                 return false;
             }
 
@@ -335,48 +334,48 @@ namespace GameEngine
         /// <summary>
         /// 取消当前基础对象对指定编码的响应
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
-        protected internal void RemoveInputResponse(int inputCode)
+        /// <param name="keyCode">按键编码</param>
+        protected internal void RemoveInputResponse(VirtualKeyCode keyCode)
         {
-            RemoveInputResponse(inputCode, 0);
+            RemoveInputResponse(keyCode, InputOperationType.Unknown);
         }
 
         /// <summary>
         /// 取消当前基础对象对指定编码的响应
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
-        protected internal virtual void RemoveInputResponse(int inputCode, int operationType)
+        protected internal virtual void RemoveInputResponse(VirtualKeyCode keyCode, InputOperationType operationType)
         {
             // 若针对特定编码绑定了监听回调，则移除相应的回调句柄
-            if (_inputResponseCallsForCode.ContainsKey(inputCode))
+            if (_inputResponseCallsForCode.ContainsKey(keyCode))
             {
-                _inputResponseCallsForCode.Remove(inputCode);
+                _inputResponseCallsForCode.Remove(keyCode);
             }
 
             // 移除输入响应的后处理程序
-            OnInputResponseRemovedActionPostProcess(inputCode, operationType);
+            OnInputResponseRemovedActionPostProcess(keyCode, operationType);
         }
 
         /// <summary>
         /// 取消当前基础对象对指定编码的监听回调函数
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
         /// <param name="fullname">函数名称</param>
-        protected internal void RemoveInputResponse(string fullname, int inputCode)
+        /// <param name="keyCode">按键编码</param>
+        protected internal void RemoveInputResponse(string fullname, VirtualKeyCode keyCode)
         {
-            RemoveInputResponse(fullname, inputCode, 0);
+            RemoveInputResponse(fullname, keyCode, InputOperationType.Unknown);
         }
 
         /// <summary>
         /// 取消当前基础对象对指定编码的监听回调函数
         /// </summary>
         /// <param name="fullname">函数名称</param>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
-        protected internal void RemoveInputResponse(string fullname, int inputCode, int operationType)
+        protected internal void RemoveInputResponse(string fullname, VirtualKeyCode keyCode, InputOperationType operationType)
         {
-            if (_inputResponseCallsForCode.TryGetValue(inputCode, out IDictionary<string, bool> calls))
+            if (_inputResponseCallsForCode.TryGetValue(keyCode, out IDictionary<string, bool> calls))
             {
                 if (calls.ContainsKey(fullname))
                 {
@@ -387,9 +386,9 @@ namespace GameEngine
             }
 
             // 当前监听列表为空时，移除该编码的监听
-            if (false == IsInputResponsedOfTargetCode(inputCode, operationType))
+            if (false == IsInputResponsedOfTargetCode(keyCode, operationType))
             {
-                RemoveInputResponse(inputCode, operationType);
+                RemoveInputResponse(keyCode, operationType);
             }
         }
 
@@ -479,7 +478,7 @@ namespace GameEngine
         /// </summary>
         protected internal void RemoveAllAutomaticallyInputResponses()
         {
-            OnAutomaticallyCallSyntaxInfoProcessHandler<int>(_inputResponseCallsForCode, RemoveInputResponse);
+            OnAutomaticallyCallSyntaxInfoProcessHandler<VirtualKeyCode>(_inputResponseCallsForCode, RemoveInputResponse);
             OnAutomaticallyCallSyntaxInfoProcessHandler<Type>(_inputResponseCallsForType, RemoveInputResponse);
         }
 
@@ -488,11 +487,11 @@ namespace GameEngine
         /// </summary>
         public virtual void RemoveAllInputResponses()
         {
-            IList<int> id_keys = NovaEngine.Utility.Collection.ToListForKeys<int, IDictionary<string, bool>>(_inputResponseCallsForCode);
-            if (null != id_keys)
+            IList<VirtualKeyCode> code_keys = NovaEngine.Utility.Collection.ToListForKeys<VirtualKeyCode, IDictionary<string, bool>>(_inputResponseCallsForCode);
+            if (null != code_keys)
             {
-                int c = id_keys.Count;
-                for (int n = 0; n < c; ++n) { RemoveInputResponse(id_keys[n]); }
+                int c = code_keys.Count;
+                for (int n = 0; n < c; ++n) { RemoveInputResponse(code_keys[n]); }
             }
 
             IList<Type> type_keys = NovaEngine.Utility.Collection.ToListForKeys<Type, IDictionary<string, bool>>(_inputResponseCallsForType);
@@ -515,15 +514,15 @@ namespace GameEngine
         /// </summary>
         /// <param name="fullname">完整名称</param>
         /// <param name="methodInfo">函数对象</param>
-        /// <param name="inputCode">按键编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">操作类型</param>
         /// <param name="automatically">自动装载状态标识</param>
-        private void AddInputCallDelegateHandler(string fullname, MethodInfo methodInfo, int inputCode, int operationType, bool automatically)
+        private void AddInputCallDelegateHandler(string fullname, MethodInfo methodInfo, VirtualKeyCode keyCode, InputOperationType operationType, bool automatically)
         {
             // 静态函数（包括扩展类型）
             if (methodInfo.IsStatic)
             {
-                InputHandler.Instance.AddInputResponseBindingCallInfo(fullname, BeanType, methodInfo, inputCode, operationType, automatically);
+                InputHandler.Instance.AddInputResponseBindingCallInfo(fullname, BeanType, methodInfo, keyCode, operationType, automatically);
                 return;
             }
 
@@ -537,10 +536,10 @@ namespace GameEngine
                 return;
             }
 
-            Debugger.Info(LogGroupTag.Module, "新增指定的按键编码‘{%d}’及操作类型‘{%d}’对应的输入响应绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
-                    inputCode, operationType, BeanType, fullname);
+            Debugger.Info(LogGroupTag.Module, "新增指定的按键编码‘{%i}’及操作类型‘{%d}’对应的输入响应绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
+                    keyCode, operationType, BeanType, fullname);
 
-            InputCallMethodInfo inputCallMethodInfo = new InputCallMethodInfo(this, fullname, BeanType, methodInfo, inputCode, operationType, automatically);
+            InputCallMethodInfo inputCallMethodInfo = new InputCallMethodInfo(this, fullname, BeanType, methodInfo, keyCode, operationType, automatically);
             _inputCallBindingCaches.Add(fullname, inputCallMethodInfo);
         }
 
@@ -606,17 +605,17 @@ namespace GameEngine
         /// 针对消息事件调用指定的回调绑定函数
         /// </summary>
         /// <param name="fullname">完整名称</param>
-        /// <param name="inputCode">按键编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">按键操作类型</param>
-        private void InvokeInputCall(string fullname, int inputCode, int operationType)
+        private void InvokeInputCall(string fullname, VirtualKeyCode keyCode, InputOperationType operationType)
         {
             if (null != _inputCallBindingCaches && _inputCallBindingCaches.TryGetValue(fullname, out InputCallMethodInfo inputCallMethodInfo))
             {
-                inputCallMethodInfo.Invoke(inputCode, operationType);
+                inputCallMethodInfo.Invoke(keyCode, operationType);
                 return;
             }
 
-            InputHandler.Instance.InvokeInputResponseBindingCall(this, fullname, BeanType, inputCode, operationType);
+            InputHandler.Instance.InvokeInputResponseBindingCall(this, fullname, BeanType, keyCode, operationType);
         }
 
         /// <summary>

@@ -2,7 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -34,18 +34,33 @@ namespace GameEngine
         /// 无效操作
         /// </summary>
         Unknown = 0x00,
+
         /// <summary>
         /// 按下操作
         /// </summary>
         Pressed = 0x01,
         /// <summary>
-        /// 长按操作
+        /// 移动操作
         /// </summary>
         Moved = 0x02,
         /// <summary>
         /// 释放操作
         /// </summary>
         Released = 0x04,
+
+        /// <summary>
+        /// 按下或移动操作
+        /// </summary>
+        PressedOrMoved = Pressed | Moved,
+        /// <summary>
+        /// 移动或释放操作
+        /// </summary>
+        MovedOrReleased = Moved | Released,
+        /// <summary>
+        /// 按下或释放操作
+        /// </summary>
+        PressedOrReleased = Pressed | Released,
+
         /// <summary>
         /// 按键全部操作均支持
         /// </summary>

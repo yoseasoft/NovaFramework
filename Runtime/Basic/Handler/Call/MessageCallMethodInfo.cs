@@ -66,11 +66,8 @@ namespace GameEngine
         { }
 
         private MessageCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, int opcode, Type messageType, bool automatically)
-            : base(fullname, targetType, methodInfo, automatically)
-        {
-            _opcode = opcode;
-            _messageType = messageType;
-        }
+            : this(null, fullname, targetType, methodInfo, opcode, messageType, automatically)
+        { }
 
         #endregion
 

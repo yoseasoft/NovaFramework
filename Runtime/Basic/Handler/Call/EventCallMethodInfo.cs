@@ -66,11 +66,8 @@ namespace GameEngine
         { }
 
         private EventCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, int eventID, Type eventDataType, bool automatically)
-            : base(fullname, targetType, methodInfo, automatically)
-        {
-            _eventID = eventID;
-            _eventDataType = eventDataType;
-        }
+            : this(null, fullname, targetType, methodInfo, eventID, eventDataType, automatically)
+        { }
 
         #endregion
 

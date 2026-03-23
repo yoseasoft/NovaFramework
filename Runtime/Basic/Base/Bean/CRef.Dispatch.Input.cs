@@ -35,7 +35,7 @@ namespace GameEngine
         /// <summary>
         /// 对象内部输入响应的编码管理容器
         /// </summary>
-        private IList<int> _inputCodes;
+        private IList<VirtualKeyCode> _inputCodes;
         /// <summary>
         /// 对象内部输入响应的类型管理容器
         /// </summary>
@@ -47,7 +47,7 @@ namespace GameEngine
         private void OnInputResponseProcessingInitialize()
         {
             // 输入编码容器初始化
-            _inputCodes = new List<int>();
+            _inputCodes = new List<VirtualKeyCode>();
             // 输入类型容器初始化
             _inputTypes = new List<Type>();
         }
@@ -68,11 +68,11 @@ namespace GameEngine
         /// <summary>
         /// 发送输入编码到自己的输入管理器中进行派发
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
-        public void SimulateKeycodeForSelf(int inputCode, int operationType)
+        public void SimulateKeycodeForSelf(VirtualKeyCode keyCode, InputOperationType operationType)
         {
-            OnInputDispatchForCode(inputCode, operationType);
+            OnInputDispatchForCode(keyCode, operationType);
         }
 
         /// <summary>
@@ -87,9 +87,9 @@ namespace GameEngine
         /// <summary>
         /// 用户自定义的输入处理函数，您可以通过重写该函数处理自定义输入行为
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
-        protected override void OnInput(int inputCode, int operationType) { }
+        protected override void OnInput(VirtualKeyCode keyCode, InputOperationType operationType) { }
 
         /// <summary>
         /// 用户自定义的输入处理函数，您可以通过重写该函数处理自定义输入行为
@@ -100,12 +100,12 @@ namespace GameEngine
         /// <summary>
         /// 针对指定输入编码新增输入响应的后处理程序
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
         /// <returns>返回后处理的操作结果</returns>
-        protected override bool OnInputResponseAddedActionPostProcess(int inputCode, int operationType)
+        protected override bool OnInputResponseAddedActionPostProcess(VirtualKeyCode keyCode, InputOperationType operationType)
         {
-            return AddInputResponse(inputCode, operationType);
+            return AddInputResponse(keyCode, operationType);
         }
 
         /// <summary>
@@ -121,9 +121,9 @@ namespace GameEngine
         /// <summary>
         /// 针对指定输入编码移除输入响应的后处理程序
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
-        protected override void OnInputResponseRemovedActionPostProcess(int inputCode, int operationType)
+        protected override void OnInputResponseRemovedActionPostProcess(VirtualKeyCode keyCode, InputOperationType operationType)
         { }
 
         /// <summary>
@@ -136,24 +136,24 @@ namespace GameEngine
         /// <summary>
         /// 引用对象的输入响应函数接口，对一个指定的输入编码进行响应监听
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
-        protected internal override sealed bool AddInputResponse(int inputCode, int operationType)
+        protected internal override sealed bool AddInputResponse(VirtualKeyCode keyCode, InputOperationType operationType)
         {
-            if (_inputCodes.Contains(inputCode))
+            if (_inputCodes.Contains(keyCode))
             {
-                Debugger.Warn("The 'CRef' instance input '{%d}' was already added, repeat do it failed.", inputCode);
+                Debugger.Warn("The 'CRef' instance input '{%i}' was already added, repeat do it failed.", keyCode);
                 return true;
             }
 
-            if (false == InputHandler.Instance.AddInputResponse(inputCode, this))
+            if (false == InputHandler.Instance.AddInputResponse(keyCode, this))
             {
-                Debugger.Warn("The 'CRef' instance add input response '{%d}' failed.", inputCode);
+                Debugger.Warn("The 'CRef' instance add input response '{%i}' failed.", keyCode);
                 return false;
             }
 
-            _inputCodes.Add(inputCode);
+            _inputCodes.Add(keyCode);
 
             return true;
         }
@@ -185,20 +185,20 @@ namespace GameEngine
         /// <summary>
         /// 取消当前引用对象对指定输入的响应
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
-        protected internal override sealed void RemoveInputResponse(int inputCode, int operationType)
+        protected internal override sealed void RemoveInputResponse(VirtualKeyCode keyCode, InputOperationType operationType)
         {
-            if (false == _inputCodes.Contains(inputCode))
+            if (false == _inputCodes.Contains(keyCode))
             {
-                // Debugger.Warn("Could not found any input '{%d}' for target 'CRef' instance with on added, do removed it failed.", inputCode);
+                // Debugger.Warn("Could not found any input '{%i}' for target 'CRef' instance with on added, do removed it failed.", keyCode);
                 return;
             }
 
-            InputHandler.Instance.RemoveInputResponse(inputCode, this);
-            _inputCodes.Remove(inputCode);
+            InputHandler.Instance.RemoveInputResponse(keyCode, this);
+            _inputCodes.Remove(keyCode);
 
-            base.RemoveInputResponse(inputCode, operationType);
+            base.RemoveInputResponse(keyCode, operationType);
         }
 
         /// <summary>

@@ -102,11 +102,11 @@ namespace GameEngine
 
                 Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' input listener with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);
 
-                if (methodTypeCodeInfo.InputCode > 0)
+                if (methodTypeCodeInfo.KeyCode > VirtualKeyCode.None)
                 {
-                    // if (reload) { obj.RemoveInputResponse(methodTypeCodeInfo.Method, methodTypeCodeInfo.InputCode, (int) methodTypeCodeInfo.OperationType); }
+                    // if (reload) { obj.RemoveInputResponse(methodTypeCodeInfo.Method, methodTypeCodeInfo.KeyCode, methodTypeCodeInfo.OperationType); }
 
-                    obj.AddInputResponse(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.InputCode, (int) methodTypeCodeInfo.OperationType, true);
+                    obj.AddInputResponse(methodTypeCodeInfo.Fullname, methodTypeCodeInfo.Method, methodTypeCodeInfo.KeyCode, methodTypeCodeInfo.OperationType, true);
                 }
                 else
                 {

@@ -2,7 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -33,9 +33,9 @@ namespace GameEngine
         /// <summary>
         /// 对象内部输入的监听回调接口，通过该类型函数对指定输入编码进行监听处理
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
-        // public delegate void InputDispatchingListenerForCode(int inputCode, int operationType);
+        // public delegate void InputDispatchingListenerForCode(VirtualKeyCode keyCode, InputOperationType operationType);
 
         /// <summary>
         /// 对象内部输入的监听回调接口，通过该类型函数对指定输入类型进行监听处理
@@ -46,9 +46,9 @@ namespace GameEngine
         /// <summary>
         /// 接收监听指定输入编码的回调接口函数
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
-        void OnInputDispatchForCode(int inputCode, int operationType);
+        void OnInputDispatchForCode(VirtualKeyCode keyCode, InputOperationType operationType);
 
         /// <summary>
         /// 接收监听指定输入类型的回调接口函数

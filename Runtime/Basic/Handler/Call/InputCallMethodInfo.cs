@@ -25,6 +25,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -36,30 +37,23 @@ namespace GameEngine
     internal sealed class InputCallMethodInfo : BaseCallMethodInfo
     {
         /// <summary>
-        /// 输入回调绑定的输入编码
+        /// 同步回调绑定的数据标签
         /// </summary>
-        private readonly int _inputCode;
-        /// <summary>
-        /// 输入回调绑定的操作类型
-        /// </summary>
-        private readonly int _operationType;
+        private readonly IDictionary<VirtualKeyCode, InputOperationType> _operationTypes;
+
         /// <summary>
         /// 输入回调绑定的输入数据类型
         /// </summary>
         private readonly Type _inputDataType;
 
-        public int InputCode => _inputCode;
-        public int OperationType => _operationType;
-        public Type InputDataType => _inputDataType;
-
         #region 为静态回调函数构建委托句柄的构造函数
 
-        public InputCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, int inputCode, int operationType)
-            : this(fullname, targetType, methodInfo, inputCode, operationType, false)
+        public InputCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, VirtualKeyCode keyCode, InputOperationType operationType)
+            : this(fullname, targetType, methodInfo, keyCode, operationType, false)
         { }
 
-        public InputCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, int inputCode, int operationType, bool automatically)
-            : this(fullname, targetType, methodInfo, inputCode, operationType, null, automatically)
+        public InputCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, VirtualKeyCode keyCode, InputOperationType operationType, bool automatically)
+            : this(fullname, targetType, methodInfo, keyCode, operationType, null, automatically)
         { }
 
         public InputCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, Type inputDataType)
@@ -67,27 +61,23 @@ namespace GameEngine
         { }
 
         public InputCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, Type inputDataType, bool automatically)
-            : this(fullname, targetType, methodInfo, 0, 0, inputDataType, automatically)
+            : this(fullname, targetType, methodInfo, VirtualKeyCode.None, InputOperationType.Unknown, inputDataType, automatically)
         { }
 
-        private InputCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, int inputCode, int operationType, Type inputDataType, bool automatically)
-            : base(fullname, targetType, methodInfo, automatically)
-        {
-            _inputCode = inputCode;
-            _operationType = operationType;
-            _inputDataType = inputDataType;
-        }
+        private InputCallMethodInfo(string fullname, Type targetType, MethodInfo methodInfo, VirtualKeyCode keyCode, InputOperationType operationType, Type inputDataType, bool automatically)
+            : this(null, fullname, targetType, methodInfo, keyCode, operationType, automatically)
+        { }
 
         #endregion
 
         #region 为普通回调函数构建委托句柄的构造函数
 
-        public InputCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, int inputCode, int operationType)
-            : this(targetObject, fullname, targetType, methodInfo, inputCode, operationType, false)
+        public InputCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, VirtualKeyCode keyCode, InputOperationType operationType)
+            : this(targetObject, fullname, targetType, methodInfo, keyCode, operationType, false)
         { }
 
-        public InputCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, int inputCode, int operationType, bool automatically)
-            : this(targetObject, fullname, targetType, methodInfo, inputCode, operationType, null, automatically)
+        public InputCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, VirtualKeyCode keyCode, InputOperationType operationType, bool automatically)
+            : this(targetObject, fullname, targetType, methodInfo, keyCode, operationType, null, automatically)
         { }
 
         public InputCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, Type inputDataType)
@@ -95,14 +85,17 @@ namespace GameEngine
         { }
 
         public InputCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, Type inputDataType, bool automatically)
-            : this(targetObject, fullname, targetType, methodInfo, 0, 0, inputDataType, automatically)
+            : this(targetObject, fullname, targetType, methodInfo, VirtualKeyCode.None, InputOperationType.Unknown, inputDataType, automatically)
         { }
 
-        private InputCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, int inputCode, int operationType, Type inputDataType, bool automatically)
+        private InputCallMethodInfo(IBean targetObject, string fullname, Type targetType, MethodInfo methodInfo, VirtualKeyCode keyCode, InputOperationType operationType, Type inputDataType, bool automatically)
             : base(targetObject, fullname, targetType, methodInfo, automatically)
         {
-            _inputCode = inputCode;
-            _operationType = operationType;
+            if (keyCode > VirtualKeyCode.None)
+            {
+                _operationTypes = new Dictionary<VirtualKeyCode, InputOperationType>() { { keyCode, operationType } };
+            }
+
             _inputDataType = inputDataType;
         }
 
@@ -150,14 +143,33 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 注册指定按键编码的操作类型
+        /// </summary>
+        /// <param name="keyCode">按键编码</param>
+        /// <param name="operationType">输入操作类型</param>
+        public void RegisterOperationType(VirtualKeyCode keyCode, InputOperationType operationType)
+        {
+            if (_operationTypes.ContainsKey(keyCode))
+            {
+                Debugger.Warn(LogGroupTag.Module, "The key code '{%i}' was already exists, multiple settings will incorporate operation values.", keyCode);
+
+                _operationTypes[keyCode] |= operationType;
+            }
+            else
+            {
+                _operationTypes.Add(keyCode, operationType);
+            }
+        }
+
+        /// <summary>
         /// 输入回调的调度函数
         /// </summary>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Invoke(int inputCode, int operationType)
+        public void Invoke(VirtualKeyCode keyCode, InputOperationType operationType)
         {
-            if (/*_operationType == 0 ||*/ (_operationType & operationType) == 0)
+            if (/*InputOperationType.Unknown == _operationTypes[keyCode] ||*/ InputOperationType.Unknown == (_operationTypes[keyCode] & operationType))
             {
                 return; // ignore
             }
@@ -168,7 +180,7 @@ namespace GameEngine
             }
             else
             {
-                _callback.DynamicInvoke(inputCode, operationType);
+                _callback.DynamicInvoke(keyCode, operationType);
             }
         }
 
@@ -176,14 +188,14 @@ namespace GameEngine
         /// 输入回调的调度函数
         /// </summary>
         /// <param name="targetObject">对象实例</param>
-        /// <param name="inputCode">输入编码</param>
+        /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">输入操作类型</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Invoke(IBean targetObject, int inputCode, int operationType)
+        public void Invoke(IBean targetObject, VirtualKeyCode keyCode, InputOperationType operationType)
         {
             Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
 
-            if (/*_operationType == 0 ||*/ (_operationType & operationType) == 0)
+            if (/*InputOperationType.Unknown == _operationTypes[keyCode] ||*/ InputOperationType.Unknown == (_operationTypes[keyCode] & operationType))
             {
                 return; // ignore
             }
@@ -194,7 +206,7 @@ namespace GameEngine
             }
             else
             {
-                _callback.DynamicInvoke(targetObject, inputCode, operationType);
+                _callback.DynamicInvoke(targetObject, keyCode, operationType);
             }
         }
 

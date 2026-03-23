@@ -150,7 +150,7 @@ namespace GameEngine
         /// <param name="tags">数据标签</param>
         private void RemoveReplicateDistributeCallInfo(string fullname, Type targetType, string tags)
         {
-            Debugger.Info(LogGroupTag.Controller, "Remove replicate distribute call '{%s}' with target tags '{%s}' and class type '{%t}'.",
+            Debugger.Info(LogGroupTag.Controller, "Remove replicate distribute call '{%s}' with target tags '{%s}' of the class type '{%t}'.",
                     fullname, tags, targetType);
             int[] keys = ReplicateTagToCodeArray(tags);
             if (false == _replicateTagDistributeCallInfos.TryGetValue(keys, out IDictionary<string, ReplicateCallMethodInfo> infos))
