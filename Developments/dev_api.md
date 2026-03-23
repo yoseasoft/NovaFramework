@@ -325,7 +325,15 @@ GameEngine.GameApi.UnloadAssetScene(asset);
 
 ### 7.5 原始文件类型资源访问
 
-暂无，待补充。
+同步加载原始文件资源：
+```csharp
+GooAsset.RawFile rawFile = GameEngine.GameApi.LoadRawFile("C:/Users/Public/Downloads/History.log");
+```
+
+异步加载原始文件资源：
+```csharp
+GooAsset.RawFile rawFile = await GameEngine.GameApi.AsyncLoadRawFile("C:/Users/Public/Downloads/History.log");
+```
 
 ---
 
