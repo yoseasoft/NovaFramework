@@ -64,6 +64,44 @@
 - ✅ 通过 `GameApi.LoadAssetScene` 加载的场景资源，必须通过 `GameApi.UnloadAssetScene` 手动释放
 - ❌ **禁止**依赖 GC 自动释放主动加载的资源
 
+### 2.8 业务层二次封装规则
+
+为了将业务代码与框架引擎层解耦，项目在 `Game` 命名空间下对框架的核心基类进行了二次封装（G 类），位于 `Game/Core/Surface/` 目录：
+
+| 框架基类（GameEngine） | 业务封装类（Game） | 说明 |
+|----------------------|------------------|------|
+| `CScene` | `Game.GScene` | 场景对象封装 |
+| `CActor` | `Game.GActor` | 角色对象封装 |
+| `CView` | `Game.GView` | 视图对象封装 |
+| `CObject` | `Game.GObject` | 常规对象封装（注意与 `FairyGUI.GObject` 同名，使用时需注意命名空间） |
+| `CComponent` | `Game.GComponent` | 组件对象封装（注意与 `FairyGUI.GComponent` 同名，使用时需注意命名空间） |
+
+- ✅ 所有业务实体对象**必须继承 G 类**，而非直接继承框架的 C 类
+- ✅ G 类可以包含业务层的通用逻辑（公共字段、公共方法等），供所有子类复用
+- ❌ **禁止**业务实体对象直接继承 `GameEngine.CActor`、`GameEngine.CScene` 等框架基类
+
+正确示例：
+```csharp
+// ✅ 正确：继承 Game.GActor
+[CActorClass("LocalPlayer")]
+public sealed class Player : Game.GActor { ... }
+
+// ✅ 正确：继承 Game.GScene
+[CSceneClass("Loading")]
+public sealed class LoadingScene : Game.GScene { ... }
+
+// ✅ 正确：继承 Game.GComponent
+[CComponentClass("MoveComponent")]
+public sealed class MoveComponent : Game.GComponent { ... }
+```
+
+错误示例：
+```csharp
+// ❌ 错误：直接继承框架基类
+[CActorClass("LocalPlayer")]
+public sealed class Player : GameEngine.CActor { ... }
+```
+
 ---
 
 ## 3. 目录结构
@@ -107,22 +145,23 @@ Assets
 | System 逻辑类 | `GameHotfix/<对象类型>/` | `GameHotfix/Component/Mail/MailComponentMailSystem.cs` |
 | 管理器 | `GameHotfix/Manager/` | `GameHotfix/Manager/MailManager.cs` |
 
-### 3.2 多模块结构
+### 3.2 多模组结构
 
-项目可能存在多个独立模块，每个数据模块都有一个对应的逻辑模块，命名格式为：
-- 数据模块目录名：`<模块名称>`（如 `Game`、`World`、`Battle`）
-- 逻辑模块目录名：`<模块名称>Hotfix`（如 `GameHotfix`、`WorldHotfix`、`BattleHotfix`）
+项目可能存在多个独立模组，每个数据模组都有一个对应的逻辑模组，命名格式为：
+- 数据模组目录名：`<模组名称>`（如 `Game`、`World`、`Battle`）
+- 逻辑模组目录名：`<模组名称>Hotfix`（如 `GameHotfix`、`WorldHotfix`、`BattleHotfix`）
 
-**模块对应规则**：实体对象的数据类定义在哪个数据模块中，其对应的 System 逻辑类就**必须**放在该数据模块对应的 Hotfix 逻辑模块中。例如：
+**模块对应规则**：实体对象的数据类定义在哪个数据模组中，其对应的 System 逻辑类就**必须**放在该数据模组对应的 Hotfix 逻辑模组中。例如：
 - `LoadingScene` 定义在 `Game/Scene/` → `LoadingSceneSystem` 必须放在 `GameHotfix/Scene/`
 - 若某个实体对象定义在 `World/` → 其 System 类必须放在 `WorldHotfix/`
 
-每个模块的数据模块和逻辑模块目录结构一一对应。
+每个模组的数据模组和逻辑模组目录结构一一对应。
 
 ## 4. 核心概念
 
 ### 4.1 实体对象继承体系
 
+ +**框架层**（`GameEngine` 命名空间，不可修改）：  
 ```text
 CBean
 └── CBase                  # 对象基础抽象类，实现输入、事件、消息和数据的派发
@@ -134,6 +173,27 @@ CBean
             ├── CActor     # 角色对象类型
             └── CView      # 视图对象类型
 ```
+
+**业务封装层**（`Game` 命名空间，可扩展通用逻辑）：
+```text
+CComponent ← Game.GComponent      # 业务层组件基类
+CObject    ← Game.GObject         # 业务层常规对象基类
+CScene     ← Game.GScene          # 业务层场景基类
+CActor     ← Game.GActor          # 业务层角色基类
+CView      ← Game.GView           # 业务层视图基类
+```
+
+**业务层**（具体业务对象，必须继承 G 类）：
+```text
+Game.GActor     ← Player, Monster, Slime ...
+Game.GScene     ← LoadingScene, WorldScene ...
+Game.GView      ← LoadingPanel, MailPanel ...
+Game.GObject    ← 具体常规对象 ...
+Game.GComponent ← MoveComponent, HitEffectComponent ...
+```
+
+> 业务对象**必须**继承 G 类（详见 2.7 规则），不可直接继承框架 C 类。
+
 
 ### 4.2 实体对象类型说明
 
@@ -170,16 +230,16 @@ CBean
 
 组件复用示例——不同实体对象挂载同一个组件：
 ```csharp
-[CComponentClass()]
-public class MoveComponent : CComponent { ... }
+[CComponentClass("MoveComponent")]
+public sealed class MoveComponent : Game.GComponent { ... }
 
-[CActorClass()]
+[CActorClass("LocalPlayer")]
 [CComponentAutomaticActivationOfEntity(typeof(MoveComponent))]
-public sealed class Player : CActor { ... }
+public sealed class Player : Game.GActor { ... }
 
-[CActorClass()]
+[CActorClass("Monster")]
 [CComponentAutomaticActivationOfEntity(typeof(MoveComponent))]
-public sealed class Monster : CActor { ... }
+public sealed class Monster : Game.GActor { ... }
 ```
 
 ### 4.5 生命周期
