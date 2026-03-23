@@ -85,7 +85,7 @@ namespace GameEngine
             while (keycode_enumerator.MoveNext())
             {
                 UnityEngine.KeyCode keyCode = (UnityEngine.KeyCode) keycode_enumerator.Current;
-                if (Enum.TryParse(keyCode.ToString(), out VirtualKeyCode virtualKeyCode))
+                if (false == Enum.TryParse(keyCode.ToString(), out VirtualKeyCode virtualKeyCode))
                 {
                     _inputVirtualMapTables.Add(keyCode, virtualKeyCode);
                 }
