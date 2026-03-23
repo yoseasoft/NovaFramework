@@ -291,31 +291,32 @@ static class PlayerSystem
 
 #### 4.6.1 输入通知
 
-输入数据类型：按键编码（`UnityEngine.KeyCode` + 按键状态）、自定义数据结构（摇杆/触屏等封装后的结构体）。
+输入数据类型：按键编码（虚拟按键编码 + 按键状态）、自定义数据结构（摇杆/触屏等封装后的结构体）。  
+**注意**：在Unity平台，虚拟按键编码与Unity按键编码（UnityEngine.KeyCode）一致。
 
 接收函数有三种绑定方式：
 ```csharp
 // 方式一：全局接收（无实体对象绑定）
-[OnInput((int) UnityEngine.KeyCode.Space, GameEngine.InputOperationType.Released)]
-static void OnRecvSpaceReleased(int keyCode, int operationType) { ... }
+[OnInput(GameEngine.VirtualKeyCode.Space, GameEngine.InputOperationType.Released)]
+static void OnRecvSpaceReleased(GameEngine.VirtualKeyCode keyCode, GameEngine.InputOperationType operationType) { ... }
 
 // 方式二：指定实体类型接收（通过 typeof 参数）
-[OnInput(typeof(MainScene), (int) UnityEngine.KeyCode.Space, GameEngine.InputOperationType.Pressed)]
-static void OnRecvSpacePressed(MainScene mainScene, int keyCode, int operationType) { ... }
+[OnInput(typeof(MainScene), GameEngine.VirtualKeyCode.Space, GameEngine.InputOperationType.Pressed)]
+static void OnRecvSpacePressed(MainScene mainScene, GameEngine.VirtualKeyCode keyCode, GameEngine.InputOperationType operationType) { ... }
 
 // 方式三：通过实体对象扩展函数接收（推荐）
-[OnInput((int) UnityEngine.KeyCode.Space, GameEngine.InputOperationType.Moved)]
-static void OnRecvSpaceMoved(this MainScene self, int keyCode, int operationType) { ... }
+[OnInput(GameEngine.VirtualKeyCode.Space, GameEngine.InputOperationType.Moved)]
+static void OnRecvSpaceMoved(this MainScene self, GameEngine.VirtualKeyCode keyCode, GameEngine.InputOperationType operationType) { ... }
 ```
 
 同一个函数可以叠加多个 `[OnInput]` 标签，以响应多个按键：
 ```csharp
 // 同时监听 Space 键和 Return 键，触发同一逻辑
-[OnInput((int) UnityEngine.KeyCode.Space, GameEngine.InputOperationType.Released)]
-[OnInput((int) UnityEngine.KeyCode.Return, GameEngine.InputOperationType.Released)]
-static void OnRecvSpaceOrReturnReleased(this MainScene self, int keyCode, int operationType)
+[OnInput(GameEngine.VirtualKeyCode.Space, GameEngine.InputOperationType.Released)]
+[OnInput(GameEngine.VirtualKeyCode.Return, GameEngine.InputOperationType.Released)]
+static void OnRecvSpaceOrReturnReleased(this MainScene self, GameEngine.VirtualKeyCode keyCode, GameEngine.InputOperationType operationType)
 {
-    UnityEngine.Debug.Log($"按键：{(UnityEngine.KeyCode) keyCode}");
+    UnityEngine.Debug.Log($"按键：{keyCode}");
 }
 ```
 

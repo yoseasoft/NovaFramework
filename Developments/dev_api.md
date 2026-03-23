@@ -193,7 +193,7 @@ AttributeComponent comp = player.GetComponent("AttributeComp") as AttributeCompo
 
 ```csharp
 // 模拟按键输入
-GameEngine.GameApi.OnInputSimulation(UnityEngine.KeyCode.A, GameEngine.InputOperationType.Released);
+GameEngine.GameApi.OnInputSimulation(GameEngine.VirtualKeyCode.A, GameEngine.InputOperationType.Released);
 
 // 模拟结构类型的输入数据
 GameEngine.GameApi.OnInputSimulation(new JoystickData() { x = 1f, y = 0.5f });
