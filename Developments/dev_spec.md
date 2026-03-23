@@ -244,8 +244,19 @@ static void OnRecvSpaceReleased(int keyCode, int operationType) { ... }
 static void OnRecvSpacePressed(MainScene mainScene, int keyCode, int operationType) { ... }
 
 // 方式三：通过实体对象扩展函数接收（推荐）
-[OnInput((int) UnityEngine.KeyCode.Space, GameEngine.InputOperationType.Pressed)]
-static void OnRecvSpacePressed(this MainScene self, int keyCode, int operationType) { ... }
+[OnInput((int) UnityEngine.KeyCode.Space, GameEngine.InputOperationType.Moved)]
+static void OnRecvSpaceMoved(this MainScene self, int keyCode, int operationType) { ... }
+```
+
+同一个函数可以叠加多个 `[OnInput]` 标签，以响应多个按键：
+```csharp
+// 同时监听 Space 键和 Return 键，触发同一逻辑
+[OnInput((int) UnityEngine.KeyCode.Space, GameEngine.InputOperationType.Released)]
+[OnInput((int) UnityEngine.KeyCode.Return, GameEngine.InputOperationType.Released)]
+static void OnRecvSpaceOrReturnReleased(this MainScene self, int keyCode, int operationType)
+{
+    UnityEngine.Debug.Log($"按键：{(UnityEngine.KeyCode) keyCode}");
+}
 ```
 
 #### 4.6.2 事件通知
@@ -283,11 +294,22 @@ static void OnRecvClickEvent(MainScene mainScene, LoginClickEvent eventData) { .
 static void OnRecvEvent(this MainScene self, int eventId, params object[] args) { ... }
 ```
 
+同一个函数可以叠加多个 `[OnEvent]` 标签，以响应多个事件：
+```csharp
+// 同时监听 1001 事件和 1002 事件，触发同一逻辑
+[OnEvent(1001)]
+[OnEvent(1002)]
+static void OnRecvEvent(this MainScene self, int eventId, params object[] args)
+{
+    UnityEngine.Debug.Log($"事件：{eventId}");
+}
+```
+
 > 事件发送 API（`Send`/`Fire`）详见 `dev_api.md` 中"数据通知与转发"章节。
 
 #### 4.6.3 消息通知
 
-消息数据类型：操作码（唯一编码标识）+ 消息对象（根据协议类型定义）。
+消息数据类型：操作码（唯一编码标识）、消息对象（根据协议类型定义）。
 
 消息对象定义示例：
 ```csharp
@@ -313,6 +335,17 @@ static void OnRecvMessage(MainScene mainScene, EnterMapResp message) { ... }
 // 通过扩展函数接收（推荐）
 [OnMessage(typeof(EnterMapResp))]
 static void OnRecvMessage(this MainScene self, EnterMapResp message) { ... }
+```
+
+同一个函数可以叠加多个 `[OnMessage]` 标签，以响应多个消息：
+```csharp
+// 同时接收 ProtoOpcode.EnterMapResp 消息和 ProtoOpcode.LeaveMapResp 消息，触发同一逻辑
+[OnMessage(ProtoOpcode.EnterMapResp)]
+[OnMessage(ProtoOpcode.LeaveMapResp)]
+static void OnRecvEvent(this MainScene self, ProtoBuf.Extension.IMessage msg)
+{
+    UnityEngine.Debug.Log($"消息类型：{typeof(msg)}");
+}
 ```
 
 #### 4.6.4 同步通知

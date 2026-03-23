@@ -245,6 +245,7 @@ player.Fire(new JoinMapNotify() { roleId = 1001, type = 1, bean = "goblin" });
 |---------|---------|
 | `GameApi.Send(...)` / `GameApi.Fire(...)` | 全局，所有绑定了该事件的监听函数 |
 | `entity.Send(...)` / `entity.Fire(...)` | 仅该实体对象实例及其组件 |
+| `component.Send(...)` / `component.Fire(...)` | 仅限该组件对象实例所属的实体对象实例及其组件 |
 
 ### 6.3 消息数据通知
 
