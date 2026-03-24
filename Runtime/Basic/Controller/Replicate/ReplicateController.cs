@@ -26,6 +26,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
@@ -91,9 +92,11 @@ namespace GameEngine
         /// </summary>
         /// <param name="tags">数据标签</param>
         /// <param name="announceType">数据播报类型</param>
-        public void Post(string tags, ReplicateAnnounceType announceType)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Send(string tags, ReplicateAnnounceType announceType)
         {
-            // 缓存数据标签
+            // 暂时先即刻派发，后续再考虑缓存问题
+            Fire(tags, announceType);
         }
 
         /// <summary>
@@ -101,7 +104,8 @@ namespace GameEngine
         /// </summary>
         /// <param name="tags">数据标签</param>
         /// <param name="announceType">数据播报类型</param>
-        public void Push(string tags, ReplicateAnnounceType announceType)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Fire(string tags, ReplicateAnnounceType announceType)
         {
             OnReplicateDispatched(tags, announceType);
         }
