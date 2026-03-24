@@ -47,6 +47,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="keyCode">按键编码</param>
         /// <param name="operationType">按键操作类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void OnInputSimulation(VirtualKeyCode keyCode, InputOperationType operationType)
         {
             InputHandler.Instance.OnInputSimulation(keyCode, operationType);
@@ -56,6 +57,7 @@ namespace GameEngine
         /// 通过模拟输入操作的方式发送自定义数据的接口函数
         /// </summary>
         /// <param name="inputData">输入数据</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void OnInputSimulation(object inputData)
         {
             InputHandler.Instance.OnInputSimulation(inputData);
@@ -70,6 +72,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="eventID">事件标识</param>
         /// <param name="args">事件参数列表</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Send(int eventID, params object[] args)
         {
             EventController.Instance.Send(eventID, args);
@@ -79,6 +82,7 @@ namespace GameEngine
         /// 发送事件消息到事件管理器中等待派发
         /// </summary>
         /// <param name="arg">事件数据</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Send<T>(T arg) where T : struct
         {
             EventController.Instance.Send<T>(arg);
@@ -89,6 +93,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="eventID">事件标识</param>
         /// <param name="args">事件参数列表</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fire(int eventID, params object[] args)
         {
             EventController.Instance.Fire(eventID, args);
@@ -98,6 +103,7 @@ namespace GameEngine
         /// 发送事件消息到事件管理器中并立即处理掉它
         /// </summary>
         /// <param name="arg">事件数据</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fire<T>(T arg) where T : struct
         {
             EventController.Instance.Fire<T>(arg);
@@ -111,6 +117,7 @@ namespace GameEngine
         /// 通过模拟的方式接收特定格式协议构建的网络消息的接口函数
         /// </summary>
         /// <param name="message">消息对象实例</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void OnMessageSimulation(object message)
         {
             NetworkHandler.Instance.OnMessageSimulation(message);
@@ -125,19 +132,21 @@ namespace GameEngine
         /// </summary>
         /// <param name="tags">数据标签</param>
         /// <param name="announceType">数据播报类型</param>
-        public static void Post(string tags, ReplicateAnnounceType announceType)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Send(string tags, ReplicateAnnounceType announceType)
         {
-            ReplicateController.Instance.Post(tags, announceType);
+            ReplicateController.Instance.Send(tags, announceType);
         }
 
         /// <summary>
-        /// 立即推送指定的数据标签到分发调度中
+        /// 发送指定的数据标签到分发调度中并立即处理掉它
         /// </summary>
         /// <param name="tags">数据标签</param>
         /// <param name="announceType">数据播报类型</param>
-        public static void Push(string tags, ReplicateAnnounceType announceType)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Fire(string tags, ReplicateAnnounceType announceType)
         {
-            ReplicateController.Instance.Push(tags, announceType);
+            ReplicateController.Instance.Fire(tags, announceType);
         }
 
         #endregion

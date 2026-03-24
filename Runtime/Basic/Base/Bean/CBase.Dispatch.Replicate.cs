@@ -73,9 +73,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="tags">数据标签</param>
         /// <param name="announceType">数据播报类型</param>
-        public void Post(string tags, ReplicateAnnounceType announceType)
+        public void Send(string tags, ReplicateAnnounceType announceType)
         {
-            ReplicateController.Instance.Post(tags, announceType);
+            ReplicateController.Instance.Send(tags, announceType);
         }
 
         /// <summary>
@@ -83,9 +83,9 @@ namespace GameEngine
         /// </summary>
         /// <param name="tags">数据标签</param>
         /// <param name="announceType">数据播报类型</param>
-        public void Push(string tags, ReplicateAnnounceType announceType)
+        public void Fire(string tags, ReplicateAnnounceType announceType)
         {
-            ReplicateController.Instance.Push(tags, announceType);
+            ReplicateController.Instance.Fire(tags, announceType);
         }
 
         #endregion
