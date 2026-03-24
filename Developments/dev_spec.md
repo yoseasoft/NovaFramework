@@ -66,33 +66,33 @@
 
 ### 2.8 业务层二次封装规则
 
-为了将业务代码与框架引擎层解耦，项目在 `Game` 命名空间下对框架的核心基类进行了二次封装（G 类），位于 `Game/Core/Surface/` 目录：
+为了将业务代码与框架引擎层解耦，项目在 `Game` 命名空间下对框架的核心基类进行了二次封装（U 类），位于 `Game/Core/Surface/` 目录：
 
 | 框架基类（GameEngine） | 业务封装类（Game） | 说明 |
 |----------------------|------------------|------|
-| `CScene` | `Game.GScene` | 场景对象封装 |
-| `CActor` | `Game.GActor` | 角色对象封装 |
-| `CView` | `Game.GView` | 视图对象封装 |
-| `CObject` | `Game.GObject` | 常规对象封装（注意与 `FairyGUI.GObject` 同名，使用时需注意命名空间） |
-| `CComponent` | `Game.GComponent` | 组件对象封装（注意与 `FairyGUI.GComponent` 同名，使用时需注意命名空间） |
+| `CScene` | `Game.UScene` | 场景对象封装 |
+| `CActor` | `Game.UActor` | 角色对象封装 |
+| `CView` | `Game.UView` | 视图对象封装 |
+| `CObject` | `Game.UObject` | 常规对象封装 |
+| `CComponent` | `Game.UComponent` | 组件对象封装 |
 
-- ✅ 所有业务实体对象**必须继承 G 类**，而非直接继承框架的 C 类
-- ✅ G 类可以包含业务层的通用逻辑（公共字段、公共方法等），供所有子类复用
+- ✅ 所有业务实体对象**必须继承 U 类**，而非直接继承框架的 C 类
+- ✅ U 类可以包含业务层的通用逻辑（公共字段、公共方法等），供所有子类复用
 - ❌ **禁止**业务实体对象直接继承 `GameEngine.CActor`、`GameEngine.CScene` 等框架基类
 
 正确示例：
 ```csharp
-// ✅ 正确：继承 Game.GActor
+// ✅ 正确：继承 Game.UActor
 [CActorClass("LocalPlayer")]
-public sealed class Player : Game.GActor { ... }
+public sealed class Player : Game.UActor { ... }
 
-// ✅ 正确：继承 Game.GScene
+// ✅ 正确：继承 Game.UScene
 [CSceneClass("Loading")]
-public sealed class LoadingScene : Game.GScene { ... }
+public sealed class LoadingScene : Game.UScene { ... }
 
-// ✅ 正确：继承 Game.GComponent
+// ✅ 正确：继承 Game.UComponent
 [CComponentClass("MoveComponent")]
-public sealed class MoveComponent : Game.GComponent { ... }
+public sealed class MoveComponent : Game.UComponent { ... }
 ```
 
 错误示例：
@@ -176,23 +176,23 @@ CBean
 
 **业务封装层**（`Game` 命名空间，可扩展通用逻辑）：
 ```text
-CComponent ← Game.GComponent      # 业务层组件基类
-CObject    ← Game.GObject         # 业务层常规对象基类
-CScene     ← Game.GScene          # 业务层场景基类
-CActor     ← Game.GActor          # 业务层角色基类
-CView      ← Game.GView           # 业务层视图基类
+CComponent ← Game.UComponent      # 业务层组件基类
+CObject    ← Game.UObject         # 业务层常规对象基类
+CScene     ← Game.UScene          # 业务层场景基类
+CActor     ← Game.UActor          # 业务层角色基类
+CView      ← Game.UView           # 业务层视图基类
 ```
 
-**业务层**（具体业务对象，必须继承 G 类）：
+**业务层**（具体业务对象，必须继承 U 类）：
 ```text
-Game.GActor     ← Player, Monster, Slime ...
-Game.GScene     ← LoadingScene, WorldScene ...
-Game.GView      ← LoadingPanel, MailPanel ...
-Game.GObject    ← 具体常规对象 ...
-Game.GComponent ← MoveComponent, HitEffectComponent ...
+Game.UActor     ← Player, Monster, Slime ...
+Game.UScene     ← LoadingScene, WorldScene ...
+Game.UView      ← LoadingPanel, MailPanel ...
+Game.UObject    ← 具体常规对象 ...
+Game.UComponent ← MoveComponent, HitEffectComponent ...
 ```
 
-> 业务对象**必须**继承 G 类（详见 2.7 规则），不可直接继承框架 C 类。
+> 业务对象**必须**继承 U 类（详见 2.7 规则），不可直接继承框架 C 类。
 
 
 ### 4.2 实体对象类型说明
@@ -225,21 +225,21 @@ Game.GComponent ← MoveComponent, HitEffectComponent ...
 
 自动挂载组件的特性标签：
 ```csharp
-[CComponentAutomaticActivationOfEntity(typeof(MoveComponent))]
+[UComponentAutomaticActivationOfEntity(typeof(MoveComponent))]
 ```
 
 组件复用示例——不同实体对象挂载同一个组件：
 ```csharp
 [CComponentClass("MoveComponent")]
-public sealed class MoveComponent : Game.GComponent { ... }
+public sealed class MoveComponent : Game.UComponent { ... }
 
 [CActorClass("LocalPlayer")]
-[CComponentAutomaticActivationOfEntity(typeof(MoveComponent))]
-public sealed class Player : Game.GActor { ... }
+[UComponentAutomaticActivationOfEntity(typeof(MoveComponent))]
+public sealed class Player : Game.UActor { ... }
 
 [CActorClass("Monster")]
-[CComponentAutomaticActivationOfEntity(typeof(MoveComponent))]
-public sealed class Monster : Game.GActor { ... }
+[UComponentAutomaticActivationOfEntity(typeof(MoveComponent))]
+public sealed class Monster : Game.UActor { ... }
 ```
 
 ### 4.5 生命周期
@@ -264,6 +264,9 @@ public sealed class Monster : Game.GActor { ... }
 
 绑定方式——通过扩展函数 + 特性标签：
 ```csharp
+using Game;
+using GameEngine;
+
 static class PlayerSystem
 {
     [OnAwake]
@@ -273,6 +276,8 @@ static class PlayerSystem
     static void Destroy(this Player self) { ... }
 }
 ```
+
+> **命名空间引用规则**：逻辑模组（Hotfix）中的 System 类需要引用数据模组中定义的实体对象类型。由于实体对象继承自 `Game` 命名空间下的 U 类，System 类必须添加 `using Game;`。同时需要 `using GameEngine;` 以使用框架的特性标签和 API。
 
 > 关联生命周期特性标签的目标函数，**必须是某个实体对象的扩展函数**。
 
@@ -452,7 +457,14 @@ static void OnRecvEvent(this MainScene self, ProtoBuf.Extension.IMessage msg)
 
 ---
 
+## 6. 视图开发与 FGUI 资源规则
+
+> FGUI 资源规则已迁移至独立文档，详见 `dev_fgui.md`。
+
+---
+
 ## 相关文档
 
 - **API 手册**：`dev_api.md` — 框架提供的所有可调用接口
+- **FairyGUI 开发指南**：`dev_fgui.md` — FGUI 资源规则与操作 API
 - **开发示例集**：`dev_examples.md` — 完整业务开发示例、代码模板和反模式

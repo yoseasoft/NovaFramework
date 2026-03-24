@@ -176,7 +176,16 @@ AttributeComponent comp = player.GetComponent<AttributeComponent>();
 AttributeComponent comp = player.GetComponent("AttributeComp") as AttributeComponent;
 ```
 
-### 5.4 基于配置管理的实体对象访问函数
+### 5.4 组件获取所属实体
+
+```csharp
+// 获取组件所属的实体对象（返回 CEntity 基类，需类型转换）
+Player player = self.Entity as Player;
+```
+
+> ⚠️ **使用 `self.Entity`，不是 `self.Parent`**。`CComponent` 没有 `Parent` 属性。
+
+### 5.5 基于配置管理的实体对象访问函数
 
 暂无，待补充。
 
@@ -412,7 +421,14 @@ GooAsset.RawFile rawFile = await GameEngine.GameApi.AsyncLoadRawFile("C:/Users/P
 
 ---
 
+## 9. 视图对象 FGUI 操作 API
+
+> FGUI 相关 API 已迁移至独立文档，详见 `dev_fgui.md`。
+
+---
+
 ## 相关文档
 
 - **开发规范**：`dev_spec.md` — 框架规则、架构约束、命名规范
+- **FairyGUI 开发指南**：`dev_fgui.md` — FGUI 资源规则与操作 API
 - **开发示例集**：`dev_examples.md` — 完整业务开发示例、代码模板和反模式
