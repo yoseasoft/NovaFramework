@@ -238,7 +238,7 @@ namespace GameEngine
 
             if (calls.ContainsKey(fullname))
             {
-                Debugger.Warn("The '{%t}' instance's input '{%i}' was already add same listener by name '{%s}', repeat do it failed.",
+                Debugger.Warn("The '{%t}' instance's input '{%v}' was already add same listener by name '{%s}', repeat do it failed.",
                         BeanType, keyCode, fullname);
                 return false;
             }
@@ -536,7 +536,7 @@ namespace GameEngine
                 return;
             }
 
-            Debugger.Info(LogGroupTag.Module, "新增指定的按键编码‘{%i}’及操作类型‘{%d}’对应的输入响应绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
+            Debugger.Info(LogGroupTag.Module, "新增指定的按键编码‘{%v}’及操作类型‘{%d}’对应的输入响应绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     keyCode, operationType, BeanType, fullname);
 
             InputCallMethodInfo inputCallMethodInfo = new InputCallMethodInfo(this, fullname, BeanType, methodInfo, keyCode, operationType, automatically);

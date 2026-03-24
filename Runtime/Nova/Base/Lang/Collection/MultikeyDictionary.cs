@@ -144,7 +144,7 @@ namespace NovaEngine
         {
             if (ContainsKey(firstKey) || ContainsKey(secondKey))
             {
-                Logger.Warn("The composite map key '{%i}, {%i}' was already exist, repeat added it failed.", firstKey, secondKey);
+                Logger.Warn("The composite map key '{%v}, {%v}' was already exist, repeat added it failed.", firstKey, secondKey);
                 return false;
             }
 
@@ -162,7 +162,7 @@ namespace NovaEngine
         {
             if (false == _keyMap.TryGetValueByKey(firstKey, out TSecondKey secondKey))
             {
-                Logger.Warn("Could not found any value with class key '{%i}', removed it failed.", firstKey);
+                Logger.Warn("Could not found any value with class key '{%v}', removed it failed.", firstKey);
                 return;
             }
 
@@ -179,7 +179,7 @@ namespace NovaEngine
         {
             if (false == _keyMap.TryGetKeyByValue(secondKey, out TFirstKey firstKey))
             {
-                Logger.Warn("Could not found any value with name key '{%i}', removed it failed.", secondKey);
+                Logger.Warn("Could not found any value with name key '{%v}', removed it failed.", secondKey);
                 return;
             }
 

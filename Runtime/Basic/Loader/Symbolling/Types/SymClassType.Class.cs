@@ -483,11 +483,11 @@ namespace GameEngine.Loader.Symbolling
 
             if (_aspectBehaviourTypes.Contains(aspectBehaviourType))
             {
-                // Debugger.Warn(LogGroupTag.CodeLoader, "The symbol class '{%t}' aspect behaviour type '{%i}' was already exist, repeat added it failed.", _classType, aspectBehaviourType);
+                // Debugger.Warn(LogGroupTag.CodeLoader, "The symbol class '{%t}' aspect behaviour type '{%v}' was already exist, repeat added it failed.", _classType, aspectBehaviourType);
                 return;
             }
 
-            // Debugger.Log(LogGroupTag.CodeLoader, "新增切面行为类型‘{%i}’到目标对象实例‘{%s}’", aspectBehaviourType, _className);
+            // Debugger.Log(LogGroupTag.CodeLoader, "新增切面行为类型‘{%v}’到目标对象实例‘{%s}’", aspectBehaviourType, _className);
 
             _aspectBehaviourTypes.Add(aspectBehaviourType);
         }
@@ -520,11 +520,11 @@ namespace GameEngine.Loader.Symbolling
 
             if (false == _aspectBehaviourTypes.Contains(aspectBehaviourType))
             {
-                Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any aspect behaviour type '{%i}' from target symbol class '{%t}', removed it failed.", aspectBehaviourType, _classType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any aspect behaviour type '{%v}' from target symbol class '{%t}', removed it failed.", aspectBehaviourType, _classType);
                 return;
             }
 
-            // Debugger.Log(LogGroupTag.CodeLoader, "从目标对象实例‘{%s}’中移除切面行为类型‘{%i}’", _className, aspectBehaviourType);
+            // Debugger.Log(LogGroupTag.CodeLoader, "从目标对象实例‘{%s}’中移除切面行为类型‘{%v}’", _className, aspectBehaviourType);
 
             _aspectBehaviourTypes.Remove(aspectBehaviourType);
         }

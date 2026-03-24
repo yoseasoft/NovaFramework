@@ -151,7 +151,7 @@ namespace GameEngine
         {
             if (_operationTypes.ContainsKey(keyCode))
             {
-                Debugger.Warn(LogGroupTag.Module, "The key code '{%i}' was already exists, multiple settings will incorporate operation values.", keyCode);
+                Debugger.Warn(LogGroupTag.Module, "The key code '{%v}' was already exists, multiple settings will incorporate operation values.", keyCode);
 
                 _operationTypes[keyCode] |= operationType;
             }

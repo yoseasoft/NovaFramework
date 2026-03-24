@@ -35,7 +35,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CComponent), AspectBehaviourType.Initialize)]
         private static void CallServiceProcessOfComponentInitialize(CComponent component, bool reload)
         {
-            // Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' dispatch call with target behaviour type '{%i}'.", component.BeanType, AspectBehaviourType.Initialize);
+            // Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' dispatch call with target behaviour type '{%v}'.", component.BeanType, AspectBehaviourType.Initialize);
 
             RegComponentDispatchCallByTargetType(component, AspectBehaviourType.Initialize, reload);
         }
@@ -43,7 +43,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CComponent), AspectBehaviourType.Startup)]
         private static void CallServiceProcessOfComponentStartup(CComponent component, bool reload)
         {
-            // Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' dispatch call with target behaviour type '{%i}'.", component.BeanType, AspectBehaviourType.Startup);
+            // Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' dispatch call with target behaviour type '{%v}'.", component.BeanType, AspectBehaviourType.Startup);
 
             RegComponentDispatchCallByTargetType(component, AspectBehaviourType.Startup, reload);
         }
@@ -51,7 +51,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CComponent), AspectBehaviourType.Awake)]
         private static void CallServiceProcessOfComponentAwake(CComponent component, bool reload)
         {
-            // Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' dispatch call with target behaviour type '{%i}'.", component.BeanType, AspectBehaviourType.Awake);
+            // Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' dispatch call with target behaviour type '{%v}'.", component.BeanType, AspectBehaviourType.Awake);
 
             RegComponentDispatchCallByTargetType(component, AspectBehaviourType.Awake, reload);
         }
@@ -59,7 +59,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CComponent), AspectBehaviourType.Start)]
         private static void CallServiceProcessOfComponentStart(CComponent component, bool reload)
         {
-            // Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' dispatch call with target behaviour type '{%i}'.", component.BeanType, AspectBehaviourType.Start);
+            // Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' dispatch call with target behaviour type '{%v}'.", component.BeanType, AspectBehaviourType.Start);
 
             RegComponentDispatchCallByTargetType(component, AspectBehaviourType.Start, reload);
         }

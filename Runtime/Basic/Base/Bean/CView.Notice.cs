@@ -157,7 +157,7 @@ namespace GameEngine
 
             if (calls.Contains(fullname))
             {
-                Debugger.Warn(LogGroupTag.Bean, "The '{%t}' instance's notice '{%i}' was already add same process by name '{%s}', repeat do it failed.",
+                Debugger.Warn(LogGroupTag.Bean, "The '{%t}' instance's notice '{%v}' was already add same process by name '{%s}', repeat do it failed.",
                         BeanType, noticeType, fullname);
                 return false;
             }

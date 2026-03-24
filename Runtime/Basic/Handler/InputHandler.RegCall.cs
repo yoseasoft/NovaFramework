@@ -99,7 +99,7 @@ namespace GameEngine
                 return;
             }
 
-            Debugger.Info(LogGroupTag.Module, "新增指定的按键编码‘{%i}’及操作类型‘{%d}’对应的输入响应绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
+            Debugger.Info(LogGroupTag.Module, "新增指定的按键编码‘{%v}’及操作类型‘{%d}’对应的输入响应绑定回调函数，其响应接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     keyCode, operationType, targetType, fullname);
 
             InputCallMethodInfo inputCallMethodInfo = new InputCallMethodInfo(fullname, targetType, methodInfo, keyCode, operationType, automatically);
@@ -178,7 +178,7 @@ namespace GameEngine
             InputCallMethodInfo inputCallMethodInfo = FindInputResponseBindingCallByName(fullname, targetType);
             if (null == inputCallMethodInfo)
             {
-                Debugger.Warn(LogGroupTag.Module, "当前的输入响应缓存管理容器中无法检索到指定类型‘{%t}’及名称‘{%s}’对应的回调绑定函数，此次按键编码‘{%i}’转发通知失败！", targetType, fullname, keyCode);
+                Debugger.Warn(LogGroupTag.Module, "当前的输入响应缓存管理容器中无法检索到指定类型‘{%t}’及名称‘{%s}’对应的回调绑定函数，此次按键编码‘{%v}’转发通知失败！", targetType, fullname, keyCode);
                 return;
             }
 

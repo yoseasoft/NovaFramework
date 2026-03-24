@@ -401,7 +401,7 @@ namespace GameEngine
 
                 if (container.ContainsKey(enumValue))
                 {
-                    Debugger.Warn(LogGroupTag.Controller, "The aspect access type '{%i}' was already exist within call status, repeat added it will be override old value.", enumValue);
+                    Debugger.Warn(LogGroupTag.Controller, "The aspect access type '{%v}' was already exist within call status, repeat added it will be override old value.", enumValue);
                     container.Remove(enumValue);
                 }
 
