@@ -1,4 +1,4 @@
-# `NovaFramework` 开发规范指南
+﻿# `NovaFramework` 开发规范指南
 
 > 本文档是 AI 开发助手的核心参考文档，定义在 `NovaFramework` 框架中进行业务开发时**必须遵守的规则、架构约束和代码组织方式**。
 
@@ -35,7 +35,7 @@
 
 - ✅ 所有业务逻辑**必须依附于某个实体对象类型**
 - ✅ 业务逻辑通过扩展函数 + 特性标签绑定到实体对象的生命周期节点
-- ✅ 业务层只使用 `[OnAwake]`、`[OnStart]`、`[OnDestroy]` 生命周期标签
+- ✅ 业务层生命周期推荐使用 `[OnAwake]`、`[OnStart]`、`[OnDestroy]`；按需可使用 `[OnUpdate]`、`[OnLateUpdate]`（如 UI 逐帧驱动）
 - ❌ **禁止**重载实体对象的生命周期函数来处理业务逻辑
 - ❌ **禁止** `OnInitialize`、`OnStartup`、`OnShutdown`、`OnCleanup` 在业务层使用（这些由底层框架使用）
 
@@ -83,22 +83,22 @@
 正确示例：
 ```csharp
 // ✅ 正确：继承 Game.UActor
-[CActorClass("LocalPlayer")]
+[UActorClass("LocalPlayer")]
 public sealed class Player : Game.UActor { ... }
 
 // ✅ 正确：继承 Game.UScene
-[CSceneClass("Loading")]
+[USceneClass("Loading")]
 public sealed class LoadingScene : Game.UScene { ... }
 
 // ✅ 正确：继承 Game.UComponent
-[CComponentClass("MoveComponent")]
+[UComponentClass("MoveComponent")]
 public sealed class MoveComponent : Game.UComponent { ... }
 ```
 
 错误示例：
 ```csharp
 // ❌ 错误：直接继承框架基类
-[CActorClass("LocalPlayer")]
+[UActorClass("LocalPlayer")]
 public sealed class Player : GameEngine.CActor { ... }
 ```
 
@@ -192,7 +192,7 @@ Game.UObject    ← 具体常规对象 ...
 Game.UComponent ← MoveComponent, HitEffectComponent ...
 ```
 
-> 业务对象**必须**继承 U 类（详见 2.7 规则），不可直接继承框架 C 类。
+> 业务对象**必须**继承 U 类（详见 2.8 规则），不可直接继承框架 C 类。
 
 
 ### 4.2 实体对象类型说明
@@ -217,11 +217,11 @@ Game.UComponent ← MoveComponent, HitEffectComponent ...
 
 | 对象类型 | 特性标签 | 示例 |
 |---------|---------|------|
-| 场景对象 | `[CSceneClass("名称")]` | `[CSceneClass("Login")]` |
-| 角色对象 | `[CActorClass("名称")]` | `[CActorClass("LocalPlayer")]` |
-| 视图对象 | `[CViewClass("名称")]` | `[CViewClass("GameLoginPanel")]` |
-| 通用对象 | `[CObjectClass("名称")]` | `[CObjectClass("MonthlyCardActivity")]` |
-| 组件对象 | `[CComponentClass("名称")]` | `[CComponentClass("AttributeComp")]` |
+| 场景对象 | `[USceneClass("名称")]` | `[USceneClass("Login")]` |
+| 角色对象 | `[UActorClass("名称")]` | `[UActorClass("LocalPlayer")]` |
+| 视图对象 | `[UViewClass("名称")]` | `[UViewClass("GameLoginPanel")]` |
+| 通用对象 | `[UObjectClass("名称")]` | `[UObjectClass("MonthlyCardActivity")]` |
+| 组件对象 | `[UComponentClass("名称")]` | `[UComponentClass("AttributeComp")]` |
 
 自动挂载组件的特性标签：
 ```csharp
@@ -230,14 +230,14 @@ Game.UComponent ← MoveComponent, HitEffectComponent ...
 
 组件复用示例——不同实体对象挂载同一个组件：
 ```csharp
-[CComponentClass("MoveComponent")]
+[UComponentClass("MoveComponent")]
 public sealed class MoveComponent : Game.UComponent { ... }
 
-[CActorClass("LocalPlayer")]
+[UActorClass("LocalPlayer")]
 [UComponentAutomaticActivationOfEntity(typeof(MoveComponent))]
 public sealed class Player : Game.UActor { ... }
 
-[CActorClass("Monster")]
+[UActorClass("Monster")]
 [UComponentAutomaticActivationOfEntity(typeof(MoveComponent))]
 public sealed class Monster : Game.UActor { ... }
 ```
@@ -254,13 +254,17 @@ public sealed class Monster : Game.UActor { ... }
 | | **`Start`** | **业务层** | 若正在轮询中则延迟到下一帧 |
 | 运行阶段 | `Execute` | 框架层 | 逻辑帧时序每帧调用 |
 | | `LateExecute` | 框架层 | 逻辑帧时序每帧调用 |
-| | `Update` | 框架层 | 动画帧时序每帧调用 |
-| | `LateUpdate` | 框架层 | 动画帧时序每帧调用 |
+| | `Update` | 框架层 / 业务层（可选） | 动画帧时序每帧调用；业务层可用于逐帧 UI/表现驱动 |
+| | `LateUpdate` | 框架层 / 业务层（可选） | 动画帧时序每帧调用；用于晚于 Update 的收尾处理 |
 | 销毁阶段 | **`Destroy`** | **业务层** | 业务数据清理，若正在轮询中则延迟到下一帧控制器轮询前执行 |
 | | `Shutdown` | 框架层 | 模组数据清理 |
 | | `Cleanup` | 框架层 | 对象清理 |
 
-**业务层只使用加粗的三个节点**：`Awake`、`Start`、`Destroy`。
+**业务层推荐使用** `Awake`、`Start`、`Destroy`；在确有逐帧需求时可使用 `Update`、`LateUpdate`。
+
+> 当前项目 `Assets/Sources/GameHotfix/View/LoadingPanelUISystem.cs` 已使用 `[OnUpdate]` 进行进度条逐帧推进。
+>
+> 场景对象中涉及 `GameApi.OpenUI<T>()` 等依赖 UI 就绪时序的逻辑，推荐放在 `[OnStart]`，避免初始化阶段的时序问题。
 
 绑定方式——通过扩展函数 + 特性标签：
 ```csharp
@@ -331,8 +335,8 @@ static void OnRecvSpaceOrReturnReleased(this MainScene self, GameEngine.VirtualK
 
 自定义事件结构体定义在实体对象类内部，访问权限必须是 `public`：
 ```csharp
-[CComponentClass("AttributeComp")]
-public class AttributeComponent : GameEngine.CComponent
+[UComponentClass("AttributeComp")]
+public class AttributeComponent : Game.UComponent
 {
     public struct LevelupNotify
     {
@@ -468,3 +472,4 @@ static void OnRecvEvent(this MainScene self, ProtoBuf.Extension.IMessage msg)
 - **API 手册**：`dev_api.md` — 框架提供的所有可调用接口
 - **FairyGUI 开发指南**：`dev_fgui.md` — FGUI 资源规则与操作 API
 - **开发示例集**：`dev_examples.md` — 完整业务开发示例、代码模板和反模式
+
