@@ -128,7 +128,7 @@ namespace GameEngine
 
             if (infos.TryGetValue(fullname, out ReplicateCallMethodInfo info))
             {
-                Debugger.Info(LogGroupTag.Controller, "Update replicate distribute call '{%s}' to target tags '{%s}' and announce type '{%i}' of the class type '{%t}'.",
+                Debugger.Info(LogGroupTag.Controller, "Update replicate distribute call '{%s}' to target tags '{%s}' and announce type '{%v}' of the class type '{%t}'.",
                     fullname, tags, announceType, targetType);
                 info.RegisterAnnounceType(tags, announceType);
                 return;
@@ -136,7 +136,7 @@ namespace GameEngine
 
             info = new ReplicateCallMethodInfo(fullname, targetType, methodInfo, tags, announceType);
 
-            Debugger.Info(LogGroupTag.Controller, "Add new replicate distribute call '{%s}' to target tags '{%s}' and announce type '{%i}' of the class type '{%t}'.",
+            Debugger.Info(LogGroupTag.Controller, "Add new replicate distribute call '{%s}' to target tags '{%s}' and announce type '{%v}' of the class type '{%t}'.",
                     fullname, tags, announceType, targetType);
 
             infos.Add(fullname, info);

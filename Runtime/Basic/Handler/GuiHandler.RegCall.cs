@@ -108,7 +108,7 @@ namespace GameEngine
                 }
             }
 
-            Debugger.Info(LogGroupTag.Module, "新增指定类型的‘{%i}’对应的通知接口绑定回调函数，其接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
+            Debugger.Info(LogGroupTag.Module, "新增指定类型的‘{%v}’对应的通知接口绑定回调函数，其接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     noticeType, targetType, fullname);
 
             ViewNoticeCallMethodInfo viewNoticeCallMethodInfo = new ViewNoticeCallMethodInfo(fullname, targetType, methodInfo, noticeType, automatically);

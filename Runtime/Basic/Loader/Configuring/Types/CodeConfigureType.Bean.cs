@@ -208,7 +208,7 @@ namespace GameEngine.Loader.Configuring
             }
             else if (_components.Contains(componentInfo))
             {
-                Debugger.Warn(LogGroupTag.CodeLoader, "The bean '{%t}' class's component '{%i}' was already exist, repeat added it will be override old value.", _classType, componentInfo);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The bean '{%t}' class's component '{%v}' was already exist, repeat added it will be override old value.", _classType, componentInfo);
                 _components.Remove(componentInfo);
             }
 

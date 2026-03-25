@@ -35,7 +35,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CRef), AspectBehaviourType.Initialize)]
         private static void CallServiceProcessOfRefInitialize(CRef obj, bool reload)
         {
-            // Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' dispatch call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Initialize);
+            // Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' dispatch call with target behaviour type '{%v}'.", obj.BeanType, AspectBehaviourType.Initialize);
 
             RegRefDispatchCallByTargetType(obj, AspectBehaviourType.Initialize, reload);
         }
@@ -43,7 +43,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CRef), AspectBehaviourType.Startup)]
         private static void CallServiceProcessOfRefStartup(CRef obj, bool reload)
         {
-            // Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' dispatch call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Startup);
+            // Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' dispatch call with target behaviour type '{%v}'.", obj.BeanType, AspectBehaviourType.Startup);
 
             RegRefDispatchCallByTargetType(obj, AspectBehaviourType.Startup, reload);
         }
@@ -51,7 +51,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CRef), AspectBehaviourType.Awake)]
         private static void CallServiceProcessOfRefAwake(CRef obj, bool reload)
         {
-            // Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' dispatch call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Awake);
+            // Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' dispatch call with target behaviour type '{%v}'.", obj.BeanType, AspectBehaviourType.Awake);
 
             RegRefDispatchCallByTargetType(obj, AspectBehaviourType.Awake, reload);
         }
@@ -59,7 +59,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CRef), AspectBehaviourType.Start)]
         private static void CallServiceProcessOfRefStart(CRef obj, bool reload)
         {
-            // Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' dispatch call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Start);
+            // Debugger.Info(LogGroupTag.Controller, "Register ref '{%t}' dispatch call with target behaviour type '{%v}'.", obj.BeanType, AspectBehaviourType.Start);
 
             RegRefDispatchCallByTargetType(obj, AspectBehaviourType.Start, reload);
         }

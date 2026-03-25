@@ -1054,7 +1054,7 @@ namespace GameEngine
 
             if (IsOnWorkingStatus())
             {
-                Debugger.Error(LogGroupTag.Bean, "The entity instance was working '{%i}' now, cannot added any component at once.", CurrentLifecycleType);
+                Debugger.Error(LogGroupTag.Bean, "The entity instance was working '{%v}' now, cannot added any component at once.", CurrentLifecycleType);
                 return null;
             }
 

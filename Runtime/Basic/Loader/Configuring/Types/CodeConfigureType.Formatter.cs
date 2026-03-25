@@ -31,7 +31,7 @@ namespace GameEngine.Loader
         private static string ToString(Configuring.BaseConfigureInfo targetObject)
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
-            fsb.Append("Type={%i},", targetObject.Type);
+            fsb.Append("Type={%v},", targetObject.Type);
             fsb.Append("Name={%s},", targetObject.Name);
             return fsb.ToString();
         }
@@ -77,7 +77,7 @@ namespace GameEngine.Loader
             fsb.Append("ReferenceName={%s},", targetObject.ReferenceName);
             fsb.Append("ReferenceType={%t},", targetObject.ReferenceType);
             fsb.Append("Priority={%d},", targetObject.Priority);
-            fsb.Append("ActivationBehaviourType={%i},", targetObject.ActivationBehaviourType);
+            fsb.Append("ActivationBehaviourType={%v},", targetObject.ActivationBehaviourType);
             return fsb.ToString();
         }
     }

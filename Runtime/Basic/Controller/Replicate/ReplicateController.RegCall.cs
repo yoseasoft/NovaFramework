@@ -97,7 +97,7 @@ namespace GameEngine
                 return;
             }
 
-            Debugger.Info(LogGroupTag.Controller, "新增指定的数据标签‘{%s}’及播报类型‘{%i}’对应的同步传输绑定回调函数，其通讯接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
+            Debugger.Info(LogGroupTag.Controller, "新增指定的数据标签‘{%s}’及播报类型‘{%v}’对应的同步传输绑定回调函数，其通讯接口函数来自于目标类型‘{%t}’的‘{%s}’函数。",
                     tags, announceType, targetType, fullname);
 
             ReplicateCallMethodInfo inputCallMethodInfo = new ReplicateCallMethodInfo(fullname, targetType, methodInfo, tags, announceType, automatically);

@@ -88,7 +88,7 @@ namespace GameEngine
                 UnityEngine.KeyCode keyCode = (UnityEngine.KeyCode) keycode_enumerator.Current;
                 if (_inputVirtualMapTables.ContainsKey(keyCode))
                 {
-                    // Debugger.Warn("目标按键{%i}已存在于虚拟按键的映射表中，不可对相同按键进行多次重复映射！", keyCode);
+                    // Debugger.Warn("目标按键{%v}已存在于虚拟按键的映射表中，不可对相同按键进行多次重复映射！", keyCode);
                     continue;
                 }
 

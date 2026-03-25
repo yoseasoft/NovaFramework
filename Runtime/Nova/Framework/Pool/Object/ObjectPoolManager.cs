@@ -1307,7 +1307,7 @@ namespace NovaEngine.ObjectPool
             TypeNamePair typeNamePair = new TypeNamePair(typeof(T), name);
             if (HasObjectPool<T>(name))
             {
-                throw new CFrameworkException("Already exist object pool '{%i}'.", typeNamePair);
+                throw new CFrameworkException("Already exist object pool '{%v}'.", typeNamePair);
             }
 
             ObjectPool<T> objectPool = new ObjectPool<T>(name, allowMultiSpawn, autoReleaseInterval, capacity, expireTime, priority);
@@ -1330,7 +1330,7 @@ namespace NovaEngine.ObjectPool
             TypeNamePair typeNamePair = new TypeNamePair(objectType, name);
             if (HasObjectPool(objectType, name))
             {
-                throw new CFrameworkException("Already exist object pool '{%i}'.", typeNamePair);
+                throw new CFrameworkException("Already exist object pool '{%v}'.", typeNamePair);
             }
 
             Type objectPoolType = typeof(ObjectPool<>).MakeGenericType(objectType);

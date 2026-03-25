@@ -143,13 +143,13 @@ namespace GameEngine
         {
             if (_inputCodes.Contains(keyCode))
             {
-                Debugger.Warn("The 'CRef' instance input '{%i}' was already added, repeat do it failed.", keyCode);
+                Debugger.Warn("The 'CRef' instance input '{%v}' was already added, repeat do it failed.", keyCode);
                 return true;
             }
 
             if (false == InputHandler.Instance.AddInputResponse(keyCode, this))
             {
-                Debugger.Warn("The 'CRef' instance add input response '{%i}' failed.", keyCode);
+                Debugger.Warn("The 'CRef' instance add input response '{%v}' failed.", keyCode);
                 return false;
             }
 
@@ -191,7 +191,7 @@ namespace GameEngine
         {
             if (false == _inputCodes.Contains(keyCode))
             {
-                // Debugger.Warn("Could not found any input '{%i}' for target 'CRef' instance with on added, do removed it failed.", keyCode);
+                // Debugger.Warn("Could not found any input '{%v}' for target 'CRef' instance with on added, do removed it failed.", keyCode);
                 return;
             }
 

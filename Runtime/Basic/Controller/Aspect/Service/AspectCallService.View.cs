@@ -35,7 +35,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CView), AspectBehaviourType.Initialize)]
         private static void CallServiceProcessOfViewInitialize(CView obj, bool reload)
         {
-            // Debugger.Info("Register view '{%t}' notice call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Initialize);
+            // Debugger.Info("Register view '{%t}' notice call with target behaviour type '{%v}'.", obj.BeanType, AspectBehaviourType.Initialize);
 
             RegViewNoticeCallByTargetType(obj, AspectBehaviourType.Initialize, reload);
         }
@@ -44,7 +44,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CView), AspectBehaviourType.Startup)]
         private static void CallServiceProcessOfViewStartup(CView obj, bool reload)
         {
-            // Debugger.Info("Register view '{%t}' notice call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Startup);
+            // Debugger.Info("Register view '{%t}' notice call with target behaviour type '{%v}'.", obj.BeanType, AspectBehaviourType.Startup);
 
             RegViewNoticeCallByTargetType(obj, AspectBehaviourType.Startup, reload);
         }
@@ -53,7 +53,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CView), AspectBehaviourType.Awake)]
         private static void CallServiceProcessOfViewAwake(CView obj, bool reload)
         {
-            // Debugger.Info("Register view '{%t}' notice call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Awake);
+            // Debugger.Info("Register view '{%t}' notice call with target behaviour type '{%v}'.", obj.BeanType, AspectBehaviourType.Awake);
 
             RegViewNoticeCallByTargetType(obj, AspectBehaviourType.Awake, reload);
         }
@@ -62,7 +62,7 @@ namespace GameEngine
         [OnServiceProcessRegisterOfTarget(typeof(CView), AspectBehaviourType.Start)]
         private static void CallServiceProcessOfViewStart(CView obj, bool reload)
         {
-            // Debugger.Info("Register view '{%t}' notice call with target behaviour type '{%i}'.", obj.BeanType, AspectBehaviourType.Start);
+            // Debugger.Info("Register view '{%t}' notice call with target behaviour type '{%v}'.", obj.BeanType, AspectBehaviourType.Start);
 
             RegViewNoticeCallByTargetType(obj, AspectBehaviourType.Start, reload);
         }

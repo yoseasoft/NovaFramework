@@ -111,7 +111,7 @@ namespace GameEngine
         /// <returns>若输入响应成功则返回true，否则返回false</returns>
         public bool AddInputResponse(VirtualKeyCode keyCode, IInputDispatch listener)
         {
-            // Debugger.Info(LogGroupTag.Module, "新增目标对象类型‘{%t}’的输入转发监听回调接口到指定的输入编码‘{%i}’对应的输入响应管理容器中！", listener, keyCode);
+            // Debugger.Info(LogGroupTag.Module, "新增目标对象类型‘{%t}’的输入转发监听回调接口到指定的输入编码‘{%v}’对应的输入响应管理容器中！", listener, keyCode);
 
             if (false == _inputListenersForCode.TryGetValue(keyCode, out IList<IInputDispatch> list))
             {
@@ -124,7 +124,7 @@ namespace GameEngine
             // 检查是否重复添加
             if (list.Contains(listener))
             {
-                Debugger.Warn("The listener for target input '{%i}' was already added, cannot repeat do it.", keyCode);
+                Debugger.Warn("The listener for target input '{%v}' was already added, cannot repeat do it.", keyCode);
                 return false;
             }
 
@@ -172,7 +172,7 @@ namespace GameEngine
         {
             if (false == _inputListenersForCode.TryGetValue(keyCode, out IList<IInputDispatch> list))
             {
-                Debugger.Warn("Could not found any listener for target input '{%i}' with on added, do removed it failed.", keyCode);
+                Debugger.Warn("Could not found any listener for target input '{%v}' with on added, do removed it failed.", keyCode);
                 return;
             }
 
@@ -183,7 +183,7 @@ namespace GameEngine
                 _inputListenersForCode.Remove(keyCode);
             }
 
-            // Debugger.Info(LogGroupTag.Module, "从输入响应管理容器中移除指定的输入编码‘{%i}’对应的目标对象类型‘{%t}’的输入转发监听回调接口！", keyCode, listener);
+            // Debugger.Info(LogGroupTag.Module, "从输入响应管理容器中移除指定的输入编码‘{%v}’对应的目标对象类型‘{%t}’的输入转发监听回调接口！", keyCode, listener);
         }
 
         /// <summary>
@@ -318,7 +318,7 @@ namespace GameEngine
 
             if (infos.TryGetValue(fullname, out InputCallMethodInfo info))
             {
-                Debugger.Info(LogGroupTag.Module, "Update input distribute call '{%s}' to target code '{%i}' and operation type '{%i}' of the class type '{%t}'.",
+                Debugger.Info(LogGroupTag.Module, "Update input distribute call '{%s}' to target code '{%v}' and operation type '{%v}' of the class type '{%t}'.",
                     fullname, keyCode, operationType, targetType);
                 info.RegisterOperationType(keyCode, operationType);
                 return;
@@ -326,7 +326,7 @@ namespace GameEngine
 
             info = new InputCallMethodInfo(fullname, targetType, methodInfo, keyCode, operationType);
 
-            Debugger.Info(LogGroupTag.Module, "Add new input distribute call '{%s}' to target code '{%i}' and operation type '{%i}' of the class type '{%t}'.",
+            Debugger.Info(LogGroupTag.Module, "Add new input distribute call '{%s}' to target code '{%v}' and operation type '{%v}' of the class type '{%t}'.",
                     fullname, keyCode, operationType, targetType);
 
             infos.Add(fullname, info);
@@ -371,11 +371,11 @@ namespace GameEngine
         /// <param name="operationType">操作类型</param>
         private void RemoveInputDistributeCallInfo(string fullname, Type targetType, VirtualKeyCode keyCode, InputOperationType operationType)
         {
-            Debugger.Info(LogGroupTag.Module, "Remove input distribute call '{%s}' with target code '{%i}' of the class type '{%t}'.",
+            Debugger.Info(LogGroupTag.Module, "Remove input distribute call '{%s}' with target code '{%v}' of the class type '{%t}'.",
                     fullname, keyCode, targetType);
             if (false == _inputCodeDistributeCallInfos.TryGetValue(keyCode, out IDictionary<string, InputCallMethodInfo> infos))
             {
-                Debugger.Warn(LogGroupTag.Module, "Could not found any input distribute call '{%s}' with target code '{%i}', removed it failed.", fullname, keyCode);
+                Debugger.Warn(LogGroupTag.Module, "Could not found any input distribute call '{%s}' with target code '{%v}', removed it failed.", fullname, keyCode);
                 return;
             }
 

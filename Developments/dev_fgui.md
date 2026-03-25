@@ -14,9 +14,9 @@
 | 前缀 | 元素类型 | 示例 |
 |------|---------|------|
 | `btn_` | 按钮 | `btn_start`、`btn_exit` |
-| `txt_` | 文本 | `txt_title`、`txt_text` |
+| `txt_` | 文本 | `txt_title`、`txt_name` |
 | `img_` | 图片 | `img_bg`、`img_icon` |
-| `list_` | 列表 | `list_mail` |
+| `lst_` | 列表 | `lst_bag`、`lst_mail` |
 | `prog_` | 进度条 | `prog_loading` |
 
 > 所有元素必须使用对应前缀命名；如历史资源命名不一致，以资源实际名称为准。

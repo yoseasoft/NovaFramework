@@ -299,8 +299,8 @@ namespace NovaEngine.ObjectPool
                 }
                 else
                 {
-                    throw new CFrameworkException("Can not find target in object pool '{%i}', target type is '{%t}', target value is '{%i}'.",
-                                         new TypeNamePair(typeof(T), Name), target, target);
+                    throw new CFrameworkException("Can not find target type '{%t}' from object pool '{%v}'.",
+                                         target, new TypeNamePair(typeof(T), Name));
                 }
             }
 
@@ -339,8 +339,8 @@ namespace NovaEngine.ObjectPool
                 }
                 else
                 {
-                    throw new CFrameworkException("Can not find target in object pool '{%i}', target type is '{%t}', target value is '{%i}'.",
-                                         new TypeNamePair(typeof(T), Name), target, target);
+                    throw new CFrameworkException("Can not find target type '{%t}' from object pool '{%v}'.",
+                                         target, new TypeNamePair(typeof(T), Name));
                 }
             }
 
@@ -379,8 +379,8 @@ namespace NovaEngine.ObjectPool
                 }
                 else
                 {
-                    throw new CFrameworkException("Can not find target in object pool '{%i}', target type is '{%t}', target value is '{%i}'.",
-                                         new TypeNamePair(typeof(T), Name), target, target);
+                    throw new CFrameworkException("Can not find target type '{%t}' from object pool '{%v}'.",
+                                         target, new TypeNamePair(typeof(T), Name));
                 }
             }
 

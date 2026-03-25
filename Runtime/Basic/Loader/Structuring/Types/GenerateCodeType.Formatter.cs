@@ -52,10 +52,10 @@ namespace GameEngine.Loader
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append(ToString((Structuring.MethodTypeCodeInfo) targetObject));
-            fsb.Append("KeyCode={%i},", targetObject.KeyCode);
-            fsb.Append("OperationType={%i},", targetObject.OperationType);
+            fsb.Append("KeyCode={%v},", targetObject.KeyCode);
+            fsb.Append("OperationType={%v},", targetObject.OperationType);
             fsb.Append("InputDataType={%t},", targetObject.InputDataType);
-            fsb.Append("BehaviourType={%i},", targetObject.BehaviourType);
+            fsb.Append("BehaviourType={%v},", targetObject.BehaviourType);
             return fsb.ToString();
         }
 
@@ -79,7 +79,7 @@ namespace GameEngine.Loader
             fsb.Append(ToString((Structuring.MethodTypeCodeInfo) targetObject));
             fsb.Append("EventID={%d},", targetObject.EventID);
             fsb.Append("EventDataType={%t},", targetObject.EventDataType);
-            fsb.Append("BehaviourType={%i},", targetObject.BehaviourType);
+            fsb.Append("BehaviourType={%v},", targetObject.BehaviourType);
             return fsb.ToString();
         }
 
@@ -114,7 +114,7 @@ namespace GameEngine.Loader
             fsb.Append(ToString((Structuring.MethodTypeCodeInfo) targetObject));
             fsb.Append("Opcode={%d},", targetObject.Opcode);
             fsb.Append("MessageType={%t},", targetObject.MessageType);
-            fsb.Append("BehaviourType={%i},", targetObject.BehaviourType);
+            fsb.Append("BehaviourType={%v},", targetObject.BehaviourType);
             return fsb.ToString();
         }
 
@@ -159,7 +159,7 @@ namespace GameEngine.Loader
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append(ToString((Structuring.MethodTypeCodeInfo) targetObject));
             fsb.Append("MethodName={%s},", targetObject.MethodName);
-            fsb.Append("AccessType={%i},", targetObject.AccessType);
+            fsb.Append("AccessType={%v},", targetObject.AccessType);
             return fsb.ToString();
         }
 
@@ -172,7 +172,7 @@ namespace GameEngine.Loader
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append("InjectCall={");
             fsb.Append("ClassType={%t},", targetObject.ClassType);
-            fsb.Append("BehaviourType={%i},", targetObject.BehaviourType);
+            fsb.Append("BehaviourType={%v},", targetObject.BehaviourType);
             fsb.Append("}");
             return fsb.ToString();
         }
@@ -232,8 +232,8 @@ namespace GameEngine.Loader
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append(ToString((Structuring.MethodTypeCodeInfo) targetObject));
             fsb.Append("Tags={%s},", targetObject.Tags);
-            fsb.Append("AnnounceType={%i},", targetObject.AnnounceType);
-            fsb.Append("BehaviourType={%i},", targetObject.BehaviourType);
+            fsb.Append("AnnounceType={%v},", targetObject.AnnounceType);
+            fsb.Append("BehaviourType={%v},", targetObject.BehaviourType);
             return fsb.ToString();
         }
 
@@ -338,8 +338,8 @@ namespace GameEngine.Loader
         {
             NovaEngine.FormatStringBuilder fsb = NovaEngine.FormatStringBuilder.Create();
             fsb.Append(ToString((Structuring.MethodTypeCodeInfo) targetObject));
-            fsb.Append("NoticeType={%i},", targetObject.NoticeType);
-            fsb.Append("BehaviourType={%i},", targetObject.BehaviourType);
+            fsb.Append("NoticeType={%v},", targetObject.NoticeType);
+            fsb.Append("BehaviourType={%v},", targetObject.BehaviourType);
             return fsb.ToString();
         }
 

@@ -99,7 +99,7 @@ namespace GameEngine
                 {
                     if (Convert.ToInt32(enumValue) != Convert.ToInt32(eventType))
                     {
-                        Debugger.Error(LogGroupTag.Module, "The handler class type '{%s}' was not matched module event type '{%i}', registered it failed.", enumName, eventType);
+                        Debugger.Error(LogGroupTag.Module, "The handler class type '{%s}' was not matched module event type '{%v}', registered it failed.", enumName, eventType);
                         continue;
                     }
                 }
@@ -129,7 +129,7 @@ namespace GameEngine
 
                 handler.As<BaseHandler>().HandlerType = Convert.ToInt32(enumValue);
 
-                // Debugger.Info(LogGroupTag.Module, "Register new handler {%s} to target class type {%i}.", handlerName, handler.HandlerType);
+                // Debugger.Info(LogGroupTag.Module, "Register new handler {%s} to target class type {%v}.", handlerName, handler.HandlerType);
 
                 // 添加的管理容器
                 _handlerDeclaringTypes.Add(handlerType);

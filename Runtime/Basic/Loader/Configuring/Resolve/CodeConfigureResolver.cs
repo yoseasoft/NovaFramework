@@ -110,7 +110,7 @@ namespace GameEngine.Loader.Configuring
 
             if (false == _codeConfigureResolveCallbacks.TryGetValue(nodeType, out IDictionary<string, OnConfigureObjectLoadingHandler> callbacks))
             {
-                Debugger.Error(LogGroupTag.CodeLoader, "Could not resolve target node type '{%i}', loaded content failed.", nodeType);
+                Debugger.Error(LogGroupTag.CodeLoader, "Could not resolve target node type '{%v}', loaded content failed.", nodeType);
                 return;
             }
 
