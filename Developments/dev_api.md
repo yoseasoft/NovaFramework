@@ -1,6 +1,6 @@
 # `NovaFramework` 核心 API 手册
 
-> 本文档列出 `NovaFramework` 提供的所有可直接调用的 API，按功能分类。  
+> 本文档列出 `NovaFramework` 提供的所有可直接调用的 API，按功能分类。
 > 使用前请确保已阅读 `dev_spec.md` 中的框架规则。
 
 ---
@@ -9,7 +9,7 @@
 
 ### 1.1 场景切换
 
-场景对象同一时间**只能存在一个实例**，不提供主动创建/销毁接口，只能通过切换方式操作。  
+场景对象同一时间**只能存在一个实例**，不提供主动创建/销毁接口，只能通过切换方式操作。
 切换到新场景时，当前场景会**自动销毁**。
 
 #### 延迟切换（推荐）
@@ -22,6 +22,9 @@ GameEngine.GameApi.ReplaceScene<LoginScene>();
 
 // 通过名称切换
 GameEngine.GameApi.ReplaceScene("Login");
+
+// 通过名称切换，并传递自定义数据
+GameEngine.GameApi.ReplaceScene("World", message);
 ```
 
 #### 立即切换（不推荐，不安全）
@@ -32,6 +35,23 @@ LoginScene scene = GameEngine.GameApi.ChangeScene<LoginScene>();
 
 // 通过名称立即切换
 LoginScene scene = GameEngine.GameApi.ChangeScene("Login") as LoginScene;
+```
+
+#### 场景间传递数据
+
+通过 `ReplaceScene` 的第二个参数传递任意数据，在目标场景中通过 `self.UserData` 获取：
+
+```csharp
+// 切换场景并传递数据
+GameEngine.GameApi.ReplaceScene("World", enterWorldResp);
+
+// 在目标场景 System 中接收数据
+[OnAwake]
+static void Awake(this WorldScene self)
+{
+    Proto.EnterWorldResp message = self.UserData.As<Proto.EnterWorldResp>();
+    Debugger.Info("enter world code = {%d}", message.Code);
+}
 ```
 
 ### 1.2 场景查询
@@ -52,6 +72,9 @@ AttributeComponent comp = GameEngine.GameApi.GetCurrentSceneComponent<AttributeC
 
 // 通过组件名称获取
 AttributeComponent comp = GameEngine.GameApi.GetCurrentSceneComponent("AttributeComp") as AttributeComponent;
+
+// 在非场景 System 中获取当前场景的组件（常用模式）
+WorldDataComponent worldDataComponent = GameEngine.GameApi.GetCurrentScene().GetComponent<WorldDataComponent>();
 ```
 
 ---
@@ -60,15 +83,36 @@ AttributeComponent comp = GameEngine.GameApi.GetCurrentSceneComponent("Attribute
 
 ### 2.1 创建
 
+#### 通过 GameApi 创建
+
 ```csharp
 Player player = GameEngine.GameApi.CreateActor<Player>();
 Player player = GameEngine.GameApi.CreateActor("LocalPlayer") as Player;
 ```
 
+#### 通过 ApplicationContext 创建（配置驱动）
+
+当角色类型由配置表决定（如怪物根据 `actorConfig.bean` 字段动态确定类型）时，使用 `ApplicationContext`：
+
+```csharp
+// 通过泛型创建
+Player player = GameEngine.ApplicationContext.CreateBean<Player>();
+
+// 通过配置名称创建（bean 名称来自配置表）
+Config.ActorConfig actorConfig = Config.ActorConfigTable.Get(classId);
+Monster monster = GameEngine.ApplicationContext.CreateBean(actorConfig.bean) as Monster;
+```
+
+> `GameApi.CreateActor` 与 `ApplicationContext.CreateBean` 的区别：`CreateActor` 创建的对象会被 `GameApi` 统一管理（可通过 `GetAllActors()` 查询），`CreateBean` 创建的对象需要业务层自行管理引用和释放。
+
 ### 2.2 销毁
 
 ```csharp
+// GameApi 创建的角色
 GameEngine.GameApi.DestroyActor(player);
+
+// ApplicationContext 创建的角色
+GameEngine.ApplicationContext.ReleaseBean(player);
 ```
 
 ### 2.3 查询
@@ -176,7 +220,13 @@ AttributeComponent comp = player.GetComponent<AttributeComponent>();
 AttributeComponent comp = player.GetComponent("AttributeComp") as AttributeComponent;
 ```
 
-### 5.4 组件获取所属实体
+### 5.4 检查组件是否存在
+
+```csharp
+bool has = entity.HasComponent<ContextPreBuiltComponent>();
+```
+
+### 5.5 组件获取所属实体
 
 ```csharp
 // 获取组件所属的实体对象（返回 CEntity 基类，需类型转换）
@@ -185,7 +235,19 @@ Player player = self.Entity as Player;
 
 > ⚠️ **使用 `self.Entity`，不是 `self.Parent`**。`CComponent` 没有 `Parent` 属性。
 
-### 5.5 基于配置管理的实体对象访问函数
+### 5.6 组件获取兄弟组件
+
+在组件 System 中可直接通过 `self.GetComponent<T>()` 获取同一实体上的其他组件：
+
+```csharp
+// 在 AttackComponentSystem 中获取兄弟组件
+IdentityComponent identity = self.GetComponent<IdentityComponent>();
+TransformComponent transform = self.GetComponent<TransformComponent>();
+```
+
+> `self.GetComponent<T>()` 在组件上调用时等同于 `self.Entity.GetComponent<T>()`。
+
+### 5.7 基于配置管理的实体对象访问函数
 
 暂无，待补充。
 
@@ -195,7 +257,7 @@ Player player = self.Entity as Player;
 
 ### 6.1 输入数据通知
 
-输入数据一般由引擎底层自动通知转发，业务层只需关注接收。  
+输入数据一般由引擎底层自动通知转发，业务层只需关注接收。
 接收方式详见 `dev_spec.md` 中"输入通知"章节。
 
 模拟输入操作（用于测试或特殊场景）：
@@ -210,7 +272,7 @@ GameEngine.GameApi.OnInputSimulation(new JoystickData() { x = 1f, y = 0.5f });
 
 ### 6.2 事件数据通知
 
-事件是实现不同业务模组间通讯的核心机制。  
+事件是实现不同业务模组间通讯的核心机制。
 接收方式详见 `dev_spec.md` 中"事件通知"章节。
 
 #### 6.2.1 全局事件派发
@@ -243,22 +305,46 @@ player.Fire(1001, "hurley", 520, "ECMS");
 player.Fire(new JoinMapNotify() { roleId = 1001, type = 1, bean = "goblin" });
 ```
 
-#### 6.2.3 Send 与 Fire 的区别
+#### 6.2.3 定向事件派发（SendToSelf）
+
+向**指定目标实体**立即派发事件，仅目标实体及其组件接收。与 `Fire` 不同的是，`SendToSelf` 在目标实体上派发，而非调用方所属的实体。
+
+```csharp
+// 攻击者向被攻击目标发送命中通知
+target.SendToSelf(new AttackComponent.HitTargetReq
+{
+    attackerId = self.GetComponent<IdentityComponent>().uid,
+    skillId = 0,
+    damage = 50,
+});
+
+// 向自身实体派发位置更新事件
+self.SendToSelf(new TransformComponent.TransformUpdatedNotify());
+```
+
+典型使用场景：
+- 攻击命中通知（攻击者 → 被攻击者）
+- 被攻击者反馈通知（被攻击者 → 攻击者）
+- 组件内向所属实体派发变更通知
+
+#### 6.2.4 Send、Fire 与 SendToSelf 的区别
 
 | 方法 | 派发时机 | 适用场景 |
 |-----|---------|---------|
 | `Send` | 下一帧开始处统一派发 | 常规业务通知，无需即时响应 |
 | `Fire` | 当前帧立即派发 | 需要监听方立即响应的场景 |
+| `SendToSelf` | 当前帧立即派发 | 向指定目标实体发送定向事件 |
 
 | 调用方式 | 接收范围 |
 |---------|---------|
 | `GameApi.Send(...)` / `GameApi.Fire(...)` | 全局，所有绑定了该事件的监听函数 |
 | `entity.Send(...)` / `entity.Fire(...)` | 仅该实体对象实例及其组件 |
 | `component.Send(...)` / `component.Fire(...)` | 仅限该组件对象实例所属的实体对象实例及其组件 |
+| `entity.SendToSelf(struct)` | 仅该目标实体及其组件（定向派发） |
 
 ### 6.3 消息数据通知
 
-消息数据由引擎底层接收服务端下行数据后自动转发，业务层只需关注接收。  
+消息数据由引擎底层接收服务端下行数据后自动转发，业务层只需关注接收。
 接收方式详见 `dev_spec.md` 中"消息通知"章节。
 
 模拟消息通知（用于测试）：
@@ -277,7 +363,7 @@ GameEngine.GameApi.OnMessageSimulation(new EnterWorldResp() { Code = 1, Name = "
 
 ### 7.1 配置数据
 
-配置文件由外部定义并自动导出对应的数据类型。  
+配置文件由外部定义并自动导出对应的数据类型。
 例如角色配置文件 `actor`，导出字段如下：
 
 | 字段名称 | 字段类型 | 字段描述 |
@@ -353,16 +439,20 @@ GooAsset.RawFile rawFile = await GameEngine.GameApi.AsyncLoadRawFile("C:/Users/P
 | 操作 | API | 返回类型 |
 |-----|-----|---------|
 | 延迟切换 | `GameApi.ReplaceScene<T>()` / `(name)` | `void` |
+| 延迟切换（传数据） | `GameApi.ReplaceScene(name, userData)` | `void` |
 | 立即切换 | `GameApi.ChangeScene<T>()` / `(name)` | `T` / `CScene` |
 | 获取当前 | `GameApi.GetCurrentScene<T>()` / `()` | `T?` / `CScene` |
 | 获取场景组件 | `GameApi.GetCurrentSceneComponent<T>()` / `(name)` | `T` / `CComponent` |
+| 获取切换数据 | `self.UserData.As<T>()` | `T` |
 
 ### 8.2 角色对象
 
 | 操作 | API | 返回类型 |
 |-----|-----|---------|
 | 创建 | `GameApi.CreateActor<T>()` / `(name)` | `T` / `CActor` |
+| 创建（配置驱动） | `ApplicationContext.CreateBean<T>()` / `(beanName)` | `T` / `CBean` |
 | 销毁 | `GameApi.DestroyActor(actor)` | `void` |
+| 释放（配置驱动） | `ApplicationContext.ReleaseBean(bean)` | `void` |
 | 查询全部 | `GameApi.GetAllActors()` | `IReadOnlyList<CActor>` |
 | 按类型查询 | `GameApi.GetActor<T>()` | `IReadOnlyList<T>` |
 | 按名称查询 | `GameApi.GetActor(name)` | `IReadOnlyList<CActor>` |
@@ -396,6 +486,9 @@ GooAsset.RawFile rawFile = await GameEngine.GameApi.AsyncLoadRawFile("C:/Users/P
 | 查询全部 | `entity.GetAllComponents()` | `IReadOnlyList<CComponent>` |
 | 按类型查询 | `entity.GetComponent<T>()` | `T` |
 | 按名称查询 | `entity.GetComponent(name)` | `CComponent` |
+| 检查存在 | `entity.HasComponent<T>()` | `bool` |
+| 兄弟组件访问 | `component.GetComponent<T>()` | `T` |
+| 获取所属实体 | `component.Entity` | `CEntity` |
 
 ### 8.6 数据通知与转发
 
@@ -405,6 +498,7 @@ GooAsset.RawFile rawFile = await GameEngine.GameApi.AsyncLoadRawFile("C:/Users/P
 | 全局立即派发 | `GameApi.Fire(id, args...)` / `GameApi.Fire(struct)` | 当前帧 | 全局 |
 | 实体延迟派发 | `entity.Send(id, args...)` / `entity.Send(struct)` | 下一帧 | 该实体及其组件 |
 | 实体立即派发 | `entity.Fire(id, args...)` / `entity.Fire(struct)` | 当前帧 | 该实体及其组件 |
+| 定向立即派发 | `entity.SendToSelf(struct)` | 当前帧 | 仅目标实体及其组件 |
 | 模拟输入 | `GameApi.OnInputSimulation(keyCode, opType)` / `(struct)` | 当前帧 | 全局 |
 | 模拟消息 | `GameApi.OnMessageSimulation(messageObj)` | 当前帧 | 全局 |
 

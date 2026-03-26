@@ -16,7 +16,7 @@
 | `btn_` | 按钮 | `btn_start`、`btn_exit` |
 | `txt_` | 文本 | `txt_title`、`txt_name` |
 | `img_` | 图片 | `img_bg`、`img_icon` |
-| `lst_` | 列表 | `lst_bag`、`lst_mail` |
+| `list_` | 列表 | `list_mail` |
 | `prog_` | 进度条 | `prog_loading` |
 
 > 所有元素必须使用对应前缀命名；如历史资源命名不一致，以资源实际名称为准。
@@ -381,9 +381,37 @@ namespace Game
         static void <回调方法名>(this <面板名> self)
         {
         }
+
+        // ====== 视图生命周期回调（可选，按需添加） ======
+
+        [UViewResume]
+        static void OnResume(this <面板名> self)
+        {
+            // 视图从暂停恢复时调用
+        }
+
+        [UViewPause]
+        static void OnPause(this <面板名> self)
+        {
+            // 视图被暂停时调用（如被其他视图覆盖）
+        }
+
+        [UViewReveal]
+        static void OnReveal(this <面板名> self)
+        {
+            // 视图置顶时调用（成为最上层可见视图）
+        }
+
+        [UViewCover]
+        static void OnCover(this <面板名> self)
+        {
+            // 视图被遮挡时调用（有其他视图覆盖在上方）
+        }
     }
 }
 ```
+
+> **视图生命周期标签说明**：`[UViewResume]`、`[UViewPause]`、`[UViewReveal]`、`[UViewCover]` 用于响应视图的显示层级变化。当多个视图叠加时，框架会自动调用这些回调。这些标签是可选的，按需添加。
 
 ### 3.7 完整示例
 
@@ -467,6 +495,32 @@ namespace Game
 
         static void OnClickExit(this LoginPanel self)
         {
+        }
+
+        // ====== 视图生命周期回调（可选） ======
+
+        [UViewResume]
+        static void OnResume(this LoginPanel self)
+        {
+            Debugger.Info("{%t}处于恢复状态！", self);
+        }
+
+        [UViewPause]
+        static void OnPause(this LoginPanel self)
+        {
+            Debugger.Info("{%t}处于暂停状态！", self);
+        }
+
+        [UViewReveal]
+        static void OnReveal(this LoginPanel self)
+        {
+            Debugger.Info("{%t}处于置顶状态！", self);
+        }
+
+        [UViewCover]
+        static void OnCover(this LoginPanel self)
+        {
+            Debugger.Info("{%t}处于遮挡状态！", self);
         }
     }
 }
