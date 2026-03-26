@@ -37,7 +37,7 @@ namespace GameEngine.Loader.Symbolling
         /// <param name="symClass">类标记对象</param>
         private static void AutoFillBeanObjectClassFeatures(SymClass symClass)
         {
-            if (symClass.HasAttribute<OnReplicateClassAttribute>(true))
+            if (symClass.HasAttribute<CReplicateObjectAttribute>(true))
             {
                 AutobindFeatureTypeForTargetSymbol<ReplicateConfigureAttribute>(symClass);
                 return;
@@ -47,7 +47,7 @@ namespace GameEngine.Loader.Symbolling
             for (int n = 0; null != fields && n < fields.Count; ++n)
             {
                 SymField field = fields[n];
-                if (field.HasAttribute<OnReplicateFieldAttribute>(true))
+                if (field.HasAttribute<CReplicateFieldAttribute>(true))
                 {
                     AutobindFeatureTypeForTargetSymbol<ReplicateConfigureAttribute>(symClass);
                     return;
@@ -58,7 +58,7 @@ namespace GameEngine.Loader.Symbolling
             for (int n = 0; null != properties && n < properties.Count; ++n)
             {
                 SymProperty property = properties[n];
-                if (property.HasAttribute<OnReplicatePropertyAttribute>(true))
+                if (property.HasAttribute<CReplicatePropertyAttribute>(true))
                 {
                     AutobindFeatureTypeForTargetSymbol<ReplicateConfigureAttribute>(symClass);
                     return;

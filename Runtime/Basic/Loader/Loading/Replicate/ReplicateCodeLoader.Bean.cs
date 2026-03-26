@@ -54,7 +54,7 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
                 Attribute attr = attrs[n];
-                if (attr is OnReplicateClassAttribute replicateClassAttribute)
+                if (attr is CReplicateObjectAttribute replicateClassAttribute)
                 {
                     // 若未配置名称，则默认使用类名小写作为标签
                     info.DataLabel = replicateClassAttribute.Tag ?? symClass.ClassName.ToLower();
@@ -73,7 +73,7 @@ namespace GameEngine.Loader
             {
                 Symbolling.SymField field = fields[n];
 
-                OnReplicateFieldAttribute replicateFieldAttribute = field.GetAttribute<OnReplicateFieldAttribute>(true);
+                CReplicateFieldAttribute replicateFieldAttribute = field.GetAttribute<CReplicateFieldAttribute>(true);
                 if (null != replicateFieldAttribute)
                 {
                     info.AddMember(new Structuring.ReplicateBeanMemberCodeInfo()
@@ -92,7 +92,7 @@ namespace GameEngine.Loader
             {
                 Symbolling.SymProperty property = properties[n];
 
-                OnReplicatePropertyAttribute replicatePropertyAttribute = property.GetAttribute<OnReplicatePropertyAttribute>(true);
+                CReplicatePropertyAttribute replicatePropertyAttribute = property.GetAttribute<CReplicatePropertyAttribute>(true);
                 if (null != replicatePropertyAttribute)
                 {
                     info.AddMember(new Structuring.ReplicateBeanMemberCodeInfo()
