@@ -54,7 +54,7 @@ namespace GameEngine
     /// 数据同步的目标对象类型启用标记的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public sealed class CReplicateObjectAttribute : CReplicateDataCellAttribute
+    public class CReplicateObjectAttribute : CReplicateDataCellAttribute
     {
         public CReplicateObjectAttribute() : base() { }
 
@@ -65,7 +65,7 @@ namespace GameEngine
     /// 数据同步的目标实体对象唯一标识的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class CReplicateIdAttribute : CReplicateDataCellAttribute
+    public class CReplicateIdAttribute : CReplicateDataCellAttribute
     {
         public CReplicateIdAttribute() : base() { }
 
@@ -76,7 +76,7 @@ namespace GameEngine
     /// 数据同步的目标对象字段启用标记的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
-    public sealed class CReplicateFieldAttribute : CReplicateDataCellAttribute
+    public class CReplicateFieldAttribute : CReplicateDataCellAttribute
     {
         public CReplicateFieldAttribute() : base() { }
 
@@ -87,7 +87,7 @@ namespace GameEngine
     /// 数据同步的目标对象属性启用标记的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class CReplicatePropertyAttribute : CReplicateDataCellAttribute
+    public class CReplicatePropertyAttribute : CReplicateDataCellAttribute
     {
         public CReplicatePropertyAttribute() : base() { }
 
