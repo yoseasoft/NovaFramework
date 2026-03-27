@@ -217,9 +217,29 @@ LoginPanel panel = await GameEngine.GameApi.AsyncFindUI("GameLoginPanel") as Log
 
 ### 4.1 创建
 
+#### 4.1.1 常规创建
+
 ```csharp
 MonthlyCardActivityObject obj = GameEngine.GameApi.CreateObject<MonthlyCardActivityObject>();
 MonthlyCardActivityObject obj = GameEngine.GameApi.CreateObject("MonthlyCardActivity") as MonthlyCardActivityObject;
+```
+
+#### 4.1.2 通过元数据创建
+
+通过 `CreateObject` 的第二个参数传递元数据，在目标通用对象中通过 `self.UserData` 获取：
+
+```csharp
+// 创建通用对象并传递元数据
+MonthlyCardActivityObject obj = GameEngine.GameApi.CreateObject<MonthlyCardActivityObject>(monthlyCardResp);
+MonthlyCardActivityObject obj = GameEngine.GameApi.CreateObject("MonthlyCardActivity", monthlyCardResp) as MonthlyCardActivityObject;
+
+// 在目标通用对象 System 中获取元数据
+[OnAwake]
+static void Awake(this MonthlyCardActivityObject self)
+{
+    Proto.MonthlyCardResp message = self.UserData.As<Proto.MonthlyCardResp>();
+    Debugger.Info("activity id = {%d}", message.Id);
+}
 ```
 
 ### 4.2 销毁
