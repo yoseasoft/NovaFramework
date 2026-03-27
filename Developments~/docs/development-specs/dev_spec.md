@@ -471,7 +471,37 @@ static void OnRecvEvent(this MainScene self, ProtoBuf.Extension.IMessage msg)
 
 #### 3.7.4 同步通知
 
-暂无，后续再行补充。
+同步数据类型：`string` 数据标签。
+
+同步通知用于监听实体对象的字段/属性变更，通过数据标签标识变更来源。
+
+接收函数有三种绑定方式：
+```csharp
+// 方式一：全局接收（无实体对象绑定）
+[OnReplicate("player.inventory", GameEngine.ReplicateAnnounceType.Changed)]
+static void OnRecvInventoryChanged(string tags, GameEngine.ReplicateAnnounceType announceType) { ... }
+
+// 方式二：指定实体类型接收（通过 typeof 参数）
+[OnReplicate(typeof(MainScene), "player.inventory", GameEngine.ReplicateAnnounceType.Changed)]
+static void OnRecvInventoryChanged(MainScene mainScene, string tags, GameEngine.ReplicateAnnounceType announceType) { ... }
+
+// 方式三：通过实体对象扩展函数接收（推荐）
+[OnReplicate("player.inventory", GameEngine.ReplicateAnnounceType.Changed)]
+static void OnRecvInventoryChanged(this MainScene self, string tags, GameEngine.ReplicateAnnounceType announceType) { ... }
+```
+
+同一个函数可以叠加多个 `[OnReplicate]` 标签，以响应多个同步行为：
+```csharp
+// 同时监听背包和技能数据，触发同一逻辑
+[OnReplicate("player.inventory", GameEngine.ReplicateAnnounceType.Changed)]
+[OnReplicate("player.skill", GameEngine.ReplicateAnnounceType.Created)]
+static void OnRecvEvent(this MainScene self, string tags, GameEngine.ReplicateAnnounceType announceType)
+{
+    UnityEngine.Debug.Log($"数据标签：{tags}");
+}
+```
+
+> 同步发送 API 详见 `dev_api.md` 中"同步数据通知"章节。
 
 ---
 
