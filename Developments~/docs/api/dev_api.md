@@ -355,7 +355,28 @@ GameEngine.GameApi.OnMessageSimulation(new EnterWorldResp() { Code = 1, Name = "
 
 ### 6.4 同步数据通知
 
-暂无，待补充。
+同步是实现数据发生改变后对业务模组进行通知的核心机制。
+接收方式详见 `dev_spec.md` 中"同步通知"章节。
+
+#### 6.4.1 全局同步派发
+
+**延迟派发（`Send`）**——推送到缓存，下一帧开始处统一派发：
+
+```csharp
+GameEngine.GameApi.Send("player.inventory", GameEngine.ReplicateAnnounceType.Changed);
+```
+
+**立即派发（`Fire`）**——当前帧立即触发所有监听逻辑：
+
+```csharp
+GameEngine.GameApi.Fire("player.inventory", GameEngine.ReplicateAnnounceType.Changed);
+```
+
+模拟同步通知（用于测试）：
+
+```csharp
+GameEngine.GameApi.OnReplicateSimulation("player.inventory", GameEngine.ReplicateAnnounceType.Changed);
+```
 
 ---
 
@@ -408,14 +429,41 @@ GameEngine.GameApi.UnloadAsset(go);
 
 ### 7.4 场景类型资源访问
 
-加载场景资源：
+#### 同步加载场景资源
+
 ```csharp
+// 基础用法：直接加载
 GooAsset.Scene asset = GameEngine.GameApi.LoadAssetScene("101", "Assets/_Resources/Scene/101.unity");
 ```
 
-释放场景资源（**必须手动释放**）：
 ```csharp
-GameEngine.GameApi.UnloadAssetScene(asset);
+// 带完成回调：场景资源加载完毕后执行回调
+// completed 参数默认为 null，传入后可在场景加载完成时执行初始化逻辑
+GooAsset.Scene asset = GameEngine.GameApi.LoadAssetScene("101", "Assets/_Resources/Scene/101.unity", (GooAsset.Scene scene) =>
+{
+    // 场景加载完成后的初始化逻辑
+    // 例如：查找场景中的摄像机、设置光照、初始化场景内对象等
+    UnityEngine.Camera sceneCamera = UnityEngine.Camera.main;
+});
+```
+
+> **方法签名**：`LoadAssetScene(string assetName, string url, Action<GooAsset.Scene> completed = null)`
+>
+> `completed` 回调在场景资源加载完成后触发，适用于需要在场景就绪后执行后续操作的场景（如获取场景内的摄像机、灯光等对象）。若无需回调，可省略该参数。
+
+#### 异步加载场景资源
+
+```csharp
+GooAsset.Scene asset = await GameEngine.GameApi.AsyncLoadAssetScene("101", "Assets/_Resources/Scene/101.unity");
+// 此处场景已加载完成，可直接执行后续逻辑
+```
+
+> **方法签名**：`AsyncLoadAssetScene(string assetName, string url)`，返回 `UniTask<GooAsset.Scene>`。
+
+#### 释放场景资源（**必须手动释放**）
+
+```csharp
+GameEngine.GameApi.UnloadAssetScene(asset.sceneName);
 ```
 
 ### 7.5 原始文件类型资源访问
@@ -501,6 +549,9 @@ GooAsset.RawFile rawFile = await GameEngine.GameApi.AsyncLoadRawFile("C:/Users/P
 | 定向立即派发 | `entity.SendToSelf(struct)` | 当前帧 | 仅目标实体及其组件 |
 | 模拟输入 | `GameApi.OnInputSimulation(keyCode, opType)` / `(struct)` | 当前帧 | 全局 |
 | 模拟消息 | `GameApi.OnMessageSimulation(messageObj)` | 当前帧 | 全局 |
+| 同步延迟派发 | `GameApi.Send(tags, announceType)` | 下一帧 | 全局 |
+| 同步立即派发 | `GameApi.Fire(tags, announceType)` | 当前帧 | 全局 |
+| 模拟同步 | `GameApi.OnReplicateSimulation(tags, announceType)` | 当前帧 | 全局 |
 
 ### 8.7 资源访问
 
@@ -510,8 +561,9 @@ GooAsset.RawFile rawFile = await GameEngine.GameApi.AsyncLoadRawFile("C:/Users/P
 | 同步加载资源 | `GameApi.LoadAsset(path, type)` | 返回 `UnityEngine.Object` |
 | 异步加载资源 | `GameApi.AsyncLoadAsset<T>(path)` | 返回 `Task<T>` |
 | 释放资源 | `GameApi.UnloadAsset(obj)` | 主动加载的必须手动释放 |
-| 加载场景资源 | `GameApi.LoadAssetScene(name, path)` | 返回 `GooAsset.Scene` |
-| 释放场景资源 | `GameApi.UnloadAssetScene(asset)` | 必须手动释放 |
+| 加载场景资源 | `GameApi.LoadAssetScene(name, path, completed?)` | 返回 `GooAsset.Scene`，可选完成回调 |
+| 异步加载场景资源 | `GameApi.AsyncLoadAssetScene(name, path)` | 返回 `UniTask<GooAsset.Scene>` |
+| 释放场景资源 | `GameApi.UnloadAssetScene(asset.sceneName)` | 必须手动释放 |
 
 ---
 
