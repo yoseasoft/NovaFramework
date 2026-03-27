@@ -415,7 +415,7 @@ GooAsset.Scene asset = GameEngine.GameApi.LoadAssetScene("101", "Assets/_Resourc
 
 释放场景资源（**必须手动释放**）：
 ```csharp
-GameEngine.GameApi.UnloadAssetScene(asset);
+GameEngine.GameApi.UnloadAssetScene(asset.sceneName);
 ```
 
 ### 7.5 原始文件类型资源访问
@@ -511,7 +511,7 @@ GooAsset.RawFile rawFile = await GameEngine.GameApi.AsyncLoadRawFile("C:/Users/P
 | 异步加载资源 | `GameApi.AsyncLoadAsset<T>(path)` | 返回 `Task<T>` |
 | 释放资源 | `GameApi.UnloadAsset(obj)` | 主动加载的必须手动释放 |
 | 加载场景资源 | `GameApi.LoadAssetScene(name, path)` | 返回 `GooAsset.Scene` |
-| 释放场景资源 | `GameApi.UnloadAssetScene(asset)` | 必须手动释放 |
+| 释放场景资源 | `GameApi.UnloadAssetScene(asset.sceneName)` | 必须手动释放 |
 
 ---
 

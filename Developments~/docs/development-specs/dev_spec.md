@@ -327,6 +327,37 @@ static void OnMoveUp(this Player self)
 }
 ```
 
+### 3.7.2 输入处理规则
+✅ 所有按键输入**必须通过框架的 `[OnInput]` 特性标签**绑定处理，使用 `GameEngine.VirtualKeyCode` 和 `GameEngine.InputOperationType`
+✅ 持续按键（如移动）通过 `Pressed` 记录状态、`Released` 清除状态，在 `[OnUpdate]` 中根据状态执行逻辑
+❌ **禁止**使用 Unity 原生输入 API（`UnityEngine.Input.GetKey`、`Input.GetKeyDown`、`Input.GetAxis` 等）
+❌ **禁止**在 `[OnUpdate]` 中直接轮询 Unity 按键状态
+正确示例：
+```csharp
+// ✅ 正确：通过框架输入系统
+[OnInput(VirtualKeyCode.A, InputOperationType.Pressed)]
+static void OnAPressed(this Player self, VirtualKeyCode keyCode, InputOperationType opType)
+{
+    self.inputX = -1f;
+}
+
+[OnInput(VirtualKeyCode.A, InputOperationType.Released)]
+static void OnAReleased(this Player self, VirtualKeyCode keyCode, InputOperationType opType)
+{
+    if (self.inputX < 0f) self.inputX = 0f;
+}
+```
+
+错误示例：
+```csharp
+// ❌ 错误：使用 Unity 原生输入
+[OnUpdate]
+static void Update(this Player self)
+{
+    if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.A)) { ... }
+}
+```
+
 #### 3.7.2 事件通知
 
 事件数据类型：`int` 事件标识、自定义 `struct` 数据结构。
@@ -834,7 +865,20 @@ Player player = self.Entity as Player;
 
 ---
 
-## 9. 视图开发与 FGUI 资源规则
+## 9. 代码完整性规范
+以下规则确保生成的代码是可运行的完整实现，**违反即为错误**。
+### 9.1 禁止占位符
+❌ 禁止在生成的代码中留下 `TODO`、`FIXME`、`HACK`、`// ...` 等占位注释
+✅ 当需求文档和 API 文档能推导出实现方式时，必须生成完整可运行的代码
+### 6.2 配置表链路必须完整实现
+需求文档中定义的配置表字段关联链路（如 `map.player_asset_id` → `resource.asset_url`），必须在代码中完整实现加载和使用逻辑
+不可仅写出获取配置的代码而跳过后续的资源加载、实例化等步骤
+### 6.3 多方案选择规则
+当存在多种实现方式（如同步/异步加载）且需求未明确指定时，优先选择**同步方式**，除非有明确的性能需求要求异步
+选择后在代码注释中简要说明选择理由（一行即可）
+---
+
+## 10. 视图开发与 FGUI 资源规则
 
 > FGUI 资源规则已迁移至独立文档，详见 `dev_fgui.md`。
 
