@@ -249,26 +249,22 @@ public sealed class AttackComponent : GameEngine.CComponent { ... }
 
 **业务层推荐使用** `Awake`、`Start`、`Destroy`；在确有逐帧需求时可使用 `Update`、`LateUpdate`。
 
-> 当前项目 `Assets/Sources/GameHotfix/Component/AttackComponentSystem.cs` 已使用 `[OnUpdate]` 进行攻击冷却倒计时。
->
-> 场景对象中涉及 `GameApi.OpenUI<T>()` 等依赖 UI 就绪时序的逻辑，推荐放在 `[OnStart]`，避免初始化阶段的时序问题。
-
 绑定方式——通过扩展函数 + 特性标签：
 ```csharp
-using Game;
-using GameEngine;
-
-static class PlayerSystem
+namespace Game
 {
-    [OnAwake]
-    static void Awake(this Player self) { ... }
+    static class PlayerSystem
+    {
+        [OnAwake]
+        static void Awake(this Player self) { ... }
 
-    [OnDestroy]
-    static void Destroy(this Player self) { ... }
+        [OnDestroy]
+        static void Destroy(this Player self) { ... }
+    }
 }
 ```
 
-> **命名空间引用规则**：逻辑模组（Hotfix）中的 System 类需要引用数据模组中定义的实体对象类型。由于实体对象继承自 `Game` 命名空间下的 U 类，System 类必须添加 `using Game;`。同时需要 `using GameEngine;` 以使用框架的特性标签和 API。
+> **命名空间使用规则**：逻辑模组（Hotfix）中的 System 类与引用数据模组中定义的实体对象类型，必须使用相同的命名空间。由于实体对象使用 `Game` 命名空间，则 `System` 类必须添加 `Game` 命名空间。
 
 > 关联生命周期特性标签的目标函数，**必须是某个实体对象的扩展函数**。
 
@@ -284,6 +280,8 @@ static class PlayerSystem
 | 同步数据 | 实体对象字段/属性变更通知 | `[OnReplicate]` |
 
 不同模组的业务系统之间，通过上述数据通知进行联动。
+
+> 同一个函数不能绑定不同类型的数据推送特性标签。
 
 #### 3.7.1 输入通知
 
@@ -308,19 +306,19 @@ static void OnRecvSpaceMoved(this MainScene self, GameEngine.VirtualKeyCode keyC
 **简化签名**：通过扩展函数接收时，`keyCode` 和 `operationType` 参数可省略——仅关心"是否触发"时更简洁：
 ```csharp
 // ✅ 简化签名（推荐，不需要区分具体按键时）
-[OnInput((VirtualKeyCode) UnityEngine.KeyCode.A, GameEngine.InputOperationType.Released)]
+[OnInput(GameEngine.VirtualKeyCode.A, GameEngine.InputOperationType.Released)]
 static void OnStartGameClicked(this LogoScene self) { ... }
 
 // ✅ 完整签名（需要区分按键或状态时）
-[OnInput((VirtualKeyCode) UnityEngine.KeyCode.A, GameEngine.InputOperationType.Released)]
-static void OnStartGameClicked(this LogoScene self, VirtualKeyCode keyCode, InputOperationType operationType) { ... }
+[OnInput(GameEngine.VirtualKeyCode.A, GameEngine.InputOperationType.Released)]
+static void OnStartGameClicked(this LogoScene self, GameEngine.VirtualKeyCode keyCode, GameEngine.InputOperationType operationType) { ... }
 ```
 
 同一个函数可以叠加多个 `[OnInput]` 标签，以响应多个按键：
 ```csharp
 // 同时监听 W 键和 UpArrow 键，触发同一逻辑
-[OnInput((VirtualKeyCode) UnityEngine.KeyCode.W, GameEngine.InputOperationType.Released)]
-[OnInput((VirtualKeyCode) UnityEngine.KeyCode.UpArrow, GameEngine.InputOperationType.Released)]
+[OnInput(GameEngine.VirtualKeyCode.W, GameEngine.InputOperationType.Released)]
+[OnInput(GameEngine.VirtualKeyCode.UpArrow, GameEngine.InputOperationType.Released)]
 static void OnMoveUp(this Player self)
 {
     self.MoveTo(0f, 1f);
@@ -335,14 +333,14 @@ static void OnMoveUp(this Player self)
 正确示例：
 ```csharp
 // ✅ 正确：通过框架输入系统
-[OnInput(VirtualKeyCode.A, InputOperationType.Pressed)]
-static void OnAPressed(this Player self, VirtualKeyCode keyCode, InputOperationType opType)
+[OnInput(GameEngine.VirtualKeyCode.A, GameEngine.InputOperationType.Pressed)]
+static void OnAPressed(this Player self, GameEngine.VirtualKeyCode keyCode, GameEngine.InputOperationType opType)
 {
     self.inputX = -1f;
 }
 
-[OnInput(VirtualKeyCode.A, InputOperationType.Released)]
-static void OnAReleased(this Player self, VirtualKeyCode keyCode, InputOperationType opType)
+[OnInput(GameEngine.VirtualKeyCode.A, GameEngine.InputOperationType.Released)]
+static void OnAReleased(this Player self, GameEngine.VirtualKeyCode keyCode, GameEngine.InputOperationType opType)
 {
     if (self.inputX < 0f) self.inputX = 0f;
 }
@@ -521,6 +519,7 @@ static void OnRecvEvent(this MainScene self, string tags, GameEngine.ReplicateAn
 - ✅ 所有 `System` 类必须是 `static` 类（无状态）
 - ✅ `System` 类内部的所有函数必须是 `static` 函数或指定实体对象类型的扩展函数
 - ✅ `System` 类推荐使用默认访问权限（`internal`）
+- ✅ `System` 类内部的功能函数（使用了生命周期特性标签或数据推送特性标签的函数）推荐使用默认访问权限（`private`）
 - ✅ `System` 类命名格式：`<实体对象类名><功能描述>System`；若无明显功能描述，则为 `<实体对象类名>System`
 - ✅ 一个 `System` 类只服务于一个指定的 `CBean` 对象类
 - ❌ **禁止**在 `System` 类中定义任何字段或属性
@@ -677,9 +676,9 @@ static class PlayerSystem
 
 ```csharp
 // ✅ 正确：按行为拆分为独立组件
-// MoveComponent + MoveComponentMoveSystem    → 移动能力
-// AttackComponent + AttackComponentSystem    → 攻击能力
-// HitEffectComponent + HitEffectSystem       → 受击表现
+// MoveComponent + MoveComponentSystem             → 移动能力
+// AttackComponent + AttackComponentSystem         → 攻击能力
+// HitEffectComponent + HitEffectComponentSystem   → 受击表现
 // PlayerSystem 只处理 Player 级别的整体协调
 ```
 
@@ -756,7 +755,7 @@ static void OnClickButton(this MailPanel self)
 ### 5.12 ❌ 主动加载的资源未手动释放
 
 ```csharp
-// ❌ 加载了没释放 → 资源泄漏
+// ❌ 成功加载但没释放 → 资源泄漏
 var go = await GameApi.AsyncLoadAsset<GameObject>("Assets/Model/Hero.prefab");
 ```
 
@@ -771,14 +770,14 @@ GameApi.UnloadAsset(go);  // ✅
 
 ```csharp
 // ❌ LoadingScene 定义在 Game/ 下，但 System 放到了 BattleHotfix/
-// Game/Scene/LoadingScene.cs            ← 数据在 Game
-// BattleHotfix/Scene/LoadingSystem.cs   ← ❌ System 放错了模组！
+// Game/Scene/LoadingScene.cs                ← 数据在 Game
+// BattleHotfix/Scene/LoadingSceneSystem.cs  ← ❌ System 放错了模组！
 ```
 
 ```csharp
 // ✅ 数据模组和逻辑模组必须对应
-// Game/Scene/LoadingScene.cs              ← 数据在 Game
-// GameHotfix/Scene/LoadingSceneSystem.cs  ← ✅ System 在 GameHotfix
+// Game/Scene/LoadingScene.cs                ← 数据在 Game
+// GameHotfix/Scene/LoadingSceneSystem.cs    ← ✅ System 在 GameHotfix
 ```
 
 ---

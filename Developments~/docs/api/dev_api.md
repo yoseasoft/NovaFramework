@@ -12,7 +12,7 @@
 场景对象同一时间**只能存在一个实例**，不提供主动创建/销毁接口，只能通过切换方式操作。
 切换到新场景时，当前场景会**自动销毁**。
 
-#### 延迟切换（推荐）
+#### 1.1.1 延迟切换（推荐）
 
 在所有实体对象刷新前执行切换，若正在刷新则延迟到下一帧开始处。
 
@@ -27,7 +27,9 @@ GameEngine.GameApi.ReplaceScene("Login");
 GameEngine.GameApi.ReplaceScene("World", message);
 ```
 
-#### 立即切换（不推荐，不安全）
+> **注意：** 使用延迟切换场景的接口函数，不能立即返回待切换的目标场景实例，所有需要在新场景中开展的业务，需要的新场景的 `System` 中进行调度。
+
+#### 1.1.2 立即切换（不推荐，不安全）
 
 ```csharp
 // 通过类型立即切换
@@ -37,15 +39,15 @@ LoginScene scene = GameEngine.GameApi.ChangeScene<LoginScene>();
 LoginScene scene = GameEngine.GameApi.ChangeScene("Login") as LoginScene;
 ```
 
-#### 场景间传递数据
+#### 1.1.3 通过元数据切换
 
-通过 `ReplaceScene` 的第二个参数传递任意数据，在目标场景中通过 `self.UserData` 获取：
+通过 `ReplaceScene` 的第二个参数传递元数据，在目标场景对象中通过 `self.UserData` 获取：
 
 ```csharp
-// 切换场景并传递数据
+// 切换场景并传递元数据
 GameEngine.GameApi.ReplaceScene("World", enterWorldResp);
 
-// 在目标场景 System 中接收数据
+// 在目标场景对象 System 中获取元数据
 [OnAwake]
 static void Awake(this WorldScene self)
 {
@@ -73,7 +75,7 @@ AttributeComponent comp = GameEngine.GameApi.GetCurrentSceneComponent<AttributeC
 // 通过组件名称获取
 AttributeComponent comp = GameEngine.GameApi.GetCurrentSceneComponent("AttributeComp") as AttributeComponent;
 
-// 在非场景 System 中获取当前场景的组件（常用模式）
+// 在非场景对象 System 中获取当前场景的组件（常用模式）
 WorldDataComponent worldDataComponent = GameEngine.GameApi.GetCurrentScene().GetComponent<WorldDataComponent>();
 ```
 
@@ -83,14 +85,32 @@ WorldDataComponent worldDataComponent = GameEngine.GameApi.GetCurrentScene().Get
 
 ### 2.1 创建
 
-#### 通过 GameApi 创建
+#### 2.1.1 通过 GameApi 创建
 
 ```csharp
 Player player = GameEngine.GameApi.CreateActor<Player>();
 Player player = GameEngine.GameApi.CreateActor("LocalPlayer") as Player;
 ```
 
-#### 通过 ApplicationContext 创建（配置驱动）
+#### 2.1.2 通过元数据创建
+
+通过 `CreateActor` 的第二个参数传递元数据，在目标角色对象中通过 `self.UserData` 获取：
+
+```csharp
+// 创建角色对象并传递元数据
+Player player = GameEngine.GameApi.CreateActor<Player>(playerInfoResp);
+Player player = GameEngine.GameApi.CreateActor("LocalPlayer", playerInfoResp) as Player;
+
+// 在目标角色对象 System 中获取元数据
+[OnAwake]
+static void Awake(this Player self)
+{
+    Proto.PlayerInfoResp message = self.UserData.As<Proto.PlayerInfoResp>();
+    Debugger.Info("player id = {%d}", message.Id);
+}
+```
+
+#### 2.1.3 通过 ApplicationContext 创建（配置驱动）
 
 当角色类型由配置表决定（如怪物根据 `actorConfig.bean` 字段动态确定类型）时，使用 `ApplicationContext`：
 
@@ -129,27 +149,51 @@ IReadOnlyList<CActor> players = GameEngine.GameApi.GetActor("LocalPlayer");
 
 同类型视图**只允许同时存在一个实例**。视图对象需要异步加载 UI 资源。
 
-### 3.1 创建（同步，无法获取实例）
+### 3.1 创建
+
+#### 3.1.1 创建（同步，无法获取实例）
 
 ```csharp
 GameEngine.GameApi.OpenUI<LoginPanel>();
 GameEngine.GameApi.OpenUI("GameLoginPanel");
 ```
 
-### 3.2 创建（异步，可获取实例）
+#### 3.1.2 创建（异步，可获取实例）
 
 ```csharp
 LoginPanel panel = await GameEngine.GameApi.AsyncOpenUI<LoginPanel>();
 LoginPanel panel = await GameEngine.GameApi.AsyncOpenUI("GameLoginPanel") as LoginPanel;
 ```
 
-### 3.3 销毁
+#### 3.1.3 通过元数据创建
+
+通过 `OpenUI` 或 `AsyncOpenUI` 的第二个参数传递元数据，在目标视图对象中通过 `self.UserData` 获取：
+
+```csharp
+// 创建视图对象并传递元数据
+GameEngine.GameApi.OpenUI<LoginPanel>(loginInfoResp);
+GameEngine.GameApi.OpenUI("GameLoginPanel", loginInfoResp);
+LoginPanel panel = await GameEngine.GameApi.AsyncOpenUI<LoginPanel>(loginInfoResp);
+LoginPanel panel = await GameEngine.GameApi.AsyncOpenUI("GameLoginPanel", loginInfoResp) as LoginPanel;
+
+// 在目标视图对象 System 中获取元数据
+[OnAwake]
+static void Awake(this LoginPanel self)
+{
+    Proto.LoginInfoResp message = self.UserData.As<Proto.LoginInfoResp>();
+    Debugger.Info("login account id = {%d}", message.AccountId);
+}
+```
+
+### 3.2 销毁
 
 ```csharp
 GameEngine.GameApi.CloseUI(panel);
 ```
 
-### 3.4 查询（同步）
+### 3.3 查询
+
+#### 3.3.1 查询（同步）
 
 > 注意：返回的视图对象实例可能尚未启动完成，无法在业务层直接使用。
 
@@ -158,7 +202,7 @@ LoginPanel panel = GameEngine.GameApi.FindUI<LoginPanel>();
 LoginPanel panel = GameEngine.GameApi.FindUI("GameLoginPanel") as LoginPanel;
 ```
 
-### 3.5 查询（异步，确保可用）
+#### 3.3.2 查询（异步，确保可用）
 
 ```csharp
 LoginPanel panel = await GameEngine.GameApi.AsyncFindUI<LoginPanel>();
@@ -418,7 +462,7 @@ UnityEngine.Object obj = GameEngine.GameApi.LoadAsset("Assets/_Resources/Gui/Log
 异步加载通用资源：
 ```csharp
 UnityEngine.TextAsset textAsset = await GameEngine.GameApi.AsyncLoadAsset<UnityEngine.TextAsset>("Assets/_Resources/Gui/LoginPanel_fgui.bytes");
-UnityEngine.GameObject go = await GameEngine.GameApi.AsyncLoadAsset<UnityEngine.GameObject>("Assets/Gui/LoginPanel/Main.prefab");
+UnityEngine.GameObject go = await GameEngine.GameApi.AsyncLoadAsset<UnityEngine.GameObject>("Assets/_Resources/Gui/LoginPanel/Main.prefab");
 ```
 
 手动释放资源（**主动加载的资源必须手动释放**）：
@@ -491,7 +535,7 @@ GooAsset.RawFile rawFile = await GameEngine.GameApi.AsyncLoadRawFile("C:/Users/P
 | 立即切换 | `GameApi.ChangeScene<T>()` / `(name)` | `T` / `CScene` |
 | 获取当前 | `GameApi.GetCurrentScene<T>()` / `()` | `T?` / `CScene` |
 | 获取场景组件 | `GameApi.GetCurrentSceneComponent<T>()` / `(name)` | `T` / `CComponent` |
-| 获取切换数据 | `self.UserData.As<T>()` | `T` |
+| 获取元数据 | `self.UserData.As<T>()` | `T` |
 
 ### 8.2 角色对象
 
@@ -504,6 +548,7 @@ GooAsset.RawFile rawFile = await GameEngine.GameApi.AsyncLoadRawFile("C:/Users/P
 | 查询全部 | `GameApi.GetAllActors()` | `IReadOnlyList<CActor>` |
 | 按类型查询 | `GameApi.GetActor<T>()` | `IReadOnlyList<T>` |
 | 按名称查询 | `GameApi.GetActor(name)` | `IReadOnlyList<CActor>` |
+| 获取元数据 | `self.UserData.As<T>()` | `T` |
 
 ### 8.3 视图对象
 
@@ -514,6 +559,7 @@ GooAsset.RawFile rawFile = await GameEngine.GameApi.AsyncLoadRawFile("C:/Users/P
 | 销毁 | `GameApi.CloseUI(view)` | `void` |
 | 查询 | `GameApi.FindUI<T>()` / `(name)` | `T?` / `CView?` |
 | 异步查询 | `GameApi.AsyncFindUI<T>()` / `(name)` | `Task<T>` / `Task<CView>` |
+| 获取元数据 | `self.UserData.As<T>()` | `T` |
 
 ### 8.4 通用对象
 
@@ -524,6 +570,7 @@ GooAsset.RawFile rawFile = await GameEngine.GameApi.AsyncLoadRawFile("C:/Users/P
 | 查询全部 | `GameApi.GetAllObjects()` | `IReadOnlyList<CObject>` |
 | 按类型查询 | `GameApi.GetObject<T>()` | `IReadOnlyList<T>` |
 | 按名称查询 | `GameApi.GetObject(name)` | `IReadOnlyList<CObject>` |
+| 获取元数据 | `self.UserData.As<T>()` | `T` |
 
 ### 8.5 组件对象（实体实例方法）
 
