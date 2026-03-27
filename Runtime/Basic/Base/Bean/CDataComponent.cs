@@ -1,7 +1,6 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,56 +22,36 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
 namespace GameEngine
 {
     /// <summary>
-    /// 输入按键的操作类型枚举定义
+    /// 基于组件对象的扩展对象类，该类区别于传统组件对象，是以数据通知为核心<br/>
+    /// 它除了具备基础组件的所有能力之外，还支持属性数据变化后的通知回调流程<br/>
+    /// <br/>
+    /// 属性改变后自动触发通知的应用案例：
+    /// <code>
+    ///   private string _name;
+    ///   public string Name
+    ///   {
+    ///     get { return _name; }
+    ///     set { _name = value; OnPropertyChanged(); } // 使用CallerMemberName特性自动传递属性名
+    ///   }
+    /// </code>
     /// </summary>
-    public enum InputOperationType
+    public abstract partial class CDataComponent : CComponent, INotifyPropertyChanged
     {
-        /// <summary>
-        /// 无效操作
-        /// </summary>
-        Unknown = 0x00,
+        // 声明 PropertyChanged 事件
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>
-        /// 按下操作
-        /// </summary>
-        Pressed = 0x01,
-        /// <summary>
-        /// 移动操作
-        /// </summary>
-        Moved = 0x02,
-        /// <summary>
-        /// 释放操作
-        /// </summary>
-        Released = 0x04,
-
-        /// <summary>
-        /// 双击操作
-        /// </summary>
-        DoubleClicked = 0x10,
-        /// <summary>
-        /// 三连击操作
-        /// </summary>
-        TripleClicked = 0x20,
-
-        /// <summary>
-        /// 按下或移动操作
-        /// </summary>
-        PressedOrMoved = Pressed | Moved,
-        /// <summary>
-        /// 移动或释放操作
-        /// </summary>
-        MovedOrReleased = Moved | Released,
-        /// <summary>
-        /// 按下或释放操作
-        /// </summary>
-        PressedOrReleased = Pressed | Released,
-
-        /// <summary>
-        /// 按键全部操作均支持
-        /// </summary>
-        All = Pressed | Moved | Released,
+        // 触发 PropertyChanged 事件的方法
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

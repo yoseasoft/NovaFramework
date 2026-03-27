@@ -1,7 +1,6 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,56 +22,15 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Collections;
+using System.Collections.Generic;
+
 namespace GameEngine
 {
     /// <summary>
-    /// 输入按键的操作类型枚举定义
+    /// 本地化文本管理对象类，用于对程序中的所有本地化字符信息进行统一管理，并提供格式化相关的获取方法
     /// </summary>
-    public enum InputOperationType
+    public static partial class Localization
     {
-        /// <summary>
-        /// 无效操作
-        /// </summary>
-        Unknown = 0x00,
-
-        /// <summary>
-        /// 按下操作
-        /// </summary>
-        Pressed = 0x01,
-        /// <summary>
-        /// 移动操作
-        /// </summary>
-        Moved = 0x02,
-        /// <summary>
-        /// 释放操作
-        /// </summary>
-        Released = 0x04,
-
-        /// <summary>
-        /// 双击操作
-        /// </summary>
-        DoubleClicked = 0x10,
-        /// <summary>
-        /// 三连击操作
-        /// </summary>
-        TripleClicked = 0x20,
-
-        /// <summary>
-        /// 按下或移动操作
-        /// </summary>
-        PressedOrMoved = Pressed | Moved,
-        /// <summary>
-        /// 移动或释放操作
-        /// </summary>
-        MovedOrReleased = Moved | Released,
-        /// <summary>
-        /// 按下或释放操作
-        /// </summary>
-        PressedOrReleased = Pressed | Released,
-
-        /// <summary>
-        /// 按键全部操作均支持
-        /// </summary>
-        All = Pressed | Moved | Released,
     }
 }
