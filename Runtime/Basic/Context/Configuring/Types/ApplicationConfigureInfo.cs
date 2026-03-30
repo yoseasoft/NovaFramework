@@ -33,10 +33,6 @@ namespace GameEngine.Context.Configuring
     static class ApplicationConfigureInfo
     {
         /// <summary>
-        /// 热加载模块包列表
-        /// </summary>
-        private static IList<string> _hotModulePacks;
-        /// <summary>
         /// 模组配置路径列表
         /// </summary>
         private static IList<string> _moduleUrlPaths;
@@ -50,7 +46,6 @@ namespace GameEngine.Context.Configuring
         /// </summary>
         private static IList<string> _configureFilePaths;
 
-        public static IList<string> HotModulePacks => _hotModulePacks;
         public static IList<string> ModuleUrlPaths => _moduleUrlPaths;
         public static IList<string> BeanUrlPaths => _beanUrlPaths;
 
@@ -60,7 +55,6 @@ namespace GameEngine.Context.Configuring
         public static void Initialize()
         {
             // 初始化容器
-            _hotModulePacks = new List<string>();
             _moduleUrlPaths = new List<string>();
             _beanUrlPaths = new List<string>();
         }
@@ -73,7 +67,6 @@ namespace GameEngine.Context.Configuring
             // 清理容器
             RemoveAllConfigureInfos();
 
-            _hotModulePacks = null;
             _moduleUrlPaths = null;
             _beanUrlPaths = null;
 
@@ -86,34 +79,8 @@ namespace GameEngine.Context.Configuring
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RemoveAllConfigureInfos()
         {
-            RemoveAllHotModulePacks();
             RemoveAllModuleUrlPaths();
             RemoveAllBeanUrlPaths();
-        }
-
-        /// <summary>
-        /// 新增热加载模块的包名称
-        /// </summary>
-        /// <param name="packName">包名称</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AddHotModulePack(string packName)
-        {
-            if (_hotModulePacks.Contains(packName))
-            {
-                Debugger.Warn(LogGroupTag.Basic, "The hot module pack '{%s}' was already exists, repeat added it failed.", packName);
-                return;
-            }
-
-            _hotModulePacks.Add(packName);
-        }
-
-        /// <summary>
-        /// 移除当前记录的所有热加载模块包名称
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void RemoveAllHotModulePacks()
-        {
-            _hotModulePacks.Clear();
         }
 
         /// <summary>

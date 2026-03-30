@@ -35,11 +35,32 @@ namespace GameEngine
             #region 外部配置信息的自动装配接口函数
 
             /// <summary>
+            /// 外部配置导入初始化回调函数
+            /// </summary>
+            private static void OnExternalImportInitialize()
+            {
+                // 模组配置解析器初始化
+                Context.Configuring.ModuleConfigureResolver.Initialize();
+            }
+
+            /// <summary>
+            /// 外部配置导入清理回调函数
+            /// </summary>
+            private static void OnExternalImportCleanup()
+            {
+                // 模组配置解析器清理
+                Context.Configuring.ModuleConfigureResolver.Cleanup();
+            }
+
+            /// <summary>
             /// 自动加载扩展的导入配置数据
             /// </summary>
             /// <param name="callback">回调句柄</param>
             private static void AutoLoadExternalImportConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
             {
+                // 导入模组配置数据
+                AutoLoadModuleImportConfigure(callback);
+                // 导入Bean配置数据
                 AutoLoadBeanImportConfigure(callback);
             }
 
@@ -49,6 +70,9 @@ namespace GameEngine
             /// <param name="callback">回调句柄</param>
             private static async UniTask AutoLoadExternalImportConfigure(NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
             {
+                // 导入模组配置数据
+                await AutoLoadModuleImportConfigure(callback);
+                // 导入Bean配置数据
                 await AutoLoadBeanImportConfigure(callback);
             }
 
@@ -58,6 +82,9 @@ namespace GameEngine
             /// <param name="callback">回调句柄</param>
             private static void AutoLoadExternalImportConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
             {
+                // 导入模组配置数据
+                AutoLoadModuleImportConfigure(callback);
+                // 导入Bean配置数据
                 AutoLoadBeanImportConfigure(callback);
             }
 
@@ -67,6 +94,9 @@ namespace GameEngine
             /// <param name="callback">回调句柄</param>
             private static async UniTask AutoLoadExternalImportConfigure(NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
             {
+                // 导入模组配置数据
+                await AutoLoadModuleImportConfigure(callback);
+                // 导入Bean配置数据
                 await AutoLoadBeanImportConfigure(callback);
             }
 

@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,22 +25,19 @@
 namespace GameEngine.Context.Configuring
 {
     /// <summary>
-    /// 应用配置数据的节点标签命名
+    /// 模组配置数据的节点标签命名
     /// </summary>
-    static class ApplicationConfigureNodeName
+    static class ModuleConfigureNodeName
     {
         public const string Comment = @"#comment";
-        public const string File = @"file";
-        public const string ModuleImport = @"module-import";
-        public const string BeanImport = @"bean-import";
+        public const string HotLoad = @"hot-load";
     }
 
     /// <summary>
-    /// 应用配置数据的语法标签定义
+    /// 模组配置数据的语法标签定义
     /// </summary>
-    static class ApplicationConfigureAttributeName
+    static class ModuleConfigureAttributeName
     {
-        public const string Url = @"url";
-        public const string Include = @"include";
+        public const string Name = @"name";
     }
 }

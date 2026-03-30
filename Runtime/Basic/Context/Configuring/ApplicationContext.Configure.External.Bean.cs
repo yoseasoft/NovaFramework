@@ -136,8 +136,11 @@ namespace GameEngine
             }
 
             /// <summary>
-            /// 重新绑定符号对象实例中关于实体数据部分的配置信息
+            /// 重新绑定符号对象实例中关于实体数据部分的配置信息<br/>
+            /// 一般情况下该接口是不对外开放的，仅供内部使用<br/>
+            /// 目前主要提供给演示案例和单元测试模块使用，通过绑定指定的实体配置信息，达到演示或测试的目的
             /// </summary>
+            [Obsolete]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static void RebindingBeanConfigureOfSymbols()
             {
@@ -164,7 +167,7 @@ namespace GameEngine
             /// <summary>
             /// 自动加载Bean的导入配置数据<br/>
             /// 该函数会将当前已记录的所有Bean文件路径，通过<see cref="LoadBeanConfigure(string, NovaEngine.Definition.File.OnFileStreamLoadingHandler)"/>全部重新加载一次<br/>
-            /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="Loader.CodeLoader.UnloadAllBeanConfigureInfos()"/>方法进行全部配置数据卸载
+            /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="UnloadAllBeanConfigureInfos()"/>方法进行全部配置数据卸载
             /// </summary>
             /// <param name="callback">回调句柄</param>
             private static void AutoLoadBeanImportConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
@@ -179,7 +182,7 @@ namespace GameEngine
             /// <summary>
             /// 自动加载Bean的导入配置数据<br/>
             /// 该函数会将当前已记录的所有Bean文件路径，通过<see cref="LoadBeanConfigure(string, NovaEngine.Definition.File.OnFileStreamLoadingHandler)"/>全部重新加载一次<br/>
-            /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="Loader.CodeLoader.UnloadAllBeanConfigureInfos()"/>方法进行全部配置数据卸载
+            /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="UnloadAllBeanConfigureInfos()"/>方法进行全部配置数据卸载
             /// </summary>
             /// <param name="callback">回调句柄</param>
             private static async UniTask AutoLoadBeanImportConfigure(NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
@@ -194,7 +197,7 @@ namespace GameEngine
             /// <summary>
             /// 自动加载Bean的导入配置数据<br/>
             /// 该函数会将当前已记录的所有Bean导入文件路径，通过<see cref="LoadBeanConfigure(string, NovaEngine.Definition.File.OnFileTextLoadingHandler)"/>全部重新加载一次<br/>
-            /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="Loader.CodeLoader.UnloadAllBeanConfigureInfos()"/>方法进行全部配置数据卸载
+            /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="UnloadAllBeanConfigureInfos()"/>方法进行全部配置数据卸载
             /// </summary>
             /// <param name="callback">回调句柄</param>
             private static void AutoLoadBeanImportConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
@@ -209,7 +212,7 @@ namespace GameEngine
             /// <summary>
             /// 自动加载Bean的导入配置数据<br/>
             /// 该函数会将当前已记录的所有Bean导入文件路径，通过<see cref="LoadBeanConfigure(string, NovaEngine.Definition.File.OnFileTextLoadingHandler)"/>全部重新加载一次<br/>
-            /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="Loader.CodeLoader.UnloadAllBeanConfigureInfos()"/>方法进行全部配置数据卸载
+            /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="UnloadAllBeanConfigureInfos()"/>方法进行全部配置数据卸载
             /// </summary>
             /// <param name="callback">回调句柄</param>
             private static async UniTask AutoLoadBeanImportConfigure(NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)

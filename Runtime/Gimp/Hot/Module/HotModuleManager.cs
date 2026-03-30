@@ -109,7 +109,7 @@ namespace GameEngine
         /// </summary>
         public static void AutoRegisterAllHotModulesOfContextConfigure()
         {
-            IList<string> packs = Context.Configuring.ApplicationConfigureInfo.HotModulePacks;
+            IList<string> packs = Context.Configuring.ModuleConfigureInfo.HotLoadPacks;
             for (int n = 0; null != packs && n < packs.Count; ++n)
             {
                 string packName = packs[n];
@@ -172,7 +172,7 @@ namespace GameEngine
         /// </summary>
         public static void AutoUnregisterAllHotModulesOfContextConfigure()
         {
-            IList<string> packs = Context.Configuring.ApplicationConfigureInfo.HotModulePacks;
+            IList<string> packs = Context.Configuring.ModuleConfigureInfo.HotLoadPacks;
             for (int n = 0; null != packs && n < packs.Count; ++n)
             {
                 string packName = packs[n];

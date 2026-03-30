@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -27,38 +27,18 @@ using UnityEngine.Scripting;
 
 namespace GameEngine.Context.Configuring
 {
-    /// 程序配置数据的解析类
-    internal static partial class ApplicationConfigureResolver
+    /// 模组配置数据的解析类
+    internal static partial class ModuleConfigureResolver
     {
         /// <summary>
         /// 热加载模块导入节点的配置数据
         /// </summary>
         /// <param name="node">节点实例</param>
         [Preserve]
-        [OnXmlConfigureResolvingCallback(XmlNodeType.Element, ApplicationConfigureNodeName.HotModule)]
-        private static void LoadHotModuleElement(XmlNode node)
+        [OnXmlConfigureResolvingCallback(XmlNodeType.Comment, ModuleConfigureNodeName.Comment)]
+        private static void LoadCommentElement(XmlNode node)
         {
-            string packName = null;
-            XmlAttributeCollection attrCollection = node.Attributes;
-            for (int n = 0; null != attrCollection && n < attrCollection.Count; ++n)
-            {
-                XmlAttribute attr = attrCollection[n];
-                switch (attr.Name)
-                {
-                    case ApplicationConfigureAttributeName.Name:
-                        packName = attr.Value;
-                        break;
-                }
-            }
-
-            if (string.IsNullOrEmpty(packName))
-            {
-                Debugger.Warn(LogGroupTag.Basic, "应用配置文件的‘{%s}’节点导入信息不能为空，该节点解析处理异常！", node.Name);
-                return;
-            }
-
-            Debugger.Info(LogGroupTag.Basic, "Load hot-module configure '{%s}' succeed.", packName);
-            ApplicationConfigureInfo.AddHotModulePack(packName);
+            Debugger.Info(LogGroupTag.Basic, "Load module configure comment: {%s}", node.Value);
         }
     }
 }
