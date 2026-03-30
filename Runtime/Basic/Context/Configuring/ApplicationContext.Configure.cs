@@ -1,0 +1,259 @@
+/// -------------------------------------------------------------------------------
+/// GameEngine Framework
+///
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to deal
+/// in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in
+/// all copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+/// THE SOFTWARE.
+/// -------------------------------------------------------------------------------
+
+using System.Customize.Extension;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Xml;
+
+using Cysharp.Threading.Tasks;
+
+namespace GameEngine
+{
+    /// 应用程序的上下文管理器对象类
+    public static partial class ApplicationContext
+    {
+        /// <summary>
+        /// 针对当前应用程序上下文的配置管理封装类，提供配置加载、初始化、清理等功能。
+        /// </summary>
+        public static partial class Configure
+        {
+            /// <summary>
+            /// 配置信息初始化回调函数
+            /// </summary>
+            internal static void Initialize()
+            {
+                // 配置解析器初始化
+                Context.Configuring.ApplicationConfigureResolver.Initialize();
+            }
+
+            /// <summary>
+            /// 配置信息清理回调函数
+            /// </summary>
+            internal static void Cleanup()
+            {
+                // 配置解析器清理
+                Context.Configuring.ApplicationConfigureResolver.Cleanup();
+            }
+
+            /// <summary>
+            /// 加载通用类库的配置数据
+            /// </summary>
+            /// <param name="buffer">数据流</param>
+            /// <param name="offset">数据偏移</param>
+            /// <param name="length">数据长度</param>
+            private static void LoadGeneralConfigure(byte[] buffer, int offset, int length)
+            {
+                MemoryStream memoryStream = new MemoryStream();
+                memoryStream.Write(buffer, offset, length);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+
+                LoadGeneralConfigure(memoryStream);
+
+                memoryStream.Dispose();
+            }
+
+            /// <summary>
+            /// 加载通用类库的配置数据
+            /// </summary>
+            /// <param name="memoryStream">数据流</param>
+            private static void LoadGeneralConfigure(MemoryStream memoryStream)
+            {
+                XmlDocument document = new XmlDocument();
+                document.Load(memoryStream);
+
+                XmlElement element = document.DocumentElement;
+                XmlNodeList nodeList = element.ChildNodes;
+                for (int n = 0; null != nodeList && n < nodeList.Count; ++n)
+                {
+                    XmlNode node = nodeList[n];
+
+                    Context.Configuring.ApplicationConfigureResolver.LoadConfigureContent(node);
+                }
+            }
+
+            /// <summary>
+            /// 重载通用类库的配置数据
+            /// </summary>
+            /// <param name="callback">回调句柄</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            private static void LoadGeneralConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
+            {
+                LoadGeneralConfigure(null, callback);
+            }
+
+            /// <summary>
+            /// 重载通用类库的配置数据
+            /// </summary>
+            /// <param name="url">资源路径</param>
+            /// <param name="callback">回调句柄</param>
+            private static void LoadGeneralConfigure(string url, NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
+            {
+                string path = url;
+                if (null == callback)
+                {
+                    Debugger.Error(LogGroupTag.Basic, "The configure file load handler must be non-null, reload general configure failed!");
+                    return;
+                }
+
+                do
+                {
+                    MemoryStream ms = new MemoryStream();
+                    Debugger.Info(LogGroupTag.Basic, "指定的应用配置文件‘{%s}’开始进行进入加载队列中……", path);
+                    if (false == callback(path, ms))
+                    {
+                        Debugger.Error(LogGroupTag.Basic, "载入Application配置数据失败：指定路径‘{%s}’下的配置文件加载回调接口执行异常！", path);
+                        return;
+                    }
+
+                    // 加载配置
+                    LoadGeneralConfigure(ms);
+
+                    ms.Dispose();
+
+                    // 获取下一个文件路径
+                    path = Context.Configuring.ApplicationConfigureResolver.MoveNextConfigureFile();
+                } while (null != path);
+            }
+
+            /// <summary>
+            /// 重载通用类库的配置数据
+            /// </summary>
+            /// <param name="callback">回调句柄</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            private static async UniTask LoadGeneralConfigure(NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
+            {
+                await LoadGeneralConfigure(null, callback);
+            }
+
+            /// <summary>
+            /// 重载通用类库的配置数据
+            /// </summary>
+            /// <param name="url">资源路径</param>
+            /// <param name="callback">回调句柄</param>
+            private static async UniTask LoadGeneralConfigure(string url, NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
+            {
+                string path = url;
+                if (null == callback)
+                {
+                    Debugger.Error(LogGroupTag.Basic, "The configure file load handler must be non-null, reload general configure failed!");
+                    return;
+                }
+
+                do
+                {
+                    MemoryStream ms = new MemoryStream();
+                    Debugger.Info(LogGroupTag.Basic, "指定的应用配置文件‘{%s}’开始进行进入加载队列中……", path);
+                    if (false == await callback(path, ms))
+                    {
+                        Debugger.Error(LogGroupTag.Basic, "载入Application配置数据失败：指定路径‘{%s}’下的配置文件加载回调接口执行异常！", path);
+                        return;
+                    }
+
+                    // 加载配置
+                    LoadGeneralConfigure(ms);
+
+                    ms.Dispose();
+
+                    // 获取下一个文件路径
+                    path = Context.Configuring.ApplicationConfigureResolver.MoveNextConfigureFile();
+                } while (null != path);
+            }
+
+            /// <summary>
+            /// 重载通用类库的配置数据
+            /// </summary>
+            /// <param name="callback">回调句柄</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            private static void LoadGeneralConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
+            {
+                LoadGeneralConfigure(null, callback);
+            }
+
+            /// <summary>
+            /// 重载通用类库的配置数据
+            /// </summary>
+            /// <param name="url">资源路径</param>
+            /// <param name="callback">回调句柄</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            private static void LoadGeneralConfigure(string url, NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
+            {
+                LoadGeneralConfigure(url, (url, ms) =>
+                {
+                    string text = callback(url);
+                    if (text.IsNullOrEmpty())
+                        return false;
+
+                    byte[] buffer = Encoding.UTF8.GetBytes(text);
+                    ms.Write(buffer, 0, buffer.Length);
+                    ms.Seek(0, SeekOrigin.Begin);
+
+                    return true;
+                });
+            }
+
+            /// <summary>
+            /// 重载通用类库的配置数据
+            /// </summary>
+            /// <param name="callback">回调句柄</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            private static async UniTask LoadGeneralConfigure(NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
+            {
+                await LoadGeneralConfigure(null, callback);
+            }
+
+            /// <summary>
+            /// 重载通用类库的配置数据
+            /// </summary>
+            /// <param name="url">资源路径</param>
+            /// <param name="callback">回调句柄</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            private static async UniTask LoadGeneralConfigure(string url, NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
+            {
+                await LoadGeneralConfigure(url, async (url, ms) =>
+                {
+                    string text = await callback(url);
+                    if (text.IsNullOrEmpty())
+                        return false;
+
+                    byte[] buffer = Encoding.UTF8.GetBytes(text);
+                    ms.Write(buffer, 0, buffer.Length);
+                    ms.Seek(0, SeekOrigin.Begin);
+
+                    return true;
+                });
+            }
+
+            /// <summary>
+            /// 卸载当前所有解析登记的配置数据对象实例
+            /// </summary>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            private static void UnloadAllConfigureContents()
+            {
+                Context.Configuring.ApplicationConfigureResolver.UnloadAllConfigureContents();
+            }
+        }
+    }
+}

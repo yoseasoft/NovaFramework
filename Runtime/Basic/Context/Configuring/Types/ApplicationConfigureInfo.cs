@@ -37,6 +37,10 @@ namespace GameEngine.Context.Configuring
         /// </summary>
         private static IList<string> _hotModulePacks;
         /// <summary>
+        /// 模组配置路径列表
+        /// </summary>
+        private static IList<string> _moduleUrlPaths;
+        /// <summary>
         /// 实体配置路径列表
         /// </summary>
         private static IList<string> _beanUrlPaths;
@@ -47,6 +51,7 @@ namespace GameEngine.Context.Configuring
         private static IList<string> _configureFilePaths;
 
         public static IList<string> HotModulePacks => _hotModulePacks;
+        public static IList<string> ModuleUrlPaths => _moduleUrlPaths;
         public static IList<string> BeanUrlPaths => _beanUrlPaths;
 
         /// <summary>
@@ -56,6 +61,7 @@ namespace GameEngine.Context.Configuring
         {
             // 初始化容器
             _hotModulePacks = new List<string>();
+            _moduleUrlPaths = new List<string>();
             _beanUrlPaths = new List<string>();
         }
 
@@ -68,6 +74,7 @@ namespace GameEngine.Context.Configuring
             RemoveAllConfigureInfos();
 
             _hotModulePacks = null;
+            _moduleUrlPaths = null;
             _beanUrlPaths = null;
 
             _configureFilePaths = null;
@@ -80,6 +87,7 @@ namespace GameEngine.Context.Configuring
         public static void RemoveAllConfigureInfos()
         {
             RemoveAllHotModulePacks();
+            RemoveAllModuleUrlPaths();
             RemoveAllBeanUrlPaths();
         }
 
@@ -103,9 +111,34 @@ namespace GameEngine.Context.Configuring
         /// 移除当前记录的所有热加载模块包名称
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void RemoveAllHotModulePacks()
+        private static void RemoveAllHotModulePacks()
         {
             _hotModulePacks.Clear();
+        }
+
+        /// <summary>
+        /// 新增模组配置文件的资源路径
+        /// </summary>
+        /// <param name="moduleUrlPath">资源路径</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void AddModuleUrlPath(string moduleUrlPath)
+        {
+            if (_moduleUrlPaths.Contains(moduleUrlPath))
+            {
+                Debugger.Warn(LogGroupTag.Basic, "The module url path '{%s}' was already exists, repeat added it failed.", moduleUrlPath);
+                return;
+            }
+
+            _moduleUrlPaths.Add(moduleUrlPath);
+        }
+
+        /// <summary>
+        /// 移除当前记录的所有模组配置文件资源路径
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void RemoveAllModuleUrlPaths()
+        {
+            _moduleUrlPaths.Clear();
         }
 
         /// <summary>
@@ -128,7 +161,7 @@ namespace GameEngine.Context.Configuring
         /// 移除当前记录的所有实体对象配置文件资源路径
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void RemoveAllBeanUrlPaths()
+        private static void RemoveAllBeanUrlPaths()
         {
             _beanUrlPaths.Clear();
         }
