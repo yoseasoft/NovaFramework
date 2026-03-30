@@ -317,9 +317,9 @@ TransformComponent transform = self.GetComponent<TransformComponent>();
 
 ---
 
-## 6. 数据通知与转发 API
+## 6. 通知与转发 API
 
-### 6.1 输入数据通知
+### 6.1 输入通知
 
 输入数据一般由引擎底层自动通知转发，业务层只需关注接收。
 接收方式详见 `dev_spec.md` 中"输入通知"章节。
@@ -334,9 +334,9 @@ GameEngine.GameApi.OnInputSimulation(GameEngine.VirtualKeyCode.A, GameEngine.Inp
 GameEngine.GameApi.OnInputSimulation(new JoystickData() { x = 1f, y = 0.5f });
 ```
 
-### 6.2 事件数据通知
+### 6.2 事件通知
 
-事件是实现不同业务模组间通讯的核心机制。
+事件是实现不同业务模组间行为变化的核心通讯机制。
 接收方式详见 `dev_spec.md` 中"事件通知"章节。
 
 #### 6.2.1 全局事件派发
@@ -406,9 +406,9 @@ self.SendToSelf(new TransformComponent.TransformUpdatedNotify());
 | `component.Send(...)` / `component.Fire(...)` | 仅限该组件对象实例所属的实体对象实例及其组件 |
 | `entity.SendToSelf(struct)` | 仅该目标实体及其组件（定向派发） |
 
-### 6.3 消息数据通知
+### 6.3 消息通知
 
-消息数据由引擎底层接收服务端下行数据后自动转发，业务层只需关注接收。
+消息数据由引擎底层网络接收服务端下行数据后自动转发，业务层只需关注接收。
 接收方式详见 `dev_spec.md` 中"消息通知"章节。
 
 模拟消息通知（用于测试）：
@@ -417,9 +417,9 @@ self.SendToSelf(new TransformComponent.TransformUpdatedNotify());
 GameEngine.GameApi.OnMessageSimulation(new EnterWorldResp() { Code = 1, Name = "hurley" });
 ```
 
-### 6.4 同步数据通知
+### 6.4 同步通知
 
-同步是实现数据发生改变后对业务模组进行通知的核心机制。
+同步是实现实体对象数据发生改变后对业务模组进行通知的核心机制。
 接收方式详见 `dev_spec.md` 中"同步通知"章节。
 
 #### 6.4.1 全局同步派发

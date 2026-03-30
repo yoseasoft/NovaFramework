@@ -78,6 +78,16 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 世界对象重构函数
+        /// </summary>
+        [Preserve]
+        public static void OnRebuild()
+        {
+            // 重构业务层模块
+            GameCall.Rebuild();
+        }
+
+        /// <summary>
         /// 世界对象重载函数
         /// </summary>
         /// <param name="commandType">类型标识</param>

@@ -58,6 +58,13 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 重构业务层模块
+        /// </summary>
+        public static void Rebuild()
+        {
+        }
+
+        /// <summary>
         /// 重载业务层模块
         /// </summary>
         /// <param name="commandType">类型标识</param>
@@ -134,6 +141,14 @@ namespace GameEngine
             CallRemoteService(GameMacros.GAME_REMOTE_PROCESS_CALL_STOP_SERVICE_NAME);
 
             AfterStopGame();
+        }
+
+        /// <summary>
+        /// 重构游戏业务层模块
+        /// </summary>
+        private static void RebuildGame()
+        {
+            CallRemoteService(GameMacros.GAME_REMOTE_PROCESS_CALL_REBUILD_SERVICE_NAME);
         }
 
         /// <summary>

@@ -56,6 +56,16 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 重构引擎的外部调用接口函数
+        /// </summary>
+        [Preserve]
+        public static void Rebuild()
+        {
+            // 引擎重构
+            EngineLauncher.OnRebuild();
+        }
+
+        /// <summary>
         /// 重载引擎的外部调用接口函数
         /// </summary>
         /// <param name="type">重载类型</param>
@@ -69,7 +79,7 @@ namespace GameEngine
                 return;
             }
 
-            // 重载引擎
+            // 引擎重载
             EngineLauncher.OnReload(commandType);
         }
 

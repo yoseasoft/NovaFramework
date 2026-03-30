@@ -59,9 +59,10 @@ namespace GameEngine
     }
 
     /// <summary>
-    /// 实体自动挂载的目标组件的属性类型定义
+    /// 实体对象下的自动挂载组件的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
+    // CAutomaticallyActivatedComponent
     public class CComponentAutomaticActivationOfEntityAttribute : Attribute
     {
         /// <summary>

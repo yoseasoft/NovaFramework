@@ -47,9 +47,9 @@ namespace GameEngine
         /// </summary>
         public const string GAME_REMOTE_PROCESS_CALL_STOP_SERVICE_NAME = @"Stop";
         /// <summary>
-        /// 业务远程服务调用的重启服务接口名称
+        /// 业务远程服务调用的重构服务接口名称
         /// </summary>
-        public const string GAME_REMOTE_PROCESS_CALL_REBOOT_SERVICE_NAME = @"Reboot";
+        public const string GAME_REMOTE_PROCESS_CALL_REBUILD_SERVICE_NAME = @"Rebuild";
         /// <summary>
         /// 业务远程服务调用的重载服务接口名称
         /// </summary>
