@@ -42,6 +42,15 @@ namespace GameEngine
     ///     set { _name = value; OnPropertyChanged(); } // 使用CallerMemberName特性自动传递属性名
     ///   }
     /// </code>
+    /// <br/>
+    /// 或者使用装箱接口：
+    /// <code>
+    ///   public string Name
+    ///   {
+    ///     get => Get&lt;string&gt;();
+    ///     set => Set(value);
+    ///   }
+    /// </code>
     /// </summary>
     public abstract partial class CDataComponent : CComponent, INotifyPropertyChanged
     {
@@ -52,6 +61,25 @@ namespace GameEngine
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private readonly IDictionary<string, object> _propertyValues = new Dictionary<string, object>();
+
+        protected T Get<T>([CallerMemberName] string propertyName = null)
+        {
+            if (_propertyValues.TryGetValue(propertyName, out object value))
+                return (T) value;
+
+            return default(T);
+        }
+
+        protected void Set<T>(T value, [CallerMemberName] string propertyName = null)
+        {
+            if (Equals(Get<T>(propertyName), value))
+                return;
+
+            _propertyValues[propertyName] = value;
+            OnPropertyChanged(propertyName);
         }
     }
 }
