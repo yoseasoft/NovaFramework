@@ -54,10 +54,10 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
                 Attribute attr = attrs[n];
-                if (attr is CViewClassAttribute viewClassAttribute)
+                if (attr is CViewTemplateConfigurationAttribute viewTemplateConfigurationAttribute)
                 {
-                    info.EntityName = viewClassAttribute.Name;
-                    info.Priority = viewClassAttribute.Priority;
+                    info.EntityName = viewTemplateConfigurationAttribute.Name;
+                    info.Priority = viewTemplateConfigurationAttribute.Priority;
                 }
                 else if (attr is CViewGroupAttribute viewGroupAttribute)
                 {

@@ -31,18 +31,18 @@ namespace GameEngine
     /// 视图实现类声明属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class CViewClassAttribute : CEntityDeclareClassAttribute
+    public class CViewTemplateConfigurationAttribute : CEntityTemplateConfigurationAttribute
     {
-        public CViewClassAttribute() : this(null, 0)
+        public CViewTemplateConfigurationAttribute() : this(null, 0)
         { }
 
-        public CViewClassAttribute(string viewName) : this(viewName, 0)
+        public CViewTemplateConfigurationAttribute(string viewName) : this(viewName, 0)
         { }
 
-        public CViewClassAttribute(int priority) : this(null, priority)
+        public CViewTemplateConfigurationAttribute(int priority) : this(null, priority)
         { }
 
-        public CViewClassAttribute(string viewName, int priority) : base(viewName, priority)
+        public CViewTemplateConfigurationAttribute(string viewName, int priority) : base(viewName, priority)
         { }
     }
 

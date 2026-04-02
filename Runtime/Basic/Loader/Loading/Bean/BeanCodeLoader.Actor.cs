@@ -54,10 +54,10 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
                 Attribute attr = attrs[n];
-                if (attr is CActorClassAttribute actorClassAttribute)
+                if (attr is CActorTemplateConfigurationAttribute actorTemplateConfigurationAttribute)
                 {
-                    info.EntityName = actorClassAttribute.Name;
-                    info.Priority = actorClassAttribute.Priority;
+                    info.EntityName = actorTemplateConfigurationAttribute.Name;
+                    info.Priority = actorTemplateConfigurationAttribute.Priority;
                 }
                 else
                 {

@@ -30,7 +30,7 @@ namespace GameEngine
     /// 实体类声明属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public abstract class CEntityDeclareClassAttribute : Attribute
+    public abstract class CEntityTemplateConfigurationAttribute : Attribute
     {
         /// <summary>
         /// 实体名称
@@ -51,7 +51,7 @@ namespace GameEngine
         /// </summary>
         protected internal int Priority => _priority;
 
-        protected CEntityDeclareClassAttribute(string name, int priority) : base()
+        protected CEntityTemplateConfigurationAttribute(string name, int priority) : base()
         {
             _name = name ?? string.Empty;
             _priority = priority;
@@ -62,8 +62,7 @@ namespace GameEngine
     /// 实体对象下的自动挂载组件的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
-    // CAutomaticallyActivatedComponent
-    public class CComponentAutomaticActivationOfEntityAttribute : Attribute
+    public class CAutomaticallyActivatedComponentAttribute : Attribute
     {
         /// <summary>
         /// 组件引用对象类型
@@ -91,13 +90,13 @@ namespace GameEngine
         /// </summary>
         public AspectBehaviourType ActivationBehaviourType => _activationBehaviourType;
 
-        public CComponentAutomaticActivationOfEntityAttribute(Type referenceType) : this(referenceType, 0, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyActivatedProcessingNode)
+        public CAutomaticallyActivatedComponentAttribute(Type referenceType) : this(referenceType, 0, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyActivatedProcessingNode)
         { }
 
-        public CComponentAutomaticActivationOfEntityAttribute(Type referenceType, int priority) : this(referenceType, priority, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyActivatedProcessingNode)
+        public CAutomaticallyActivatedComponentAttribute(Type referenceType, int priority) : this(referenceType, priority, AspectBehaviour.DefaultBehaviourTypeForAutomaticallyActivatedProcessingNode)
         { }
 
-        public CComponentAutomaticActivationOfEntityAttribute(Type referenceType, int priority, AspectBehaviourType activationBehaviourType) : base()
+        public CAutomaticallyActivatedComponentAttribute(Type referenceType, int priority, AspectBehaviourType activationBehaviourType) : base()
         {
             _referenceType = referenceType;
             _priority = priority;
@@ -115,7 +114,7 @@ namespace GameEngine
             if (obj is null || this.GetType() != obj.GetType()) return false;
 
             // 3. 转换为当前类型后，比较所有关键字段的值
-            CComponentAutomaticActivationOfEntityAttribute other = (CComponentAutomaticActivationOfEntityAttribute) obj;
+            CAutomaticallyActivatedComponentAttribute other = (CAutomaticallyActivatedComponentAttribute) obj;
             return _referenceType == other._referenceType &&
                    _priority == other._priority &&
                    _activationBehaviourType == other._activationBehaviourType;

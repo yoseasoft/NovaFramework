@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 
 namespace GameEngine.Loader.Symbolling
 {
@@ -55,11 +56,11 @@ namespace GameEngine.Loader.Symbolling
             for (int n = 0; null != classTypeAttrs && n < classTypeAttrs.Count; ++n)
             {
                 Attribute attr = classTypeAttrs[n];
-                if (attr is CComponentAutomaticActivationOfEntityAttribute _attr)
+                if (attr is CAutomaticallyActivatedComponentAttribute _attr)
                 {
-                    Debugger.Assert(typeof(CEntity).IsAssignableFrom(symClass.ClassType), "Invalid symbol class type '{%s}'.", symClass.FullName);
+                    Debugger.Assert(symClass.ClassType.Is<CEntity>(), "Invalid symbol class type '{%s}'.", symClass.FullName);
 
-                    // CComponentAutomaticActivationOfEntityAttribute _attr = (CComponentAutomaticActivationOfEntityAttribute) attr;
+                    // CAutomaticallyActivatedComponentAttribute _attr = (CAutomaticallyActivatedComponentAttribute) attr;
 
                     if (null == _attr.ReferenceType)
                     {

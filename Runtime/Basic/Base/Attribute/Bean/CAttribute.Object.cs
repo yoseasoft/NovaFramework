@@ -31,7 +31,7 @@ namespace GameEngine
     /// 对象实现类声明属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class CObjectClassAttribute : Attribute
+    public class CObjectTemplateConfigurationAttribute : Attribute
     {
         /// <summary>
         /// 对象名称
@@ -52,16 +52,16 @@ namespace GameEngine
         /// </summary>
         public int Priority => _priority;
 
-        public CObjectClassAttribute() : this(null, 0)
+        public CObjectTemplateConfigurationAttribute() : this(null, 0)
         { }
 
-        public CObjectClassAttribute(string objectName) : this(objectName, 0)
+        public CObjectTemplateConfigurationAttribute(string objectName) : this(objectName, 0)
         { }
 
-        public CObjectClassAttribute(int priority) : this(null, priority)
+        public CObjectTemplateConfigurationAttribute(int priority) : this(null, priority)
         { }
 
-        public CObjectClassAttribute(string objectName, int priority) : base()
+        public CObjectTemplateConfigurationAttribute(string objectName, int priority) : base()
         {
             _objectName = objectName ?? string.Empty;
             _priority = priority;

@@ -31,18 +31,18 @@ namespace GameEngine
     /// 角色实现类声明属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class CActorClassAttribute : CEntityDeclareClassAttribute
+    public class CActorTemplateConfigurationAttribute : CEntityTemplateConfigurationAttribute
     {
-        public CActorClassAttribute() : this(null, 0)
+        public CActorTemplateConfigurationAttribute() : this(null, 0)
         { }
 
-        public CActorClassAttribute(string actorName) : this(actorName, 0)
+        public CActorTemplateConfigurationAttribute(string actorName) : this(actorName, 0)
         { }
 
-        public CActorClassAttribute(int priority) : this(null, priority)
+        public CActorTemplateConfigurationAttribute(int priority) : this(null, priority)
         { }
 
-        public CActorClassAttribute(string actorName, int priority) : base(actorName, priority)
+        public CActorTemplateConfigurationAttribute(string actorName, int priority) : base(actorName, priority)
         {
         }
     }

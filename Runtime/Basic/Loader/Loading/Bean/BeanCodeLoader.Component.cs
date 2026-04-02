@@ -56,9 +56,9 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
                 Attribute attr = attrs[n];
-                if (attr is CComponentClassAttribute componentClassAttribute)
+                if (attr is CComponentTemplateConfigurationAttribute componentTemplateConfigurationAttribute)
                 {
-                    info.ComponentName = componentClassAttribute.ComponentName;
+                    info.ComponentName = componentTemplateConfigurationAttribute.ComponentName;
                 }
             }
 

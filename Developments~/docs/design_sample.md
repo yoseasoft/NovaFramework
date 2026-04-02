@@ -23,10 +23,8 @@
 #### 文件：`Game/Component/Mail/MailComponent.cs`
 
 ```csharp
-using GameEngine;
-
-[CComponentClass("MailComponent")]
-public sealed class MailComponent : CComponent
+[OnComponentConfigure("MailComponent")]
+public sealed class MailComponent : GComponentWrapper
 {
     /// <summary>邮件列表</summary>
     public List<MailData> mailList = new List<MailData>();
@@ -55,10 +53,8 @@ public sealed class MailComponent : CComponent
 #### 文件：`Game/View/MailPanel.cs`
 
 ```csharp
-using GameEngine;
-
-[CViewClass("GameMailPanel")]
-public sealed class MailPanel : CView
+[OnViewConfigure("GameMailPanel")]
+public sealed class MailPanel : GViewWrapper
 {
     // 视图对象数据类中只定义 UI 相关的引用数据
 }
@@ -67,12 +63,10 @@ public sealed class MailPanel : CView
 #### 文件：`Game/Object/Player.cs`（修改已有的玩家角色类，添加邮件组件挂载）
 
 ```csharp
-using GameEngine;
-
-[CActorClass("LocalPlayer")]
-[CComponentAutomaticActivationOfEntity(typeof(MailComponent))]       // 新增
-[CComponentAutomaticActivationOfEntity(typeof(AttributeComponent))]  // 已有
-public sealed class Player : CActor
+[OnActorConfigure("LocalPlayer")]
+[GAutomaticallyActivatedComponent(typeof(MailComponent))]       // 新增
+[GAutomaticallyActivatedComponent(typeof(AttributeComponent))]  // 已有
+public sealed class Player : GActorWrapper
 {
     // 玩家角色数据定义...
 }
@@ -230,10 +224,8 @@ mailComp.RequestMailList();
 #### 数据类：`Game/Component/XXX/XXXComponent.cs`
 
 ```csharp
-using GameEngine;
-
-[CComponentClass("XXXComponent")]
-public sealed class XXXComponent : CComponent
+[OnComponentConfigure("XXXComponent")]
+public sealed class XXXComponent : GComponentWrapper
 {
     // ====== 数据字段 ======
     public int someData;
@@ -292,10 +284,8 @@ static class XXXComponentXXXSystem
 #### 数据类：`Game/View/XXXPanel.cs`
 
 ```csharp
-using GameEngine;
-
-[CViewClass("GameXXXPanel")]
-public sealed class XXXPanel : CView
+[OnViewConfigure("GameXXXPanel")]
+public sealed class XXXPanel : GViewWrapper
 {
     // UI 相关的引用数据
 }
@@ -338,11 +328,9 @@ static class XXXPanelUISystem
 #### 数据类：`Game/Scene/XXXScene.cs`
 
 ```csharp
-using GameEngine;
-
-[CSceneClass("XXX")]
-[CComponentAutomaticActivationOfEntity(typeof(SomeComponent))]
-public sealed class XXXScene : CScene
+[OnSceneConfigure("XXX")]
+[GAutomaticallyActivatedComponent(typeof(SomeComponent))]
+public sealed class XXXScene : GSceneWrapper
 {
     // 场景数据
 }
@@ -376,12 +364,10 @@ static class XXXSceneSystem
 #### 数据类：`Game/Object/XXX.cs`
 
 ```csharp
-using GameEngine;
-
-[CActorClass("XXX")]
-[CComponentAutomaticActivationOfEntity(typeof(AttributeComponent))]
-[CComponentAutomaticActivationOfEntity(typeof(MoveComponent))]
-public sealed class XXX : CActor
+[OnActorConfigure("XXX")]
+[GAutomaticallyActivatedComponent(typeof(AttributeComponent))]
+[GAutomaticallyActivatedComponent(typeof(MoveComponent))]
+public sealed class XXX : GActorWrapper
 {
     // 角色标识数据
 }
@@ -416,8 +402,8 @@ static class XXXSystem
 
 ```csharp
 // ❌ 错误
-[CComponentClass("MailComponent")]
-public sealed class MailComponent : CComponent
+[OnComponentConfigure("MailComponent")]
+public sealed class MailComponent : GComponentWrapper
 {
     public List<MailData> mailList = new List<MailData>();
     public void RefreshMailList() { ... }  // ❌ 业务逻辑不允许在数据类中！
@@ -444,7 +430,7 @@ static class MailComponentMailSystem
 
 ```csharp
 // ✅ 正确：数据定义在实体对象中
-public sealed class MailComponent : CComponent
+public sealed class MailComponent : GComponentWrapper
 {
     public List<MailData> mailList = new List<MailData>();
 }
@@ -485,7 +471,7 @@ static void OnAddExp(this AttributeComponent self, AttributeComponent.AddExpNoti
 
 ```csharp
 // ❌ 错误
-public sealed class MailComponent : CComponent
+public sealed class MailComponent : GComponentWrapper
 {
     protected override void OnAwake() { ... }  // ❌ 禁止重载！
 }
@@ -584,13 +570,13 @@ static void LoadSomething(this XXXComponent self)
 - [ ] 在数据类中定义数据字段和事件结构体（`public struct`）
 - [ ] 在 `GameHotfix/Component/<功能名>/` 下创建 `<功能名>Component<业务>System.cs` 逻辑类
 - [ ] 在逻辑类中通过 `[OnAwake]` 和 `[OnDestroy]` 处理初始化和清理
-- [ ] 在需要使用此组件的实体对象上添加 `[CComponentAutomaticActivationOfEntity]`
+- [ ] 在需要使用此组件的实体对象上添加 `[GAutomaticallyActivatedComponent]`
 - [ ] 如果需要 UI，同步创建对应的视图对象数据类和逻辑类
 
 ### 4.2 新增一个 UI 面板
 
 - [ ] 确保 UI 资源已准备好（FairyGUI 或 UGUI），放置在 `_Resources/Gui/`
-- [ ] 在 `Game/View/` 下创建 `<面板名>.cs` 数据类，`[CViewClass]` 名称与 UI 资源名一致
+- [ ] 在 `Game/View/` 下创建 `<面板名>.cs` 数据类，`[OnViewConfigure]` 名称与 UI 资源名一致
 - [ ] 在 `GameHotfix/View/` 下创建 `<面板名>UISystem.cs` 逻辑类
 - [ ] 通过 `[OnEvent]` 监听数据变更事件来刷新 UI
 - [ ] 在需要的地方调用 `GameApi.OpenUI<T>()` 打开面板
@@ -598,7 +584,7 @@ static void LoadSomething(this XXXComponent self)
 ### 4.3 新增一个场景
 
 - [ ] 在 `Game/Scene/` 下创建 `<场景名>Scene.cs` 数据类
-- [ ] 通过 `[CComponentAutomaticActivationOfEntity]` 挂载场景所需的组件
+- [ ] 通过 `[GAutomaticallyActivatedComponent]` 挂载场景所需的组件
 - [ ] 在 `GameHotfix/Scene/` 下创建 `<场景名>SceneSystem.cs` 逻辑类
 - [ ] 在 `[OnAwake]` 中初始化场景（创建角色、打开 UI 等）
 - [ ] 通过 `GameApi.ReplaceScene<T>()` 切换到此场景

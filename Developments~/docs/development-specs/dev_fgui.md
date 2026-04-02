@@ -29,7 +29,7 @@
 
 ## 2. 视图对象 FGUI 操作 API
 
-项目使用 FairyGUI 作为 UI 框架。业务视图对象（`Game.UView`）通过以下 API 与 FGUI 元素交互。
+项目使用 FairyGUI 作为 UI 框架。业务视图对象（`Game.GViewWrapper`）通过以下 API 与 FGUI 元素交互。
 
 > 使用前需 `using FairyGUI;`。UI 元素名称以资源实际名称为准。
 
@@ -296,7 +296,7 @@ UI文件名称：<面板名，必填>
 字段说明：
 
 - `UI界面名称`：业务/策划侧名称，仅用于需求可读性描述。
-- `UI文件名称`：用于生成 `UViewClass`、View 类名、System 文件名。
+- `UI文件名称`：用于生成 `OnViewConfigure`、View 类名、System 文件名。
 
 ### 3.2 前缀到类型与事件的推断规则
 
@@ -339,8 +339,8 @@ using FairyGUI;
 
 namespace Game
 {
-    [UViewClass("<面板名>")]
-    public class <面板名> : UView
+    [OnViewConfigure("<面板名>")]
+    public class <面板名> : GViewWrapper
     {
         /// <summary>中文名</summary>
         public <字段类型> <字段名>;
@@ -384,26 +384,26 @@ namespace Game
 
         // ====== 视图生命周期回调（可选，按需添加） ======
 
-        [UViewResume]
-        static void OnResume(this <面板名> self)
+        [OnResume]
+        static void OnViewResume(this <面板名> self)
         {
             // 视图从暂停恢复时调用
         }
 
-        [UViewPause]
-        static void OnPause(this <面板名> self)
+        [OnPause]
+        static void OnViewPause(this <面板名> self)
         {
             // 视图被暂停时调用（如被其他视图覆盖）
         }
 
-        [UViewReveal]
-        static void OnReveal(this <面板名> self)
+        [OnReveal]
+        static void OnViewReveal(this <面板名> self)
         {
             // 视图置顶时调用（成为最上层可见视图）
         }
 
-        [UViewCover]
-        static void OnCover(this <面板名> self)
+        [OnCover]
+        static void OnViewCover(this <面板名> self)
         {
             // 视图被遮挡时调用（有其他视图覆盖在上方）
         }
@@ -411,7 +411,7 @@ namespace Game
 }
 ```
 
-> **视图生命周期标签说明**：`[UViewResume]`、`[UViewPause]`、`[UViewReveal]`、`[UViewCover]` 用于响应视图的显示层级变化。当多个视图叠加时，框架会自动调用这些回调。这些标签是可选的，按需添加。
+> **视图生命周期标签说明**：`[OnResume]`、`[OnPause]`、`[OnReveal]`、`[OnCover]` 用于响应视图的显示层级变化。当多个视图叠加时，框架会自动调用这些回调。这些标签是可选的，按需添加。
 
 ### 3.7 完整示例
 
@@ -436,8 +436,8 @@ using FairyGUI;
 
 namespace Game
 {
-    [UViewClass("LoginPanel")]
-    public class LoginPanel : UView
+    [OnViewConfigure("LoginPanel")]
+    public class LoginPanel : GViewWrapper
     {
         /// <summary>开始按钮</summary>
         public GButton btnStart;
@@ -499,26 +499,26 @@ namespace Game
 
         // ====== 视图生命周期回调（可选） ======
 
-        [UViewResume]
-        static void OnResume(this LoginPanel self)
+        [OnResume]
+        static void OnViewResume(this LoginPanel self)
         {
             Debugger.Info("{%t}处于恢复状态！", self);
         }
 
-        [UViewPause]
-        static void OnPause(this LoginPanel self)
+        [OnPause]
+        static void OnViewPause(this LoginPanel self)
         {
             Debugger.Info("{%t}处于暂停状态！", self);
         }
 
-        [UViewReveal]
-        static void OnReveal(this LoginPanel self)
+        [OnReveal]
+        static void OnViewReveal(this LoginPanel self)
         {
             Debugger.Info("{%t}处于置顶状态！", self);
         }
 
-        [UViewCover]
-        static void OnCover(this LoginPanel self)
+        [OnCover]
+        static void OnViewCover(this LoginPanel self)
         {
             Debugger.Info("{%t}处于遮挡状态！", self);
         }

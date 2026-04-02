@@ -95,39 +95,39 @@ CBean
 
 **业务封装层**（`Game` 命名空间，可扩展通用逻辑）：
 ```text
-CComponent ← Game.UComponent      # 业务层组件基类
-CObject    ← Game.UObject         # 业务层常规对象基类
-CScene     ← Game.UScene          # 业务层场景基类
-CActor     ← Game.UActor          # 业务层角色基类
-CView      ← Game.UView           # 业务层视图基类
+CComponent ← Game.GComponentWrapper     # 业务层组件基类
+CObject    ← Game.GObjectWrapper        # 业务层常规对象基类
+CScene     ← Game.GSceneWrapper         # 业务层场景基类
+CActor     ← Game.GActorWrapper         # 业务层角色基类
+CView      ← Game.GViewWrapper          # 业务层视图基类
 ```
 
-**业务层**（具体业务对象，必须继承 U 类）：
+**业务层**（具体业务对象，必须继承 G 类）：
 
-场景/视图对象直接继承 U 类：
+场景/视图对象直接继承 G 类：
 ```text
-Game.UScene     ← LogoScene, LoadingScene, WorldScene
-Game.UView      ← LoginPanel, LoadingPanel, ItemChoicePanel
-Game.UObject    ← 具体常规对象
+Game.GSceneWrapper     ← LogoScene, LoadingScene, WorldScene
+Game.GViewWrapper      ← LoginPanel, LoadingPanel, ItemChoicePanel
+Game.GObjectWrapper    ← 具体通用对象
 ```
 
 角色对象通过中间基类继承，共享组件挂载声明：
 ```text
-Game.UActor
+Game.GActorWrapper
 ├── Actor              # 中间基类（非 sealed），挂载 IdentityComponent + TransformComponent
 │   ├── Soldier        # 中间基类（非 sealed），挂载 AttributeComponent
 │   │   ├── Player     # 叶子类（sealed），挂载 AttackComponent
 │   │   └── Monster    # 叶子类（sealed）
 │   ├── Npc            # 叶子类（sealed）
 │   └── Trap           # 叶子类（sealed）
-└── Map                # 直接继承 UActor，挂载 IdentityComponent
+└── Map                # 直接继承 GActorWrapper，挂载 IdentityComponent
 ```
 
-> 中间基类（如 `Actor`、`Soldier`）是非 sealed 的，用于通过继承让多个子类共享 `[UComponentAutomaticActivationOfEntity]` 声明。子类自动继承父类声明的组件挂载。
+> 中间基类（如 `Actor`、`Soldier`）是非 sealed 的，用于通过继承让多个子类共享 `[GAutomaticallyActivatedComponent]` 声明。子类自动继承父类声明的组件挂载。
 
-组件对象继承 U 类：
+组件对象继承 G 类：
 ```text
-Game.UComponent ← AttackComponent, AttributeComponent, IdentityComponent, TransformComponent, ...
+Game.GComponentWrapper ← AttackComponent, AttributeComponent, IdentityComponent, TransformComponent, ...
 ```
 
 ### 3.2 实体对象类型说明
@@ -152,35 +152,35 @@ Game.UComponent ← AttackComponent, AttributeComponent, IdentityComponent, Tran
 
 | 对象类型 | 特性标签 | 示例 |
 |---------|---------|------|
-| 场景对象 | `[USceneClass("名称")]` | `[USceneClass("Login")]` |
-| 角色对象 | `[UActorClass("名称")]` | `[UActorClass("LocalPlayer")]` |
-| 视图对象 | `[UViewClass("名称")]` | `[UViewClass("GameLoginPanel")]` |
-| 通用对象 | `[UObjectClass("名称")]` | `[UObjectClass("MonthlyCardActivity")]` |
-| 组件对象 | `[UComponentClass("名称")]` | `[UComponentClass("AttributeComp")]` |
+| 场景对象 | `[OnSceneConfigure("名称")]` | `[OnSceneConfigure("Login")]` |
+| 角色对象 | `[OnActorConfigure("名称")]` | `[OnActorConfigure("LocalPlayer")]` |
+| 视图对象 | `[OnViewConfigure("名称")]` | `[OnViewConfigure("GameLoginPanel")]` |
+| 通用对象 | `[OnObjectConfigure("名称")]` | `[OnObjectConfigure("MonthlyCardActivity")]` |
+| 组件对象 | `[OnComponentConfigure("名称")]` | `[OnComponentConfigure("AttributeComp")]` |
 
-> **特性标签的使用场景**：特性标签在通过名称创建对象（如 `ApplicationContext.CreateBean(beanName)` 或 `GameApi.ReplaceScene("Loading")`）时是必需的。若仅通过泛型 API（如 `GameApi.CreateActor<Player>()`）或通过 `[UComponentAutomaticActivationOfEntity]` 自动挂载时，可省略特性标签。当前项目中，场景对象和视图对象均标注了特性标签，角色对象和组件对象未标注。
+> **特性标签的使用场景**：特性标签在通过名称创建对象（如 `ApplicationContext.CreateBean(beanName)` 或 `GameApi.ReplaceScene("Loading")`）时是必需的。若仅通过泛型 API（如 `GameApi.CreateActor<Player>()`）或通过 `[GAutomaticallyActivatedComponent]` 自动挂载时，可省略特性标签。当前项目中，场景对象和视图对象均标注了特性标签，角色对象和组件对象未标注。
 
 自动挂载组件的特性标签：
 ```csharp
-[UComponentAutomaticActivationOfEntity(typeof(MoveComponent))]
+[GAutomaticallyActivatedComponent(typeof(MoveComponent))]
 ```
 
-> `[UComponentAutomaticActivationOfEntity]` 支持继承——父类声明的自动挂载组件会被所有子类继承。
+> `[GAutomaticallyActivatedComponent]` 支持继承——父类声明的自动挂载组件会被所有子类继承。
 
 组件复用示例——通过中间基类共享组件挂载：
 ```csharp
 // Actor 作为中间基类，所有子类自动挂载 IdentityComponent 和 TransformComponent
-[UComponentAutomaticActivationOfEntity(typeof(IdentityComponent))]
-[UComponentAutomaticActivationOfEntity(typeof(TransformComponent))]
-public class Actor : UActor { }
+[GAutomaticallyActivatedComponent(typeof(IdentityComponent))]
+[GAutomaticallyActivatedComponent(typeof(TransformComponent))]
+public class Actor : GActorWrapper { }
 
 // Soldier 继承 Actor，额外挂载 AttributeComponent
-[UComponentAutomaticActivationOfEntity(typeof(AttributeComponent))]
+[GAutomaticallyActivatedComponent(typeof(AttributeComponent))]
 public class Soldier : Actor { }
 
 // Player 继承 Soldier，额外挂载 AttackComponent
 // 最终 Player 拥有：IdentityComponent + TransformComponent + AttributeComponent + AttackComponent
-[UComponentAutomaticActivationOfEntity(typeof(AttackComponent))]
+[GAutomaticallyActivatedComponent(typeof(AttackComponent))]
 public sealed class Player : Soldier { }
 
 // Monster 继承 Soldier，不额外挂载
@@ -190,31 +190,31 @@ public sealed class Monster : Soldier { }
 
 ### 3.5 业务层二次封装规则
 
-为了将业务代码与框架引擎层解耦，项目在 `Game` 命名空间下对框架的核心基类进行了二次封装（U 类），位于 `Game/Core/Surface/` 目录：
+为了将业务代码与框架引擎层解耦，项目在 `Game` 命名空间下对框架的核心基类进行了二次封装（G 类），位于 `Game/Core/Wrapper/` 目录：
 
 | 框架基类（GameEngine） | 业务封装类（Game） | 说明 |
 |----------------------|------------------|------|
-| `CScene` | `Game.UScene` | 场景对象封装 |
-| `CActor` | `Game.UActor` | 角色对象封装 |
-| `CView` | `Game.UView` | 视图对象封装 |
-| `CObject` | `Game.UObject` | 常规对象封装 |
-| `CComponent` | `Game.UComponent` | 组件对象封装 |
+| `CScene` | `Game.GSceneWrapper` | 场景对象封装 |
+| `CActor` | `Game.GActorWrapper` | 角色对象封装 |
+| `CView` | `Game.GViewWrapper` | 视图对象封装 |
+| `CObject` | `Game.GObjectWrapper` | 通用对象封装 |
+| `CComponent` | `Game.GComponentWrapper` | 组件对象封装 |
 
-- ✅ 所有业务实体对象**必须继承 U 类**，而非直接继承框架的 C 类
-- ✅ U 类可以包含业务层的通用逻辑（公共字段、公共方法等），供所有子类复用
+- ✅ 所有业务实体对象**必须继承 G 类**，而非直接继承框架的 C 类
+- ✅ G 类可以包含业务层的通用逻辑（公共字段、公共方法等），供所有子类复用
 - ❌ **禁止**业务实体对象直接继承 `GameEngine.CActor`、`GameEngine.CScene`、`GameEngine.CComponent` 等框架基类
 
 正确示例：
 ```csharp
-// ✅ 正确：场景继承 Game.UScene
-[USceneClass("Loading")]
-public sealed class LoadingScene : Game.UScene { }
+// ✅ 正确：场景继承 Game.GSceneWrapper
+[OnSceneConfigure("Loading")]
+public sealed class LoadingScene : Game.GSceneWrapper { }
 
-// ✅ 正确：角色继承 Game.UActor（或继承 Game.UActor 的中间基类）
-public sealed class Player : Game.Soldier { }  // Game.Soldier → Game.Actor → Game.UActor
+// ✅ 正确：角色继承 Game.GActorWrapper（或继承 Game.GActorWrapper 的中间基类）
+public sealed class Player : Game.Soldier { }  // Game.Soldier → Game.Actor → Game.GActorWrapper
 
-// ✅ 正确：组件继承 Game.UComponent
-public sealed class AttackComponent : Game.UComponent { ... }
+// ✅ 正确：组件继承 Game.GComponentWrapper
+public sealed class AttackComponent : Game.GComponentWrapper { ... }
 ```
 
 错误示例：
@@ -362,8 +362,8 @@ static void Update(this Player self)
 
 自定义事件结构体定义在实体对象类内部，访问权限必须是 `public`：
 ```csharp
-[UComponentClass("AttributeComp")]
-public sealed class AttributeComponent : Game.UComponent
+[OnComponentConfigure("AttributeComp")]
+public sealed class AttributeComponent : Game.GComponentWrapper
 {
     public struct LevelupNotify
     {
@@ -567,43 +567,43 @@ static void OnRecvEvent(this MainScene self, string tags, GameEngine.ReplicateAn
 
 ```csharp
 // ❌ 错误：直接继承 GameEngine.CActor
-[UActorClass("LocalPlayer")]
+[OnActorConfigure("LocalPlayer")]
 public sealed class Player : GameEngine.CActor { ... }
 
 // ❌ 错误：直接继承 GameEngine.CComponent
-[UComponentClass("MoveComponent")]
+[OnComponentConfigure("MoveComponent")]
 public sealed class MoveComponent : GameEngine.CComponent { ... }
 ```
 
 ```csharp
-// ✅ 正确：继承业务封装 U 类
-[UActorClass("LocalPlayer")]
-public sealed class Player : Game.UActor { ... }
+// ✅ 正确：继承业务封装 G 类
+[OnActorConfigure("LocalPlayer")]
+public sealed class Player : Game.GActorWrapper { ... }
 
-[UComponentClass("MoveComponent")]
-public sealed class MoveComponent : Game.UComponent { ... }
+[OnComponentConfigure("MoveComponent")]
+public sealed class MoveComponent : Game.GComponentWrapper { ... }
 ```
 
-### 5.2 ❌ 使用 CComponentAutomaticActivationOfEntity 而非 U 版本
+### 5.2 ❌ 使用 CAutomaticallyActivatedComponent 而非 G 版本
 
 ```csharp
 // ❌ 错误：使用框架原始特性标签
-[CComponentAutomaticActivationOfEntity(typeof(MoveComponent))]
-public sealed class Player : Game.UActor { ... }
+[CAutomaticallyActivatedComponent(typeof(MoveComponent))]
+public sealed class Player : Game.GActorWrapper { ... }
 ```
 
 ```csharp
-// ✅ 正确：使用业务封装的 U 版本特性标签
-[UComponentAutomaticActivationOfEntity(typeof(MoveComponent))]
-public sealed class Player : Game.UActor { ... }
+// ✅ 正确：使用业务封装的 G 版本特性标签
+[GAutomaticallyActivatedComponent(typeof(MoveComponent))]
+public sealed class Player : Game.GActorWrapper { ... }
 ```
 
 ### 5.3 ❌ 在数据类中编写业务逻辑
 
 ```csharp
 // ❌ 错误
-[UComponentClass("MailComponent")]
-public sealed class MailComponent : Game.UComponent
+[OnComponentConfigure("MailComponent")]
+public sealed class MailComponent : Game.GComponentWrapper
 {
     public List<MailData> mailList = new();
     public void RefreshMailList() { ... }  // ❌ 业务逻辑！
@@ -630,7 +630,7 @@ static class MailComponentMailSystem
 
 ```csharp
 // ✅ 正确：数据定义在实体对象中
-public sealed class MailComponent : Game.UComponent
+public sealed class MailComponent : Game.GComponentWrapper
 {
     public List<MailData> mailList = new();  // 数据在这里
 }
@@ -686,7 +686,7 @@ static class PlayerSystem
 
 ```csharp
 // ❌ 错误
-public sealed class MailComponent : Game.UComponent
+public sealed class MailComponent : Game.GComponentWrapper
 {
     protected override void OnAwake() { ... }  // ❌ 禁止重载！
 }
@@ -855,25 +855,25 @@ Player player = self.Entity as Player;
 
 ### 8.1 新增一个业务功能（组件级别）
 
-- [ ] 在 `Game/Component/<功能名>/` 下创建 `<功能名>Component.cs`，**继承 `Game.UComponent`**
+- [ ] 在 `Game/Component/<功能名>/` 下创建 `<功能名>Component.cs`，**继承 `Game.GComponentWrapper`**
 - [ ] 在数据类中定义数据字段和事件结构体（`public struct`）
 - [ ] 在 `GameHotfix/Component/<功能名>/` 下创建 System 逻辑类
 - [ ] 在逻辑类中用 `[OnAwake]` 和 `[OnDestroy]` 处理初始化和清理
-- [ ] 在需要使用此组件的实体对象上添加 **`[UComponentAutomaticActivationOfEntity]`**
+- [ ] 在需要使用此组件的实体对象上添加 **`[GAutomaticallyActivatedComponent]`**
 - [ ] 如果需要 UI，同步创建对应的视图对象
 
 ### 8.2 新增一个 UI 面板
 
 - [ ] 确保 UI 资源已准备好，放置在 `_Resources/Gui/`
-- [ ] 在 `Game/View/` 下创建视图数据类，**继承 `Game.UView`**，`[UViewClass]` 名称与资源名一致
+- [ ] 在 `Game/View/` 下创建视图数据类，**继承 `Game.GViewWrapper`**，`[OnViewConfigure]` 名称与资源名一致
 - [ ] 在 `GameHotfix/View/` 下创建 System 逻辑类
 - [ ] 通过 `[OnEvent]` 监听数据变更事件来刷新 UI
 - [ ] 在需要的地方调用 `GameApi.OpenUI<T>()` 打开面板
 
 ### 8.3 新增一个场景
 
-- [ ] 在 `Game/Scene/` 下创建场景数据类，**继承 `Game.UScene`**
-- [ ] 通过 **`[UComponentAutomaticActivationOfEntity]`** 挂载场景所需的组件
+- [ ] 在 `Game/Scene/` 下创建场景数据类，**继承 `Game.GSceneWrapper`**
+- [ ] 通过 **`[GAutomaticallyActivatedComponent]`** 挂载场景所需的组件
 - [ ] 在对应的 Hotfix 模组中创建 System 逻辑类
 - [ ] 在 `[OnStart]` 中初始化场景（创建角色、打开 UI 等）
 - [ ] 通过 `GameApi.ReplaceScene<T>()` 切换到此场景

@@ -31,18 +31,18 @@ namespace GameEngine
     /// 场景实现类声明属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class CSceneClassAttribute : CEntityDeclareClassAttribute
+    public class CSceneTemplateConfigurationAttribute : CEntityTemplateConfigurationAttribute
     {
-        public CSceneClassAttribute() : this(null, 0)
+        public CSceneTemplateConfigurationAttribute() : this(null, 0)
         { }
 
-        public CSceneClassAttribute(string sceneName) : this(sceneName, 0)
+        public CSceneTemplateConfigurationAttribute(string sceneName) : this(sceneName, 0)
         { }
 
-        public CSceneClassAttribute(int priority) : this(null, priority)
+        public CSceneTemplateConfigurationAttribute(int priority) : this(null, priority)
         { }
 
-        public CSceneClassAttribute(string sceneName, int priority) : base(sceneName, priority)
+        public CSceneTemplateConfigurationAttribute(string sceneName, int priority) : base(sceneName, priority)
         {
         }
     }

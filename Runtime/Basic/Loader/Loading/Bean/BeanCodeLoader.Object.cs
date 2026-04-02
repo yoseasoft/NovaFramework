@@ -55,10 +55,10 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
                 Attribute attr = attrs[n];
-                if (attr is CObjectClassAttribute objectClassAttribute)
+                if (attr is CObjectTemplateConfigurationAttribute objectTemplateConfigurationAttribute)
                 {
-                    info.ObjectName = objectClassAttribute.ObjectName;
-                    info.Priority = objectClassAttribute.Priority;
+                    info.ObjectName = objectTemplateConfigurationAttribute.ObjectName;
+                    info.Priority = objectTemplateConfigurationAttribute.Priority;
                 }
                 else
                 {

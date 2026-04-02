@@ -54,10 +54,10 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
                 Attribute attr = attrs[n];
-                if (attr is CSceneClassAttribute sceneClassAttribute)
+                if (attr is CSceneTemplateConfigurationAttribute sceneTemplateConfigurationAttribute)
                 {
-                    info.EntityName = sceneClassAttribute.Name;
-                    info.Priority = sceneClassAttribute.Priority;
+                    info.EntityName = sceneTemplateConfigurationAttribute.Name;
+                    info.Priority = sceneTemplateConfigurationAttribute.Priority;
                 }
                 else if (attr is SceneAutoDisplayOnTargetViewAttribute sceneAutoDisplayOnTargetViewAttribute)
                 {

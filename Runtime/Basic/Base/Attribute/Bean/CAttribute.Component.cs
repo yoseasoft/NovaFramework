@@ -31,7 +31,7 @@ namespace GameEngine
     /// 组件实现类声明属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class CComponentClassAttribute : Attribute
+    public class CComponentTemplateConfigurationAttribute : Attribute
     {
         /// <summary>
         /// 组件名称
@@ -52,16 +52,16 @@ namespace GameEngine
         /// </summary>
         public int Priority => _priority;
 
-        public CComponentClassAttribute() : this(null, 0)
+        public CComponentTemplateConfigurationAttribute() : this(null, 0)
         { }
 
-        public CComponentClassAttribute(string componentName) : this(componentName, 0)
+        public CComponentTemplateConfigurationAttribute(string componentName) : this(componentName, 0)
         { }
 
-        public CComponentClassAttribute(int priority) : this(null, priority)
+        public CComponentTemplateConfigurationAttribute(int priority) : this(null, priority)
         { }
 
-        public CComponentClassAttribute(string componentName, int priority) : base()
+        public CComponentTemplateConfigurationAttribute(string componentName, int priority) : base()
         {
             _componentName = componentName ?? string.Empty;
             _priority = priority;
