@@ -69,7 +69,7 @@ namespace GameEngine
                 return;
             }
 
-            // Debugger.Log("-------------------------------------- close all ui with target scene '{0}' ???", scene.GetType().FullName);
+            // Debugger.Log("-------------------------------------- close all ui with target scene '{%t}' ???", scene);
         }
     }
 }

@@ -105,13 +105,13 @@ namespace GameEngine
 
             if (false == clsType.Is<CComponent>())
             {
-                Debugger.Warn(LogGroupTag.Controller, "The register type {0} must be inherited from 'CComponent'.", clsType.Name);
+                Debugger.Warn(LogGroupTag.Controller, "The register type {%s} must be inherited from 'CComponent'.", clsType.Name);
                 return false;
             }
 
             if (_componentClassTypes.ContainsKey(componentName))
             {
-                Debugger.Warn(LogGroupTag.Controller, "The component name '{0}' was already registered, repeat add will be override old name.", componentName);
+                Debugger.Warn(LogGroupTag.Controller, "The component name '{%s}' was already registered, repeat add will be override old name.", componentName);
                 _componentClassTypes.RemoveByKey(componentName);
             }
 
@@ -130,7 +130,7 @@ namespace GameEngine
         {
             if (false == _componentClassTypes.ContainsKey(componentName))
             {
-                Debugger.Warn(LogGroupTag.Controller, "Could not found any component with target name '{0}', removed it failed.", componentName);
+                Debugger.Warn(LogGroupTag.Controller, "Could not found any component with target name '{%s}', removed it failed.", componentName);
                 return;
             }
 

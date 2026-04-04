@@ -554,7 +554,7 @@ namespace GameEngine
                 }
                 else
                 {
-                    Debugger.Warn(LogGroupTag.Module, "Could not found any schedule callback with target session '{0}', invoked it failed.", sessionID);
+                    Debugger.Warn(LogGroupTag.Module, "Could not found any schedule callback with target session '{%d}', invoked it failed.", sessionID);
                 }
             }
         }

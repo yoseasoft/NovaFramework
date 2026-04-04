@@ -56,7 +56,7 @@ namespace GameEngine
         {
             if (false == NovaEngine.Utility.Convertion.IsCorrectedEnumValue<AspectBehaviourType>((int) behaviourType))
             {
-                Debugger.Error("Invalid aspect behaviour type ({0}).", behaviourType.ToString());
+                Debugger.Error("Invalid aspect behaviour type ({%v}).", behaviourType);
                 return;
             }
 

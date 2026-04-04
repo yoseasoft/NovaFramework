@@ -110,7 +110,7 @@ namespace GameEngine.Loader.Structuring
 
             if (_groupOfSymbioticViewNames.Contains(viewName))
             {
-                Debugger.Warn("The group of symbiotic view name '{0}' was already existed, repeat added it failed.", viewName);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The group of symbiotic view name '{%s}' was already existed, repeat added it failed.", viewName);
                 return;
             }
 
@@ -164,7 +164,7 @@ namespace GameEngine.Loader.Structuring
         {
             if (null == _groupOfSymbioticViewNames || index < 0 || index >= _groupOfSymbioticViewNames.Count)
             {
-                Debugger.Warn("Invalid index ({0}) for group of symbiotic view name list.", index);
+                Debugger.Warn(LogGroupTag.CodeLoader, "Invalid index ({%d}) for group of symbiotic view name list.", index);
                 return null;
             }
 

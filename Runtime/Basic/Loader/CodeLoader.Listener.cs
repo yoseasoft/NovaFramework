@@ -128,7 +128,7 @@ namespace GameEngine.Loader
 
             if (_assemblyLoadFiltingProcessorCallbacks.Contains(callback))
             {
-                Debugger.Warn("The assembly load filting processor callback '{0}' was already exist, repeat added it failed.", NovaEngine.Utility.Text.ToString(callback));
+                Debugger.Warn("The assembly load filtering processor callback '{0}' was already exist, repeat added it failed.", NovaEngine.Utility.Text.ToString(callback));
                 return;
             }
 
