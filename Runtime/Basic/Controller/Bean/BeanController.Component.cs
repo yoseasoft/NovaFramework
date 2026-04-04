@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using UnityEngine.Scripting;
 
 namespace GameEngine
@@ -102,7 +103,7 @@ namespace GameEngine
         {
             Debugger.Assert(false == string.IsNullOrEmpty(componentName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
 
-            if (false == typeof(CComponent).IsAssignableFrom(clsType))
+            if (false == clsType.Is<CComponent>())
             {
                 Debugger.Warn(LogGroupTag.Controller, "The register type {0} must be inherited from 'CComponent'.", clsType.Name);
                 return false;

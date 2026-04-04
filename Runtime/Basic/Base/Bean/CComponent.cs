@@ -37,7 +37,7 @@ namespace GameEngine
     /// 但除了需要继承指定接口外，还要求上层的实体对象必须打开执行或刷新调度才可以正常工作
     /// </summary>
     public abstract partial class CComponent : CBase, IComponent,
-        NovaEngine.IExecutable, NovaEngine.IUpdatable, IBeanLifecycle, IEventDispatch, IMessageDispatch
+        NovaEngine.IExecutable, NovaEngine.IUpdatable, IBeanLifecycle
     {
         /// <summary>
         /// 获取组件对象的分类类型
