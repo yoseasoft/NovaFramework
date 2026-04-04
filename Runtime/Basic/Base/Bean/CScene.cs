@@ -40,9 +40,9 @@ namespace GameEngine
         public static SceneHandler SceneHandler => SceneHandler.Instance;
 
         /// <summary>
-        /// 获取场景对象的调度序列类型
+        /// 获取场景对象的分类类型
         /// </summary>
-        public override sealed SchedulingSequenceType SequenceType => SchedulingSequenceType.Scene;
+        public override sealed BeanClassifyType ClassifyType => BeanClassifyType.Scene;
 
         /// <summary>
         /// 获取实体对象的名称

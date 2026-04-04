@@ -40,9 +40,9 @@ namespace GameEngine
         NovaEngine.IExecutable, NovaEngine.IUpdatable, IBeanLifecycle, IEventDispatch, IMessageDispatch
     {
         /// <summary>
-        /// 获取组件对象的调度序列类型
+        /// 获取组件对象的分类类型
         /// </summary>
-        public override sealed SchedulingSequenceType SequenceType => SchedulingSequenceType.Component;
+        public override sealed BeanClassifyType ClassifyType => BeanClassifyType.Component;
 
         /// <summary>
         /// 获取组件对象的名称

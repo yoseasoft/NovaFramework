@@ -42,9 +42,9 @@ namespace GameEngine
         public static ActorHandler ActorHandler => ActorHandler.Instance;
 
         /// <summary>
-        /// 获取角色对象的调度序列类型
+        /// 获取角色对象的分类类型
         /// </summary>
-        public override sealed SchedulingSequenceType SequenceType => SchedulingSequenceType.Actor;
+        public override sealed BeanClassifyType ClassifyType => BeanClassifyType.Actor;
 
         /// <summary>
         /// 获取角色对象的名称

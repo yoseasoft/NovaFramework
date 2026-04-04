@@ -34,9 +34,9 @@ namespace GameEngine
     public abstract class CObject : CRef, IBeanLifecycle
     {
         /// <summary>
-        /// 获取通用对象的调度序列类型
+        /// 获取通用对象的分类类型
         /// </summary>
-        public override sealed SchedulingSequenceType SequenceType => SchedulingSequenceType.Object;
+        public override sealed BeanClassifyType ClassifyType => BeanClassifyType.Object;
 
         /// <summary>
         /// 通用对象等待销毁状态标识
