@@ -167,9 +167,9 @@ namespace GameEngine
             }
             else
             {
-                Debugger.Assert(null != eventData.Params && eventData.Params.Length == 1, "Invalid event data arguments.");
+                Debugger.Assert(null != eventData.EventObject, NovaEngine.ErrorText.InvalidArguments);
 
-                OnEventDispatched(eventData.Params[0]);
+                OnEventDispatched(eventData.EventObject);
             }
         }
 

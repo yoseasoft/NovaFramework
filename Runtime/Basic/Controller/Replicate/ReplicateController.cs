@@ -41,12 +41,20 @@ namespace GameEngine
         private IDictionary<string, IList<IReplicateDispatch>> _replicateListenersForTag;
 
         /// <summary>
+        /// 同步分发数据的缓冲管理队列
+        /// </summary>
+        private Queue<ReplicateData> _replicateBuffers;
+
+        /// <summary>
         /// 数据同步管理对象初始化通知接口函数
         /// </summary>
         protected override sealed void OnInitialize()
         {
             // 初始化监听列表
             _replicateListenersForTag = new Dictionary<string, IList<IReplicateDispatch>>();
+
+            // 初始化同步数据缓冲队列
+            _replicateBuffers = new Queue<ReplicateData>();
         }
 
         /// <summary>
@@ -54,6 +62,10 @@ namespace GameEngine
         /// </summary>
         protected override sealed void OnCleanup()
         {
+            // 清理同步数据缓冲队列
+            _replicateBuffers.Clear();
+            _replicateBuffers = null;
+
             // 清理监听列表
             _replicateListenersForTag.Clear();
             _replicateListenersForTag = null;
@@ -64,6 +76,17 @@ namespace GameEngine
         /// </summary>
         protected override sealed void OnUpdate()
         {
+            if (_replicateBuffers.Count > 0)
+            {
+                Queue<ReplicateData> queue = new Queue<ReplicateData>(_replicateBuffers);
+                _replicateBuffers.Clear();
+
+                while (queue.Count > 0)
+                {
+                    ReplicateData replicateData = queue.Dequeue();
+                    // OnReplicateDispatched(replicateData);
+                }
+            }
         }
 
         /// <summary>

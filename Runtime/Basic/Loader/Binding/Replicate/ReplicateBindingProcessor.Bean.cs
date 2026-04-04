@@ -51,12 +51,12 @@ namespace GameEngine
 
             if (reload)
             {
-                Instance.RemoveReplicateObjectInfo(replicateCodeInfo.ClassType);
+                Instance.UnregisterReplicateObject(replicateCodeInfo.ClassType);
             }
 
             if (false == string.IsNullOrEmpty(replicateCodeInfo.DataLabel))
             {
-                Instance.AddReplicateClassInfo(replicateCodeInfo.DataLabel, replicateCodeInfo.ClassType);
+                Instance.RegisterReplicateObject(replicateCodeInfo.ClassType, replicateCodeInfo.DataLabel);
             }
 
             if (replicateCodeInfo.GetMemberCount() > 0)
@@ -64,9 +64,9 @@ namespace GameEngine
                 for (int i = 0; i < replicateCodeInfo.GetMemberCount(); i++)
                 {
                     Loader.Structuring.ReplicateBeanMemberCodeInfo memberCodeInfo = replicateCodeInfo.GetMember(i);
-                    Debugger.Assert(!memberCodeInfo.IsProperty, "Only supported field member!");
+                    // Debugger.Assert(!memberCodeInfo.IsProperty, "Only supported field member!");
 
-                    Instance.AddReplicateFieldInfo(memberCodeInfo.DataLabel, replicateCodeInfo.ClassType, memberCodeInfo.MemberName);
+                    Instance.RegisterReplicateMember(replicateCodeInfo.ClassType, memberCodeInfo.MemberName, memberCodeInfo.DataLabel);
                 }
             }
         }
@@ -78,7 +78,7 @@ namespace GameEngine
         [OnReplicateBeanUnregisterClassOfTarget(typeof(ReplicateConfigureAttribute))]
         private static void UnloadAllBeanBindCodeTypes()
         {
-            Instance.RemoveAllReplicateObjectInfos();
+            Instance.UnregisterAllReplicateInfos();
         }
     }
 }

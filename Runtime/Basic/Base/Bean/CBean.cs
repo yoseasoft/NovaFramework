@@ -75,6 +75,11 @@ namespace GameEngine
         public object UserData { get { return _userData; } protected internal set { _userData = value; } }
 
         /// <summary>
+        /// 获取实体对象的调度序列类型
+        /// </summary>
+        public abstract SchedulingSequenceType SequenceType { get; }
+
+        /// <summary>
         /// 获取实体对象对应的符号对象实例
         /// </summary>
         public Loader.Symbolling.SymClass Symbol

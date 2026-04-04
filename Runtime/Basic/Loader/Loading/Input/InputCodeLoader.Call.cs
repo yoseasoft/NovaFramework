@@ -49,8 +49,13 @@ namespace GameEngine.Loader
             {
                 Symbolling.SymMethod symMethod = symMethods[n];
 
+                if (false == symMethod.IsStatic || symMethod.IsExtension)
+                {
+                    continue;
+                }
+
                 // 检查函数格式是否合法
-                if (false == symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCall(symMethod.MethodInfo))
+                if (false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCall(symMethod.MethodInfo))
                 {
                     Debugger.Info(LogGroupTag.CodeLoader, "The input call method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     continue;

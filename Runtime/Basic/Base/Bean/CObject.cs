@@ -29,17 +29,22 @@ using System.Collections.Generic;
 namespace GameEngine
 {
     /// <summary>
-    /// 基础对象抽象类，对场景中的基础对象上下文进行封装及调度管理
+    /// 通用对象抽象类，对场景中的通用对象上下文进行封装及调度管理
     /// </summary>
     public abstract class CObject : CRef, IBeanLifecycle
     {
         /// <summary>
-        /// 基础对象等待销毁状态标识
+        /// 获取通用对象的调度序列类型
+        /// </summary>
+        public override sealed SchedulingSequenceType SequenceType => SchedulingSequenceType.Object;
+
+        /// <summary>
+        /// 通用对象等待销毁状态标识
         /// </summary>
         private bool _isOnWaitingDestroy = false;
 
         /// <summary>
-        /// 节点初始化通知接口函数
+        /// 通用对象初始化通知接口函数
         /// </summary>
         public override sealed void Initialize()
         {
@@ -49,12 +54,12 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基础对象内部初始化通知接口函数
+        /// 通用对象内部初始化通知接口函数
         /// </summary>
         protected virtual void OnInitialize() { }
 
         /// <summary>
-        /// 基础对象清理通知接口函数
+        /// 通用对象清理通知接口函数
         /// </summary>
         public override sealed void Cleanup()
         {
@@ -64,12 +69,12 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基础对象内部清理通知接口函数
+        /// 通用对象内部清理通知接口函数
         /// </summary>
         protected virtual void OnCleanup() { }
 
         /// <summary>
-        /// 基础对象启动通知接口函数
+        /// 通用对象启动通知接口函数
         /// </summary>
         public override sealed void Startup()
         {
@@ -79,12 +84,12 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基础对象内部启动通知接口函数
+        /// 通用对象内部启动通知接口函数
         /// </summary>
         protected virtual void OnStartup() { }
 
         /// <summary>
-        /// 基础对象关闭通知接口函数
+        /// 通用对象关闭通知接口函数
         /// </summary>
         public override sealed void Shutdown()
         {
@@ -94,12 +99,12 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基础对象内部关闭通知接口函数
+        /// 通用对象内部关闭通知接口函数
         /// </summary>
         protected virtual void OnShutdown() { }
 
         /// <summary>
-        /// 基础对象执行通知接口函数
+        /// 通用对象执行通知接口函数
         /// </summary>
         public override sealed void Execute()
         {
@@ -107,12 +112,12 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基础对象内部执行通知接口函数
+        /// 通用对象内部执行通知接口函数
         /// </summary>
         protected virtual void OnExecute() { }
 
         /// <summary>
-        /// 基础对象后置执行通知接口函数
+        /// 通用对象后置执行通知接口函数
         /// </summary>
         public override sealed void LateExecute()
         {
@@ -120,12 +125,12 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基础对象内部后置执行通知接口函数
+        /// 通用对象内部后置执行通知接口函数
         /// </summary>
         protected virtual void OnLateExecute() { }
 
         /// <summary>
-        /// 基础对象刷新通知接口函数
+        /// 通用对象刷新通知接口函数
         /// </summary>
         public override sealed void Update()
         {
@@ -133,12 +138,12 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基础对象内部刷新通知接口函数
+        /// 通用对象内部刷新通知接口函数
         /// </summary>
         protected virtual void OnUpdate() { }
 
         /// <summary>
-        /// 基础对象后置刷新通知接口函数
+        /// 通用对象后置刷新通知接口函数
         /// </summary>
         public override sealed void LateUpdate()
         {
@@ -146,12 +151,12 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基础对象内部后置刷新通知接口函数
+        /// 通用对象内部后置刷新通知接口函数
         /// </summary>
         protected virtual void OnLateUpdate() { }
 
         /// <summary>
-        /// 基础对象唤醒通知函数接口
+        /// 通用对象唤醒通知函数接口
         /// </summary>
         public void Awake()
         {
@@ -159,24 +164,24 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基础对象内部唤醒通知接口函数
+        /// 通用对象内部唤醒通知接口函数
         /// </summary>
         protected virtual void OnAwake() { }
 
         /// <summary>
-        /// 基础对象开始通知函数接口
+        /// 通用对象开始通知函数接口
         /// </summary>
         public void Start()
         {
         }
 
         /// <summary>
-        /// 基础对象内部开始通知接口函数
+        /// 通用对象内部开始通知接口函数
         /// </summary>
         protected virtual void OnStart() { }
 
         /// <summary>
-        /// 基础对象销毁通知函数接口
+        /// 通用对象销毁通知函数接口
         /// </summary>
         public void Destroy()
         {
@@ -186,13 +191,13 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基础对象内部销毁通知接口函数
+        /// 通用对象内部销毁通知接口函数
         /// </summary>
         protected virtual void OnDestroy() { }
 
         /// <summary>
-        /// 标记当前基础对象此刻为待销毁状态<br/>
-        /// 待销毁状态一旦设定便不可更改，只能等待系统删除回收此基础对象实例
+        /// 标记当前通用对象此刻为待销毁状态<br/>
+        /// 待销毁状态一旦设定便不可更改，只能等待系统删除回收此通用对象实例
         /// </summary>
         public void OnPrepareToDestroy()
         {

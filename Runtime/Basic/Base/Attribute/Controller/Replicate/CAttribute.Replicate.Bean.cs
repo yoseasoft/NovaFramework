@@ -30,7 +30,7 @@ namespace GameEngine
     /// 数据同步的目标实体对象启用标记的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public abstract class CReplicateDataCellAttribute : Attribute
+    public abstract class CReplicateDataConfigurationAttribute : Attribute
     {
         /// <summary>
         /// 同步数据的关联标签
@@ -42,9 +42,9 @@ namespace GameEngine
         /// </summary>
         public string Tag => _tag;
 
-        protected CReplicateDataCellAttribute() : this(null) { }
+        protected CReplicateDataConfigurationAttribute() : this(null) { }
 
-        protected CReplicateDataCellAttribute(string tag) : base()
+        protected CReplicateDataConfigurationAttribute(string tag) : base()
         {
             _tag = tag;
         }
@@ -54,43 +54,43 @@ namespace GameEngine
     /// 数据同步的目标对象类型启用标记的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class CReplicateObjectAttribute : CReplicateDataCellAttribute
+    public class CReplicateObjectConfigurationAttribute : CReplicateDataConfigurationAttribute
     {
-        public CReplicateObjectAttribute() : base() { }
+        public CReplicateObjectConfigurationAttribute() : base() { }
 
-        public CReplicateObjectAttribute(string tag) : base(tag) { }
+        public CReplicateObjectConfigurationAttribute(string tag) : base(tag) { }
     }
 
     /// <summary>
     /// 数据同步的目标实体对象唯一标识的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class CReplicateIdAttribute : CReplicateDataCellAttribute
+    public class CReplicateIdConfigurationAttribute : CReplicateDataConfigurationAttribute
     {
-        public CReplicateIdAttribute() : base() { }
+        public CReplicateIdConfigurationAttribute() : base() { }
 
-        public CReplicateIdAttribute(string tag) : base(tag) { }
+        public CReplicateIdConfigurationAttribute(string tag) : base(tag) { }
     }
 
     /// <summary>
     /// 数据同步的目标对象字段启用标记的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
-    public class CReplicateFieldAttribute : CReplicateDataCellAttribute
+    public class CReplicateFieldConfigurationAttribute : CReplicateDataConfigurationAttribute
     {
-        public CReplicateFieldAttribute() : base() { }
+        public CReplicateFieldConfigurationAttribute() : base() { }
 
-        public CReplicateFieldAttribute(string tag) : base(tag) { }
+        public CReplicateFieldConfigurationAttribute(string tag) : base(tag) { }
     }
 
     /// <summary>
     /// 数据同步的目标对象属性启用标记的属性类型定义
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class CReplicatePropertyAttribute : CReplicateDataCellAttribute
+    public class CReplicatePropertyConfigurationAttribute : CReplicateDataConfigurationAttribute
     {
-        public CReplicatePropertyAttribute() : base() { }
+        public CReplicatePropertyConfigurationAttribute() : base() { }
 
-        public CReplicatePropertyAttribute(string tag) : base(tag) { }
+        public CReplicatePropertyConfigurationAttribute(string tag) : base(tag) { }
     }
 }

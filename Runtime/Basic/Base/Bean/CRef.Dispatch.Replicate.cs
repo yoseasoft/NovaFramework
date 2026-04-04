@@ -62,7 +62,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="tags">数据标签</param>
         /// <param name="announceType">数据播报类型</param>
-        public void PostToSelf(string tags, ReplicateAnnounceType announceType)
+        public void SendToSelf(string tags, ReplicateAnnounceType announceType)
         {
             OnReplicateDispatchForTag(tags, announceType);
         }

@@ -54,10 +54,10 @@ namespace GameEngine.Loader
             for (int n = 0; null != attrs && n < attrs.Count; ++n)
             {
                 Attribute attr = attrs[n];
-                if (attr is CReplicateObjectAttribute replicateClassAttribute)
+                if (attr is CReplicateObjectConfigurationAttribute replicateObjectConfigurationAttribute)
                 {
                     // 若未配置名称，则默认使用类名小写作为标签
-                    info.DataLabel = replicateClassAttribute.Tag ?? symClass.ClassName.ToLower();
+                    info.DataLabel = replicateObjectConfigurationAttribute.Tag ?? symClass.ClassName.ToLower();
                 }
             }
 
@@ -73,8 +73,8 @@ namespace GameEngine.Loader
             {
                 Symbolling.SymField field = fields[n];
 
-                CReplicateFieldAttribute replicateFieldAttribute = field.GetAttribute<CReplicateFieldAttribute>(true);
-                if (null != replicateFieldAttribute)
+                CReplicateFieldConfigurationAttribute replicateFieldConfigurationAttribute = field.GetAttribute<CReplicateFieldConfigurationAttribute>(true);
+                if (null != replicateFieldConfigurationAttribute)
                 {
                     info.AddMember(new Structuring.ReplicateBeanMemberCodeInfo()
                     {
@@ -82,7 +82,7 @@ namespace GameEngine.Loader
                         MemberName = field.FieldName,
                         IsProperty = false,
                         // 若未配置名称，则默认使用字段名小写作为标签
-                        DataLabel = replicateFieldAttribute.Tag ?? field.FieldName.ToLower(),
+                        DataLabel = replicateFieldConfigurationAttribute.Tag ?? field.FieldName.ToLower(),
                     });
                 }
             }
@@ -92,8 +92,8 @@ namespace GameEngine.Loader
             {
                 Symbolling.SymProperty property = properties[n];
 
-                CReplicatePropertyAttribute replicatePropertyAttribute = property.GetAttribute<CReplicatePropertyAttribute>(true);
-                if (null != replicatePropertyAttribute)
+                CReplicatePropertyConfigurationAttribute replicatePropertyConfigurationAttribute = property.GetAttribute<CReplicatePropertyConfigurationAttribute>(true);
+                if (null != replicatePropertyConfigurationAttribute)
                 {
                     info.AddMember(new Structuring.ReplicateBeanMemberCodeInfo()
                     {
@@ -101,7 +101,7 @@ namespace GameEngine.Loader
                         MemberName = property.PropertyName,
                         IsProperty = true,
                         // 若未配置名称，则默认使用属性名小写作为标签
-                        DataLabel = replicatePropertyAttribute.Tag ?? property.PropertyName.ToLower(),
+                        DataLabel = replicatePropertyConfigurationAttribute.Tag ?? property.PropertyName.ToLower(),
                     });
                 }
             }

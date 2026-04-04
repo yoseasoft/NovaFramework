@@ -75,6 +75,11 @@ namespace GameEngine
         public static GuiHandler GuiHandler => GuiHandler.Instance;
 
         /// <summary>
+        /// 获取视图对象的调度序列类型
+        /// </summary>
+        public override sealed SchedulingSequenceType SequenceType => SchedulingSequenceType.View;
+
+        /// <summary>
         /// 获取视图对象的名称
         /// </summary>
         public override sealed string DeclareClassName => GuiHandler.GetViewNameForType(BeanType);

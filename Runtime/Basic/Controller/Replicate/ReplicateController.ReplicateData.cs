@@ -1,7 +1,8 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -24,78 +25,60 @@
 
 namespace GameEngine
 {
-    /// 事件管理对象类
-    internal partial class EventController
+    /// 数据同步管理对象类
+    internal sealed partial class ReplicateController
     {
         /// <summary>
-        /// 事件的数据存储对象类，用于临时存放事件的参数列表
+        /// 同步的数据存储对象类，用于临时存放同步数据的标签
         /// </summary>
-        private class EventData : NovaEngine.IReference
+        private class ReplicateData : NovaEngine.IReference
         {
             /// <summary>
-            /// 事件对象唯一标识
+            /// 数据对象的标签
             /// </summary>
-            private int _eventID;
+            private string _tags;
             /// <summary>
-            /// 事件处理参数列表
+            /// 数据标签的播报类型
             /// </summary>
-            private object[] _params;
-            /// <summary>
-            /// 事件数据对象实例
-            /// </summary>
-            private object _eventObject;
+            private ReplicateAnnounceType _announceType;
 
-            public int EventID => _eventID;
-            public object[] Params => _params;
-            public object EventObject => _eventObject;
+            public string Tags => _tags;
+            public ReplicateAnnounceType AnnounceType => _announceType;
 
             /// <summary>
-            /// 事件数据对象的构造函数
+            /// 同步数据对象的构造函数
             /// </summary>
-            public EventData()
+            public ReplicateData()
             {
-                _eventID = 0;
-                _params = null;
-                _eventObject = null;
+                _tags = null;
+                _announceType = ReplicateAnnounceType.None;
             }
 
             /// <summary>
-            /// 事件数据对象的构造函数
+            /// 同步数据对象的构造函数
             /// </summary>
-            /// <param name="_eventID">事件唯一标识</param>
-            /// <param name="_params">事件参数列表</param>
-            public EventData(int _eventID, params object[] _params)
+            /// <param name="tags">数据标签</param>
+            /// <param name="announceType">数据播报类型</param>
+            public ReplicateData(string tags, ReplicateAnnounceType announceType)
             {
-                this._eventID = _eventID;
-                this._params = _params;
+                this._tags = tags;
+                this._announceType = announceType;
             }
 
             /// <summary>
-            /// 事件数据对象的构造函数
-            /// </summary>
-            /// <param name="obj">事件数据</param>
-            public EventData(object obj)
-            {
-                _eventID = 0;
-                _params = null;
-                _eventObject = obj;
-            }
-
-            /// <summary>
-            /// 事件数据对象初始化函数接口
+            /// 同步数据对象初始化函数接口
             /// </summary>
             public void Initialize()
             {
             }
 
             /// <summary>
-            /// 事件数据对象清理函数接口
+            /// 同步数据对象清理函数接口
             /// </summary>
             public void Cleanup()
             {
-                _eventID = 0;
-                _params = null;
-                _eventObject = null;
+                _tags = null;
+                _announceType = ReplicateAnnounceType.None;
             }
         }
     }
