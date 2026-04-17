@@ -228,7 +228,7 @@ namespace GameEngine
         /// <summary>
         /// 同步加载原始流式文件(直接读取persistentDataPath中的文件, 然后可根据文件保存路径(RawFile.savePath)读取文件, 使用同步加载前需已保证文件更新)
         /// </summary>
-        /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
+        /// <param name="url">文件原打包路径('%RAW_RESOURCE_PATH%/...', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
         public GooAsset.RawFile LoadRawFile(string url)
         {
             return ResourceModule.LoadRawFile(url);
@@ -237,7 +237,7 @@ namespace GameEngine
         /// <summary>
         /// 异步加载原始流式文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
         /// </summary>
-        /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
+        /// <param name="url">文件原打包路径('%RAW_RESOURCE_PATH%/...', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
         public GooAsset.RawFile AsyncLoadRawFile(string url, Action<GooAsset.RawFile> completed)
         {
             return ResourceModule.AsyncLoadRawFile(url, completed);
@@ -246,7 +246,7 @@ namespace GameEngine
         /// <summary>
         /// 异步加载原始流式文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
         /// </summary>
-        /// <param name="url">文件原打包路径('%ORIGINAL_RESOURCE_PATH%/......', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
+        /// <param name="url">文件原打包路径('%RAW_RESOURCE_PATH%/...', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
         public async UniTask<GooAsset.RawFile> AsyncLoadRawFile(string url)
         {
             GooAsset.RawFile rawFile = ResourceModule.AsyncLoadRawFile(url);
