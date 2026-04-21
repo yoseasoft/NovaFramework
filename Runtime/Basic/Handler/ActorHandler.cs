@@ -481,17 +481,6 @@ namespace GameEngine
         #region 角色对象实例检索查询相关的操作函数合集
 
         /// <summary>
-        /// 同步实例化对象
-        /// </summary>
-        /// <param name="url">资源地址(名字或路径)</param>
-        public UnityGameObject Instantiate(string url)
-        {
-            return ResourceModule.InstantiateObject(url);
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        /// <summary>
         /// 通过指定的角色类型获取对应角色的名称
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>

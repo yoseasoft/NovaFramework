@@ -58,9 +58,9 @@ namespace GameEngine
         /// 自动注册应用上下文配置的所有热加载模块对象
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AutoRegisterAllHotModulesOfContextConfigure()
+        public static void RegisterAllHotModulesOfContextConfigure()
         {
-            HotModuleManager.AutoRegisterAllHotModulesOfContextConfigure();
+            HotModuleManager.RegisterAllHotModulesOfContextConfigure();
         }
 
         /// <summary>
@@ -89,9 +89,9 @@ namespace GameEngine
         /// 自动注销应用上下文配置的所有热加载模块对象
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AutoUnregisterAllHotModulesOfContextConfigure()
+        public static void UnregisterAllHotModulesOfContextConfigure()
         {
-            HotModuleManager.AutoUnregisterAllHotModulesOfContextConfigure();
+            HotModuleManager.UnregisterAllHotModulesOfContextConfigure();
         }
 
         #endregion

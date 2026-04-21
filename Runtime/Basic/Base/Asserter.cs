@@ -1,9 +1,8 @@
 /// -------------------------------------------------------------------------------
-/// NovaEngine Framework
+/// GameEngine Framework
 ///
-/// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
-/// Copyright (C) 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -24,28 +23,24 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Diagnostics;
+using System;
+using System.Runtime.CompilerServices;
 
-using UnityAssert = UnityEngine.Assertions.Assert;
-
-namespace NovaEngine
+namespace GameEngine
 {
     /// <summary>
-    /// 断言对象工具类，用于引擎内部用例测试时的调试断言提供的操作函数
+    /// 应用层提供的断言对象类，它是基于对<see cref="NovaEngine.CAssert"/>的便捷性接口封装
     /// </summary>
-    public static class CAssert
+    public static class Asserter
     {
         /// <summary>
         /// 检测指定条件是否为TRUE的断言函数
         /// </summary>
         /// <param name="condition">断言条件</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsTrue(bool condition)
         {
-            if (Environment.IsDevelopmentState())
-            {
-                UnityAssert.IsTrue(condition);
-            }
+            NovaEngine.CAssert.IsTrue(condition);
         }
 
         /// <summary>
@@ -53,13 +48,10 @@ namespace NovaEngine
         /// </summary>
         /// <param name="condition">断言条件</param>
         /// <param name="message">消息内容</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsTrue(bool condition, string message)
         {
-            if (Environment.IsDevelopmentState())
-            {
-                UnityAssert.IsTrue(condition, message);
-            }
+            NovaEngine.CAssert.IsTrue(condition, message);
         }
 
         /// <summary>
@@ -68,26 +60,20 @@ namespace NovaEngine
         /// <param name="condition">断言条件</param>
         /// <param name="format">消息格式</param>
         /// <param name="args">消息参数列表</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsTrue(bool condition, string format, params object[] args)
         {
-            if (Environment.IsDevelopmentState())
-            {
-                UnityAssert.IsTrue(condition, Utility.Text.Format(format, args));
-            }
+            NovaEngine.CAssert.IsTrue(condition, format, args);
         }
 
         /// <summary>
         /// 检测指定条件是否为FALSE的断言函数
         /// </summary>
         /// <param name="condition">断言条件</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsFalse(bool condition)
         {
-            if (Environment.IsDevelopmentState())
-            {
-                UnityAssert.IsFalse(condition);
-            }
+            NovaEngine.CAssert.IsFalse(condition);
         }
 
         /// <summary>
@@ -95,13 +81,10 @@ namespace NovaEngine
         /// </summary>
         /// <param name="condition">断言条件</param>
         /// <param name="message">消息内容</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsFalse(bool condition, string message)
         {
-            if (Environment.IsDevelopmentState())
-            {
-                UnityAssert.IsFalse(condition, message);
-            }
+            NovaEngine.CAssert.IsFalse(condition, message);
         }
 
         /// <summary>
@@ -110,13 +93,10 @@ namespace NovaEngine
         /// <param name="condition">断言条件</param>
         /// <param name="format">消息格式</param>
         /// <param name="args">消息参数列表</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsFalse(bool condition, string format, params object[] args)
         {
-            if (Environment.IsDevelopmentState())
-            {
-                UnityAssert.IsFalse(condition, Utility.Text.Format(format, args));
-            }
+            NovaEngine.CAssert.IsFalse(condition, format, args);
         }
 
         /// <summary>
@@ -124,10 +104,10 @@ namespace NovaEngine
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="value">对象实例</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsNull<T>(T value) where T : class
         {
-            UnityAssert.IsNull<T>(value);
+            NovaEngine.CAssert.IsNull(value);
         }
 
         /// <summary>
@@ -136,10 +116,10 @@ namespace NovaEngine
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="value">对象实例</param>
         /// <param name="message">消息内容</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsNull<T>(T value, string message) where T : class
         {
-            UnityAssert.IsNull<T>(value, message);
+            NovaEngine.CAssert.IsNull(value, message);
         }
 
         /// <summary>
@@ -149,10 +129,10 @@ namespace NovaEngine
         /// <param name="value">对象实例</param>
         /// <param name="format">消息格式</param>
         /// <param name="args">消息参数列表</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsNull<T>(T value, string format, params object[] args) where T : class
         {
-            UnityAssert.IsNull<T>(value, Utility.Text.Format(format, args));
+            NovaEngine.CAssert.IsNull(value, format, args);
         }
 
         /// <summary>
@@ -160,10 +140,10 @@ namespace NovaEngine
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="value">对象实例</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsNotNull<T>(T value) where T : class
         {
-            UnityAssert.IsNotNull<T>(value);
+            NovaEngine.CAssert.IsNotNull(value);
         }
 
         /// <summary>
@@ -172,10 +152,10 @@ namespace NovaEngine
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="value">对象实例</param>
         /// <param name="message">消息内容</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsNotNull<T>(T value, string message) where T : class
         {
-            UnityAssert.IsNotNull<T>(value, message);
+            NovaEngine.CAssert.IsNotNull(value, message);
         }
 
         /// <summary>
@@ -185,10 +165,10 @@ namespace NovaEngine
         /// <param name="value">对象实例</param>
         /// <param name="format">消息格式</param>
         /// <param name="args">消息参数列表</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsNotNull<T>(T value, string format, params object[] args) where T : class
         {
-            UnityAssert.IsNotNull<T>(value, Utility.Text.Format(format, args));
+            NovaEngine.CAssert.IsNotNull(value, format, args);
         }
     }
 }

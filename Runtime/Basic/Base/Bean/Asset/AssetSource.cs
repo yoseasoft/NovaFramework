@@ -2,7 +2,8 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
-/// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,55 +26,53 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
-using UnityObject = UnityEngine.Object;
-using UnityTransform = UnityEngine.Transform;
+using NovaFramework.AssetLoader;
+
 using UnityVector3 = UnityEngine.Vector3;
 using UnityQuaternion = UnityEngine.Quaternion;
+using UnityObject = UnityEngine.Object;
+using UnityTransform = UnityEngine.Transform;
 
 namespace GameEngine
 {
     /// <summary>
     /// 对实体对象内部加载的资产进行封装管理的对象类，用于管理指定类型的资产数据
     /// </summary>
-    internal sealed class AssetSource
+    public sealed class AssetSource
     {
         /// <summary>
         /// 资产名称
         /// </summary>
         private readonly string _name;
+
         /// <summary>
-        /// 资产路径
+        /// 资产装载句柄
         /// </summary>
-        private readonly string _url;
-        /// <summary>
-        /// 资产类型
-        /// </summary>
-        private readonly Type _type;
-        /// <summary>
-        /// 原始资产对象（Unity对象）
-        /// </summary>
-        private UnityObject _original;
+        private IAssetHandler _assetHandler;
         /// <summary>
         /// 实例化对象实例
         /// </summary>
-        private IList<UnityObject> _objects;
+        private IList<UnityObject> _gameObjects;
 
         public string Name => _name;
-        public string Url => _url;
-        public Type Type => _type;
-        public UnityObject Original => _original;
+        public string Url => _assetHandler?.Url;
+        public Type Type => _assetHandler?.AssetType;
+        public UnityObject AssetObject => _assetHandler?.AssetObject;
 
-        public AssetSource(string name, string url, Type type, UnityObject obj)
+        public Task Task => _assetHandler?.Task;
+
+        public AssetSource(string name, IAssetHandler assetHandler)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(name), NovaEngine.ErrorText.InvalidArguments);
+            Asserter.IsTrue(name.IsNotNullOrEmpty());
+            Asserter.IsNotNull(assetHandler);
 
             _name = name;
-            _url = url;
-            _type = type;
-            _original = obj;
-            _objects = new List<UnityObject>();
+            _assetHandler = assetHandler;
+            _gameObjects = new List<UnityObject>();
         }
 
         ~AssetSource()
@@ -86,72 +85,110 @@ namespace GameEngine
         /// </summary>
         public void Clear()
         {
-            if (null != _objects)
+            if (null != _gameObjects)
             {
-                for (int n = 0; n < _objects.Count; ++n)
+                for (int n = 0; n < _gameObjects.Count; ++n)
                 {
-                    UnityObject.Destroy(_objects[n]);
+                    UnityObject.Destroy(_gameObjects[n]);
                 }
-                _objects.Clear();
-                _objects = null;
+                _gameObjects.Clear();
+                _gameObjects = null;
             }
 
-            if (null != _original)
+            if (null != _assetHandler)
             {
-                ResourceHandler.Instance.UnloadAsset(_original);
-                _original = null;
+                _assetHandler.Release();
+                _assetHandler = null;
             }
         }
 
         /// <summary>
-        /// 创建场景对象实例
+        /// 创建资源对象实例
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
-        /// <param name="position">位置</param>
-        /// <param name="rotation">旋转</param>
-        /// <returns>返回创建的场景对象实例</returns>
+        /// <returns>返回资源对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T Instantiate<T>(UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
+        public T Instantiate<T>() where T : UnityObject
         {
-            Debugger.Assert(typeof(T) == _type, NovaEngine.ErrorText.InvalidArguments);
-
-            UnityObject obj = UnityObject.Instantiate(_original, position, rotation);
-            _objects.Add(obj);
-            return (T) obj;
+            return InstantiateObjectInternal<T>(false, UnityVector3.zero, UnityQuaternion.identity, null, false);
         }
 
         /// <summary>
-        /// 创建场景对象实例
+        /// 创建资源对象实例
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
-        /// <param name="position">位置</param>
-        /// <param name="rotation">旋转</param>
-        /// <param name="parent">父对象实例</param>
-        /// <returns>返回创建的场景对象实例</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T Instantiate<T>(UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
-        {
-            Debugger.Assert(typeof(T) == _type, NovaEngine.ErrorText.InvalidArguments);
-
-            UnityObject obj = UnityObject.Instantiate(_original, position, rotation, parent);
-            _objects.Add(obj);
-            return (T) obj;
-        }
-
-        /// <summary>
-        /// 创建场景对象实例
-        /// </summary>
-        /// <typeparam name="T">对象类型</typeparam>
-        /// <param name="parent">父对象实例</param>
-        /// <returns>返回创建的场景对象实例</returns>
+        /// <param name="parent">父节点对象实例</param>
+        /// <returns>返回资源对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Instantiate<T>(UnityTransform parent) where T : UnityObject
         {
-            Debugger.Assert(typeof(T) == _type, NovaEngine.ErrorText.InvalidArguments);
+            return InstantiateObjectInternal<T>(false, UnityVector3.zero, UnityQuaternion.identity, parent, false);
+        }
 
-            UnityObject obj = UnityObject.Instantiate(_original, parent);
-            _objects.Add(obj);
-            return (T) obj;
+        /// <summary>
+        /// 创建资源对象实例
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="parent">父节点对象实例</param>
+        /// <param name="worldPositionStays">使用世界坐标</param>
+        /// <returns>返回资源对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T Instantiate<T>(UnityTransform parent, bool worldPositionStays) where T : UnityObject
+        {
+            return InstantiateObjectInternal<T>(false, UnityVector3.zero, UnityQuaternion.identity, parent, worldPositionStays);
+        }
+
+        /// <summary>
+        /// 创建资源对象实例
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="position">位置</param>
+        /// <param name="rotation">旋转</param>
+        /// <returns>返回资源对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T Instantiate<T>(UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
+        {
+            return InstantiateObjectInternal<T>(true, position, rotation, null, false);
+        }
+
+        /// <summary>
+        /// 创建资源对象实例
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="position">位置</param>
+        /// <param name="rotation">旋转</param>
+        /// <param name="parent">父节点对象实例</param>
+        /// <returns>返回资源对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T Instantiate<T>(UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
+        {
+            return InstantiateObjectInternal<T>(true, position, rotation, parent, false);
+        }
+
+        private T InstantiateObjectInternal<T>(bool setPositionAndRotation, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent, bool worldPositionStays) where T : UnityObject
+        {
+            Asserter.IsNotNull(AssetObject);
+            Asserter.IsTrue(Type.Is<T>());
+
+            T go;
+            if (setPositionAndRotation)
+            {
+                if (null != parent)
+                    go = UnityObject.Instantiate(AssetObject.As<T>(), position, rotation, parent);
+                else
+                    go = UnityObject.Instantiate(AssetObject.As<T>(), position, rotation);
+            }
+            else
+            {
+                if (null != parent)
+                    go = UnityObject.Instantiate(AssetObject.As<T>(), parent, worldPositionStays);
+                else
+                    go = UnityObject.Instantiate(AssetObject.As<T>());
+            }
+
+            _gameObjects.Add(go);
+
+            return go;
         }
 
         /// <summary>
@@ -162,7 +199,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ContainsObject(UnityObject obj)
         {
-            return _objects.Contains(obj);
+            return _gameObjects.Contains(obj);
         }
 
         /// <summary>
@@ -172,9 +209,9 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DestroyObject(UnityObject obj)
         {
-            Debugger.Assert(_objects.Contains(obj), NovaEngine.ErrorText.InvalidArguments);
+            Asserter.IsTrue(_gameObjects.Contains(obj));
 
-            _objects.Remove(obj);
+            _gameObjects.Remove(obj);
             UnityObject.Destroy(obj);
         }
     }

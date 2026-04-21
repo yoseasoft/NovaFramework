@@ -2,8 +2,8 @@
     "name": "NovaEngine.Basic",
     "rootNamespace": "",
     "references": [
-        "GooAsset",
         "NovaFramework.UniTask",
+        "NovaFramework.AssetLoader",
         "NovaEngine.Library",
         "NovaEngine.Kernel"
     ],

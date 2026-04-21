@@ -5,6 +5,7 @@
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +28,11 @@
 
 using System;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+using UnityEngine.SceneManagement;
+
+using NovaFramework.AssetLoader;
 
 using UnityObject = UnityEngine.Object;
 
@@ -103,122 +108,137 @@ namespace GameEngine
         {
         }
 
-        #region 对象资源加载及卸载操作相关的接口函数
+        #region 场景资源加载及卸载操作相关的接口函数
 
         /// <summary>
-        /// 同步加载资源
+        /// 同步加载场景资源
         /// </summary>
-        /// <param name="url">资源地址(名字或路径)</param>
-        /// <param name="type">资源类型</param>
-        public UnityObject LoadAsset(string url, Type type)
+        /// <param name="url">资源地址</param>
+        /// <returns>返回场景资源句柄实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ISceneHandler LoadSceneSync(string url)
         {
-            return ResourceModule.LoadAsset(url, type);
+            return ResourceModule.LoadSceneSync(url);
         }
 
         /// <summary>
-        /// 异步加载资源
+        /// 同步加载场景资源
         /// </summary>
-        /// <param name="url">资源地址(名字或路径)</param>
-        /// <param name="completed">加载完成回调</param>
-        public GooAsset.Asset AsyncLoadAsset<T>(string url, Action<UnityObject> completed) where T : UnityObject
+        /// <param name="url">资源地址</param>
+        /// <param name="sceneMode">场景加载模式</param>
+        /// <param name="physicsMode">场景物理模式</param>
+        /// <returns>返回场景资源句柄实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ISceneHandler LoadSceneSync(string url, LoadSceneMode sceneMode, LocalPhysicsMode physicsMode)
         {
-            return ResourceModule.AsyncLoadAsset(url, typeof(T), completed);
+            return ResourceModule.LoadSceneSync(url, sceneMode, physicsMode);
         }
 
         /// <summary>
-        /// 异步加载资源
+        /// 异步加载场景资源
         /// </summary>
-        /// <param name="url">资源地址(名字或路径)</param>
-        public async UniTask<T> AsyncLoadAsset<T>(string url) where T : UnityObject
+        /// <param name="url">资源地址</param>
+        /// <returns>返回场景资源句柄实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ISceneHandler LoadSceneAsync(string url)
         {
-            return (T) await AsyncLoadAsset(url, typeof(T));
+            return ResourceModule.LoadSceneAsync(url);
         }
 
         /// <summary>
-        /// 异步加载资源
+        /// 异步加载场景资源
         /// </summary>
-        /// <param name="url">资源地址(名字或路径)</param>
-        /// <param name="type">资源类型</param>
-        public async UniTask<UnityObject> AsyncLoadAsset(string url, Type type)
+        /// <param name="url">资源地址</param>
+        /// <param name="sceneMode">场景加载模式</param>
+        /// <param name="physicsMode">场景物理模式</param>
+        /// <returns>返回场景资源句柄实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ISceneHandler LoadSceneAsync(string url, LoadSceneMode sceneMode, LocalPhysicsMode physicsMode)
         {
-            GooAsset.Asset asset = ResourceModule.AsyncLoadAsset(url, type);
-            if (asset is null)
-                return null;
-
-            await asset.Task;
-            return asset.result;
-        }
-
-        /// <summary>
-        /// 释放资源(加载完成或加载中都可以使用此接口释放资源)
-        /// </summary>
-        /// <param name="asset">资源对象</param>
-        public void UnloadAsset(GooAsset.Asset asset)
-        {
-            ResourceModule.UnloadAsset(asset);
-        }
-
-        /// <summary>
-        /// 释放已加载的资源
-        /// </summary>
-        /// <param name="obj">Unity对象</param>
-        public void UnloadAsset(UnityObject obj)
-        {
-            ResourceModule.UnloadAsset(obj);
-        }
-
-        /// <summary>
-        /// 清理所有资源
-        /// </summary>
-        public void RemoveAllAssets()
-        {
-            ResourceModule.RemoveAllAssets();
+            return ResourceModule.LoadSceneAsync(url, sceneMode, physicsMode);
         }
 
         #endregion
 
-        #region 场景资源加载及卸载操作相关的接口函数
+        #region 普通资源加载及卸载操作相关的接口函数
 
         /// <summary>
-        /// 同步加载场景
+        /// 同步加载普通资源
         /// </summary>
-        /// <param name="url">资源地址(名字或路径)</param>
-        /// <param name="isAdditive">是否使用叠加方式加载</param>
-        public GooAsset.Scene LoadScene(string url, bool isAdditive = false)
+        /// <param name="url">资源地址</param>
+        /// <returns>返回普通资源句柄实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IAssetHandler LoadAssetSync(string url)
         {
-            return ResourceModule.LoadScene(url, isAdditive);
+            return ResourceModule.LoadAssetSync(url);
         }
 
         /// <summary>
-        /// 异步加载场景(回调)
+        /// 同步加载普通资源
         /// </summary>
-        /// <param name="url">资源地址(名字或路径)</param>
-        /// <param name="isAdditive">是否使用叠加方式加载</param>
-        /// <param name="completed">加载完成回调</param>
-        public GooAsset.Scene AsyncLoadScene(string url, bool isAdditive, Action<GooAsset.Scene> completed)
+        /// <typeparam name="T">资源类型</typeparam>
+        /// <param name="url">资源地址</param>
+        /// <returns>返回普通资源句柄实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IAssetHandler LoadAssetSync<T>(string url) where T : UnityObject
         {
-            return ResourceModule.AsyncLoadScene(url, isAdditive, completed);
+            return ResourceModule.LoadAssetSync<T>(url);
         }
 
         /// <summary>
-        /// 异步加载场景
+        /// 同步加载普通资源
         /// </summary>
-        /// <param name="url">资源地址(名字或路径)</param>
-        /// <param name="isAdditive">是否使用叠加方式加载</param>
-        public async UniTask<GooAsset.Scene> AsyncLoadScene(string url, bool isAdditive = false)
+        /// <param name="url">资源地址</param>
+        /// <param name="type">资源类型</param>
+        /// <returns>返回普通资源句柄实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IAssetHandler LoadAssetSync(string url, Type type)
         {
-            GooAsset.Scene scene = ResourceModule.AsyncLoadScene(url, isAdditive);
-            await scene.Task;
-            return scene;
+            return ResourceModule.LoadAssetSync(url, type);
         }
 
         /// <summary>
-        /// 卸载场景
+        /// 异步加载普通资源
         /// </summary>
-        /// <param name="scene">场景对象</param>
-        public void UnloadScene(GooAsset.Scene scene)
+        /// <param name="url">资源地址</param>
+        /// <returns>返回普通资源句柄实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IAssetHandler LoadAssetAsync(string url)
         {
-            ResourceModule.UnloadScene(scene);
+            return ResourceModule.LoadAssetAsync(url);
+        }
+
+        /// <summary>
+        /// 异步加载普通资源
+        /// </summary>
+        /// <typeparam name="T">资源类型</typeparam>
+        /// <param name="url">资源地址</param>
+        /// <returns>返回普通资源句柄实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IAssetHandler LoadAssetAsync<T>(string url) where T : UnityObject
+        {
+            return ResourceModule.LoadAssetAsync<T>(url);
+        }
+
+        /// <summary>
+        /// 异步加载普通资源
+        /// </summary>
+        /// <param name="url">资源地址</param>
+        /// <param name="type">资源类型</param>
+        /// <returns>返回普通资源句柄实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IAssetHandler LoadAssetAsync(string url, Type type)
+        {
+            return ResourceModule.LoadAssetAsync(url, type);
+        }
+
+        /// <summary>
+        /// 释放当前加载的所有普通资源对象实例
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void UnloadAllAssets()
+        {
+            ResourceModule.UnloadAllAssets();
         }
 
         #endregion
@@ -226,44 +246,27 @@ namespace GameEngine
         # region 原始文件资源加载及卸载操作相关的接口函数
 
         /// <summary>
-        /// 同步加载原始流式文件(直接读取persistentDataPath中的文件, 然后可根据文件保存路径(RawFile.savePath)读取文件, 使用同步加载前需已保证文件更新)
+        /// 同步加载原始文件资源
         /// </summary>
-        /// <param name="url">文件原打包路径('%RAW_RESOURCE_PATH%/...', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
-        public GooAsset.RawFile LoadRawFile(string url)
+        /// <param name="url">资源路径</param>
+        /// <returns>返回原始文件资源句柄实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IRawFileHandler LoadRawFileSync(string url)
         {
-            return ResourceModule.LoadRawFile(url);
+            return ResourceModule.LoadRawFileSync(url);
         }
 
         /// <summary>
-        /// 异步加载原始流式文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
+        /// 异步加载原始文件资源
         /// </summary>
-        /// <param name="url">文件原打包路径('%RAW_RESOURCE_PATH%/...', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
-        public GooAsset.RawFile AsyncLoadRawFile(string url, Action<GooAsset.RawFile> completed)
+        /// <param name="url">资源路径</param>
+        /// <returns>返回原始文件资源句柄实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IRawFileHandler LoadRawFileAsync(string url)
         {
-            return ResourceModule.AsyncLoadRawFile(url, completed);
-        }
-
-        /// <summary>
-        /// 异步加载原始流式文件(将所需的文件下载到persistentDataPath中, 完成后可根据文件保存路径(RawFile.savePath)读取文件)
-        /// </summary>
-        /// <param name="url">文件原打包路径('%RAW_RESOURCE_PATH%/...', 若为Assets外部文件则为:'Assets文件夹同级目录/...'或'Assets文件夹同级文件')</param>
-        public async UniTask<GooAsset.RawFile> AsyncLoadRawFile(string url)
-        {
-            GooAsset.RawFile rawFile = ResourceModule.AsyncLoadRawFile(url);
-            await rawFile.Task;
-            return rawFile;
+            return ResourceModule.LoadRawFileAsync(url);
         }
 
         #endregion
-
-        /// <summary>
-        /// 通过指定的标签获取能匹配该标签的所有资源路径信息
-        /// </summary>
-        /// <param name="tag">资源标签</param>
-        /// <returns>返回资源路径列表，若该标签不存在任何信息则返回null</returns>
-        public IList<string> GetAllAssetPathsByTag(string tag)
-        {
-            return ResourceModule.GetAllAssetPathsByTag(tag);
-        }
     }
 }

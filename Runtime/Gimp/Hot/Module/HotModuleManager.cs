@@ -107,9 +107,9 @@ namespace GameEngine
         /// <summary>
         /// 自动注册应用上下文配置的所有热加载模块对象
         /// </summary>
-        public static void AutoRegisterAllHotModulesOfContextConfigure()
+        public static void RegisterAllHotModulesOfContextConfigure()
         {
-            IList<string> packs = Context.Configuring.ModuleConfigureInfo.HotLoadPacks;
+            IReadOnlyList<string> packs = NovaEngine.Configuration.GetAllHotloadAssemblyNames();
             for (int n = 0; null != packs && n < packs.Count; ++n)
             {
                 string packName = packs[n];
@@ -170,9 +170,9 @@ namespace GameEngine
         /// <summary>
         /// 自动注销应用上下文配置的所有热加载模块对象
         /// </summary>
-        public static void AutoUnregisterAllHotModulesOfContextConfigure()
+        public static void UnregisterAllHotModulesOfContextConfigure()
         {
-            IList<string> packs = Context.Configuring.ModuleConfigureInfo.HotLoadPacks;
+            IReadOnlyList<string> packs = NovaEngine.Configuration.GetAllHotloadAssemblyNames();
             for (int n = 0; null != packs && n < packs.Count; ++n)
             {
                 string packName = packs[n];

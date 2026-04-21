@@ -5,6 +5,7 @@
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +31,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 using Cysharp.Threading.Tasks;
+using NovaFramework.AssetLoader;
 
 namespace GameEngine
 {
@@ -249,7 +251,7 @@ namespace GameEngine
 
             if (sceneType == _waitingSceneType)
             {
-                Debugger.Warn("The target scene '{%t}' was already in a waiting state, repeat setted it failed.", sceneType);
+                Debugger.Warn("The target scene '{%t}' was already in a waiting state, repeat setting it failed.", sceneType);
                 return;
             }
 
@@ -362,37 +364,27 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 加载指定名称及路径的场景资源对象实例
+        /// 加载指定名称及路径的场景资源对象实例<br/>
+        /// 需要注意的是，该接口是以异步的方式进行场景资源的加载操作<br/>
+        /// 因此，返回的句柄不能直接获取其内部的场景资源对象，而是需要进行异步等待加载结束后再进行资源对象实例的访问
         /// </summary>
-        /// <param name="assetName">场景资源名称</param>
+        /// <param name="sceneName">场景资源名称</param>
         /// <param name="url">场景资源路径</param>
-        /// <param name="completed">结束回调</param>
+        /// <returns>返回场景资源句柄实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GooAsset.Scene LoadAssetScene(string assetName, string url, Action<GooAsset.Scene> completed = null)
+        public ISceneHandler LoadSceneAssets(string sceneName, string url)
         {
-            return SceneModule.LoadScene(assetName, url, completed);
-        }
-
-        /// <summary>
-        /// 异步加载场景资源
-        /// </summary>
-        /// <param name="assetName">场景资源名称</param>
-        /// <param name="url">场景资源路径</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<GooAsset.Scene> AsyncLoadAssetScene(string assetName, string url)
-        {
-            // string assetName = System.IO.Path.GetFileNameWithoutExtension(assetUrl);
-            return await SceneModule.LoadScene(assetName, url).Task;
+            return SceneModule.LoadScene(sceneName, url);
         }
 
         /// <summary>
         /// 卸载指定名称的场景资源对象实例
         /// </summary>
-        /// <param name="assetName">场景资源名称</param>
+        /// <param name="sceneName">场景资源名称</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void UnloadAssetScene(string assetName)
+        public void UnloadSceneAssets(string sceneName)
         {
-            SceneModule.UnloadScene(assetName);
+            SceneModule.UnloadScene(sceneName);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////

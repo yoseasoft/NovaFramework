@@ -3,6 +3,7 @@
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,12 +26,13 @@
 
 using System;
 using System.Runtime.CompilerServices;
+
 using Cysharp.Threading.Tasks;
 
-using UnityObject = UnityEngine.Object;
-using UnityTransform = UnityEngine.Transform;
 using UnityVector3 = UnityEngine.Vector3;
 using UnityQuaternion = UnityEngine.Quaternion;
+using UnityObject = UnityEngine.Object;
+using UnityTransform = UnityEngine.Transform;
 
 namespace GameEngine
 {
@@ -68,12 +70,37 @@ namespace GameEngine
         /// </summary>
         /// <param name="name">资源名称</param>
         /// <param name="url">资源地址</param>
-        /// <param name="type">资源类型</param>
+        /// <returns>返回对象资源数据实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public UnityObject LoadAsset(string name, string url, Type type)
+        public AssetSource LoadAssetSync(string name, string url)
         {
-            AssetSource assetSource = _assetLoader.LoadAsset(name, url, type);
-            return assetSource.Original;
+            return _assetLoader.LoadSync(name, url);
+        }
+
+        /// <summary>
+        /// 同步加载对象资源
+        /// </summary>
+        /// <typeparam name="T">资源类型</typeparam>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <returns>返回对象资源数据实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AssetSource LoadAssetSync<T>(string name, string url) where T : UnityObject
+        {
+            return _assetLoader.LoadSync<T>(name, url);
+        }
+
+        /// <summary>
+        /// 同步加载对象资源
+        /// </summary>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <param name="type">资源类型</param>
+        /// <returns>返回对象资源数据实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AssetSource LoadAssetSync(string name, string url, Type type)
+        {
+            return _assetLoader.LoadSync(name, url, type);
         }
 
         /// <summary>
@@ -81,11 +108,37 @@ namespace GameEngine
         /// </summary>
         /// <param name="name">资源名称</param>
         /// <param name="url">资源地址</param>
+        /// <returns>返回对象资源数据实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<T> AsyncLoadAsset<T>(string name, string url) where T : UnityObject
+        public AssetSource LoadAssetAsync(string name, string url)
         {
-            AssetSource assetSource = await _assetLoader.AsyncLoadAsset<T>(name, url);
-            return assetSource.Original as T;
+            return _assetLoader.LoadAsync(name, url);
+        }
+
+        /// <summary>
+        /// 异步加载对象资源
+        /// </summary>
+        /// <typeparam name="T">资源类型</typeparam>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <returns>返回对象资源数据实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AssetSource LoadAssetAsync<T>(string name, string url) where T : UnityObject
+        {
+            return _assetLoader.LoadAsync<T>(name, url);
+        }
+
+        /// <summary>
+        /// 异步加载对象资源
+        /// </summary>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <param name="type">资源类型</param>
+        /// <returns>返回对象资源数据实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AssetSource LoadAssetAsync(string name, string url, Type type)
+        {
+            return _assetLoader.LoadAsync(name, url, type);
         }
 
         /// <summary>
@@ -95,7 +148,49 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void UnloadAsset(string name)
         {
-            _assetLoader.UnloadAsset(name);
+            _assetLoader.Unload(name);
+        }
+
+        /// <summary>
+        /// 指定资源对象的实例化函数
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <returns>返回实例化的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T InstantiateSync<T>(string name, string url) where T : UnityObject
+        {
+            return _assetLoader.InstantiateSync<T>(name, url);
+        }
+
+        /// <summary>
+        /// 指定资源对象的实例化函数
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <param name="parent">父对象实例</param>
+        /// <returns>返回实例化的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T InstantiateSync<T>(string name, string url, UnityTransform parent) where T : UnityObject
+        {
+            return _assetLoader.InstantiateSync<T>(name, url, parent);
+        }
+
+        /// <summary>
+        /// 指定资源对象的实例化函数
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <param name="parent">父对象实例</param>
+        /// <param name="worldPositionStays">使用世界坐标</param>
+        /// <returns>返回实例化的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T InstantiateSync<T>(string name, string url, UnityTransform parent, bool worldPositionStays) where T : UnityObject
+        {
+            return _assetLoader.InstantiateSync<T>(name, url, parent);
         }
 
         /// <summary>
@@ -108,9 +203,9 @@ namespace GameEngine
         /// <param name="rotation">旋转</param>
         /// <returns>返回实例化的对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T Instantiate<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
+        public T InstantiateSync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
         {
-            return _assetLoader.Instantiate<T>(name, url, position, rotation);
+            return _assetLoader.InstantiateSync<T>(name, url, position, rotation);
         }
 
         /// <summary>
@@ -124,9 +219,22 @@ namespace GameEngine
         /// <param name="parent">父对象实例</param>
         /// <returns>返回实例化的对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T Instantiate<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
+        public T InstantiateSync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
         {
-            return _assetLoader.Instantiate<T>(name, url, position, rotation, parent);
+            return _assetLoader.InstantiateSync<T>(name, url, position, rotation, parent);
+        }
+
+        /// <summary>
+        /// 指定资源对象的实例化函数
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <returns>返回实例化的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public async UniTask<T> InstantiateAsync<T>(string name, string url) where T : UnityObject
+        {
+            return await _assetLoader.InstantiateAsync<T>(name, url);
         }
 
         /// <summary>
@@ -138,9 +246,24 @@ namespace GameEngine
         /// <param name="parent">父对象实例</param>
         /// <returns>返回实例化的对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T Instantiate<T>(string name, string url, UnityTransform parent) where T : UnityObject
+        public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityTransform parent) where T : UnityObject
         {
-            return _assetLoader.Instantiate<T>(name, url, parent);
+            return await _assetLoader.InstantiateAsync<T>(name, url, parent);
+        }
+
+        /// <summary>
+        /// 指定资源对象的实例化函数
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <param name="parent">父对象实例</param>
+        /// <param name="worldPositionStays">使用世界坐标</param>
+        /// <returns>返回实例化的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityTransform parent, bool worldPositionStays) where T : UnityObject
+        {
+            return await _assetLoader.InstantiateAsync<T>(name, url, parent, worldPositionStays);
         }
 
         /// <summary>
@@ -155,7 +278,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
         {
-            return await _assetLoader.AsyncInstantiate<T>(name, url, position, rotation);
+            return await _assetLoader.InstantiateAsync<T>(name, url, position, rotation);
         }
 
         /// <summary>
@@ -171,21 +294,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
         {
-            return await _assetLoader.AsyncInstantiate<T>(name, url, position, rotation, parent);
-        }
-
-        /// <summary>
-        /// 指定资源对象的实例化函数
-        /// </summary>
-        /// <typeparam name="T">对象类型</typeparam>
-        /// <param name="name">资源名称</param>
-        /// <param name="url">资源地址</param>
-        /// <param name="parent">父对象实例</param>
-        /// <returns>返回实例化的对象实例</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityTransform parent) where T : UnityObject
-        {
-            return await _assetLoader.AsyncInstantiate<T>(name, url, parent);
+            return await _assetLoader.InstantiateAsync<T>(name, url, position, rotation, parent);
         }
 
         /// <summary>

@@ -219,15 +219,6 @@ namespace GameEngine
         protected virtual void OnDestroy()
         { }
 
-        /// <summary>
-        /// 同步实例化对象
-        /// </summary>
-        /// <param name="url">资源地址(名字或路径)</param>
-        public UnityGameObject Instantiate(string url)
-        {
-            return ActorHandler.Instantiate(url);
-        }
-
         #region 角色对象内部组件相关的接口实现函数
 
         /// <summary>

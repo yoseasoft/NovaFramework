@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace NovaEngine
 {
@@ -87,6 +88,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="key">属性键</param>
         /// <returns>若存在对应属性值则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool HasValue(string key)
         {
             return _variables.ContainsKey(key);
@@ -174,12 +176,33 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 获取配置库中可编译的程序集名称
+        /// 获取配置库中所有编译模组的程序集名称
         /// </summary>
         /// <returns>返回对应的程序集名称集合</returns>
-        public static IReadOnlyList<string> GetAllCompilableAssemblyNames()
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IReadOnlyList<string> GetAllCompileAssemblyNames()
         {
             return FindAssemblyNamesByTag(NovaFramework.LibraryTag.Compile);
+        }
+
+        /// <summary>
+        /// 获取配置库中所有重载模组的程序集名称
+        /// </summary>
+        /// <returns>返回对应的程序集名称集合</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IReadOnlyList<string> GetAllHotfixAssemblyNames()
+        {
+            return FindAssemblyNamesByTag(NovaFramework.LibraryTag.Hotfix);
+        }
+
+        /// <summary>
+        /// 获取配置库中所有热插模组的程序集名称
+        /// </summary>
+        /// <returns>返回对应的程序集名称集合</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IReadOnlyList<string> GetAllHotloadAssemblyNames()
+        {
+            return FindAssemblyNamesByTag(NovaFramework.LibraryTag.Hotload);
         }
 
         #endregion

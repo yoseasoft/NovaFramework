@@ -2,10 +2,10 @@
     "name": "NovaEngine.Kernel",
     "rootNamespace": "",
     "references": [
-        "GooAsset",
         "NovaFramework.UniTask",
         "NovaFramework.Common",
         "NovaFramework.Configure",
+        "NovaFramework.AssetLoader",
         "NovaEngine.Library"
     ],
     "includePlatforms": [],

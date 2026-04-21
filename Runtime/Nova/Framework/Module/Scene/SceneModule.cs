@@ -6,6 +6,7 @@
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +31,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 using UnityEngine.SceneManagement;
+using NovaFramework.AssetLoader;
 
 namespace NovaEngine.Module
 {
@@ -46,7 +48,7 @@ namespace NovaEngine.Module
         /// <summary>
         /// 当前加载的场景实例的管理容器
         /// </summary>
-        private IDictionary<string, SceneRecordInfo> _sceneRecordInfos;
+        private IDictionary<string, SceneOperationRecord> _sceneOperationRecords;
 
         /// <summary>
         /// 场景模块事件类型
@@ -64,7 +66,7 @@ namespace NovaEngine.Module
                 Logger.Warn("当前程序启动的初始环境中存在多个场景实例，系统将随机选取一个作为主场景，其它场景实例可能在后期运行过程中被随机移除掉！");
             }
 
-            _sceneRecordInfos = new Dictionary<string, SceneRecordInfo>();
+            _sceneOperationRecords = new Dictionary<string, SceneOperationRecord>();
 
             // 获取main场景，这是项目启动的基础场景组件
             // 若当前已启动了多个场景，则默认选择第一个场景作为主场景
@@ -74,12 +76,12 @@ namespace NovaEngine.Module
             Logger.Assert(scene.IsValid(), "程序运行时自动加载的主场景当前处于无效状态，调度该场景对象实例失败！");
             _mainSceneName = scene.name;
 
-            SceneRecordInfo info = SceneRecordInfo.Create(_mainSceneName);
-            info.Enabled = true;
-            info.Unmovabled = true;
-            info.StateType = SceneRecordInfo.SceneStateType.Complete;
-            info.Scene = scene;
-            _sceneRecordInfos.Add(_mainSceneName, info);
+            SceneOperationRecord rec = SceneOperationRecord.Create(_mainSceneName);
+            rec.Enabled = true;
+            rec.Unmovabled = true;
+            rec.StateType = SceneOperationRecord.SceneStateType.Complete;
+            rec.SceneObject = scene;
+            _sceneOperationRecords.Add(_mainSceneName, rec);
 
             Logger.Info("设置程序的主场景对象实例‘{%s}’成功！", _mainSceneName);
         }
@@ -90,7 +92,7 @@ namespace NovaEngine.Module
         protected override sealed void OnCleanup()
         {
             // 对象清理时清除掉全部场景
-            this.RemoveAllSceneRecordInfos();
+            this.RemoveAllSceneOperationRecords();
         }
 
         /// <summary>
@@ -127,13 +129,13 @@ namespace NovaEngine.Module
         /// </summary>
         protected override sealed void OnUpdate()
         {
-            foreach (KeyValuePair<string, SceneRecordInfo> pair in _sceneRecordInfos)
+            foreach (KeyValuePair<string, SceneOperationRecord> pair in _sceneOperationRecords)
             {
-                SceneRecordInfo info = pair.Value;
-                if (SceneRecordInfo.SceneStateType.Loading == info.StateType)
+                SceneOperationRecord rec = pair.Value;
+                if (SceneOperationRecord.SceneStateType.Loading == rec.StateType)
                 {
-                    GooAsset.Scene assetScene = info.AssetScene;
-                    this.SendEvent((int) ProtocolType.Progressed, "{\"sceneName\":\"" + pair.Key + "\",\"progress\":" + assetScene.Progress + "}");
+                    ISceneHandler sceneHandler = rec.SceneHandler;
+                    this.SendEvent((int) ProtocolType.Progressed, "{\"sceneName\":\"" + pair.Key + "\",\"progress\":" + sceneHandler.LoadingProgress + "}");
                 }
             }
         }
@@ -146,57 +148,63 @@ namespace NovaEngine.Module
         /// 加载指定地址的场景对象实例
         /// </summary>
         /// <param name="sceneName">场景名称</param>
-        /// <param name="sceneAddress">资源地址</param>
-        public GooAsset.Scene LoadScene(string sceneName, string sceneAddress, System.Action<GooAsset.Scene> completed = null)
+        /// <param name="url">资源地址</param>
+        /// <returns>返回场景资源句柄实例</returns>
+        public ISceneHandler LoadScene(string sceneName, string url)
         {
-            SceneRecordInfo info = null;
-            if (_sceneRecordInfos.ContainsKey(sceneName))
+            SceneOperationRecord rec = null;
+            if (_sceneOperationRecords.ContainsKey(sceneName))
             {
-                info = _sceneRecordInfos[sceneName];
+                rec = _sceneOperationRecords[sceneName];
                 // 加载中或加载完成两种情况下均直接返回当前资源数据对象
-                if (SceneRecordInfo.SceneStateType.Loading == info.StateType || SceneRecordInfo.SceneStateType.Complete == info.StateType)
+                if (SceneOperationRecord.SceneStateType.Loading == rec.StateType || SceneOperationRecord.SceneStateType.Complete == rec.StateType)
                 {
-                    return info.AssetScene;
+                    return rec.SceneHandler;
                 }
             }
 
-            if (null != info)
+            if (null != rec)
             {
                 // 状态移除，暂时先直接移除
-                _sceneRecordInfos.Remove(sceneName);
-                info.Destroy();
-                info = null;
+                _sceneOperationRecords.Remove(sceneName);
+                rec.Destroy();
+                rec = null;
             }
 
-            GooAsset.Scene assetScene = GetModule<ResourceModule>().AsyncLoadScene(sceneAddress, true, completed);
-            info = SceneRecordInfo.Create(sceneName);
-            info.StateType = SceneRecordInfo.SceneStateType.Loading;
-            info.AssetScene = assetScene;
-            _sceneRecordInfos.Add(sceneName, info);
+            ISceneHandler sceneHandler = GetModule<ResourceModule>().LoadSceneAsync(url);
+            rec = SceneOperationRecord.Create(sceneName);
+            rec.StateType = SceneOperationRecord.SceneStateType.Loading;
+            rec.SceneHandler = sceneHandler;
+            _sceneOperationRecords.Add(sceneName, rec);
 
-            assetScene.completed += scene =>
+            sceneHandler.Completed += (handler) =>
             {
-                Scene unityScene = SceneManager.GetSceneByName(sceneName);
-                Logger.Assert(unityScene.IsValid(), $"检测到当前世界容器中不存在指定名称为‘{sceneName}’的场景实例，异步加载场景成功后的回调查询操作失败！");
+                // Scene sceneObject = SceneManager.GetSceneByName(sceneName);
+                Scene sceneObject = handler.SceneObject;
+                Logger.Assert(sceneObject.IsValid(), $"检测到当前世界容器中不存在指定名称为‘{sceneName}’的场景实例，异步加载场景成功后的回调查询操作失败！");
 
-                //if (false == unityScene.IsValid())
-                //{
-                //    rec.Enabled = false;
-                //    rec.StateType = SceneRecObject.EStateType.Fault;
-                //    rec.AssetScene = null;
-                //}
+                if (false == sceneObject.IsValid())
+                {
+                    rec.Enabled = false;
+                    rec.StateType = SceneOperationRecord.SceneStateType.Fault;
+                    rec.SceneHandler = null;
 
-                info.Enabled = true;
-                info.StateType = SceneRecordInfo.SceneStateType.Complete;
-                info.Scene = unityScene;
+                    SendEvent((int) ProtocolType.Exception, sceneName);
+                }
+                else
+                {
+                    rec.Enabled = true;
+                    rec.StateType = SceneOperationRecord.SceneStateType.Complete;
+                    rec.SceneObject = sceneObject;
 
-                // 重置激活场景
-                ReactivationScene();
+                    // 重置激活场景
+                    ReactivationScene();
 
-                SendEvent((int) ProtocolType.Loaded, sceneName);
+                    SendEvent((int) ProtocolType.Loaded, sceneName);
+                }
             };
 
-            return assetScene;
+            return sceneHandler;
         }
 
         /// <summary>
@@ -205,28 +213,20 @@ namespace NovaEngine.Module
         /// <param name="sceneName">场景名称</param>
         public void UnloadScene(string sceneName)
         {
-            if (false == _sceneRecordInfos.TryGetValue(sceneName, out SceneRecordInfo info))
+            if (false == _sceneOperationRecords.TryGetValue(sceneName, out SceneOperationRecord rec))
             {
                 Logger.Warn("检测到当前世界容器中不存在指定名称为‘{%s}’的场景实例，卸载场景对象操作失败！", sceneName);
                 return;
             }
 
-            if (info.Unmovabled)
+            if (rec.Unmovabled)
             {
                 Logger.Warn("检测到指定名称为‘{%s}’的场景实例被标识为不可移除状态，卸载场景对象操作失败！", sceneName);
                 return;
             }
 
-            if (SceneRecordInfo.SceneStateType.Complete == info.StateType)
-            {
-                // 2025-06-20:
-                // 为什么新的资源库此处不能使用该代码，是因为在资源管理的场景操作句柄中重复使用了该代码
-                // 因为异步卸载资源可能导致场景中材质的丢失，所以也把该操作和资源异步清理统一处理了
-                // SceneManager.UnloadSceneAsync(sceneName);
-            }
-
-            _sceneRecordInfos.Remove(sceneName);
-            info.Destroy();
+            _sceneOperationRecords.Remove(sceneName);
+            rec.Destroy();
 
             // 重置激活场景
             ReactivationScene();
@@ -235,19 +235,22 @@ namespace NovaEngine.Module
         }
 
         /// <summary>
-        /// 通过场景名称获取对应的场景运行时信息数据对象实例
+        /// 通过场景名称获取对应的场景运行时资源对象实例
         /// </summary>
         /// <param name="sceneName">场景名称</param>
-        /// <returns>返回给定名称对应的场景运行时信息数据对象实例</returns>
+        /// <param name="scene">场景对象实例</param>
+        /// <returns>若查找资源对象实例成功则返回true，否则返回false</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SceneRecordInfo GetSceneRecordInfo(string sceneName)
+        public bool TryGetScene(string sceneName, out Scene scene)
         {
-            if (_sceneRecordInfos.TryGetValue (sceneName, out SceneRecordInfo info))
+            if (_sceneOperationRecords.TryGetValue (sceneName, out SceneOperationRecord rec))
             {
-                return info;
+                scene = rec.SceneObject;
+                return true;
             }
 
-            return null;
+            scene = default;
+            return false;
         }
 
         /// <summary>
@@ -274,13 +277,13 @@ namespace NovaEngine.Module
                 return;
             }
 
-            if (false == _sceneRecordInfos.TryGetValue(sceneName, out SceneRecordInfo info))
+            if (false == _sceneOperationRecords.TryGetValue(sceneName, out SceneOperationRecord rec))
             {
-                Logger.Warn("检测到当前场景容器中不存在名称为‘{0}’的场景实例，激活该场景对象失败！", sceneName);
+                Logger.Warn("检测到当前场景容器中不存在名称为‘{%s}’的场景实例，激活该场景对象失败！", sceneName);
                 return;
             }
 
-            Scene scene = info.Scene;
+            Scene scene = rec.SceneObject;
             SceneManager.SetActiveScene(scene);
         }
 
@@ -288,16 +291,16 @@ namespace NovaEngine.Module
         /// 移除当前模块中激活的全部场景实例
         /// PS.仅有main场景生命周期不受此接口影响
         /// </summary>
-        private void RemoveAllSceneRecordInfos()
+        private void RemoveAllSceneOperationRecords()
         {
             // 记录除主场景以外的其它场景名称
-            IList<string> keys = new List<string>(_sceneRecordInfos.Count);
-            foreach (KeyValuePair<string, SceneRecordInfo> pair in _sceneRecordInfos)
+            IList<string> keys = new List<string>(_sceneOperationRecords.Count);
+            foreach (KeyValuePair<string, SceneOperationRecord> pair in _sceneOperationRecords)
             {
-                SceneRecordInfo info = pair.Value;
-                if (false == info.Unmovabled)
+                SceneOperationRecord rec = pair.Value;
+                if (false == rec.Unmovabled)
                 {
-                    keys.Add(info.Name);
+                    keys.Add(rec.Name);
                 }
             }
 
@@ -312,12 +315,12 @@ namespace NovaEngine.Module
         /// </summary>
         public void ReactivationScene()
         {
-            foreach (KeyValuePair<string, SceneRecordInfo> pair in _sceneRecordInfos)
+            foreach (KeyValuePair<string, SceneOperationRecord> pair in _sceneOperationRecords)
             {
-                SceneRecordInfo info = pair.Value;
-                if (info.Enabled && false == info.Unmovabled && SceneRecordInfo.SceneStateType.Complete == info.StateType)
+                SceneOperationRecord rec = pair.Value;
+                if (rec.Enabled && false == rec.Unmovabled && SceneOperationRecord.SceneStateType.Complete == rec.StateType)
                 {
-                    SetActiveScene(info.Name);
+                    SetActiveScene(rec.Name);
                     return;
                 }
             }

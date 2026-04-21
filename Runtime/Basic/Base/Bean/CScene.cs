@@ -4,6 +4,7 @@
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
 /// Copyright (C) 2022 - 2023, Shanghai Bilibili Technology Co., Ltd.
 /// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +27,8 @@
 
 using System;
 using Cysharp.Threading.Tasks;
+
+using NovaFramework.AssetLoader;
 
 namespace GameEngine
 {
@@ -220,31 +223,21 @@ namespace GameEngine
         /// <summary>
         /// 加载指定名称及路径的场景资源对象实例
         /// </summary>
-        /// <param name="assetName">场景资源名称</param>
-        /// <param name="assetUrl">场景资源路径</param>
-        /// <param name="completed">结束回调</param>
-        public GooAsset.Scene LoadAssetScene(string assetName, string assetUrl, Action<GooAsset.Scene> completed = null)
+        /// <param name="sceneName">场景资源名称</param>
+        /// <param name="url">场景资源路径</param>
+        /// <returns>返回场景资源句柄对象实例</returns>
+        public ISceneHandler LoadSceneAssets(string sceneName, string url)
         {
-            return SceneHandler.LoadAssetScene(assetName, assetUrl, completed);
-        }
-
-        /// <summary>
-        /// 加载场景资源的接口函数
-        /// </summary>
-        /// <param name="assetName">资源名称</param>
-        /// <param name="assetUrl">资源路径</param>
-        public async UniTask<GooAsset.Scene> AsyncLoadAssetScene(string assetName, string assetUrl)
-        {
-            return await SceneHandler.AsyncLoadAssetScene(assetName, assetUrl);
+            return SceneHandler.LoadSceneAssets(sceneName, url);
         }
 
         /// <summary>
         /// 卸载场景资源的接口函数
         /// </summary>
-        /// <param name="assetName">资源名称</param>
-        public void UnloadAssetScene(string assetName)
+        /// <param name="sceneName">资源名称</param>
+        public void UnloadSceneAssets(string sceneName)
         {
-            SceneHandler.UnloadAssetScene(assetName);
+            SceneHandler.UnloadSceneAssets(sceneName);
         }
 
         #region 场景对象功能检测相关接口函数合集

@@ -3,6 +3,7 @@
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +29,12 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Cysharp.Threading.Tasks;
 
-using UnityObject = UnityEngine.Object;
-using UnityTransform = UnityEngine.Transform;
+using NovaFramework.AssetLoader;
+
 using UnityVector3 = UnityEngine.Vector3;
 using UnityQuaternion = UnityEngine.Quaternion;
+using UnityObject = UnityEngine.Object;
+using UnityTransform = UnityEngine.Transform;
 
 namespace GameEngine
 {
@@ -95,24 +98,26 @@ namespace GameEngine
         /// </summary>
         /// <param name="name">资源名称</param>
         /// <param name="url">资源地址</param>
-        /// <param name="type">资源类型</param>
-        public AssetSource LoadAsset(string name, string url, Type type)
+        /// <returns>返回对象资源数据实例</returns>
+        public AssetSource LoadSync(string name, string url)
         {
             if (TryGetAssetSource(name, out AssetSource assetSource))
             {
                 return assetSource;
             }
 
-            UnityObject obj = ResourceHandler.Instance.LoadAsset(url, type);
-            return CacheTargetAssetObject(name, url, type, obj);
+            IAssetHandler assetHandler = ResourceHandler.Instance.LoadAssetSync(url);
+            return TryCacheTargetAssetObject(name, assetHandler);
         }
 
         /// <summary>
-        /// 异步加载对象资源
+        /// 同步加载对象资源
         /// </summary>
+        /// <typeparam name="T">资源类型</typeparam>
         /// <param name="name">资源名称</param>
         /// <param name="url">资源地址</param>
-        public async UniTask<AssetSource> AsyncLoadAsset<T>(string name, string url) where T : UnityObject
+        /// <returns>返回对象资源数据实例</returns>
+        public AssetSource LoadSync<T>(string name, string url) where T : UnityObject
         {
             if (TryGetAssetSource(name, out AssetSource assetSource))
             {
@@ -120,15 +125,89 @@ namespace GameEngine
                 return assetSource;
             }
 
-            T obj = await ResourceHandler.Instance.AsyncLoadAsset<T>(url);
-            return CacheTargetAssetObject(name, url, typeof(T), obj);
+            IAssetHandler assetHandler = ResourceHandler.Instance.LoadAssetSync<T>(url);
+            return TryCacheTargetAssetObject(name, assetHandler);
+        }
+
+        /// <summary>
+        /// 同步加载对象资源
+        /// </summary>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <param name="type">资源类型</param>
+        /// <returns>返回对象资源数据实例</returns>
+        public AssetSource LoadSync(string name, string url, Type type)
+        {
+            if (TryGetAssetSource(name, out AssetSource assetSource))
+            {
+                Debugger.Assert(type == assetSource.Type, NovaEngine.ErrorText.InvalidArguments);
+                return assetSource;
+            }
+
+            IAssetHandler assetHandler = ResourceHandler.Instance.LoadAssetSync(url, type);
+            return TryCacheTargetAssetObject(name, assetHandler);
+        }
+
+        /// <summary>
+        /// 异步加载对象资源
+        /// </summary>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <returns>返回对象资源数据实例</returns>
+        public AssetSource LoadAsync(string name, string url)
+        {
+            if (TryGetAssetSource(name, out AssetSource assetSource))
+            {
+                return assetSource;
+            }
+
+            IAssetHandler assetHandler = ResourceHandler.Instance.LoadAssetAsync(url);
+            return TryCacheTargetAssetObject(name, assetHandler);
+        }
+
+        /// <summary>
+        /// 异步加载对象资源
+        /// </summary>
+        /// <typeparam name="T">资源类型</typeparam>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <returns>返回对象资源数据实例</returns>
+        public AssetSource LoadAsync<T>(string name, string url) where T : UnityObject
+        {
+            if (TryGetAssetSource(name, out AssetSource assetSource))
+            {
+                Debugger.Assert(typeof(T) == assetSource.Type, NovaEngine.ErrorText.InvalidArguments);
+                return assetSource;
+            }
+
+            IAssetHandler assetHandler = ResourceHandler.Instance.LoadAssetAsync<T>(url);
+            return TryCacheTargetAssetObject(name, assetHandler);
+        }
+
+        /// <summary>
+        /// 异步加载对象资源
+        /// </summary>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <param name="type">资源类型</param>
+        /// <returns>返回对象资源数据实例</returns>
+        public AssetSource LoadAsync(string name, string url, Type type)
+        {
+            if (TryGetAssetSource(name, out AssetSource assetSource))
+            {
+                Debugger.Assert(type == assetSource.Type, NovaEngine.ErrorText.InvalidArguments);
+                return assetSource;
+            }
+
+            IAssetHandler assetHandler = ResourceHandler.Instance.LoadAssetAsync(url, type);
+            return TryCacheTargetAssetObject(name, assetHandler);
         }
 
         /// <summary>
         /// 释放已加载的对象资源
         /// </summary>
         /// <param name="name">资源名称</param>
-        public void UnloadAsset(string name)
+        public void Unload(string name)
         {
             if (null == _assetSources) return;
 
@@ -140,55 +219,55 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 指定资源对象的实例化函数
+        /// 同步进行资源对象的实例化函数
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="name">资源名称</param>
         /// <param name="url">资源地址</param>
-        /// <param name="position">位置</param>
-        /// <param name="rotation">旋转</param>
         /// <returns>返回实例化的对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T Instantiate<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
+        public T InstantiateSync<T>(string name, string url) where T : UnityObject
         {
-            AssetSource assetSource = LoadAsset(name, url, typeof(T));
-            return assetSource.Instantiate<T>(position, rotation);
+            AssetSource assetSource = LoadSync<T>(name, url);
+
+            return assetSource.Instantiate<T>();
         }
 
         /// <summary>
-        /// 指定资源对象的实例化函数
+        /// 同步进行资源对象的实例化函数
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="name">资源名称</param>
         /// <param name="url">资源地址</param>
-        /// <param name="position">位置</param>
-        /// <param name="rotation">旋转</param>
-        /// <param name="parent">父对象实例</param>
+        /// <param name="parent">父节点对象</param>
         /// <returns>返回实例化的对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T Instantiate<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
+        public T InstantiateSync<T>(string name, string url, UnityTransform parent) where T : UnityObject
         {
-            AssetSource assetSource = LoadAsset(name, url, typeof(T));
-            return assetSource.Instantiate<T>(position, rotation, parent);
-        }
+            AssetSource assetSource = LoadSync<T>(name, url);
 
-        /// <summary>
-        /// 指定资源对象的实例化函数
-        /// </summary>
-        /// <typeparam name="T">对象类型</typeparam>
-        /// <param name="name">资源名称</param>
-        /// <param name="url">资源地址</param>
-        /// <param name="parent">父对象实例</param>
-        /// <returns>返回实例化的对象实例</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T Instantiate<T>(string name, string url, UnityTransform parent) where T : UnityObject
-        {
-            AssetSource assetSource = LoadAsset(name, url, typeof(T));
             return assetSource.Instantiate<T>(parent);
         }
 
         /// <summary>
-        /// 指定资源对象的实例化函数
+        /// 同步进行资源对象的实例化函数
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <param name="parent">父节点对象</param>
+        /// <param name="worldPositionStays">使用世界坐标</param>
+        /// <returns>返回实例化的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T InstantiateSync<T>(string name, string url, UnityTransform parent, bool worldPositionStays) where T : UnityObject
+        {
+            AssetSource assetSource = LoadSync<T>(name, url);
+
+            return assetSource.Instantiate<T>(parent, worldPositionStays);
+        }
+
+        /// <summary>
+        /// 同步进行资源对象的实例化函数
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="name">资源名称</param>
@@ -197,42 +276,117 @@ namespace GameEngine
         /// <param name="rotation">旋转</param>
         /// <returns>返回实例化的对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<T> AsyncInstantiate<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
+        public T InstantiateSync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
         {
-            AssetSource assetSource = await AsyncLoadAsset<T>(name, url);
+            AssetSource assetSource = LoadSync<T>(name, url);
+
             return assetSource.Instantiate<T>(position, rotation);
         }
 
         /// <summary>
-        /// 指定资源对象的实例化函数
+        /// 同步进行资源对象的实例化函数
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="name">资源名称</param>
         /// <param name="url">资源地址</param>
         /// <param name="position">位置</param>
         /// <param name="rotation">旋转</param>
-        /// <param name="parent">父对象实例</param>
+        /// <param name="parent">父节点对象</param>
         /// <returns>返回实例化的对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<T> AsyncInstantiate<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
+        public T InstantiateSync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
         {
-            AssetSource assetSource = await AsyncLoadAsset<T>(name, url);
+            AssetSource assetSource = LoadSync<T>(name, url);
+
             return assetSource.Instantiate<T>(position, rotation, parent);
         }
 
         /// <summary>
-        /// 指定资源对象的实例化函数
+        /// 异步进行资源对象的实例化函数
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="name">资源名称</param>
         /// <param name="url">资源地址</param>
-        /// <param name="parent">父对象实例</param>
         /// <returns>返回实例化的对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public async UniTask<T> AsyncInstantiate<T>(string name, string url, UnityTransform parent) where T : UnityObject
+        public async UniTask<T> InstantiateAsync<T>(string name, string url) where T : UnityObject
         {
-            AssetSource assetSource = await AsyncLoadAsset<T>(name, url);
+            AssetSource assetSource = LoadAsync<T>(name, url);
+            await assetSource.Task;
+
+            return assetSource.Instantiate<T>();
+        }
+
+        /// <summary>
+        /// 异步进行资源对象的实例化函数
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <param name="parent">父节点对象</param>
+        /// <returns>返回实例化的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityTransform parent) where T : UnityObject
+        {
+            AssetSource assetSource = LoadSync<T>(name, url);
+            await assetSource.Task;
+
             return assetSource.Instantiate<T>(parent);
+        }
+
+        /// <summary>
+        /// 异步进行资源对象的实例化函数
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <param name="parent">父节点对象</param>
+        /// <param name="worldPositionStays">使用世界坐标</param>
+        /// <returns>返回实例化的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityTransform parent, bool worldPositionStays) where T : UnityObject
+        {
+            AssetSource assetSource = LoadSync<T>(name, url);
+            await assetSource.Task;
+
+            return assetSource.Instantiate<T>(parent, worldPositionStays);
+        }
+
+        /// <summary>
+        /// 异步进行资源对象的实例化函数
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <param name="position">位置</param>
+        /// <param name="rotation">旋转</param>
+        /// <returns>返回实例化的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
+        {
+            AssetSource assetSource = LoadSync<T>(name, url);
+            await assetSource.Task;
+
+            return assetSource.Instantiate<T>(position, rotation);
+        }
+
+        /// <summary>
+        /// 异步进行资源对象的实例化函数
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="name">资源名称</param>
+        /// <param name="url">资源地址</param>
+        /// <param name="position">位置</param>
+        /// <param name="rotation">旋转</param>
+        /// <param name="parent">父节点对象</param>
+        /// <returns>返回实例化的对象实例</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
+        {
+            AssetSource assetSource = LoadSync<T>(name, url);
+            await assetSource.Task;
+
+            return assetSource.Instantiate<T>(position, rotation, parent);
         }
 
         /// <summary>
@@ -241,39 +395,28 @@ namespace GameEngine
         /// <param name="obj">场景对象实例</param>
         public void DestroyObject(UnityObject obj)
         {
-            AssetSource assetSource = null;
             foreach (KeyValuePair<string, AssetSource> kvp in _assetSources)
             {
                 if (kvp.Value.ContainsObject(obj))
                 {
-                    assetSource = kvp.Value;
-                    break;
+                    kvp.Value.DestroyObject(obj);
+                    return;
                 }
             }
 
-            if (null == assetSource)
-            {
-                Debugger.Warn(LogGroupTag.Bean, "Could not found any asset source with target instantiation object '{%t}', destroyed it failed.", obj);
-                return;
-            }
-
-            assetSource.DestroyObject(obj);
+            Debugger.Warn(LogGroupTag.Bean, "Could not found any asset source with target instantiation object '{%t}', destroyed it failed.", obj);
         }
 
         /// <summary>
         /// 通过资源名称在当前缓存容器中查找对应的资源对象实例
         /// </summary>
         /// <param name="name">资源名称</param>
-        /// <param name="obj">资源对象</param>
+        /// <param name="assetSource">资源对象</param>
         /// <returns>若存在指定的资源对象则返回true，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool TryGetAssetSource(string name, out AssetSource assetSource)
         {
-            if (null == _assetSources)
-            {
-                _assetSources = new Dictionary<string, AssetSource>();
-                assetSource = null;
-                return false;
-            }
+            _assetSources ??= new Dictionary<string, AssetSource>();
 
             return _assetSources.TryGetValue(name, out assetSource);
         }
@@ -282,16 +425,14 @@ namespace GameEngine
         /// 缓存目标资源对象
         /// </summary>
         /// <param name="name">资源名称</param>
-        /// <param name="url">资源地址</param>
-        /// <param name="type">资源类型</param>
-        /// <param name="obj">Unity资源对象</param>
+        /// <param name="assetHandler">资源装载句柄</param>
         /// <returns>返回缓存的目标资源对象实例</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private AssetSource CacheTargetAssetObject(string name, string url, Type type, UnityObject obj)
+        private AssetSource TryCacheTargetAssetObject(string name, IAssetHandler assetHandler)
         {
-            Debugger.Assert(false == _assetSources.ContainsKey(name), NovaEngine.ErrorText.InvalidArguments);
+            Asserter.IsFalse(_assetSources.ContainsKey(name));
 
-            AssetSource assetSource = new AssetSource(name, url, type, obj);
+            AssetSource assetSource = new AssetSource(name, assetHandler);
             _assetSources.Add(name, assetSource);
 
             return assetSource;
