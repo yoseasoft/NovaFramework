@@ -28,10 +28,8 @@ using System.Runtime.CompilerServices;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// 应用层提供的断言对象类，它是基于对<see cref="NovaEngine.CAssert"/>的便捷性接口封装
-    /// </summary>
-    public static class Asserter
+    /// 应用层提供的调试对象类
+    public static partial class Debugger
     {
         /// <summary>
         /// 检测指定条件是否为TRUE的断言函数

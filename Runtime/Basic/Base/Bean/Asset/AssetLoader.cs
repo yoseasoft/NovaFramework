@@ -430,7 +430,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private AssetSource TryCacheTargetAssetObject(string name, IAssetHandler assetHandler)
         {
-            Asserter.IsFalse(_assetSources.ContainsKey(name));
+            Debugger.IsFalse(_assetSources.ContainsKey(name));
 
             AssetSource assetSource = new AssetSource(name, assetHandler);
             _assetSources.Add(name, assetSource);

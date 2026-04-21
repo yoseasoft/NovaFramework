@@ -160,15 +160,15 @@ namespace NovaEngine
         /// </summary>
         /// <param name="tag">功能标签</param>
         /// <returns>返回给定标签对应的程序集名称集合</returns>
-        private static IReadOnlyList<string> FindAssemblyNamesByTag(NovaFramework.LibraryTag tag)
+        private static IReadOnlyList<string> FindAssemblyNamesByTag(NovaFramework.ExtensionModuleTag tag)
         {
-            return NovaFramework.DynamicLibrary.Instance.GetAllPlayableAssemblyNames((info) =>
+            return NovaFramework.ExtensionModuleService.Instance.GetAllPlayableAssemblyNames((info) =>
             {
                 if (false == info.IsContainsTag(tag))
                     return false;
 
                 // 对教程模式进行过滤
-                if (false == TutorialMode && info.IsContainsTag(NovaFramework.LibraryTag.Tutorial))
+                if (false == TutorialMode && info.IsContainsTag(NovaFramework.ExtensionModuleTag.Tutorial))
                     return false;
 
                 return true;
@@ -182,7 +182,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IReadOnlyList<string> GetAllCompileAssemblyNames()
         {
-            return FindAssemblyNamesByTag(NovaFramework.LibraryTag.Compile);
+            return FindAssemblyNamesByTag(NovaFramework.ExtensionModuleTag.Compile);
         }
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IReadOnlyList<string> GetAllHotfixAssemblyNames()
         {
-            return FindAssemblyNamesByTag(NovaFramework.LibraryTag.Hotfix);
+            return FindAssemblyNamesByTag(NovaFramework.ExtensionModuleTag.Hotfix);
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IReadOnlyList<string> GetAllHotloadAssemblyNames()
         {
-            return FindAssemblyNamesByTag(NovaFramework.LibraryTag.Hotload);
+            return FindAssemblyNamesByTag(NovaFramework.ExtensionModuleTag.Hotload);
         }
 
         #endregion

@@ -76,8 +76,8 @@ namespace GameEngine
         {
             _instantiateObjects ??= new List<UnityObject>();
 
-            Asserter.IsNotNull(obj);
-            Asserter.IsFalse(_instantiateObjects.Contains(obj));
+            Debugger.IsNotNull(obj);
+            Debugger.IsFalse(_instantiateObjects.Contains(obj));
 
             _instantiateObjects.Add(obj);
         }
@@ -93,7 +93,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AssetSource LoadAssetSync(string name, string url)
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             return Entity.LoadAssetSync(name, url);
         }
@@ -108,7 +108,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AssetSource LoadAssetSync<T>(string name, string url) where T : UnityObject
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             return Entity.LoadAssetSync<T>(name, url);
         }
@@ -123,7 +123,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AssetSource LoadAssetSync(string name, string url, Type type)
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             return Entity.LoadAssetSync(name, url, type);
         }
@@ -137,7 +137,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AssetSource LoadAssetAsync(string name, string url)
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             return Entity.LoadAssetAsync(name, url);
         }
@@ -152,7 +152,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AssetSource LoadAssetAsync<T>(string name, string url) where T : UnityObject
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             return Entity.LoadAssetAsync<T>(name, url);
         }
@@ -167,7 +167,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AssetSource LoadAssetAsync(string name, string url, Type type)
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             return Entity.LoadAssetAsync(name, url, type);
         }
@@ -179,7 +179,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void UnloadAsset(string name)
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             Entity.UnloadAsset(name);
         }
@@ -194,7 +194,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T InstantiateSync<T>(string name, string url) where T : UnityObject
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             T obj = Entity.InstantiateSync<T>(name, url);
 
@@ -214,7 +214,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T InstantiateSync<T>(string name, string url, UnityTransform parent) where T : UnityObject
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             T obj = Entity.InstantiateSync<T>(name, url, parent);
 
@@ -235,7 +235,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T InstantiateSync<T>(string name, string url, UnityTransform parent, bool worldPositionStays) where T : UnityObject
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             T obj = Entity.InstantiateSync<T>(name, url, parent, worldPositionStays);
 
@@ -256,7 +256,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T InstantiateSync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             T obj = Entity.InstantiateSync<T>(name, url, position, rotation);
 
@@ -278,7 +278,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T InstantiateSync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             T obj = Entity.InstantiateSync<T>(name, url, position, rotation, parent);
 
@@ -297,7 +297,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public async UniTask<T> InstantiateAsync<T>(string name, string url) where T : UnityObject
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             T obj = await Entity.InstantiateAsync<T>(name, url);
 
@@ -317,7 +317,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityTransform parent) where T : UnityObject
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             T obj = await Entity.InstantiateAsync<T>(name, url, parent);
 
@@ -338,7 +338,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityTransform parent, bool worldPositionStays) where T : UnityObject
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             T obj = await Entity.InstantiateAsync<T>(name, url, parent, worldPositionStays);
 
@@ -359,7 +359,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation) where T : UnityObject
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             T obj = await Entity.InstantiateAsync<T>(name, url, position, rotation);
 
@@ -381,7 +381,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public async UniTask<T> InstantiateAsync<T>(string name, string url, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent) where T : UnityObject
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             T obj = await Entity.InstantiateAsync<T>(name, url, position, rotation, parent);
 
@@ -397,7 +397,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DestroyObject(UnityObject obj)
         {
-            Asserter.IsNotNull(Entity);
+            Debugger.IsNotNull(Entity);
 
             if (null != _instantiateObjects)
             {

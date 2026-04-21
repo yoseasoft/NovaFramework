@@ -67,8 +67,8 @@ namespace GameEngine
 
         public AssetSource(string name, IAssetHandler assetHandler)
         {
-            Asserter.IsTrue(name.IsNotNullOrEmpty());
-            Asserter.IsNotNull(assetHandler);
+            Debugger.IsTrue(name.IsNotNullOrEmpty());
+            Debugger.IsNotNull(assetHandler);
 
             _name = name;
             _assetHandler = assetHandler;
@@ -167,8 +167,8 @@ namespace GameEngine
 
         private T InstantiateObjectInternal<T>(bool setPositionAndRotation, UnityVector3 position, UnityQuaternion rotation, UnityTransform parent, bool worldPositionStays) where T : UnityObject
         {
-            Asserter.IsNotNull(AssetObject);
-            Asserter.IsTrue(Type.Is<T>());
+            Debugger.IsNotNull(AssetObject);
+            Debugger.IsTrue(Type.Is<T>());
 
             T go;
             if (setPositionAndRotation)
@@ -209,7 +209,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DestroyObject(UnityObject obj)
         {
-            Asserter.IsTrue(_gameObjects.Contains(obj));
+            Debugger.IsTrue(_gameObjects.Contains(obj));
 
             _gameObjects.Remove(obj);
             UnityObject.Destroy(obj);
