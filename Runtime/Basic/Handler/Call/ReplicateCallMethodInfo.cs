@@ -158,7 +158,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke(IBean targetObject, string tags, ReplicateAnnounceType announceType)
         {
-            Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(targetObject);
 
             if ((_announceTypes[tags] & announceType) == 0)
             {

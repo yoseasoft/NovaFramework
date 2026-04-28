@@ -278,7 +278,7 @@ namespace GameEngine.Loader
         /// <returns>返回对应的标记数据实例，若查找失败返回null</returns>
         public static Symbolling.SymClass GetSymClassByName(string className)
         {
-            Debugger.Assert(_symClassMaps, NovaEngine.ErrorText.NullObjectReference);
+            Debugger.IsNotNull(_symClassMaps);
 
             if (_symClassMaps.TryGetValue(className, out Symbolling.SymClass symbol))
             {
@@ -295,7 +295,7 @@ namespace GameEngine.Loader
         /// <returns>返回对应的标记数据实例，若查找失败返回null</returns>
         public static Symbolling.SymClass GetSymClassByType(Type targetType)
         {
-            Debugger.Assert(_symClassMaps, NovaEngine.ErrorText.NullObjectReference);
+            Debugger.IsNotNull(_symClassMaps);
 
             if (_symClassMaps.TryGetValue(targetType, out Symbolling.SymClass symbol))
             {

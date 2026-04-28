@@ -113,7 +113,7 @@ namespace GameEngine.Loader
             while (e.MoveNext())
             {
                 OnInitAllBindingProcessorClassesHandler handler = e.Current.Value as OnInitAllBindingProcessorClassesHandler;
-                Debugger.Assert(handler, "Invalid code binding processor class init handler.");
+                Debugger.IsNotNull(handler);
 
                 handler.Invoke();
             }
@@ -129,7 +129,7 @@ namespace GameEngine.Loader
             while (e.MoveNext())
             {
                 OnCleanupAllBindingProcessorClassesHandler handler = e.Current.Value as OnCleanupAllBindingProcessorClassesHandler;
-                Debugger.Assert(handler, "Invalid code binding processor class cleanup handler.");
+                Debugger.IsNotNull(handler);
 
                 handler.Invoke();
             }

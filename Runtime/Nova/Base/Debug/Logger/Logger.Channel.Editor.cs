@@ -199,7 +199,7 @@ namespace NovaEngine
                         {
                             _cachedStringBuilder.AppendFormat(
                                 _usingSystemColor ?
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=gray><b>[DEBUG] ► </b></color>[{0}] ({1}) - <color=#00FF18>{2}</color>" :
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#00FF18><b>[DEBUG] ► </b></color>[{0}] ({1}) - <color=#00FF18>{2}</color>" :
                                 "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#00FF18><b>[DEBUG] ► </b></color>[{0}] ({1}) - {2}",
                                 GetCurrentTimeString(), GetActivatedTaskString(), message);
                         }
@@ -240,7 +240,7 @@ namespace NovaEngine
                         if (_usingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
-                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=#FF9400><b>[WARNING] ► </b></color>[{0}] ({1}) - <color=#{3}>{2}</color>",
+                                "<color=#0099bc><b>[NovaEngine] ► </b></color><color=red><b>[ERROR] ► </b></color>[{0}] ({1}) - <color=#{3}>{2}</color>",
                                 GetCurrentTimeString(), GetActivatedTaskString(), message, LOG_COLOR_RED);
                         }
                         else

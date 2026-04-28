@@ -44,12 +44,12 @@ namespace GameEngine.Loader
         {
             if (null == codeInfo)
             {
-                Debugger.Warn("The load code info '{%t}' must be non-null, recv arguments invalid.", targetType);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The load code info '{%t}' must be non-null, recv arguments invalid.", targetType);
                 return;
             }
 
             Structuring.ExtendCallCodeInfo extendCodeInfo = codeInfo as Structuring.ExtendCallCodeInfo;
-            Debugger.Assert(extendCodeInfo, "Invalid extend call code info.");
+            Debugger.IsNotNull(extendCodeInfo);
 
             for (int n = 0; n < extendCodeInfo.GetInputCallMethodTypeCount(); ++n)
             {
@@ -64,7 +64,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("Could not found any general code info with target type '{%t}', binded input call failed.", callMethodInfo.TargetType);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any general code info with target type '{%t}', binded input call failed.", callMethodInfo.TargetType);
                 }
             }
 
@@ -81,7 +81,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("Could not found any general code info with target type '{%t}', binded event call failed.", callMethodInfo.TargetType);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any general code info with target type '{%t}', binded event call failed.", callMethodInfo.TargetType);
                 }
             }
 
@@ -98,7 +98,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("Could not found any general code info with target type '{%t}', binded message call failed.", callMethodInfo.TargetType);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any general code info with target type '{%t}', binded message call failed.", callMethodInfo.TargetType);
                 }
             }
 
@@ -115,7 +115,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("Could not found any general code info with target type '{%t}', binded replicate call failed.", callMethodInfo.TargetType);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "Could not found any general code info with target type '{%t}', binded replicate call failed.", callMethodInfo.TargetType);
                 }
             }
         }

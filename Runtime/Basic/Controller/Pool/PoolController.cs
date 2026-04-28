@@ -117,7 +117,7 @@ namespace GameEngine
             if (false == IsPoolObjectType(classType))
             {
                 object instance = Activator.CreateInstance(classType);
-                Debugger.Assert(instance, NovaEngine.ErrorText.InvalidArguments);
+                Debugger.IsNotNull(instance);
 
                 return instance;
             }

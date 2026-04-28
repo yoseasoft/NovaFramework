@@ -144,7 +144,7 @@ namespace GameEngine
                 Type baseType = handlerType.BaseType;
                 while (null != baseType)
                 {
-                    if (false == baseType.Is<IHandler>() || baseType.IsInterface)
+                    if (baseType.IsNot<IHandler>() || baseType.IsInterface)
                     {
                         break;
                     }

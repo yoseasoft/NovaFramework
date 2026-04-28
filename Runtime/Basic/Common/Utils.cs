@@ -43,7 +43,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Delegate CreateSubmoduleBehaviourCallback(Type classType, Type attributeType)
         {
-            Debugger.Assert(NovaEngine.Utility.Reflection.IsTypeOfStaticClass(classType), NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsTrue(NovaEngine.Utility.Reflection.IsTypeOfStaticClass(classType));
 
             return CreateSubmoduleBehaviourCallback(null, classType, attributeType);
         }
@@ -57,7 +57,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Delegate CreateSubmoduleBehaviourCallback(object targetObject, Type attributeType)
         {
-            Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(targetObject);
 
             return CreateSubmoduleBehaviourCallback(targetObject, targetObject.GetType(), attributeType);
         }

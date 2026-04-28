@@ -90,13 +90,15 @@ namespace GameEngine
         /// <param name="type">对象类型</param>
         public static void RegisterHotModule(Type type)
         {
-            Debugger.Assert(_isRunning, NovaEngine.ErrorText.InvalidOperation);
+            Debugger.IsTrue(_isRunning);
 
             if (_hotModules.ContainsKey(type))
             {
                 Debugger.Error("The hot module object '{%t}' was already exists, repeat registered it failed.", type);
                 return;
             }
+
+            Debugger.Info("Register hot module '{%t}' succeed.", type);
 
             IHotModule module = Activator.CreateInstance(type) as IHotModule;
             module.Startup();
@@ -154,7 +156,7 @@ namespace GameEngine
         /// <param name="type">对象类型</param>
         public static void UnregisterHotModule(Type type)
         {
-            Debugger.Assert(_isRunning, NovaEngine.ErrorText.InvalidOperation);
+            Debugger.IsTrue(_isRunning);
 
             if (false == _hotModules.TryGetValue(type, out IHotModule module))
             {

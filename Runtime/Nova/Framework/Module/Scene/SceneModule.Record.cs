@@ -95,7 +95,7 @@ namespace NovaEngine.Module
             /// <summary>
             /// 场景资源信息对象实例
             /// </summary>
-            private ISceneHandler _sceneHandler = null;
+            private ISceneHandler _sceneHandler;
 
             /// <summary>
             /// 场景信息对象构造函数
@@ -141,7 +141,7 @@ namespace NovaEngine.Module
             public static SceneOperationRecord Create(string name)
             {
                 SceneOperationRecord ret = new SceneOperationRecord();
-                ret.Name = name;
+                ret._name = name;
 
                 if (ret.Initialize())
                 {
@@ -166,7 +166,6 @@ namespace NovaEngine.Module
             /// </summary>
             public string Name
             {
-                set { _name = value; }
                 get { return _name; }
             }
 

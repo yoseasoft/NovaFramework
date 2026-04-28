@@ -73,49 +73,5 @@ namespace NovaEngine
         {
             Instance._assert_format_args?.Invoke(condition, format, args);
         }
-
-        /// <summary>
-        /// 对象非空的断言检查，仅在调试模式下该函数有效
-        /// </summary>
-        /// <param name="obj">对象实例</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Assert(object obj)
-        {
-            Assert(null != obj);
-        }
-
-        /// <summary>
-        /// 对象非空的断言检查，仅在调试模式下该函数有效
-        /// </summary>
-        /// <param name="obj">对象实例</param>
-        /// <param name="message">消息内容</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Assert(object obj, object message)
-        {
-            Assert(null != obj, message);
-        }
-
-        /// <summary>
-        /// 对象非空的断言检查，仅在调试模式下该函数有效
-        /// </summary>
-        /// <param name="obj">对象实例</param>
-        /// <param name="message">消息内容</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Assert(object obj, string message)
-        {
-            Assert(null != obj, message);
-        }
-
-        /// <summary>
-        /// 对象非空的断言检查，仅在调试模式下该函数有效
-        /// </summary>
-        /// <param name="obj">对象实例</param>
-        /// <param name="format">格式内容</param>
-        /// <param name="args">消息格式化参数</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Assert(object obj, string format, params object[] args)
-        {
-            Assert(null != obj, format, args);
-        }
     }
 }

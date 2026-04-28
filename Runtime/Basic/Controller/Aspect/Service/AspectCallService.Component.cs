@@ -98,7 +98,7 @@ namespace GameEngine
                 }
 
                 // Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
-                // Debugger.Assert(callback, "Invalid method type.");
+                // Debugger.IsNotNull(callback);
 
                 Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' input listener with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);
 
@@ -129,7 +129,7 @@ namespace GameEngine
                 }
 
                 // Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
-                // Debugger.Assert(callback, "Invalid method type.");
+                // Debugger.IsNotNull(callback);
 
                 Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' event listener with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);
 
@@ -160,7 +160,7 @@ namespace GameEngine
                 }
 
                 // Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
-                // Debugger.Assert(callback, "Invalid method type.");
+                // Debugger.IsNotNull(callback);
 
                 Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' message listener with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);
 
@@ -191,7 +191,7 @@ namespace GameEngine
                 }
 
                 // Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
-                // Debugger.Assert(callback, "Invalid method type.");
+                // Debugger.IsNotNull(callback);
 
                 Debugger.Info(LogGroupTag.Controller, "Register component '{%t}' replicate listener with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);
 

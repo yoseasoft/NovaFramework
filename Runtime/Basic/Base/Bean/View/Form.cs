@@ -68,7 +68,11 @@ namespace GameEngine
         /// <summary>
         /// 窗口对象所属的视图类型
         /// </summary>
-        protected Type _viewType = null;
+        protected Type _viewType;
+        /// <summary>
+        /// 窗口对象的分组名称
+        /// </summary>
+        protected string _groupName;
 
         /// <summary>
         /// 窗口对象载入完成状态标识
@@ -84,6 +88,10 @@ namespace GameEngine
         /// 获取窗口对象所属的视图类型
         /// </summary>
         public Type ViewType => _viewType;
+        /// <summary>
+        /// 获取窗口对象的分组名称
+        /// </summary>
+        public string GroupName => _groupName;
 
         /// <summary>
         /// 获取窗口对象当前载入状态
@@ -93,6 +101,8 @@ namespace GameEngine
         protected Form(Type viewType)
         {
             _viewType = viewType;
+
+            _groupName = GuiHandler.Instance.GetGroupNameByViewType(viewType);
         }
 
         /// <summary>

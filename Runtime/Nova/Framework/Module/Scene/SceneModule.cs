@@ -63,7 +63,7 @@ namespace NovaEngine.Module
             Logger.Assert(SceneManager.sceneCount > 0, "程序启动初始环境中必须存在至少一个有效的场景实例，当前环境获取场景数据失败！");
             if (SceneManager.sceneCount > 1)
             {
-                Logger.Warn("当前程序启动的初始环境中存在多个场景实例，系统将随机选取一个作为主场景，其它场景实例可能在后期运行过程中被随机移除掉！");
+                Logger.Warn("当前程序启动的初始环境中存在多个场景实例，引擎将选取首个实例作为主场景，其它场景实例可能在后期运行过程中被随机移除掉！");
             }
 
             _sceneOperationRecords = new Dictionary<string, SceneOperationRecord>();
@@ -116,6 +116,12 @@ namespace NovaEngine.Module
         {
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void SendEvent(ProtocolType protocol, object data)
+        {
+            SendEvent((int) protocol, data);
+        }
+
         private void SendEvent(int eventID, object data)
         {
             SceneEventArgs e = this.AcquireEvent<SceneEventArgs>();
@@ -135,7 +141,7 @@ namespace NovaEngine.Module
                 if (SceneOperationRecord.SceneStateType.Loading == rec.StateType)
                 {
                     ISceneHandler sceneHandler = rec.SceneHandler;
-                    this.SendEvent((int) ProtocolType.Progressed, "{\"sceneName\":\"" + pair.Key + "\",\"progress\":" + sceneHandler.LoadingProgress + "}");
+                    this.SendEvent(ProtocolType.Progressed, "{\"sceneName\":\"" + pair.Key + "\",\"progress\":" + sceneHandler.LoadingProgress + "}");
                 }
             }
         }
@@ -181,7 +187,7 @@ namespace NovaEngine.Module
             {
                 // Scene sceneObject = SceneManager.GetSceneByName(sceneName);
                 Scene sceneObject = handler.SceneObject;
-                Logger.Assert(sceneObject.IsValid(), $"检测到当前世界容器中不存在指定名称为‘{sceneName}’的场景实例，异步加载场景成功后的回调查询操作失败！");
+                Logger.Assert(sceneObject.IsValid(), "检测到当前世界容器中不存在指定名称为‘{%s}’的场景实例，异步加载场景成功后的回调查询操作失败！", sceneName);
 
                 if (false == sceneObject.IsValid())
                 {
@@ -189,7 +195,7 @@ namespace NovaEngine.Module
                     rec.StateType = SceneOperationRecord.SceneStateType.Fault;
                     rec.SceneHandler = null;
 
-                    SendEvent((int) ProtocolType.Exception, sceneName);
+                    SendEvent(ProtocolType.Exception, sceneName);
                 }
                 else
                 {
@@ -200,7 +206,7 @@ namespace NovaEngine.Module
                     // 重置激活场景
                     ReactivationScene();
 
-                    SendEvent((int) ProtocolType.Loaded, sceneName);
+                    SendEvent(ProtocolType.Loaded, sceneName);
                 }
             };
 
@@ -231,7 +237,7 @@ namespace NovaEngine.Module
             // 重置激活场景
             ReactivationScene();
 
-            this.SendEvent((int) ProtocolType.Unloaded, sceneName);
+            this.SendEvent(ProtocolType.Unloaded, sceneName);
         }
 
         /// <summary>

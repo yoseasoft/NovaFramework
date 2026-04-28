@@ -248,7 +248,7 @@ namespace GameEngine
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
         public async UniTask<CView> AsyncOpenUI(Type viewType, object userData = null)
         {
-            Debugger.Assert(viewType, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(viewType);
             if (false == _entityClassTypes.Values.Contains(viewType))
             {
                 Debugger.Error(LogGroupTag.Module, "Could not found any correct view class with target type '{%t}', opened view failed.", viewType);
@@ -582,7 +582,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnGroupBindingForTargetView(CView view)
         {
-            ViewGroup viewGroup = FindGroupByViewType(view.BeanType);
+            ViewGroup viewGroup = GetGroupInfoByViewType(view.BeanType);
             viewGroup.OnViewGroupBinding(view);
         }
 
@@ -593,7 +593,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnGroupUnbindingForTargetView(CView view)
         {
-            ViewGroup viewGroup = FindGroupByViewType(view.BeanType);
+            ViewGroup viewGroup = GetGroupInfoByViewType(view.BeanType);
             viewGroup?.OnViewGroupUnbinding(view);
         }
 

@@ -161,7 +161,7 @@ namespace GameEngine
         private void OnObjectDestroyProcess(IBean bean)
         {
             CObject obj = bean as CObject;
-            Debugger.Assert(obj, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(obj);
 
             ObjectHandler.Instance.RemoveObject(obj);
         }
@@ -176,7 +176,7 @@ namespace GameEngine
         private void OnActorDestroyProcess(IBean bean)
         {
             CActor actor = bean as CActor;
-            Debugger.Assert(actor, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(actor);
 
             RemoveAllComponentsBelongingToTargetEntityFromTheContainer(actor, _beanDestroyNotificationList);
 
@@ -187,7 +187,7 @@ namespace GameEngine
         private void OnViewDestroyProcess(IBean bean)
         {
             CView view = bean as CView;
-            Debugger.Assert(view, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(view);
 
             RemoveAllComponentsBelongingToTargetEntityFromTheContainer(view, _beanDestroyNotificationList);
 
@@ -198,7 +198,7 @@ namespace GameEngine
         private void OnComponentDestroyProcess(IBean bean)
         {
             CComponent component = bean as CComponent;
-            Debugger.Assert(component, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(component);
 
             // Entity对象在BeforeDestroy阶段移除的组件对象实例，组件的Destroy通知会多调用一次
             if (false == component.IsOnAwakingStatus() || component.IsOnDestroyingStatus())

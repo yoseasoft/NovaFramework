@@ -346,7 +346,7 @@ namespace GameEngine
             public override CBean Alloc()
             {
                 CBean obj = CreateInstance();
-                Debugger.Assert(obj, "Invalid class type {%t}.", _classType);
+                Debugger.IsNotNull(obj);
 
                 _objects.Add(obj);
 
@@ -372,7 +372,7 @@ namespace GameEngine
             /// <param name="obj">目标对象实例</param>
             public override void Release(CBean obj)
             {
-                Debugger.Assert(obj, NovaEngine.ErrorText.InvalidArguments);
+                Debugger.IsNotNull(obj);
 
                 _objects.Remove(obj);
                 DestroyInstance(obj);
@@ -418,7 +418,7 @@ namespace GameEngine
                 if (null == _instance)
                 {
                     _instance = CreateInstance();
-                    Debugger.Assert(_instance, "Invalid class type {%t}.", _classType);
+                    Debugger.IsNotNull(_instance);
                 }
 
                 ++_referenceCount;
@@ -439,7 +439,7 @@ namespace GameEngine
             /// <param name="obj">目标对象实例</param>
             public override void Release(CBean obj)
             {
-                Debugger.Assert(obj == _instance, NovaEngine.ErrorText.InvalidArguments);
+                Debugger.IsTrue(obj == _instance);
 
                 if (null == obj)
                 {

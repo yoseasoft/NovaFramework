@@ -108,7 +108,7 @@ namespace GameEngine
                     Type attrType = attr.GetType();
                     if (typeof(OnServiceProcessRegisterOfTargetAttribute) == attrType)
                     {
-                        Debugger.Assert(method.IsStatic);
+                        Debugger.IsTrue(method.IsStatic);
 
                         OnServiceProcessRegisterOfTargetAttribute _attr = (OnServiceProcessRegisterOfTargetAttribute) attr;
 

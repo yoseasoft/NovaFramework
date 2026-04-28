@@ -151,7 +151,7 @@ namespace GameEngine
         public static MessageChannel Create(int channelID, int channelType, string name, string url)
         {
             Type classType = NetworkHandler.Instance.GetMessageChannelTypeByServiceType(channelType);
-            Debugger.Assert(classType, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(classType);
 
             MessageChannel channel = Activator.CreateInstance(classType, new object[] { channelID, name, url }) as MessageChannel;
             channel.Initialize();

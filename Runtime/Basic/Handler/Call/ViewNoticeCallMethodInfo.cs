@@ -69,7 +69,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke(IBean targetObject)
         {
-            Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(targetObject);
 
             _callback.DynamicInvoke(targetObject);
         }

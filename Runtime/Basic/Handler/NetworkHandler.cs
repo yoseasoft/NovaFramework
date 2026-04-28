@@ -551,11 +551,7 @@ namespace GameEngine
         /// <param name="message">消息对象实例</param>
         public void OnMessageSimulation(object message)
         {
-            if (false == NovaEngine.Environment.IsDevelopmentState())
-            {
-                Debugger.Error("不能在正式环境下进行模拟接收消息处理‘{%d} - {%t}’，请检查您是否正确调用了预期的函数接口！", GetOpcodeByMessageType(message.GetType()), message);
-                return;
-            }
+            // Debugger.IsTrue(NovaEngine.Environment.IsDevelopmentState(), "不能在正式环境下进行模拟接收消息处理‘{%d} - {%t}’，请检查您是否正确调用了预期的函数接口！", GetOpcodeByMessageType(message.GetType()), message);
 
             OnReceiveMessage(null, message);
         }
@@ -810,7 +806,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Type GetMessageProtocolType()
         {
-            Debugger.Assert(_messageProtocolType, NovaEngine.ErrorText.NullObjectReference);
+            Debugger.IsNotNull(_messageProtocolType);
 
             return _messageProtocolType;
         }

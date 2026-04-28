@@ -111,7 +111,7 @@ namespace GameEngine.Loader.Symbolling
         /// <param name="resolver">解析对象</param>
         public static void AddInstantiationClassResolver(ISymbolResolverOfInstantiationClass resolver)
         {
-            Debugger.Assert(resolver, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(resolver);
 
             if (_instantiationClassResolvers.Contains(resolver))
             {

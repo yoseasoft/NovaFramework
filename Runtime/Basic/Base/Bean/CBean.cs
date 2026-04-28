@@ -89,7 +89,7 @@ namespace GameEngine
                 if (null == _symbol)
                 {
                     _symbol = Loader.CodeLoader.GetSymClassByType(BeanType);
-                    Debugger.Assert(_symbol, "Invalid bean object type.");
+                    Debugger.IsNotNull(_symbol);
                 }
 
                 return _symbol;

@@ -236,7 +236,7 @@ namespace GameEngine
         /// <param name="userData">用户数据</param>
         public void ReplaceScene(Type sceneType, object userData = null)
         {
-            Debugger.Assert(sceneType, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(sceneType);
             if (sceneType == _currentSceneType)
             {
                 Debugger.Warn("The replace scene '{%t}' must be not equals to current scene, replaced it failed.", sceneType);

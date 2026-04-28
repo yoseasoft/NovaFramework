@@ -2,6 +2,7 @@
 /// NovaEngine Framework
 ///
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -77,7 +78,26 @@ namespace NovaEngine
             /// <param name="message">日志内容</param>
             public void Output(LogOutputLevelType level, object message)
             {
+#if UNITY_WEBGL && !UNITY_EDITOR
+                switch (level)
+                {
+                    case LogOutputLevelType.Debug:
+                    case LogOutputLevelType.Info:
+                        UnityEngine.Application.ExternalCall("console.log", message.ToString());
+                        break;
+                    case LogOutputLevelType.Warning:
+                        UnityEngine.Application.ExternalCall("console.warn", message.ToString());
+                        break;
+                    case LogOutputLevelType.Error:
+                    case LogOutputLevelType.Fatal:
+                    case LogOutputLevelType.Assert:
+                    case LogOutputLevelType.Exception:
+                        UnityEngine.Application.ExternalCall("console.error", message.ToString());
+                        break;
+                }
+#else
                 Console.WriteLine(message.ToString());
+#endif
             }
         }
     }

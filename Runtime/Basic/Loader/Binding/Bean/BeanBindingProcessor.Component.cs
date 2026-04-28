@@ -53,7 +53,7 @@ namespace GameEngine
             }
 
             Loader.Structuring.ComponentCodeInfo componentCodeInfo = codeInfo as Loader.Structuring.ComponentCodeInfo;
-            Debugger.Assert(componentCodeInfo, "Invalid component code info.");
+            Debugger.IsNotNull(componentCodeInfo);
 
             if (reload)
             {

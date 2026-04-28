@@ -164,7 +164,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke(IBean targetObject, object message)
         {
-            Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(targetObject);
 
             if (_isNullParameterType)
             {

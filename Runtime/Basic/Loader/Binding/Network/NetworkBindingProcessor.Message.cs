@@ -53,7 +53,7 @@ namespace GameEngine
             }
 
             Loader.Structuring.NetworkMessageCodeInfo networkCodeInfo = codeInfo as Loader.Structuring.NetworkMessageCodeInfo;
-            Debugger.Assert(networkCodeInfo, "Invalid network message code info.");
+            Debugger.IsNotNull(networkCodeInfo);
 
             if (reload)
             {
@@ -90,7 +90,7 @@ namespace GameEngine
             }
 
             Loader.Structuring.MessageCallCodeInfo messageCodeInfo = codeInfo as Loader.Structuring.MessageCallCodeInfo;
-            Debugger.Assert(messageCodeInfo, "Invalid message call code info.");
+            Debugger.IsNotNull(messageCodeInfo);
 
             for (int n = 0; n < messageCodeInfo.GetMethodTypeCount(); ++n)
             {

@@ -245,7 +245,7 @@ namespace GameEngine.Profiler.Statistics
             }
 
             IStat stat = GetStat(targetType);
-            Debugger.Assert(stat, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(stat);
 
             if (false == _statProcessCallbacks.TryGetValue(stat.StatType, out StatProcessHandler callback))
             {

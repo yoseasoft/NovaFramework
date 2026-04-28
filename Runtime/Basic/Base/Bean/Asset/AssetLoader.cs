@@ -121,7 +121,7 @@ namespace GameEngine
         {
             if (TryGetAssetSource(name, out AssetSource assetSource))
             {
-                Debugger.Assert(typeof(T) == assetSource.Type, NovaEngine.ErrorText.InvalidArguments);
+                Debugger.IsTypeOf<T>(assetSource.Type);
                 return assetSource;
             }
 
@@ -140,7 +140,7 @@ namespace GameEngine
         {
             if (TryGetAssetSource(name, out AssetSource assetSource))
             {
-                Debugger.Assert(type == assetSource.Type, NovaEngine.ErrorText.InvalidArguments);
+                Debugger.IsTrue(type == assetSource.Type);
                 return assetSource;
             }
 
@@ -176,7 +176,7 @@ namespace GameEngine
         {
             if (TryGetAssetSource(name, out AssetSource assetSource))
             {
-                Debugger.Assert(typeof(T) == assetSource.Type, NovaEngine.ErrorText.InvalidArguments);
+                Debugger.IsTypeOf<T>(assetSource.Type);
                 return assetSource;
             }
 
@@ -195,7 +195,7 @@ namespace GameEngine
         {
             if (TryGetAssetSource(name, out AssetSource assetSource))
             {
-                Debugger.Assert(type == assetSource.Type, NovaEngine.ErrorText.InvalidArguments);
+                Debugger.IsTrue(type == assetSource.Type);
                 return assetSource;
             }
 

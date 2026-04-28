@@ -3,6 +3,7 @@
 ///
 /// Copyright (C) 2024 - 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +26,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine.Scripting;
 
@@ -63,7 +66,7 @@ namespace GameEngine
         /// <summary>
         /// 默认视图分组名称
         /// </summary>
-        private readonly static string _defaultViewGroupName = $"{NovaEngine.Definition.CString.Default}_{typeof(ViewGroup).Name.ToLower()}";
+        private readonly static string DefaultViewGroupName = $"{NovaEngine.Definition.CString.Default}_{nameof(ViewGroup).ToLower()}";
 
         /// <summary>
         /// 视图分组对象管理列表
@@ -95,7 +98,7 @@ namespace GameEngine
             _viewBindingGroupNames = new Dictionary<Type, string>();
 
             // 注册默认分组
-            AddViewGroup(_defaultViewGroupName, 0, ViewGroupStrategyType.None);
+            AddViewGroup(DefaultViewGroupName, 0, ViewGroupStrategyType.None);
         }
 
         /// <summary>
@@ -132,7 +135,7 @@ namespace GameEngine
         /// <param name="groupName">分组名称</param>
         /// <param name="level">分组层级</param>
         /// <param name="strategyType">分组策略类型</param>
-        public void AddViewGroup(string groupName, byte level, ViewGroupStrategyType strategyType = ViewGroupStrategyType.None)
+        public void AddViewGroup(string groupName, int level, ViewGroupStrategyType strategyType = ViewGroupStrategyType.None)
         {
             if (_viewGroups.ContainsKey(groupName))
             {
@@ -156,11 +159,9 @@ namespace GameEngine
 
             // 添加视图分组对象
             _viewGroups.Add(groupName, viewGroup);
-            // 分组对象添加到排序列表
-            _sortingGroupList.Add(viewGroup);
 
-            // 视图分组排序
-            SortingViewGroups();
+            // 更新视图分组排序
+            UpdateViewGroupSortingList();
         }
 
         /// <summary>
@@ -175,13 +176,11 @@ namespace GameEngine
                 return;
             }
 
-            // 从排序列表移除
-            _sortingGroupList.Remove(viewGroup);
             // 移除视图分组对象
             _viewGroups.Remove(groupName);
 
-            // 视图分组排序
-            SortingViewGroups();
+            // 更新视图分组排序
+            UpdateViewGroupSortingList();
         }
 
         /// <summary>
@@ -199,9 +198,25 @@ namespace GameEngine
         /// 对当前句柄容器中注册的所有视图分组对象实例进行排序
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void SortingViewGroups()
+        private void UpdateViewGroupSortingList()
         {
+            _sortingGroupList.Clear();
+
+            foreach (KeyValuePair<string, ViewGroup> kvp in _viewGroups)
+            {
+                _sortingGroupList.Add(kvp.Value);
+            }
+
             ((List<ViewGroup>) _sortingGroupList).Sort();
+        }
+
+        /// <summary>
+        /// 获取当前已注册的所有视图分组的名称
+        /// </summary>
+        /// <returns>返回视图分组名称列表</returns>
+        public IReadOnlyList<string> GetAllSortingViewGroupNames()
+        {
+            return _sortingGroupList.Select(g => g.GroupName).ToList();
         }
 
         /// <summary>
@@ -216,7 +231,7 @@ namespace GameEngine
             /// <summary>
             /// 分组对象的挂载层级
             /// </summary>
-            private readonly byte _level;
+            private readonly int _level;
             /// <summary>
             /// 分组对象策略类型
             /// </summary>
@@ -228,10 +243,10 @@ namespace GameEngine
             private readonly IList<CView> _groupViews;
 
             public string GroupName => _groupName;
-            public byte Level => _level;
+            public int Level => _level;
             public ViewGroupStrategyType StrategyType => _strategyType;
 
-            public ViewGroup(string groupName, byte level, ViewGroupStrategyType strategyType)
+            public ViewGroup(string groupName, int level, ViewGroupStrategyType strategyType)
             {
                 _groupName = groupName;
                 _level = level;
@@ -249,7 +264,7 @@ namespace GameEngine
 
             public int CompareTo(ViewGroup other)
             {
-                return other.Level.CompareTo(this.Level);
+                return this.Level.CompareTo(other.Level);
             }
 
             /// <summary>
@@ -348,11 +363,27 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// 通过指定视图类型查找对应的分组名称
+        /// </summary>
+        /// <param name="viewType">视图类型</param>
+        /// <returns>返回视图类型对应的分组名称</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal string GetGroupNameByViewType(Type viewType)
+        {
+            if (false == _viewBindingGroupNames.TryGetValue(viewType, out string groupName))
+            {
+                groupName = DefaultViewGroupName;
+            }
+
+            return groupName;
+        }
+
+        /// <summary>
         /// 通过指定视图类型查找对应的分组对象实例
         /// </summary>
         /// <param name="viewType">视图类型</param>
         /// <returns>返回视图类型对应的分组对象实例</returns>
-        private ViewGroup FindGroupByViewType(Type viewType)
+        private ViewGroup GetGroupInfoByViewType(Type viewType)
         {
             if (null == _viewGroups)
             {
@@ -361,10 +392,8 @@ namespace GameEngine
                 return null;
             }
 
-            if (false == _viewBindingGroupNames.TryGetValue(viewType, out string groupName))
-            {
-                groupName = _defaultViewGroupName;
-            }
+            // 获取分组名称
+            string groupName = GetGroupNameByViewType(viewType);
 
             if (_viewGroups.TryGetValue(groupName, out ViewGroup viewGroup))
             {

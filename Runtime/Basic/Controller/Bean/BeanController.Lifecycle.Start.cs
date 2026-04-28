@@ -142,7 +142,7 @@ namespace GameEngine
         private void OnObjectStartProcess(IBean bean)
         {
             CObject obj = bean as CObject;
-            Debugger.Assert(obj, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(obj);
 
             ObjectHandler.Instance.OnObjectStartProcessing(obj);
         }
@@ -151,7 +151,7 @@ namespace GameEngine
         private void OnSceneStartProcess(IBean bean)
         {
             CScene scene = bean as CScene;
-            Debugger.Assert(scene, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(scene);
 
             SceneHandler.Instance.OnEntityStartProcessing(scene);
         }
@@ -160,7 +160,7 @@ namespace GameEngine
         private void OnActorStartProcess(IBean bean)
         {
             CActor actor = bean as CActor;
-            Debugger.Assert(actor, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(actor);
 
             ActorHandler.Instance.OnEntityStartProcessing(actor);
         }
@@ -169,7 +169,7 @@ namespace GameEngine
         private void OnViewStartProcess(IBean bean)
         {
             CView view = bean as CView;
-            Debugger.Assert(view, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(view);
 
             GuiHandler.Instance.OnEntityStartProcessing(view);
         }
@@ -178,7 +178,7 @@ namespace GameEngine
         private void OnComponentStartProcess(IBean bean)
         {
             CComponent component = bean as CComponent;
-            Debugger.Assert(component, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(component);
 
             if (false == component.Entity.IsOnStartingStatus())
             {

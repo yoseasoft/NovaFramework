@@ -98,7 +98,7 @@ namespace GameEngine.Loader
             foreach (Delegate callback in _registerClassUnloadCallbacks.Values)
             {
                 CodeLoader.OnCleanupAllCodeTypesHandler handler = callback as CodeLoader.OnCleanupAllCodeTypesHandler;
-                Debugger.Assert(handler, "Invalid cleanup register class unload callback.");
+                Debugger.IsNotNull(handler);
 
                 handler.Invoke();
             }

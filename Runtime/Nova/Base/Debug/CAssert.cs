@@ -4,6 +4,7 @@
 /// Copyright (C) 2023, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2025, Hurley, Independent Studio.
 /// Copyright (C) 2025, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +25,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Diagnostics;
 
 using UnityAssert = UnityEngine.Assertions.Assert;
@@ -120,7 +122,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 检测指定类对象是否为NULL的断言函数
+        /// 检测指定对象是否为NULL的断言函数
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="value">对象实例</param>
@@ -131,7 +133,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 检测指定类对象是否为NULL的断言函数
+        /// 检测指定对象是否为NULL的断言函数
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="value">对象实例</param>
@@ -143,7 +145,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 检测指定类对象是否为NULL的断言函数
+        /// 检测指定对象是否为NULL的断言函数
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="value">对象实例</param>
@@ -156,7 +158,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 检测指定类对象是否为非NULL的断言函数
+        /// 检测指定对象是否为非NULL的断言函数
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="value">对象实例</param>
@@ -167,7 +169,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 检测指定类对象是否为非NULL的断言函数
+        /// 检测指定对象是否为非NULL的断言函数
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="value">对象实例</param>
@@ -179,7 +181,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 检测指定类对象是否为非NULL的断言函数
+        /// 检测指定对象是否为非NULL的断言函数
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="value">对象实例</param>
@@ -189,6 +191,78 @@ namespace NovaEngine
         public static void IsNotNull<T>(T value, string format, params object[] args) where T : class
         {
             UnityAssert.IsNotNull<T>(value, Utility.Text.Format(format, args));
+        }
+
+        /// <summary>
+        /// 检测指定对象是否继承自目标类型的断言函数
+        /// </summary>
+        /// <typeparam name="T">父对象类型</typeparam>
+        /// <param name="obj">对象实例</param>
+        [Conditional("UNITY_ASSERTIONS")]
+        public static void IsTypeOf<T>(object obj) where T : class
+        {
+            IsTypeOf<T>(obj.GetType());
+        }
+
+        /// <summary>
+        /// 检测指定对象是否继承自目标类型的断言函数
+        /// </summary>
+        /// <typeparam name="T">父对象类型</typeparam>
+        /// <param name="obj">对象实例</param>
+        /// <param name="message">消息内容</param>
+        [Conditional("UNITY_ASSERTIONS")]
+        public static void IsTypeOf<T>(object obj, string message) where T : class
+        {
+            IsTypeOf<T>(obj.GetType(), message);
+        }
+
+        /// <summary>
+        /// 检测指定对象是否继承自目标类型的断言函数
+        /// </summary>
+        /// <typeparam name="T">父对象类型</typeparam>
+        /// <param name="obj">对象实例</param>
+        /// <param name="format">消息格式</param>
+        /// <param name="args">消息参数列表</param>
+        [Conditional("UNITY_ASSERTIONS")]
+        public static void IsTypeOf<T>(object obj, string format, params object[] args) where T : class
+        {
+            IsTypeOf<T>(obj.GetType(), format, args);
+        }
+
+        /// <summary>
+        /// 检测指定对象类型是否继承自目标类型的断言函数
+        /// </summary>
+        /// <typeparam name="T">父对象类型</typeparam>
+        /// <param name="type">对象类型</param>
+        [Conditional("UNITY_ASSERTIONS")]
+        public static void IsTypeOf<T>(Type type) where T : class
+        {
+            IsTrue(typeof(T).IsAssignableFrom(type));
+        }
+
+        /// <summary>
+        /// 检测指定对象类型是否继承自目标类型的断言函数
+        /// </summary>
+        /// <typeparam name="T">父对象类型</typeparam>
+        /// <param name="type">对象类型</param>
+        /// <param name="message">消息内容</param>
+        [Conditional("UNITY_ASSERTIONS")]
+        public static void IsTypeOf<T>(Type type, string message) where T : class
+        {
+            IsTrue(typeof(T).IsAssignableFrom(type), message);
+        }
+
+        /// <summary>
+        /// 检测指定对象类型是否继承自目标类型的断言函数
+        /// </summary>
+        /// <typeparam name="T">父对象类型</typeparam>
+        /// <param name="type">对象类型</param>
+        /// <param name="format">消息格式</param>
+        /// <param name="args">消息参数列表</param>
+        [Conditional("UNITY_ASSERTIONS")]
+        public static void IsTypeOf<T>(Type type, string format, params object[] args) where T : class
+        {
+            IsTrue(typeof(T).IsAssignableFrom(type), format, args);
         }
     }
 }

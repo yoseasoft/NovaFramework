@@ -114,7 +114,7 @@ namespace GameEngine.Loader
             foreach (Delegate callback in _classCleanupCallbacks.Values)
             {
                 CodeLoader.OnCleanupAllGeneralCodeLoaderHandler handler = callback as CodeLoader.OnCleanupAllGeneralCodeLoaderHandler;
-                Debugger.Assert(handler, "Invalid class '{%t}' cleanup handler.", _targetType);
+                Debugger.IsNotNull(handler);
 
                 handler.Invoke();
             }
@@ -144,7 +144,7 @@ namespace GameEngine.Loader
                 if (onMatched(matchedType, kvp.Key))
                 {
                     CodeLoader.OnGeneralCodeLoaderLoadHandler handler = kvp.Value as CodeLoader.OnGeneralCodeLoaderLoadHandler;
-                    Debugger.Assert(handler, "Invalid class '{%t}' load handler.", _targetType);
+                    Debugger.IsNotNull(handler);
                     succeed = handler.Invoke(symClass, reload);
                     return true;
                 }
@@ -171,7 +171,7 @@ namespace GameEngine.Loader
                 if (onMatched(matchedType, kvp.Key))
                 {
                     CodeLoader.OnGeneralCodeLoaderLookupHandler handler = kvp.Value as CodeLoader.OnGeneralCodeLoaderLookupHandler;
-                    Debugger.Assert(handler, "Invalid class '{%t}' lookup handler.", _targetType);
+                    Debugger.IsNotNull(handler);
                     codeInfo = handler.Invoke(symClass);
                     return true;
                 }

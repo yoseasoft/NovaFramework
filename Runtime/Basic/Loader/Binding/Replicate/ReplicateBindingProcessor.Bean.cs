@@ -47,7 +47,7 @@ namespace GameEngine
             }
 
             Loader.Structuring.ReplicateBeanCodeInfo replicateCodeInfo = codeInfo as Loader.Structuring.ReplicateBeanCodeInfo;
-            Debugger.Assert(replicateCodeInfo, "Invalid replicate bean code info.");
+            Debugger.IsNotNull(replicateCodeInfo);
 
             if (reload)
             {

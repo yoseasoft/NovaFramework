@@ -193,7 +193,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke(IBean targetObject, VirtualKeyCode keyCode, InputOperationType operationType)
         {
-            Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(targetObject);
 
             if (/*InputOperationType.Unknown == _operationTypes[keyCode] ||*/ InputOperationType.Unknown == (_operationTypes[keyCode] & operationType))
             {
@@ -235,7 +235,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Invoke(IBean targetObject, object inputData)
         {
-            Debugger.Assert(targetObject, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(targetObject);
 
             if (_isNullParameterType)
             {

@@ -53,7 +53,6 @@ namespace GameEngine.Loader.Configuring
                         break;
                     case BeanConfigureNodeAttributeName.ClassType:
                         beanInfo.ClassType = NovaEngine.Utility.Assembly.GetType(attr.Value);
-                        Debugger.Assert(beanInfo.ClassType, "Invalid bean class type.");
                         break;
                     case BeanConfigureNodeAttributeName.ParentName:
                         beanInfo.ParentName = attr.Value;
@@ -66,6 +65,9 @@ namespace GameEngine.Loader.Configuring
                         break;
                 }
             }
+
+            // 配置的bean必须有类型属性标识
+            Debugger.IsNotNull(beanInfo.ClassType);
 
             XmlNodeList nodeList = node.ChildNodes;
             for (int n = 0; null != nodeList && n < nodeList.Count; ++n)
@@ -124,7 +126,6 @@ namespace GameEngine.Loader.Configuring
                         break;
                     case BeanConfigureNodeAttributeName.ReferenceType:
                         fieldInfo.ReferenceType = NovaEngine.Utility.Assembly.GetType(attr.Value);
-                        Debugger.Assert(fieldInfo.ReferenceType, "Invalid bean field class type.");
                         break;
                     case BeanConfigureNodeAttributeName.ReferenceValue:
                         fieldInfo.ReferenceValue = attr.Value;
@@ -153,7 +154,6 @@ namespace GameEngine.Loader.Configuring
                         break;
                     case BeanConfigureNodeAttributeName.ReferenceType:
                         propertyInfo.ReferenceType = NovaEngine.Utility.Assembly.GetType(attr.Value);
-                        Debugger.Assert(propertyInfo.ReferenceType, "Invalid bean property class type.");
                         break;
                     case BeanConfigureNodeAttributeName.ReferenceValue:
                         propertyInfo.ReferenceValue = attr.Value;
@@ -179,7 +179,6 @@ namespace GameEngine.Loader.Configuring
                         break;
                     case BeanConfigureNodeAttributeName.ReferenceType:
                         componentInfo.ReferenceType = NovaEngine.Utility.Assembly.GetType(attr.Value);
-                        Debugger.Assert(componentInfo.ReferenceType, "Invalid bean component class type.");
                         break;
                     case BeanConfigureNodeAttributeName.Priority:
                         componentInfo.Priority = int.Parse(attr.Value);

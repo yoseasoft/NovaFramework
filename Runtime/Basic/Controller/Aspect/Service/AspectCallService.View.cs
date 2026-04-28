@@ -97,7 +97,7 @@ namespace GameEngine
                 }
 
                 // Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodTypeCodeInfo.Method);
-                // Debugger.Assert(callback, "Invalid method type.");
+                // Debugger.IsNotNull(callback);
 
                 Debugger.Info(LogGroupTag.Controller, "Register view '{%t}' notice call with target method '{%t}'.", targetType, methodTypeCodeInfo.Method);
 

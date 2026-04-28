@@ -26,6 +26,7 @@
 using System.Collections.Generic;
 using System.Customize.Extension;
 using System.Runtime.CompilerServices;
+
 using UnityEngine.Scripting;
 
 namespace GameEngine
@@ -209,6 +210,7 @@ namespace GameEngine
         /// <summary>
         /// 管理器内部固定执行函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void InternalFixedExecute()
         {
             // 帧调度启动
@@ -223,6 +225,7 @@ namespace GameEngine
         /// <summary>
         /// 管理器内部执行函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void InternalExecute()
         {
             // 帧调度启动
@@ -246,6 +249,7 @@ namespace GameEngine
         /// <summary>
         /// 管理器内部延迟执行函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void InternalLateExecute()
         {
             // 帧调度启动
@@ -269,6 +273,7 @@ namespace GameEngine
         /// <summary>
         /// 管理器内部固定刷新函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void InternalFixedUpdate()
         {
             // do nothing
@@ -277,6 +282,7 @@ namespace GameEngine
         /// <summary>
         /// 管理器内部刷新函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void InternalUpdate()
         {
             // 总控实例刷新
@@ -294,6 +300,7 @@ namespace GameEngine
         /// <summary>
         /// 管理器内部延迟刷新函数
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void InternalLateUpdate()
         {
             // 总控实例后置刷新

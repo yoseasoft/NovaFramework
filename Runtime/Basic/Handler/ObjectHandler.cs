@@ -315,7 +315,7 @@ namespace GameEngine
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
         internal CObject CreateObject(Type objectType, string beanName, object userData = null)
         {
-            Debugger.Assert(objectType, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(objectType);
             if (false == _objectClassTypes.Values.Contains(objectType))
             {
                 Debugger.Error(LogGroupTag.Module, "Could not found any correct object class with target type '{%t}', created object failed.", objectType);

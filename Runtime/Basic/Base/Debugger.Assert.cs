@@ -168,5 +168,77 @@ namespace GameEngine
         {
             NovaEngine.CAssert.IsNotNull(value, format, args);
         }
+
+        /// <summary>
+        /// 检测指定对象是否继承自目标类型的断言函数
+        /// </summary>
+        /// <typeparam name="T">父对象类型</typeparam>
+        /// <param name="obj">对象实例</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsTypeOf<T>(object obj) where T : class
+        {
+            NovaEngine.CAssert.IsTypeOf<T>(obj);
+        }
+
+        /// <summary>
+        /// 检测指定对象是否继承自目标类型的断言函数
+        /// </summary>
+        /// <typeparam name="T">父对象类型</typeparam>
+        /// <param name="obj">对象实例</param>
+        /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsTypeOf<T>(object obj, string message) where T : class
+        {
+            NovaEngine.CAssert.IsTypeOf<T>(obj, message);
+        }
+
+        /// <summary>
+        /// 检测指定对象是否继承自目标类型的断言函数
+        /// </summary>
+        /// <typeparam name="T">父对象类型</typeparam>
+        /// <param name="obj">对象实例</param>
+        /// <param name="format">消息格式</param>
+        /// <param name="args">消息参数列表</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsTypeOf<T>(object obj, string format, params object[] args) where T : class
+        {
+            NovaEngine.CAssert.IsTypeOf<T>(obj, format, args);
+        }
+
+        /// <summary>
+        /// 检测指定对象类型是否继承自目标类型的断言函数
+        /// </summary>
+        /// <typeparam name="T">父对象类型</typeparam>
+        /// <param name="type">对象类型</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsTypeOf<T>(Type type) where T : class
+        {
+            NovaEngine.CAssert.IsTypeOf<T>(type);
+        }
+
+        /// <summary>
+        /// 检测指定对象类型是否继承自目标类型的断言函数
+        /// </summary>
+        /// <typeparam name="T">父对象类型</typeparam>
+        /// <param name="type">对象类型</param>
+        /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsTypeOf<T>(Type type, string message) where T : class
+        {
+            NovaEngine.CAssert.IsTypeOf<T>(type, message);
+        }
+
+        /// <summary>
+        /// 检测指定对象类型是否继承自目标类型的断言函数
+        /// </summary>
+        /// <typeparam name="T">父对象类型</typeparam>
+        /// <param name="type">对象类型</param>
+        /// <param name="format">消息格式</param>
+        /// <param name="args">消息参数列表</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsTypeOf<T>(Type type, string format, params object[] args) where T : class
+        {
+            NovaEngine.CAssert.IsTypeOf<T>(type, format, args);
+        }
     }
 }

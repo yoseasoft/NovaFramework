@@ -108,7 +108,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal bool IsOnTargetLifecycle(AspectBehaviourType lifecycleType)
         {
-            Debugger.Assert(AspectBehaviourType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
+            Debugger.IsFalse(AspectBehaviourType.Unknown == _currentLifecycleType);
 
             if (_currentLifecycleType == lifecycleType)
             {
@@ -126,7 +126,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal bool IsOnProcessingForTargetLifecycle(AspectBehaviourType lifecycleType)
         {
-            Debugger.Assert(AspectBehaviourType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
+            Debugger.IsFalse(AspectBehaviourType.Unknown == _currentLifecycleType);
 
             if (_currentLifecycleType == lifecycleType && _isCurrentLifecycleTypeRunning)
             {
@@ -146,7 +146,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool IsTheLifecycleTypeBetweenOfTargetRanges(AspectBehaviourType began, AspectBehaviourType ended)
         {
-            Debugger.Assert(AspectBehaviourType.Unknown != _currentLifecycleType, "Invalid current lifecycle value.");
+            Debugger.IsFalse(AspectBehaviourType.Unknown == _currentLifecycleType);
 
             if (_currentLifecycleType >= began && _currentLifecycleType < ended)
             {
@@ -254,7 +254,7 @@ namespace GameEngine
             AspectBehaviourType lifecycleType = GetLifecycleTypeByMethodName(f.Method.Name);
 
             CBase obj = f.Target as CBase;
-            Debugger.Assert(obj, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(obj);
 
             if (AspectBehaviourType.Unknown != lifecycleType)
             {
@@ -274,10 +274,10 @@ namespace GameEngine
         /// <param name="lifecycleType">生命周期类型</param>
         protected internal void Call(Action f, AspectBehaviourType lifecycleType)
         {
-            Debugger.Assert(AspectBehaviourType.Unknown != lifecycleType, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsFalse(AspectBehaviourType.Unknown == lifecycleType);
 
             CBase obj = f.Target as CBase;
-            Debugger.Assert(obj, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(obj);
 
             obj._currentLifecycleType = lifecycleType;
             obj._isCurrentLifecycleTypeRunning = true;

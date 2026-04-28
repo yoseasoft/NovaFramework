@@ -47,7 +47,7 @@ namespace GameEngine
             }
 
             Loader.Structuring.ReplicateCallCodeInfo replicateCodeInfo = codeInfo as Loader.Structuring.ReplicateCallCodeInfo;
-            Debugger.Assert(replicateCodeInfo, "Invalid replicate call code info.");
+            Debugger.IsNotNull(replicateCodeInfo);
 
             for (int n = 0; n < replicateCodeInfo.GetMethodTypeCount(); ++n)
             {

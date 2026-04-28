@@ -360,50 +360,6 @@ namespace GameEngine
             NovaEngine.Debugger.Assert(condition, format, args);
         }
 
-        /// <summary>
-        /// 对象非空的断言检查，仅在调试模式下该函数有效
-        /// </summary>
-        /// <param name="obj">对象实例</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Assert(object obj)
-        {
-            NovaEngine.Debugger.Assert(obj);
-        }
-
-        /// <summary>
-        /// 对象非空的断言检查，仅在调试模式下该函数有效
-        /// </summary>
-        /// <param name="obj">对象实例</param>
-        /// <param name="message">消息内容</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Assert(object obj, object message)
-        {
-            NovaEngine.Debugger.Assert(obj, message);
-        }
-
-        /// <summary>
-        /// 对象非空的断言检查，仅在调试模式下该函数有效
-        /// </summary>
-        /// <param name="obj">对象实例</param>
-        /// <param name="message">消息内容</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Assert(object obj, string message)
-        {
-            NovaEngine.Debugger.Assert(obj, message);
-        }
-
-        /// <summary>
-        /// 对象非空的断言检查，仅在调试模式下该函数有效
-        /// </summary>
-        /// <param name="obj">对象实例</param>
-        /// <param name="format">格式内容</param>
-        /// <param name="args">消息格式化参数</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Assert(object obj, string format, params object[] args)
-        {
-            NovaEngine.Debugger.Assert(obj, format, args);
-        }
-
         #endregion
 
         #region 异常操作相关的接口函数

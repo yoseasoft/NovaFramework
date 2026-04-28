@@ -77,7 +77,7 @@ namespace GameEngine.Loader.Configuring
                     OnXmlConfigureResolvingCallbackAttribute _attr = (OnXmlConfigureResolvingCallbackAttribute) attr;
 
                     OnConfigureObjectLoadingHandler callback = method.CreateDelegate(typeof(OnConfigureObjectLoadingHandler)) as OnConfigureObjectLoadingHandler;
-                    Debugger.Assert(callback, "Invalid configure resolve callback.");
+                    Debugger.IsNotNull(callback);
 
                     AddConfigureResolveCallback(_attr.NodeType, _attr.NodeName, callback);
                 }

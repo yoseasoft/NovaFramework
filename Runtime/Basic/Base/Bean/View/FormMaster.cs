@@ -74,7 +74,7 @@ namespace GameEngine
         /// </summary>
         public static void Update()
         {
-            Debugger.Assert(_isOnStartup, "Invalid status.");
+            Debugger.IsTrue(_isOnStartup);
 
             // 刷新表单管理器实例
             if (null != _formManager)
@@ -91,7 +91,7 @@ namespace GameEngine
         /// <returns>返回窗口对象实例</returns>
         public static Form CreateForm(Type viewType)
         {
-            Debugger.Assert(_formManager, NovaEngine.ErrorText.NullObjectReference);
+            Debugger.IsNotNull(_formManager);
 
             return _formManager.CreateForm(viewType);
         }
@@ -129,7 +129,7 @@ namespace GameEngine
         /// <param name="formManager">管理器对象</param>
         public static void RegisterFormManager(IFormManager formManager)
         {
-            Debugger.Assert(formManager, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(formManager);
 
             if (null != _formManager)
             {

@@ -158,7 +158,7 @@ namespace GameEngine
         /// <returns>若消息监听成功则返回true，否则返回false</returns>
         protected internal bool AddMessageListener(string fullname, MethodInfo methodInfo, int opcode, bool automatically)
         {
-            Debugger.Assert(opcode > 0, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsTrue(opcode > 0);
 
             // 2025-11-30：
             // 针对普通函数采用对象自身构建的方式
@@ -168,8 +168,10 @@ namespace GameEngine
             if (false == _messageListenerCallForType.TryGetValue(opcode, out IDictionary<string, bool> calls))
             {
                 // 创建回调列表
-                calls = new Dictionary<string, bool>();
-                calls.Add(fullname, automatically);
+                calls = new Dictionary<string, bool>()
+                {
+                    { fullname, automatically },
+                };
 
                 _messageListenerCallForType.Add(opcode, calls);
 
@@ -179,7 +181,7 @@ namespace GameEngine
 
             if (calls.ContainsKey(fullname))
             {
-                Debugger.Warn("The '{%t}' instance's message type '{%d}' was already add same listener by name '{%s}', repeat added it failed.",
+                Debugger.Warn(LogGroupTag.Bean, "The '{%t}' instance's message type '{%d}' was already add same listener by name '{%s}', repeat added it failed.",
                     BeanType, opcode, fullname);
                 return false;
             }

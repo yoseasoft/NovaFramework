@@ -294,7 +294,7 @@ namespace GameEngine
         /// <returns>若动态创建实例成功返回其引用，否则返回null</returns>
         internal CActor CreateActor(Type actorType, string beanName, object userData = null)
         {
-            Debugger.Assert(actorType, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(actorType);
             if (false == _entityClassTypes.Values.Contains(actorType))
             {
                 Debugger.Error(LogGroupTag.Module, "Could not found any correct actor class with target type '{%t}', created actor failed.", actorType);
@@ -408,7 +408,7 @@ namespace GameEngine
         {
             if (false == Entities.Contains(actor))
             {
-                Debugger.Warn("Could not found target actor instance '{%t}' from current container, removed it failed.", actor.BeanType);
+                Debugger.Warn(LogGroupTag.Module, "Could not found target actor instance '{%t}' from current container, removed it failed.", actor.BeanType);
                 return;
             }
 

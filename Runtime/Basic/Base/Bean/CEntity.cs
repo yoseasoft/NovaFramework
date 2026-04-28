@@ -231,7 +231,7 @@ namespace GameEngine
                 }
 
                 // 组件尚未唤醒
-                // Debugger.Assert(false == component.IsOnAwakingStatus() && false == component.IsOnDestroyingStatus(), "Invalid entity lifecycle.");
+                // Debugger.IsFalse(component.IsOnAwakingStatus() || component.IsOnDestroyingStatus());
                 // 2024-05-20:
                 // 在唤醒阶段添加的组件对象，其实例通过"AddComponent"函数添加时，就会自动唤醒
                 // 因此在大部分的情况下，所有添加成功的组件，均已处于唤醒状态了，无需在此处重复调用

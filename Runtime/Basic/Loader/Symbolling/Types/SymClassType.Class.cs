@@ -340,7 +340,7 @@ namespace GameEngine.Loader.Symbolling
             if (null != _featureObjects && _featureObjects.TryGetValue(typeof(T), out Attribute attribute))
             {
                 featureObject = attribute as T;
-                Debugger.Assert(featureObject, NovaEngine.ErrorText.InvalidArguments);
+                Debugger.IsNotNull(featureObject);
 
                 return true;
             }

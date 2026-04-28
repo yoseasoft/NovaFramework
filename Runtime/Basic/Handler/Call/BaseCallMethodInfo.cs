@@ -114,7 +114,7 @@ namespace GameEngine
             _isNullParameterType = CheckFunctionFormatWasNullParameterType(methodInfo);
 
             Delegate callback = NovaEngine.Utility.Reflection.CreateGenericActionDelegate(targetObject, methodInfo);
-            Debugger.Assert(callback, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNull(callback);
             _callback = callback;
         }
 

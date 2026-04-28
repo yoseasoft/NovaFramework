@@ -48,7 +48,7 @@ namespace GameEngine
             }
 
             Loader.Structuring.ApiCallCodeInfo apiCodeInfo = codeInfo as Loader.Structuring.ApiCallCodeInfo;
-            Debugger.Assert(apiCodeInfo, "Invalid api call code info.");
+            Debugger.IsNotNull(apiCodeInfo);
 
             for (int n = 0; n < apiCodeInfo.GetMethodTypeCount(); ++n)
             {

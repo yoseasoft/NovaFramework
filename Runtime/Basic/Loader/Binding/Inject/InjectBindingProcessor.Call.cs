@@ -47,7 +47,7 @@ namespace GameEngine
             }
 
             Loader.Structuring.InjectCallCodeInfo injectCodeInfo = codeInfo as Loader.Structuring.InjectCallCodeInfo;
-            Debugger.Assert(injectCodeInfo, "Invalid inject call code info.");
+            Debugger.IsNotNull(injectCodeInfo);
 
             /**
              * 2024-08-26：
