@@ -145,7 +145,7 @@ namespace NovaEngine
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static string Format(string format, params object[] args)
             {
-                return ObjectFormatter.TextFormatConvertionProcess(format, args);
+                return ObjectFormatter.TextFormatConversionProcess(format, args);
             }
 
             /// <summary>
@@ -163,7 +163,7 @@ namespace NovaEngine
                 }
 
                 buff.Length = 0;
-                buff.Append(ObjectFormatter.TextFormatConvertionProcess(format, args));
+                buff.Append(ObjectFormatter.TextFormatConversionProcess(format, args));
             }
 
             #region 对象的字符串输出封装接口函数

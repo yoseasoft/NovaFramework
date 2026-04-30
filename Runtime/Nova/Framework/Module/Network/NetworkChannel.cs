@@ -262,7 +262,8 @@ namespace NovaEngine.Module
         /// <param name="url">通道连接目标地址</param>
         public void Connect(string name, string url)
         {
-            CLogger.Assert(string.IsNullOrEmpty(_channelName) && string.IsNullOrEmpty(_url), "The name or url was already assigned value.");
+            CAssert.IsNullOrEmpty(_channelName);
+            CAssert.IsNullOrEmpty(_url);
 
             _channelName = name;
             _url = url;

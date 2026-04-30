@@ -71,7 +71,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="obj">目标参数</param>
         /// <returns>返回转换后的参数对象实例</returns>
-        private delegate string TextFormatParameterConvertionCallback(object obj);
+        private delegate string TextFormatParameterConversionCallback(object obj);
 
         [ThreadStatic]
         private static StringBuilder _cachedStringBuilder = new StringBuilder(4096);
@@ -81,7 +81,7 @@ namespace NovaEngine
         /// <summary>
         /// 文本格式转换的参数默认分隔符
         /// </summary>
-        private const string TEXT_FORMAT_CONVERTION_ARGUMENTS_SEPARATOR = " ";
+        private const string TEXT_FORMAT_CONVERSION_ARGUMENTS_SEPARATOR = " ";
 
         /// <summary>
         /// 通过指定的解析标识符，查找对应的格式转换参数类型
@@ -98,12 +98,12 @@ namespace NovaEngine
             // 转换为小写字符
             symbolName = symbolName.ToLower();
 
-            for (int n = 0; n < _textFormatConvertionInfos.Length; ++n)
+            for (int n = 0; n < _textFormatConversionInfos.Length; ++n)
             {
-                if (_textFormatConvertionInfos[n].parameterType != TextFormatParameterType.Unknown &&
-                    _textFormatConvertionInfos[n].formatSymbol == char.Parse(symbolName))
+                if (_textFormatConversionInfos[n].parameterType != TextFormatParameterType.Unknown &&
+                    _textFormatConversionInfos[n].formatSymbol == char.Parse(symbolName))
                 {
-                    return _textFormatConvertionInfos[n].parameterType;
+                    return _textFormatConversionInfos[n].parameterType;
                 }
             }
 
@@ -117,7 +117,7 @@ namespace NovaEngine
         /// <param name="args">参数列表</param>
         /// <returns>返回格式化处理后的文本字符串</returns>
         /// <exception cref="CFrameworkException">格式文件解析异常</exception>
-        public static string TextFormatConvertionProcess(string text, params object[] args)
+        public static string TextFormatConversionProcess(string text, params object[] args)
         {
             // 格式内容不能为空
             if (text.IsNullOrEmpty())
@@ -167,7 +167,7 @@ namespace NovaEngine
                 {
                     if (num_value != index)
                     {
-                        throw new CFrameworkException("The convertion index '{0}' doesnot match format location '{1}' within text context '{2}'.", num_value, index, text);
+                        throw new CFrameworkException("The conversion index '{0}' don't match format location '{1}' within text context '{2}'.", num_value, index, text);
                     }
 
                     parameters[index] = args[index];
@@ -194,8 +194,8 @@ namespace NovaEngine
                         throw new CFrameworkException("Invalid format parameter type '{0}' within text \"{1}\" position '{2}'.", substr, text, match.Index);
                     }
 
-                    TextFormatConvertionInfo convertionInfo = _textFormatConvertionInfos[(int) parameterType];
-                    parameters[index] = convertionInfo.convertionCallback(args[index]);
+                    TextFormatConversionInfo conversionInfo = _textFormatConversionInfos[(int) parameterType];
+                    parameters[index] = conversionInfo.conversionCallback(args[index]);
                 }
 
                 sb.Append($"{{{index}}}");
@@ -211,7 +211,7 @@ namespace NovaEngine
             // 则将多余参数以字符串形式追加至末尾输出
             while (index < args.Length)
             {
-                sb.Append($"{TEXT_FORMAT_CONVERTION_ARGUMENTS_SEPARATOR}{{{index}}}");
+                sb.Append($"{TEXT_FORMAT_CONVERSION_ARGUMENTS_SEPARATOR}{{{index}}}");
                 parameters[index] = ToString(args[index]);
                 index++;
             }
@@ -231,128 +231,128 @@ namespace NovaEngine
         /// 文本格式转换的处理信息数据结构定义<br/>
         /// 用于记录参数类型所对应的解析标识符和处理回调函数
         /// </summary>
-        private struct TextFormatConvertionInfo
+        private struct TextFormatConversionInfo
         {
             public TextFormatParameterType parameterType;
             public char formatSymbol;
-            public TextFormatParameterConvertionCallback convertionCallback;
+            public TextFormatParameterConversionCallback conversionCallback;
         }
 
         /// <summary>
         /// 文本格式转换的处理信息对象集合
         /// </summary>
-        private static TextFormatConvertionInfo[] _textFormatConvertionInfos = new TextFormatConvertionInfo[(int) TextFormatParameterType.Max]
+        private static TextFormatConversionInfo[] _textFormatConversionInfos = new TextFormatConversionInfo[(int) TextFormatParameterType.Max]
         {
             new ()
             {
                 parameterType = TextFormatParameterType.Unknown,
                 formatSymbol = Definition.CCharacter.Nil,
-                convertionCallback = null,
+                conversionCallback = null,
             },
             new ()
             {
                 parameterType = TextFormatParameterType.Boolean,
                 formatSymbol = Placeholder_B,
-                convertionCallback = _TextFormatParameterConvertionCallback_Boolean,
+                conversionCallback = _TextFormatParameterConversionCallback_Boolean,
             },
             new ()
             {
                 parameterType = TextFormatParameterType.DecimalInteger,
                 formatSymbol = Placeholder_D,
-                convertionCallback = _TextFormatParameterConvertionCallback_DecimalInteger,
+                conversionCallback = _TextFormatParameterConversionCallback_DecimalInteger,
             },
             new ()
             {
                 parameterType = TextFormatParameterType.OctalInteger,
                 formatSymbol = Placeholder_O,
-                convertionCallback = _TextFormatParameterConvertionCallback_OctalInteger,
+                conversionCallback = _TextFormatParameterConversionCallback_OctalInteger,
             },
             new ()
             {
                 parameterType = TextFormatParameterType.HexadecimalInteger,
                 formatSymbol = Placeholder_X,
-                convertionCallback = _TextFormatParameterConvertionCallback_HexadecimalInteger,
+                conversionCallback = _TextFormatParameterConversionCallback_HexadecimalInteger,
             },
             new ()
             {
                 parameterType = TextFormatParameterType.CommonFloat,
                 formatSymbol = Placeholder_F,
-                convertionCallback = _TextFormatParameterConvertionCallback_CommonFloat,
+                conversionCallback = _TextFormatParameterConversionCallback_CommonFloat,
             },
             new ()
             {
                 parameterType = TextFormatParameterType.ScientificNotationFloat,
                 formatSymbol = Placeholder_E,
-                convertionCallback = _TextFormatParameterConvertionCallback_ScientificNotationFloat,
+                conversionCallback = _TextFormatParameterConversionCallback_ScientificNotationFloat,
             },
             new ()
             {
                 parameterType = TextFormatParameterType.Character,
                 formatSymbol = Placeholder_C,
-                convertionCallback = _TextFormatParameterConvertionCallback_Character,
+                conversionCallback = _TextFormatParameterConversionCallback_Character,
             },
             new ()
             {
                 parameterType = TextFormatParameterType.String,
                 formatSymbol = Placeholder_S,
-                convertionCallback = _TextFormatParameterConvertionCallback_String,
+                conversionCallback = _TextFormatParameterConversionCallback_String,
             },
             new ()
             {
                 parameterType = TextFormatParameterType.ObjectPointer,
                 formatSymbol = Placeholder_P,
-                convertionCallback = _TextFormatParameterConvertionCallback_ObjectPointer,
+                conversionCallback = _TextFormatParameterConversionCallback_ObjectPointer,
             },
             new ()
             {
                 parameterType = TextFormatParameterType.ObjectType,
                 formatSymbol = Placeholder_T,
-                convertionCallback = _TextFormatParameterConvertionCallback_ObjectType,
+                conversionCallback = _TextFormatParameterConversionCallback_ObjectType,
             },
             new ()
             {
                 parameterType = TextFormatParameterType.ObjectVerbose,
                 formatSymbol = Placeholder_V,
-                convertionCallback = _TextFormatParameterConvertionCallback_ObjectVerbose,
+                conversionCallback = _TextFormatParameterConversionCallback_ObjectVerbose,
             },
         };
 
-        private static string _TextFormatParameterConvertionCallback_Boolean(object obj)
+        private static string _TextFormatParameterConversionCallback_Boolean(object obj)
         {
             bool b = Convert.ToBoolean(obj);
             return b ? Definition.CString.True : Definition.CString.False;
         }
 
-        private static string _TextFormatParameterConvertionCallback_DecimalInteger(object obj)
+        private static string _TextFormatParameterConversionCallback_DecimalInteger(object obj)
         {
             long n = Convert.ToInt64(obj);
             return n.ToString();
         }
 
-        private static string _TextFormatParameterConvertionCallback_OctalInteger(object obj)
+        private static string _TextFormatParameterConversionCallback_OctalInteger(object obj)
         {
             return Convert.ToString(Convert.ToInt64(obj), 8);
         }
 
-        private static string _TextFormatParameterConvertionCallback_HexadecimalInteger(object obj)
+        private static string _TextFormatParameterConversionCallback_HexadecimalInteger(object obj)
         {
             // return Convert.ToString(Convert.ToInt64(obj), 16);
             return string.Format("{0:X8}", obj);
         }
 
-        private static string _TextFormatParameterConvertionCallback_CommonFloat(object obj)
+        private static string _TextFormatParameterConversionCallback_CommonFloat(object obj)
         {
             double d = Convert.ToDouble(obj);
             return d.ToString();
         }
 
-        private static string _TextFormatParameterConvertionCallback_ScientificNotationFloat(object obj)
+        private static string _TextFormatParameterConversionCallback_ScientificNotationFloat(object obj)
         {
             double d = Convert.ToDouble(obj);
             return d.ToString("E");
         }
 
-        private static string _TextFormatParameterConvertionCallback_Character(object obj)
+        private static string _TextFormatParameterConversionCallback_Character(object obj)
         {
             if (obj is char)
             {
@@ -369,14 +369,14 @@ namespace NovaEngine
             return c.ToString();
         }
 
-        private static string _TextFormatParameterConvertionCallback_String(object obj)
+        private static string _TextFormatParameterConversionCallback_String(object obj)
         {
-            CLogger.Assert(obj is string, ErrorText.InvalidArguments);
+            CAssert.IsTrue(obj is string);
 
             return obj.ToString();
         }
 
-        private static string _TextFormatParameterConvertionCallback_ObjectPointer(object obj)
+        private static string _TextFormatParameterConversionCallback_ObjectPointer(object obj)
         {
             // unsafe { fixed (object *p = &obj) { Console.WriteLine((long) p); } } // 输出对象的内存地址指针值
 
@@ -385,10 +385,10 @@ namespace NovaEngine
             handle.Free();
 
             // 将内存地址转换为十六进制整型数值的表示方式再返回
-            return _TextFormatParameterConvertionCallback_HexadecimalInteger(address.ToInt64());
+            return _TextFormatParameterConversionCallback_HexadecimalInteger(address.ToInt64());
         }
 
-        private static string _TextFormatParameterConvertionCallback_ObjectType(object obj)
+        private static string _TextFormatParameterConversionCallback_ObjectType(object obj)
         {
             // 处理反射对象实例的情况
             if (TryGetSystemReflectionObjectInfo(obj, out string text))
@@ -400,7 +400,7 @@ namespace NovaEngine
             return Utility.Text.GetFullName(obj.GetType());
         }
 
-        private static string _TextFormatParameterConvertionCallback_ObjectVerbose(object obj)
+        private static string _TextFormatParameterConversionCallback_ObjectVerbose(object obj)
         {
             return ToString(obj);
         }

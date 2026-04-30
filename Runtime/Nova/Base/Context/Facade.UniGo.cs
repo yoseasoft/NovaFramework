@@ -77,7 +77,7 @@ namespace NovaEngine
         /// 获取当前表现层加载的根节点对象实例
         /// </summary>
         /// <returns>返回当前表现层加载的根节点对象实例，若不存在则返回null</returns>
-        public UnityEngine.GameObject GetRootGameObject()
+        public UnityGameObject GetRootGameObject()
         {
             return AppEntry.RootGameObject;
         }
@@ -90,7 +90,7 @@ namespace NovaEngine
         public T AddComponent<T>() where T : UnityComponent
         {
             UnityGameObject rootGameObject = AppEntry.RootGameObject;
-            CLogger.Assert(rootGameObject);
+            CAssert.IsNotNull(rootGameObject);
 
             UnityComponent c = rootGameObject.AddComponent<T>();
 
@@ -104,9 +104,9 @@ namespace NovaEngine
         public void RemoveComponent(UnityObject obj)
         {
             UnityGameObject rootGameObject = AppEntry.RootGameObject;
-            CLogger.Assert(rootGameObject);
+            CAssert.IsNotNull(rootGameObject);
 
-            UnityComponent.Destroy(obj);
+            UnityObject.Destroy(obj);
         }
 
         #endregion

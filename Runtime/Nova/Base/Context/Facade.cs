@@ -89,7 +89,7 @@ namespace NovaEngine
         private bool Initialize()
         {
             // 该初始化接口仅可调用一次，若需再次初始化该接口，需将之前的实例销毁掉
-            CLogger.Assert(null == _instance);
+            CAssert.IsNull(_instance);
 
             // if (null == _rootGameObject) { CLogger.Error("管理器对象的根节点组件实例为空，不可添加组件实例及进行MONO协程调度！"); return false; }
 

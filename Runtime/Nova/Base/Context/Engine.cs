@@ -109,7 +109,7 @@ namespace NovaEngine
         private bool Initialize()
         {
             // 该初始化接口仅可调用一次，若需再次初始化该接口，需将之前的实例销毁掉
-            CLogger.Assert(null == _instance);
+            CAssert.IsNull(_instance);
 
             // if (null == _monoBehaviour) { CLogger.Error("引擎对象实例的MONO组件对象实例为空，引擎初始化失败！"); return false; }
 
@@ -184,7 +184,7 @@ namespace NovaEngine
             Application.Instance.Startup();
 
             // 引擎正常启动，总控对象不可为null
-            CLogger.Assert(null != _facade);
+            CAssert.IsNotNull(_facade);
 
             _facade.Startup();
 

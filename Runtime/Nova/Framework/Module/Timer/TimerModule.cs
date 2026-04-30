@@ -417,7 +417,8 @@ namespace NovaEngine.Module
 
             public TimerInfo(TimerModule module)
             {
-                CLogger.Assert(null != module, "构建定时任务对象必须依附于一个模块载体实例，该实例不能为空！");
+                CAssert.IsNotNull(module);
+
                 _timerModule = module;
             }
 

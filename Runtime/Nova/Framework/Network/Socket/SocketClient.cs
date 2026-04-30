@@ -90,7 +90,8 @@ namespace NovaEngine.Network
         public SocketClient(int id, ISocketCall handler)
         {
             // 必须传入上层管理容器用于回调通知
-            CLogger.Assert(null != handler);
+            CAssert.IsNotNull(handler);
+
             _notification = handler;
             _sequenceId = id;
 

@@ -234,7 +234,7 @@ namespace NovaEngine
         /// <param name="manager">管理器实例</param>
         public static void RemoveManager(IManager manager)
         {
-            CLogger.Assert(null != manager, "Invalid manager instance.");
+            CAssert.IsNotNull(manager);
 
             // 处于更新中
             if (_isManagerProcessing)
@@ -275,7 +275,8 @@ namespace NovaEngine
         /// </summary>
         private static void RemoveAllManagers()
         {
-            CLogger.Assert(!_isManagerProcessing, "Cannot remove manager within update progressing!");
+            CAssert.IsFalse(_isManagerProcessing);
+
             for (LinkedListNode<IManager> current = _frameworkManagers.Last; null != current; current = current.Next)
             {
                 DestroyManager(current.Value);

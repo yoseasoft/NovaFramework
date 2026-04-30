@@ -80,7 +80,7 @@ namespace NovaEngine
         /// <returns>若实例创建成功返回true，否则返回false</returns>
         public static bool Create()
         {
-            CLogger.Assert(null == _engine, "Cannot created one more time.");
+            CAssert.IsNull(_engine);
 
             // 创建引擎实例
             _engine = Engine.Create();
@@ -153,7 +153,7 @@ namespace NovaEngine
         /// </summary>
         public static void Startup()
         {
-            CLogger.Assert(null != _engine, ErrorText.InvalidArguments);
+            CAssert.IsNotNull(_engine);
 
             if (_engine.IsOnStartup)
             {
@@ -240,7 +240,7 @@ namespace NovaEngine
         /// </summary>
         public static void Execute()
         {
-            CLogger.Assert(_isRunning, "The application entry was not running.");
+            CAssert.IsTrue(_isRunning);
 
             // 引擎执行通知
             _engine.Execute();
@@ -254,7 +254,7 @@ namespace NovaEngine
         /// </summary>
         public static void LateExecute()
         {
-            CLogger.Assert(_isRunning, "The application entry was not running.");
+            CAssert.IsTrue(_isRunning);
 
             // 引擎后置执行通知
             _engine.LateExecute();
@@ -268,7 +268,7 @@ namespace NovaEngine
         /// </summary>
         public static void Update()
         {
-            CLogger.Assert(_isRunning, "The application entry was not running.");
+            CAssert.IsTrue(_isRunning);
 
             // 引擎刷新通知
             _engine.Update();
@@ -282,7 +282,7 @@ namespace NovaEngine
         /// </summary>
         public static void LateUpdate()
         {
-            CLogger.Assert(_isRunning, "The application entry was not running.");
+            CAssert.IsTrue(_isRunning);
 
             // 引擎后置刷新通知
             _engine.LateUpdate();
