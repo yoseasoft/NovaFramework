@@ -34,9 +34,9 @@ namespace GameEngine
     public abstract class CObject : CRef, IBeanLifecycle
     {
         /// <summary>
-        /// 获取通用对象的分类类型
+        /// 获取通用对象的分类标签
         /// </summary>
-        public override sealed BeanClassifyType ClassifyType => BeanClassifyType.Object;
+        public override sealed CBeanClassificationLabel ClassificationLabel => CBeanClassificationLabel.Object;
 
         /// <summary>
         /// 通用对象等待销毁状态标识

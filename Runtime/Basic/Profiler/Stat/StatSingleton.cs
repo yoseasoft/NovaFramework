@@ -268,7 +268,7 @@ namespace GameEngine.Profiler.Statistics
         /// <param name="method">函数信息</param>
         protected void RegisterStatMethod(int funcType, MethodInfo method)
         {
-            Debugger.Assert(null != _regStatMethodTypes, "The register method container must be non-null.");
+            Debugger.IsNotNull(_regStatMethodTypes);
 
             if (_regStatMethodTypes.ContainsKey(funcType))
             {

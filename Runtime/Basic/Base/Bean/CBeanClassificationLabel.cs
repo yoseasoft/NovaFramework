@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -24,37 +25,33 @@
 
 namespace GameEngine
 {
-    /// Bean对象抽象类
-    public abstract partial class CBean
+    /// <summary>
+    /// 实体对象的分类标签枚举定义<br/>
+    /// 此类型主要用于快速进行类型判断，避免使用类似<see cref="System.Type.IsAssignableFrom(System.Type)"/>之类的方式导致的性能消耗
+    /// </summary>
+    public enum CBeanClassificationLabel : byte
     {
-        /// <summary>
-        /// 实体对象的分类类型枚举定义<br/>
-        /// 此类型主要用于快速进行类型判断，避免使用类似<see cref="System.Type.IsAssignableFrom(System.Type)"/>之类的方式导致的性能消耗
-        /// </summary>
-        public enum BeanClassifyType : byte
-        {
-            Unknown = 0,
+        Unknown = 0,
 
-            /// <summary>
-            /// 通用对象类型
-            /// </summary>
-            Object,
-            /// <summary>
-            /// 场景对象类型
-            /// </summary>
-            Scene,
-            /// <summary>
-            /// 角色对象类型
-            /// </summary>
-            Actor,
-            /// <summary>
-            /// 视图对象类型
-            /// </summary>
-            View,
-            /// <summary>
-            /// 组件对象类型
-            /// </summary>
-            Component,
-        }
+        /// <summary>
+        /// 通用对象类型
+        /// </summary>
+        Object,
+        /// <summary>
+        /// 场景对象类型
+        /// </summary>
+        Scene,
+        /// <summary>
+        /// 角色对象类型
+        /// </summary>
+        Actor,
+        /// <summary>
+        /// 视图对象类型
+        /// </summary>
+        View,
+        /// <summary>
+        /// 组件对象类型
+        /// </summary>
+        Component,
     }
 }

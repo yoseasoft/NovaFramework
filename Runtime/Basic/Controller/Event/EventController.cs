@@ -167,7 +167,7 @@ namespace GameEngine
             }
             else
             {
-                Debugger.Assert(null != eventData.EventObject, NovaEngine.ErrorText.InvalidArguments);
+                Debugger.IsNotNull(eventData.EventObject);
 
                 OnEventDispatched(eventData.EventObject);
             }

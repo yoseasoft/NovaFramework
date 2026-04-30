@@ -101,9 +101,10 @@ namespace GameEngine
         /// <returns>若组件类型注册成功则返回true，否则返回false</returns>
         internal bool RegisterComponentClass(string componentName, Type clsType)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(componentName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNullOrEmpty(componentName);
+            Debugger.IsNotNull(clsType);
 
-            if (false == clsType.Is<CComponent>())
+            if (clsType.IsNot<CComponent>())
             {
                 Debugger.Warn(LogGroupTag.Controller, "The register type {%s} must be inherited from 'CComponent'.", clsType.Name);
                 return false;

@@ -1,3 +1,7 @@
+
+using static UnityEngine.EventSystems.EventTrigger;
+
+
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
@@ -36,6 +40,11 @@ namespace GameEngine
         internal override sealed void OnPropertyChangedDispatch(string propertyName)
         {
             string tags = ReplicateController.Instance.RetrievingCompleteReplicateTags(BeanType, propertyName);
+            if (null == tags)
+            {
+                Debugger.Warn(LogGroupTag.Bean, "Could not found any replicate tag from property '{%s}' and bean type '{%t}', announced it failed.", propertyName, BeanType);
+                return;
+            }
 
             SendToSelf(tags, ReplicateAnnounceType.Changed);
         }

@@ -32,7 +32,7 @@ namespace GameEngine
     /// <summary>
     /// 框架内部的辅助工具类，用于实现一些通用的辅助接口函数
     /// </summary>
-    static class Utils
+    static partial class Utils
     {
         /// <summary>
         /// 获取目标对象类型下所有指定行为模式的函数信息，合并创建一个回调句柄实例

@@ -26,7 +26,10 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Customize.Extension;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 using UnityAssert = UnityEngine.Assertions.Assert;
 
@@ -193,12 +196,14 @@ namespace NovaEngine
             UnityAssert.IsNotNull<T>(value, Utility.Text.Format(format, args));
         }
 
+        #region 基于类型匹配检测封装的断言函数
+
         /// <summary>
         /// 检测指定对象是否继承自目标类型的断言函数
         /// </summary>
         /// <typeparam name="T">父对象类型</typeparam>
         /// <param name="obj">对象实例</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsTypeOf<T>(object obj) where T : class
         {
             IsTypeOf<T>(obj.GetType());
@@ -210,7 +215,7 @@ namespace NovaEngine
         /// <typeparam name="T">父对象类型</typeparam>
         /// <param name="obj">对象实例</param>
         /// <param name="message">消息内容</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsTypeOf<T>(object obj, string message) where T : class
         {
             IsTypeOf<T>(obj.GetType(), message);
@@ -223,7 +228,7 @@ namespace NovaEngine
         /// <param name="obj">对象实例</param>
         /// <param name="format">消息格式</param>
         /// <param name="args">消息参数列表</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsTypeOf<T>(object obj, string format, params object[] args) where T : class
         {
             IsTypeOf<T>(obj.GetType(), format, args);
@@ -234,7 +239,7 @@ namespace NovaEngine
         /// </summary>
         /// <typeparam name="T">父对象类型</typeparam>
         /// <param name="type">对象类型</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsTypeOf<T>(Type type) where T : class
         {
             IsTrue(typeof(T).IsAssignableFrom(type));
@@ -246,7 +251,7 @@ namespace NovaEngine
         /// <typeparam name="T">父对象类型</typeparam>
         /// <param name="type">对象类型</param>
         /// <param name="message">消息内容</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsTypeOf<T>(Type type, string message) where T : class
         {
             IsTrue(typeof(T).IsAssignableFrom(type), message);
@@ -259,10 +264,230 @@ namespace NovaEngine
         /// <param name="type">对象类型</param>
         /// <param name="format">消息格式</param>
         /// <param name="args">消息参数列表</param>
-        [Conditional("UNITY_ASSERTIONS")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsTypeOf<T>(Type type, string format, params object[] args) where T : class
         {
             IsTrue(typeof(T).IsAssignableFrom(type), format, args);
         }
+
+        #endregion
+
+        #region 基于空字符串检测封装的断言函数
+
+        /// <summary>
+        /// 检测指定字符串对象是否为空的断言函数
+        /// </summary>
+        /// <param name="str">字符串对象</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNullOrEmpty(string str)
+        {
+            IsTrue(str.IsNullOrEmpty());
+        }
+
+        /// <summary>
+        /// 检测指定字符串对象是否为空的断言函数
+        /// </summary>
+        /// <param name="str">字符串对象</param>
+        /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNullOrEmpty(string str, string message)
+        {
+            IsTrue(str.IsNullOrEmpty(), message);
+        }
+
+        /// <summary>
+        /// 检测指定字符串对象是否为空的断言函数
+        /// </summary>
+        /// <param name="str">字符串对象</param>
+        /// <param name="format">消息格式</param>
+        /// <param name="args">消息参数列表</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNullOrEmpty(string str, string format, params object[] args)
+        {
+            IsTrue(str.IsNullOrEmpty(), format, args);
+        }
+
+        /// <summary>
+        /// 检测指定字符串对象是否为非空的断言函数
+        /// </summary>
+        /// <param name="str">字符串对象</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNotNullOrEmpty(string str)
+        {
+            IsTrue(str.IsNotNullOrEmpty());
+        }
+
+        /// <summary>
+        /// 检测指定字符串对象是否为非空的断言函数
+        /// </summary>
+        /// <param name="str">字符串对象</param>
+        /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNotNullOrEmpty(string str, string message)
+        {
+            IsTrue(str.IsNotNullOrEmpty(), message);
+        }
+
+        /// <summary>
+        /// 检测指定字符串对象是否为非空的断言函数
+        /// </summary>
+        /// <param name="str">字符串对象</param>
+        /// <param name="format">消息格式</param>
+        /// <param name="args">消息参数列表</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNotNullOrEmpty(string str, string format, params object[] args)
+        {
+            IsTrue(str.IsNotNullOrEmpty(), format, args);
+        }
+
+        #endregion
+
+        #region 基于空容器检测封装的断言函数
+
+        /// <summary>
+        /// 检测指定容器对象是否为空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="collection">容器对象</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNullOrEmpty<T>(ICollection<T> collection)
+        {
+            IsTrue(collection.IsNull() || 0 == collection.Count);
+        }
+
+        /// <summary>
+        /// 检测指定容器对象是否为空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="collection">容器对象</param>
+        /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNullOrEmpty<T>(ICollection<T> collection, string message)
+        {
+            IsTrue(collection.IsNull() || 0 == collection.Count, message);
+        }
+
+        /// <summary>
+        /// 检测指定字符串对象是否为空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="collection">容器对象</param>
+        /// <param name="format">消息格式</param>
+        /// <param name="args">消息参数列表</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNullOrEmpty<T>(ICollection<T> collection, string format, params object[] args)
+        {
+            IsTrue(collection.IsNull() || 0 == collection.Count, format, args);
+        }
+
+        /// <summary>
+        /// 检测指定容器对象是否为空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="collection">容器对象</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNullOrEmpty<T>(IReadOnlyCollection<T> collection)
+        {
+            IsTrue(collection.IsNull() || 0 == collection.Count);
+        }
+
+        /// <summary>
+        /// 检测指定容器对象是否为空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="collection">容器对象</param>
+        /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNullOrEmpty<T>(IReadOnlyCollection<T> collection, string message)
+        {
+            IsTrue(collection.IsNull() || 0 == collection.Count, message);
+        }
+
+        /// <summary>
+        /// 检测指定字符串对象是否为空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="collection">容器对象</param>
+        /// <param name="format">消息格式</param>
+        /// <param name="args">消息参数列表</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNullOrEmpty<T>(IReadOnlyCollection<T> collection, string format, params object[] args)
+        {
+            IsTrue(collection.IsNull() || 0 == collection.Count, format, args);
+        }
+
+        /// <summary>
+        /// 检测指定容器对象是否为非空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="collection">容器对象</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNotNullOrEmpty<T>(ICollection<T> collection)
+        {
+            IsTrue(collection.IsNotNull() && collection.Count > 0);
+        }
+
+        /// <summary>
+        /// 检测指定容器对象是否为非空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="collection">容器对象</param>
+        /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNotNullOrEmpty<T>(ICollection<T> collection, string message)
+        {
+            IsTrue(collection.IsNotNull() && collection.Count > 0, message);
+        }
+
+        /// <summary>
+        /// 检测指定字符串对象是否为非空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="collection">容器对象</param>
+        /// <param name="format">消息格式</param>
+        /// <param name="args">消息参数列表</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNotNullOrEmpty<T>(ICollection<T> collection, string format, params object[] args)
+        {
+            IsTrue(collection.IsNotNull() && collection.Count > 0, format, args);
+        }
+
+        /// <summary>
+        /// 检测指定容器对象是否为非空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="collection">容器对象</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNotNullOrEmpty<T>(IReadOnlyCollection<T> collection)
+        {
+            IsTrue(collection.IsNotNull() && collection.Count > 0);
+        }
+
+        /// <summary>
+        /// 检测指定容器对象是否为非空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="collection">容器对象</param>
+        /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNotNullOrEmpty<T>(IReadOnlyCollection<T> collection, string message)
+        {
+            IsTrue(collection.IsNotNull() && collection.Count > 0, message);
+        }
+
+        /// <summary>
+        /// 检测指定字符串对象是否为非空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="collection">容器对象</param>
+        /// <param name="format">消息格式</param>
+        /// <param name="args">消息参数列表</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNotNullOrEmpty<T>(IReadOnlyCollection<T> collection, string format, params object[] args)
+        {
+            IsTrue(collection.IsNotNull() && collection.Count > 0, format, args);
+        }
+
+        #endregion
     }
 }

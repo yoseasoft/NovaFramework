@@ -42,9 +42,9 @@ namespace GameEngine
         public static ActorHandler ActorHandler => ActorHandler.Instance;
 
         /// <summary>
-        /// 获取角色对象的分类类型
+        /// 获取角色对象的分类标签
         /// </summary>
-        public override sealed BeanClassifyType ClassifyType => BeanClassifyType.Actor;
+        public override sealed CBeanClassificationLabel ClassificationLabel => CBeanClassificationLabel.Actor;
 
         /// <summary>
         /// 获取角色对象的名称

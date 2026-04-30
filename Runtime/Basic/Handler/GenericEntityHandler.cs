@@ -191,9 +191,10 @@ namespace GameEngine
         /// <returns>若实体类型注册成功则返回true，否则返回false</returns>
         protected bool RegisterEntityClass(string entityName, Type clsType, int priority)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(entityName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNullOrEmpty(entityName);
+            Debugger.IsNotNull(clsType);
 
-            if (false == typeof(CEntity).IsAssignableFrom(clsType))
+            if (clsType.IsNot<CEntity>())
             {
                 Debugger.Warn(LogGroupTag.Module, "The register type '{%t}' must be inherited from 'CEntity'.", clsType);
                 return false;

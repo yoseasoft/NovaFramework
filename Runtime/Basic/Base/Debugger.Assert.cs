@@ -24,6 +24,7 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Customize.Extension;
 using System.Runtime.CompilerServices;
 
 namespace GameEngine
@@ -169,6 +170,8 @@ namespace GameEngine
             NovaEngine.CAssert.IsNotNull(value, format, args);
         }
 
+        #region 基于类型匹配检测封装的断言函数
+
         /// <summary>
         /// 检测指定对象是否继承自目标类型的断言函数
         /// </summary>
@@ -240,5 +243,77 @@ namespace GameEngine
         {
             NovaEngine.CAssert.IsTypeOf<T>(type, format, args);
         }
+
+        #endregion
+
+        #region 基于空字符串检测封装的断言函数
+
+        /// <summary>
+        /// 检测指定字符串对象是否为空的断言函数
+        /// </summary>
+        /// <param name="str">字符串对象</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNullOrEmpty(string str)
+        {
+            NovaEngine.CAssert.IsNullOrEmpty(str);
+        }
+
+        /// <summary>
+        /// 检测指定字符串对象是否为空的断言函数
+        /// </summary>
+        /// <param name="str">字符串对象</param>
+        /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNullOrEmpty(string str, string message)
+        {
+            NovaEngine.CAssert.IsNullOrEmpty(str, message);
+        }
+
+        /// <summary>
+        /// 检测指定字符串对象是否为空的断言函数
+        /// </summary>
+        /// <param name="str">字符串对象</param>
+        /// <param name="format">消息格式</param>
+        /// <param name="args">消息参数列表</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNullOrEmpty(string str, string format, params object[] args)
+        {
+            NovaEngine.CAssert.IsNullOrEmpty(str, format, args);
+        }
+
+        /// <summary>
+        /// 检测指定字符串对象是否为非空的断言函数
+        /// </summary>
+        /// <param name="str">字符串对象</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNotNullOrEmpty(string str)
+        {
+            IsTrue(str.IsNotNullOrEmpty());
+        }
+
+        /// <summary>
+        /// 检测指定字符串对象是否为非空的断言函数
+        /// </summary>
+        /// <param name="str">字符串对象</param>
+        /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNotNullOrEmpty(string str, string message)
+        {
+            IsTrue(str.IsNotNullOrEmpty(), message);
+        }
+
+        /// <summary>
+        /// 检测指定字符串对象是否为非空的断言函数
+        /// </summary>
+        /// <param name="str">字符串对象</param>
+        /// <param name="format">消息格式</param>
+        /// <param name="args">消息参数列表</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNotNullOrEmpty(string str, string format, params object[] args)
+        {
+            IsTrue(str.IsNotNullOrEmpty(), format, args);
+        }
+
+        #endregion
     }
 }

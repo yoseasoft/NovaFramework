@@ -75,9 +75,9 @@ namespace GameEngine
         public object UserData { get { return _userData; } protected internal set { _userData = value; } }
 
         /// <summary>
-        /// 获取实体对象的分类类型
+        /// 获取实体对象的分类标签
         /// </summary>
-        public abstract BeanClassifyType ClassifyType { get; }
+        public abstract CBeanClassificationLabel ClassificationLabel { get; }
 
         /// <summary>
         /// 获取实体对象对应的符号对象实例

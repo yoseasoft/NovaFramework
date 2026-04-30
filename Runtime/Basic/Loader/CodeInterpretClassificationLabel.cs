@@ -1,7 +1,9 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
+/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
 /// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,31 +24,72 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System;
-
-namespace GameEngine
+namespace GameEngine.Loader
 {
-    /// 基于ECS模式的组件对象封装类
-    public abstract partial class CComponent
+    /// <summary>
+    /// 程序集的编码解释分类标签的枚举定义
+    /// </summary>
+    // [Flags]
+    internal enum CodeInterpretClassificationLabel : byte
     {
-        #region 组件对象数据同步分发调度接口函数
+        /// <summary>
+        /// 未知类型
+        /// </summary>
+        Unknown = 0,
 
         /// <summary>
-        /// 属性变化的分发调度接口函数
+        /// 输入类型
         /// </summary>
-        /// <param name="propertyName">变化属性名称</param>
-        internal override sealed void OnPropertyChangedDispatch(string propertyName)
-        {
-            string tags = ReplicateController.Instance.RetrievingCompleteReplicateTags(Entity.BeanType, BeanType, propertyName);
-            if (null == tags)
-            {
-                Debugger.Warn(LogGroupTag.Bean, "Could not found any replicate tag from property '{%s}' and bean type '{%t}.{%t}', announced it failed.", propertyName, Entity.BeanType, BeanType);
-                return;
-            }
+        Input = 1,
 
-            SendToSelf(tags, ReplicateAnnounceType.Changed);
-        }
+        /// <summary>
+        /// 事件类型
+        /// </summary>
+        Event = 2,
 
-        #endregion
+        /// <summary>
+        /// 网络类型
+        /// </summary>
+        Network = 3,
+
+        /// <summary>
+        /// 实体类型
+        /// </summary>
+        Bean = 11,
+
+        /// <summary>
+        /// 同步类型
+        /// </summary>
+        Replicate = 12,
+
+        /// <summary>
+        /// 扩展类型
+        /// </summary>
+        Extend = 13,
+
+        /// <summary>
+        /// 通知类型
+        /// </summary>
+        Notice = 14,
+
+        /// <summary>
+        /// 切面类型
+        /// </summary>
+        Aspect = 21,
+
+        /// <summary>
+        /// 注入类型
+        /// </summary>
+        Inject = 22,
+
+        /// <summary>
+        /// 对象池类型
+        /// </summary>
+        Pool = 31,
+
+        /// <summary>
+        /// 编程接口类型
+        /// </summary>
+        Api = 41,
     }
 }

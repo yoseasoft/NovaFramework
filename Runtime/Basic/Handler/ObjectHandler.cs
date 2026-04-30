@@ -169,9 +169,10 @@ namespace GameEngine
         /// <returns>若对象类型注册成功则返回true，否则返回false</returns>
         private bool RegisterObjectClass(string objectName, Type clsType, int priority)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(objectName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNullOrEmpty(objectName);
+            Debugger.IsNotNull(clsType);
 
-            if (false == clsType.Is<CObject>())
+            if (clsType.IsNot<CObject>())
             {
                 Debugger.Warn(LogGroupTag.Module, "The register type {%t} must be inherited from 'CObject'.", clsType);
                 return false;

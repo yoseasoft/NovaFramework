@@ -154,7 +154,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 加载器类的后缀名称常量定义
         /// </summary>
-        private const string CodeLoaderClassUnifiedStandardName = "CodeLoader";
+        private const string CodeLoaderClassUnifiedStandardName = nameof(CodeLoader);
 
         /// <summary>
         /// 通用类加载器类的反射管理容器列表
@@ -169,9 +169,9 @@ namespace GameEngine.Loader
         {
             string namespaceTag = typeof(CodeLoader).Namespace;
 
-            foreach (string enumName in Enum.GetNames(typeof(CodeClassifyType)))
+            foreach (string enumName in Enum.GetNames(typeof(CodeInterpretClassificationLabel)))
             {
-                if (enumName.Equals(CodeClassifyType.Unknown.ToString()))
+                if (enumName.Equals(CodeInterpretClassificationLabel.Unknown.ToString()))
                 {
                     // 未知类型直接忽略
                     continue;

@@ -72,7 +72,7 @@ namespace GameEngine
         private static void CallGameFunc(string methodName, params object[] args)
         {
             string targetName = NovaEngine.Configuration.GameEntryName; // GameConfig.GAME_MODULE_EXTERNAL_GATEWAY_NAME;
-            Debugger.Assert(targetName.IsNotNullOrEmpty(), NovaEngine.ErrorText.NullObjectReference);
+            Debugger.IsNotNullOrEmpty(targetName);
 
             // 可能存在开启了教程模式，但是忘记配置具体案例类型的情况
             //

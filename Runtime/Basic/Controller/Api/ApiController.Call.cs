@@ -179,7 +179,7 @@ namespace GameEngine
             if (info.IsExtension)
             {
                 // 如果是扩展类型函数，则记录一下扩展的目标对象类型
-                Debugger.Assert(parameters.Length > 0, NovaEngine.ErrorText.InvalidArguments);
+                Debugger.IsTrue(parameters.Length > 0);
                 info.ExtensionObjectType = parameters[pos].ParameterType;
                 pos++;
             }

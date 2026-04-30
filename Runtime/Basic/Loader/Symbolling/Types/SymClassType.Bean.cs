@@ -105,7 +105,7 @@ namespace GameEngine.Loader.Symbolling
 
             if (_fields.ContainsKey(field.FieldName))
             {
-                Debugger.Warn("The bean object '{0}' field name '{1}' was already exist, repeat added it failed.", _beanName, field.FieldName);
+                Debugger.Warn("The bean object '{%s}' field name '{%s}' was already exist, repeat added it failed.", _beanName, field.FieldName);
                 _fields.Remove(field.FieldName);
             }
 
@@ -119,7 +119,7 @@ namespace GameEngine.Loader.Symbolling
         /// <returns>若存在目标字段信息实例则返回true，否则返回false</returns>
         public bool HasFieldByName(string fieldName)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(fieldName), NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNullOrEmpty(fieldName);
 
             if (null == _fields)
             {
@@ -185,7 +185,7 @@ namespace GameEngine.Loader.Symbolling
 
             if (false == _fields.ContainsKey(field.FieldName))
             {
-                Debugger.Warn("Could not found any field name '{0}' from target bean object '{1}', removed it failed.", field.FieldName, _beanName);
+                Debugger.Warn("Could not found any field name '{%s}' from target bean object '{%s}', removed it failed.", field.FieldName, _beanName);
                 return;
             }
 
@@ -237,7 +237,7 @@ namespace GameEngine.Loader.Symbolling
 
             if (_properties.ContainsKey(property.PropertyName))
             {
-                Debugger.Warn("The bean object '{0}' property name '{1}' was already exist, repeat added it failed.", _beanName, property.PropertyName);
+                Debugger.Warn("The bean object '{%s}' property name '{%s}' was already exist, repeat added it failed.", _beanName, property.PropertyName);
                 _properties.Remove(property.PropertyName);
             }
 
@@ -251,7 +251,7 @@ namespace GameEngine.Loader.Symbolling
         /// <returns>若存在目标属性信息实例则返回true，否则返回false</returns>
         public bool HasPropertyByName(string propertyName)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(propertyName), NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNullOrEmpty(propertyName);
 
             if (null == _properties)
             {
@@ -317,7 +317,7 @@ namespace GameEngine.Loader.Symbolling
 
             if (false == _properties.ContainsKey(property.PropertyName))
             {
-                Debugger.Warn("Could not found any property name '{0}' from target bean object '{1}', removed it failed.", property.PropertyName, _beanName);
+                Debugger.Warn("Could not found any property name '{%s}' from target bean object '{%s}', removed it failed.", property.PropertyName, _beanName);
                 return;
             }
 

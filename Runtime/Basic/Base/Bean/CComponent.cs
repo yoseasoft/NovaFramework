@@ -40,9 +40,9 @@ namespace GameEngine
         NovaEngine.IExecutable, NovaEngine.IUpdatable, IBeanLifecycle
     {
         /// <summary>
-        /// 获取组件对象的分类类型
+        /// 获取组件对象的分类标签
         /// </summary>
-        public override sealed BeanClassifyType ClassifyType => BeanClassifyType.Component;
+        public override sealed CBeanClassificationLabel ClassificationLabel => CBeanClassificationLabel.Component;
 
         /// <summary>
         /// 获取组件对象的名称

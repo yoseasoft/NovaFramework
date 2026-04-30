@@ -86,7 +86,7 @@ namespace GameEngine.Loader
                         methodTypeCodeInfo.BehaviourType = inputDispatchCallAttribute.BehaviourType;
                         methodTypeCodeInfo.Fullname = symMethod.FullName;
                         methodTypeCodeInfo.Method = symMethod.MethodInfo;
-                        Debugger.Assert(null == inputDispatchCallAttribute.ClassType, "Cannot assigned any values to target type if current was extension function.");
+                        Debugger.IsNull(inputDispatchCallAttribute.ClassType);
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                         if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
@@ -140,7 +140,7 @@ namespace GameEngine.Loader
                         methodTypeCodeInfo.BehaviourType = eventDispatchCallAttribute.BehaviourType;
                         methodTypeCodeInfo.Fullname = symMethod.FullName;
                         methodTypeCodeInfo.Method = symMethod.MethodInfo;
-                        Debugger.Assert(null == eventDispatchCallAttribute.ClassType, "Cannot assigned any values to target type if current was extension function.");
+                        Debugger.IsNull(eventDispatchCallAttribute.ClassType);
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                         if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
@@ -194,7 +194,7 @@ namespace GameEngine.Loader
                         methodTypeCodeInfo.BehaviourType = messageDispatchCallAttribute.BehaviourType;
                         methodTypeCodeInfo.Fullname = symMethod.FullName;
                         methodTypeCodeInfo.Method = symMethod.MethodInfo;
-                        Debugger.Assert(null == messageDispatchCallAttribute.ClassType, "Cannot assigned any values to target type if current was extension function.");
+                        Debugger.IsNull(messageDispatchCallAttribute.ClassType);
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                         if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
@@ -248,7 +248,7 @@ namespace GameEngine.Loader
                         methodTypeCodeInfo.BehaviourType = replicateDispatchCallAttribute.BehaviourType;
                         methodTypeCodeInfo.Fullname = symMethod.FullName;
                         methodTypeCodeInfo.Method = symMethod.MethodInfo;
-                        Debugger.Assert(null == replicateDispatchCallAttribute.ClassType, "Cannot assigned any values to target type if current was extension function.");
+                        Debugger.IsNull(replicateDispatchCallAttribute.ClassType);
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
                         if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())

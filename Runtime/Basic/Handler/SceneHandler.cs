@@ -28,9 +28,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using System.Runtime.CompilerServices;
 
-using Cysharp.Threading.Tasks;
 using NovaFramework.AssetLoader;
 
 namespace GameEngine
@@ -469,9 +469,10 @@ namespace GameEngine
         /// <returns>若场景类型注册成功则返回true，否则返回false</returns>
         private bool RegisterSceneClass(string sceneName, Type clsType, int priority)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(sceneName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNullOrEmpty(sceneName);
+            Debugger.IsNotNull(clsType);
 
-            if (false == typeof(CScene).IsAssignableFrom(clsType))
+            if (clsType.IsNot<CScene>())
             {
                 Debugger.Warn(LogGroupTag.Module, "The register type '{%t}' must be inherited from 'CScene'.", clsType);
                 return false;

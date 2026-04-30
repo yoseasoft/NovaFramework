@@ -215,6 +215,10 @@ namespace GameEngine
             /// 对象实体名称
             /// </summary>
             protected readonly string _beanName;
+            /// <summary>
+            /// 对象分类标签
+            /// </summary>
+            protected readonly CBeanClassificationLabel _classificationLabel;
 
             /// <summary>
             /// 对象是否为单例模式的状态标识
@@ -223,10 +227,12 @@ namespace GameEngine
 
             protected GeneralInstantiateGenerator(Type classType, string beanName)
             {
-                Debugger.Assert(classType.Is<CBean>(), NovaEngine.ErrorText.InvalidArguments);
+                Debugger.IsTypeOf<CBean>(classType);
 
                 _classType = classType;
                 _beanName = beanName;
+
+                _classificationLabel = Utils.GetBeanClassificationLabelByClassType(classType);
             }
 
             /// <summary>
@@ -254,27 +260,33 @@ namespace GameEngine
             {
                 CBean obj = null;
 
-                if (_classType.Is<CScene>())
+                switch (_classificationLabel)
                 {
-                    // obj = SceneHandler.Instance.CreateScene(m_classType);
-                    throw new ArgumentException();
-                }
-                else if (_classType.Is<CActor>())
-                {
-                    obj = ActorHandler.Instance.CreateActor(_classType, _beanName);
-                }
-                else if (_classType.Is<CObject>())
-                {
-                    obj = ObjectHandler.Instance.CreateObject(_classType, _beanName);
-                }
-                else
-                {
-                    obj = Activator.CreateInstance(_classType) as CBean;
+                    case CBeanClassificationLabel.Scene:
+                        {
+                            // obj = SceneHandler.Instance.CreateScene(m_classType);
+                            throw new ArgumentException();
+                        }
+                    case CBeanClassificationLabel.Actor:
+                        {
+                            obj = ActorHandler.Instance.CreateActor(_classType, _beanName);
+                            break;
+                        }
+                    case CBeanClassificationLabel.Object:
+                        {
+                            obj = ObjectHandler.Instance.CreateObject(_classType, _beanName);
+                            break;
+                        }
+                    default:
+                        {
+                            obj = Activator.CreateInstance(_classType) as CBean;
 
-                    // 记录对象实例的映射名称
-                    obj.BeanName = _beanName;
+                            // 记录对象实例的映射名称
+                            obj.BeanName = _beanName;
 
-                    AspectController.Instance.Call(obj.Initialize);
+                            AspectController.Instance.Call(obj.Initialize);
+                            break;
+                        }
                 }
 
                 // 自动装配新创建的对象实例
@@ -294,21 +306,27 @@ namespace GameEngine
                 // 卸载待销毁的对象实例
                 AutowiredProcessingOnReleaseTargetObject(obj);
 
-                if (_classType.Is<CScene>())
+                switch (_classificationLabel)
                 {
-                    throw new ArgumentException();
-                }
-                else if (_classType.Is<CActor>())
-                {
-                    ActorHandler.Instance.DestroyActor(obj as CActor);
-                }
-                else if (_classType.Is<CObject>())
-                {
-                    ObjectHandler.Instance.DestroyObject(obj as CObject);
-                }
-                else
-                {
-                    AspectController.Instance.Call(obj.Cleanup);
+                    case CBeanClassificationLabel.Scene:
+                        {
+                            throw new ArgumentException();
+                        }
+                    case CBeanClassificationLabel.Actor:
+                        {
+                            ActorHandler.Instance.DestroyActor(obj as CActor);
+                            break;
+                        }
+                    case CBeanClassificationLabel.Object:
+                        {
+                            ObjectHandler.Instance.DestroyObject(obj as CObject);
+                            break;
+                        }
+                    default:
+                        {
+                            AspectController.Instance.Call(obj.Cleanup);
+                            break;
+                        }
                 }
             }
         }

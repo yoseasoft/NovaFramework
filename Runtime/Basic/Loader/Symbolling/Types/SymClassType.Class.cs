@@ -569,7 +569,7 @@ namespace GameEngine.Loader.Symbolling
         /// <returns>若存在目标字段实例则返回true，否则返回false</returns>
         public bool HasFieldByName(string fieldName)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(fieldName), NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNullOrEmpty(fieldName);
 
             if (null == _fields)
             {

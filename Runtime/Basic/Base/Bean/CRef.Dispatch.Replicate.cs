@@ -103,13 +103,13 @@ namespace GameEngine
         {
             if (_replicateTags.Contains(tags))
             {
-                Debugger.Warn("The 'CRef' instance replicate '{%s}' was already added, repeat do it failed.", tags);
+                Debugger.Warn(LogGroupTag.Bean, "The 'CRef' instance replicate '{%s}' was already added, repeat do it failed.", tags);
                 return true;
             }
 
             if (false == ReplicateController.Instance.AddReplicateCommunicate(tags, this))
             {
-                Debugger.Warn("The 'CRef' instance add replicate communicate '{%s}' failed.", tags);
+                Debugger.Warn(LogGroupTag.Bean, "The 'CRef' instance add replicate communicate '{%s}' failed.", tags);
                 return false;
             }
 
@@ -127,7 +127,7 @@ namespace GameEngine
         {
             if (false == _replicateTags.Contains(tags))
             {
-                // Debugger.Warn("Could not found any replicate '{%s}' for target 'CRef' instance with on added, do removed it failed.", tags);
+                // Debugger.Warn(LogGroupTag.Bean, "Could not found any replicate '{%s}' for target 'CRef' instance with on added, do removed it failed.", tags);
                 return;
             }
 

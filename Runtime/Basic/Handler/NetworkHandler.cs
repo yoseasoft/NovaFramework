@@ -832,7 +832,7 @@ namespace GameEngine
         /// <param name="classType">对象类</param>
         private void RegMessageClassTypes(int msgType, Type classType)
         {
-            Debugger.Assert(msgType > 0, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsTrue(msgType > 0);
 
             if (_messageClassTypes.ContainsKey(msgType))
             {

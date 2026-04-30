@@ -56,7 +56,7 @@ namespace GameEngine.Loader.Symbolling
                 SymMethod method = methods[n];
                 // 因为是静态类，所以内部的所有方法都必然为静态方法
                 // 其实这里完全没有必要做检查，但作者高兴，而且这里的处理是一次性的，所以就做吧，开心最重要
-                Debugger.Assert(method.IsStatic, "Invalid method type.");
+                Debugger.IsTrue(method.IsStatic);
 
                 // 扩展类型函数，将扩展目标添加到符号类中
                 if (method.IsExtension)
@@ -98,7 +98,7 @@ namespace GameEngine.Loader.Symbolling
                             {
                                 // 通过扩展的目标类型，获取到对应的符号类实例
                                 SymClass extensionTargetClass = CodeLoader.GetSymClassByType(method.ExtensionParameterType);
-                                Debugger.Assert(null != extensionTargetClass, "Invalid extension target type.");
+                                Debugger.IsNotNull(extensionTargetClass);
 
                                 // 将切面行为类型附加到扩展的目标对象上
                                 extensionTargetClass.AddAspectBehaviourType(aspectBehaviourType);

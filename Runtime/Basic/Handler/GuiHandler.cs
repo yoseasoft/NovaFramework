@@ -139,9 +139,10 @@ namespace GameEngine
         /// <returns>若视图类型注册成功则返回true，否则返回false</returns>
         private bool RegisterViewClass(string viewName, Type clsType, int priority)
         {
-            Debugger.Assert(false == string.IsNullOrEmpty(viewName) && null != clsType, NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNullOrEmpty(viewName);
+            Debugger.IsNotNull(clsType);
 
-            if (false == typeof(CView).IsAssignableFrom(clsType))
+            if (clsType.IsNot<CView>())
             {
                 Debugger.Warn(LogGroupTag.Module, "The register type '{%t}' must be inherited from 'CView'.", clsType);
                 return false;
@@ -249,6 +250,7 @@ namespace GameEngine
         public async UniTask<CView> AsyncOpenUI(Type viewType, object userData = null)
         {
             Debugger.IsNotNull(viewType);
+
             if (false == _entityClassTypes.Values.Contains(viewType))
             {
                 Debugger.Error(LogGroupTag.Module, "Could not found any correct view class with target type '{%t}', opened view failed.", viewType);

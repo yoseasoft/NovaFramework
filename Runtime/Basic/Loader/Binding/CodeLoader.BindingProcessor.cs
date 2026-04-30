@@ -32,6 +32,11 @@ namespace GameEngine.Loader
     public static partial class CodeLoader
     {
         /// <summary>
+        /// 绑定处理服务定义类
+        /// </summary>
+        internal class BindingProcessor { }
+
+        /// <summary>
         /// 初始化绑定处理服务类的函数句柄定义
         /// </summary>
         private delegate void OnInitAllBindingProcessorClassesHandler();
@@ -61,7 +66,7 @@ namespace GameEngine.Loader
         /// <summary>
         /// 绑定处理服务类的后缀名称常量定义
         /// </summary>
-        private const string BindingProcessorClassUnifiedStandardName = "BindingProcessor";
+        private const string BindingProcessorClassUnifiedStandardName = nameof(BindingProcessor);
 
         /// <summary>
         /// 初始化绑定处理服务类相关回调函数的管理容器
@@ -80,9 +85,9 @@ namespace GameEngine.Loader
         {
             string namespaceTag = typeof(CodeLoader).Namespace;
 
-            foreach (string enumName in Enum.GetNames(typeof(CodeClassifyType)))
+            foreach (string enumName in Enum.GetNames(typeof(CodeInterpretClassificationLabel)))
             {
-                if (enumName.Equals(CodeClassifyType.Unknown.ToString()))
+                if (enumName.Equals(CodeInterpretClassificationLabel.Unknown.ToString()))
                 {
                     // 未知类型直接忽略
                     continue;

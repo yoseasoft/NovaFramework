@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// GameEngine Framework
 ///
-/// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,30 @@
 /// -------------------------------------------------------------------------------
 
 using System;
+using System.Customize.Extension;
 
 namespace GameEngine
 {
-    /// 基于ECS模式的组件对象封装类
-    public abstract partial class CComponent
+    /// 框架内部的辅助工具类
+    static partial class Utils
     {
-        #region 组件对象数据同步分发调度接口函数
-
         /// <summary>
-        /// 属性变化的分发调度接口函数
+        /// 通过指定的对象类型获取与之匹配的实体分类标签，<br/>
+        /// 若类型不属于实体对象的子类，则返回<see cref="CBeanClassificationLabel.Unknown"/>值
         /// </summary>
-        /// <param name="propertyName">变化属性名称</param>
-        internal override sealed void OnPropertyChangedDispatch(string propertyName)
+        /// <param name="classType">对象类型</param>
+        /// <returns>返回该类型匹配的实体分类标签</returns>
+        public static CBeanClassificationLabel GetBeanClassificationLabelByClassType(Type classType)
         {
-            string tags = ReplicateController.Instance.RetrievingCompleteReplicateTags(Entity.BeanType, BeanType, propertyName);
-            if (null == tags)
+            return classType switch
             {
-                Debugger.Warn(LogGroupTag.Bean, "Could not found any replicate tag from property '{%s}' and bean type '{%t}.{%t}', announced it failed.", propertyName, Entity.BeanType, BeanType);
-                return;
-            }
-
-            SendToSelf(tags, ReplicateAnnounceType.Changed);
+                _ when classType.Is<CObject>()    => CBeanClassificationLabel.Object,
+                _ when classType.Is<CScene>()     => CBeanClassificationLabel.Scene,
+                _ when classType.Is<CActor>()     => CBeanClassificationLabel.Actor,
+                _ when classType.Is<CView>()      => CBeanClassificationLabel.View,
+                _ when classType.Is<CComponent>() => CBeanClassificationLabel.Component,
+                _                                 => CBeanClassificationLabel.Unknown
+            };
         }
-
-        #endregion
     }
 }

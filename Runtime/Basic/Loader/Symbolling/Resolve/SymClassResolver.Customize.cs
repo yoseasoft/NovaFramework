@@ -103,7 +103,7 @@ namespace GameEngine.Loader.Symbolling
         {
             // 通过目标类型，获取到对应的符号类实例
             SymClass symClass = CodeLoader.GetSymClassByType(targetType);
-            Debugger.Assert(null != symClass, "Invalid target symbol type.");
+            Debugger.IsNotNull(symClass);
 
             AutobindFeatureTypeForTargetSymbol(symClass, featureType);
         }

@@ -75,9 +75,9 @@ namespace GameEngine
         public static GuiHandler GuiHandler => GuiHandler.Instance;
 
         /// <summary>
-        /// 获取视图对象的分类类型
+        /// 获取视图对象的分类标签
         /// </summary>
-        public override sealed BeanClassifyType ClassifyType => BeanClassifyType.View;
+        public override sealed CBeanClassificationLabel ClassificationLabel => CBeanClassificationLabel.View;
 
         /// <summary>
         /// 获取视图对象的名称

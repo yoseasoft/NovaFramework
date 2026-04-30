@@ -71,7 +71,7 @@ namespace GameEngine
 
             if (false == IsOnStartingStatus()) return;
 
-            Debugger.Assert(propertyName.IsNotNullOrEmpty(), NovaEngine.ErrorText.InvalidArguments);
+            Debugger.IsNotNullOrEmpty(propertyName);
 
             OnPropertyChangedDispatch(propertyName);
         }
