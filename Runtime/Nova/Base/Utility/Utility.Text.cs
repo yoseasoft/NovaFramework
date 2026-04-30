@@ -103,8 +103,7 @@ namespace NovaEngine
             /// <returns>返回连接后的字符串</returns>
             public static string Append(params object[] args)
             {
-                if (null == args)
-                    CLogger.Throw<ArgumentNullException>("Append is invalid.");
+                CDebugger.Throw<ArgumentNullException>(null != args);
 
                 _stringBuilderCache.Clear();
                 int length = args.Length;
@@ -123,8 +122,7 @@ namespace NovaEngine
             /// <returns>返回合并后的字符串</returns>
             public static string Combine(params string[] strings)
             {
-                if (null == strings)
-                    CLogger.Throw<ArgumentNullException>("Combine is invalid.");
+                CDebugger.Throw<ArgumentNullException>(null != strings);
 
                 _stringBuilderCache.Length = 0;
                 int length = strings.Length;
@@ -157,10 +155,7 @@ namespace NovaEngine
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static void FormatToBuffer(StringBuilder buff, string format, params object[] args)
             {
-                if (buff == null)
-                {
-                    throw new CFrameworkException("Invalid arguments.");
-                }
+                CDebugger.Throw<ArgumentNullException>(null != buff);
 
                 buff.Length = 0;
                 buff.Append(ObjectFormatter.TextFormatConversionProcess(format, args));

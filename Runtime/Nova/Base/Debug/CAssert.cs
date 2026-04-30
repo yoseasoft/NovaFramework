@@ -342,7 +342,83 @@ namespace NovaEngine
 
         #endregion
 
-        #region 基于空容器检测封装的断言函数
+        #region 基于数组检测封装的断言函数
+
+        /// <summary>
+        /// 检测指定数组对象是否为空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="array">数组对象</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNullOrEmpty<T>(T[] array)
+        {
+            IsTrue(array.IsNull() || 0 == array.Length);
+        }
+
+        /// <summary>
+        /// 检测指定数组对象是否为空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="array">数组对象</param>
+        /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNullOrEmpty<T>(T[] array, string message)
+        {
+            IsTrue(array.IsNull() || 0 == array.Length, message);
+        }
+
+        /// <summary>
+        /// 检测指定数组对象是否为空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="array">数组对象</param>
+        /// <param name="format">消息格式</param>
+        /// <param name="args">消息参数列表</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNullOrEmpty<T>(T[] array, string format, params object[] args)
+        {
+            IsTrue(array.IsNull() || 0 == array.Length, format, args);
+        }
+
+        /// <summary>
+        /// 检测指定数组对象是否为非空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="array">数组对象</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNotNullOrEmpty<T>(T[] array)
+        {
+            IsTrue(array.IsNotNull() && array.Length > 0);
+        }
+
+        /// <summary>
+        /// 检测指定数组对象是否为非空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="array">数组对象</param>
+        /// <param name="message">消息内容</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNotNullOrEmpty<T>(T[] array, string message)
+        {
+            IsTrue(array.IsNotNull() && array.Length > 0, message);
+        }
+
+        /// <summary>
+        /// 检测指定数组对象是否为非空的断言函数
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="array">数组对象</param>
+        /// <param name="format">消息格式</param>
+        /// <param name="args">消息参数列表</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void IsNotNullOrEmpty<T>(T[] array, string format, params object[] args)
+        {
+            IsTrue(array.IsNotNull() && array.Length > 0, format, args);
+        }
+
+        #endregion
+
+        #region 基于容器检测封装的断言函数
 
         /// <summary>
         /// 检测指定容器对象是否为空的断言函数
@@ -368,7 +444,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 检测指定字符串对象是否为空的断言函数
+        /// 检测指定容器对象是否为空的断言函数
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="collection">容器对象</param>
@@ -404,7 +480,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 检测指定字符串对象是否为空的断言函数
+        /// 检测指定容器对象是否为空的断言函数
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="collection">容器对象</param>
@@ -440,7 +516,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 检测指定字符串对象是否为非空的断言函数
+        /// 检测指定容器对象是否为非空的断言函数
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="collection">容器对象</param>
@@ -476,7 +552,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 检测指定字符串对象是否为非空的断言函数
+        /// 检测指定容器对象是否为非空的断言函数
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="collection">容器对象</param>

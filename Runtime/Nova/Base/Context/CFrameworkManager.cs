@@ -33,10 +33,7 @@ namespace NovaEngine
         /// <summary>
         /// 获取管理器实例的优先级
         /// </summary>
-        public virtual int Priority
-        {
-            get { return 0; }
-        }
+        public virtual int Priority => 0;
 
         /// <summary>
         /// 管理器对象的初始化回调函数
