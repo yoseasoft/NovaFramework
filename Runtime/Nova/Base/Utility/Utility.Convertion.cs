@@ -135,7 +135,7 @@ namespace NovaEngine
             {
                 if (false == bool.TryParse(text, out bool result))
                 {
-                    Logger.Warn("Convert string '{%s}' to bool failed.", text);
+                    CLogger.Warn("Convert string '{%s}' to bool failed.", text);
 
                     result = defaultValue;
                 }
@@ -153,7 +153,7 @@ namespace NovaEngine
             {
                 if (false == int.TryParse(text, out int result))
                 {
-                    Logger.Warn("Convert string '{%s}' to int failed.", text);
+                    CLogger.Warn("Convert string '{%s}' to int failed.", text);
 
                     result = defaultValue;
                 }
@@ -171,7 +171,7 @@ namespace NovaEngine
             {
                 if (false == long.TryParse(text, out long result))
                 {
-                    Logger.Warn("Convert string '{%s}' to int failed.", text);
+                    CLogger.Warn("Convert string '{%s}' to int failed.", text);
 
                     result = defaultValue;
                 }
@@ -189,7 +189,7 @@ namespace NovaEngine
             {
                 if (false == float.TryParse(text, out float result))
                 {
-                    Logger.Warn("Convert string '{%s}' to float failed.", text);
+                    CLogger.Warn("Convert string '{%s}' to float failed.", text);
 
                     result = defaultValue;
                 }
@@ -207,7 +207,7 @@ namespace NovaEngine
             {
                 if (false == double.TryParse(text, out double result))
                 {
-                    Logger.Warn("Convert string '{%s}' to double failed.", text);
+                    CLogger.Warn("Convert string '{%s}' to double failed.", text);
 
                     result = defaultValue;
                 }
@@ -225,7 +225,7 @@ namespace NovaEngine
             {
                 if (false == SystemDateTime.TryParse(text, out SystemDateTime result))
                 {
-                    Logger.Warn("Convert string '{%s}' to DateTime failed.", text);
+                    CLogger.Warn("Convert string '{%s}' to DateTime failed.", text);
 
                     result = defaultValue;
                 }
@@ -276,7 +276,7 @@ namespace NovaEngine
                     return StringToDateTime(text);
                 }
 
-                Logger.Warn("Cannot convert string to target type '{%t}', getting value failed.", targetType);
+                CLogger.Warn("Cannot convert string to target type '{%t}', getting value failed.", targetType);
                 return null;
             }
 

@@ -86,7 +86,7 @@ namespace NovaEngine
                     {
                         if (!reload)
                         {
-                            Logger.Error("当前域中的程序集缓存列表中已存在相同名称‘{%s}’的程序包，此处正在进行错误的重复添加操作，建议在非重载模式下先移除同名程序集后再进行注册操作！", kvp.Key);
+                            CLogger.Error("当前域中的程序集缓存列表中已存在相同名称‘{%s}’的程序包，此处正在进行错误的重复添加操作，建议在非重载模式下先移除同名程序集后再进行注册操作！", kvp.Key);
                         }
 
                         _cachedAssemblies.Remove(kvp.Key);

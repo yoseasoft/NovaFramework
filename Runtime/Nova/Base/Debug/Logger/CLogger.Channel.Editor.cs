@@ -33,12 +33,12 @@ namespace NovaEngine
     /// <summary>
     /// 日志相关函数集合工具类
     /// </summary>
-    internal static partial class Logger
+    internal static partial class CLogger
     {
         /// <summary>
         /// 日志输出编辑器模式操作管理类
         /// </summary>
-        [LogOutputChannelBinding(LogOutputChannelType.Editor)]
+        [LogOutputChannelBinding(CLogOutputChannelType.Editor)]
         private sealed class LogEditor : Singleton<LogEditor>, ILogOutput
         {
             /// <summary>
@@ -103,12 +103,12 @@ namespace NovaEngine
             /// </summary>
             /// <param name="level">日志等级</param>
             /// <param name="message">日志内容</param>
-            public void Output(LogOutputLevelType level, object message)
+            public void Output(CLogOutputLevelType level, object message)
             {
                 StringBuilder sb = GetHighlightedLogText(level, message.ToString());
 
                 // 获取C#堆栈,Warning以上级别日志才获取堆栈
-                if (level >= LogOutputLevelType.Warning)
+                if (level >= CLogOutputLevelType.Warning)
                 {
                     sb.Append("\n");
 
@@ -134,19 +134,19 @@ namespace NovaEngine
 
                 switch (level)
                 {
-                    case LogOutputLevelType.Debug:
-                    case LogOutputLevelType.Info:
+                    case CLogOutputLevelType.Debug:
+                    case CLogOutputLevelType.Info:
                         UnityEngine.Debug.Log(sb.ToString());
                         break;
-                    case LogOutputLevelType.Warning:
+                    case CLogOutputLevelType.Warning:
                         UnityEngine.Debug.LogWarning(sb.ToString());
                         break;
-                    case LogOutputLevelType.Error:
-                    case LogOutputLevelType.Fatal:
+                    case CLogOutputLevelType.Error:
+                    case CLogOutputLevelType.Fatal:
                         UnityEngine.Debug.LogError(sb.ToString());
                         break;
-                    case LogOutputLevelType.Assert:
-                    case LogOutputLevelType.Exception:
+                    case CLogOutputLevelType.Assert:
+                    case CLogOutputLevelType.Exception:
                         UnityEngine.Debug.LogAssertion(sb.ToString());
                         break;
                 }
@@ -182,13 +182,13 @@ namespace NovaEngine
                 return string.Format("PlayerLoop:{0}", Timestamp.FrameCount);
             }
 
-            private StringBuilder GetHighlightedLogText(LogOutputLevelType level, string message)
+            private StringBuilder GetHighlightedLogText(CLogOutputLevelType level, string message)
             {
                 _cachedStringBuilder.Clear();
 
                 switch (level)
                 {
-                    case LogOutputLevelType.Debug:
+                    case CLogOutputLevelType.Debug:
                         if (_usingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
@@ -204,7 +204,7 @@ namespace NovaEngine
                                 GetCurrentTimeString(), GetActivatedTaskString(), message);
                         }
                         break;
-                    case LogOutputLevelType.Info:
+                    case CLogOutputLevelType.Info:
                         if (_usingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
@@ -220,7 +220,7 @@ namespace NovaEngine
                                 GetCurrentTimeString(), GetActivatedTaskString(), message);
                         }
                         break;
-                    case LogOutputLevelType.Warning:
+                    case CLogOutputLevelType.Warning:
                         if (_usingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
@@ -236,7 +236,7 @@ namespace NovaEngine
                                 GetCurrentTimeString(), GetActivatedTaskString(), message);
                         }
                         break;
-                    case LogOutputLevelType.Error:
+                    case CLogOutputLevelType.Error:
                         if (_usingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
@@ -252,7 +252,7 @@ namespace NovaEngine
                                 GetCurrentTimeString(), GetActivatedTaskString(), message);
                         }
                         break;
-                    case LogOutputLevelType.Fatal:
+                    case CLogOutputLevelType.Fatal:
                         if (_usingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
@@ -268,7 +268,7 @@ namespace NovaEngine
                                 GetCurrentTimeString(), GetActivatedTaskString(), message);
                         }
                         break;
-                    case LogOutputLevelType.Assert:
+                    case CLogOutputLevelType.Assert:
                         if (_usingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(
@@ -284,7 +284,7 @@ namespace NovaEngine
                                 GetCurrentTimeString(), GetActivatedTaskString(), message);
                         }
                         break;
-                    case LogOutputLevelType.Exception:
+                    case CLogOutputLevelType.Exception:
                         if (_usingCustomColor)
                         {
                             _cachedStringBuilder.AppendFormat(

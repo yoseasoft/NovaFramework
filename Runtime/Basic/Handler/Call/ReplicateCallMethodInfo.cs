@@ -74,7 +74,7 @@ namespace GameEngine
         protected override sealed bool CheckFunctionFormatWasInvalidType(MethodInfo methodInfo)
         {
             // 函数格式校验
-            if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+            if (NovaEngine.CVerification.IsOnDebuggingVerificationActivated())
             {
                 bool verificated = false;
                 if (NovaEngine.Utility.Reflection.IsTypeOfExtension(methodInfo))

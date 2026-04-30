@@ -42,11 +42,11 @@ namespace NovaEngine.IO.FileSystem
         /// <param name="length">文件数据长度</param>
         public FileInfo(string name, long offset, int length)
         {
-            Logger.Assert(string.IsNullOrEmpty(name), "Name is invalid.");
+            CLogger.Assert(string.IsNullOrEmpty(name), "Name is invalid.");
 
-            Logger.Assert(offset < 0L, "Offset is invalid.");
+            CLogger.Assert(offset < 0L, "Offset is invalid.");
 
-            Logger.Assert(length < 0, "Length is invalid.");
+            CLogger.Assert(length < 0, "Length is invalid.");
 
             this._name = name;
             this._offset = offset;

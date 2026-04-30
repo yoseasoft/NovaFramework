@@ -174,12 +174,12 @@ namespace NovaEngine
                 return;
             }
 
-            Logger.Assert(!_currentExecutingSubworkName.IsNullOrEmpty(), ErrorText.InvalidArguments);
+            CLogger.Assert(!_currentExecutingSubworkName.IsNullOrEmpty(), ErrorText.InvalidArguments);
 
             Subwork subwork = GetSubwork(_currentExecutingSubworkName);
             if (null == subwork)
             {
-                Logger.Warn("Could not found any subwork instance by name '{%s}', on completed it failed.", _currentExecutingSubworkName);
+                CLogger.Warn("Could not found any subwork instance by name '{%s}', on completed it failed.", _currentExecutingSubworkName);
                 return;
             }
 
@@ -223,7 +223,7 @@ namespace NovaEngine
                 Subwork tmp = _subworks[n];
                 if ((isMain && tmp.IsMain) || (!isMain && tmp.Name == name))
                 {
-                    Logger.Error("The subwork '{%s}' was already exist, repeat added it failed.", name);
+                    CLogger.Error("The subwork '{%s}' was already exist, repeat added it failed.", name);
                     return;
                 }
             }
@@ -251,7 +251,7 @@ namespace NovaEngine
                 }
             }
 
-            Logger.Error("Could not found any subwork with target name '{%s}', removed it failed.", s);
+            CLogger.Error("Could not found any subwork with target name '{%s}', removed it failed.", s);
         }
 
         /// <summary>

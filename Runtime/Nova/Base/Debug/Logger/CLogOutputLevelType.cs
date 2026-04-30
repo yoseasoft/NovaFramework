@@ -2,6 +2,7 @@
 /// NovaEngine Framework
 ///
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2025, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -25,21 +26,48 @@
 namespace NovaEngine
 {
     /// <summary>
-    /// 日志相关函数集合工具类
+    /// 日志处理级别类型定义
     /// </summary>
-    internal static partial class Logger
+    internal enum CLogOutputLevelType : byte
     {
         /// <summary>
-        /// 日志输出管理接口类
+        /// 空置
         /// </summary>
-        public interface ILogOutput
-        {
-            /// <summary>
-            /// 日志输入记录接口
-            /// </summary>
-            /// <param name="level">日志等级</param>
-            /// <param name="message">日志内容</param>
-            void Output(LogOutputLevelType level, object message);
-        }
+        None = 0,
+
+        /// <summary>
+        /// 调试
+        /// </summary>
+        Debug = 1,
+
+        /// <summary>
+        /// 信息
+        /// </summary>
+        Info = 2,
+
+        /// <summary>
+        /// 警告
+        /// </summary>
+        Warning = 3,
+
+        /// <summary>
+        /// 错误
+        /// </summary>
+        Error = 4,
+
+        /// <summary>
+        /// 崩溃
+        /// </summary>
+        Fatal = 5,
+
+        /// <summary>
+        /// 断言
+        /// </summary>
+        Assert = 11,
+
+        /// <summary>
+        /// 异常
+        /// </summary>
+        Exception = 12,
     }
 }

@@ -168,13 +168,13 @@ namespace NovaEngine.IO
                 string[] property = line.Split(new char[] { '=' });
                 if (property.Length < 2)
                 {
-                    Logger.Error("文件‘{0}’存在错误的配置,请检查", _filename);
+                    CLogger.Error("文件‘{0}’存在错误的配置,请检查", _filename);
                     continue;
                 }
 
                 if (property[0].Length < 0 || property[1].Length < 0)
                 {
-                    Logger.Error("文件‘{0}’存在错误的配置key={1}, value={2}请检查", _filename, property[0], property[1]);
+                    CLogger.Error("文件‘{0}’存在错误的配置key={1}, value={2}请检查", _filename, property[0], property[1]);
                     continue;
                 }
 

@@ -117,7 +117,7 @@ namespace NovaEngine.Module
 
             if (UnityWebRequest.Result.ProtocolError == webRequest.result || UnityWebRequest.Result.ConnectionError == webRequest.result)
             {
-                Logger.Error(webRequest.error);
+                CLogger.Error(webRequest.error);
                 this._memoryStream.Seek(0, SeekOrigin.Begin);
                 this._memoryStream.SetLength(body.Length);
                 Array.Copy(body, 0, this._memoryStream.GetBuffer(), 0, body.Length);
@@ -126,7 +126,7 @@ namespace NovaEngine.Module
             else
             {
                 long size = (long) webRequest.downloadedBytes;
-                // Logger.Debug(webRequest.downloadHandler.text);
+                // CLogger.Debug(webRequest.downloadHandler.text);
                 this._memoryStream.Seek(0, SeekOrigin.Begin);
                 this._memoryStream.SetLength(size);
                 Array.Copy(webRequest.downloadHandler.data, 0, this._memoryStream.GetBuffer(), 0, size);
@@ -138,7 +138,7 @@ namespace NovaEngine.Module
                 }
                 catch (Exception e)
                 {
-                    Logger.Error(e);
+                    CLogger.Error(e);
                 }
             }
         }

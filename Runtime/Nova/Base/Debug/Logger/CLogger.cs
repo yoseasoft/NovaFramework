@@ -28,14 +28,14 @@ namespace NovaEngine
     /// <summary>
     /// 日志相关函数集合工具类
     /// </summary>
-    internal static partial class Logger
+    internal static partial class CLogger
     {
         /// <summary>
         /// 日志输出规范定义代理句柄接口
         /// </summary>
         /// <param name="level">日志级别</param>
         /// <param name="message">日志内容</param>
-        public delegate void OutputHandler(LogOutputLevelType level, object message);
+        public delegate void OutputHandler(CLogOutputLevelType level, object message);
 
         /// <summary>
         /// 日志输入代理回调接口
@@ -51,19 +51,19 @@ namespace NovaEngine
 
             //#if !UNITY_EDITOR
             //// 如果处于非编辑器环境，需要禁用掉编辑器相关通道类型
-            //int mask = ~((int) LogOutputChannelType.Editor);
+            //int mask = ~((int) CLogOutputChannelType.Editor);
             //channels = channels & mask;
             //#endif
 
             if (Application.IsEditor())
             {
                 // 如果处于编辑器环境，可以默认开启编辑器相关通道类型
-                //channels = channels | (int) LogOutputChannelType.Editor;
+                //channels = channels | (int) CLogOutputChannelType.Editor;
             }
             else
             {
                 // 如果处于非编辑器环境，需要禁用掉编辑器相关通道类型
-                int mask = ~(int) LogOutputChannelType.Editor;
+                int mask = ~(int) CLogOutputChannelType.Editor;
                 channels = channels & mask;
             }
 

@@ -59,7 +59,7 @@ namespace NovaEngine
 
                 if (null == args || args.Length != parameterInfoArray.Length)
                 {
-                    Logger.Error("Invalid arguments length.");
+                    CLogger.Error("Invalid arguments length.");
                     return null;
                 }
 
@@ -67,7 +67,7 @@ namespace NovaEngine
                 {
                     if (null != args[n] && parameterInfoArray[n].ParameterType != args[n].GetType())
                     {
-                        Logger.Error("Invalid arguments type {0} at param index {1}.", parameterInfoArray[n].ParameterType.ToString(), n);
+                        CLogger.Error("Invalid arguments type {0} at param index {1}.", parameterInfoArray[n].ParameterType.ToString(), n);
                         return null;
                     }
                 }
@@ -109,7 +109,7 @@ namespace NovaEngine
                 Type type = Assembly.GetType(className);
                 if (null == type)
                 {
-                    Logger.Error("Could not found {%s} class type with current assemblies list, call that function {%s} failed.", className, methodName);
+                    CLogger.Error("Could not found {%s} class type with current assemblies list, call that function {%s} failed.", className, methodName);
                     return null;
                 }
 
@@ -341,7 +341,7 @@ namespace NovaEngine
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static bool IsGenericDelegateParameterTypeMatched(Delegate handler, params Type[] parameterTypes)
             {
-                if (null == handler) return false;
+                CAssert.IsNotNull(handler);
 
                 return IsGenericDelegateParameterTypeMatched(handler.Method, parameterTypes);
             }
@@ -368,7 +368,7 @@ namespace NovaEngine
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static bool IsGenericDelegateParameterAndReturnTypeMatched(Delegate handler, Type returnType, params Type[] parameterTypes)
             {
-                if (null == handler) return false;
+                CAssert.IsNotNull(handler);
 
                 return IsGenericDelegateParameterAndReturnTypeMatched(handler.Method, returnType, parameterTypes);
             }
@@ -382,18 +382,18 @@ namespace NovaEngine
             /// <returns>若目标函数的参数类型匹配则返回true，否则返回false</returns>
             public static bool IsGenericDelegateParameterAndReturnTypeMatched(MethodInfo methodInfo, Type returnType, params Type[] parameterTypes)
             {
-                ParameterInfo[] paramInfos = methodInfo.GetParameters();
-
                 if (null != returnType)
                 {
                     // 函数返回对象的类型必须可以赋予给函数定义返回值的类型
                     if (null == methodInfo.ReturnType || false == methodInfo.ReturnType.IsAssignableFrom(returnType))
                     {
-                        Logger.Warn("The target method '{%t}' declared return type '{%t}' cannot matched calc return type '{%t}', created it for delegate failed.",
+                        CLogger.Warn("The target method '{%t}' declared return type '{%t}' cannot matched calc return type '{%t}', created it for delegate failed.",
                                 methodInfo, methodInfo.ReturnType, returnType);
                         return false;
                     }
                 }
+
+                ParameterInfo[] paramInfos = methodInfo.GetParameters();
 
                 // 空参检查
                 if (null == paramInfos || paramInfos.Length <= 0)
@@ -420,7 +420,7 @@ namespace NovaEngine
                     // 函数传入参数的类型必须可以赋予给函数定义参数的类型
                     if (false == paramInfoType.IsAssignableFrom(parameterTypes[n]))
                     {
-                        Logger.Warn("The target method '{%t}' parameter info type '{%t}' cannot matched assign param type '{%t}', created it for delegate failed.",
+                        CLogger.Warn("The target method '{%t}' parameter info type '{%t}' cannot matched assign param type '{%t}', created it for delegate failed.",
                                 methodInfo, paramInfoType, parameterTypes[n]);
                         return false;
                     }
@@ -458,7 +458,7 @@ namespace NovaEngine
                 // 所以此处的检测需要重新打开
                 if (null == self && false == methodInfo.IsStatic)
                 {
-                    Logger.Error("The target method '{%t}' wasn't static function, the 'self' object must be non-null.", methodInfo);
+                    CLogger.Error("The target method '{%t}' wasn't static function, the 'self' object must be non-null.", methodInfo);
                     return null;
                 }
 
@@ -486,7 +486,7 @@ namespace NovaEngine
                 Type genericActionType = CreateGenericActionType(paramInfos.Length);
                 if (null == genericActionType)
                 {
-                    Logger.Warn("No supported generic action type with parameters length '{%d}' for target method '{%t}', created action delegate failed.", paramInfos.Length, methodInfo);
+                    CLogger.Warn("No supported generic action type with parameters length '{%d}' for target method '{%t}', created action delegate failed.", paramInfos.Length, methodInfo);
                     return null;
                 }
 
@@ -519,7 +519,7 @@ namespace NovaEngine
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static Delegate CreateGenericActionDelegateAndCheckParameterType(object self, MethodInfo methodInfo, params Type[] parameterTypes)
             {
-                Debugger.Verification.CheckGenericDelegateParameterTypeMatched(methodInfo, parameterTypes);
+                CVerification.CheckGenericDelegateParameterTypeMatched(methodInfo, parameterTypes);
 
                 // if (false == IsGenericDelegateParameterTypeMatched(methodInfo, parameterTypes)) return null;
                 return CreateGenericActionDelegate(self, methodInfo);
@@ -558,14 +558,14 @@ namespace NovaEngine
                 // 所以此处的检测需要重新打开
                 if (null == self && false == methodInfo.IsStatic)
                 {
-                    Logger.Error("The target method '{%t}' wasn't static function, the 'self' object must be non-null.", methodInfo);
+                    CLogger.Error("The target method '{%t}' wasn't static function, the 'self' object must be non-null.", methodInfo);
                     return null;
                 }
 
                 Type returnType = methodInfo.ReturnType;
                 if (null == returnType)
                 {
-                    Logger.Error("The target method '{%t}' must be has return value, created delegate failed.", methodInfo);
+                    CLogger.Error("The target method '{%t}' must be has return value, created delegate failed.", methodInfo);
                     return null;
                 }
 
@@ -597,7 +597,7 @@ namespace NovaEngine
                 Type genericFuncType = CreateGenericFuncType(paramInfos.Length);
                 if (null == genericFuncType)
                 {
-                    Logger.Warn("No supported generic func type with parameters length '{%d}' for target method '{%t}', created func delegate failed.", paramInfos.Length, methodInfo);
+                    CLogger.Warn("No supported generic func type with parameters length '{%d}' for target method '{%t}', created func delegate failed.", paramInfos.Length, methodInfo);
                     return null;
                 }
 
@@ -630,7 +630,7 @@ namespace NovaEngine
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static Delegate CreateGenericFuncDelegateAndCheckParameterAndReturnType(object self, MethodInfo methodInfo, Type returnType, params Type[] parameterTypes)
             {
-                Debugger.Verification.CheckGenericDelegateParameterAndReturnTypeMatched(methodInfo, returnType, parameterTypes);
+                CVerification.CheckGenericDelegateParameterAndReturnTypeMatched(methodInfo, returnType, parameterTypes);
 
                 // if (false == IsGenericDelegateParameterAndReturnTypeMatched(methodInfo, returnType, parameterTypes)) return null;
                 return CreateGenericFuncDelegate(self, methodInfo);
@@ -709,20 +709,20 @@ namespace NovaEngine
             {
                 //if (null == self && false == methodInfo.IsStatic)
                 //{
-                //    Logger.Error("The target method '{%t}' wasn't static function, the 'self' object must be non-null.", methodInfo);
+                //    CLogger.Error("The target method '{%t}' wasn't static function, the 'self' object must be non-null.", methodInfo);
                 //    return null;
                 //}
 
                 //ParameterInfo[] paramInfos = methodInfo.GetParameters();
                 //if (null == paramInfos || paramInfos.Length != 1)
                 //{
-                //    Logger.Error("The target method '{%t}' parameter size must be only one, method arguments was invalid.", methodInfo);
+                //    CLogger.Error("The target method '{%t}' parameter size must be only one, method arguments was invalid.", methodInfo);
                 //    return null;
                 //}
 
                 //if (false == typeof(T).IsAssignableFrom(paramInfos[0].ParameterType))
                 //{
-                //    Logger.Error("The target method '{%t}' parameter type '{%t}' must be assignable from '{%t}', generated action failed.",
+                //    CLogger.Error("The target method '{%t}' parameter type '{%t}' must be assignable from '{%t}', generated action failed.",
                 //            methodInfo, paramInfos[0].ParameterType, typeof(T));
                 //    return null;
                 //}
@@ -771,7 +771,7 @@ namespace NovaEngine
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static Action<T> CreateGenericActionAndCheckParameterType<T>(object self, MethodInfo methodInfo, Type parameterType)
             {
-                Debugger.Verification.CheckGenericDelegateParameterTypeMatched(methodInfo, parameterType);
+                CVerification.CheckGenericDelegateParameterTypeMatched(methodInfo, parameterType);
 
                 // if (false == IsGenericDelegateParameterTypeMatched(methodInfo, parameterTypes)) return null;
                 return CreateGenericAction<T>(self, methodInfo, parameterType);
@@ -828,7 +828,7 @@ namespace NovaEngine
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static Action<T1, T2> CreateGenericActionAndCheckParameterType<T1, T2>(object self, MethodInfo methodInfo, params Type[] parameterTypes)
             {
-                Debugger.Verification.CheckGenericDelegateParameterTypeMatched(methodInfo, parameterTypes);
+                CVerification.CheckGenericDelegateParameterTypeMatched(methodInfo, parameterTypes);
 
                 // if (false == IsGenericDelegateParameterTypeMatched(methodInfo, parameterTypes)) return null;
                 return CreateGenericAction<T1, T2>(self, methodInfo, parameterTypes);
@@ -846,7 +846,7 @@ namespace NovaEngine
             {
                 if (null == self && false == methodInfo.IsStatic)
                 {
-                    Logger.Error("The target method '{%t}' wasn't static function, the 'self' object must be non-null.", methodInfo);
+                    CLogger.Error("The target method '{%t}' wasn't static function, the 'self' object must be non-null.", methodInfo);
                     return null;
                 }
 
@@ -857,13 +857,13 @@ namespace NovaEngine
                     ParameterInfo[] paramInfos = methodInfo.GetParameters();
                     if (null == paramInfos || paramInfos.Length != length)
                     {
-                        Logger.Error("The target method '{%t}' parameter size must be equal to '{%d}', method arguments was invalid.", methodInfo, length);
+                        CLogger.Error("The target method '{%t}' parameter size must be equal to '{%d}', method arguments was invalid.", methodInfo, length);
                         return null;
                     }
 
                     if (null == paramTypes || paramTypes.Length != length)
                     {
-                        Logger.Error("The target method '{%t}' adapter parameter type size must be equal to '{%d}', method arguments was invalid.", methodInfo, length);
+                        CLogger.Error("The target method '{%t}' adapter parameter type size must be equal to '{%d}', method arguments was invalid.", methodInfo, length);
                         return null;
                     }
 
@@ -872,7 +872,7 @@ namespace NovaEngine
                         // 函数参数校验
                         if (false == genericTypes[n].IsAssignableFrom(paramInfos[n].ParameterType))
                         {
-                            Logger.Error("The target method '{%t}' parameter type '{%t}' must be assignable from '{%t}', generated action failed.",
+                            CLogger.Error("The target method '{%t}' parameter type '{%t}' must be assignable from '{%t}', generated action failed.",
                                     methodInfo, paramInfos[n].ParameterType, genericTypes[n]);
                             return null;
                         }
@@ -880,7 +880,7 @@ namespace NovaEngine
                         // 传递参数类型校验
                         if (false == genericTypes[n].IsAssignableFrom(paramTypes[n]))
                         {
-                            Logger.Error("The target method '{%t}' adapter parameter type '{%t}' must be assignable from '{%t}', generated action failed.",
+                            CLogger.Error("The target method '{%t}' adapter parameter type '{%t}' must be assignable from '{%t}', generated action failed.",
                                     methodInfo, paramTypes[n], genericTypes[n]);
                             return null;
                         }

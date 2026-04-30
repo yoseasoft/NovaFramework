@@ -99,13 +99,13 @@ namespace NovaEngine
         {
             if (init <= 0 || max <= 0)
             {
-                Logger.Error("All session parameters must be greater than zero.");
+                CLogger.Error("All session parameters must be greater than zero.");
                 return null;
             }
 
             if (init >= max)
             {
-                Logger.Error("The init value must be less than the max value.");
+                CLogger.Error("The init value must be less than the max value.");
                 return null;
             }
 

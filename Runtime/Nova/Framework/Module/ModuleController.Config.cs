@@ -110,17 +110,17 @@ namespace NovaEngine.Module
                     Type moduleType = Type.GetType(moduleName);
                     if (null == moduleType)
                     {
-                        Logger.Info("Could not found any module class with target name '{%s}'.", moduleName);
+                        CLogger.Info("Could not found any module class with target name '{%s}'.", moduleName);
                         continue;
                     }
 
                     if (false == typeof(ModuleObject).IsAssignableFrom(moduleType))
                     {
-                        Logger.Warn("The module type '{%s}' must be inherited from 'ModuleObject' class.", moduleName);
+                        CLogger.Warn("The module type '{%s}' must be inherited from 'ModuleObject' class.", moduleName);
                         continue;
                     }
 
-                    // Logger.Info("Register new module class '{%s}' to target type '{%s}'.", moduleName, enumName);
+                    // CLogger.Info("Register new module class '{%s}' to target type '{%s}'.", moduleName, enumName);
 
                     RegModuleConfigureInfo(enumValue, moduleType);
                 }
@@ -152,12 +152,12 @@ namespace NovaEngine.Module
             private static void RegModuleConfigureInfo(ModuleObject.ModuleEventType moduleType, Type clsType)
             {
                 // 若打开启用标识，则必须提供映射类型参数
-                Logger.Assert(null != clsType, ErrorText.InvalidArguments);
+                CAssert.IsNotNull(clsType);
 
                 ModuleConfigureInfo found = GetModuleConfigureInfoByType(moduleType);
                 if (null != found)
                 {
-                    throw new CFrameworkException("Cannot repeat registation module configure.");
+                    throw new CFrameworkException("Cannot repeat register module configure.");
                 }
                 
                 ModuleConfigureInfo mbi = new ModuleConfigureInfo();

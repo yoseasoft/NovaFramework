@@ -90,7 +90,7 @@ namespace NovaEngine.Network
         public SocketClient(int id, ISocketCall handler)
         {
             // 必须传入上层管理容器用于回调通知
-            Logger.Assert(null != handler);
+            CLogger.Assert(null != handler);
             _notification = handler;
             _sequenceId = id;
 
@@ -151,7 +151,7 @@ namespace NovaEngine.Network
                 IPAddress[] address = Dns.GetHostAddresses(host);
                 if (address.Length == 0)
                 {
-                    Logger.Error("请求网络连接的主机地址{0}格式错误！", host);
+                    CLogger.Error("请求网络连接的主机地址{0}格式错误！", host);
                     return 0;
                 }
 
@@ -178,7 +178,7 @@ namespace NovaEngine.Network
                 return _sequenceId;
             } catch (Exception e)
             {
-                Logger.Error(e.Message);
+                CLogger.Error(e.Message);
 
                 this.Disconnect();
                 return 0;
@@ -197,7 +197,7 @@ namespace NovaEngine.Network
                 this.Disconnect();
             } catch (Exception e)
             {
-                Logger.Error(e.Message);
+                CLogger.Error(e.Message);
             }
         }
 
@@ -246,7 +246,7 @@ namespace NovaEngine.Network
 
             if (false == this.IsConnected())
             {
-                Logger.Warn("当前SOCKET网络尚未连接到任何有效远程服务终端，调用此接口发送消息失败！");
+                CLogger.Warn("当前SOCKET网络尚未连接到任何有效远程服务终端，调用此接口发送消息失败！");
                 _notification.OnDisconnection(_sequenceId);
                 return;
             }
@@ -337,7 +337,7 @@ namespace NovaEngine.Network
 
                 if (readBytes < 1)
                 {
-                    Logger.Error("SOCKET: read bytes error ({0}).", readBytes);
+                    CLogger.Error("SOCKET: read bytes error ({0}).", readBytes);
                     // 字节长度异常，断线处理
                     this.OnConnectError(_sequenceId);
                     return;
@@ -354,7 +354,7 @@ namespace NovaEngine.Network
                 }
             } catch (Exception e)
             {
-                Logger.Error(e.Message);
+                CLogger.Error(e.Message);
 
                 this.OnConnectError(_sequenceId);
             }
@@ -367,7 +367,7 @@ namespace NovaEngine.Network
                 _outStream.EndWrite(ar);
             } catch (Exception e)
             {
-                Logger.Error(e.Message);
+                CLogger.Error(e.Message);
 
                 this.OnConnectError(_sequenceId);
             }

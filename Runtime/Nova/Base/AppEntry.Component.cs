@@ -144,14 +144,14 @@ namespace NovaEngine
         {
             if (name.IsNullOrEmpty())
             {
-                Logger.Error("The register component name must be non-null.");
+                CLogger.Error("The register component name must be non-null.");
                 return null;
             }
 
             // 每个GameObject仅能容许一个CFrameworkComponent实例
             if (_frameworkGameObjects.ContainsKey(name))
             {
-                Logger.Error("The register component name '{%s}' is already exist, cannot repeat register it.", name);
+                CLogger.Error("The register component name '{%s}' is already exist, cannot repeat register it.", name);
                 CFrameworkComponent c = _frameworkComponents[name];
                 if (c.GetType() == componentType)
                 {
@@ -159,13 +159,13 @@ namespace NovaEngine
                 }
 
                 // 已注册的组件类型和新注册组件类型不一致
-                Logger.Error("The register component type '{%t}' not matched the exist type '{%t}', get it failed.", componentType, c);
+                CLogger.Error("The register component type '{%t}' not matched the exist type '{%t}', get it failed.", componentType, c);
                 return null;
             }
 
             if (false == typeof(CFrameworkComponent).IsAssignableFrom(componentType))
             {
-                Logger.Error("The register component type '{%t}' must be inherited from CFrameworkComponent, check the type invalid.", componentType);
+                CLogger.Error("The register component type '{%t}' must be inherited from CFrameworkComponent, check the type invalid.", componentType);
                 return null;
             }
 
@@ -178,7 +178,7 @@ namespace NovaEngine
             }
             else
             {
-                Logger.Warn("Could not found root game object, setting component's parent failed.");
+                CLogger.Warn("Could not found root game object, setting component's parent failed.");
             }
 
             _frameworkGameObjects.Add(name, gameObject);
@@ -195,13 +195,13 @@ namespace NovaEngine
         {
             if (name.IsNullOrEmpty())
             {
-                Logger.Error("The unregister component name must be non-null.");
+                CLogger.Error("The unregister component name must be non-null.");
                 return;
             }
 
             if (false == _frameworkGameObjects.ContainsKey(name))
             {
-                Logger.Error("Could not found any component name '{%s}' in current framework, unregister it failed.", name);
+                CLogger.Error("Could not found any component name '{%s}' in current framework, unregister it failed.", name);
                 return;
             }
 

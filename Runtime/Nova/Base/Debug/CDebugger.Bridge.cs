@@ -28,7 +28,7 @@ using System;
 namespace NovaEngine
 {
     /// 调试器对象工具类
-    internal partial class Debugger
+    internal partial class CDebugger
     {
         /// <summary>
         /// 日志输出规范定义代理句柄接口
@@ -39,9 +39,9 @@ namespace NovaEngine
         protected internal delegate void OutputHandler_format_args(string format, params object[] args);
         protected internal delegate void OutputHandler_cond_format_args(bool cond, string format, params object[] args);
 
-        protected internal delegate void OutputHandler_level_object(LogOutputLevelType level, object message);
-        protected internal delegate void OutputHandler_level_string(LogOutputLevelType level, string message);
-        protected internal delegate void OutputHandler_level_format_args(LogOutputLevelType level, string format, params object[] args);
+        protected internal delegate void OutputHandler_level_object(CLogOutputLevelType level, object message);
+        protected internal delegate void OutputHandler_level_string(CLogOutputLevelType level, string message);
+        protected internal delegate void OutputHandler_level_format_args(CLogOutputLevelType level, string format, params object[] args);
 
         /// <summary>
         /// 断言处理规范定义代理句柄接口
@@ -149,14 +149,14 @@ namespace NovaEngine
         /// </summary>
         /// <param name="level">日志基本</param>
         /// <param name="message">日志内容</param>
-        private static void Blank_Output(LogOutputLevelType level, object message) { }
+        private static void Blank_Output(CLogOutputLevelType level, object message) { }
 
         /// <summary>
         /// 控制版本的日志输出接口，用于忽略指定级别类型对应的输出回调
         /// </summary>
         /// <param name="level">日志基本</param>
         /// <param name="message">日志内容</param>
-        private static void Blank_Output(LogOutputLevelType level, string message) { }
+        private static void Blank_Output(CLogOutputLevelType level, string message) { }
 
         /// <summary>
         /// 控制版本的日志输出接口，用于忽略指定级别类型对应的输出回调
@@ -164,7 +164,7 @@ namespace NovaEngine
         /// <param name="level">日志基本</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
-        private static void Blank_Output(LogOutputLevelType level, string format, params object[] args) { }
+        private static void Blank_Output(CLogOutputLevelType level, string format, params object[] args) { }
 
         /// <summary>
         /// 空置版本的日志断言接口，用于忽略对应的断言回调

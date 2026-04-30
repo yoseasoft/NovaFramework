@@ -80,7 +80,7 @@ namespace NovaEngine
         /// <returns>若实例创建成功返回true，否则返回false</returns>
         public static bool Create()
         {
-            Logger.Assert(null == _engine, "Cannot created one more time.");
+            CLogger.Assert(null == _engine, "Cannot created one more time.");
 
             // 创建引擎实例
             _engine = Engine.Create();
@@ -100,7 +100,7 @@ namespace NovaEngine
                 UnityGameObject gameObject = controller.gameObject;
                 if (null == gameObject)
                 {
-                    Logger.Error("The root game object must be non-null.");
+                    CLogger.Error("The root game object must be non-null.");
                     return false;
                 }
 
@@ -116,7 +116,7 @@ namespace NovaEngine
 
                 if (null == controller)
                 {
-                    Logger.Error("Could not found any framework controller component in this game object '{0}', register root controller failed.", gameObject.name);
+                    CLogger.Error("Could not found any framework controller component in this game object '{0}', register root controller failed.", gameObject.name);
                     return false;
                 }
 
@@ -153,11 +153,11 @@ namespace NovaEngine
         /// </summary>
         public static void Startup()
         {
-            Logger.Assert(null != _engine, ErrorText.InvalidArguments);
+            CLogger.Assert(null != _engine, ErrorText.InvalidArguments);
 
             if (_engine.IsOnStartup)
             {
-                Logger.Warn("The App entry is already running, cannot repeat start it.");
+                CLogger.Warn("The App entry is already running, cannot repeat start it.");
                 return;
             }
 
@@ -240,7 +240,7 @@ namespace NovaEngine
         /// </summary>
         public static void Execute()
         {
-            Logger.Assert(_isRunning, "The application entry was not running.");
+            CLogger.Assert(_isRunning, "The application entry was not running.");
 
             // 引擎执行通知
             _engine.Execute();
@@ -254,7 +254,7 @@ namespace NovaEngine
         /// </summary>
         public static void LateExecute()
         {
-            Logger.Assert(_isRunning, "The application entry was not running.");
+            CLogger.Assert(_isRunning, "The application entry was not running.");
 
             // 引擎后置执行通知
             _engine.LateExecute();
@@ -268,7 +268,7 @@ namespace NovaEngine
         /// </summary>
         public static void Update()
         {
-            Logger.Assert(_isRunning, "The application entry was not running.");
+            CLogger.Assert(_isRunning, "The application entry was not running.");
 
             // 引擎刷新通知
             _engine.Update();
@@ -282,7 +282,7 @@ namespace NovaEngine
         /// </summary>
         public static void LateUpdate()
         {
-            Logger.Assert(_isRunning, "The application entry was not running.");
+            CLogger.Assert(_isRunning, "The application entry was not running.");
 
             // 引擎后置刷新通知
             _engine.LateUpdate();

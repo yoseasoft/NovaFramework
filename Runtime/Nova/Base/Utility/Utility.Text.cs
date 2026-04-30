@@ -104,7 +104,7 @@ namespace NovaEngine
             public static string Append(params object[] args)
             {
                 if (null == args)
-                    Logger.Throw<ArgumentNullException>("Append is invalid.");
+                    CLogger.Throw<ArgumentNullException>("Append is invalid.");
 
                 _stringBuilderCache.Clear();
                 int length = args.Length;
@@ -124,7 +124,7 @@ namespace NovaEngine
             public static string Combine(params string[] strings)
             {
                 if (null == strings)
-                    Logger.Throw<ArgumentNullException>("Combine is invalid.");
+                    CLogger.Throw<ArgumentNullException>("Combine is invalid.");
 
                 _stringBuilderCache.Length = 0;
                 int length = strings.Length;
@@ -1077,11 +1077,11 @@ namespace NovaEngine
                         PropertyInfo getKeyPropertyInfo = targetType.GetProperty("Key");
                         PropertyInfo getValuePropertyInfo = targetType.GetProperty("Value");
 
-                        Logger.Assert(null != getKeyPropertyInfo && null != getValuePropertyInfo, "Invalid arguments.");
+                        CLogger.Assert(null != getKeyPropertyInfo && null != getValuePropertyInfo, "Invalid arguments.");
                         return callback(getKeyPropertyInfo.GetValue(obj), getValuePropertyInfo.GetValue(obj));
                     }
 
-                    Logger.Warn("Resolve dictionary value type '{%t}' failed.", targetType);
+                    CLogger.Warn("Resolve dictionary value type '{%t}' failed.", targetType);
                     return callback(obj, obj);
                 });
             }

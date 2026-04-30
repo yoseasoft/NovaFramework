@@ -29,7 +29,7 @@ using System.Runtime.CompilerServices;
 namespace GameEngine
 {
     /// <summary>
-    /// 应用层提供的调试对象类，它是基于对<see cref="NovaEngine.Debugger"/>的便捷性接口封装
+    /// 应用层提供的调试对象类，它是基于对<see cref="NovaEngine.CDebugger"/>的便捷性接口封装
     /// </summary>
     public static partial class Debugger
     {
@@ -40,7 +40,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于调试模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Debug"/>类型定义
+        /// 基于调试模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
@@ -51,7 +51,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于调试模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Debug"/>类型定义
+        /// 基于调试模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         //[Conditional(NovaEngine.GlobalMacros.BUILD_CONFIGURATION_DEBUG)]
@@ -62,7 +62,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于调试模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Debug"/>类型定义
+        /// 基于调试模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
@@ -74,7 +74,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于调试模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Debug"/>类型定义
+        /// 基于调试模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
@@ -86,7 +86,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于调试模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Debug"/>类型定义
+        /// 基于调试模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
@@ -99,7 +99,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于常规模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Info"/>类型定义
+        /// 基于常规模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -109,7 +109,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于常规模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Info"/>类型定义
+        /// 基于常规模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -119,7 +119,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于常规模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Info"/>类型定义
+        /// 基于常规模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
@@ -130,7 +130,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于常规模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Info"/>类型定义
+        /// 基于常规模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
@@ -141,7 +141,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于常规模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Info"/>类型定义
+        /// 基于常规模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
@@ -153,7 +153,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于警告模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Warning"/>类型定义
+        /// 基于警告模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -163,7 +163,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于警告模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Warning"/>类型定义
+        /// 基于警告模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -173,7 +173,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于警告模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Warning"/>类型定义
+        /// 基于警告模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
@@ -184,7 +184,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于警告模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Warning"/>类型定义
+        /// 基于警告模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
@@ -195,7 +195,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于警告模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Warning"/>类型定义
+        /// 基于警告模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
@@ -207,7 +207,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于错误模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Error"/>类型定义
+        /// 基于错误模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -217,7 +217,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于错误模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Error"/>类型定义
+        /// 基于错误模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -227,7 +227,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于错误模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Error"/>类型定义
+        /// 基于错误模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
@@ -238,7 +238,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于错误模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Error"/>类型定义
+        /// 基于错误模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
@@ -249,7 +249,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于错误模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Error"/>类型定义
+        /// 基于错误模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
@@ -261,7 +261,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于崩溃模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Fatal"/>类型定义
+        /// 基于崩溃模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -271,7 +271,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于崩溃模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Fatal"/>类型定义
+        /// 基于崩溃模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -281,7 +281,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于崩溃模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Fatal"/>类型定义
+        /// 基于崩溃模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
@@ -292,7 +292,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于崩溃模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Fatal"/>类型定义
+        /// 基于崩溃模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
@@ -303,7 +303,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// 基于崩溃模式下的日志输出接口，参考<see cref="NovaEngine.LogOutputLevelType.Fatal"/>类型定义
+        /// 基于崩溃模式下的日志输出接口，参考<see cref="NovaEngine.CLogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
@@ -323,7 +323,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(bool condition)
         {
-            NovaEngine.Debugger.Assert(condition);
+            NovaEngine.CDebugger.Assert(condition);
         }
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(bool condition, object message)
         {
-            NovaEngine.Debugger.Assert(condition, message);
+            NovaEngine.CDebugger.Assert(condition, message);
         }
 
         /// <summary>
@@ -345,7 +345,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(bool condition, string message)
         {
-            NovaEngine.Debugger.Assert(condition, message);
+            NovaEngine.CDebugger.Assert(condition, message);
         }
 
         /// <summary>
@@ -357,7 +357,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Assert(bool condition, string format, params object[] args)
         {
-            NovaEngine.Debugger.Assert(condition, format, args);
+            NovaEngine.CDebugger.Assert(condition, format, args);
         }
 
         #endregion
@@ -370,7 +370,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw()
         {
-            NovaEngine.Debugger.Throw();
+            NovaEngine.CDebugger.Throw();
         }
 
         /// <summary>
@@ -380,7 +380,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(int errorCode)
         {
-            NovaEngine.Debugger.Throw(errorCode);
+            NovaEngine.CDebugger.Throw(errorCode);
         }
 
         /// <summary>
@@ -390,7 +390,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(string message)
         {
-            NovaEngine.Debugger.Throw(message);
+            NovaEngine.CDebugger.Throw(message);
         }
 
         /// <summary>
@@ -401,7 +401,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(string format, params object[] args)
         {
-            NovaEngine.Debugger.Throw(format, args);
+            NovaEngine.CDebugger.Throw(format, args);
         }
 
         /// <summary>
@@ -411,7 +411,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(Exception exception)
         {
-            NovaEngine.Debugger.Throw(exception);
+            NovaEngine.CDebugger.Throw(exception);
         }
 
         /// <summary>
@@ -421,7 +421,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(Type type)
         {
-            NovaEngine.Debugger.Throw(type);
+            NovaEngine.CDebugger.Throw(type);
         }
 
         /// <summary>
@@ -432,7 +432,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(Type type, string message)
         {
-            NovaEngine.Debugger.Throw(type, message);
+            NovaEngine.CDebugger.Throw(type, message);
         }
 
         /// <summary>
@@ -444,7 +444,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(Type type, string format, params object[] args)
         {
-            NovaEngine.Debugger.Throw(type, format, args);
+            NovaEngine.CDebugger.Throw(type, format, args);
         }
 
         /// <summary>
@@ -454,7 +454,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>() where T : Exception
         {
-            NovaEngine.Debugger.Throw<T>();
+            NovaEngine.CDebugger.Throw<T>();
         }
 
         /// <summary>
@@ -465,7 +465,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(string message) where T : Exception
         {
-            NovaEngine.Debugger.Throw<T>(message);
+            NovaEngine.CDebugger.Throw<T>(message);
         }
 
         /// <summary>
@@ -477,7 +477,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(string format, params object[] args) where T : Exception
         {
-            NovaEngine.Debugger.Throw<T>(format, args);
+            NovaEngine.CDebugger.Throw<T>(format, args);
         }
 
         /// <summary>
@@ -487,7 +487,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition)
         {
-            NovaEngine.Debugger.Throw(condition);
+            NovaEngine.CDebugger.Throw(condition);
         }
 
         /// <summary>
@@ -498,7 +498,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, int errorCode)
         {
-            NovaEngine.Debugger.Throw(condition, errorCode);
+            NovaEngine.CDebugger.Throw(condition, errorCode);
         }
 
         /// <summary>
@@ -509,7 +509,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, string message)
         {
-            NovaEngine.Debugger.Throw(condition, message);
+            NovaEngine.CDebugger.Throw(condition, message);
         }
 
         /// <summary>
@@ -521,7 +521,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, string format, params object[] args)
         {
-            NovaEngine.Debugger.Throw(condition, format, args);
+            NovaEngine.CDebugger.Throw(condition, format, args);
         }
 
         /// <summary>
@@ -532,7 +532,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, Exception exception)
         {
-            NovaEngine.Debugger.Throw(condition, exception);
+            NovaEngine.CDebugger.Throw(condition, exception);
         }
 
         /// <summary>
@@ -543,7 +543,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, Type type)
         {
-            NovaEngine.Debugger.Throw(condition, type);
+            NovaEngine.CDebugger.Throw(condition, type);
         }
 
         /// <summary>
@@ -555,7 +555,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, Type type, string message)
         {
-            NovaEngine.Debugger.Throw(condition, type, message);
+            NovaEngine.CDebugger.Throw(condition, type, message);
         }
 
         /// <summary>
@@ -568,7 +568,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, Type type, string format, params object[] args)
         {
-            NovaEngine.Debugger.Throw(condition, type, format, args);
+            NovaEngine.CDebugger.Throw(condition, type, format, args);
         }
 
         /// <summary>
@@ -579,7 +579,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(bool condition) where T : Exception
         {
-            NovaEngine.Debugger.Throw<T>(condition);
+            NovaEngine.CDebugger.Throw<T>(condition);
         }
 
         /// <summary>
@@ -591,7 +591,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(bool condition, string message) where T : Exception
         {
-            NovaEngine.Debugger.Throw<T>(condition, message);
+            NovaEngine.CDebugger.Throw<T>(condition, message);
         }
 
         /// <summary>
@@ -604,7 +604,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(bool condition, string format, params object[] args) where T : Exception
         {
-            NovaEngine.Debugger.Throw<T>(condition, format, args);
+            NovaEngine.CDebugger.Throw<T>(condition, format, args);
         }
 
         #endregion

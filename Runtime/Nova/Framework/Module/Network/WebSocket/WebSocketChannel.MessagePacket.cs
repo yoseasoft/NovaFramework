@@ -74,7 +74,7 @@ namespace NovaEngine.Module
                 {
                     if (buffer.Length - offsetSize < this._headerSize)
                     {
-                        Logger.Error("network packet buffer length '{%d}' error.", buffer.Length - offsetSize);
+                        CLogger.Error("network packet buffer length '{%d}' error.", buffer.Length - offsetSize);
                         break;
                     }
 
@@ -105,7 +105,7 @@ namespace NovaEngine.Module
 
                     if (buffer.Length - offsetSize < packetSize)
                     {
-                        Logger.Error("network packet buffer length '{%d}' error.", buffer.Length - offsetSize);
+                        CLogger.Error("network packet buffer length '{%d}' error.", buffer.Length - offsetSize);
                         break;
                     }
 

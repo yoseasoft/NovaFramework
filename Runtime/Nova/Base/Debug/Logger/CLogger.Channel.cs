@@ -33,7 +33,7 @@ namespace NovaEngine
     /// <summary>
     /// 日志相关函数集合工具类
     /// </summary>
-    internal static partial class Logger
+    internal static partial class CLogger
     {
         /// <summary>
         /// 日志输出通道绑定信息管理容器
@@ -48,7 +48,7 @@ namespace NovaEngine
         {
             _logOutputChannelBindingInfos = new List<LogOutputChannelBindingInfo>();
 
-            Type classType = typeof(Logger);
+            Type classType = typeof(CLogger);
             Type[] innerClassTypes = classType.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             for (int n = 0; null != innerClassTypes && n < innerClassTypes.Length; ++n)
             {
@@ -104,14 +104,14 @@ namespace NovaEngine
             /// <summary>
             /// 日志通道类型标识
             /// </summary>
-            private readonly LogOutputChannelType _channelType;
+            private readonly CLogOutputChannelType _channelType;
 
             /// <summary>
             /// 日志通道类型标识获取函数
             /// </summary>
-            public LogOutputChannelType ChannelType => _channelType;
+            public CLogOutputChannelType ChannelType => _channelType;
 
-            public LogOutputChannelBindingAttribute(LogOutputChannelType channelType)
+            public LogOutputChannelBindingAttribute(CLogOutputChannelType channelType)
             {
                 _channelType = channelType;
             }
@@ -125,7 +125,7 @@ namespace NovaEngine
             /// <summary>
             /// 日志通道类型标识
             /// </summary>
-            private readonly LogOutputChannelType _channelType;
+            private readonly CLogOutputChannelType _channelType;
             /// <summary>
             /// 日志通道对象的启用回调接口
             /// </summary>
@@ -142,13 +142,13 @@ namespace NovaEngine
             /// <summary>
             /// 日志通道类型标识获取函数
             /// </summary>
-            public LogOutputChannelType ChannelType => _channelType;
+            public CLogOutputChannelType ChannelType => _channelType;
             /// <summary>
             /// 日志通道对象当前的启用状态标识获取函数
             /// </summary>
             public bool Enabled => _enabled;
 
-            public LogOutputChannelBindingInfo(LogOutputChannelType channelType,
+            public LogOutputChannelBindingInfo(CLogOutputChannelType channelType,
                                                Definition.Delegate.EmptyFunctionHandler startupCallback,
                                                Definition.Delegate.EmptyFunctionHandler shutdownCallback)
             {

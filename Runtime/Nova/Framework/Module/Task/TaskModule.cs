@@ -160,7 +160,7 @@ namespace NovaEngine.Module
                 ITask e = _executionTasks[n];
                 if (e.UniqueCode() == task.UniqueCode())
                 {
-                    Logger.Warn("添加更新处理单元到任务管理器失败，目标{0}执行单元已存在！", e.UniqueCode());
+                    CLogger.Warn("添加更新处理单元到任务管理器失败，目标{0}执行单元已存在！", e.UniqueCode());
                     return;
                 }
             }

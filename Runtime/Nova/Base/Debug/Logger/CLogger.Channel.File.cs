@@ -30,12 +30,12 @@ namespace NovaEngine
     /// <summary>
     /// 日志相关函数集合工具类
     /// </summary>
-    internal static partial class Logger
+    internal static partial class CLogger
     {
         /// <summary>
         /// 日志输出文件模式操作管理类
         /// </summary>
-        [LogOutputChannelBinding(LogOutputChannelType.File)]
+        [LogOutputChannelBinding(CLogOutputChannelType.File)]
         private sealed class LogFile : Singleton<LogFile>, ILogOutput
         {
             private FileInfo _fileHandler = null;
@@ -154,7 +154,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="level">日志等级</param>
             /// <param name="message">日志内容</param>
-            public void Output(LogOutputLevelType level, object message)
+            public void Output(CLogOutputLevelType level, object message)
             {
                 // 写入日志内容
                 Write(message.ToString());

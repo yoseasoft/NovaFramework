@@ -22,6 +22,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -58,7 +59,7 @@ namespace NovaEngine
         /// <param name="value">节点值</param>
         public void Add(TKey[] keys, TValue value)
         {
-            Debugger.Assert(keys.Length > 0, NovaEngine.ErrorText.InvalidArguments);
+            CDebugger.Throw<ArgumentException>(keys.Length > 0);
 
             TKey key = keys[0];
             if (false == _nodes.TryGetValue(key, out TreeNode sub_node))
@@ -77,7 +78,7 @@ namespace NovaEngine
         /// <returns>返回索引的节点数据</returns>
         public TValue Get(TKey[] keys)
         {
-            Debugger.Assert(keys.Length > 0, NovaEngine.ErrorText.InvalidArguments);
+            CDebugger.Throw<ArgumentException>(keys.Length > 0);
 
             TKey key = keys[0];
             if (false == _nodes.TryGetValue(key, out TreeNode sub_node))
@@ -96,7 +97,7 @@ namespace NovaEngine
         /// <returns>若获取数据实例成功则返回true，否则返回false</returns>
         public bool TryGetValue(TKey[] keys, out TValue value)
         {
-            Debugger.Assert(keys.Length > 0, NovaEngine.ErrorText.InvalidArguments);
+            CDebugger.Throw<ArgumentException>(keys.Length > 0);
 
             TKey key = keys[0];
             if (false == _nodes.TryGetValue(key, out TreeNode sub_node))
@@ -115,7 +116,7 @@ namespace NovaEngine
         /// <returns>若存在节点数据则返回true，否则返回false</returns>
         public bool ContainsKey(TKey[] keys)
         {
-            Debugger.Assert(keys.Length > 0, NovaEngine.ErrorText.InvalidArguments);
+            CDebugger.Throw<ArgumentException>(keys.Length > 0);
 
             TKey key = keys[0];
             if (false == _nodes.TryGetValue(key, out TreeNode sub_node))
@@ -137,7 +138,7 @@ namespace NovaEngine
         /// <param name="keys">索引键</param>
         public void Remove(TKey[] keys)
         {
-            Debugger.Assert(keys.Length > 0, NovaEngine.ErrorText.InvalidArguments);
+            CDebugger.Throw<ArgumentException>(keys.Length > 0);
 
             TKey key = keys[0];
             if (false == _nodes.TryGetValue(key, out TreeNode sub_node))
@@ -199,7 +200,7 @@ namespace NovaEngine
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void SetValue(TValue value)
             {
-                Debugger.Assert(null == _value, NovaEngine.ErrorText.InvalidOperation);
+                CDebugger.Assert(null == _value, NovaEngine.ErrorText.InvalidOperation);
 
                 _value = value;
             }
@@ -223,7 +224,7 @@ namespace NovaEngine
             /// <param name="value">节点值</param>
             private void Add(TKey[] keys, int index, TValue value)
             {
-                Debugger.Assert(index >= 0 && index < keys.Length, NovaEngine.ErrorText.InvalidArguments);
+                CDebugger.Throw<ArgumentOutOfRangeException>(index >= 0 && index < keys.Length);
 
                 if (keys.Length - index == 1)
                 {
@@ -264,7 +265,7 @@ namespace NovaEngine
             /// <returns>返回索引的节点数据</returns>
             private TValue Get(TKey[] keys, int index)
             {
-                Debugger.Assert(index >= 0 && index < keys.Length, NovaEngine.ErrorText.InvalidArguments);
+                CDebugger.Throw<ArgumentOutOfRangeException>(index >= 0 && index < keys.Length);
 
                 if (keys.Length - index == 1)
                 {
@@ -275,7 +276,7 @@ namespace NovaEngine
                 TKey k = keys[next_index];
                 if (null == _childs || false == _childs.TryGetValue(k, out TreeNode sub_node))
                 {
-                    Debugger.Warn("Could not found any tree node with target key '{%s}', getting node value failed.", k.ToString());
+                    CLogger.Warn("Could not found any tree node with target key '{%s}', getting node value failed.", k.ToString());
                     return null;
                 }
 
@@ -303,7 +304,7 @@ namespace NovaEngine
             /// <returns>若获取节点数据成功则返回true，否则返回false</returns>
             private bool TryGetValue(TKey[] keys, int index, out TValue value)
             {
-                Debugger.Assert(index >= 0 && index < keys.Length, NovaEngine.ErrorText.InvalidArguments);
+                CDebugger.Throw<ArgumentOutOfRangeException>(index >= 0 && index < keys.Length);
 
                 if (keys.Length - index == 1)
                 {
@@ -341,7 +342,7 @@ namespace NovaEngine
             /// <returns>若节点数据存在则返回true，否则返回false</returns>
             private bool ContainsKey(TKey[] keys, int index)
             {
-                Debugger.Assert(index >= 0 && index < keys.Length, NovaEngine.ErrorText.InvalidArguments);
+                CDebugger.Throw<ArgumentOutOfRangeException>(index >= 0 && index < keys.Length);
 
                 if (keys.Length - index == 1)
                 {
@@ -375,13 +376,13 @@ namespace NovaEngine
             /// <param name="index">索引位置</param>
             private void Remove(TKey[] keys, int index)
             {
-                Debugger.Assert(index >= 0 && index < keys.Length, NovaEngine.ErrorText.InvalidArguments);
+                CDebugger.Throw<ArgumentOutOfRangeException>(index >= 0 && index < keys.Length);
 
                 int next_index = index + 1;
                 TKey k = keys[next_index];
                 if (null == _childs || false == _childs.TryGetValue(k, out TreeNode sub_node))
                 {
-                    Debugger.Warn("Could not found any tree node with target key '{%s}', removed it failed.", k.ToString());
+                    CLogger.Warn("Could not found any tree node with target key '{%s}', removed it failed.", k.ToString());
                     return;
                 }
 

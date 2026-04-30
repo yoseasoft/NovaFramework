@@ -224,7 +224,7 @@ namespace NovaEngine
             }
             else
             {
-                Logger.Warn("Could not found any manager instance with type '{%t}', remove ti failed.", managerType);
+                CLogger.Warn("Could not found any manager instance with type '{%t}', remove ti failed.", managerType);
             }
         }
 
@@ -234,14 +234,14 @@ namespace NovaEngine
         /// <param name="manager">管理器实例</param>
         public static void RemoveManager(IManager manager)
         {
-            Logger.Assert(null != manager, "Invalid manager instance.");
+            CLogger.Assert(null != manager, "Invalid manager instance.");
 
             // 处于更新中
             if (_isManagerProcessing)
             {
                 if (IsExpiredManager(manager))
                 {
-                    Logger.Warn("The target manager '{%t}' was already expired, repeat removed it failed.", manager);
+                    CLogger.Warn("The target manager '{%t}' was already expired, repeat removed it failed.", manager);
                 }
                 else
                 {
@@ -275,7 +275,7 @@ namespace NovaEngine
         /// </summary>
         private static void RemoveAllManagers()
         {
-            Logger.Assert(!_isManagerProcessing, "Cannot remove manager within update progressing!");
+            CLogger.Assert(!_isManagerProcessing, "Cannot remove manager within update progressing!");
             for (LinkedListNode<IManager> current = _frameworkManagers.Last; null != current; current = current.Next)
             {
                 DestroyManager(current.Value);

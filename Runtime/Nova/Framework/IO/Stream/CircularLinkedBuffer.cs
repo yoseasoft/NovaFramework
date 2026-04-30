@@ -98,7 +98,7 @@ namespace NovaEngine.IO
 
                 if (c < 0)
                 {
-                    Logger.Error("circular buffer count '{0}' error.", this._bufferQueue.Count);
+                    CLogger.Error("circular buffer count '{0}' error.", this._bufferQueue.Count);
                 }
 
                 return c;

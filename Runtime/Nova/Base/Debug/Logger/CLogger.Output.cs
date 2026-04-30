@@ -28,146 +28,146 @@ namespace NovaEngine
     /// <summary>
     /// 日志相关函数集合工具类
     /// </summary>
-    internal static partial class Logger
+    internal static partial class CLogger
     {
         /// <summary>
-        /// 基于调试模式下的日志标准输出接口，参考<see cref="LogOutputLevelType.Debug"/>类型定义
+        /// 基于调试模式下的日志标准输出接口，参考<see cref="CLogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void Debug(object message)
         {
-            __Output(LogOutputLevelType.Debug, message);
+            __Output(CLogOutputLevelType.Debug, message);
         }
 
         /// <summary>
-        /// 基于调试模式下的日志标准输出接口，参考<see cref="LogOutputLevelType.Debug"/>类型定义
+        /// 基于调试模式下的日志标准输出接口，参考<see cref="CLogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void Debug(string message)
         {
-            __Output(LogOutputLevelType.Debug, message);
+            __Output(CLogOutputLevelType.Debug, message);
         }
 
         /// <summary>
-        /// 基于调试模式下的日志标准输出接口，参考<see cref="LogOutputLevelType.Debug"/>类型定义
+        /// 基于调试模式下的日志标准输出接口，参考<see cref="CLogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
         public static void Debug(string format, params object[] args)
         {
-            __Output(LogOutputLevelType.Debug, format, args);
+            __Output(CLogOutputLevelType.Debug, format, args);
         }
 
         /// <summary>
-        /// 基于常规模式下的日志标准输出接口，参考<see cref="LogOutputLevelType.Info"/>类型定义
+        /// 基于常规模式下的日志标准输出接口，参考<see cref="CLogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void Info(object message)
         {
-            __Output(LogOutputLevelType.Info, message);
+            __Output(CLogOutputLevelType.Info, message);
         }
 
         /// <summary>
-        /// 基于常规模式下的日志标准输出接口，参考<see cref="LogOutputLevelType.Info"/>类型定义
+        /// 基于常规模式下的日志标准输出接口，参考<see cref="CLogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void Info(string message)
         {
-            __Output(LogOutputLevelType.Info, message);
+            __Output(CLogOutputLevelType.Info, message);
         }
 
         /// <summary>
-        /// 基于常规模式下的日志标准输出接口，参考<see cref="LogOutputLevelType.Info"/>类型定义
+        /// 基于常规模式下的日志标准输出接口，参考<see cref="CLogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
         public static void Info(string format, params object[] args)
         {
-            __Output(LogOutputLevelType.Info, format, args);
+            __Output(CLogOutputLevelType.Info, format, args);
         }
 
         /// <summary>
-        /// 基于警告模式下的日志标准输出接口，参考<see cref="LogOutputLevelType.Warning"/>类型定义
+        /// 基于警告模式下的日志标准输出接口，参考<see cref="CLogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void Warn(object message)
         {
-            __Output(LogOutputLevelType.Warning, message);
+            __Output(CLogOutputLevelType.Warning, message);
         }
 
         /// <summary>
-        /// 基于警告模式下的日志标准输出接口，参考<see cref="LogOutputLevelType.Warning"/>类型定义
+        /// 基于警告模式下的日志标准输出接口，参考<see cref="CLogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void Warn(string message)
         {
-            __Output(LogOutputLevelType.Warning, message);
+            __Output(CLogOutputLevelType.Warning, message);
         }
 
         /// <summary>
-        /// 基于警告模式下的日志标准输出接口，参考<see cref="LogOutputLevelType.Warning"/>类型定义
+        /// 基于警告模式下的日志标准输出接口，参考<see cref="CLogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
         public static void Warn(string format, params object[] args)
         {
-            __Output(LogOutputLevelType.Warning, format, args);
+            __Output(CLogOutputLevelType.Warning, format, args);
         }
 
         /// <summary>
-        /// 基于错误模式下的日志标准输出接口，参考<see cref="LogOutputLevelType.Error"/>类型定义
+        /// 基于错误模式下的日志标准输出接口，参考<see cref="CLogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void Error(object message)
         {
-            __Output(LogOutputLevelType.Error, message);
+            __Output(CLogOutputLevelType.Error, message);
         }
 
         /// <summary>
-        /// 基于错误模式下的日志标准输出接口，参考<see cref="LogOutputLevelType.Error"/>类型定义
+        /// 基于错误模式下的日志标准输出接口，参考<see cref="CLogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void Error(string message)
         {
-            __Output(LogOutputLevelType.Error, message);
+            __Output(CLogOutputLevelType.Error, message);
         }
 
         /// <summary>
-        /// 基于错误模式下的日志标准输出接口，参考<see cref="LogOutputLevelType.Error"/>类型定义
+        /// 基于错误模式下的日志标准输出接口，参考<see cref="CLogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
         public static void Error(string format, params object[] args)
         {
-            __Output(LogOutputLevelType.Error, format, args);
+            __Output(CLogOutputLevelType.Error, format, args);
         }
 
         /// <summary>
-        /// 基于崩溃模式下的日志标准输出接口，参考<see cref="LogOutputLevelType.Fatal"/>类型定义
+        /// 基于崩溃模式下的日志标准输出接口，参考<see cref="CLogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void Fatal(object message)
         {
-            __Output(LogOutputLevelType.Fatal, message);
+            __Output(CLogOutputLevelType.Fatal, message);
         }
 
         /// <summary>
-        /// 基于崩溃模式下的日志标准输出接口，参考<see cref="LogOutputLevelType.Fatal"/>类型定义
+        /// 基于崩溃模式下的日志标准输出接口，参考<see cref="CLogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void Fatal(string message)
         {
-            __Output(LogOutputLevelType.Fatal, message);
+            __Output(CLogOutputLevelType.Fatal, message);
         }
 
         /// <summary>
-        /// 基于崩溃模式下的日志标准输出接口，参考<see cref="LogOutputLevelType.Fatal"/>类型定义
+        /// 基于崩溃模式下的日志标准输出接口，参考<see cref="CLogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
         public static void Fatal(string format, params object[] args)
         {
-            __Output(LogOutputLevelType.Fatal, format, args);
+            __Output(CLogOutputLevelType.Fatal, format, args);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="level">日志级别</param>
         /// <param name="message">日志内容</param>
-        internal static void __Output(LogOutputLevelType level, object message)
+        internal static void __Output(CLogOutputLevelType level, object message)
         {
             __Output(level, message.ToString());
         }
@@ -185,7 +185,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="level">日志级别</param>
         /// <param name="message">日志内容</param>
-        internal static void __Output(LogOutputLevelType level, string message)
+        internal static void __Output(CLogOutputLevelType level, string message)
         {
             _logOutputHandler?.Invoke(level, message);
         }
@@ -196,7 +196,7 @@ namespace NovaEngine
         /// <param name="level">日志级别</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
-        internal static void __Output(LogOutputLevelType level, string format, params object[] args)
+        internal static void __Output(CLogOutputLevelType level, string format, params object[] args)
         {
             __Output(level, Utility.Text.Format(format, args));
         }

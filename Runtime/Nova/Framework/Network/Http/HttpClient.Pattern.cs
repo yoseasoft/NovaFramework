@@ -67,10 +67,10 @@ namespace NovaEngine.Network
 
             if (false == request.isDone)
             {
-                Logger.Error(request.error);
+                CLogger.Error(request.error);
             }
 
-            // Logger.Debug(request.downloadHandler.text);
+            // CLogger.Debug(request.downloadHandler.text);
 
             handler(linkID, request);
         }

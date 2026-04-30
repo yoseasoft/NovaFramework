@@ -406,7 +406,7 @@ namespace NovaEngine
 
         public override string ToString()
         {
-            Logger.Assert(_isActive);
+            CAssert.IsTrue(_isActive);
 
             _isActive = false;
             if (_caches.Count < MaxCacheSize)

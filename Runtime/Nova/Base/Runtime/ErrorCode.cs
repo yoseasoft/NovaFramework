@@ -217,7 +217,7 @@ namespace NovaEngine
             FieldInfo field = errorCodeType.GetField(exceptionName, BindingFlags.Public | BindingFlags.Static);
             if (null == field)
             {
-                Logger.Error("Could not found ErrorCode field name '{0}', get target property value failed.", exceptionName);
+                CLogger.Error("Could not found ErrorCode field name '{0}', get target property value failed.", exceptionName);
                 return 0;
             }
 

@@ -153,13 +153,13 @@ namespace NovaEngine.IO
                 string[] attr = line.Split(new char[] { '=' });
                 if (attr.Length < 2)
                 {
-                    Logger.Error("文件‘{0}’存在错误的配置,请检查", _filename);
+                    CLogger.Error("文件‘{0}’存在错误的配置,请检查", _filename);
                     continue;
                 }
 
                 if (attr[0].Length < 0 || attr[1].Length < 0)
                 {
-                    Logger.Error("文件‘{0}’存在错误的配置key={1}, value={2}请检查", _filename, attr[0], attr[1]);
+                    CLogger.Error("文件‘{0}’存在错误的配置key={1}, value={2}请检查", _filename, attr[0], attr[1]);
                     continue;
                 }
 
@@ -232,7 +232,7 @@ namespace NovaEngine.IO
                 string[] attr = line.Split(new char[] { '=' });
                 if (attr.Length < 2 || string.IsNullOrEmpty(attr[0]) || string.IsNullOrEmpty(attr[1]))
                 {
-                    Logger.Error("原始数据‘{0}’存在格式错误的问题，该行数据解析失败！", line);
+                    CLogger.Error("原始数据‘{0}’存在格式错误的问题，该行数据解析失败！", line);
                     continue;
                 }
 

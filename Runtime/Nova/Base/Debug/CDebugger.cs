@@ -29,7 +29,7 @@ namespace NovaEngine
     /// <summary>
     /// 调试器对象工具类，用于引擎内部调试控制及输出相关接口声明
     /// </summary>
-    internal /*sealed*/ partial class Debugger : Singleton<Debugger>
+    internal /*sealed*/ partial class CDebugger : Singleton<CDebugger>
     {
         /// <summary>
         /// 调试器对象类初始化接口
@@ -46,7 +46,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于调试模式下的日志输出接口，参考<see cref="LogOutputLevelType.Debug"/>类型定义
+        /// 基于调试模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -56,7 +56,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于调试模式下的日志输出接口，参考<see cref="LogOutputLevelType.Debug"/>类型定义
+        /// 基于调试模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -66,7 +66,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于调试模式下的日志输出接口，参考<see cref="LogOutputLevelType.Debug"/>类型定义
+        /// 基于调试模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
@@ -77,7 +77,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于调试模式下的日志输出接口，参考<see cref="LogOutputLevelType.Debug"/>类型定义
+        /// 基于调试模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
@@ -88,7 +88,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于调试模式下的日志输出接口，参考<see cref="LogOutputLevelType.Debug"/>类型定义
+        /// 基于调试模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
@@ -100,7 +100,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于常规模式下的日志输出接口，参考<see cref="LogOutputLevelType.Info"/>类型定义
+        /// 基于常规模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -110,7 +110,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于常规模式下的日志输出接口，参考<see cref="LogOutputLevelType.Info"/>类型定义
+        /// 基于常规模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -120,7 +120,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于常规模式下的日志输出接口，参考<see cref="LogOutputLevelType.Info"/>类型定义
+        /// 基于常规模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
@@ -131,7 +131,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于常规模式下的日志输出接口，参考<see cref="LogOutputLevelType.Info"/>类型定义
+        /// 基于常规模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
@@ -142,7 +142,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于常规模式下的日志输出接口，参考<see cref="LogOutputLevelType.Info"/>类型定义
+        /// 基于常规模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
@@ -154,7 +154,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于警告模式下的日志输出接口，参考<see cref="LogOutputLevelType.Warning"/>类型定义
+        /// 基于警告模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -164,7 +164,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于警告模式下的日志输出接口，参考<see cref="LogOutputLevelType.Warning"/>类型定义
+        /// 基于警告模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -174,7 +174,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于警告模式下的日志输出接口，参考<see cref="LogOutputLevelType.Warning"/>类型定义
+        /// 基于警告模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
@@ -185,7 +185,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于警告模式下的日志输出接口，参考<see cref="LogOutputLevelType.Warning"/>类型定义
+        /// 基于警告模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
@@ -196,7 +196,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于警告模式下的日志输出接口，参考<see cref="LogOutputLevelType.Warning"/>类型定义
+        /// 基于警告模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
@@ -208,7 +208,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于错误模式下的日志输出接口，参考<see cref="LogOutputLevelType.Error"/>类型定义
+        /// 基于错误模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -218,7 +218,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于错误模式下的日志输出接口，参考<see cref="LogOutputLevelType.Error"/>类型定义
+        /// 基于错误模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -228,7 +228,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于错误模式下的日志输出接口，参考<see cref="LogOutputLevelType.Error"/>类型定义
+        /// 基于错误模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
@@ -239,7 +239,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于错误模式下的日志输出接口，参考<see cref="LogOutputLevelType.Error"/>类型定义
+        /// 基于错误模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
@@ -250,7 +250,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于错误模式下的日志输出接口，参考<see cref="LogOutputLevelType.Error"/>类型定义
+        /// 基于错误模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
@@ -262,7 +262,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于崩溃模式下的日志输出接口，参考<see cref="LogOutputLevelType.Fatal"/>类型定义
+        /// 基于崩溃模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -272,7 +272,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于崩溃模式下的日志输出接口，参考<see cref="LogOutputLevelType.Fatal"/>类型定义
+        /// 基于崩溃模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -282,7 +282,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于崩溃模式下的日志输出接口，参考<see cref="LogOutputLevelType.Fatal"/>类型定义
+        /// 基于崩溃模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
@@ -293,7 +293,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于崩溃模式下的日志输出接口，参考<see cref="LogOutputLevelType.Fatal"/>类型定义
+        /// 基于崩溃模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
@@ -304,7 +304,7 @@ namespace NovaEngine
         }
 
         /// <summary>
-        /// 基于崩溃模式下的日志输出接口，参考<see cref="LogOutputLevelType.Fatal"/>类型定义
+        /// 基于崩溃模式下的日志输出接口，参考<see cref="CLogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="condition">条件表达式</param>
         /// <param name="format">日志格式内容</param>
@@ -321,7 +321,7 @@ namespace NovaEngine
         /// <param name="level">日志级别</param>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Output(LogOutputLevelType level, object message)
+        public static void Output(CLogOutputLevelType level, object message)
         {
             Instance._output_object?.Invoke(level, message);
         }
@@ -332,7 +332,7 @@ namespace NovaEngine
         /// <param name="level">日志级别</param>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Output(LogOutputLevelType level, string message)
+        public static void Output(CLogOutputLevelType level, string message)
         {
             Instance._output_string?.Invoke(level, message);
         }
@@ -344,7 +344,7 @@ namespace NovaEngine
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Output(LogOutputLevelType level, string format, params object[] args)
+        public static void Output(CLogOutputLevelType level, string format, params object[] args)
         {
             Instance._output_format_args?.Invoke(level, format, args);
         }

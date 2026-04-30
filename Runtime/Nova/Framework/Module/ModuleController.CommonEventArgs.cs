@@ -98,7 +98,7 @@ namespace NovaEngine.Module
             /// <param name="args">事件参数实例</param>
             public override void CopyTo(ModuleEventArgs args)
             {
-                Logger.Assert(args.GetType().IsAssignableFrom(typeof(CommonEventArgs)));
+                CLogger.Assert(args.GetType().IsAssignableFrom(typeof(CommonEventArgs)));
 
                 CommonEventArgs e = (CommonEventArgs) args;
                 e._eventID = _eventID;

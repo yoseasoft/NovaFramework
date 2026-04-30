@@ -100,7 +100,7 @@ namespace NovaEngine
         {
             if (null == action)
             {
-                Logger.Warn("The ForEach call action must be non-null.");
+                CLogger.Warn("The ForEach call action must be non-null.");
                 return;
             }
 
@@ -122,7 +122,7 @@ namespace NovaEngine
             if (null == key || null == value ||
                 _kv.ContainsKey(key) || _vk.ContainsKey(value))
             {
-                Logger.Warn("Invalid arguments.");
+                CLogger.Warn("Invalid arguments.");
                 return;
             }
 

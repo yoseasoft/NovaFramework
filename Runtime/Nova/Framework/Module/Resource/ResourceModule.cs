@@ -225,7 +225,7 @@ namespace NovaEngine.Module
         /// </summary>
         public void UnloadAllAssets()
         {
-            Debugger.Throw<InvalidOperationException>();
+            CDebugger.Throw<NotImplementedException>();
         }
 
         #endregion

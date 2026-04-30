@@ -377,7 +377,7 @@ namespace NovaEngine.Module
                 }
                 catch (Exception ee)
                 {
-                    Logger.Error("receive bytes parse failed '{%s}'.", ee.ToString());
+                    CLogger.Error("receive bytes parse failed '{%s}'.", ee.ToString());
 
                     this.OnError(NetworkErrorCode.SocketError);
                     return;
@@ -389,7 +389,7 @@ namespace NovaEngine.Module
                 }
                 catch (Exception ee)
                 {
-                    Logger.Error(ee.ToString());
+                    CLogger.Error(ee.ToString());
                 }
             }
 

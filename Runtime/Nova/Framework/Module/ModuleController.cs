@@ -246,7 +246,7 @@ namespace NovaEngine.Module
         /// <returns>返回当前创建的模块新实例</returns>
         private static ModuleObject CreateModuleObject(int moduleType)
         {
-            Logger.Assert(_isRunning);
+            CLogger.Assert(_isRunning);
 
             if (_moduleCollections.ContainsKey(moduleType))
             {
@@ -286,7 +286,7 @@ namespace NovaEngine.Module
         /// <param name="moduleType">模块对象类型</param>
         private static void ReleaseModuleObject(int moduleType)
         {
-            Logger.Assert(_isRunning);
+            CLogger.Assert(_isRunning);
 
             if (false == _moduleCollections.ContainsKey(moduleType))
             {
@@ -479,7 +479,7 @@ namespace NovaEngine.Module
         /// <param name="agent">代理对象实例</param>
         public static void AddCommandAgent(string cname, ICommandAgent agent)
         {
-            Logger.Assert(_isRunning);
+            CLogger.Assert(_isRunning);
 
             _commandDispatcher.AddAgent(cname, agent);
         }
@@ -490,7 +490,7 @@ namespace NovaEngine.Module
         /// <param name="cname">代理对象名称</param>
         public static void RemoveCommandAgent(string cname)
         {
-            Logger.Assert(_isRunning);
+            CLogger.Assert(_isRunning);
 
             _commandDispatcher.RemoveAgent(cname);
         }

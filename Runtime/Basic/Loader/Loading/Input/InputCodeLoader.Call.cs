@@ -86,44 +86,24 @@ namespace GameEngine.Loader
                         callMethodInfo.Method = symMethod.MethodInfo;
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                        if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+                        if (NovaEngine.CVerification.IsOnDebuggingVerificationActivated())
                         {
                             bool verificated;
-                            if (null == callMethodInfo.TargetType)
+
+                            if (Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo))
                             {
-                                if (Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo))
-                                {
-                                    // 无参类型的输入响应函数
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
-                                }
-                                else if (callMethodInfo.KeyCode > VirtualKeyCode.None)
-                                {
-                                    // 输入键码和操作类型派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, typeof(VirtualKeyCode), typeof(InputOperationType));
-                                }
-                                else
-                                {
-                                    // 输入键码集合数据派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.InputDataType);
-                                }
+                                // 无参类型的输入响应函数
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatchedOfTargetObject(symMethod.MethodInfo, callMethodInfo.TargetType);
+                            }
+                            else if (callMethodInfo.KeyCode > VirtualKeyCode.None)
+                            {
+                                // 输入键码和操作类型派发
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatchedOfTargetObject(symMethod.MethodInfo, callMethodInfo.TargetType, typeof(VirtualKeyCode), typeof(InputOperationType));
                             }
                             else
                             {
-                                if (Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo))
-                                {
-                                    // 无参类型的输入响应函数
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType);
-                                }
-                                else if (callMethodInfo.KeyCode > VirtualKeyCode.None)
-                                {
-                                    // 输入键码和操作类型派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType, typeof(VirtualKeyCode), typeof(InputOperationType));
-                                }
-                                else
-                                {
-                                    // 输入键码集合数据派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType, callMethodInfo.InputDataType);
-                                }
+                                // 输入键码集合数据派发
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatchedOfTargetObject(symMethod.MethodInfo, callMethodInfo.TargetType, callMethodInfo.InputDataType);
                             }
 
                             // 校验失败

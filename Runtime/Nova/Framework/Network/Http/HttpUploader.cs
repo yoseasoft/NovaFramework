@@ -227,7 +227,7 @@ namespace NovaEngine.Network
             }
             catch (Exception e)
             {
-                Logger.Error("An error occurred for upload file to target url {0}: {1}.", url, e.ToString());
+                CLogger.Error("An error occurred for upload file to target url {0}: {1}.", url, e.ToString());
 
                 failed(e.ToString());
             }

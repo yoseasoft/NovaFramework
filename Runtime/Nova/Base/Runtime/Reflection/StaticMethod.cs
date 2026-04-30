@@ -64,7 +64,7 @@ namespace NovaEngine
         /// </summary>
         public virtual void Invoke()
         {
-            Logger.Assert(0 == _paramCount, "Invalid parameters length.");
+            CAssert.IsTrue(0 == _paramCount);
 
             _methodInfo.Invoke(null, _params);
         }
@@ -75,7 +75,7 @@ namespace NovaEngine
         /// <param name="arg1">参数1</param>
         public virtual void Invoke(object arg1)
         {
-            Logger.Assert(1 == _paramCount, "Invalid parameters length.");
+            CAssert.IsTrue(1 == _paramCount);
 
             _params[0] = arg1;
             _methodInfo.Invoke(null, _params);
@@ -88,7 +88,7 @@ namespace NovaEngine
         /// <param name="arg2">参数2</param>
         public virtual void Invoke(object arg1, object arg2)
         {
-            Logger.Assert(2 == _paramCount, "Invalid parameters length.");
+            CAssert.IsTrue(2 == _paramCount);
 
             _params[0] = arg1;
             _params[1] = arg2;
@@ -103,7 +103,7 @@ namespace NovaEngine
         /// <param name="arg3">参数3</param>
         public virtual void Invoke(object arg1, object arg2, object arg3)
         {
-            Logger.Assert(3 == _paramCount, "Invalid parameters length.");
+            CAssert.IsTrue(3 == _paramCount);
 
             _params[0] = arg1;
             _params[1] = arg2;

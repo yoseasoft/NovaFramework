@@ -51,7 +51,7 @@ namespace NovaEngine
             string[] items = text.Split('.');
             if (items.Length != (int) Version.FieldType.Max)
             {
-                Logger.Error("Invalid arguments: {0}", text);
+                CLogger.Error("Invalid arguments: {0}", text);
                 items = null;
             }
 

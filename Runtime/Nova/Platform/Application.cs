@@ -68,14 +68,14 @@ namespace NovaEngine
             Platform.PlatformType platformType = Platform.Instance.TargetPlatformType();
             if (Platform.PlatformType.Unknown == platformType)
             {
-                Logger.Error("Could not found any available platform on target application.");
+                CLogger.Error("Could not found any available platform on target application.");
                 return false;
             }
 
             // 设备模块启动
             if (false == Device.Instance.Startup())
             {
-                Logger.Error("The device instance startup failed.");
+                CLogger.Error("The device instance startup failed.");
                 return false;
             }
 

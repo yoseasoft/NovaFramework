@@ -1,7 +1,7 @@
 /// -------------------------------------------------------------------------------
 /// NovaEngine Framework
 ///
-/// Copyright (C) 2023 - 2024, Guangzhou Shiyue Network Technology Co., Ltd.
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -22,16 +22,28 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-namespace NovaEngine
+namespace System.Customize.Extension
 {
-    /// 调试器对象工具类
-    internal partial class Debugger
+    /// <summary>
+    /// 为系统默认的数组类型提供扩展接口支持
+    /// </summary>
+    public static class __Array
     {
         /// <summary>
-        /// 验证工具类，对类型，函数等定义进行格式校验
+        /// 克隆数组并在新数组起始位置插入新数据
         /// </summary>
-        public static partial class Verification
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="array">数组对象</param>
+        /// <param name="value">新数据内容</param>
+        /// <returns>返回克隆数组实例</returns>
+        public static T[] Prepend<T>(this T[] array, T value)
         {
+            if (array == null) return new[] { value };
+
+            T[] result = new T[array.Length + 1];
+            result[0] = value;
+            Array.Copy(array, 0, result, 1, array.Length);
+            return result;
         }
     }
 }

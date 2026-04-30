@@ -71,12 +71,12 @@ namespace NovaEngine
         {
             if (null == cname || null == agent)
             {
-                Logger.Throw<System.ArgumentNullException>("Command agent is invalid.");
+                CLogger.Throw<System.ArgumentNullException>("Command agent is invalid.");
             }
 
             if (_commandAgents.ContainsKey(cname))
             {
-                Logger.Throw<System.ArgumentException>("Agent name '{%s}' is already exist.", cname);
+                CLogger.Throw<System.ArgumentException>("Agent name '{%s}' is already exist.", cname);
             }
 
             agent.Initialize();
@@ -91,12 +91,12 @@ namespace NovaEngine
         {
             if (null == cname)
             {
-                Logger.Throw<System.ArgumentNullException>("Command agent is invalid.");
+                CLogger.Throw<System.ArgumentNullException>("Command agent is invalid.");
             }
 
             if (false == _commandAgents.ContainsKey(cname))
             {
-                Logger.Throw<System.ArgumentException>("Agent name '{%s}' is not exist.", cname);
+                CLogger.Throw<System.ArgumentException>("Agent name '{%s}' is not exist.", cname);
             }
 
             ICommandAgent agent = _commandAgents[cname];

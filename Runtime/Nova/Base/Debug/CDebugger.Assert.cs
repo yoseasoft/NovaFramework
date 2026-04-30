@@ -28,7 +28,7 @@ using System.Runtime.CompilerServices;
 namespace NovaEngine
 {
     /// 调试器对象工具类
-    internal partial class Debugger
+    internal partial class CDebugger
     {
         /// <summary>
         /// 系统断言，仅在调试模式下该函数有效

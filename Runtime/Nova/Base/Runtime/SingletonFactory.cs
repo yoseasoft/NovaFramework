@@ -86,7 +86,7 @@ namespace NovaEngine
 
             if (Environment.IsDevelopmentState())
             {
-                Logger.Assert(Utility.Reflection.IsTypeOfInstantiableClass(classType), ErrorText.InvalidArguments);
+                CLogger.Assert(Utility.Reflection.IsTypeOfInstantiableClass(classType), ErrorText.InvalidArguments);
             }
 
             if (_instances.TryGetValue(classType, out ISingleton instance))
@@ -138,7 +138,7 @@ namespace NovaEngine
         {
             if (false == _instances.ContainsKey(classType))
             {
-                Logger.Warn("Could not found any object instance with target class type '{0}', released instance failed.", classType.FullName);
+                CLogger.Warn("Could not found any object instance with target class type '{0}', released instance failed.", classType.FullName);
                 return;
             }
 

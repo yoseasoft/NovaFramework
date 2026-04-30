@@ -41,7 +41,7 @@ namespace NovaEngine.IO
         /// <param name="data">初始字节流</param>
         public ByteStreamReader(byte[] data)
         {
-            Logger.Assert(null != data);
+            CAssert.IsNotNull(data);
 
             _stream = new MemoryStream(data);
             _reader = new BinaryReader(_stream);

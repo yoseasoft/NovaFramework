@@ -227,13 +227,13 @@ namespace NovaEngine.Module
             {
                 await _webSocket.ConnectAsync(new Uri(_url), _cancellationTokenSource.Token);
 
-                // Logger.Info("The WebSocket connect state {0} for target url {1}.", _webSocket.State, _url);
+                // CLogger.Info("The WebSocket connect state {0} for target url {1}.", _webSocket.State, _url);
 
                 OnConnectionComplete();
             }
             catch (Exception exception)
             {
-                Logger.Error(exception);
+                CLogger.Error(exception);
 
                 OnConnectionError();
             }
@@ -329,7 +329,7 @@ namespace NovaEngine.Module
         /// <returns>若远程链接被关闭返回true，否则返回false</returns>
         private bool IsRemoteClosed()
         {
-            Logger.Assert(null != this._webSocket || null != this._cancellationTokenSource, ErrorText.InvalidArguments);
+            CLogger.Assert(null != this._webSocket || null != this._cancellationTokenSource, ErrorText.InvalidArguments);
 
             if (false == this._isConnected) // IsClosed
             {
@@ -343,7 +343,7 @@ namespace NovaEngine.Module
 
             if (this._webSocket.CloseStatus.HasValue && this._webSocket.CloseStatus.Value != WebSocketCloseStatus.Empty)
             {
-                Logger.Info("The WebSocket was closed by status {0}.", this._webSocket.CloseStatus.Value);
+                CLogger.Info("The WebSocket was closed by status {0}.", this._webSocket.CloseStatus.Value);
                 return true;
             }
 
@@ -489,7 +489,7 @@ namespace NovaEngine.Module
                 }
                 catch (Exception e)
                 {
-                    Logger.Error(e);
+                    CLogger.Error(e);
 
                     this.OnError(NetworkErrorCode.SocketError);
                 }
@@ -536,7 +536,7 @@ namespace NovaEngine.Module
                 return;
             }
 
-            // Logger.Info($"Received Data = {System.Text.Encoding.UTF8.GetString(_readBuffer, 0, result.Count)}, Count = {result.Count}, Result CloseStatus = {result.MessageType}.");
+            // CLogger.Info($"Received Data = {System.Text.Encoding.UTF8.GetString(_readBuffer, 0, result.Count)}, Count = {result.Count}, Result CloseStatus = {result.MessageType}.");
 
             this.OnRecvComplete(receiveCount);
         }
@@ -563,7 +563,7 @@ namespace NovaEngine.Module
             }
             catch (Exception exception)
             {
-                Logger.Error(exception);
+                CLogger.Error(exception);
             }
 
             this.OnRecv();
@@ -576,7 +576,7 @@ namespace NovaEngine.Module
         {
             if (e.IsPing)
             {
-                Logger.Info("The WebSocket channel was received ping notify now.");
+                CLogger.Info("The WebSocket channel was received ping notify now.");
                 return;
             }
 
@@ -590,7 +590,7 @@ namespace NovaEngine.Module
 
             Recycle(buffer);
 
-            // Logger.Info($"Received Data = {e.Data.Length}, Count = {e.RawData.Length}, Opcode = {e.Opcode}.");
+            // CLogger.Info($"Received Data = {e.Data.Length}, Count = {e.RawData.Length}, Opcode = {e.Opcode}.");
         }
 #elif __USING_UnityWebSocket_LIBRARIES_TYPE
         /// <summary>
@@ -627,7 +627,7 @@ namespace NovaEngine.Module
 
             Recycle(buffer);
 
-            // Logger.Info($"Received Data Count = {e.RawData.Length}, Opcode = {e.Opcode}, Data = {e.Data}.");
+            // CLogger.Info($"Received Data Count = {e.RawData.Length}, Opcode = {e.Opcode}, Data = {e.Data}.");
         }
 #endif
 

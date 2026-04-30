@@ -28,146 +28,146 @@ namespace NovaEngine
     /// <summary>
     /// 日志相关函数集合工具类
     /// </summary>
-    internal static partial class Logger
+    internal static partial class CLogger
     {
         /// <summary>
-        /// 基于调试模式下的日志追踪输出接口，参考<see cref="LogOutputLevelType.Debug"/>类型定义
+        /// 基于调试模式下的日志追踪输出接口，参考<see cref="CLogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void TraceDebug(object message)
         {
-            __TraceOutput(LogOutputLevelType.Debug, message);
+            __TraceOutput(CLogOutputLevelType.Debug, message);
         }
 
         /// <summary>
-        /// 基于调试模式下的日志追踪输出接口，参考<see cref="LogOutputLevelType.Debug"/>类型定义
+        /// 基于调试模式下的日志追踪输出接口，参考<see cref="CLogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void TraceDebug(string message)
         {
-            __TraceOutput(LogOutputLevelType.Debug, message);
+            __TraceOutput(CLogOutputLevelType.Debug, message);
         }
 
         /// <summary>
-        /// 基于调试模式下的日志追踪输出接口，参考<see cref="LogOutputLevelType.Debug"/>类型定义
+        /// 基于调试模式下的日志追踪输出接口，参考<see cref="CLogOutputLevelType.Debug"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
         public static void TraceDebug(string format, params object[] args)
         {
-            __TraceOutput(LogOutputLevelType.Debug, format, args);
+            __TraceOutput(CLogOutputLevelType.Debug, format, args);
         }
 
         /// <summary>
-        /// 基于常规模式下的日志追踪输出接口，参考<see cref="LogOutputLevelType.Info"/>类型定义
+        /// 基于常规模式下的日志追踪输出接口，参考<see cref="CLogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void TraceInfo(object message)
         {
-            __TraceOutput(LogOutputLevelType.Info, message);
+            __TraceOutput(CLogOutputLevelType.Info, message);
         }
 
         /// <summary>
-        /// 基于常规模式下的日志追踪输出接口，参考<see cref="LogOutputLevelType.Info"/>类型定义
+        /// 基于常规模式下的日志追踪输出接口，参考<see cref="CLogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void TraceInfo(string message)
         {
-            __TraceOutput(LogOutputLevelType.Info, message);
+            __TraceOutput(CLogOutputLevelType.Info, message);
         }
 
         /// <summary>
-        /// 基于常规模式下的日志追踪输出接口，参考<see cref="LogOutputLevelType.Info"/>类型定义
+        /// 基于常规模式下的日志追踪输出接口，参考<see cref="CLogOutputLevelType.Info"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
         public static void TraceInfo(string format, params object[] args)
         {
-            __TraceOutput(LogOutputLevelType.Info, format, args);
+            __TraceOutput(CLogOutputLevelType.Info, format, args);
         }
 
         /// <summary>
-        /// 基于警告模式下的日志追踪输出接口，参考<see cref="LogOutputLevelType.Warning"/>类型定义
+        /// 基于警告模式下的日志追踪输出接口，参考<see cref="CLogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void TraceWarn(object message)
         {
-            __TraceOutput(LogOutputLevelType.Warning, message);
+            __TraceOutput(CLogOutputLevelType.Warning, message);
         }
 
         /// <summary>
-        /// 基于警告模式下的日志追踪输出接口，参考<see cref="LogOutputLevelType.Warning"/>类型定义
+        /// 基于警告模式下的日志追踪输出接口，参考<see cref="CLogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void TraceWarn(string message)
         {
-            __TraceOutput(LogOutputLevelType.Warning, message);
+            __TraceOutput(CLogOutputLevelType.Warning, message);
         }
 
         /// <summary>
-        /// 基于警告模式下的日志追踪输出接口，参考<see cref="LogOutputLevelType.Warning"/>类型定义
+        /// 基于警告模式下的日志追踪输出接口，参考<see cref="CLogOutputLevelType.Warning"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
         public static void TraceWarn(string format, params object[] args)
         {
-            __TraceOutput(LogOutputLevelType.Warning, format, args);
+            __TraceOutput(CLogOutputLevelType.Warning, format, args);
         }
 
         /// <summary>
-        /// 基于错误模式下的日志追踪输出接口，参考<see cref="LogOutputLevelType.Error"/>类型定义
+        /// 基于错误模式下的日志追踪输出接口，参考<see cref="CLogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void TraceError(object message)
         {
-            __TraceOutput(LogOutputLevelType.Error, message);
+            __TraceOutput(CLogOutputLevelType.Error, message);
         }
 
         /// <summary>
-        /// 基于错误模式下的日志追踪输出接口，参考<see cref="LogOutputLevelType.Error"/>类型定义
+        /// 基于错误模式下的日志追踪输出接口，参考<see cref="CLogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void TraceError(string message)
         {
-            __TraceOutput(LogOutputLevelType.Error, message);
+            __TraceOutput(CLogOutputLevelType.Error, message);
         }
 
         /// <summary>
-        /// 基于错误模式下的日志追踪输出接口，参考<see cref="LogOutputLevelType.Error"/>类型定义
+        /// 基于错误模式下的日志追踪输出接口，参考<see cref="CLogOutputLevelType.Error"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
         public static void TraceError(string format, params object[] args)
         {
-            __TraceOutput(LogOutputLevelType.Error, format, args);
+            __TraceOutput(CLogOutputLevelType.Error, format, args);
         }
 
         /// <summary>
-        /// 基于崩溃模式下的日志追踪输出接口，参考<see cref="LogOutputLevelType.Fatal"/>类型定义
+        /// 基于崩溃模式下的日志追踪输出接口，参考<see cref="CLogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void TraceFatal(object message)
         {
-            __TraceOutput(LogOutputLevelType.Fatal, message);
+            __TraceOutput(CLogOutputLevelType.Fatal, message);
         }
 
         /// <summary>
-        /// 基于崩溃模式下的日志追踪输出接口，参考<see cref="LogOutputLevelType.Fatal"/>类型定义
+        /// 基于崩溃模式下的日志追踪输出接口，参考<see cref="CLogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="message">日志内容</param>
         public static void TraceFatal(string message)
         {
-            __TraceOutput(LogOutputLevelType.Fatal, message);
+            __TraceOutput(CLogOutputLevelType.Fatal, message);
         }
 
         /// <summary>
-        /// 基于崩溃模式下的日志追踪输出接口，参考<see cref="LogOutputLevelType.Fatal"/>类型定义
+        /// 基于崩溃模式下的日志追踪输出接口，参考<see cref="CLogOutputLevelType.Fatal"/>类型定义
         /// </summary>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
         public static void TraceFatal(string format, params object[] args)
         {
-            __TraceOutput(LogOutputLevelType.Fatal, format, args);
+            __TraceOutput(CLogOutputLevelType.Fatal, format, args);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="level">日志级别</param>
         /// <param name="message">日志内容</param>
-        internal static void __TraceOutput(LogOutputLevelType level, object message)
+        internal static void __TraceOutput(CLogOutputLevelType level, object message)
         {
             __TraceOutput(level, message.ToString());
         }
@@ -185,7 +185,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="level">日志级别</param>
         /// <param name="message">日志内容</param>
-        internal static void __TraceOutput(LogOutputLevelType level, string message)
+        internal static void __TraceOutput(CLogOutputLevelType level, string message)
         {
             _logOutputHandler?.Invoke(level, message);
         }
@@ -196,7 +196,7 @@ namespace NovaEngine
         /// <param name="level">日志级别</param>
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
-        internal static void __TraceOutput(LogOutputLevelType level, string format, params object[] args)
+        internal static void __TraceOutput(CLogOutputLevelType level, string format, params object[] args)
         {
             __TraceOutput(level, Utility.Text.Format(format, args));
         }

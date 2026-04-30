@@ -108,7 +108,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(int groupID, object message)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Debug, message);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Debug, message);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(int groupID, string message)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Debug, message);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Debug, message);
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(int groupID, bool condition, string message)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Debug, condition, message);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Debug, condition, message);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(int groupID, string format, params object[] args)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Debug, format, args);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Debug, format, args);
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(int groupID, bool condition, string format, params object[] args)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Debug, condition, format, args);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Debug, condition, format, args);
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(int groupID, object message)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Info, message);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Info, message);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(int groupID, string message)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Info, message);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Info, message);
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(int groupID, bool condition, string message)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Info, condition, message);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Info, condition, message);
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(int groupID, string format, params object[] args)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Info, format, args);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Info, format, args);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Info(int groupID, bool condition, string format, params object[] args)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Info, condition, format, args);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Info, condition, format, args);
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(int groupID, object message)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Warning, message);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Warning, message);
         }
 
         /// <summary>
@@ -238,7 +238,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(int groupID, string message)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Warning, message);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Warning, message);
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(int groupID, bool condition, string message)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Warning, condition, message);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Warning, condition, message);
         }
 
         /// <summary>
@@ -262,7 +262,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(int groupID, string format, params object[] args)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Warning, format, args);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Warning, format, args);
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Warn(int groupID, bool condition, string format, params object[] args)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Warning, condition, format, args);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Warning, condition, format, args);
         }
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(int groupID, object message)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Error, message);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Error, message);
         }
 
         /// <summary>
@@ -297,7 +297,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(int groupID, string message)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Error, message);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Error, message);
         }
 
         /// <summary>
@@ -309,7 +309,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(int groupID, bool condition, string message)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Error, condition, message);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Error, condition, message);
         }
 
         /// <summary>
@@ -321,7 +321,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(int groupID, string format, params object[] args)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Error, format, args);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Error, format, args);
         }
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Error(int groupID, bool condition, string format, params object[] args)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Error, condition, format, args);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Error, condition, format, args);
         }
 
         /// <summary>
@@ -345,7 +345,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(int groupID, object message)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Fatal, message);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Fatal, message);
         }
 
         /// <summary>
@@ -356,7 +356,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(int groupID, string message)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Fatal, message);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Fatal, message);
         }
 
         /// <summary>
@@ -368,7 +368,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(int groupID, bool condition, string message)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Fatal, condition, message);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Fatal, condition, message);
         }
 
         /// <summary>
@@ -380,7 +380,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(int groupID, string format, params object[] args)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Fatal, format, args);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Fatal, format, args);
         }
 
         /// <summary>
@@ -393,7 +393,7 @@ namespace GameEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Fatal(int groupID, bool condition, string format, params object[] args)
         {
-            Output(groupID, NovaEngine.LogOutputLevelType.Fatal, condition, format, args);
+            Output(groupID, NovaEngine.CLogOutputLevelType.Fatal, condition, format, args);
         }
 
         /// <summary>
@@ -403,7 +403,7 @@ namespace GameEngine
         /// <param name="level">日志级别</param>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void Output(int groupID, NovaEngine.LogOutputLevelType level, object message)
+        private static void Output(int groupID, NovaEngine.CLogOutputLevelType level, object message)
         {
             if (_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
             {
@@ -419,7 +419,7 @@ namespace GameEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void Output(int groupID, NovaEngine.LogOutputLevelType level, bool condition, object message)
+        private static void Output(int groupID, NovaEngine.CLogOutputLevelType level, bool condition, object message)
         {
             if (!condition && _debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
             {
@@ -434,7 +434,7 @@ namespace GameEngine
         /// <param name="level">日志级别</param>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void Output(int groupID, NovaEngine.LogOutputLevelType level, string message)
+        private static void Output(int groupID, NovaEngine.CLogOutputLevelType level, string message)
         {
             if (_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
             {
@@ -450,7 +450,7 @@ namespace GameEngine
         /// <param name="condition">条件表达式</param>
         /// <param name="message">日志内容</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void Output(int groupID, NovaEngine.LogOutputLevelType level, bool condition, string message)
+        private static void Output(int groupID, NovaEngine.CLogOutputLevelType level, bool condition, string message)
         {
             if (!condition && _debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
             {
@@ -466,7 +466,7 @@ namespace GameEngine
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void Output(int groupID, NovaEngine.LogOutputLevelType level, string format, params object[] args)
+        private static void Output(int groupID, NovaEngine.CLogOutputLevelType level, string format, params object[] args)
         {
             if (_debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
             {
@@ -483,7 +483,7 @@ namespace GameEngine
         /// <param name="format">日志格式内容</param>
         /// <param name="args">日志格式化参数</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void Output(int groupID, NovaEngine.LogOutputLevelType level, bool condition, string format, params object[] args)
+        private static void Output(int groupID, NovaEngine.CLogOutputLevelType level, bool condition, string format, params object[] args)
         {
             if (!condition && _debuggingOutputGroupInfos.TryGetValue(groupID, out DebuggingOutputGroupInfo group))
             {
@@ -527,11 +527,11 @@ namespace GameEngine
             /// </summary>
             /// <param name="level">日志级别</param>
             /// <param name="message">日志内容</param>
-            public void Output(NovaEngine.LogOutputLevelType level, object message)
+            public void Output(NovaEngine.CLogOutputLevelType level, object message)
             {
                 if (IsOutputEnabled(level))
                 {
-                    NovaEngine.Debugger.Output(level, $"【{_groupName}】 {message}");
+                    NovaEngine.CDebugger.Output(level, $"【{_groupName}】 {message}");
                 }
             }
 
@@ -540,11 +540,11 @@ namespace GameEngine
             /// </summary>
             /// <param name="level">日志级别</param>
             /// <param name="message">日志内容</param>
-            public void Output(NovaEngine.LogOutputLevelType level, string message)
+            public void Output(NovaEngine.CLogOutputLevelType level, string message)
             {
                 if (IsOutputEnabled(level))
                 {
-                    NovaEngine.Debugger.Output(level, $"【{_groupName}】 {message}");
+                    NovaEngine.CDebugger.Output(level, $"【{_groupName}】 {message}");
                 }
             }
 
@@ -554,11 +554,11 @@ namespace GameEngine
             /// <param name="level">日志级别</param>
             /// <param name="format">日志格式内容</param>
             /// <param name="args">日志格式化参数</param>
-            public void Output(NovaEngine.LogOutputLevelType level, string format, params object[] args)
+            public void Output(NovaEngine.CLogOutputLevelType level, string format, params object[] args)
             {
                 if (IsOutputEnabled(level))
                 {
-                    NovaEngine.Debugger.Output(level, $"【{_groupName}】 {format}", args);
+                    NovaEngine.CDebugger.Output(level, $"【{_groupName}】 {format}", args);
                 }
             }
 
@@ -567,9 +567,9 @@ namespace GameEngine
             /// </summary>
             /// <param name="level">日志级别</param>
             /// <returns>若启用给定级别的调试输出返回true，否则返回false</returns>
-            private bool IsOutputEnabled(NovaEngine.LogOutputLevelType level)
+            private bool IsOutputEnabled(NovaEngine.CLogOutputLevelType level)
             {
-                return (_enabled && NovaEngine.Configuration.LogUsingGroupFilter) || (level > NovaEngine.LogOutputLevelType.Warning);
+                return (_enabled && NovaEngine.Configuration.LogUsingGroupFilter) || (level > NovaEngine.CLogOutputLevelType.Warning);
             }
         }
 

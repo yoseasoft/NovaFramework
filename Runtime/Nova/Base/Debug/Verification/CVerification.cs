@@ -24,58 +24,60 @@
 
 namespace NovaEngine
 {
-    /// 调试器对象工具类
-    internal partial class Debugger
+    /// <summary>
+    /// 验证工具类，对类型，函数等定义进行格式校验
+    /// </summary>
+    public static partial class CVerification
     {
         /// <summary>
         /// 对象类型校验模式启用状态标识
         /// </summary>
-        private bool _isClassTypeVerificationEnabled = false;
+        private static bool _isClassTypeVerificationEnabled = false;
 
         /// <summary>
         /// 函数信息校验模式启用状态标识
         /// </summary>
-        private bool _isMethodInfoVerificationEnabled = false;
+        private static bool _isMethodInfoVerificationEnabled = false;
 
         /// <summary>
         /// 参数信息校验模式启用状态标识
         /// </summary>
-        private bool _isParameterInfoVerificationEnabled = false;
+        private static bool _isParameterInfoVerificationEnabled = false;
 
         /// <summary>
         /// 调试校验中的断言模式启用状态标识
         /// </summary>
-        private bool _isDebuggingVerificationAssertModeEnabled = false;
+        private static bool _isDebuggingVerificationAssertModeEnabled = false;
 
         /// <summary>
         /// 对象类型校验模式启用状态标识的getter/setter属性
         /// </summary>
-        public bool IsClassTypeVerificationEnabled
-        { get { return _isClassTypeVerificationEnabled; } set { _isClassTypeVerificationEnabled = value; } }
+        public static bool IsClassTypeVerificationEnabled
+        { get { return _isClassTypeVerificationEnabled; } internal set { _isClassTypeVerificationEnabled = value; } }
 
         /// <summary>
         /// 函数信息校验模式启用状态标识的getter/setter属性
         /// </summary>
-        public bool IsMethodInfoVerificationEnabled
-        { get { return _isMethodInfoVerificationEnabled; } set { _isMethodInfoVerificationEnabled = value; } }
+        public static bool IsMethodInfoVerificationEnabled
+        { get { return _isMethodInfoVerificationEnabled; } internal set { _isMethodInfoVerificationEnabled = value; } }
 
         /// <summary>
         /// 参数信息校验模式启用状态标识的getter/setter属性
         /// </summary>
-        public bool IsParameterInfoVerificationEnabled
-        { get { return _isParameterInfoVerificationEnabled; } set { _isParameterInfoVerificationEnabled = value; } }
+        public static bool IsParameterInfoVerificationEnabled
+        { get { return _isParameterInfoVerificationEnabled; } internal set { _isParameterInfoVerificationEnabled = value; } }
 
         /// <summary>
         /// 调试校验中的断言模式启用状态标识的getter/setter属性
         /// </summary>
-        public bool IsDebuggingVerificationAssertModeEnabled
-        { get { return _isDebuggingVerificationAssertModeEnabled; } set { _isDebuggingVerificationAssertModeEnabled = value; } }
+        public static bool IsDebuggingVerificationAssertModeEnabled
+        { get { return _isDebuggingVerificationAssertModeEnabled; } internal set { _isDebuggingVerificationAssertModeEnabled = value; } }
 
         /// <summary>
         /// 检测当前调试校验模式是否已处于激活状态
         /// </summary>
         /// <returns>若调试校验模式已激活则返回true，否则返回false</returns>
-        public bool IsOnDebuggingVerificationActivated()
+        public static bool IsOnDebuggingVerificationActivated()
         {
             if (Environment.DebugMode)
             {

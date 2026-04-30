@@ -52,7 +52,7 @@ namespace NovaEngine
         {
             if (null == properties)
             {
-                Logger.Error("The input properties params must be non-null.");
+                CLogger.Error("The input properties params must be non-null.");
                 return;
             }
 
@@ -103,7 +103,7 @@ namespace NovaEngine
         {
             if (_variables.ContainsKey(key))
             {
-                // Logger.Warn("The key '{%s}' was already exist in variables, repeat added it will be override old value.", key);
+                // CLogger.Warn("The key '{%s}' was already exist in variables, repeat added it will be override old value.", key);
 
                 _variables.Remove(key);
             }

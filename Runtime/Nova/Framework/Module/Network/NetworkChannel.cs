@@ -198,7 +198,7 @@ namespace NovaEngine.Module
         /// <param name="service">服务对象实例</param>
         public NetworkChannel(string name, string url, NetworkService service)
         {
-            Logger.Assert(null != service);
+            CAssert.IsNotNull(service);
 
             this._channelID = Session.NextSession((int) ModuleObject.ModuleEventType.Network);
             this._channelName = name;
@@ -262,7 +262,7 @@ namespace NovaEngine.Module
         /// <param name="url">通道连接目标地址</param>
         public void Connect(string name, string url)
         {
-            Logger.Assert(string.IsNullOrEmpty(_channelName) && string.IsNullOrEmpty(_url), "The name or url was already assigned value.");
+            CLogger.Assert(string.IsNullOrEmpty(_channelName) && string.IsNullOrEmpty(_url), "The name or url was already assigned value.");
 
             _channelName = name;
             _url = url;

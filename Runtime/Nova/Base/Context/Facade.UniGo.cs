@@ -90,7 +90,7 @@ namespace NovaEngine
         public T AddComponent<T>() where T : UnityComponent
         {
             UnityGameObject rootGameObject = AppEntry.RootGameObject;
-            Logger.Assert(rootGameObject);
+            CLogger.Assert(rootGameObject);
 
             UnityComponent c = rootGameObject.AddComponent<T>();
 
@@ -104,7 +104,7 @@ namespace NovaEngine
         public void RemoveComponent(UnityObject obj)
         {
             UnityGameObject rootGameObject = AppEntry.RootGameObject;
-            Logger.Assert(rootGameObject);
+            CLogger.Assert(rootGameObject);
 
             UnityComponent.Destroy(obj);
         }

@@ -33,7 +33,7 @@ namespace NovaEngine
     {
         public static Variable Instantiate(object v)
         {
-            Logger.Debug(v.GetType());
+            CLogger.Debug(v.GetType());
             return null;
         }
     }

@@ -31,7 +31,7 @@ namespace NovaEngine
     /// 日志处理通道类型定义
     /// </summary>
     [Flags]
-    internal enum LogOutputChannelType : byte
+    internal enum CLogOutputChannelType : byte
     {
         /// <summary>
         /// 空置

@@ -154,7 +154,7 @@ namespace NovaEngine.Network
             }
             catch (System.Exception e)
             {
-                Logger.Error("An error occurred for download file to target url {0}: {1}.", url, e.ToString());
+                CLogger.Error("An error occurred for download file to target url {0}: {1}.", url, e.ToString());
                 isDone = false;
             }
             finally
@@ -168,7 +168,7 @@ namespace NovaEngine.Network
                         fstream = null;
                     }
                 }
-                catch (System.Exception e) { Logger.Error(e.ToString()); }
+                catch (System.Exception e) { CLogger.Error(e.ToString()); }
 
                 try
                 {
@@ -179,7 +179,7 @@ namespace NovaEngine.Network
                         respStream = null;
                     }
                 }
-                catch (System.Exception e) { Logger.Error(e.ToString()); }
+                catch (System.Exception e) { CLogger.Error(e.ToString()); }
 
                 try
                 {
@@ -189,7 +189,7 @@ namespace NovaEngine.Network
                         request = null;
                     }
                 }
-                catch (System.Exception e) { Logger.Error(e.ToString()); }
+                catch (System.Exception e) { CLogger.Error(e.ToString()); }
 
                 try
                 {
@@ -199,7 +199,7 @@ namespace NovaEngine.Network
                         response = null;
                     }
                 }
-                catch (System.Exception e) { Logger.Error(e.ToString()); }
+                catch (System.Exception e) { CLogger.Error(e.ToString()); }
             }
 
             // if (false == _isDownloadRunning) { return; }

@@ -103,7 +103,7 @@ namespace NovaEngine
                 });
             }
 
-            Logger.Warn("Could not found any container formatter with target object type {%t}.", targetType);
+            CLogger.Warn("Could not found any container formatter with target object type {%t}.", targetType);
 
             return Definition.CString.Null;
         }

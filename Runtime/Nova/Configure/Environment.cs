@@ -147,7 +147,7 @@ namespace NovaEngine
             FieldInfo field = type.GetField(fieldName, InternelFieldBindingType);
             if (null == field)
             {
-                Logger.Error("Could not found Environment field name '{%s}', set target property value failed.", fieldName);
+                CLogger.Error("Could not found Environment field name '{%s}', set target property value failed.", fieldName);
                 return;
             }
 
@@ -165,7 +165,7 @@ namespace NovaEngine
             FieldInfo field = type.GetField(fieldName, InternelFieldBindingType);
             if (null == field)
             {
-                Logger.Error("Could not found Environment field name '{%s}', get target property value failed.", fieldName);
+                CLogger.Error("Could not found Environment field name '{%s}', get target property value failed.", fieldName);
                 return null;
             }
 
@@ -201,7 +201,7 @@ namespace NovaEngine
         {
             if (_variables.ContainsKey(key))
             {
-                Logger.Info("The environment variable key {%s} was already exists, repeat setting it will be override old value.", key);
+                CLogger.Info("The environment variable key {%s} was already exists, repeat setting it will be override old value.", key);
 
                 _variables[key] = value;
             }
@@ -328,7 +328,7 @@ namespace NovaEngine
                     // 非预定义属性类型，暂时放在全局环境中备用
                     if (null == value)
                     {
-                        Logger.Warn("The Environment property '{%s}' field type '{%t}' parse failed.", field.Name, field.FieldType);
+                        CLogger.Warn("The Environment property '{%s}' field type '{%t}' parse failed.", field.Name, field.FieldType);
                         SetVariable(pair.Key, pair.Value);
                     }
                     else

@@ -88,7 +88,7 @@ namespace GameEngine.Loader
                 // 检查函数格式是否合法
                 if (false == Inspecting.CodeInspector.CheckFunctionFormatOfAspect(symMethod.MethodInfo))
                 {
-                    Debugger.Warn("The aspect call method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.FullName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The aspect call method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.FullName);
                     continue;
                 }
 
@@ -100,23 +100,23 @@ namespace GameEngine.Loader
                 callMethodInfo.Callback = NovaEngine.Utility.Reflection.CreateGenericAction<object>(symMethod.MethodInfo, callMethodInfo.TargetType);
                 if (null == callMethodInfo.Callback)
                 {
-                    Debugger.Warn("Cannot converted from method info '{%s}' to aspect standard call, loaded this method failed.", symMethod.MethodName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "Cannot converted from method info '{%s}' to aspect standard call, loaded this method failed.", symMethod.MethodName);
                     continue;
                 }
 
                 // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                // NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(callMethodInfo.Callback, callMethodInfo.TargetType);
-                NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType);
+                // NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(callMethodInfo.Callback, callMethodInfo.TargetType);
+                NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType);
 
                 // if (false == method.IsStatic)
-                // { Debugger.Warn("The aspect call method '{%s}.{%s}' must be static type, loaded it failed.", symClass.FullName, method.Name); continue; }
+                // { Debugger.Warn(LogGroupTag.CodeLoader, "The aspect call method '{%s}.{%s}' must be static type, loaded it failed.", symClass.FullName, method.Name); continue; }
 
                 info.AddMethodType(callMethodInfo);
             }
 
             if (info.GetMethodTypeCount() <= 0)
             {
-                Debugger.Warn("The aspect call method types count must be great than zero, newly added class '{%s}' failed.", symClass.FullName);
+                Debugger.Warn(LogGroupTag.CodeLoader, "The aspect call method types count must be great than zero, newly added class '{%s}' failed.", symClass.FullName);
                 return false;
             }
 
@@ -128,7 +128,7 @@ namespace GameEngine.Loader
                 }
                 else
                 {
-                    Debugger.Warn("The aspect call '{%s}' was already existed, repeat added it failed.", symClass.FullName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The aspect call '{%s}' was already existed, repeat added it failed.", symClass.FullName);
                     return false;
                 }
             }

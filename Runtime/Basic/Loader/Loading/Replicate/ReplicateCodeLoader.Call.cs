@@ -87,34 +87,19 @@ namespace GameEngine.Loader
                         callMethodInfo.Method = symMethod.MethodInfo;
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                        if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+                        if (NovaEngine.CVerification.IsOnDebuggingVerificationActivated())
                         {
                             bool verificated = false;
-                            if (null == callMethodInfo.TargetType)
+
+                            if (Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCallWithNullParameterType(symMethod.MethodInfo))
                             {
-                                if (Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCallWithNullParameterType(symMethod.MethodInfo))
-                                {
-                                    // 无参类型的事件函数
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
-                                }
-                                else
-                                {
-                                    // 事件数据派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, typeof(string), typeof(ReplicateAnnounceType));
-                                }
+                                // 无参类型的事件函数
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatchedOfTargetObject(symMethod.MethodInfo, callMethodInfo.TargetType);
                             }
                             else
                             {
-                                if (Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCallWithNullParameterType(symMethod.MethodInfo))
-                                {
-                                    // 无参类型的事件函数
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType);
-                                }
-                                else
-                                {
-                                    // 事件数据派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType, typeof(string), typeof(ReplicateAnnounceType));
-                                }
+                                // 事件数据派发
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatchedOfTargetObject(symMethod.MethodInfo, callMethodInfo.TargetType, typeof(string), typeof(ReplicateAnnounceType));
                             }
 
                             // 校验失败

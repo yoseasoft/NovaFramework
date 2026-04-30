@@ -109,9 +109,9 @@ namespace NovaEngine
         private bool Initialize()
         {
             // 该初始化接口仅可调用一次，若需再次初始化该接口，需将之前的实例销毁掉
-            Logger.Assert(null == _instance);
+            CLogger.Assert(null == _instance);
 
-            // if (null == _monoBehaviour) { Logger.Error("引擎对象实例的MONO组件对象实例为空，引擎初始化失败！"); return false; }
+            // if (null == _monoBehaviour) { CLogger.Error("引擎对象实例的MONO组件对象实例为空，引擎初始化失败！"); return false; }
 
             // 表现层对象实例初始化
             _facade = Facade.Create(this);
@@ -184,7 +184,7 @@ namespace NovaEngine
             Application.Instance.Startup();
 
             // 引擎正常启动，总控对象不可为null
-            Logger.Assert(null != _facade);
+            CLogger.Assert(null != _facade);
 
             _facade.Startup();
 
@@ -196,7 +196,7 @@ namespace NovaEngine
             // 引擎尚未启动
             if (false == _isOnStartup)
             {
-                Logger.Warn("The kernel engine was not startup, do it shutdown failed.");
+                CLogger.Warn("The kernel engine was not startup, do it shutdown failed.");
                 return;
             }
 

@@ -89,15 +89,15 @@ namespace NovaEngine
         private static void RegErrorCodeForTargetException(Type exceptionType)
         {
             int errorCode = ErrorCode.GetErrorCodeByExceptionType(exceptionType);
-            Logger.Assert(errorCode > 0, ErrorText.InvalidArguments);
+            CAssert.IsTrue(errorCode > 0);
 
             if (_ExceptionCode.ContainsKey(errorCode))
             {
-                Logger.Error("The error code {0} was already registered, repeat add will be override old type.", errorCode);
+                CLogger.Error("The error code {0} was already registered, repeat add will be override old type.", errorCode);
                 _ExceptionCode.Remove(errorCode);
             }
 
-            // Logger.Info("Reg: errorCode = {0}, exception = {1}", errorCode, exceptionType.Name);
+            // CLogger.Info("Reg: errorCode = {0}, exception = {1}", errorCode, exceptionType.Name);
             _ExceptionCode.Add(errorCode, exceptionType);
         }
 
@@ -127,7 +127,7 @@ namespace NovaEngine
                 }
             }
 
-            Logger.Error("The argument must be an exception type.");
+            CLogger.Error("The argument must be an exception type.");
             return null;
         }
 

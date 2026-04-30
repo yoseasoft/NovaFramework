@@ -84,44 +84,24 @@ namespace GameEngine.Loader
                         callMethodInfo.Method = symMethod.MethodInfo;
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                        if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+                        if (NovaEngine.CVerification.IsOnDebuggingVerificationActivated())
                         {
                             bool verificated;
-                            if (null == callMethodInfo.TargetType)
+
+                            if (Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo))
                             {
-                                if (Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo))
-                                {
-                                    // 无参类型的事件函数
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
-                                }
-                                else if (callMethodInfo.Opcode > 0)
-                                {
-                                    // 协议编码派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, NetworkHandler.Instance.GetMessageProtocolType());
-                                }
-                                else
-                                {
-                                    // 协议类型派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.MessageType);
-                                }
+                                // 无参类型的事件函数
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatchedOfTargetObject(symMethod.MethodInfo, callMethodInfo.TargetType);
+                            }
+                            else if (callMethodInfo.Opcode > 0)
+                            {
+                                // 协议编码派发
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatchedOfTargetObject(symMethod.MethodInfo, callMethodInfo.TargetType, NetworkHandler.Instance.GetMessageProtocolType());
                             }
                             else
                             {
-                                if (Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo))
-                                {
-                                    // 无参类型的事件函数
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType);
-                                }
-                                else if (callMethodInfo.Opcode > 0)
-                                {
-                                    // 协议编码派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType, NetworkHandler.Instance.GetMessageProtocolType());
-                                }
-                                else
-                                {
-                                    // 协议类型派发
-                                    verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo, callMethodInfo.TargetType, callMethodInfo.MessageType);
-                                }
+                                // 协议类型派发
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatchedOfTargetObject(symMethod.MethodInfo, callMethodInfo.TargetType, callMethodInfo.MessageType);
                             }
 
                             // 校验失败

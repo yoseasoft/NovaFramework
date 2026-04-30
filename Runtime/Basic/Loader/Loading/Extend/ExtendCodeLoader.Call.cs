@@ -89,23 +89,23 @@ namespace GameEngine.Loader
                         Debugger.IsNull(inputDispatchCallAttribute.ClassType);
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                        if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+                        if (NovaEngine.CVerification.IsOnDebuggingVerificationActivated())
                         {
                             bool verificated;
 
                             if (Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo))
                             {
-                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
                             }
                             else if (methodTypeCodeInfo.KeyCode > VirtualKeyCode.None)
                             {
-                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, typeof(VirtualKeyCode), typeof(InputOperationType));
                             }
                             else
                             {
-                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, methodTypeCodeInfo.InputDataType);
                             }
 
@@ -143,23 +143,23 @@ namespace GameEngine.Loader
                         Debugger.IsNull(eventDispatchCallAttribute.ClassType);
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                        if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+                        if (NovaEngine.CVerification.IsOnDebuggingVerificationActivated())
                         {
                             bool verificated;
 
                             if (Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo))
                             {
-                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
                             }
                             else if (methodTypeCodeInfo.EventID > 0)
                             {
-                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, typeof(int), typeof(object[]));
                             }
                             else
                             {
-                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, methodTypeCodeInfo.EventDataType);
                             }
 
@@ -197,23 +197,23 @@ namespace GameEngine.Loader
                         Debugger.IsNull(messageDispatchCallAttribute.ClassType);
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                        if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+                        if (NovaEngine.CVerification.IsOnDebuggingVerificationActivated())
                         {
                             bool verificated;
 
                             if (Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo))
                             {
-                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
                             }
                             else if (methodTypeCodeInfo.Opcode > 0)
                             {
-                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, NetworkHandler.Instance.GetMessageProtocolType());
                             }
                             else
                             {
-                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, methodTypeCodeInfo.MessageType);
                             }
 
@@ -251,18 +251,18 @@ namespace GameEngine.Loader
                         Debugger.IsNull(replicateDispatchCallAttribute.ClassType);
 
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                        if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+                        if (NovaEngine.CVerification.IsOnDebuggingVerificationActivated())
                         {
                             bool verificated;
 
                             if (Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCallWithNullParameterType(symMethod.MethodInfo))
                             {
-                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType);
                             }
                             else
                             {
-                                verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                                verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                                     symMethod.MethodInfo, methodTypeCodeInfo.TargetType, typeof(string), typeof(ReplicateAnnounceType));
                             }
 

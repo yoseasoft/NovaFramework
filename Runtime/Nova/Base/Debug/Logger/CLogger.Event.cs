@@ -27,7 +27,7 @@ namespace NovaEngine
     /// <summary>
     /// 日志相关函数集合工具类
     /// </summary>
-    internal static partial class Logger
+    internal static partial class CLogger
     {
         /// <summary>
         /// 日志输出事件模式操作管理类
@@ -39,7 +39,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="level">日志级别</param>
             /// <param name="message">日志内容</param>
-            public delegate void OutputHandler(LogOutputLevelType level, object message);
+            public delegate void OutputHandler(CLogOutputLevelType level, object message);
 
             /// <summary>
             /// 输出事件回调接口
@@ -52,7 +52,7 @@ namespace NovaEngine
             public static void Startup()
             {
                 Event e = Event.Instance;
-                Logger.AddOutputChannel(e);
+                CLogger.AddOutputChannel(e);
             }
 
             /// <summary>
@@ -61,7 +61,7 @@ namespace NovaEngine
             public static void Shutdown()
             {
                 Event e = Event.Instance;
-                Logger.RemoveOutputChannel(e);
+                CLogger.RemoveOutputChannel(e);
                 Event.Destroy();
             }
 
@@ -85,7 +85,7 @@ namespace NovaEngine
             /// </summary>
             /// <param name="level">日志等级</param>
             /// <param name="message">日志内容</param>
-            public void Output(LogOutputLevelType level, object message)
+            public void Output(CLogOutputLevelType level, object message)
             {
                 _outputCallback(level, message);
             }

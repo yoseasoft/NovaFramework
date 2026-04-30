@@ -96,7 +96,7 @@ namespace GameEngine
             }
 
             // 函数格式校验
-            if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+            if (NovaEngine.CVerification.IsOnDebuggingVerificationActivated())
             {
                 bool verificated = Loader.Inspecting.CodeInspector.CheckFunctionFormatOfTargetWithNullParameterType(methodInfo);
 

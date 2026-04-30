@@ -29,7 +29,7 @@ using System.Runtime.CompilerServices;
 namespace NovaEngine
 {
     /// 调试器对象工具类
-    internal partial class Debugger
+    internal partial class CDebugger
     {
         /// <summary>
         /// 系统异常，仅在调试模式下该函数有效
@@ -154,7 +154,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition)
         {
-            if (condition) Throw();
+            if (!condition) Throw();
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, int errorCode)
         {
-            if (condition) Throw(errorCode);
+            if (!condition) Throw(errorCode);
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, string message)
         {
-            if (condition) Throw(message);
+            if (!condition) Throw(message);
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, string format, params object[] args)
         {
-            if (condition) Throw(format, args);
+            if (!condition) Throw(format, args);
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, Exception exception)
         {
-            if (condition) Throw(exception);
+            if (!condition) Throw(exception);
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, Type type)
         {
-            if (condition) Throw(type);
+            if (!condition) Throw(type);
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, Type type, string message)
         {
-            if (condition) Throw(type, message);
+            if (!condition) Throw(type, message);
         }
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw(bool condition, Type type, string format, params object[] args)
         {
-            if (condition) Throw(type, format, args);
+            if (!condition) Throw(type, format, args);
         }
 
         /// <summary>
@@ -246,7 +246,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(bool condition) where T : Exception
         {
-            if (condition) Throw<T>();
+            if (!condition) Throw<T>();
         }
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(bool condition, string message) where T : Exception
         {
-            if (condition) Throw<T>(message);
+            if (!condition) Throw<T>(message);
         }
 
         /// <summary>
@@ -271,7 +271,7 @@ namespace NovaEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Throw<T>(bool condition, string format, params object[] args) where T : Exception
         {
-            if (condition) Throw<T>(format, args);
+            if (!condition) Throw<T>(format, args);
         }
     }
 }

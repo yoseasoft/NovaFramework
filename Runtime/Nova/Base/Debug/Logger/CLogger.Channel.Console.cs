@@ -2,6 +2,7 @@
 /// NovaEngine Framework
 ///
 /// Copyright (C) 2020 - 2022, Guangzhou Xinyuan Technology Co., Ltd.
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -29,20 +30,20 @@ namespace NovaEngine
     /// <summary>
     /// 日志相关函数集合工具类
     /// </summary>
-    internal static partial class Logger
+    internal static partial class CLogger
     {
         /// <summary>
-        /// 日志输出视图窗口模式操作管理类
+        /// 日志输出控制台模式操作管理类
         /// </summary>
-        [LogOutputChannelBinding(LogOutputChannelType.Gui)]
-        private sealed class LogGui : Singleton<LogGui>, ILogOutput
+        [LogOutputChannelBinding(CLogOutputChannelType.Console)]
+        private sealed class LogConsole : Singleton<LogConsole>, ILogOutput
         {
             /// <summary>
             /// 启动日志输出控制台模式
             /// </summary>
             public static void Startup()
             {
-                LogGui c = Instance;
+                LogConsole c = Instance;
                 AddOutputChannel(c);
             }
 
@@ -51,7 +52,7 @@ namespace NovaEngine
             /// </summary>
             public static void Shutdown()
             {
-                LogGui c = Instance;
+                LogConsole c = Instance;
                 RemoveOutputChannel(c);
                 Destroy();
             }
@@ -75,9 +76,28 @@ namespace NovaEngine
             /// </summary>
             /// <param name="level">日志等级</param>
             /// <param name="message">日志内容</param>
-            public void Output(LogOutputLevelType level, object message)
+            public void Output(CLogOutputLevelType level, object message)
             {
+#if UNITY_WEBGL && !UNITY_EDITOR
+                switch (level)
+                {
+                    case LogOutputLevelType.Debug:
+                    case LogOutputLevelType.Info:
+                        UnityEngine.Application.ExternalCall("console.log", message.ToString());
+                        break;
+                    case LogOutputLevelType.Warning:
+                        UnityEngine.Application.ExternalCall("console.warn", message.ToString());
+                        break;
+                    case LogOutputLevelType.Error:
+                    case LogOutputLevelType.Fatal:
+                    case LogOutputLevelType.Assert:
+                    case LogOutputLevelType.Exception:
+                        UnityEngine.Application.ExternalCall("console.error", message.ToString());
+                        break;
+                }
+#else
                 Console.WriteLine(message.ToString());
+#endif
             }
         }
     }

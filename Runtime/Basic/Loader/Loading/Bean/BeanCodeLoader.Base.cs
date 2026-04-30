@@ -80,7 +80,7 @@ namespace GameEngine.Loader
             {
                 if (symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfInputCall(symMethod.MethodInfo))
                 {
-                    Debugger.Warn("The input dispatching method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The input dispatching method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     return;
                 }
 
@@ -95,29 +95,29 @@ namespace GameEngine.Loader
                 Debugger.IsNull(methodTypeCodeInfo.TargetType);
 
                 // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+                if (NovaEngine.CVerification.IsOnDebuggingVerificationActivated())
                 {
                     bool verificated;
 
                     if (Inspecting.CodeInspector.CheckFunctionFormatOfInputCallWithNullParameterType(symMethod.MethodInfo))
                     {
-                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
+                        verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
                     }
                     else if (methodTypeCodeInfo.KeyCode > VirtualKeyCode.None)
                     {
-                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                        verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                             symMethod.MethodInfo, typeof(VirtualKeyCode), typeof(InputOperationType));
                     }
                     else
                     {
-                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                        verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                             symMethod.MethodInfo, methodTypeCodeInfo.InputDataType);
                     }
 
                     // 校验失败
                     if (false == verificated)
                     {
-                        Debugger.Error("Cannot verificated from method info '{%s}' to input dispatching call, loaded this method failed.", symMethod.FullName);
+                        Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to input dispatching call, loaded this method failed.", symMethod.FullName);
                         return;
                     }
                 }
@@ -128,7 +128,7 @@ namespace GameEngine.Loader
             {
                 if (symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfEventCall(symMethod.MethodInfo))
                 {
-                    Debugger.Warn("The event dispatching method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The event dispatching method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     return;
                 }
 
@@ -142,29 +142,29 @@ namespace GameEngine.Loader
                 Debugger.IsNull(methodTypeCodeInfo.TargetType);
 
                 // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+                if (NovaEngine.CVerification.IsOnDebuggingVerificationActivated())
                 {
                     bool verificated;
 
                     if (Inspecting.CodeInspector.CheckFunctionFormatOfEventCallWithNullParameterType(symMethod.MethodInfo))
                     {
-                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
+                        verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
                     }
                     else if (methodTypeCodeInfo.EventID > 0)
                     {
-                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                        verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                             symMethod.MethodInfo, typeof(int), typeof(object[]));
                     }
                     else
                     {
-                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                        verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                             symMethod.MethodInfo, methodTypeCodeInfo.EventDataType);
                     }
 
                     // 校验失败
                     if (false == verificated)
                     {
-                        Debugger.Error("Cannot verificated from method info '{%s}' to event dispatching call, loaded this method failed.", symMethod.FullName);
+                        Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to event dispatching call, loaded this method failed.", symMethod.FullName);
                         return;
                     }
                 }
@@ -175,7 +175,7 @@ namespace GameEngine.Loader
             {
                 if (symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfMessageCall(symMethod.MethodInfo))
                 {
-                    Debugger.Warn("The message dispatching method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The message dispatching method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     return;
                 }
 
@@ -189,29 +189,29 @@ namespace GameEngine.Loader
                 Debugger.IsNull(methodTypeCodeInfo.TargetType);
 
                 // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+                if (NovaEngine.CVerification.IsOnDebuggingVerificationActivated())
                 {
                     bool verificated;
 
                     if (Inspecting.CodeInspector.CheckFunctionFormatOfMessageCallWithNullParameterType(symMethod.MethodInfo))
                     {
-                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
+                        verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
                     }
                     else if (methodTypeCodeInfo.Opcode > 0)
                     {
-                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                        verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                             symMethod.MethodInfo, typeof(object));
                     }
                     else
                     {
-                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                        verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                             symMethod.MethodInfo, methodTypeCodeInfo.MessageType);
                     }
 
                     // 校验失败
                     if (false == verificated)
                     {
-                        Debugger.Error("Cannot verificated from method info '{%s}' to message dispatching call, loaded this method failed.", symMethod.FullName);
+                        Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to message dispatching call, loaded this method failed.", symMethod.FullName);
                         return;
                     }
                 }
@@ -222,7 +222,7 @@ namespace GameEngine.Loader
             {
                 if (symMethod.IsStatic || false == Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCall(symMethod.MethodInfo))
                 {
-                    Debugger.Warn("The replicate dispatching method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
+                    Debugger.Warn(LogGroupTag.CodeLoader, "The replicate dispatching method '{%s}.{%s}' was invalid format, added it failed.", symClass.FullName, symMethod.MethodName);
                     return;
                 }
 
@@ -236,24 +236,24 @@ namespace GameEngine.Loader
                 Debugger.IsNull(methodTypeCodeInfo.TargetType);
 
                 // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                if (NovaEngine.Debugger.Instance.IsOnDebuggingVerificationActivated())
+                if (NovaEngine.CVerification.IsOnDebuggingVerificationActivated())
                 {
                     bool verificated;
 
                     if (Inspecting.CodeInspector.CheckFunctionFormatOfReplicateCallWithNullParameterType(symMethod.MethodInfo))
                     {
-                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
+                        verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(symMethod.MethodInfo);
                     }
                     else
                     {
-                        verificated = NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(
+                        verificated = NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(
                                             symMethod.MethodInfo, typeof(string), typeof(ReplicateAnnounceType));
                     }
 
                     // 校验失败
                     if (false == verificated)
                     {
-                        Debugger.Error("Cannot verificated from method info '{%s}' to replicate dispatching call, loaded this method failed.", symMethod.FullName);
+                        Debugger.Error(LogGroupTag.CodeLoader, "Cannot verificated from method info '{%s}' to replicate dispatching call, loaded this method failed.", symMethod.FullName);
                         return;
                     }
                 }

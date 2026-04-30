@@ -54,7 +54,7 @@ namespace NovaEngine
         {
             if (_referencePostProcessInfos.ContainsKey(type))
             {
-                Logger.Warn("The reference '{%t}' type's post process was already exist, repeat added it will be override old value.", type);
+                CLogger.Warn("The reference '{%t}' type's post process was already exist, repeat added it will be override old value.", type);
 
                 _referencePostProcessInfos.Remove(type);
             }
@@ -62,7 +62,7 @@ namespace NovaEngine
             // 后处理管理容器中已有的类型和当前添加类型存在继承关系，不允许进行此次添加操作
             if (IsHavingInheritanceRelationshipWithinPostProcessList(type))
             {
-                Logger.Error("The reference '{%t}' type having inheritance relationship from post process list, added it failed.", type);
+                CLogger.Error("The reference '{%t}' type having inheritance relationship from post process list, added it failed.", type);
 
                 return;
             }

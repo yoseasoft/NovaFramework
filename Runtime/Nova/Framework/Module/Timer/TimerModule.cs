@@ -197,7 +197,7 @@ namespace NovaEngine.Module
             {
                 if (false == info.Expired)
                 {
-                    Logger.Warn("The target timer was running with same name '{%s}', repeat scheduled it failed.", name);
+                    CLogger.Warn("The target timer was running with same name '{%s}', repeat scheduled it failed.", name);
                     return (SCHEDULE_CALL_FAILED, false);
                 }
 
@@ -247,7 +247,7 @@ namespace NovaEngine.Module
         {
             if (name.IsNullOrEmpty())
             {
-                Logger.Warn("The unschedule task name must be non-null or empty space.");
+                CLogger.Warn("The unschedule task name must be non-null or empty space.");
                 return;
             }
 
@@ -417,7 +417,7 @@ namespace NovaEngine.Module
 
             public TimerInfo(TimerModule module)
             {
-                Logger.Assert(null != module, "构建定时任务对象必须依附于一个模块载体实例，该实例不能为空！");
+                CLogger.Assert(null != module, "构建定时任务对象必须依附于一个模块载体实例，该实例不能为空！");
                 _timerModule = module;
             }
 

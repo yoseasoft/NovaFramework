@@ -75,13 +75,13 @@ namespace NovaEngine.Module
                 Type serviceType = Type.GetType(serviceName);
                 if (null == serviceType)
                 {
-                    Logger.Info("Could not found any network service class with target name '{%s}'.", serviceName);
+                    CLogger.Info("Could not found any network service class with target name '{%s}'.", serviceName);
                     continue;
                 }
 
                 if (false == typeof(NetworkService).IsAssignableFrom(serviceType))
                 {
-                    Logger.Warn("The service type '{%s}' must be inherited from 'NetworkService' type.", serviceName);
+                    CLogger.Warn("The service type '{%s}' must be inherited from 'NetworkService' type.", serviceName);
                     continue;
                 }
 
@@ -122,7 +122,7 @@ namespace NovaEngine.Module
 
             if (_services.ContainsKey(type))
             {
-                Logger.Warn("The target service instance '{%d}' was already exists, repeat added it will be override old value.", type);
+                CLogger.Warn("The target service instance '{%d}' was already exists, repeat added it will be override old value.", type);
 
                 RemoveService(type);
             }
@@ -138,7 +138,7 @@ namespace NovaEngine.Module
         {
             if (false == typeof(NetworkService).IsAssignableFrom(serviceType))
             {
-                Logger.Warn("The service type '{%t}' must be inherited from 'NetworkService' type.", serviceType);
+                CLogger.Warn("The service type '{%t}' must be inherited from 'NetworkService' type.", serviceType);
                 return;
             }
 
@@ -148,7 +148,7 @@ namespace NovaEngine.Module
 
             if (_services.ContainsKey(type))
             {
-                Logger.Warn("The target service instance '{%d}' was already exists, repeat added it will be override old value.", type);
+                CLogger.Warn("The target service instance '{%d}' was already exists, repeat added it will be override old value.", type);
 
                 RemoveService(type);
             }
@@ -229,7 +229,7 @@ namespace NovaEngine.Module
             }
             else
             {
-                Logger.Warn("Could not found channel instance by ID '{%d}'.", channelID);
+                CLogger.Warn("Could not found channel instance by ID '{%d}'.", channelID);
             }
         }
 
@@ -404,13 +404,13 @@ namespace NovaEngine.Module
                         ModuleController.GetModule<NetworkModule>().OnReceivedMessage(channelID, ASCII.GetString(message));
                         break;
                     default:
-                        Logger.Error("unknown stream type '{%d}'.", streamType);
+                        CLogger.Error("unknown stream type '{%d}'.", streamType);
                         break;
                 }
             }
             catch (Exception e)
             {
-                Logger.Error(e);
+                CLogger.Error(e);
                 NetworkChannel channel = GetChannel(channelID);
                 channel.ErrorCode = NetworkErrorCode.PacketReadError;
                 ModuleController.GetModule<NetworkModule>().OnConnectError(channelID);
@@ -436,13 +436,13 @@ namespace NovaEngine.Module
                         ModuleController.GetModule<NetworkModule>().OnSendFailedMessage(channelID, ASCII.GetString(message));
                         break;
                     default:
-                        Logger.Error("unknown stream type '{%d}'.", streamType);
+                        CLogger.Error("unknown stream type '{%d}'.", streamType);
                         break;
                 }
             }
             catch (Exception e)
             {
-                Logger.Error(e);
+                CLogger.Error(e);
             }
             finally
             {

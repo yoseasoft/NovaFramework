@@ -134,37 +134,37 @@ namespace GameEngine
                     Type attrType = attr.GetType();
                     if (typeof(OnBeanLifecycleRegisterAttribute) == attrType)
                     {
-                        Debugger.Assert(false == method.IsStatic);
+                        Debugger.IsFalse(method.IsStatic);
 
                         OnBeanLifecycleRegisterAttribute _attr = (OnBeanLifecycleRegisterAttribute) attr;
 
                         Delegate callback = method.CreateDelegate(typeof(OnBeanLifecycleProcessingHandler), this);
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                        NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(callback, typeof(IBean));
+                        NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(callback, typeof(IBean));
 
                         AddBeanLifecycleRegisterCallback(_attr.BehaviourType, callback as OnBeanLifecycleProcessingHandler);
                     }
                     else if (typeof(OnBeanLifecycleUnregisterAttribute) == attrType)
                     {
-                        Debugger.Assert(false == method.IsStatic);
+                        Debugger.IsFalse(method.IsStatic);
 
                         OnBeanLifecycleUnregisterAttribute _attr = (OnBeanLifecycleUnregisterAttribute) attr;
 
                         Delegate callback = method.CreateDelegate(typeof(OnBeanLifecycleProcessingHandler), this);
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                        NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(callback, typeof(IBean));
+                        NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(callback, typeof(IBean));
 
                         AddBeanLifecycleUnregisterCallback(_attr.BehaviourType, callback as OnBeanLifecycleProcessingHandler);
                     }
                     else if (typeof(OnBeanLifecycleProcessRegisterOfTargetAttribute) == attrType)
                     {
-                        Debugger.Assert(false == method.IsStatic);
+                        Debugger.IsFalse(method.IsStatic);
 
                         OnBeanLifecycleProcessRegisterOfTargetAttribute _attr = (OnBeanLifecycleProcessRegisterOfTargetAttribute) attr;
 
                         Delegate callback = method.CreateDelegate(typeof(OnBeanLifecycleProcessingHandler), this);
                         // 函数参数类型的格式检查，仅在调试模式下执行，正式环境可跳过该处理
-                        NovaEngine.Debugger.Verification.CheckGenericDelegateParameterTypeMatched(callback, _attr.ClassType);
+                        NovaEngine.CVerification.CheckGenericDelegateParameterTypeMatched(callback, _attr.ClassType);
 
                         AddBeanLifecycleProcessingCallHandler(_attr.ClassType, _attr.BehaviourType, callback as OnBeanLifecycleProcessingHandler);
                     }

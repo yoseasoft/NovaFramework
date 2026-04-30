@@ -49,7 +49,7 @@ namespace NovaEngine
         /// <returns>返回给定名称的可执行程序运行句柄</returns>
         public static SystemProcess Run(string exe, string arguments, string workingDirectory = ".", bool waitExit = false)
         {
-            Logger.Debug($"Process Run exe: {exe}, arguments: {arguments}, workingDirectory: {workingDirectory}.");
+            CLogger.Debug($"Process Run exe: {exe}, arguments: {arguments}, workingDirectory: {workingDirectory}.");
             try
             {
                 bool redirectStandardOutput = true;
@@ -102,7 +102,7 @@ namespace NovaEngine
         {
             await process.WaitForExitAsync();
 
-            Logger.Info("process exit, exit code: {0} {1} {2}",
+            CLogger.Info("process exit, exit code: {0} {1} {2}",
                 process.ExitCode, process.StandardOutput.ReadToEnd(), process.StandardError.ReadToEnd());
         }
 

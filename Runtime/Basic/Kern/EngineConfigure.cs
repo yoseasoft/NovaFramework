@@ -47,7 +47,7 @@ namespace GameEngine
             NovaEngine.Application.Instance.AddProtocolTransformationHandler(EngineDispatcher.OnApplicationResponseCallback);
 
             // 日志开启
-            NovaEngine.Logger.Startup();
+            NovaEngine.CLogger.Startup();
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace GameEngine
             Debugger.Shutdown();
 
             // 日志关闭
-            NovaEngine.Logger.Shutdown();
+            NovaEngine.CLogger.Shutdown();
 
             NovaEngine.Application.Instance.RemoveProtocolTransformationHandler(EngineDispatcher.OnApplicationResponseCallback);
         }

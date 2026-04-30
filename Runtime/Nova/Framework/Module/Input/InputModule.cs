@@ -158,14 +158,14 @@ namespace NovaEngine.Module
                         }
                         else if (pressed)
                         {
-                            Logger.Assert(!IsKeycodeChanged(code), "Could not found any pressed operation record with keycode '{%v}'.", code);
+                            CLogger.Assert(!IsKeycodeChanged(code), "Could not found any pressed operation record with keycode '{%v}'.", code);
 
                             // 记录变化按键
                             this.OnKeycodeChanged(code);
                         }
                         else if (released)
                         {
-                            Logger.Assert(IsKeycodeChanged(code), "Could not found any released operation record with keycode '{%v}'.", code);
+                            CLogger.Assert(IsKeycodeChanged(code), "Could not found any released operation record with keycode '{%v}'.", code);
 
                             // 取消变化按键
                             this.OnKeycodeUnchanged(code);
@@ -278,7 +278,7 @@ namespace NovaEngine.Module
             // 上一帧和当前帧之间的变化行为通知的编码信息
             fsb.Append("Changed={{{%s}}},", _keycodeChangedOnPreviousFrame);
 
-            Logger.Info(fsb.ToString());
+            CLogger.Info(fsb.ToString());
         }
     }
 }

@@ -61,7 +61,7 @@ namespace NovaEngine
             // public static UnityCoroutine StartCoroutine(UnityBehaviour behaviour, IEnumerator routine)
             public static void DoWork(ICoroutinable coroutine)
             {
-                Logger.Assert(null != coroutine);
+                CAssert.IsNotNull(coroutine);
 
                 // return behaviour.StartCoroutine(routine);
                 WorkAsync(delegate () { coroutine.Work(); });
@@ -92,7 +92,7 @@ namespace NovaEngine
             /// <param name="runnable">线程对象实例</param>
             public static void DoRun(IRunnable runnable)
             {
-                Logger.Assert(null != runnable);
+                CAssert.IsNotNull(runnable);
 
                 RunAsync(delegate () { runnable.Run(); });
             }
@@ -124,7 +124,7 @@ namespace NovaEngine
                 }
                 catch (Exception e)
                 {
-                    Logger.Error(e.ToString());
+                    CLogger.Error(e.ToString());
                 }
                 finally
                 {

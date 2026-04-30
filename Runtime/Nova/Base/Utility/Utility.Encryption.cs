@@ -196,7 +196,7 @@ namespace NovaEngine
             {
                 if (data.IsNullOrEmpty())
                 {
-                    Logger.Warn("Invalid arguments to perform AES encryption.");
+                    CLogger.Warn("Invalid arguments to perform AES encryption.");
                     return null;
                 }
 
@@ -219,19 +219,19 @@ namespace NovaEngine
             {
                 if (null == data || key.IsNullOrEmpty() || vector.IsNullOrEmpty())
                 {
-                    Logger.Warn("Invalid arguments to perform AES encryption.");
+                    CLogger.Warn("Invalid arguments to perform AES encryption.");
                     return null;
                 }
 
                 if (AES_CRYPTO_KEY_LENGTH != key.Length)
                 {
-                    Logger.Warn("The key param must have a length of {%d} chars.", AES_CRYPTO_KEY_LENGTH);
+                    CLogger.Warn("The key param must have a length of {%d} chars.", AES_CRYPTO_KEY_LENGTH);
                     return null;
                 }
 
                 if (AES_CRYPTO_VEC_LENGTH != vector.Length)
                 {
-                    Logger.Warn("The vector param must have a length of {%d} chars.", AES_CRYPTO_VEC_LENGTH);
+                    CLogger.Warn("The vector param must have a length of {%d} chars.", AES_CRYPTO_VEC_LENGTH);
                     return null;
                 }
 
@@ -272,7 +272,7 @@ namespace NovaEngine
             {
                 if (data.IsNullOrEmpty())
                 {
-                    Logger.Warn("Invalid arguments to perform AES decryption.");
+                    CLogger.Warn("Invalid arguments to perform AES decryption.");
                     return null;
                 }
 
@@ -295,19 +295,19 @@ namespace NovaEngine
             {
                 if (null == data || key.IsNullOrEmpty() || vector.IsNullOrEmpty())
                 {
-                    Logger.Warn("Invalid arguments to perform AES decryption.");
+                    CLogger.Warn("Invalid arguments to perform AES decryption.");
                     return null;
                 }
 
                 if (AES_CRYPTO_KEY_LENGTH != key.Length)
                 {
-                    Logger.Warn("The key param must have a length of {%d} chars.", AES_CRYPTO_KEY_LENGTH);
+                    CLogger.Warn("The key param must have a length of {%d} chars.", AES_CRYPTO_KEY_LENGTH);
                     return null;
                 }
 
                 if (AES_CRYPTO_VEC_LENGTH != vector.Length)
                 {
-                    Logger.Warn("The vector param must have a length of {%d} chars.", AES_CRYPTO_VEC_LENGTH);
+                    CLogger.Warn("The vector param must have a length of {%d} chars.", AES_CRYPTO_VEC_LENGTH);
                     return null;
                 }
 

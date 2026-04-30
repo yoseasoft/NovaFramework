@@ -60,10 +60,10 @@ namespace NovaEngine.Module
         /// </summary>
         protected override sealed void OnInitialize()
         {
-            Logger.Assert(SceneManager.sceneCount > 0, "程序启动初始环境中必须存在至少一个有效的场景实例，当前环境获取场景数据失败！");
+            CLogger.Assert(SceneManager.sceneCount > 0, "程序启动初始环境中必须存在至少一个有效的场景实例，当前环境获取场景数据失败！");
             if (SceneManager.sceneCount > 1)
             {
-                Logger.Warn("当前程序启动的初始环境中存在多个场景实例，引擎将选取首个实例作为主场景，其它场景实例可能在后期运行过程中被随机移除掉！");
+                CLogger.Warn("当前程序启动的初始环境中存在多个场景实例，引擎将选取首个实例作为主场景，其它场景实例可能在后期运行过程中被随机移除掉！");
             }
 
             _sceneOperationRecords = new Dictionary<string, SceneOperationRecord>();
@@ -73,7 +73,7 @@ namespace NovaEngine.Module
             // 需要注意的是，我们选择的主场景可能不是挂载了程序调度脚本所在的场景
             // 所以可能在后续的运行过程中意外关闭了调度脚本所在的场景，从而导致整个程序崩溃
             Scene scene = SceneManager.GetSceneAt(0); // UnitySceneManager.GetActiveScene()
-            Logger.Assert(scene.IsValid(), "程序运行时自动加载的主场景当前处于无效状态，调度该场景对象实例失败！");
+            CLogger.Assert(scene.IsValid(), "程序运行时自动加载的主场景当前处于无效状态，调度该场景对象实例失败！");
             _mainSceneName = scene.name;
 
             SceneOperationRecord rec = SceneOperationRecord.Create(_mainSceneName);
@@ -83,7 +83,7 @@ namespace NovaEngine.Module
             rec.SceneObject = scene;
             _sceneOperationRecords.Add(_mainSceneName, rec);
 
-            Logger.Info("设置程序的主场景对象实例‘{%s}’成功！", _mainSceneName);
+            CLogger.Info("设置程序的主场景对象实例‘{%s}’成功！", _mainSceneName);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace NovaEngine.Module
             {
                 // Scene sceneObject = SceneManager.GetSceneByName(sceneName);
                 Scene sceneObject = handler.SceneObject;
-                Logger.Assert(sceneObject.IsValid(), "检测到当前世界容器中不存在指定名称为‘{%s}’的场景实例，异步加载场景成功后的回调查询操作失败！", sceneName);
+                CLogger.Assert(sceneObject.IsValid(), "检测到当前世界容器中不存在指定名称为‘{%s}’的场景实例，异步加载场景成功后的回调查询操作失败！", sceneName);
 
                 if (false == sceneObject.IsValid())
                 {
@@ -221,13 +221,13 @@ namespace NovaEngine.Module
         {
             if (false == _sceneOperationRecords.TryGetValue(sceneName, out SceneOperationRecord rec))
             {
-                Logger.Warn("检测到当前世界容器中不存在指定名称为‘{%s}’的场景实例，卸载场景对象操作失败！", sceneName);
+                CLogger.Warn("检测到当前世界容器中不存在指定名称为‘{%s}’的场景实例，卸载场景对象操作失败！", sceneName);
                 return;
             }
 
             if (rec.Unmovabled)
             {
-                Logger.Warn("检测到指定名称为‘{%s}’的场景实例被标识为不可移除状态，卸载场景对象操作失败！", sceneName);
+                CLogger.Warn("检测到指定名称为‘{%s}’的场景实例被标识为不可移除状态，卸载场景对象操作失败！", sceneName);
                 return;
             }
 
@@ -285,7 +285,7 @@ namespace NovaEngine.Module
 
             if (false == _sceneOperationRecords.TryGetValue(sceneName, out SceneOperationRecord rec))
             {
-                Logger.Warn("检测到当前场景容器中不存在名称为‘{%s}’的场景实例，激活该场景对象失败！", sceneName);
+                CLogger.Warn("检测到当前场景容器中不存在名称为‘{%s}’的场景实例，激活该场景对象失败！", sceneName);
                 return;
             }
 
@@ -331,7 +331,7 @@ namespace NovaEngine.Module
                 }
             }
 
-            Logger.Info("从当前激活场景列表中未找到任何有效的动态场景实例，只能使用主场景对象作为当前激活场景！");
+            CLogger.Info("从当前激活场景列表中未找到任何有效的动态场景实例，只能使用主场景对象作为当前激活场景！");
             SetActiveScene(_mainSceneName);
         }
     }
