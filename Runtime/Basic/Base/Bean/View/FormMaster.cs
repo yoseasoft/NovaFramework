@@ -49,10 +49,7 @@ namespace GameEngine
             // 如果提前注册了表单管理器，则在主控启动时，同时启动该管理器实例
             // 正常情况下，应该不会出现这种情况，因为一般注册行为是发生在引擎完全启动结束之后
             // 但是为了避免出现这种情况，这里添加了该功能
-            if (null != _formManager)
-            {
-                _formManager.Startup();
-            }
+            _formManager?.Startup();
         }
 
         /// <summary>
@@ -61,10 +58,7 @@ namespace GameEngine
         public static void Shutdown()
         {
             // 此处添加该代码的原因与上面 Startup() 函数的添加原因一样
-            if (null != _formManager)
-            {
-                _formManager.Shutdown();
-            }
+            _formManager?.Shutdown();
 
             _isOnStartup = false;
         }
@@ -77,10 +71,7 @@ namespace GameEngine
             Debugger.IsTrue(_isOnStartup);
 
             // 刷新表单管理器实例
-            if (null != _formManager)
-            {
-                _formManager.Update();
-            }
+            _formManager?.Update();
         }
 
         /// <summary>
@@ -94,6 +85,29 @@ namespace GameEngine
             Debugger.IsNotNull(_formManager);
 
             return _formManager.CreateForm(viewType);
+        }
+
+        /// <summary>
+        /// 新增指定名称的分组实例
+        /// </summary>
+        /// <param name="groupName">分组名称</param>
+        /// <param name="level">分组层级</param>
+        public static void AddGroup(string groupName, int level)
+        {
+            Debugger.IsNotNullOrEmpty(groupName);
+
+            _formManager?.AddGroup(groupName, level);
+        }
+
+        /// <summary>
+        /// 移除指定名称的分组实例
+        /// </summary>
+        /// <param name="groupName">分组名称</param>
+        public static void RemoveGroup(string groupName)
+        {
+            Debugger.IsNotNullOrEmpty(groupName);
+
+            _formManager?.RemoveGroup(groupName);
         }
 
         #region 表单管理器对象的添加/移除相关操作的接口函数

@@ -585,7 +585,7 @@ namespace GameEngine
         private void OnGroupBindingForTargetView(CView view)
         {
             ViewGroup viewGroup = GetGroupInfoByViewType(view.BeanType);
-            viewGroup.OnViewGroupBinding(view);
+            viewGroup?.OnViewGroupBinding(view);
         }
 
         /// <summary>

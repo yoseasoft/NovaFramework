@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -35,67 +36,67 @@ namespace GameEngine
             #region 外部配置信息的自动装配接口函数
 
             /// <summary>
-            /// 外部配置导入初始化回调函数
+            /// 外部配置初始化回调函数
             /// </summary>
-            private static void OnExternalImportInitialize()
+            private static void OnExternalConfigureInitialize()
             {
                 // 模组配置解析器初始化
                 Context.Configuring.ModuleConfigureResolver.Initialize();
             }
 
             /// <summary>
-            /// 外部配置导入清理回调函数
+            /// 外部配置清理回调函数
             /// </summary>
-            private static void OnExternalImportCleanup()
+            private static void OnExternalConfigureCleanup()
             {
                 // 模组配置解析器清理
                 Context.Configuring.ModuleConfigureResolver.Cleanup();
             }
 
             /// <summary>
-            /// 自动加载扩展的导入配置数据
+            /// 自动加载扩展的配置数据
             /// </summary>
             /// <param name="callback">回调句柄</param>
-            private static void AutoLoadExternalImportConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
+            private static void AutoLoadExternalConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
             {
-                // 导入模组配置数据
-                AutoLoadModuleImportConfigure(callback);
+                // 设置模组配置数据
+                AutoLoadModuleSettingConfigure(callback);
                 // 导入Bean配置数据
                 AutoLoadBeanImportConfigure(callback);
             }
 
             /// <summary>
-            /// 自动加载扩展的导入配置数据
+            /// 自动加载扩展的配置数据
             /// </summary>
             /// <param name="callback">回调句柄</param>
-            private static async UniTask AutoLoadExternalImportConfigure(NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
+            private static async UniTask AutoLoadExternalConfigure(NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
             {
-                // 导入模组配置数据
-                await AutoLoadModuleImportConfigure(callback);
+                // 设置模组配置数据
+                await AutoLoadModuleSettingConfigure(callback);
                 // 导入Bean配置数据
                 await AutoLoadBeanImportConfigure(callback);
             }
 
             /// <summary>
-            /// 自动加载扩展的导入配置数据
+            /// 自动加载扩展的配置数据
             /// </summary>
             /// <param name="callback">回调句柄</param>
-            private static void AutoLoadExternalImportConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
+            private static void AutoLoadExternalConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
             {
-                // 导入模组配置数据
-                AutoLoadModuleImportConfigure(callback);
+                // 设置模组配置数据
+                AutoLoadModuleSettingConfigure(callback);
                 // 导入Bean配置数据
                 AutoLoadBeanImportConfigure(callback);
             }
 
             /// <summary>
-            /// 自动加载扩展的导入配置数据
+            /// 自动加载扩展的配置数据
             /// </summary>
             /// <param name="callback">回调句柄</param>
-            private static async UniTask AutoLoadExternalImportConfigure(NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
+            private static async UniTask AutoLoadExternalConfigure(NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
             {
-                // 导入模组配置数据
-                await AutoLoadModuleImportConfigure(callback);
+                // 设置模组配置数据
+                await AutoLoadModuleSettingConfigure(callback);
                 // 导入Bean配置数据
                 await AutoLoadBeanImportConfigure(callback);
             }

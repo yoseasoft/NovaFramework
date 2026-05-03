@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -58,8 +59,8 @@ namespace GameEngine
             {
                 LoadGeneralConfigure(callback);
 
-                // 应用配置导入完成后，自动开启扩展配置加载流程
-                AutoLoadExternalImportConfigure(callback);
+                // 应用配置解析完成后，自动开启扩展配置加载流程
+                AutoLoadExternalConfigure(callback);
             }
 
             /// <summary>
@@ -72,8 +73,8 @@ namespace GameEngine
             {
                 LoadGeneralConfigure(url, callback);
 
-                // 应用配置导入完成后，自动开启扩展配置加载流程
-                AutoLoadExternalImportConfigure(callback);
+                // 应用配置解析完成后，自动开启扩展配置加载流程
+                AutoLoadExternalConfigure(callback);
             }
 
             /// <summary>
@@ -85,8 +86,8 @@ namespace GameEngine
             {
                 await LoadGeneralConfigure(callback);
 
-                // 应用配置导入完成后，自动开启扩展配置加载流程
-                await AutoLoadExternalImportConfigure(callback);
+                // 应用配置解析完成后，自动开启扩展配置加载流程
+                await AutoLoadExternalConfigure(callback);
             }
 
             /// <summary>
@@ -99,8 +100,8 @@ namespace GameEngine
             {
                 await LoadGeneralConfigure(url, callback);
 
-                // 应用配置导入完成后，自动开启扩展配置加载流程
-                await AutoLoadExternalImportConfigure(callback);
+                // 应用配置解析完成后，自动开启扩展配置加载流程
+                await AutoLoadExternalConfigure(callback);
             }
 
             /// <summary>
@@ -112,8 +113,8 @@ namespace GameEngine
             {
                 LoadGeneralConfigure(callback);
 
-                // 应用配置导入完成后，自动开启扩展配置加载流程
-                AutoLoadExternalImportConfigure(callback);
+                // 应用配置解析完成后，自动开启扩展配置加载流程
+                AutoLoadExternalConfigure(callback);
             }
 
             /// <summary>
@@ -126,8 +127,8 @@ namespace GameEngine
             {
                 LoadGeneralConfigure(url, callback);
 
-                // 应用配置导入完成后，自动开启扩展配置加载流程
-                AutoLoadExternalImportConfigure(callback);
+                // 应用配置解析完成后，自动开启扩展配置加载流程
+                AutoLoadExternalConfigure(callback);
             }
 
             /// <summary>
@@ -139,8 +140,8 @@ namespace GameEngine
             {
                 await LoadGeneralConfigure(callback);
 
-                // 应用配置导入完成后，自动开启扩展配置加载流程
-                await AutoLoadExternalImportConfigure(callback);
+                // 应用配置解析完成后，自动开启扩展配置加载流程
+                await AutoLoadExternalConfigure(callback);
             }
 
             /// <summary>
@@ -153,8 +154,8 @@ namespace GameEngine
             {
                 await LoadGeneralConfigure(url, callback);
 
-                // 应用配置导入完成后，自动开启扩展配置加载流程
-                await AutoLoadExternalImportConfigure(callback);
+                // 应用配置解析完成后，自动开启扩展配置加载流程
+                await AutoLoadExternalConfigure(callback);
             }
 
             #endregion

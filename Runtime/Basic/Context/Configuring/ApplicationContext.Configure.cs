@@ -48,8 +48,8 @@ namespace GameEngine
                 // 应用配置解析器初始化
                 Context.Configuring.ApplicationConfigureResolver.Initialize();
 
-                // 外部导入配置解析器初始化
-                OnExternalImportInitialize();
+                // 外部配置解析器初始化
+                OnExternalConfigureInitialize();
             }
 
             /// <summary>
@@ -57,8 +57,8 @@ namespace GameEngine
             /// </summary>
             internal static void Cleanup()
             {
-                // 外部导入配置解析器清理
-                OnExternalImportCleanup();
+                // 外部配置解析器清理
+                OnExternalConfigureCleanup();
 
                 // 应用配置解析器清理
                 Context.Configuring.ApplicationConfigureResolver.Cleanup();

@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Customize.Extension;
 using UnityEngine.Scripting;
 
 namespace GameEngine
@@ -66,7 +67,7 @@ namespace GameEngine
         {
             NovaEngine.IReference reference = NovaEngine.ReferencePool.Acquire(classType);
 
-            return reference as CEntity;
+            return reference.As<CEntity>();
         }
 
         /// <summary>
@@ -84,7 +85,7 @@ namespace GameEngine
         /// <param name="reference">对象实例</param>
         private void OnPostProcessAfterEntityCreate(NovaEngine.IReference reference)
         {
-            CEntity entity = reference as CEntity;
+            CEntity entity = reference.As<CEntity>();
             Debugger.IsNotNull(entity);
 
             Debugger.Log(LogGroupTag.Controller, "Acquire entity class '{%t}' from the pool.", entity.BeanType);
@@ -97,7 +98,7 @@ namespace GameEngine
         /// <param name="reference">对象实例</param>
         private void OnPostProcessBeforeEntityRelease(NovaEngine.IReference reference)
         {
-            CEntity entity = reference as CEntity;
+            CEntity entity = reference.As<CEntity>();
             Debugger.IsNotNull(entity);
 
             Debugger.Log(LogGroupTag.Controller, "Release entity class '{%t}' to the pool.", entity.BeanType);

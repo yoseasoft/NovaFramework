@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -27,38 +28,38 @@ using UnityEngine.Scripting;
 
 namespace GameEngine.Context.Configuring
 {
-    /// 模组配置数据的解析类
-    internal static partial class ModuleConfigureResolver
+    /// 程序配置数据的解析类
+    internal static partial class ApplicationConfigureResolver
     {
         /// <summary>
-        /// 热加载模块导入节点的配置数据
+        /// 模组配置导入节点的配置数据
         /// </summary>
         /// <param name="node">节点实例</param>
         [Preserve]
-        [OnXmlConfigureResolvingCallback(XmlNodeType.Element, ModuleConfigureNodeName.HotLoad)]
-        private static void LoadHotModuleElement(XmlNode node)
+        [OnXmlConfigureResolvingCallback(XmlNodeType.Element, ApplicationConfigureNodeName.ModuleSetting)]
+        private static void LoadModuleImportElement(XmlNode node)
         {
-            string packName = null;
+            string url = null;
             XmlAttributeCollection attrCollection = node.Attributes;
             for (int n = 0; null != attrCollection && n < attrCollection.Count; ++n)
             {
                 XmlAttribute attr = attrCollection[n];
                 switch (attr.Name)
                 {
-                    case ModuleConfigureAttributeName.Name:
-                        packName = attr.Value;
+                    case ApplicationConfigureAttributeName.Url:
+                        url = attr.Value;
                         break;
                 }
             }
 
-            if (string.IsNullOrEmpty(packName))
+            if (string.IsNullOrEmpty(url))
             {
                 Debugger.Warn(LogGroupTag.Basic, "应用配置文件的‘{%s}’节点导入信息不能为空，该节点解析处理异常！", node.Name);
                 return;
             }
 
-            Debugger.Info(LogGroupTag.Basic, "Load hot-load configure '{%s}' succeed.", packName);
-            ModuleConfigureInfo.AddHotLoadPack(packName);
+            Debugger.Info(LogGroupTag.Basic, "Load module-setting configure url '{%s}' succeed.", url);
+            ApplicationConfigureInfo.AddModuleUrlPath(url);
         }
     }
 }

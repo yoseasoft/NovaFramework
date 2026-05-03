@@ -160,6 +160,9 @@ namespace GameEngine
             // 添加视图分组对象
             _viewGroups.Add(groupName, viewGroup);
 
+            // 向窗口控制模块添加分组信息
+            FormMaster.AddGroup(groupName, level);
+
             // 更新视图分组排序
             UpdateViewGroupSortingList();
         }
@@ -175,6 +178,9 @@ namespace GameEngine
                 Debugger.Warn(LogGroupTag.Module, "在视图管理句柄未找到名称为‘{%s}’的视图分组对象实例，对目标分组对象删除操作执行失败！", groupName);
                 return;
             }
+
+            // 从窗口控制模块移除分组信息
+            FormMaster.RemoveGroup(groupName);
 
             // 移除视图分组对象
             _viewGroups.Remove(groupName);
@@ -217,6 +223,21 @@ namespace GameEngine
         public IReadOnlyList<string> GetAllSortingViewGroupNames()
         {
             return _sortingGroupList.Select(g => g.GroupName).ToList();
+        }
+
+        /// <summary>
+        /// 通过指定的分组名称获取该分组对应的层级
+        /// </summary>
+        /// <param name="groupName">分组名称</param>
+        /// <returns>返回名称对应分组的层级，若分组不存在则返回0</returns>
+        public int GetViewGroupLevelByName(string groupName)
+        {
+            if (_viewGroups.TryGetValue(groupName, out ViewGroup viewGroup))
+            {
+                return viewGroup.Level;
+            }
+
+            return 0;
         }
 
         /// <summary>

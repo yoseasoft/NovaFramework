@@ -2,6 +2,7 @@
 /// GameEngine Framework
 ///
 /// Copyright (C) 2025 - 2026, Hainan Yuanyou Information Technology Co., Ltd. Guangzhou Branch
+/// Copyright (C) 2026, Hurley, Independent Studio.
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -201,26 +202,17 @@ namespace GameEngine
                 ms.Dispose();
             }
 
-            /// <summary>
-            /// 卸载当前所有解析登记的模组配置数据
-            /// </summary>
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static void UnloadAllModuleConfigureInfos()
-            {
-                Context.Configuring.ModuleConfigureResolver.UnloadAllConfigureContents();
-            }
-
             #endregion
 
             #region 模组配置信息的自动装配接口函数
 
             /// <summary>
-            /// 自动加载模组的导入配置数据<br/>
+            /// 自动加载模组设置的配置数据<br/>
             /// 该函数会将当前已记录的所有模组文件路径，通过<see cref="LoadModuleConfigure(string, NovaEngine.Definition.File.OnFileStreamLoadingHandler)"/>全部重新加载一次<br/>
-            /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="UnloadAllModuleConfigureInfos()"/>方法进行全部配置数据卸载
+            /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先清理全部配置数据
             /// </summary>
             /// <param name="callback">回调句柄</param>
-            private static void AutoLoadModuleImportConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
+            private static void AutoLoadModuleSettingConfigure(NovaEngine.Definition.File.OnFileStreamLoadingHandler callback)
             {
                 IList<string> list = Context.Configuring.ApplicationConfigureInfo.ModuleUrlPaths;
                 for (int n = 0; null != list && n < list.Count; ++n)
@@ -230,12 +222,12 @@ namespace GameEngine
             }
 
             /// <summary>
-            /// 自动加载模组的导入配置数据<br/>
+            /// 自动加载模组设置的配置数据<br/>
             /// 该函数会将当前已记录的所有模组文件路径，通过<see cref="LoadModuleConfigure(string, NovaEngine.Definition.File.OnFileStreamLoadingHandler)"/>全部重新加载一次<br/>
-            /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="UnloadAllModuleConfigureInfos()"/>方法进行全部配置数据卸载
+            /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先清理全部配置数据
             /// </summary>
             /// <param name="callback">回调句柄</param>
-            private static async UniTask AutoLoadModuleImportConfigure(NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
+            private static async UniTask AutoLoadModuleSettingConfigure(NovaEngine.Definition.File.OnFileStreamLoadingAsyncHandler callback)
             {
                 IList<string> list = Context.Configuring.ApplicationConfigureInfo.ModuleUrlPaths;
                 for (int n = 0; null != list && n < list.Count; ++n)
@@ -245,12 +237,12 @@ namespace GameEngine
             }
 
             /// <summary>
-            /// 自动加载模组的导入配置数据<br/>
+            /// 自动加载模组设置的配置数据<br/>
             /// 该函数会将当前已记录的所有模组导入文件路径，通过<see cref="LoadModuleConfigure(string, NovaEngine.Definition.File.OnFileTextLoadingHandler)"/>全部重新加载一次<br/>
-            /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="UnloadAllModuleConfigureInfos()"/>方法进行全部配置数据卸载
+            /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先清理全部配置数据
             /// </summary>
             /// <param name="callback">回调句柄</param>
-            private static void AutoLoadModuleImportConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
+            private static void AutoLoadModuleSettingConfigure(NovaEngine.Definition.File.OnFileTextLoadingHandler callback)
             {
                 IList<string> list = Context.Configuring.ApplicationConfigureInfo.ModuleUrlPaths;
                 for (int n = 0; null != list && n < list.Count; ++n)
@@ -260,12 +252,12 @@ namespace GameEngine
             }
 
             /// <summary>
-            /// 自动加载模组的导入配置数据<br/>
+            /// 自动加载模组设置的配置数据<br/>
             /// 该函数会将当前已记录的所有模组导入文件路径，通过<see cref="LoadModuleConfigure(string, NovaEngine.Definition.File.OnFileTextLoadingHandler)"/>全部重新加载一次<br/>
-            /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先调用<see cref="UnloadAllModuleConfigureInfos()"/>方法进行全部配置数据卸载
+            /// 所以如果在使用该函数之前已提前加载过配置数据，则需要先清理全部配置数据
             /// </summary>
             /// <param name="callback">回调句柄</param>
-            private static async UniTask AutoLoadModuleImportConfigure(NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
+            private static async UniTask AutoLoadModuleSettingConfigure(NovaEngine.Definition.File.OnFileTextLoadingAsyncHandler callback)
             {
                 IList<string> list = Context.Configuring.ApplicationConfigureInfo.ModuleUrlPaths;
                 for (int n = 0; null != list && n < list.Count; ++n)

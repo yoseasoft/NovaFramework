@@ -53,5 +53,18 @@ namespace GameEngine
         /// <param name="viewType">视图类型</param>
         /// <returns>返回创建的窗口对象实例</returns>
         Form CreateForm(Type viewType);
+
+        /// <summary>
+        /// 新增指定名称的分组实例
+        /// </summary>
+        /// <param name="groupName">分组名称</param>
+        /// <param name="level">分组层级</param>
+        void AddGroup(string groupName, int level);
+
+        /// <summary>
+        /// 移除指定名称的分组实例
+        /// </summary>
+        /// <param name="groupName">分组名称</param>
+        void RemoveGroup(string groupName);
     }
 }

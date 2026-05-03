@@ -111,13 +111,13 @@ namespace UnityEngine.Customize.Extension
                 for (int n = 0; n < animators.Length; ++n)
                 {
                     Animator animator = animators[n];
-                    if (animator.runtimeAnimatorController != null)
+                    if (null != animator.runtimeAnimatorController)
                     {
                         AnimatorClipInfo[] clipInfos = animator.GetCurrentAnimatorClipInfo(0);
                         if (clipInfos.Length > 0)
                         {
                             AnimationClip clip = clipInfos[0].clip;
-                            if (clip != null)
+                            if (null != clip)
                             {
                                 time = Mathf.Max(time, clip.length);
                             }
@@ -133,7 +133,7 @@ namespace UnityEngine.Customize.Extension
                 for (int n = 0; n < animations.Length; ++n)
                 {
                     Animation animation = animations[n];
-                    if (animation != null && animation.clip != null)
+                    if (null != animation && null != animation.clip)
                     {
                         time = Mathf.Max(time, animation.clip.length);
                     }
@@ -646,6 +646,32 @@ namespace UnityEngine.Customize.Extension
         {
             self.transform.SetParent(parent);
             return self;
+        }
+
+        /// <summary>
+        /// 交换两个节点对象的位置，要求两个节点必须处于同一层级
+        /// </summary>
+        /// <param name="self">源节点对象实例</param>
+        /// <param name="other">目标节点对象实例</param>
+        public static void SwapSiblingIndex(this GameObject self, GameObject other)
+        {
+            Transform srcTransform = self.transform;
+            Transform dstTransform = other.transform;
+
+            // 检查是否为兄弟节点（同一父级）
+            if (srcTransform.parent != dstTransform.parent)
+            {
+                NovaEngine.CLogger.Error("The '{%s}' and '{%s}' was not sibling nodes, swapping two nodes failed.", self.name, other.name);
+                return;
+            }
+
+            // 获取当前索引
+            int srcIndex = srcTransform.GetSiblingIndex();
+            int dstIndex = dstTransform.GetSiblingIndex();
+
+            // 交换索引
+            srcTransform.SetSiblingIndex(dstIndex);
+            dstTransform.SetSiblingIndex(srcIndex);
         }
 
         #endregion

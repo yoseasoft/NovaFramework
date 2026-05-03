@@ -51,9 +51,6 @@ namespace GameEngine.Context.Configuring
         /// </summary>
         public static void Initialize()
         {
-            // 配置管理对象初始化
-            ModuleConfigureInfo.Initialize();
-
             // 初始化解析容器
             _moduleConfigureResolveCallbacks = new Dictionary<XmlNodeType, IDictionary<string, OnConfigureObjectLoadingHandler>>();
 
@@ -83,9 +80,6 @@ namespace GameEngine.Context.Configuring
             // 清理解析容器
             RemoveAllConfigureResolveCallbacks();
             _moduleConfigureResolveCallbacks = null;
-
-            // 配置管理对象清理
-            ModuleConfigureInfo.Cleanup();
         }
 
         /// <summary>
@@ -110,15 +104,6 @@ namespace GameEngine.Context.Configuring
             }
 
             callback(node);
-        }
-
-        /// <summary>
-        /// 卸载当前所有解析登记的配置数据对象实例
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void UnloadAllConfigureContents()
-        {
-            ModuleConfigureInfo.RemoveAllConfigureInfos();
         }
 
         #region 配置解析回调句柄注册绑定接口函数
