@@ -33,6 +33,7 @@ namespace GameEngine.Context.Configuring
         public const string Comment = @"#comment";
         public const string ViewGroup = @"view-group";
         public const string Group = @"group";
+        public const string StrategyType = @"strategy-type";
     }
 
     /// <summary>

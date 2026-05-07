@@ -60,6 +60,8 @@ namespace GameEngine.Context.Configuring
         {
             string groupName = null;
             int level = 0;
+            ViewGroupStrategyType strategyType = ViewGroupStrategyType.None;
+
             XmlAttributeCollection attrCollection = node.Attributes;
             for (int n = 0; null != attrCollection && n < attrCollection.Count; ++n)
             {
@@ -75,15 +77,31 @@ namespace GameEngine.Context.Configuring
                 }
             }
 
+            XmlNodeList childs = node.ChildNodes;
+            for (int n = 0; null != childs && n < childs.Count; ++n)
+            {
+                XmlNode child = childs[n];
+
+                switch (child.Name)
+                {
+                    case ModuleConfigureNodeName.StrategyType:
+                        strategyType |= NovaEngine.Utility.Convertion.GetEnumFromName<ViewGroupStrategyType>(child.InnerText);
+                        break;
+                    default:
+                        Debugger.Warn("Invalid child node '{%s}' within 'group' element, resolved it failed.", child.Name);
+                        break;
+                }
+            }
+
             if (string.IsNullOrEmpty(groupName) || level <= 0)
             {
                 Debugger.Warn(LogGroupTag.Basic, "应用配置文件的‘{%s}’节点导入信息不能为空，该节点解析处理异常！", node.Name);
                 return;
             }
 
-            Debugger.Info(LogGroupTag.Basic, "Load view group configure 'name={%s}, level={%d}' succeed.", groupName, level);
+            Debugger.Info(LogGroupTag.Basic, "Load view group configure 'name={%s}, level={%d}, strategy={%v}' succeed.", groupName, level, strategyType);
 
-            GuiHandler.Instance.AddViewGroup(groupName, level);
+            GuiHandler.Instance.AddViewGroup(groupName, level, strategyType);
         }
     }
 }

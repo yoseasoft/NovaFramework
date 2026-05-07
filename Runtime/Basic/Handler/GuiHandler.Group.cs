@@ -45,9 +45,9 @@ namespace GameEngine
         None = 0,
 
         /// <summary>
-        /// 平铺，若未设置该标识，则默认为堆叠模式 Overlap
+        /// 堆叠模式，若未设置该标识，则默认为平铺模式 Tile
         /// </summary>
-        Tile = 0x01,
+        Overlap = 0x01,
 
         /// <summary>
         /// 单一模式，若开启该模式，将只存在最后开启的一个视图对象实例，其它实例将自动关闭
@@ -238,6 +238,21 @@ namespace GameEngine
             }
 
             return 0;
+        }
+
+        /// <summary>
+        /// 通过指定的分组名称获取该分组对应的策略类型
+        /// </summary>
+        /// <param name="groupName">分组名称</param>
+        /// <returns>返回名称对应分组的策略类型，若分组不存在则返回空值</returns>
+        public ViewGroupStrategyType GetViewGroupStrategyTypeByName(string groupName)
+        {
+            if (_viewGroups.TryGetValue(groupName, out ViewGroup viewGroup))
+            {
+                return viewGroup.StrategyType;
+            }
+
+            return ViewGroupStrategyType.None;
         }
 
         /// <summary>

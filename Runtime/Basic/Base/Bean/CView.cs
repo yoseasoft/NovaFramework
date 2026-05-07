@@ -393,7 +393,7 @@ namespace GameEngine
         /// </summary>
         /// <param name="path">节点路径</param>
         /// <returns>返回给定路径对应的节点对象实例，若不存在则返回null</returns>
-        public object GetChild(string path)
+        public T GetChild<T>(string path) where T : class
         {
             if (null == _form || false == _form.IsLoaded)
             {
@@ -401,7 +401,7 @@ namespace GameEngine
                 return null;
             }
 
-            return _form.GetChild(path);
+            return _form.GetChild(path) as T;
         }
 
         #endregion
