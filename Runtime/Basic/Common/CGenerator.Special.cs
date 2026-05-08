@@ -38,7 +38,7 @@ namespace GameEngine
         /// <returns>返回唯一会话标识</returns>
         public static int GenBeanId()
         {
-            return GenSessionId("GameEngine.Bean");
+            return GenSessionId("__internal_GameEngine_Bean");
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace GameEngine
         /// <returns>返回唯一会话标识</returns>
         public static int GenSymbolId()
         {
-            return GenSessionId("GameEngine.Symbol");
+            return GenSessionId("__internal_GameEngine_Symbol");
         }
 
         /// <summary>
