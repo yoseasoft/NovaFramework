@@ -37,10 +37,8 @@ namespace NovaEngine
         /// <param name="message">日志内容</param>
         public delegate void OutputHandler(CLogOutputLevelType level, object message);
 
-        /// <summary>
-        /// 日志输入代理回调接口
-        /// </summary>
-        private static OutputHandler _logOutputHandler = null;
+        /// <summary>日志输入代理回调接口</summary>
+        private static OutputHandler _logOutputHandler;
 
         /// <summary>
         /// 启动日志系统

@@ -33,9 +33,7 @@ namespace NovaEngine
     /// 验证工具类
     public static partial class CVerification
     {
-        /// <summary>
-        /// 检测匹配的错误信息
-        /// </summary>
+        /// <summary>检测匹配的错误信息</summary>
         private const string CheckMatchedErrorText = @"unmatched";
 
         /// <summary>

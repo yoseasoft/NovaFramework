@@ -38,40 +38,24 @@ namespace NovaEngine
     /// </summary>
     internal static partial class AppEntry
     {
-        /// <summary>
-        /// 程序管理器的实例运行状态标识
-        /// </summary>
-        private static bool _isRunning = false;
+        /// <summary>程序管理器的实例运行状态标识</summary>
+        private static bool _isRunning;
 
-        /// <summary>
-        /// 程序调度的根节点对象实例
-        /// </summary>
-        private static UnityGameObject _rootGameObject = null;
-        /// <summary>
-        /// 程序调度的根控制器对象实例
-        /// </summary>
-        private static UnityMonoBehaviour _rootController = null;
+        /// <summary>程序调度的根节点对象实例</summary>
+        private static UnityGameObject _rootGameObject;
+        /// <summary>程序调度的根控制器对象实例</summary>
+        private static UnityMonoBehaviour _rootController;
 
-        /// <summary>
-        /// 引擎对象实例
-        /// </summary>
-        private static Engine _engine = null;
+        /// <summary>引擎对象实例</summary>
+        private static Engine _engine;
 
-        /// <summary>
-        /// 获取当前调度器运行状态标识
-        /// </summary>
+        /// <summary>获取当前调度器运行状态标识</summary>
         public static bool IsRunning => _isRunning;
-        /// <summary>
-        /// 获取当前调度器的根节点对象实例
-        /// </summary>
+        /// <summary>获取当前调度器的根节点对象实例</summary>
         public static UnityGameObject RootGameObject => _rootGameObject;
-        /// <summary>
-        /// 获取当前调度器的根控制器对象实例
-        /// </summary>
+        /// <summary>获取当前调度器的根控制器对象实例</summary>
         public static UnityMonoBehaviour RootController => _rootController;
-        /// <summary>
-        /// 获取当前程序的引擎对象实例
-        /// </summary>
+        /// <summary>获取当前程序的引擎对象实例</summary>
         public static Engine Engine => _engine;
 
         /// <summary>

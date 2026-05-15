@@ -49,37 +49,25 @@ namespace NovaEngine
     /// </summary>
     internal sealed /*partial*/ class Engine : IUpdatable
     {
-        /// <summary>
-        /// 核心引擎对象静态实例
-        /// </summary>
+        /// <summary>核心引擎对象静态实例</summary>
         private static Engine _instance;
 
-        /// <summary>
-        /// 表现层管理对象实例
-        /// </summary>
-        private Facade _facade = null;
+        /// <summary>表现层管理对象实例</summary>
+        private Facade _facade;
 
-        /// <summary>
-        /// 记录当前引擎对象实例是否已经启动的状态标识
-        /// </summary>
+        /// <summary>记录当前引擎对象实例是否已经启动的状态标识</summary>
         private bool _isOnStartup = false;
 
-        /// <summary>
-        /// 引擎对象实例所依赖的MONO组件对象
-        /// </summary>
-        // private readonly UnityMonoBehaviour _monoBehaviour = null;
+        /// <summary>引擎对象实例所依赖的MONO组件对象</summary>
+        // private readonly UnityMonoBehaviour _monoBehaviour;
 
-        /// <summary>
-        /// 获取当前引擎对象的表现层管理实例
-        /// </summary>
+        /// <summary>获取当前引擎对象的表现层管理实例</summary>
         public Facade Facade
         {
             get { return _facade; }
         }
 
-        /// <summary>
-        /// 检测当前引擎对象是否处于启动状态
-        /// </summary>
+        /// <summary>检测当前引擎对象是否处于启动状态</summary>
         public bool IsOnStartup
         {
             get { return _isOnStartup; }

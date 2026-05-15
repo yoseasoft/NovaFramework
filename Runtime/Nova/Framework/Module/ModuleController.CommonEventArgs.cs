@@ -34,14 +34,10 @@ namespace NovaEngine.Module
         /// </summary>
         public sealed class CommonEventArgs : ModuleEventArgs
         {
-            /// <summary>
-            /// 模块通用事件处理类型编号
-            /// </summary>
+            /// <summary>模块通用事件处理类型编号</summary>
             private int _eventID;
 
-            /// <summary>
-            /// 模块通用事件处理类型标识
-            /// </summary>
+            /// <summary>模块通用事件处理类型标识</summary>
             private int _eventType;
 
             /// <summary>
@@ -51,9 +47,7 @@ namespace NovaEngine.Module
             {
             }
 
-            /// <summary>
-            /// 获取通用事件参数类型编号
-            /// </summary>
+            /// <summary>获取通用事件参数类型编号</summary>
             public override int ID
             {
                 get { return _eventID; }
@@ -65,9 +59,7 @@ namespace NovaEngine.Module
                 set { _eventID = value; }
             }
 
-            /// <summary>
-            /// 获取或设置通用事件处理类型
-            /// </summary>
+            /// <summary>获取或设置通用事件处理类型</summary>
             public int EventType
             {
                 get { return _eventType; }

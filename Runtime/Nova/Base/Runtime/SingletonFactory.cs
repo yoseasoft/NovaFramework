@@ -35,9 +35,7 @@ namespace NovaEngine
     /// </summary>
     public abstract class SingletonInstance<T> : ISingleton, IInitializable where T : class, ISingleton, new()
     {
-        /// <summary>
-        /// 获取单例类当前的有效实例
-        /// </summary>
+        /// <summary>获取单例类当前的有效实例</summary>
         public static T Instance
         {
             get { return SingletonFactory.GetInstance<T>(); }
@@ -69,9 +67,7 @@ namespace NovaEngine
     /// </summary>
     public static class SingletonFactory
     {
-        /// <summary>
-        /// 单例对象的实例管理容器
-        /// </summary>
+        /// <summary>单例对象的实例管理容器</summary>
         private static IDictionary<Type, ISingleton> _instances = new Dictionary<Type, ISingleton>();
 
         /// <summary>

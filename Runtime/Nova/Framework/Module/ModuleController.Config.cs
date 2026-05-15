@@ -68,14 +68,10 @@ namespace NovaEngine.Module
                 public Type ReflectionType { get { return _reflectionType; } set { _reflectionType = value; } }
             }
 
-            /// <summary>
-            /// 模块类的后缀名称常量定义
-            /// </summary>
+            /// <summary>模块类的后缀名称常量定义</summary>
             private const string ModuleClassUnifiedStandardName = "Module";
 
-            /// <summary>
-            /// 模块对象配置信息
-            /// </summary>
+            /// <summary>模块对象配置信息</summary>
             private static IList<ModuleConfigureInfo> _configureInfos;
 
             /// <summary>
@@ -84,7 +80,7 @@ namespace NovaEngine.Module
             /// </summary>
             public static void InitModuleConfigure()
             {
-                if (ModuleController._isRunning)
+                if (_isRunning)
                 {
                     throw new CFrameworkException("Cannot do reset on running state.");
                 }

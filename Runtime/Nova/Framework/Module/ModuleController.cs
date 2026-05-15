@@ -37,15 +37,11 @@ namespace NovaEngine.Module
     /// </summary>
     internal static partial class ModuleController
     {
-        /// <summary>
-        /// 模块实例管理队列
-        /// </summary>
+        /// <summary>模块实例管理队列</summary>
         private static readonly LinkedList<ModuleObject> _modules = new LinkedList<ModuleObject>();
         private static readonly IDictionary<int, ModuleObject> _moduleCollections = new Dictionary<int, ModuleObject>();
 
-        /// <summary>
-        /// 任务调度管理队列
-        /// </summary>
+        /// <summary>任务调度管理队列</summary>
         private static readonly IList<TaskInvokeAction> _runningActions = new List<TaskInvokeAction>();
         private static readonly IList<TaskInvokeAction> _waitingActions = new List<TaskInvokeAction>();
 
@@ -145,7 +141,7 @@ namespace NovaEngine.Module
                     for (int n = _waitingActions.Count - 1; n >= 0; --n)
                     {
                         TaskInvokeAction task = _waitingActions[n];
-                        if (task._timestamp <= t)
+                        if (task.timestamp <= t)
                         {
                             _runningActions.Add(task);
                             _waitingActions.Remove(task);
@@ -155,7 +151,7 @@ namespace NovaEngine.Module
 
                 for (int n = 0; n < _runningActions.Count; ++n)
                 {
-                    _runningActions[n]._action();
+                    _runningActions[n].action();
                 }
 
                 _runningActions.Clear();
@@ -418,7 +414,7 @@ namespace NovaEngine.Module
 
             lock (_waitingActions)
             {
-                _waitingActions.Add(new TaskInvokeAction { _timestamp = time, _action = action, });
+                _waitingActions.Add(new TaskInvokeAction { timestamp = time, action = action, });
             }
         }
 

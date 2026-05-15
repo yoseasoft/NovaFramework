@@ -30,9 +30,7 @@ namespace NovaEngine
     /// </summary>
     public abstract class CFrameworkManager : IManager, IInitializable, IUpdatable
     {
-        /// <summary>
-        /// 获取管理器实例的优先级
-        /// </summary>
+        /// <summary>获取管理器实例的优先级</summary>
         public virtual int Priority => 0;
 
         /// <summary>

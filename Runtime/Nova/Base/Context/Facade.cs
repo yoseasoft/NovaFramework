@@ -39,25 +39,17 @@ namespace NovaEngine
     /// </summary>
     internal sealed partial class Facade
     {
-        /// <summary>
-        /// 表现层对象静态实例
-        /// </summary>
-        private static Facade _instance = null;
+        /// <summary>表现层对象静态实例</summary>
+        private static Facade _instance;
 
-        /// <summary>
-        /// 引擎对象实例
-        /// </summary>
-        private readonly Engine _engine = null;
+        /// <summary>引擎对象实例</summary>
+        private readonly Engine _engine;
 
-        /// <summary>
-        /// 表现层所依赖的根节点组件实例
-        /// </summary>
-        // private readonly UnityGameObject _rootGameObject = null;
+        /// <summary>表现层所依赖的根节点组件实例</summary>
+        // private readonly UnityGameObject _rootGameObject;
 
-        /// <summary>
-        /// 表现层所依赖的MONO对象组件实例
-        /// </summary>
-        // private readonly UnityMonoBehaviour _monoBehaviour = null;
+        /// <summary>表现层所依赖的MONO对象组件实例</summary>
+        // private readonly UnityMonoBehaviour _monoBehaviour;
 
         /// <summary>
         /// 表现层对象构造函数
