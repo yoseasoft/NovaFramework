@@ -38,13 +38,9 @@ namespace NovaEngine
     /// </summary>
     internal static partial class AppEntry
     {
-        /// <summary>
-        /// 节点对象的映射容器
-        /// </summary>
+        /// <summary>节点对象的映射容器</summary>
         private static readonly IDictionary<string, UnityGameObject> _frameworkGameObjects = new Dictionary<string, UnityGameObject>();
-        /// <summary>
-        /// 组件对象的映射容器
-        /// </summary>
+        /// <summary>组件对象的映射容器</summary>
         private static readonly IDictionary<string, CFrameworkComponent> _frameworkComponents = new Dictionary<string, CFrameworkComponent>();
 
         /// <summary>

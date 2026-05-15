@@ -31,14 +31,10 @@ namespace NovaEngine.Module
     /// </summary>
     internal class ModuleCommandArgs : CommandArgs
     {
-        /// <summary>
-        /// 当前指令参数的类型
-        /// </summary>
+        /// <summary>当前指令参数的类型</summary>
         private int _type;
 
-        /// <summary>
-        /// 当前指令参数的数据实例
-        /// </summary>
+        /// <summary>当前指令参数的数据实例</summary>
         private ModuleEventArgs _data;
 
         /// <summary>
@@ -48,17 +44,13 @@ namespace NovaEngine.Module
         {
         }
 
-        /// <summary>
-        /// 获取模块指令参数类型编号
-        /// </summary>
+        /// <summary>获取模块指令参数类型编号</summary>
         public int Type
         {
             get { return _type; }
         }
 
-        /// <summary>
-        /// 获取模块指令参数数据实例
-        /// </summary>
+        /// <summary>获取模块指令参数数据实例</summary>
         public ModuleEventArgs Data
         {
             get { return _data; }

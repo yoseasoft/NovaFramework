@@ -36,28 +36,18 @@ namespace NovaEngine
     /// </summary>
     internal static partial class AppEntry
     {
-        /// <summary>
-        /// 管理器对象的链表容器
-        /// </summary>
+        /// <summary>管理器对象的链表容器</summary>
         private static readonly CacheLinkedList<IManager> _frameworkManagers = new CacheLinkedList<IManager>();
 
-        /// <summary>
-        /// 管理器对象的可执行列表容器
-        /// </summary>
+        /// <summary>管理器对象的可执行列表容器</summary>
         private static readonly CacheLinkedList<IExecutable> _executedManagers = new CacheLinkedList<IExecutable>();
-        /// <summary>
-        /// 管理器对象的可更新列表容器
-        /// </summary>
+        /// <summary>管理器对象的可更新列表容器</summary>
         private static readonly CacheLinkedList<IUpdatable> _updatedManagers = new CacheLinkedList<IUpdatable>();
 
-        /// <summary>
-        /// 管理器对象的过期列表容器
-        /// </summary>
+        /// <summary>管理器对象的过期列表容器</summary>
         private static readonly IList<IManager> _expiredManagers = new List<IManager>();
 
-        /// <summary>
-        /// 管理器对象处于调度中的状态标识
-        /// </summary>
+        /// <summary>管理器对象处于调度中的状态标识</summary>
         private static bool _isManagerProcessing = false;
 
         /// <summary>

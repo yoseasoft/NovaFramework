@@ -29,9 +29,7 @@ using UnityMonoBehaviour = UnityEngine.MonoBehaviour;
 
 namespace NovaEngine
 {
-    /// <summary>
-    /// 基础管理句柄的模块管理部分，对外提供全部模块组件对象的统一访问接口
-    /// </summary>
+    /// 基础管理句柄
     internal partial class Facade
     {
         #region 场景对象相关组件操作接口

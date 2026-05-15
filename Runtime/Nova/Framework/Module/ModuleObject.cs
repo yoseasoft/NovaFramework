@@ -36,19 +36,17 @@ namespace NovaEngine.Module
     /// </summary>
     internal abstract partial class ModuleObject
     {
+        /// <summary>获取引擎框架模块的事件类型</summary>
+        public abstract int EventType
+        {
+            get;
+        }
+
         /// <summary>
         /// 模块类的新实例构建接口
         /// </summary>
         public ModuleObject()
         {
-        }
-
-        /// <summary>
-        /// 获取引擎框架模块的事件类型
-        /// </summary>
-        public abstract int EventType
-        {
-            get;
         }
 
         /// <summary>

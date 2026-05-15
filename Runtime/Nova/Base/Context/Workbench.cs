@@ -35,49 +35,29 @@ namespace NovaEngine
     /// </summary>
     internal static class Workbench
     {
-        /// <summary>
-        /// 工作台运行状态
-        /// </summary>
+        /// <summary>工作台运行状态</summary>
         private static bool _isRunning;
 
-        /// <summary>
-        /// 工作台运行帧率
-        /// </summary>
+        /// <summary>工作台运行帧率</summary>
         private static int _frameRate;
-        /// <summary>
-        /// 工作台运行帧间隔时间（以秒为单位）
-        /// </summary>
+        /// <summary>工作台运行帧间隔时间（以秒为单位）</summary>
         private static float _frameInterval;
 
-        /// <summary>
-        /// 工作区对象实例管理容器
-        /// </summary>
+        /// <summary>工作区对象实例管理容器</summary>
         private static IList<Subwork> _subworks;
-        /// <summary>
-        /// 工作区对象实例数量
-        /// </summary>
+        /// <summary>工作区对象实例数量</summary>
         private static int _subworkCount;
 
-        /// <summary>
-        /// 工作区对象实例执行状态
-        /// </summary>
+        /// <summary>工作区对象实例执行状态</summary>
         private static bool _isSubworkExecuting;
-        /// <summary>
-        /// 当前正在执行的工作区对象实例名称
-        /// </summary>
+        /// <summary>当前正在执行的工作区对象实例名称</summary>
         private static string _currentExecutingSubworkName;
-        /// <summary>
-        /// 当前正在执行的工作区对象实例标识
-        /// </summary>
+        /// <summary>当前正在执行的工作区对象实例标识</summary>
         private static int _currentExecutingSubworkId;
 
-        /// <summary>
-        /// 当前正在执行的工作区对象实例帧数
-        /// </summary>
+        /// <summary>当前正在执行的工作区对象实例帧数</summary>
         private static int _currentSubworkFrameCount;
-        /// <summary>
-        /// 当前正在执行工作区对象实例的帧间隔时间
-        /// </summary>
+        /// <summary>当前正在执行工作区对象实例的帧间隔时间</summary>
         private static float _currentSubworkDeltaTime;
 
         public static bool IsSubworkExecuting => _isSubworkExecuting;

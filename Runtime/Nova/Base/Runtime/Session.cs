@@ -30,30 +30,20 @@ namespace NovaEngine
     /// </summary>
     public sealed partial class Session
     {
-        /// <summary>
-        /// 初始会话值
-        /// </summary>
+        /// <summary>初始会话值</summary>
         public const int SESSION_INIT_VALUE = 10000;
-        /// <summary>
-        /// 最大会话值
-        /// </summary>
+        /// <summary>最大会话值</summary>
         public const int SESSION_MAX_VALUE = System.Int32.MaxValue;
 
         // private readonly object _locked = new object();
 
-        /// <summary>
-        /// 初始会话值，用于进行会话值的重置
-        /// </summary>
+        /// <summary>初始会话值，用于进行会话值的重置</summary>
         private int _initValue = 0;
 
-        /// <summary>
-        /// 最大会话值，用于进行会话值的边界检查
-        /// </summary>
+        /// <summary>最大会话值，用于进行会话值的边界检查</summary>
         private int _maxValue = 0;
 
-        /// <summary>
-        /// 会话值，记录当前会话递增后的结果值
-        /// </summary>
+        /// <summary>会话值，记录当前会话递增后的结果值</summary>
         private int _currValue = 0;
 
         /// <summary>

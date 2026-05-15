@@ -38,15 +38,8 @@ namespace NovaEngine.Module
         {
         }
 
-        /*
-        /// <summary>
-        /// 获取事件参数类型编号
-        /// </summary>
-        public abstract int ID
-        {
-            get;
-        }
-        */
+        /// <summary>获取事件参数类型编号</summary>
+        // public abstract int ID { get; }
 
         /// <summary>
         /// 事件参数对象初始化接口

@@ -47,14 +47,10 @@ namespace NovaEngine.Module
 
         private readonly IO.CircularLinkedBuffer _writeBuffer = null;
 
-        /// <summary>
-        /// 当前通道的包头长度
-        /// </summary>
+        /// <summary>当前通道的包头长度</summary>
         private readonly int _headerSize = 0;
 
-        /// <summary>
-        /// 数据包的包头缓冲区
-        /// </summary>
+        /// <summary>数据包的包头缓冲区</summary>
         private readonly byte[] _packetHeaderCached = null;
 
 
@@ -64,27 +60,19 @@ namespace NovaEngine.Module
 
         private readonly IPEndPoint _remoteIp = null;
 
-        /// <summary>
-        /// 网络通道当前连接状态标识
-        /// </summary>
+        /// <summary>网络通道当前连接状态标识</summary>
         private bool _isConnected = false;
 
-        /// <summary>
-        /// 网络通道当前写入状态标识
-        /// </summary>
+        /// <summary>网络通道当前写入状态标识</summary>
         private bool _isOnWriting = false;
 
-        /// <summary>
-        /// 获取网络通道当前连接状态标识
-        /// </summary>
+        /// <summary>获取网络通道当前连接状态标识</summary>
         public bool IsConnected
         {
             get { return _isConnected; }
         }
 
-        /// <summary>
-        /// 获取网络通道当前写入状态标识
-        /// </summary>
+        /// <summary>获取网络通道当前写入状态标识</summary>
         public bool IsOnWriting
         {
             get { return _isOnWriting; }

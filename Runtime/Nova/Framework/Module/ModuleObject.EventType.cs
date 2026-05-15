@@ -26,6 +26,9 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
+using System.Runtime.CompilerServices;
+
 namespace NovaEngine.Module
 {
     /// 引擎框架模块对象的抽象定义类
@@ -37,74 +40,37 @@ namespace NovaEngine.Module
         /// </summary>
         public enum ModuleEventType : byte
         {
-            /// <summary>
-            /// 默认定义
-            /// </summary>
+            /// <summary>默认定义</summary>
             Default = 0,
 
-            /// <summary>
-            /// 定时器模块
-            /// </summary>
+            /// <summary>定时器模块</summary>
             Timer = 1,
 
-            /// <summary>
-            /// 线程模块
-            /// </summary>
+            /// <summary>线程模块</summary>
             Thread = 2,
 
-            /// <summary>
-            /// 任务模块
-            /// </summary>
+            /// <summary>任务模块</summary>
             Task = 3,
 
-            /// <summary>
-            /// 网络模块
-            /// </summary>
+            /// <summary>网络模块</summary>
             Network = 11,
 
-            /// <summary>
-            /// 输入模块
-            /// </summary>
+            /// <summary>输入模块</summary>
             Input = 21,
 
-            /// <summary>
-            /// 输出模块
-            /// </summary>
+            /// <summary>输出模块</summary>
             // Output = 22,
 
-            /// <summary>
-            /// 资源模块
-            /// </summary>
+            /// <summary>资源模块</summary>
             Resource = 31,
 
-            /// <summary>
-            /// 文件模块
-            /// </summary>
+            /// <summary>文件模块</summary>
             File = 32,
 
-            /// <summary>
-            /// 对象模块
-            /// </summary>
-            // Object = 41,
-
-            /// <summary>
-            /// 场景模块
-            /// </summary>
+            /// <summary>场景模块</summary>
             Scene = 42,
 
-            /// <summary>
-            /// 角色模块
-            /// </summary>
-            // Actor = 43,
-
-            /// <summary>
-            /// UI模块
-            /// </summary>
-            // Gui = 44,
-
-            /// <summary>
-            /// 用户自定义
-            /// </summary>
+            /// <summary>用户自定义</summary>
             User = 101,
         }
 
@@ -113,6 +79,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="type">模块事件类型</param>
         /// <returns>返回事件类型对应模块的优先级</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int GetModulePriorityWithEventType(ModuleEventType type)
         {
             return (int) type;
@@ -123,6 +90,7 @@ namespace NovaEngine.Module
         /// </summary>
         /// <param name="type">模块事件类型</param>
         /// <returns>返回事件类型对应模块的优先级</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int GetModulePriorityWithEventType(int type)
         {
             return type;

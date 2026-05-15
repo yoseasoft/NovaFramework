@@ -36,15 +36,11 @@ namespace NovaEngine.Module
         /// </summary>
         private struct TaskInvokeAction
         {
-            /// <summary>
-            /// 任务时间戳
-            /// </summary>
-            public float _timestamp;
+            /// <summary>任务时间戳</summary>
+            public float timestamp;
 
-            /// <summary>
-            /// 任务回调接口
-            /// </summary>
-            public Action _action;
+            /// <summary>任务回调接口</summary>
+            public Action action;
         }
     }
 }
