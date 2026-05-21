@@ -22,33 +22,49 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.Sockets;
 
-namespace GameEngine.Profiler.Working
+namespace GameEngine.Profiler.Debugging
 {
-    /// <summary>
-    /// 调试控制台管理对象类，用于启动远程调试后台及命令响应处理
-    /// </summary>
-    internal static class DebugConsole
+    /// 控制台组件对象类
+    internal sealed partial class ConsoleComponent
     {
-        private static string _ip;
-        private static int _port;
-        private static TcpListener _listener;
-
         /// <summary>
-        /// 初始化控制台管理器
+        /// 控制台错误码集合
         /// </summary>
-        public static void Startup()
+        private static class ConsoleErrorCode
         {
+            public const int Succeed = 0;
+            // 退出
+            public const int Quit = 1;
+            // 无效指令
+            public const int InvalidCommand = 101;
         }
 
         /// <summary>
-        /// 清理控制台管理器
+        /// 控制台错误码对应文本的映射容器
         /// </summary>
-        public static void Shutdown()
+        private readonly static IDictionary<int, string> _errorCodeText = new Dictionary<int, string>()
         {
+            { ConsoleErrorCode.Quit, @"Goodbye." },
+            { ConsoleErrorCode.InvalidCommand, @"Invalid command." },
+        };
+
+        /// <summary>
+        /// 通过指定的错误码获取对应的错误提升信息
+        /// </summary>
+        /// <param name="errorCode">错误码</param>
+        /// <returns>返回错误提示字符串</returns>
+        private static string GetErrorMessage(int errorCode)
+        {
+            if (_errorCodeText.TryGetValue(errorCode, out string errorText))
+            {
+                return errorText;
+            }
+
+            return $"unknown error {errorCode}.";
         }
     }
 }

@@ -27,7 +27,7 @@ namespace GameEngine.Profiler.Debugging
     /// <summary>
     /// 调试器窗口组的抽象接口类，对调试器窗口进行编组及批量调度操作
     /// </summary>
-    public interface IDebuggerWindowGroup : IDebuggerWindow
+    internal interface IDebuggerWindowGroup : IDebuggerWindow
     {
         /// <summary>
         /// 获取调试器窗口的数量

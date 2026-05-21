@@ -50,7 +50,7 @@ namespace GameEngine.Profiler.Debugging
     /// </summary>
     [UnityEngine.DisallowMultipleComponent]
     [UnityEngine.AddComponentMenu("Framework/Debugger")]
-    public sealed partial class DebuggerComponent : NovaEngine.CFrameworkComponent
+    internal sealed partial class DebuggerComponent : NovaEngine.CFrameworkComponent
     {
         /// <summary>
         /// 调试器组件的挂载名称

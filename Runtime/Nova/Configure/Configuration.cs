@@ -81,6 +81,14 @@ namespace NovaEngine
         public readonly static bool DebuggerWindowMode = false;
 
         /// <summary>
+        /// 调试控制台模式的开启状态标识<br/>
+        /// 该模式启动后，将在本地打开一个控制后台，可以通过‘telnet’的方式进入并发送控制指令<br/>
+        /// 在开发模式下建议打开该窗口，在程序运行时通过指令进行数据调整、实时监测等行为<br/>
+        /// 在发布模式下严禁启用该标识，因为发布环境下不允许通过控制指令强制修改程序的运行数据
+        /// </summary>
+        public readonly static bool DebuggerConsoleMode = false;
+
+        /// <summary>
         /// 自动统计模式的开启状态标识<br/>
         /// 打开该模式后，程序将对所有实体对象及其运行时数据进行统计，并在调试器窗口中显示<br/>
         /// 因此，需要同时打开调试窗口模式才能正常观察数据分析的结果<br/>

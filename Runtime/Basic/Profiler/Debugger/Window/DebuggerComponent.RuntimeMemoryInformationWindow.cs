@@ -32,10 +32,8 @@ using UnityProfiler = UnityEngine.Profiling.Profiler;
 
 namespace GameEngine.Profiler.Debugging
 {
-    /// <summary>
-    /// 游戏调试器组件对象类，用于定义调试器对象的基础属性及访问操作函数
-    /// </summary>
-    public sealed partial class DebuggerComponent
+    /// 游戏调试器组件对象类
+    internal sealed partial class DebuggerComponent
     {
         /// <summary>
         /// 运行时特定元素内存信息展示窗口的对象类

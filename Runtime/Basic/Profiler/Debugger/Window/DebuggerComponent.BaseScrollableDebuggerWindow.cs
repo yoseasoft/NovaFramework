@@ -27,10 +27,8 @@ using UnityGUILayout = UnityEngine.GUILayout;
 
 namespace GameEngine.Profiler.Debugging
 {
-    /// <summary>
-    /// 游戏调试器组件对象类，用于定义调试器对象的基础属性及访问操作函数
-    /// </summary>
-    public sealed partial class DebuggerComponent
+    /// 游戏调试器组件对象类
+    internal sealed partial class DebuggerComponent
     {
         /// <summary>
         /// 可滚动的调试窗口对象的通用基类定义，此处声明一个通用组件，在其它任何地方需要使用到滚动窗口时，可继承该组件类

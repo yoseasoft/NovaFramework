@@ -26,9 +26,7 @@ using System.Collections.Generic;
 
 namespace GameEngine.Profiler.Debugging
 {
-    /// <summary>
-    /// 调试管理器的对象实现类，对接口函数进行具体逻辑的实现
-    /// </summary>
+    /// 调试管理器的对象实现类
     internal sealed partial class DebuggerManager
     {
         /// <summary>

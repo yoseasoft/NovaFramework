@@ -28,10 +28,8 @@ using UnityLogType = UnityEngine.LogType;
 
 namespace GameEngine.Profiler.Debugging
 {
-    /// <summary>
-    /// 游戏调试器组件对象类，用于定义调试器对象的基础属性及访问操作函数
-    /// </summary>
-    public sealed partial class DebuggerComponent
+    /// 游戏调试器组件对象类
+    internal sealed partial class DebuggerComponent
     {
         /// <summary>
         /// 调试日志的记录节点对象类，用于记录单条日志记录

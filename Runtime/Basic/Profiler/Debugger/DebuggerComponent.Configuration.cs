@@ -24,10 +24,8 @@
 
 namespace GameEngine.Profiler.Debugging
 {
-    /// <summary>
-    /// 游戏调试器组件对象类，用于定义调试器对象的基础属性及访问操作函数
-    /// </summary>
-    public sealed partial class DebuggerComponent
+    /// 游戏调试器组件对象类
+    internal sealed partial class DebuggerComponent
     {
         /// <summary>
         /// 调试环境的配置参数管理对象类，内部定义类仅用于调试组件的配置参数<br/>
