@@ -22,6 +22,8 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace NovaEngine
 {
     /// <summary>
@@ -34,6 +36,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="key">环境参数键</param>
         /// <returns>若存在指定环境参数则返回对应值，否则返回false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool GetVariableAsBool(string key)
         {
             string v = GetVariable(key);
@@ -46,6 +49,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="key">环境参数键</param>
         /// <returns>若存在指定环境参数则返回对应值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int GetVariableAsInt(string key)
         {
             string v = GetVariable(key);
@@ -58,6 +62,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="key">环境参数键</param>
         /// <returns>若存在指定环境参数则返回对应值，否则返回0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static long GetVariableAsLong(string key)
         {
             string v = GetVariable(key);
@@ -70,6 +75,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="key">环境参数键</param>
         /// <returns>若存在指定环境参数则返回对应值，否则返回0.0f</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float GetVariableAsFloat(string key)
         {
             string v = GetVariable(key);
@@ -82,6 +88,7 @@ namespace NovaEngine
         /// </summary>
         /// <param name="key">环境参数键</param>
         /// <returns>若存在指定环境参数则返回对应值，否则返回0.0f</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double GetVariableAsDouble(string key)
         {
             string v = GetVariable(key);

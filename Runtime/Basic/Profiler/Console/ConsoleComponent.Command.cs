@@ -65,7 +65,7 @@ namespace GameEngine.Profiler.Debugging
                 HandleCommandTypeAttribute handleCommandTypeAttr = method.GetCustomAttribute<HandleCommandTypeAttribute>();
                 if (null != handleCommandTypeAttr)
                 {
-                    Debugger.Assert(method.IsStatic);
+                    Debugger.IsFalse(method.IsStatic);
 
                     DebugConsoleHandleCommand callback = method.CreateDelegate(typeof(DebugConsoleHandleCommand), this) as DebugConsoleHandleCommand;
                     _handleCommands.Add(handleCommandTypeAttr.Command, callback);

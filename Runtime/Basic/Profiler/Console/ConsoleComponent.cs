@@ -115,18 +115,18 @@ namespace GameEngine.Profiler.Debugging
         {
             try
             {
-                Debugger.Info(LogGroupTag.Profiler, "DebugConsole: Starting listener on {%s}:{%d}", _ip, _port);
+                Debugger.Info(LogGroupTag.Profiler, "Starting debug console listener on {%s}:{%d}", _ip, _port);
                 IPAddress ipAddress = IPAddress.Parse(_ip);
 
                 _listener = new TcpListener(ipAddress, _port);
                 _listener.Start();
-                Debugger.Info(LogGroupTag.Profiler, "DebugConsole: TcpListener started successfully.");
+                Debugger.Info(LogGroupTag.Profiler, "Debug console tcp listener started successfully.");
 
                 _listener.BeginAcceptTcpClient(OnClientConnected, null);
             }
             catch (Exception ex)
             {
-                Debugger.Error(LogGroupTag.Profiler, "DebugConsoleService failed to start listener: {%s}, and the exception stack trace: {%s}.", ex.Message, ex.StackTrace);
+                Debugger.Error(LogGroupTag.Profiler, "Debug console service failed to start listener: {%s}, and the exception stack trace: {%s}.", ex.Message, ex.StackTrace);
             }
         }
 
@@ -144,11 +144,11 @@ namespace GameEngine.Profiler.Debugging
                 var session = new ClientSession(this, sessionId, client);
                 _sessions[sessionId] = session;
 
-                Debugger.Info(LogGroupTag.Profiler, "DebugConsole: Client connected, session={%d}.", sessionId);
+                Debugger.Info(LogGroupTag.Profiler, "Debug console client connected, session={%d}.", sessionId);
             }
             catch (Exception ex)
             {
-                Debugger.Error(LogGroupTag.Profiler, "DebugConsole: Accept client error: {%s}.", ex.Message);
+                Debugger.Error(LogGroupTag.Profiler, "Debug console accept client error: {%s}.", ex.Message);
             }
         }
 
@@ -182,6 +182,8 @@ namespace GameEngine.Profiler.Debugging
                 {
                     session.Close();
                     ((IDictionary<int, ClientSession>) _sessions).Remove(sessionId);
+
+                    Debugger.Info(LogGroupTag.Profiler, "Debug console client disconnected, session={%d}.", sessionId);
                 }
             }
         }
@@ -227,6 +229,8 @@ namespace GameEngine.Profiler.Debugging
                 _client = client;
                 _stream = _client.GetStream();
                 _stream.BeginRead(_buffer, 0, _buffer.Length, OnDataReceived, null);
+
+                SendResponse(@"Welcome to NovaFramework console:");
             }
 
             /// <summary>

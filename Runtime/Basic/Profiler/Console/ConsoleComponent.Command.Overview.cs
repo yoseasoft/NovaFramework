@@ -66,6 +66,20 @@ namespace GameEngine.Profiler.Debugging
             return 0;
         }
 
+        [HandleCommandType("getenv")]
+        private int CommandOfGetenv(string command, out string response)
+        {
+            response = NovaEngine.Environment.GetValue(command.Trim());
+            return 0;
+        }
+
+        [HandleCommandType("setenv")]
+        private int CommandOfSetenv(string command, out string response)
+        {
+            response = null;
+            return 0;
+        }
+
         [HandleCommandType("quit")]
         private int CommandOfQuit(string command, out string response)
         {

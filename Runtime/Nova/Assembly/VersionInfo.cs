@@ -60,7 +60,7 @@ namespace NovaEngine
         /// <summary>
         /// 修订版本号，功能扩充或BUG修复时更改该值
         /// </summary>
-        public const int Revision = 27;
+        public const int Revision = 28;
 
         /// <summary>
         /// 编译版本号，每次重新编译版本时更改该值

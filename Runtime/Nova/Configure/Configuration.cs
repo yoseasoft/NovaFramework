@@ -26,7 +26,7 @@
 /// THE SOFTWARE.
 /// -------------------------------------------------------------------------------
 
-using System.Collections.Generic;
+using System;
 using System.Reflection;
 using System.Text;
 
@@ -46,6 +46,11 @@ namespace NovaEngine
         /// 屏幕禁止休眠模式启用开关
         /// </summary>
         public readonly static bool ScreenNeverSleep = false;
+
+        /// <summary>
+        /// 程序支持后台运行模式启用开关
+        /// </summary>
+        public readonly static bool RunInBackground = false;
 
         /// <summary>
         /// 网络消息包头长度配置
@@ -118,13 +123,6 @@ namespace NovaEngine
                 FieldInfo field = fields[n];
                 sb.AppendFormat("{0}={1},", field.Name, field.GetValue(null));
             }
-
-            sb.Append("},VARIABLES={");
-            foreach (KeyValuePair<string, string> pair in _variables)
-            {
-                sb.AppendFormat("{0}={1},", pair.Key, pair.Value);
-            }
-
             sb.Append("}");
 
             return sb.ToString();
